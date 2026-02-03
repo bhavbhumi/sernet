@@ -1,7 +1,7 @@
 import { Layout } from '@/components/layout/Layout';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { TrendingUp, BarChart3, PieChart, Wallet, BookOpen, LineChart } from 'lucide-react';
+import { TrendingUp, BarChart3, PieChart, Wallet, BookOpen, LineChart, Target, Landmark, Briefcase, MessageSquare } from 'lucide-react';
 
 const products = [
   {
@@ -9,42 +9,70 @@ const products = [
     name: 'Kite',
     tagline: 'Our ultra-fast flagship trading platform',
     description: 'Our ultra-fast flagship trading platform with streaming market data, advanced charts, an elegant UI, and more. Enjoy the Kite experience seamlessly on your Android and iOS devices.',
-    link: '#',
+    link: '/products/kite',
   },
   {
     icon: BarChart3,
     name: 'Console',
     tagline: 'The central dashboard for your Zerodha account',
     description: 'The central dashboard for your Zerodha account. Gain insights into your trades and investments with in-depth reports and visualisations.',
-    link: '#',
+    link: '/products/console',
   },
   {
     icon: PieChart,
     name: 'Coin',
     tagline: 'Buy direct mutual funds online',
     description: 'Buy direct mutual funds online, commission-free, delivered directly to your Demat account. Enjoy the low-cost MF experience on your mobile app.',
-    link: '#',
+    link: '/products/coin',
   },
   {
     icon: Wallet,
     name: 'Kite Connect',
     tagline: 'Build your own trading and investing app',
     description: 'Build trading and investment platforms with our powerful APIs. Perfect for businesses looking to build their own products.',
-    link: '#',
+    link: '/products/kite-connect',
   },
   {
     icon: BookOpen,
     name: 'Varsity',
     tagline: 'Free and open stock market education',
     description: 'An extensive and in-depth collection of stock market tutorials and content. The most popular and trusted free online learning destination.',
-    link: '#',
+    link: '/products/varsity',
   },
   {
     icon: LineChart,
     name: 'Streak',
     tagline: 'Algo trading and backtesting platform',
     description: 'Algo trading platform that lets you create and backtest strategies without any coding. Test your trading ideas before putting real money on the line.',
-    link: '#',
+    link: '/products/streak',
+  },
+  {
+    icon: Briefcase,
+    name: 'Smallcase',
+    tagline: 'Thematic stock portfolios',
+    description: 'Invest in portfolios of stocks and ETFs built around market themes, strategies, and ideas. Simple, transparent, and in your control.',
+    link: '/products/smallcase',
+  },
+  {
+    icon: Target,
+    name: 'Sensibull',
+    tagline: 'Options trading made simple',
+    description: 'India\'s most advanced options trading platform. Build strategies, analyze markets, and trade options with confidence.',
+    link: '/products/sensibull',
+  },
+  {
+    icon: Landmark,
+    name: 'GoldenPi',
+    tagline: 'Bonds and fixed income',
+    description: 'Invest in bonds directly from Kite. Government securities, corporate bonds, and more with transparent pricing and real-time execution.',
+    link: '/products/goldenpi',
+  },
+  {
+    icon: MessageSquare,
+    name: 'TradingQ&A',
+    tagline: 'Trading & investment community',
+    description: 'India\'s most active trading and investment community. Ask questions, share knowledge, and learn from fellow traders and investors.',
+    link: '/tradingqna',
   },
 ];
 
@@ -93,9 +121,9 @@ const Products = () => {
                   </div>
                 </div>
                 <p className="text-body text-sm mb-4">{product.description}</p>
-                <a href={product.link} className="link-primary text-sm font-medium">
+                <Link to={product.link} className="link-primary text-sm font-medium">
                   Learn more →
-                </a>
+                </Link>
               </motion.div>
             ))}
           </div>

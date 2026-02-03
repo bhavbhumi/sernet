@@ -28,6 +28,11 @@ const menuSections = [
       { name: 'Coin', href: '/products/coin', external: false },
       { name: 'Kite Connect', href: '/products/kite-connect', external: false },
       { name: 'Varsity', href: '/products/varsity', external: false },
+      { name: 'Streak', href: '/products/streak', external: false },
+      { name: 'Smallcase', href: '/products/smallcase', external: false },
+      { name: 'Sensibull', href: '/products/sensibull', external: false },
+      { name: 'GoldenPi', href: '/products/goldenpi', external: false },
+      { name: 'TradingQ&A', href: '/tradingqna', external: false },
     ],
   },
   {
@@ -46,6 +51,7 @@ const menuSections = [
       { name: 'Z-Connect blog', href: '/z-connect', external: false },
       { name: 'List of charges', href: '/pricing', external: false },
       { name: 'Downloads', href: '/downloads', external: false },
+      { name: 'Videos', href: '/videos', external: false },
     ],
   },
 ];
