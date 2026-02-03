@@ -224,6 +224,12 @@
     animation: slideUp 0.5s ease-out forwards;
   }
 
+  /* Marquee animation for footer */
+  .animate-marquee {
+    display: inline-block;
+    animation: marquee 30s linear infinite;
+  }
+
   @keyframes fadeIn {
     from {
       opacity: 0;
@@ -241,6 +247,15 @@
     to {
       opacity: 1;
       transform: translateY(0);
+    }
+  }
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
     }
   }
 }
