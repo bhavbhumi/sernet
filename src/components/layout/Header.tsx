@@ -3,6 +3,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ExternalLink } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+import sernetLogo from '@/assets/sernet-logo.png';
+
 const navLinks = [
   { name: 'Signup', href: '/signup' },
   { name: 'About', href: '/about' },
@@ -66,9 +68,9 @@ export const Header = () => {
         {/* Logo */}
         <Link to="/" className="flex items-center">
           <img 
-            src="https://zerodha.com/static/images/logo.svg" 
-            alt="Zerodha" 
-            className="h-5"
+            src={sernetLogo}
+            alt="Sernet"
+            className="h-6 w-auto"
           />
         </Link>
 
@@ -78,10 +80,10 @@ export const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className={`text-[15px] transition-colors hover:text-primary ${
+              className={`text-[16px] text-muted-foreground transition-colors hover:text-primary active:text-primary visited:text-muted-foreground ${
                 location.pathname === link.href
                   ? 'text-primary'
-                  : 'text-foreground'
+                  : 'text-muted-foreground'
               }`}
             >
               {link.name}
@@ -91,7 +93,7 @@ export const Header = () => {
           {/* Hamburger menu button */}
           <button
             type="button"
-            className="p-2 text-foreground hover:text-primary transition-colors"
+            className="p-2 text-muted-foreground hover:text-primary active:text-primary transition-colors"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
           >
@@ -102,7 +104,7 @@ export const Header = () => {
         {/* Mobile menu button */}
         <button
           type="button"
-          className="md:hidden p-2 text-muted-foreground hover:text-foreground transition-colors"
+          className="md:hidden p-2 text-muted-foreground hover:text-primary active:text-primary transition-colors"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
         >
@@ -127,7 +129,7 @@ export const Header = () => {
                   <Link
                     key={link.name}
                     to={link.href}
-                    className={`block py-2 text-[15px] font-medium transition-colors hover:text-primary ${
+                    className={`block py-2 text-[16px] font-medium transition-colors hover:text-primary active:text-primary visited:text-muted-foreground ${
                       location.pathname === link.href
                         ? 'text-primary'
                         : 'text-muted-foreground'
@@ -154,7 +156,7 @@ export const Header = () => {
                               href={link.href}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-1 text-[14px] text-muted-foreground hover:text-primary transition-colors"
+                              className="flex items-center gap-1 text-[15px] text-muted-foreground hover:text-primary active:text-primary visited:text-muted-foreground transition-colors"
                               onClick={() => setMenuOpen(false)}
                             >
                               {link.name}
@@ -163,7 +165,7 @@ export const Header = () => {
                           ) : (
                             <Link
                               to={link.href}
-                              className="text-[14px] text-muted-foreground hover:text-primary transition-colors"
+                              className="text-[15px] text-muted-foreground hover:text-primary active:text-primary visited:text-muted-foreground transition-colors"
                               onClick={() => setMenuOpen(false)}
                             >
                               {link.name}
