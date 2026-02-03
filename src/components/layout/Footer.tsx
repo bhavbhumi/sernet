@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 
+import sernetLogo from '@/assets/sernet-logo.png';
+
 const footerLinks = {
   company: [
     { name: 'About', href: '/about' },
@@ -57,12 +59,12 @@ export const Footer = () => {
           <div className="lg:col-span-1">
             <Link to="/" className="inline-block mb-6">
               <img 
-                src="https://zerodha.com/static/images/logo.svg" 
-                alt="Zerodha" 
-                className="h-5"
+                src={sernetLogo}
+                alt="Sernet"
+                className="h-6 w-auto"
               />
             </Link>
-            <p className="text-[13px] text-muted-foreground mb-4">
+            <p className="text-[14px] text-muted-foreground mb-4">
               © 2010 - {new Date().getFullYear()}, Zerodha Broking Ltd.
               <br />
               All rights reserved.
@@ -103,11 +105,14 @@ export const Footer = () => {
 
           {/* Company */}
           <div>
-            <h3 className="text-[15px] font-medium text-foreground mb-5">Company</h3>
+            <h3 className="text-[16px] font-medium text-foreground mb-5">Company</h3>
             <ul className="space-y-3">
               {footerLinks.company.map((link) => (
                 <li key={link.name}>
-                  <Link to={link.href} className="text-[14px] text-muted-foreground hover:text-primary transition-colors">
+                  <Link
+                    to={link.href}
+                    className="text-[15px] text-muted-foreground hover:text-primary active:text-primary visited:text-muted-foreground transition-colors"
+                  >
                     {link.name}
                   </Link>
                 </li>
@@ -117,11 +122,14 @@ export const Footer = () => {
 
           {/* Support */}
           <div>
-            <h3 className="text-[15px] font-medium text-foreground mb-5">Support</h3>
+            <h3 className="text-[16px] font-medium text-foreground mb-5">Support</h3>
             <ul className="space-y-3">
               {footerLinks.support.map((link) => (
                 <li key={link.name}>
-                  <Link to={link.href} className="text-[14px] text-muted-foreground hover:text-primary transition-colors">
+                  <Link
+                    to={link.href}
+                    className="text-[15px] text-muted-foreground hover:text-primary active:text-primary visited:text-muted-foreground transition-colors"
+                  >
                     {link.name}
                   </Link>
                 </li>
@@ -131,11 +139,14 @@ export const Footer = () => {
 
           {/* Account */}
           <div>
-            <h3 className="text-[15px] font-medium text-foreground mb-5">Account</h3>
+            <h3 className="text-[16px] font-medium text-foreground mb-5">Account</h3>
             <ul className="space-y-3">
               {footerLinks.account.map((link) => (
                 <li key={link.name}>
-                  <Link to={link.href} className="text-[14px] text-muted-foreground hover:text-primary transition-colors">
+                  <Link
+                    to={link.href}
+                    className="text-[15px] text-muted-foreground hover:text-primary active:text-primary visited:text-muted-foreground transition-colors"
+                  >
                     {link.name}
                   </Link>
                 </li>
@@ -145,12 +156,15 @@ export const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-[15px] font-medium text-foreground mb-5">Quick Links</h3>
+            <h3 className="text-[16px] font-medium text-foreground mb-5">Quick Links</h3>
             <ul className="space-y-3">
               {footerLinks.quickLinks.map((link) => (
                 <li key={link.name}>
                   {link.internal ? (
-                    <Link to={link.href} className="text-[14px] text-muted-foreground hover:text-primary transition-colors">
+                    <Link
+                      to={link.href}
+                      className="text-[15px] text-muted-foreground hover:text-primary active:text-primary visited:text-muted-foreground transition-colors"
+                    >
                       {link.name}
                     </Link>
                   ) : (
@@ -158,7 +172,7 @@ export const Footer = () => {
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[14px] text-muted-foreground hover:text-primary transition-colors"
+                      className="text-[15px] text-muted-foreground hover:text-primary active:text-primary visited:text-muted-foreground transition-colors"
                     >
                       {link.name}
                     </a>
@@ -171,12 +185,12 @@ export const Footer = () => {
 
         {/* Legal Links */}
         <div className="mt-8 pt-8 border-t border-border">
-          <div className="flex flex-wrap gap-4 text-[13px]">
+          <div className="flex flex-wrap gap-4 text-[14px]">
             {legalLinks.map((link) => (
               <Link 
                 key={link.name}
                 to={link.href}
-                className="text-muted-foreground hover:text-primary transition-colors"
+                className="text-muted-foreground hover:text-primary active:text-primary visited:text-muted-foreground transition-colors"
               >
                 {link.name}
               </Link>
@@ -186,7 +200,7 @@ export const Footer = () => {
 
         {/* Disclaimer */}
         <div className="mt-8 pt-8 border-t border-border">
-          <p className="text-[12px] text-muted-foreground leading-relaxed">
+          <p className="text-[12.5px] text-muted-foreground leading-relaxed">
             Zerodha Broking Ltd.: Member of NSE, BSE​ &​ MCX – SEBI Registration no.: INZ000031633 CDSL/NSDL: Depository services through Zerodha Broking Ltd. – SEBI Registration no.: IN-DP-431-2019 Commodity Trading through Zerodha Commodities Pvt. Ltd. MCX: 46025; NSE-50001 – SEBI Registration no.: INZ000038238 CIN: U67120KA2010PLC052690
           </p>
           <p className="text-xs text-muted-foreground leading-relaxed mt-4">
