@@ -45,6 +45,15 @@ import Philosophy from "./pages/Philosophy";
 import OpenAccount from "./pages/OpenAccount";
 import TradingQnA from "./pages/TradingQnA";
 
+// New pages
+import MarketHolidays from "./pages/MarketHolidays";
+import EconomicCalendar from "./pages/EconomicCalendar";
+import InvestorCharter from "./pages/InvestorCharter";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
+import Disclosure from "./pages/Disclosure";
+import Policies from "./pages/Policies";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -84,6 +93,8 @@ const App = () => (
           <Route path="/downloads" element={<Downloads />} />
           <Route path="/videos" element={<Videos />} />
           <Route path="/tradingqna" element={<TradingQnA />} />
+          <Route path="/market-holidays" element={<MarketHolidays />} />
+          <Route path="/economic-calendar" element={<EconomicCalendar />} />
           
           {/* Company pages */}
           <Route path="/referral" element={<Referral />} />
@@ -98,6 +109,13 @@ const App = () => (
           <Route path="/complaints" element={<Complaints />} />
           <Route path="/complaints/status" element={<ComplaintStatus />} />
           <Route path="/fund-transfer" element={<FundTransfer />} />
+          
+          {/* Legal pages */}
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/disclosure" element={<Disclosure />} />
+          <Route path="/policies" element={<Policies />} />
+          <Route path="/investor-charter" element={<InvestorCharter />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
