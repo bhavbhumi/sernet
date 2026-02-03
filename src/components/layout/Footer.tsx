@@ -62,7 +62,7 @@ export const Footer = () => {
                 className="h-5"
               />
             </Link>
-            <p className="text-small mb-4">
+            <p className="text-[13px] text-muted-foreground mb-4">
               © 2010 - {new Date().getFullYear()}, Zerodha Broking Ltd.
               <br />
               All rights reserved.
@@ -103,11 +103,11 @@ export const Footer = () => {
 
           {/* Company */}
           <div>
-            <h3 className="text-sm font-medium text-foreground mb-4">Company</h3>
+            <h3 className="text-[15px] font-medium text-foreground mb-5">Company</h3>
             <ul className="space-y-3">
               {footerLinks.company.map((link) => (
                 <li key={link.name}>
-                  <Link to={link.href} className="text-small hover:text-primary transition-colors">
+                  <Link to={link.href} className="text-[14px] text-muted-foreground hover:text-primary transition-colors">
                     {link.name}
                   </Link>
                 </li>
@@ -117,11 +117,11 @@ export const Footer = () => {
 
           {/* Support */}
           <div>
-            <h3 className="text-sm font-medium text-foreground mb-4">Support</h3>
+            <h3 className="text-[15px] font-medium text-foreground mb-5">Support</h3>
             <ul className="space-y-3">
               {footerLinks.support.map((link) => (
                 <li key={link.name}>
-                  <Link to={link.href} className="text-small hover:text-primary transition-colors">
+                  <Link to={link.href} className="text-[14px] text-muted-foreground hover:text-primary transition-colors">
                     {link.name}
                   </Link>
                 </li>
@@ -131,11 +131,11 @@ export const Footer = () => {
 
           {/* Account */}
           <div>
-            <h3 className="text-sm font-medium text-foreground mb-4">Account</h3>
+            <h3 className="text-[15px] font-medium text-foreground mb-5">Account</h3>
             <ul className="space-y-3">
               {footerLinks.account.map((link) => (
                 <li key={link.name}>
-                  <Link to={link.href} className="text-small hover:text-primary transition-colors">
+                  <Link to={link.href} className="text-[14px] text-muted-foreground hover:text-primary transition-colors">
                     {link.name}
                   </Link>
                 </li>
@@ -145,12 +145,12 @@ export const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-sm font-medium text-foreground mb-4">Quick Links</h3>
+            <h3 className="text-[15px] font-medium text-foreground mb-5">Quick Links</h3>
             <ul className="space-y-3">
               {footerLinks.quickLinks.map((link) => (
                 <li key={link.name}>
                   {link.internal ? (
-                    <Link to={link.href} className="text-small hover:text-primary transition-colors">
+                    <Link to={link.href} className="text-[14px] text-muted-foreground hover:text-primary transition-colors">
                       {link.name}
                     </Link>
                   ) : (
@@ -158,7 +158,7 @@ export const Footer = () => {
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-small hover:text-primary transition-colors"
+                      className="text-[14px] text-muted-foreground hover:text-primary transition-colors"
                     >
                       {link.name}
                     </a>
@@ -171,7 +171,7 @@ export const Footer = () => {
 
         {/* Legal Links */}
         <div className="mt-8 pt-8 border-t border-border">
-          <div className="flex flex-wrap gap-4 text-xs">
+          <div className="flex flex-wrap gap-4 text-[13px]">
             {legalLinks.map((link) => (
               <Link 
                 key={link.name}
@@ -186,7 +186,7 @@ export const Footer = () => {
 
         {/* Disclaimer */}
         <div className="mt-8 pt-8 border-t border-border">
-          <p className="text-xs text-muted-foreground leading-relaxed">
+          <p className="text-[12px] text-muted-foreground leading-relaxed">
             Zerodha Broking Ltd.: Member of NSE, BSE​ &​ MCX – SEBI Registration no.: INZ000031633 CDSL/NSDL: Depository services through Zerodha Broking Ltd. – SEBI Registration no.: IN-DP-431-2019 Commodity Trading through Zerodha Commodities Pvt. Ltd. MCX: 46025; NSE-50001 – SEBI Registration no.: INZ000038238 CIN: U67120KA2010PLC052690
           </p>
           <p className="text-xs text-muted-foreground leading-relaxed mt-4">
