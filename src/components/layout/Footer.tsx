@@ -55,11 +55,12 @@ export const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Brand */}
           <div className="lg:col-span-1">
-            <Link to="/" className="flex items-center gap-2 mb-6">
-              <div className="w-8 h-8 bg-primary rounded flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-lg">Z</span>
-              </div>
-              <span className="text-xl font-semibold text-foreground">ZERODHA</span>
+            <Link to="/" className="inline-block mb-6">
+              <img 
+                src="https://zerodha.com/static/images/logo.svg" 
+                alt="Zerodha" 
+                className="h-5"
+              />
             </Link>
             <p className="text-small mb-4">
               © 2010 - {new Date().getFullYear()}, Zerodha Broking Ltd.
@@ -102,7 +103,7 @@ export const Footer = () => {
 
           {/* Company */}
           <div>
-            <h3 className="font-semibold text-foreground mb-4">Company</h3>
+            <h3 className="text-sm font-medium text-foreground mb-4">Company</h3>
             <ul className="space-y-3">
               {footerLinks.company.map((link) => (
                 <li key={link.name}>
@@ -116,7 +117,7 @@ export const Footer = () => {
 
           {/* Support */}
           <div>
-            <h3 className="font-semibold text-foreground mb-4">Support</h3>
+            <h3 className="text-sm font-medium text-foreground mb-4">Support</h3>
             <ul className="space-y-3">
               {footerLinks.support.map((link) => (
                 <li key={link.name}>
@@ -130,7 +131,7 @@ export const Footer = () => {
 
           {/* Account */}
           <div>
-            <h3 className="font-semibold text-foreground mb-4">Account</h3>
+            <h3 className="text-sm font-medium text-foreground mb-4">Account</h3>
             <ul className="space-y-3">
               {footerLinks.account.map((link) => (
                 <li key={link.name}>
@@ -144,7 +145,7 @@ export const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-semibold text-foreground mb-4">Quick Links</h3>
+            <h3 className="text-sm font-medium text-foreground mb-4">Quick Links</h3>
             <ul className="space-y-3">
               {footerLinks.quickLinks.map((link) => (
                 <li key={link.name}>

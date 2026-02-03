@@ -64,25 +64,24 @@ export const Header = () => {
     <header className="sticky top-0 z-50 bg-background border-b border-border">
       <nav className="container-zerodha flex items-center justify-between h-16">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
-          <div className="flex items-center gap-1">
-            <div className="w-6 h-6 bg-primary rounded flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-sm">Z</span>
-            </div>
-            <span className="text-xl font-semibold text-foreground tracking-tight">ZERODHA</span>
-          </div>
+        <Link to="/" className="flex items-center">
+          <img 
+            src="https://zerodha.com/static/images/logo.svg" 
+            alt="Zerodha" 
+            className="h-5"
+          />
         </Link>
 
         {/* Desktop Navigation - shown on md and above */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-6">
           {navLinks.map((link) => (
             <Link
               key={link.name}
               to={link.href}
-              className={`text-sm font-medium transition-colors hover:text-primary ${
+              className={`text-sm transition-colors hover:text-primary ${
                 location.pathname === link.href
                   ? 'text-primary'
-                  : 'text-muted-foreground'
+                  : 'text-foreground'
               }`}
             >
               {link.name}
@@ -92,7 +91,7 @@ export const Header = () => {
           {/* Hamburger menu button */}
           <button
             type="button"
-            className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+            className="p-2 text-foreground hover:text-primary transition-colors"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
           >
@@ -144,7 +143,7 @@ export const Header = () => {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
                 {menuSections.map((section) => (
                   <div key={section.title}>
-                    <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-3">
+                    <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3">
                       {section.title}
                     </h3>
                     <ul className="space-y-2">
