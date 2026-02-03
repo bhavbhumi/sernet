@@ -54,6 +54,14 @@ import Privacy from "./pages/Privacy";
 import Disclosure from "./pages/Disclosure";
 import Policies from "./pages/Policies";
 
+// Additional Sernet pages
+import Recognitions from "./pages/Recognitions";
+import Reviews from "./pages/Reviews";
+import Clients from "./pages/Clients";
+import Partners from "./pages/Partners";
+import QuickLinks from "./pages/QuickLinks";
+import CreditClaim from "./pages/CreditClaim";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -116,6 +124,14 @@ const App = () => (
           <Route path="/disclosure" element={<Disclosure />} />
           <Route path="/policies" element={<Policies />} />
           <Route path="/investor-charter" element={<InvestorCharter />} />
+          
+          {/* Additional Sernet pages */}
+          <Route path="/recognitions" element={<Recognitions />} />
+          <Route path="/reviews" element={<Reviews />} />
+          <Route path="/clients" element={<Clients />} />
+          <Route path="/partners" element={<Partners />} />
+          <Route path="/quick-links" element={<QuickLinks />} />
+          <Route path="/credit-claim" element={<CreditClaim />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
