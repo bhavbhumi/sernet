@@ -73,12 +73,12 @@ export const Header = () => {
         </Link>
 
         {/* Desktop Navigation - shown on md and above */}
-        <div className="hidden md:flex items-center gap-6">
+        <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <Link
               key={link.name}
               to={link.href}
-              className={`text-sm transition-colors hover:text-primary ${
+              className={`text-[15px] transition-colors hover:text-primary ${
                 location.pathname === link.href
                   ? 'text-primary'
                   : 'text-foreground'
@@ -127,7 +127,7 @@ export const Header = () => {
                   <Link
                     key={link.name}
                     to={link.href}
-                    className={`block py-2 text-sm font-medium transition-colors hover:text-primary ${
+                    className={`block py-2 text-[15px] font-medium transition-colors hover:text-primary ${
                       location.pathname === link.href
                         ? 'text-primary'
                         : 'text-muted-foreground'
@@ -143,7 +143,7 @@ export const Header = () => {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
                 {menuSections.map((section) => (
                   <div key={section.title}>
-                    <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3">
+                    <h3 className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider mb-3">
                       {section.title}
                     </h3>
                     <ul className="space-y-2">
@@ -154,7 +154,7 @@ export const Header = () => {
                               href={link.href}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-colors"
+                              className="flex items-center gap-1 text-[14px] text-muted-foreground hover:text-primary transition-colors"
                               onClick={() => setMenuOpen(false)}
                             >
                               {link.name}
@@ -163,7 +163,7 @@ export const Header = () => {
                           ) : (
                             <Link
                               to={link.href}
-                              className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                              className="text-[14px] text-muted-foreground hover:text-primary transition-colors"
                               onClick={() => setMenuOpen(false)}
                             >
                               {link.name}
