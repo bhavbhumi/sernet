@@ -17,6 +17,10 @@ import Console from "./pages/products/Console";
 import Coin from "./pages/products/Coin";
 import KiteConnect from "./pages/products/KiteConnect";
 import Varsity from "./pages/products/Varsity";
+import Streak from "./pages/products/Streak";
+import Smallcase from "./pages/products/Smallcase";
+import GoldenPi from "./pages/products/GoldenPi";
+import Sensibull from "./pages/products/Sensibull";
 
 // Calculator pages
 import BrokerageCalculator from "./pages/calculators/BrokerageCalculator";
@@ -37,6 +41,9 @@ import Videos from "./pages/Videos";
 import Complaints from "./pages/Complaints";
 import ComplaintStatus from "./pages/ComplaintStatus";
 import FundTransfer from "./pages/FundTransfer";
+import Philosophy from "./pages/Philosophy";
+import OpenAccount from "./pages/OpenAccount";
+import TradingQnA from "./pages/TradingQnA";
 
 const queryClient = new QueryClient();
 
@@ -60,6 +67,10 @@ const App = () => (
           <Route path="/products/coin" element={<Coin />} />
           <Route path="/products/kite-connect" element={<KiteConnect />} />
           <Route path="/products/varsity" element={<Varsity />} />
+          <Route path="/products/streak" element={<Streak />} />
+          <Route path="/products/smallcase" element={<Smallcase />} />
+          <Route path="/products/goldenpi" element={<GoldenPi />} />
+          <Route path="/products/sensibull" element={<Sensibull />} />
           
           {/* Calculator pages */}
           <Route path="/calculators/brokerage" element={<BrokerageCalculator />} />
@@ -72,6 +83,7 @@ const App = () => (
           <Route path="/z-connect" element={<ZConnect />} />
           <Route path="/downloads" element={<Downloads />} />
           <Route path="/videos" element={<Videos />} />
+          <Route path="/tradingqna" element={<TradingQnA />} />
           
           {/* Company pages */}
           <Route path="/referral" element={<Referral />} />
@@ -79,6 +91,8 @@ const App = () => (
           <Route path="/media" element={<Media />} />
           <Route path="/csr" element={<CSR />} />
           <Route path="/tech" element={<Tech />} />
+          <Route path="/about/philosophy" element={<Philosophy />} />
+          <Route path="/open-account" element={<OpenAccount />} />
           
           {/* Support pages */}
           <Route path="/complaints" element={<Complaints />} />
