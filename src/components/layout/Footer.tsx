@@ -61,7 +61,7 @@ export const Footer = () => {
               <img 
                 src={sernetLogo}
                 alt="Sernet"
-                className="h-6 w-auto"
+                className="h-[25px] w-auto"
               />
             </Link>
             <p className="text-[14px] text-muted-foreground mb-4">
