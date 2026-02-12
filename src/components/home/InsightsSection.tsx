@@ -129,21 +129,28 @@ export const InsightsSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="mt-16 rounded-2xl bg-muted/50 border border-border p-6 md:p-8 text-center"
+          className="relative mt-16 rounded-2xl bg-muted/50 border border-primary/30 p-6 md:p-8 text-center overflow-hidden shadow-[0_0_25px_-5px_hsl(var(--primary)/0.3),0_0_10px_-5px_hsl(var(--sernet-yellow)/0.2)]"
         >
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <Mail className="w-5 h-5 text-primary" />
-            <h3 className="text-lg font-semibold text-foreground">Subscribe to our Newsletter</h3>
+          {/* Background watermark elements */}
+          <span className="absolute top-4 left-6 text-[4rem] md:text-[5rem] font-black text-primary/[0.04] uppercase select-none pointer-events-none leading-none tracking-tight">Resources</span>
+          <span className="absolute top-1/2 -translate-y-1/2 right-6 text-[4rem] md:text-[5rem] font-black text-sernet-yellow/[0.06] uppercase select-none pointer-events-none leading-none tracking-tight">Articles</span>
+          <span className="absolute bottom-4 left-1/2 -translate-x-1/2 text-[4rem] md:text-[5rem] font-black text-primary/[0.04] uppercase select-none pointer-events-none leading-none tracking-tight">Promotion</span>
+
+          <div className="relative z-10">
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <Mail className="w-5 h-5 text-primary" />
+              <h3 className="text-lg font-semibold text-foreground">Subscribe to our Newsletter</h3>
+            </div>
+            <div className="flex items-center justify-center gap-6 mb-4">
+              {['Resources', 'Articles', 'Promotion'].map((label) => (
+                <label key={label} className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer">
+                  <Checkbox defaultChecked />
+                  {label}
+                </label>
+              ))}
+            </div>
+            <NewsletterForm />
           </div>
-          <div className="flex items-center justify-center gap-6 mb-4">
-            {['Resources', 'Articles', 'Promotion'].map((label) => (
-              <label key={label} className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer">
-                <Checkbox defaultChecked />
-                {label}
-              </label>
-            ))}
-          </div>
-          <NewsletterForm />
         </motion.div>
       </div>
     </section>
