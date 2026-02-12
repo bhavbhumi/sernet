@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, Clock, Calendar } from 'lucide-react';
+import { ArrowRight, Clock, Calendar, Heart, MessageCircle, Share2 } from 'lucide-react';
 
 const articles = [
   {
@@ -84,13 +84,26 @@ export const InsightsSection = () => {
                 <p className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-2">
                   {article.excerpt}
                 </p>
-                <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                  <span className="inline-flex items-center gap-1">
-                    <Calendar className="w-3.5 h-3.5" /> {article.date}
-                  </span>
-                  <span className="inline-flex items-center gap-1">
-                    <Clock className="w-3.5 h-3.5" /> {article.readTime}
-                  </span>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                    <span className="inline-flex items-center gap-1">
+                      <Calendar className="w-3.5 h-3.5" /> {article.date}
+                    </span>
+                    <span className="inline-flex items-center gap-1">
+                      <Clock className="w-3.5 h-3.5" /> {article.readTime}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <button className="p-1.5 rounded-full text-muted-foreground hover:text-red-500 hover:bg-red-500/10 transition-colors" aria-label="Like">
+                      <Heart className="w-4 h-4" />
+                    </button>
+                    <button className="p-1.5 rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors" aria-label="Comment">
+                      <MessageCircle className="w-4 h-4" />
+                    </button>
+                    <button className="p-1.5 rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors" aria-label="Share">
+                      <Share2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
               </div>
             </motion.article>
