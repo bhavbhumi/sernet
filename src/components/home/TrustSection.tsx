@@ -1,64 +1,116 @@
 import { motion } from 'framer-motion';
-import { Users, ShieldCheck, Layers, TrendingUp } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import tickfundsLogo from '@/assets/tickfunds-logo.png';
+import tushilLogo from '@/assets/tushil-logo.png';
+import choicefinxLogo from '@/assets/choicefinx-logo.jpeg';
 
 const features = [
   {
-    icon: Users,
-    title: 'Customer-first always',
-    description: "That's why 1.6+ crore customers trust Zerodha with ~ ₹6 lakh crores of equity investments, making us India's largest broker; contributing to 15% of daily retail exchange volumes in India.",
+    title: 'Trust and Confidence',
+    description: (
+      <>
+        Thousands trust us for <span className="font-semibold text-foreground">easy, convenient & efficient</span> Investments, Insurance and Trading platforms.
+      </>
+    ),
   },
   {
-    icon: ShieldCheck,
-    title: 'No spam or gimmicks',
-    description: 'No gimmicks, spam, "gamification", or annoying push notifications. High quality apps that you use at your pace, the way you like.',
+    title: 'Clarity Over Chaos',
+    description: (
+      <>
+        No flashy gimmicks, no sales traps. Just <span className="font-semibold text-foreground">transparent, high-quality</span> financial services built for <span className="text-primary font-medium">your success</span>.
+      </>
+    ),
   },
   {
-    icon: Layers,
-    title: 'The Zerodha universe',
-    description: 'Not just an app, but a whole ecosystem. Our investments in 30+ fintech startups offer you tailored services specific to your needs.',
+    title: 'Beyond Transactions, Towards Transformation',
+    description: (
+      <>
+        Not just a platform, but a <span className="font-semibold text-foreground">financial ecosystem</span>. From equities and bullion to fixed income, we help you <span className="text-primary font-medium">build wealth effortlessly</span>.
+      </>
+    ),
   },
   {
-    icon: TrendingUp,
-    title: 'Do better with money',
-    description: "With initiatives like Nudge and Kill Switch, we don't just facilitate transactions, but actively help you do better with your money.",
+    title: 'Client First Approach',
+    description: (
+      <>
+        Every decision we make starts with <span className="font-semibold text-foreground">you</span>. Personalised guidance, dedicated support, and solutions crafted around <span className="text-primary font-medium">your financial goals</span> — because your growth is our measure of success.
+      </>
+    ),
   },
+];
+
+const products = [
+  { name: 'Tick Funds', logo: tickfundsLogo },
+  { name: 'Tushil', logo: tushilLogo },
+  { name: 'Choice FinX', logo: choicefinxLogo },
 ];
 
 export const TrustSection = () => {
   return (
     <section className="section-padding bg-background">
       <div className="container-zerodha">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-12"
-        >
-          <h2 className="heading-lg text-foreground mb-2">Trust with confidence</h2>
-        </motion.div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+          {/* Left Part */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="heading-lg text-foreground mb-1">Achieve and Prosper</h2>
+            <p className="text-muted-foreground text-lg mb-8">Your financial progress, our priority.</p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-          {features.map((feature, index) => (
-            <motion.div
-              key={feature.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="flex gap-4"
+            <div className="space-y-6">
+              {features.map((feature, index) => (
+                <motion.div
+                  key={feature.title}
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                >
+                  <h3 className="text-base font-semibold text-foreground mb-1">{feature.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Right Part */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="flex flex-col items-center justify-between gap-8"
+          >
+            {/* Product logos */}
+            <div className="w-full bg-muted/40 border border-border rounded-2xl p-8">
+              <p className="text-xs text-muted-foreground uppercase tracking-widest text-center mb-6 font-medium">Our Products</p>
+              <div className="flex items-center justify-center gap-8 flex-wrap">
+                {products.map((product) => (
+                  <div key={product.name} className="flex flex-col items-center gap-2">
+                    <div className="w-20 h-20 rounded-xl bg-background border border-border flex items-center justify-center p-2 shadow-sm">
+                      <img
+                        src={product.logo}
+                        alt={product.name}
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                    <span className="text-xs font-medium text-muted-foreground">{product.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Explore link */}
+            <Link
+              to="/products"
+              className="text-primary font-medium text-sm hover:underline underline-offset-4 transition-colors"
             >
-              <div className="flex-shrink-0">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                  <feature.icon className="w-6 h-6 text-primary" />
-                </div>
-              </div>
-              <div>
-                <h3 className="heading-md text-foreground mb-2">{feature.title}</h3>
-                <p className="text-body">{feature.description}</p>
-              </div>
-            </motion.div>
-          ))}
+              Explore our Products →
+            </Link>
+          </motion.div>
         </div>
       </div>
     </section>
