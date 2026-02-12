@@ -5,7 +5,7 @@ const Privacy = () => {
     <Layout>
       <div className="container-zerodha section-padding">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl font-bold text-foreground mb-8">Privacy Policy</h1>
+          <h1 className="heading-xl text-foreground mb-8">Privacy Policy</h1>
           
           <div className="prose prose-lg max-w-none space-y-8 text-muted-foreground">
             <section>

@@ -28,8 +28,8 @@ const Partners = () => {
   return (
     <Layout>
       <div className="container-zerodha section-padding">
-        <h1 className="text-3xl font-medium text-foreground mb-4">Our Partners</h1>
-        <p className="text-muted-foreground mb-8 max-w-2xl">
+        <h1 className="heading-lg text-foreground mb-4">Our Partners</h1>
+        <p className="text-body mb-8 max-w-2xl">
           SERNET works with leading financial institutions and service providers to offer 
           comprehensive solutions to our clients.
         </p>

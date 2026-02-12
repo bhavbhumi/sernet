@@ -31,8 +31,8 @@ const Clients = () => {
   return (
     <Layout>
       <div className="container-zerodha section-padding">
-        <h1 className="text-3xl font-medium text-foreground mb-4">Our Clients</h1>
-        <p className="text-muted-foreground mb-8 max-w-2xl">
+        <h1 className="heading-lg text-foreground mb-4">Our Clients</h1>
+        <p className="text-body mb-8 max-w-2xl">
           For over 35 years, SERNET has been trusted by thousands of clients across the globe 
           for their financial planning and investment needs.
         </p>
