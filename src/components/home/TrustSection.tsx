@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import productShowcase from '@/assets/product-showcase.png';
 
 const features = [
   {
@@ -66,7 +67,12 @@ export const TrustSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="flex flex-col items-center gap-6 lg:pt-4"
-          >
+           >
+            <img
+              src={productShowcase}
+              alt="Sernet product ecosystem — Tick Funds, Tushil, ChoiceFinX, Findemy"
+              className="w-full max-w-lg h-auto"
+            />
             <Link
               to="/products"
               className="text-primary font-medium text-body hover:underline underline-offset-4 transition-colors inline-flex items-center gap-1"
