@@ -16,7 +16,7 @@ export const HeroSection = () => {
           <img
             src={heroIllustration}
             alt="Sernet wealth management - Trade, Invest and Insure with awareness"
-            className="w-full max-w-[320px] sm:max-w-[450px] md:max-w-[600px] lg:max-w-[750px] h-auto"
+            className="w-full max-w-[220px] sm:max-w-[300px] md:max-w-[400px] lg:max-w-[500px] h-auto"
           />
         </motion.div>
 
