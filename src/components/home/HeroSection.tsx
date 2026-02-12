@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, Shield, TrendingUp, Users } from 'lucide-react';
+import { ArrowRight, BadgeCheck, Clock, Heart } from 'lucide-react';
 import heroIllustration from '@/assets/hero-illustration.webp';
 
 export const HeroSection = () => {
@@ -59,29 +59,29 @@ export const HeroSection = () => {
             <div className="flex flex-wrap gap-6 lg:gap-8">
               <div className="flex items-center gap-2.5">
                 <div className="flex items-center justify-center w-9 h-9 rounded-full bg-primary/10">
-                  <Shield className="w-4 h-4 text-primary" />
+                  <BadgeCheck className="w-4 h-4 text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-foreground leading-tight">SEBI Registered</p>
+                  <p className="text-sm font-medium text-foreground leading-tight">AMFI Registered</p>
                   <p className="text-xs text-muted-foreground">Regulated & Compliant</p>
                 </div>
               </div>
               <div className="flex items-center gap-2.5">
                 <div className="flex items-center justify-center w-9 h-9 rounded-full bg-primary/10">
-                  <Users className="w-4 h-4 text-primary" />
+                  <Clock className="w-4 h-4 text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-foreground leading-tight">5+ Years</p>
+                  <p className="text-sm font-medium text-foreground leading-tight">35+ Years</p>
                   <p className="text-xs text-muted-foreground">of Practice</p>
                 </div>
               </div>
               <div className="flex items-center gap-2.5">
                 <div className="flex items-center justify-center w-9 h-9 rounded-full bg-primary/10">
-                  <TrendingUp className="w-4 h-4 text-primary" />
+                  <Heart className="w-4 h-4 text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-foreground leading-tight">77+ Products</p>
-                  <p className="text-xs text-muted-foreground">& Solutions</p>
+                  <p className="text-sm font-medium text-foreground leading-tight">94.5% Client</p>
+                  <p className="text-xs text-muted-foreground">Retention Rate</p>
                 </div>
               </div>
             </div>
