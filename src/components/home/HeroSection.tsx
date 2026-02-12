@@ -9,11 +9,26 @@ export const HeroSection = () => {
       <div className="container-zerodha">
         {/* Split layout: text left, image right */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-          {/* Left: Content */}
+          {/* Image - shows first on mobile */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="flex justify-center lg:justify-end lg:order-2"
+          >
+            <img
+              src={heroIllustration}
+              alt="Sernet wealth management - Trade, Invest and Insure with awareness"
+              className="w-full max-w-[420px] lg:max-w-[500px] h-auto"
+            />
+          </motion.div>
+
+          {/* Content */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
+            className="lg:order-1"
           >
             <h1 className="text-[2.5rem] md:text-[3.25rem] font-light text-foreground leading-[1.15] mb-5 tracking-tight">
               Unlock your path to{' '}
@@ -70,20 +85,6 @@ export const HeroSection = () => {
                 </div>
               </div>
             </div>
-          </motion.div>
-
-          {/* Right: Illustration */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.15 }}
-            className="flex justify-center lg:justify-end"
-          >
-            <img
-              src={heroIllustration}
-              alt="Sernet wealth management - Trade, Invest and Insure with awareness"
-              className="w-full max-w-[420px] lg:max-w-[500px] h-auto"
-            />
           </motion.div>
         </div>
       </div>
