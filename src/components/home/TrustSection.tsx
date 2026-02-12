@@ -7,7 +7,7 @@ const features = [
     title: 'Trust and Confidence',
     description: (
       <>
-        Thousands trust us for <span className="font-semibold text-foreground">easy, convenient & efficient</span> Investments, Insurance and Trading platforms.
+        Thousands trust us for <span className="font-semibold text-foreground">easy, convenient & efficient</span> Investments, Insurance and Trading platforms crafted around your financial goals — because your growth is our measure of success.
       </>
     ),
   },
@@ -24,14 +24,6 @@ const features = [
     description: (
       <>
         Not just a platform, but a <span className="font-semibold text-foreground">financial ecosystem</span>. From equities and bullion to fixed income, we help you build wealth effortlessly.
-      </>
-    ),
-  },
-  {
-    title: 'Client First Approach',
-    description: (
-      <>
-        Every decision we make starts with <span className="font-semibold text-foreground">you</span>. Personalised guidance, dedicated support, and solutions crafted around your financial goals — because your growth is our measure of success.
       </>
     ),
   },
