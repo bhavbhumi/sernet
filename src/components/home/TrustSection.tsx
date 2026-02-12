@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import productShowcase from '@/assets/sernet-product-showcase.svg';
+import productShowcase from '@/assets/sernet-product-showcase.png';
 
 const features = [
   {
@@ -70,8 +70,8 @@ export const TrustSection = () => {
           >
             <img
               src={productShowcase}
-              alt="Sernet product ecosystem — Tick Funds, Tushil, Choice FinX"
-              className="w-full max-w-md h-auto"
+              alt="Sernet product ecosystem — Tick Funds, Tushil, Choice FinX, Findemy"
+              className="w-full max-w-lg h-auto"
             />
 
             <Link
