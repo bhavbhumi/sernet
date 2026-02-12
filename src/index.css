@@ -47,6 +47,9 @@
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 100%;
 
+    /* Sernet Yellow */
+    --sernet-yellow: 45 100% 51%;
+
     /* Zerodha-specific */
     --hero-bg: 220 14% 96%;
     --section-alt: 210 20% 98%;
