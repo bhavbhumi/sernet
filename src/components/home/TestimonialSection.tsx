@@ -267,7 +267,7 @@ export const TestimonialSection = () => {
   }, [isPaused]);
 
   return (
-    <section className="section-padding bg-section-alt overflow-hidden">
+    <section className="section-padding overflow-hidden" style={{ background: 'var(--gradient-testimonial)' }}>
       <div className="container-zerodha mb-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

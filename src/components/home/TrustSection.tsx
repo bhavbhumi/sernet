@@ -31,7 +31,7 @@ const features = [
 
 export const TrustSection = () => {
   return (
-    <section className="section-padding bg-background">
+    <section className="section-padding" style={{ background: 'var(--gradient-section-warm)' }}>
       <div className="container-zerodha">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-start">
           {/* Left Part */}

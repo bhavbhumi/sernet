@@ -5,7 +5,7 @@ import heroIllustration from '@/assets/hero-illustration.webp';
 
 export const HeroSection = () => {
   return (
-    <section className="section-padding bg-background">
+    <section className="section-padding bg-background" style={{ background: 'var(--gradient-hero)' }}>
       <div className="container-zerodha">
         {/* Split layout: text left, image right */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">

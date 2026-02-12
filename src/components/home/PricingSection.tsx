@@ -37,7 +37,7 @@ const pricingItems = [
 
 export const PricingSection = () => {
   return (
-    <section className="section-padding bg-background">
+    <section className="section-padding" style={{ background: 'var(--gradient-section-cool)' }}>
       <div className="container-zerodha">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
