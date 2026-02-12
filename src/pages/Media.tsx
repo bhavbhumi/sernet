@@ -171,11 +171,11 @@ const pressReleases: PressItem[] = [
 ];
 
 const years = [2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016];
-const tabs = ['Featured', 'Timeline', 'Media Kit'] as const;
+const tabs = ['Recent', 'Featured', 'Media Kit'] as const;
 type TabType = (typeof tabs)[number];
 
 const Media = () => {
-  const [activeTab, setActiveTab] = useState<TabType>('Featured');
+  const [activeTab, setActiveTab] = useState<TabType>('Recent');
   const [activeYear, setActiveYear] = useState(2025);
   const [searchQuery, setSearchQuery] = useState('');
   const yearScrollRef = useRef<HTMLDivElement>(null);
@@ -196,7 +196,7 @@ const Media = () => {
       items = items.filter((item) => item.featured);
     }
 
-    if (activeTab === 'Timeline') {
+    if (activeTab === 'Recent') {
       items = items.filter((item) => item.year === activeYear);
     }
 
@@ -216,33 +216,33 @@ const Media = () => {
 
   return (
     <Layout>
-      <section className="section-padding">
-        <div className="container-zerodha">
+      <section className="py-16 md:py-24">
+        <div className="w-full max-w-[1100px] mx-auto px-6 md:px-10">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="text-center mb-10"
+            className="text-center mb-12"
           >
-            <h1 className="text-[2rem] md:text-[2.5rem] font-light leading-tight tracking-tight mb-6">
+            <h1 className="text-[2.25rem] md:text-[2.75rem] font-light leading-tight tracking-tight mb-8">
               Press & media
             </h1>
 
-            {/* Search — hidden on Media Kit tab */}
+            {/* Search */}
             {showSearch && (
-              <div className="relative max-w-md mx-auto">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <div className="relative max-w-lg mx-auto">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   placeholder="Search by title or publisher"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 pr-10"
+                  className="pl-11 pr-11 h-12 text-[1rem] rounded-md border-border"
                 />
                 {searchQuery && (
                   <button
                     onClick={() => setSearchQuery('')}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                   >
                     <X className="h-4 w-4" />
                   </button>
@@ -252,12 +252,12 @@ const Media = () => {
           </motion.div>
 
           {/* Tabs */}
-          <div className="flex justify-center gap-8 border-b border-border mb-6">
+          <div className="flex justify-center gap-10 border-b border-border mb-0">
             {tabs.map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`pb-3 text-[1rem] transition-colors relative ${
+                className={`pb-3.5 text-[1.0625rem] transition-colors relative ${
                   activeTab === tab
                     ? 'text-foreground font-medium'
                     : 'text-muted-foreground hover:text-foreground'
@@ -267,7 +267,7 @@ const Media = () => {
                 {activeTab === tab && (
                   <motion.div
                     layoutId="tab-underline"
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
+                    className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-primary"
                   />
                 )}
               </button>
@@ -275,7 +275,7 @@ const Media = () => {
           </div>
 
           <AnimatePresence mode="wait">
-            {/* ───── Featured & Timeline content ───── */}
+            {/* ───── Recent & Featured content ───── */}
             {activeTab !== 'Media Kit' && (
               <motion.div
                 key={activeTab}
@@ -283,14 +283,13 @@ const Media = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.25 }}
-                className="max-w-3xl mx-auto"
               >
-                {/* Year timeline (only for Timeline tab) */}
-                {activeTab === 'Timeline' && (
-                  <div className="flex items-center gap-1 mb-10 border-b border-border">
+                {/* Year timeline (only for Recent tab) */}
+                {activeTab === 'Recent' && (
+                  <div className="flex items-center gap-1 border-b border-border">
                     <button
                       onClick={() => scrollYears('left')}
-                      className="flex-shrink-0 p-1.5 text-muted-foreground hover:text-foreground transition-colors"
+                      className="flex-shrink-0 p-2 text-muted-foreground hover:text-foreground transition-colors md:hidden"
                       aria-label="Scroll years left"
                     >
                       <ChevronLeft className="h-4 w-4" />
@@ -306,7 +305,7 @@ const Media = () => {
                         <button
                           key={year}
                           onClick={() => setActiveYear(year)}
-                          className={`text-[0.875rem] px-4 py-2 transition-colors border-b-2 whitespace-nowrap flex-shrink-0 ${
+                          className={`text-[1rem] px-5 py-3 transition-colors border-b-[2.5px] whitespace-nowrap flex-shrink-0 ${
                             activeYear === year
                               ? 'text-foreground font-medium border-primary'
                               : 'text-muted-foreground border-transparent hover:text-foreground'
@@ -318,7 +317,7 @@ const Media = () => {
                     </div>
                     <button
                       onClick={() => scrollYears('right')}
-                      className="flex-shrink-0 p-1.5 text-muted-foreground hover:text-foreground transition-colors"
+                      className="flex-shrink-0 p-2 text-muted-foreground hover:text-foreground transition-colors md:hidden"
                       aria-label="Scroll years right"
                     >
                       <ChevronRight className="h-4 w-4" />
@@ -329,7 +328,7 @@ const Media = () => {
                 {/* Press items */}
                 <div className="divide-y divide-border">
                   {filteredReleases.length === 0 ? (
-                    <p className="text-center text-muted-foreground py-12 text-[0.9375rem]">
+                    <p className="text-center text-muted-foreground py-16 text-[1rem]">
                       No results found.
                     </p>
                   ) : (
@@ -342,14 +341,14 @@ const Media = () => {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.3, delay: index * 0.04 }}
-                        className="block py-5 group hover:bg-muted/30 -mx-4 px-4 rounded-lg transition-colors"
+                        className="block py-6 group hover:bg-muted/30 -mx-4 px-4 rounded transition-colors"
                       >
-                        <div className="flex items-center gap-2 text-[0.8125rem] text-muted-foreground mb-1">
+                        <div className="flex items-center gap-2 text-[0.875rem] text-muted-foreground mb-1.5">
                           <span>{item.date}</span>
                           <span>—</span>
                           <span>{item.source}</span>
                         </div>
-                        <h3 className="text-[1.0625rem] font-normal text-foreground group-hover:text-primary transition-colors leading-snug">
+                        <h3 className="text-[1.1875rem] md:text-[1.25rem] font-normal text-foreground group-hover:text-primary transition-colors leading-snug">
                           {item.title}
                         </h3>
                       </motion.a>
@@ -367,10 +366,11 @@ const Media = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.25 }}
+                className="pt-10"
               >
                 <div className="max-w-3xl mx-auto mb-10">
-                  <p className="text-[0.9375rem] text-muted-foreground leading-relaxed">
-                    Download our brand assets and guidelines for use in press coverage, partnerships, and media publications. 
+                  <p className="text-[1rem] text-muted-foreground leading-relaxed">
+                    Download our brand assets and guidelines for use in press coverage, partnerships, and media publications.
                     For media enquiries, contact us at <a href="mailto:media@sernetindia.com" className="text-primary hover:underline">media@sernetindia.com</a>.
                   </p>
                 </div>
@@ -388,14 +388,14 @@ const Media = () => {
                     </div>
                     <div className="flex items-center gap-2 mb-2">
                       <Image className="h-4 w-4 text-primary" />
-                      <h3 className="text-[1rem] font-medium text-foreground">Logo assets</h3>
+                      <h3 className="text-[1.0625rem] font-medium text-foreground">Logo assets</h3>
                     </div>
-                    <p className="text-[0.8125rem] text-muted-foreground mb-4 leading-relaxed">
+                    <p className="text-[0.875rem] text-muted-foreground mb-4 leading-relaxed">
                       Official logos in PNG, SVG, and vector formats for light and dark backgrounds.
                     </p>
                     <a
                       href="#"
-                      className="inline-flex items-center gap-2 text-[0.8125rem] font-medium text-primary hover:text-primary/80 transition-colors"
+                      className="inline-flex items-center gap-2 text-[0.875rem] font-medium text-primary hover:text-primary/80 transition-colors"
                     >
                       <Download className="h-3.5 w-3.5" />
                       Download logo pack
@@ -414,14 +414,14 @@ const Media = () => {
                     </div>
                     <div className="flex items-center gap-2 mb-2">
                       <Palette className="h-4 w-4 text-primary" />
-                      <h3 className="text-[1rem] font-medium text-foreground">Brand guidelines</h3>
+                      <h3 className="text-[1.0625rem] font-medium text-foreground">Brand guidelines</h3>
                     </div>
-                    <p className="text-[0.8125rem] text-muted-foreground mb-4 leading-relaxed">
+                    <p className="text-[0.875rem] text-muted-foreground mb-4 leading-relaxed">
                       Colour palette, typography, spacing rules, and usage guidelines for brand consistency.
                     </p>
                     <a
                       href="#"
-                      className="inline-flex items-center gap-2 text-[0.8125rem] font-medium text-primary hover:text-primary/80 transition-colors"
+                      className="inline-flex items-center gap-2 text-[0.875rem] font-medium text-primary hover:text-primary/80 transition-colors"
                     >
                       <Download className="h-3.5 w-3.5" />
                       Download brand guide
@@ -435,14 +435,14 @@ const Media = () => {
                     </div>
                     <div className="flex items-center gap-2 mb-2">
                       <Type className="h-4 w-4 text-primary" />
-                      <h3 className="text-[1rem] font-medium text-foreground">Typography</h3>
+                      <h3 className="text-[1.0625rem] font-medium text-foreground">Typography</h3>
                     </div>
-                    <p className="text-[0.8125rem] text-muted-foreground mb-4 leading-relaxed">
+                    <p className="text-[0.875rem] text-muted-foreground mb-4 leading-relaxed">
                       Font families, type scale, and typographic guidelines used across the Sernet brand.
                     </p>
                     <a
                       href="#"
-                      className="inline-flex items-center gap-2 text-[0.8125rem] font-medium text-primary hover:text-primary/80 transition-colors"
+                      className="inline-flex items-center gap-2 text-[0.875rem] font-medium text-primary hover:text-primary/80 transition-colors"
                     >
                       <Download className="h-3.5 w-3.5" />
                       Download type guide
@@ -452,7 +452,7 @@ const Media = () => {
 
                 {/* Usage guidelines */}
                 <div className="max-w-3xl mx-auto mt-14">
-                  <h2 className="text-[1.25rem] font-medium text-foreground mb-4">Usage guidelines</h2>
+                  <h2 className="text-[1.375rem] font-medium text-foreground mb-4">Usage guidelines</h2>
                   <div className="divide-y divide-border">
                     {[
                       { icon: '✓', text: 'Use the official logo without any modifications to colour, proportion, or orientation.' },
@@ -461,11 +461,11 @@ const Media = () => {
                       { icon: '✗', text: 'Do not stretch, rotate, add effects, or alter the logo in any way.' },
                       { icon: '✗', text: 'Do not use the Sernet name or logo to imply endorsement without written permission.' },
                     ].map((rule, i) => (
-                      <div key={i} className="flex items-start gap-3 py-3">
-                        <span className={`text-[0.875rem] font-medium mt-0.5 ${rule.icon === '✓' ? 'text-green-600' : 'text-destructive'}`}>
+                      <div key={i} className="flex items-start gap-3 py-3.5">
+                        <span className={`text-[0.9375rem] font-medium mt-0.5 ${rule.icon === '✓' ? 'text-green-600' : 'text-destructive'}`}>
                           {rule.icon}
                         </span>
-                        <p className="text-[0.875rem] text-muted-foreground leading-relaxed">{rule.text}</p>
+                        <p className="text-[0.9375rem] text-muted-foreground leading-relaxed">{rule.text}</p>
                       </div>
                     ))}
                   </div>
@@ -476,8 +476,8 @@ const Media = () => {
                   <div className="flex items-start gap-3">
                     <FileText className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                     <div>
-                      <h3 className="text-[0.9375rem] font-medium text-foreground mb-1">Press enquiries</h3>
-                      <p className="text-[0.8125rem] text-muted-foreground leading-relaxed">
+                      <h3 className="text-[1rem] font-medium text-foreground mb-1">Press enquiries</h3>
+                      <p className="text-[0.875rem] text-muted-foreground leading-relaxed">
                         For interviews, press releases, or media partnerships, reach out to our communications team at{' '}
                         <a href="mailto:media@sernetindia.com" className="text-primary hover:underline">media@sernetindia.com</a>.
                         We typically respond within one business day.
