@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import heroIllustration from '@/assets/hero-illustration.png';
+import heroIllustration from '@/assets/hero-illustration.webp';
 
 export const HeroSection = () => {
   return (
