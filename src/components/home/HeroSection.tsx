@@ -27,16 +27,16 @@ export const HeroSection = () => {
           className="max-w-3xl mx-auto"
         >
           <h1 className="text-[2.75rem] md:text-[3rem] font-normal text-foreground leading-tight mb-5">
-            Invest in everything
+            Unlock your path to Prosperity
           </h1>
           <p className="text-[1.125rem] md:text-[1.25rem] font-normal text-muted-foreground leading-relaxed mb-8">
-            Online platform to invest in stocks, derivatives, mutual funds, ETFs, bonds, and more.
+            Grow, Preserve, Protect and Manage your Wealth. Trade, Invest and Insure with Awareness through Simple and Friendly Online Platforms from Anywhere.
           </p>
           <Link 
-            to="/signup" 
+            to="/support" 
             className="inline-block bg-primary text-primary-foreground text-[1rem] font-medium px-10 py-3.5 rounded-md hover:bg-primary/90 transition-colors"
           >
-            Sign up for free
+            Schedule a Call
           </Link>
         </motion.div>
       </div>
