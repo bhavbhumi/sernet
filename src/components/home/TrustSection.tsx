@@ -1,8 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import tickfundsLogo from '@/assets/tickfunds-logo.png';
-import tushilLogo from '@/assets/tushil-logo.png';
-import choicefinxLogo from '@/assets/choicefinx-logo.jpeg';
+import productShowcase from '@/assets/sernet-product-showcase.svg';
 
 const features = [
   {
@@ -37,12 +35,6 @@ const features = [
       </>
     ),
   },
-];
-
-const products = [
-  { name: 'Tick Funds', logo: tickfundsLogo },
-  { name: 'Tushil', logo: tushilLogo },
-  { name: 'Choice FinX', logo: choicefinxLogo },
 ];
 
 export const TrustSection = () => {
@@ -82,41 +74,14 @@ export const TrustSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="flex flex-col items-center gap-6 lg:pt-8"
+            className="flex flex-col items-center gap-6 lg:pt-4"
           >
-            {/* Product visual element */}
-            <div className="relative w-full max-w-md">
-              {/* Decorative background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/10 rounded-3xl" />
+            <img
+              src={productShowcase}
+              alt="Sernet product ecosystem — Tick Funds, Tushil, Choice FinX"
+              className="w-full max-w-md h-auto"
+            />
 
-              <div className="relative rounded-3xl border border-border/60 bg-card p-8 shadow-sm">
-                <p className="text-xs text-muted-foreground uppercase tracking-[0.2em] text-center mb-8 font-medium">Powered by</p>
-
-                <div className="flex items-center justify-center gap-6">
-                  {products.map((product, index) => (
-                    <motion.div
-                      key={product.name}
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.4, delay: 0.3 + index * 0.15 }}
-                      className="flex flex-col items-center gap-3"
-                    >
-                      <div className="w-[88px] h-[88px] rounded-2xl bg-background border border-border/80 flex items-center justify-center p-3 shadow-sm hover:shadow-md transition-shadow duration-300">
-                        <img
-                          src={product.logo}
-                          alt={product.name}
-                          className="w-full h-full object-contain"
-                        />
-                      </div>
-                      <span className="text-xs font-medium text-foreground">{product.name}</span>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Explore link */}
             <Link
               to="/products"
               className="text-primary font-medium text-body hover:underline underline-offset-4 transition-colors inline-flex items-center gap-1"
