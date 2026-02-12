@@ -1,0 +1,111 @@
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { ArrowRight, Clock, Calendar } from 'lucide-react';
+
+const articles = [
+  {
+    id: 1,
+    category: 'Market Analysis',
+    title: 'Understanding the Impact of RBI Policy on Equity Markets',
+    excerpt: 'A deep dive into how monetary policy decisions shape market trends and what investors should watch for in the coming quarters.',
+    date: 'Feb 10, 2026',
+    readTime: '5 min read',
+    image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&h=400&fit=crop',
+  },
+  {
+    id: 2,
+    category: 'Personal Finance',
+    title: 'SIP vs Lumpsum: Making the Right Choice in a Volatile Market',
+    excerpt: 'Comparing investment strategies to help you make informed decisions based on your financial goals and risk appetite.',
+    date: 'Feb 8, 2026',
+    readTime: '4 min read',
+    image: 'https://images.unsplash.com/photo-1579532537598-459ecdaf39cc?w=600&h=400&fit=crop',
+  },
+  {
+    id: 3,
+    category: 'Insurance',
+    title: 'Term Insurance in Your 20s: Why Starting Early Matters',
+    excerpt: 'The compounding advantage of early insurance planning and how it fits into a holistic financial strategy.',
+    date: 'Feb 5, 2026',
+    readTime: '3 min read',
+    image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&h=400&fit=crop',
+  },
+];
+
+export const InsightsSection = () => {
+  return (
+    <section className="section-padding bg-muted/30">
+      <div className="container-zerodha">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="flex items-end justify-between mb-12"
+        >
+          <div>
+            <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">Insights</p>
+            <h2 className="heading-lg text-foreground">Latest from SERNET</h2>
+          </div>
+          <Link
+            to="/z-connect"
+            className="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+          >
+            View all articles <ArrowRight className="w-4 h-4" />
+          </Link>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {articles.map((article, index) => (
+            <motion.article
+              key={article.id}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="group bg-background rounded-2xl overflow-hidden border border-border/50 hover:border-primary/20 hover:shadow-lg transition-all duration-300"
+            >
+              <div className="relative overflow-hidden aspect-[3/2]">
+                <img
+                  src={article.image}
+                  alt={article.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                />
+                <span className="absolute top-3 left-3 text-xs font-semibold bg-primary text-primary-foreground px-3 py-1 rounded-full">
+                  {article.category}
+                </span>
+              </div>
+
+              <div className="p-5">
+                <h3 className="text-base font-semibold text-foreground leading-snug mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                  {article.title}
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-2">
+                  {article.excerpt}
+                </p>
+                <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                  <span className="inline-flex items-center gap-1">
+                    <Calendar className="w-3.5 h-3.5" /> {article.date}
+                  </span>
+                  <span className="inline-flex items-center gap-1">
+                    <Clock className="w-3.5 h-3.5" /> {article.readTime}
+                  </span>
+                </div>
+              </div>
+            </motion.article>
+          ))}
+        </div>
+
+        <div className="sm:hidden mt-8 text-center">
+          <Link
+            to="/z-connect"
+            className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+          >
+            View all articles <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+};

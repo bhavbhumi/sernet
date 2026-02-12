@@ -6,6 +6,7 @@ import { EcosystemSection } from '@/components/home/EcosystemSection';
 import { PricingSection } from '@/components/home/PricingSection';
 import { TestimonialSection } from '@/components/home/TestimonialSection';
 import { OpenAccountSection } from '@/components/home/OpenAccountSection';
+import { InsightsSection } from '@/components/home/InsightsSection';
 
 const Index = () => {
   return (
@@ -17,6 +18,7 @@ const Index = () => {
       <PricingSection />
       <TestimonialSection />
       <OpenAccountSection />
+      <InsightsSection />
     </Layout>
   );
 };
