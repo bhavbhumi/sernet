@@ -12,12 +12,12 @@ export const OpenAccountSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center max-w-2xl mx-auto"
         >
-          <h2 className="heading-lg text-foreground mb-4">Open a Zerodha account</h2>
+          <h2 className="heading-lg text-foreground mb-4">Open a SERNET Account</h2>
           <p className="text-body mb-8">
-            Modern platforms and apps, ₹0 investments, and flat ₹20 intraday and F&O trades.
+            Modern and Simple Tools to Invest, Insure and Trade
           </p>
           <Link to="/signup" className="btn-primary text-base px-8 py-4">
-            Sign up for free
+            Signup for FREE
           </Link>
         </motion.div>
       </div>
