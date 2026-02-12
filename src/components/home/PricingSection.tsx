@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import pricingZero from '@/assets/pricing-zero.svg';
+import pricingZero from '@/assets/pricing-zero-sernet.png';
 
 const pricingItems = [
   {
