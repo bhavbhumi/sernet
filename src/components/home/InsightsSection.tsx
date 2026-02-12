@@ -4,6 +4,7 @@ import { ArrowRight, Clock, Calendar, Heart, MessageCircle, Share2, Mail } from 
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 
 const articles = [
   {
@@ -128,15 +129,20 @@ export const InsightsSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="mt-16 rounded-2xl bg-muted/50 border border-border p-8 md:p-12 text-center"
+          className="mt-16 rounded-2xl bg-muted/50 border border-border p-6 md:p-8 text-center"
         >
           <div className="flex items-center justify-center gap-2 mb-4">
             <Mail className="w-5 h-5 text-primary" />
             <h3 className="text-lg font-semibold text-foreground">Subscribe to our Newsletter</h3>
           </div>
-          <p className="text-sm text-muted-foreground mb-6 max-w-md mx-auto">
-            Get the latest market insights, trading tips, and product updates delivered straight to your inbox.
-          </p>
+          <div className="flex items-center justify-center gap-6 mb-4">
+            {['Resources', 'Articles', 'Promotion'].map((label) => (
+              <label key={label} className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer">
+                <Checkbox defaultChecked />
+                {label}
+              </label>
+            ))}
+          </div>
           <NewsletterForm />
         </motion.div>
       </div>
@@ -145,29 +151,48 @@ export const InsightsSection = () => {
 };
 
 const NewsletterForm = () => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
+    if (email && firstName) {
       setSubmitted(true);
+      setFirstName('');
+      setLastName('');
       setEmail('');
       setTimeout(() => setSubmitted(false), 3000);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row items-center gap-3 max-w-lg mx-auto">
+    <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row items-center gap-3 max-w-2xl mx-auto">
+      <Input
+        type="text"
+        placeholder="First Name"
+        value={firstName}
+        onChange={(e) => setFirstName(e.target.value)}
+        required
+        className="flex-1 h-10"
+      />
+      <Input
+        type="text"
+        placeholder="Last Name"
+        value={lastName}
+        onChange={(e) => setLastName(e.target.value)}
+        className="flex-1 h-10"
+      />
       <Input
         type="email"
-        placeholder="Enter your email address"
+        placeholder="Email address"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
-        className="flex-1 h-11"
+        className="flex-1 h-10"
       />
-      <Button type="submit" size="lg" className="w-full sm:w-auto">
+      <Button type="submit" className="w-full sm:w-auto">
         {submitted ? 'Subscribed!' : 'Subscribe'}
       </Button>
     </form>
