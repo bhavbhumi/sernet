@@ -41,10 +41,10 @@ const FundTransfer = () => {
             <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-6">
               <CreditCard className="h-8 w-8 text-primary" />
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <h1 className="heading-xl mb-4">
               Fund Transfer
             </h1>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-body">
               Add funds to your trading account or withdraw to your bank
             </p>
           </motion.div>
@@ -56,7 +56,7 @@ const FundTransfer = () => {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg p-6"
             >
-              <h2 className="text-xl font-semibold text-foreground mb-4">Add Funds</h2>
+              <h2 className="heading-md mb-4">Add Funds</h2>
               <p className="text-muted-foreground mb-6">
                 Transfer money from your bank account to start trading
               </p>
@@ -73,7 +73,7 @@ const FundTransfer = () => {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="bg-muted/50 rounded-lg p-6"
             >
-              <h2 className="text-xl font-semibold text-foreground mb-4">Withdraw Funds</h2>
+              <h2 className="heading-md mb-4">Withdraw Funds</h2>
               <p className="text-muted-foreground mb-6">
                 Transfer your available balance back to your bank
               </p>
@@ -90,7 +90,7 @@ const FundTransfer = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <h2 className="text-xl font-semibold text-foreground mb-6">Transfer Methods</h2>
+            <h2 className="heading-lg mb-6">Transfer Methods</h2>
             <div className="space-y-4">
               {transferMethods.map((method, index) => (
                 <div

@@ -60,7 +60,7 @@ const Policies = () => {
             {policies.map((category) => (
               <div key={category.category} className="bg-card border border-border rounded-lg overflow-hidden">
                 <div className="bg-muted/50 px-6 py-4 border-b border-border">
-                  <h2 className="text-lg font-semibold text-foreground">{category.category}</h2>
+                  <h2 className="heading-md">{category.category}</h2>
                 </div>
                 <div className="divide-y divide-border">
                   {category.items.map((item) => (

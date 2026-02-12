@@ -65,10 +65,10 @@ const ZConnect = () => {
             transition={{ duration: 0.5 }}
             className="text-center mb-12"
           >
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <h1 className="heading-xl mb-4">
               Z-Connect Blog
             </h1>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-body">
               Updates, announcements, and insights from the Zerodha team
             </p>
           </motion.div>
@@ -86,7 +86,7 @@ const ZConnect = () => {
                   <span className="inline-block px-3 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full mb-4">
                     {post.category}
                   </span>
-                  <h2 className="text-lg font-semibold text-foreground mb-2 line-clamp-2">
+                  <h2 className="heading-md mb-2 line-clamp-2">
                     {post.title}
                   </h2>
                   <p className="text-sm text-muted-foreground mb-4 line-clamp-3">

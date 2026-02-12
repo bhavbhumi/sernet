@@ -43,10 +43,10 @@ const CSR = () => {
             <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-6">
               <Heart className="h-8 w-8 text-primary" />
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <h1 className="heading-xl mb-4">
               Zerodha Cares
             </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-body max-w-2xl mx-auto">
               Our commitment to creating positive social and environmental impact 
               through responsible corporate citizenship.
             </p>
@@ -64,8 +64,8 @@ const CSR = () => {
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <initiative.icon className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">{initiative.title}</h3>
-                <p className="text-sm text-muted-foreground mb-4">{initiative.description}</p>
+                <h3 className="heading-md mb-2">{initiative.title}</h3>
+                <p className="text-small mb-4">{initiative.description}</p>
                 <div className="inline-block px-3 py-1 bg-primary/10 rounded-full">
                   <span className="text-sm font-medium text-primary">{initiative.impact}</span>
                 </div>
@@ -79,8 +79,8 @@ const CSR = () => {
             transition={{ duration: 0.5, delay: 0.5 }}
             className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg p-8 text-center"
           >
-            <h2 className="text-xl font-semibold text-foreground mb-4">Rainmatter Foundation</h2>
-            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+            <h2 className="heading-lg mb-4">Rainmatter Foundation</h2>
+            <p className="text-body mb-6 max-w-2xl mx-auto">
               Our non-profit foundation focuses on climate action, supporting startups and 
               organizations working on sustainable solutions for a better future.
             </p>

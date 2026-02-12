@@ -54,7 +54,7 @@ const TradingQnA = () => {
               <MessageSquare className="w-4 h-4" />
               Community
             </div>
-            <h1 className="text-display mb-6">TradingQ&A</h1>
+            <h1 className="heading-xl mb-6">TradingQ&A</h1>
             <p className="text-body max-w-2xl mx-auto mb-8">
               India's most active trading and investment community. Ask questions, 
               share knowledge, and learn from fellow traders and investors.
@@ -98,7 +98,7 @@ const TradingQnA = () => {
                     <category.icon className="w-6 h-6 text-primary" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-foreground mb-2">
+                    <h3 className="heading-md mb-2">
                       {category.title}
                     </h3>
                     <p className="text-muted-foreground text-sm mb-2">
@@ -117,7 +117,7 @@ const TradingQnA = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="bg-muted/30 rounded-2xl p-8 md:p-12 mb-16"
           >
-            <h2 className="text-2xl font-semibold text-foreground text-center mb-8">
+            <h2 className="heading-lg text-center mb-8">
               Popular questions
             </h2>
             <div className="grid md:grid-cols-2 gap-4">
@@ -137,7 +137,7 @@ const TradingQnA = () => {
           </motion.div>
 
           <div className="text-center">
-            <h3 className="text-xl font-semibold text-foreground mb-4">
+            <h3 className="heading-md mb-4">
               Join the community
             </h3>
             <p className="text-muted-foreground max-w-2xl mx-auto mb-6">

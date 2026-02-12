@@ -28,10 +28,10 @@ const Varsity = () => {
             transition={{ duration: 0.5 }}
             className="text-center max-w-3xl mx-auto mb-12"
           >
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <h1 className="heading-xl mb-4">
               Varsity
             </h1>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-body">
               The largest online stock market education book in the world covering 
               everything from the basics to advanced trading.
             </p>
@@ -52,7 +52,7 @@ const Varsity = () => {
               className="text-center p-6 bg-muted/50 rounded-lg"
             >
               <BookOpen className="h-10 w-10 text-primary mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-foreground mb-2">11+</h3>
+              <h3 className="text-2xl font-light text-foreground mb-2">11+</h3>
               <p className="text-muted-foreground">Modules</p>
             </motion.div>
             <motion.div
@@ -62,7 +62,7 @@ const Varsity = () => {
               className="text-center p-6 bg-muted/50 rounded-lg"
             >
               <GraduationCap className="h-10 w-10 text-primary mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-foreground mb-2">200+</h3>
+              <h3 className="text-2xl font-light text-foreground mb-2">200+</h3>
               <p className="text-muted-foreground">Chapters</p>
             </motion.div>
             <motion.div
@@ -72,7 +72,7 @@ const Varsity = () => {
               className="text-center p-6 bg-muted/50 rounded-lg"
             >
               <Award className="h-10 w-10 text-primary mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-foreground mb-2">Free</h3>
+              <h3 className="text-2xl font-light text-foreground mb-2">Free</h3>
               <p className="text-muted-foreground">Forever</p>
             </motion.div>
           </div>
@@ -82,7 +82,7 @@ const Varsity = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
           >
-            <h2 className="text-2xl font-bold text-foreground mb-6 text-center">Course Modules</h2>
+            <h2 className="heading-lg mb-6 text-center">Course Modules</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
               {modules.map((module, index) => (
                 <div
@@ -99,7 +99,7 @@ const Varsity = () => {
           </motion.div>
 
           <div className="mt-16 text-center">
-            <h2 className="text-2xl font-bold text-foreground mb-4">Download Varsity App</h2>
+            <h2 className="heading-lg mb-4">Download Varsity App</h2>
             <div className="flex flex-wrap justify-center gap-4">
               <Button variant="outline" className="gap-2">
                 <Smartphone className="h-4 w-4" />

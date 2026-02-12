@@ -27,10 +27,10 @@ const Referral = () => {
             <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-6">
               <Gift className="h-8 w-8 text-primary" />
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <h1 className="heading-xl mb-4">
               Referral Programme
             </h1>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-body">
               Invite your friends to Zerodha and earn rewards
             </p>
           </motion.div>
@@ -42,10 +42,10 @@ const Referral = () => {
             className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg p-8 mb-12"
           >
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-foreground mb-4">
+              <h2 className="heading-lg mb-4">
                 Earn 10% of brokerage generated
               </h2>
-              <p className="text-muted-foreground mb-6">
+              <p className="text-body mb-6">
                 For every friend who opens an account and starts trading, 
                 you earn 10% of the brokerage they generate for 1 year.
               </p>

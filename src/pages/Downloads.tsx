@@ -52,10 +52,10 @@ const Downloads = () => {
             <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-6">
               <Download className="h-8 w-8 text-primary" />
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <h1 className="heading-xl mb-4">
               Downloads & Resources
             </h1>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-body">
               Download our apps and access important documents
             </p>
           </motion.div>
@@ -69,7 +69,7 @@ const Downloads = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 * catIndex }}
               >
-                <h2 className="text-xl font-semibold text-foreground mb-6">{category.category}</h2>
+                <h2 className="heading-lg mb-6">{category.category}</h2>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   {category.items.map((item) => (
                     <div
@@ -101,7 +101,7 @@ const Downloads = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
           >
-            <h2 className="text-xl font-semibold text-foreground mb-6">Documents</h2>
+            <h2 className="heading-lg mb-6">Documents</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {documents.map((doc) => (
                 <div
