@@ -59,7 +59,7 @@ const AnimatedCounter = ({ value, suffix, decimals = 0 }: { value: number; suffi
 
 export const StatsSection = () => {
   return (
-    <section className="py-16 bg-section-alt">
+    <section className="section-padding bg-section-alt">
       <div className="container-zerodha">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 lg:gap-10">
           {stats.map((stat, index) => {

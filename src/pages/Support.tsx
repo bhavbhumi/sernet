@@ -87,7 +87,7 @@ const Support = () => {
       </section>
 
       {/* Support Links */}
-      <section className="py-12 bg-background">
+      <section className="section-padding bg-background">
         <div className="container-zerodha">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {supportLinks.map((item, index) => (

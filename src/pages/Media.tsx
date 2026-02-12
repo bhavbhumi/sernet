@@ -216,8 +216,8 @@ const Media = () => {
 
   return (
     <Layout>
-      <section className="py-16 md:py-24">
-        <div className="w-full max-w-[1100px] mx-auto px-6 md:px-10">
+      <section className="section-padding">
+        <div className="container-zerodha">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}

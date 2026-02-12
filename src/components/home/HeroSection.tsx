@@ -4,7 +4,7 @@ import heroIllustration from '@/assets/hero-illustration.webp';
 
 export const HeroSection = () => {
   return (
-    <section className="bg-background pt-8 pb-16 md:pt-12 md:pb-24">
+    <section className="section-padding bg-background">
       <div className="container-zerodha text-center">
         {/* Hero Image - centered, large */}
         <motion.div 

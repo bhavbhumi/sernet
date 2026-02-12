@@ -52,8 +52,8 @@ const QuickLinks = () => {
   return (
     <Layout>
       <div className="container-zerodha section-padding">
-        <h1 className="text-3xl font-medium text-foreground mb-4">Quick Links</h1>
-        <p className="text-muted-foreground mb-8 max-w-2xl">
+        <h1 className="heading-lg text-foreground mb-4">Quick Links</h1>
+        <p className="text-body mb-8 max-w-2xl">
           Access important resources, regulatory bodies, and useful tools for your investment journey.
         </p>
 

@@ -42,7 +42,7 @@ const ScheduleCall = () => {
   if (submitted) {
     return (
       <Layout>
-        <section className="py-20 bg-background">
+        <section className="section-padding bg-background">
           <div className="container-zerodha max-w-xl text-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
@@ -76,7 +76,7 @@ const ScheduleCall = () => {
 
   return (
     <Layout>
-      <section className="py-12 md:py-20 bg-background">
+      <section className="section-padding bg-background">
         <div className="container-zerodha max-w-5xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
