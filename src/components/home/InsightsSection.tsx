@@ -186,11 +186,11 @@ const NewsletterForm = () => {
       />
       <Input
         type="email"
-        placeholder="Email address"
+        placeholder="Valid eMail address"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
-        className="flex-1 h-10"
+        className="flex-[2] h-12 text-base"
       />
       <Button type="submit" className="w-full sm:w-auto">
         {submitted ? 'Subscribed!' : 'Subscribe'}
