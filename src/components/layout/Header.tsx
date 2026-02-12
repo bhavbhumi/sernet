@@ -1,17 +1,19 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ExternalLink } from 'lucide-react';
+import { Menu, X, ExternalLink, Globe, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import sernetLogo from '@/assets/sernet-logo.png';
 
 const navLinks = [
-  { name: 'Signup', href: '/signup' },
   { name: 'About', href: '/about' },
   { name: 'Products', href: '/products' },
   { name: 'Pricing', href: '/pricing' },
-  { name: 'Support', href: '/support' },
+  { name: 'Insights', href: '/z-connect' },
+  { name: 'Contact', href: '/support' },
 ];
+
+const languages = ['English', 'Hindi', 'Marathi', 'Gujarati', 'Punjabi'];
 
 const menuSections = [
   {
@@ -60,7 +62,20 @@ const menuSections = [
 
 export const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
+  const [selectedLang, setSelectedLang] = useState('English');
+  const langRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (langRef.current && !langRef.current.contains(e.target as Node)) {
+        setLangOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 bg-background border-b border-border">
@@ -74,21 +89,47 @@ export const Header = () => {
           />
         </Link>
 
-        {/* Desktop Navigation - shown on md and above */}
+        {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <Link
               key={link.name}
               to={link.href}
               className={`text-[16px] text-muted-foreground transition-colors hover:text-primary active:text-primary visited:text-muted-foreground ${
-                location.pathname === link.href
-                  ? 'text-primary'
-                  : 'text-muted-foreground'
+                location.pathname === link.href ? 'text-primary' : 'text-muted-foreground'
               }`}
             >
               {link.name}
             </Link>
           ))}
+
+          {/* Language Dropdown */}
+          <div ref={langRef} className="relative">
+            <button
+              type="button"
+              className="flex items-center gap-1 text-[14px] text-muted-foreground hover:text-primary transition-colors"
+              onClick={() => setLangOpen(!langOpen)}
+            >
+              <Globe className="h-4 w-4" />
+              <span className="hidden lg:inline">{selectedLang}</span>
+              <ChevronDown className="h-3 w-3" />
+            </button>
+            {langOpen && (
+              <div className="absolute right-0 top-full mt-2 w-36 bg-background border border-border rounded-md shadow-lg z-50 py-1">
+                {languages.map((lang) => (
+                  <button
+                    key={lang}
+                    className={`block w-full text-left px-4 py-2 text-[14px] hover:bg-muted transition-colors ${
+                      selectedLang === lang ? 'text-primary font-medium' : 'text-muted-foreground'
+                    }`}
+                    onClick={() => { setSelectedLang(lang); setLangOpen(false); }}
+                  >
+                    {lang}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
           
           {/* Hamburger menu button */}
           <button
@@ -101,15 +142,41 @@ export const Header = () => {
           </button>
         </div>
 
-        {/* Mobile menu button */}
-        <button
-          type="button"
-          className="md:hidden p-2 text-muted-foreground hover:text-primary active:text-primary transition-colors"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle menu"
-        >
-          {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
+        {/* Mobile: language + hamburger */}
+        <div className="md:hidden flex items-center gap-2">
+          <div ref={langRef} className="relative">
+            <button
+              type="button"
+              className="p-2 text-muted-foreground hover:text-primary transition-colors"
+              onClick={() => setLangOpen(!langOpen)}
+            >
+              <Globe className="h-5 w-5" />
+            </button>
+            {langOpen && (
+              <div className="absolute right-0 top-full mt-2 w-36 bg-background border border-border rounded-md shadow-lg z-50 py-1">
+                {languages.map((lang) => (
+                  <button
+                    key={lang}
+                    className={`block w-full text-left px-4 py-2 text-[14px] hover:bg-muted transition-colors ${
+                      selectedLang === lang ? 'text-primary font-medium' : 'text-muted-foreground'
+                    }`}
+                    onClick={() => { setSelectedLang(lang); setLangOpen(false); }}
+                  >
+                    {lang}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+          <button
+            type="button"
+            className="p-2 text-muted-foreground hover:text-primary active:text-primary transition-colors"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
+          >
+            {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
       </nav>
 
       {/* Dropdown Menu */}
