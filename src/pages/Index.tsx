@@ -4,6 +4,7 @@ import { TrustSection } from '@/components/home/TrustSection';
 import { StatsSection } from '@/components/home/StatsSection';
 import { EcosystemSection } from '@/components/home/EcosystemSection';
 import { PricingSection } from '@/components/home/PricingSection';
+import { TestimonialSection } from '@/components/home/TestimonialSection';
 import { OpenAccountSection } from '@/components/home/OpenAccountSection';
 
 const Index = () => {
@@ -14,6 +15,7 @@ const Index = () => {
       <TrustSection />
       <EcosystemSection />
       <PricingSection />
+      <TestimonialSection />
       <OpenAccountSection />
     </Layout>
   );
