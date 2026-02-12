@@ -1,7 +1,7 @@
 import { useState, useMemo, useRef } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { motion } from 'framer-motion';
-import { Calendar, ExternalLink, Search, X, Download, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ExternalLink, Search, X, Download, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import sernetLogo from '@/assets/sernet-logo.png';
 
@@ -223,12 +223,9 @@ const Media = () => {
             transition={{ duration: 0.5 }}
             className="text-center mb-10"
           >
-            <h1 className="heading-xl mb-3">
-              Press & Media
+            <h1 className="text-[2rem] md:text-[2.5rem] font-light leading-tight tracking-tight mb-6">
+              Press & media
             </h1>
-            <p className="text-body mb-8">
-              News coverage and press releases about Sernet India
-            </p>
 
             {/* Search */}
             <div className="relative max-w-md mx-auto">
@@ -256,9 +253,9 @@ const Media = () => {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`pb-3 text-[0.9375rem] font-medium transition-colors relative ${
+                className={`pb-3 text-[1rem] transition-colors relative ${
                   activeTab === tab
-                    ? 'text-foreground'
+                    ? 'text-foreground font-medium'
                     : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
@@ -275,26 +272,28 @@ const Media = () => {
 
           {/* Year timeline (only for Timeline tab) */}
           {activeTab === 'Timeline' && (
-            <div className="flex items-center gap-2 mb-10">
+            <div className="flex items-center gap-1 mb-10 border-b border-border">
               <button
                 onClick={() => scrollYears('left')}
-                className="flex-shrink-0 p-1 text-muted-foreground hover:text-foreground transition-colors"
+                className="flex-shrink-0 p-1.5 text-muted-foreground hover:text-foreground transition-colors"
                 aria-label="Scroll years left"
               >
                 <ChevronLeft className="h-4 w-4" />
               </button>
               <div
                 ref={yearScrollRef}
-                className="flex gap-5 overflow-x-auto scrollbar-hide scroll-smooth"
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                data-year-scroll
+                className="flex gap-0 overflow-x-auto scroll-smooth flex-1"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
               >
+                <style>{`[data-year-scroll]::-webkit-scrollbar { display: none; }`}</style>
                 {years.map((year) => (
                   <button
                     key={year}
                     onClick={() => setActiveYear(year)}
-                    className={`text-[0.8125rem] font-medium pb-1 transition-colors border-b-2 whitespace-nowrap flex-shrink-0 ${
+                    className={`text-[0.875rem] px-4 py-2 transition-colors border-b-2 whitespace-nowrap flex-shrink-0 ${
                       activeYear === year
-                        ? 'text-foreground border-primary'
+                        ? 'text-foreground font-medium border-primary'
                         : 'text-muted-foreground border-transparent hover:text-foreground'
                     }`}
                   >
@@ -304,7 +303,7 @@ const Media = () => {
               </div>
               <button
                 onClick={() => scrollYears('right')}
-                className="flex-shrink-0 p-1 text-muted-foreground hover:text-foreground transition-colors"
+                className="flex-shrink-0 p-1.5 text-muted-foreground hover:text-foreground transition-colors"
                 aria-label="Scroll years right"
               >
                 <ChevronRight className="h-4 w-4" />
@@ -330,18 +329,14 @@ const Media = () => {
                   transition={{ duration: 0.3, delay: index * 0.04 }}
                   className="block py-5 group hover:bg-muted/30 -mx-4 px-4 rounded-lg transition-colors"
                 >
-                  <div className="flex items-center gap-2 text-[0.8125rem] text-muted-foreground mb-1.5">
-                    <Calendar className="h-3.5 w-3.5" />
+                  <div className="flex items-center gap-2 text-[0.8125rem] text-muted-foreground mb-1">
                     <span>{item.date}</span>
-                    <span className="text-border">|</span>
-                    <span className="font-medium">{item.source}</span>
+                    <span>—</span>
+                    <span>{item.source}</span>
                   </div>
-                  <div className="flex items-start justify-between gap-4">
-                    <h3 className="text-[0.9375rem] font-medium text-foreground group-hover:text-primary transition-colors leading-snug">
-                      {item.title}
-                    </h3>
-                    <ExternalLink className="h-4 w-4 text-muted-foreground flex-shrink-0 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </div>
+                  <h3 className="text-[1.0625rem] font-normal text-foreground group-hover:text-primary transition-colors leading-snug">
+                    {item.title}
+                  </h3>
                 </motion.a>
               ))
             )}
