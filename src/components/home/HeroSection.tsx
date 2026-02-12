@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import heroIllustration from '@/assets/hero-illustration.png';
 
 export const HeroSection = () => {
   return (
@@ -13,13 +14,13 @@ export const HeroSection = () => {
           className="flex justify-center mb-8 md:mb-12"
         >
           <img
-            src="https://zerodha.com/static/images/landing.svg"
-            alt="Online stock brokerage platform for trading and investing"
+            src={heroIllustration}
+            alt="Sernet wealth management - Trade, Invest and Insure with awareness"
             className="w-full max-w-[850px] h-auto"
           />
         </motion.div>
 
-        {/* Hero Content - Zerodha typography */}
+        {/* Hero Content */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -33,7 +34,7 @@ export const HeroSection = () => {
             Grow, Preserve, Protect and Manage your Wealth. Trade, Invest and Insure with Awareness through Simple and Friendly Online Platforms from Anywhere.
           </p>
           <Link 
-            to="/support" 
+            to="/schedule-call" 
             className="inline-block bg-primary text-primary-foreground text-[1rem] font-medium px-10 py-3.5 rounded-md hover:bg-primary/90 transition-colors"
           >
             Schedule a Call

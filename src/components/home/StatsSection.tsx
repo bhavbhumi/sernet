@@ -1,33 +1,61 @@
-import { motion } from 'framer-motion';
-import { Calendar, Users, TrendingUp, MapPin, Globe } from 'lucide-react';
+import { motion, useMotionValue, useTransform, animate, useInView } from 'framer-motion';
+import { Calendar, TrendingUp, MapPin, Globe, Award } from 'lucide-react';
+import { useEffect, useRef } from 'react';
 
 const stats = [
   {
-    number: '35',
+    number: 35,
+    suffix: '',
     label: 'Years of Practice',
     icon: Calendar,
   },
   {
-    number: '1500+',
-    label: 'Families being Served',
-    icon: Users,
-  },
-  {
-    number: '94.5%',
+    number: 94.5,
+    suffix: '%',
     label: 'Client Retention Rate',
     icon: TrendingUp,
   },
   {
-    number: '54',
+    number: 500,
+    suffix: '+',
+    label: 'Products & Solutions',
+    icon: Award,
+  },
+  {
+    number: 54,
+    suffix: '',
     label: 'Cities Domestic Reach',
     icon: MapPin,
   },
   {
-    number: '18',
+    number: 18,
+    suffix: '',
     label: 'Countries International Reach',
     icon: Globe,
   },
 ];
+
+const AnimatedCounter = ({ value, suffix, decimals = 0 }: { value: number; suffix: string; decimals?: number }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: '-50px' });
+  const motionValue = useMotionValue(0);
+  const rounded = useTransform(motionValue, (v) =>
+    decimals > 0 ? v.toFixed(decimals) : Math.round(v).toString()
+  );
+
+  useEffect(() => {
+    if (isInView) {
+      animate(motionValue, value, { duration: 2, ease: 'easeOut' });
+    }
+  }, [isInView, motionValue, value]);
+
+  return (
+    <span ref={ref}>
+      <motion.span>{rounded}</motion.span>
+      {suffix}
+    </span>
+  );
+};
 
 export const StatsSection = () => {
   return (
@@ -45,11 +73,15 @@ export const StatsSection = () => {
                 transition={{ duration: 0.4, delay: index * 0.1 }}
                 className="text-center"
               >
-                <div className="w-14 h-14 rounded-full bg-primary/10 mx-auto mb-4 flex items-center justify-center">
+                <div className="w-14 h-14 rounded-lg bg-primary/10 mx-auto mb-4 flex items-center justify-center">
                   <IconComponent className="w-7 h-7 text-primary" />
                 </div>
                 <div className="text-[2rem] md:text-[2.5rem] font-light text-foreground leading-tight">
-                  {stat.number}
+                  <AnimatedCounter
+                    value={stat.number}
+                    suffix={stat.suffix}
+                    decimals={stat.number % 1 !== 0 ? 1 : 0}
+                  />
                 </div>
                 <div className="text-[0.875rem] text-muted-foreground mt-1">
                   {stat.label}
