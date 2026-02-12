@@ -61,6 +61,7 @@ import Clients from "./pages/Clients";
 import Partners from "./pages/Partners";
 import QuickLinks from "./pages/QuickLinks";
 import CreditClaim from "./pages/CreditClaim";
+import ScheduleCall from "./pages/ScheduleCall";
 
 const queryClient = new QueryClient();
 
@@ -132,6 +133,7 @@ const App = () => (
           <Route path="/partners" element={<Partners />} />
           <Route path="/quick-links" element={<QuickLinks />} />
           <Route path="/credit-claim" element={<CreditClaim />} />
+          <Route path="/schedule-call" element={<ScheduleCall />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
