@@ -3,19 +3,34 @@ import { motion } from 'framer-motion';
 
 const pricingItems = [
   {
-    title: 'Free equity delivery',
-    description: 'All equity delivery investments (NSE, BSE), are absolutely free — ₹0 brokerage.',
-    icon: '₹0',
+    highlight: '₹0',
+    title: 'Trading',
+    features: [
+      'Account Opening Fee',
+      'AMC for the 1st Year',
+      'Auto Square Off Charges',
+      'Call and Trade',
+    ],
   },
   {
-    title: 'Intraday and F&O trades',
-    description: 'Flat ₹20 or 0.03% (whichever is lower) per executed order on intraday trades across equity, currency, and commodity trades.',
-    icon: '₹20',
+    highlight: '₹0',
+    title: 'Investment',
+    features: [
+      'Multiple Profiles & Family Login',
+      'Portfolio Health Checkup',
+      'Premium Reports',
+      'Assisted Execution',
+    ],
   },
   {
-    title: 'Free direct MF',
-    description: 'All direct mutual fund investments are absolutely free — ₹0 commissions & DP charges.',
-    icon: '₹0',
+    highlight: '₹0',
+    title: 'Insurance',
+    features: [
+      'Family Login',
+      'Policy Portfolio Review',
+      'Premium Reports',
+      'Assisted Execution',
+    ],
   },
 ];
 
@@ -30,10 +45,9 @@ export const PricingSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h2 className="heading-lg text-foreground mb-4">Unbeatable pricing</h2>
+          <h2 className="heading-lg text-foreground mb-4">Best Value Pricing</h2>
           <p className="text-body max-w-2xl mx-auto">
-            We pioneered the concept of discount broking and price transparency in India., and it doesn't cost you
-            a thing.
+            We provide Full Service Broking*, Regular Distribution for Investment and Insurance Products. Honest upfront and transparent always.
           </p>
         </motion.div>
 
@@ -45,11 +59,18 @@ export const PricingSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="text-center p-6"
+              className="text-center p-8 rounded-lg border border-border"
             >
-              <div className="text-5xl font-bold text-primary mb-4">{item.icon}</div>
-              <h3 className="heading-md text-foreground mb-3">{item.title}</h3>
-              <p className="text-body">{item.description}</p>
+              <div className="text-5xl font-bold text-primary mb-2">{item.highlight}</div>
+              <h3 className="heading-md text-foreground mb-6">{item.title}</h3>
+              <ul className="space-y-3 text-left">
+                {item.features.map((feature) => (
+                  <li key={feature} className="text-body flex items-center gap-2">
+                    <span className="text-primary font-semibold">0</span>
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
             </motion.div>
           ))}
         </div>
