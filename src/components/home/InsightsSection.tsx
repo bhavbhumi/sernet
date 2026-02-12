@@ -1,6 +1,9 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, Clock, Calendar, Heart, MessageCircle, Share2 } from 'lucide-react';
+import { ArrowRight, Clock, Calendar, Heart, MessageCircle, Share2, Mail } from 'lucide-react';
+import { useState } from 'react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 const articles = [
   {
@@ -118,7 +121,55 @@ export const InsightsSection = () => {
             View all articles <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
+
+        {/* Newsletter Signup */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="mt-16 rounded-2xl bg-muted/50 border border-border p-8 md:p-12 text-center"
+        >
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <Mail className="w-5 h-5 text-primary" />
+            <h3 className="text-lg font-semibold text-foreground">Subscribe to our Newsletter</h3>
+          </div>
+          <p className="text-sm text-muted-foreground mb-6 max-w-md mx-auto">
+            Get the latest market insights, trading tips, and product updates delivered straight to your inbox.
+          </p>
+          <NewsletterForm />
+        </motion.div>
       </div>
     </section>
+  );
+};
+
+const NewsletterForm = () => {
+  const [email, setEmail] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email) {
+      setSubmitted(true);
+      setEmail('');
+      setTimeout(() => setSubmitted(false), 3000);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row items-center gap-3 max-w-lg mx-auto">
+      <Input
+        type="email"
+        placeholder="Enter your email address"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+        className="flex-1 h-11"
+      />
+      <Button type="submit" size="lg" className="w-full sm:w-auto">
+        {submitted ? 'Subscribed!' : 'Subscribe'}
+      </Button>
+    </form>
   );
 };
