@@ -11,8 +11,8 @@ const Index = () => {
   return (
     <Layout>
       <HeroSection />
-      <TrustSection />
       <EcosystemSection />
+      <TrustSection />
       <PricingSection />
       <TestimonialSection />
       <OpenAccountSection />
