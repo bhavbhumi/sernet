@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, Clock, Calendar, Heart, MessageCircle, Share2, Mail } from 'lucide-react';
+import { ArrowRight, Clock, Calendar, Heart, MessageCircle, Share2, Mail, BookOpen, FileText, Megaphone, Newspaper, FolderOpen, Send } from 'lucide-react';
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -132,9 +132,18 @@ export const InsightsSection = () => {
           className="relative mt-16 rounded-2xl bg-muted/50 border border-primary/30 p-6 md:p-8 text-center overflow-hidden shadow-[0_0_25px_-5px_hsl(var(--primary)/0.3),0_0_10px_-5px_hsl(var(--sernet-yellow)/0.2)]"
         >
           {/* Background watermark elements */}
-          <span className="absolute top-4 left-6 text-[4rem] md:text-[5rem] font-black text-primary/[0.04] uppercase select-none pointer-events-none leading-none tracking-tight">Resources</span>
-          <span className="absolute top-1/2 -translate-y-1/2 right-6 text-[4rem] md:text-[5rem] font-black text-sernet-yellow/[0.06] uppercase select-none pointer-events-none leading-none tracking-tight">Articles</span>
-          <span className="absolute bottom-4 left-1/2 -translate-x-1/2 text-[4rem] md:text-[5rem] font-black text-primary/[0.04] uppercase select-none pointer-events-none leading-none tracking-tight">Promotion</span>
+          {/* Background visual elements - Resources */}
+          <FolderOpen className="absolute top-5 left-8 w-12 h-12 text-primary/[0.07] rotate-[-12deg] pointer-events-none" />
+          <BookOpen className="absolute top-3 left-24 w-8 h-8 text-primary/[0.05] rotate-[8deg] pointer-events-none" />
+          
+          {/* Background visual elements - Articles */}
+          <Newspaper className="absolute top-4 right-10 w-14 h-14 text-sernet-yellow/[0.08] rotate-[10deg] pointer-events-none" />
+          <FileText className="absolute top-1/2 -translate-y-1/2 right-8 w-10 h-10 text-primary/[0.06] rotate-[-6deg] pointer-events-none" />
+          
+          {/* Background visual elements - Promotion */}
+          <Megaphone className="absolute bottom-4 left-10 w-12 h-12 text-sernet-yellow/[0.07] rotate-[15deg] pointer-events-none" />
+          <Send className="absolute bottom-5 right-16 w-9 h-9 text-primary/[0.06] rotate-[-20deg] pointer-events-none" />
+          <Mail className="absolute top-1/2 left-6 w-8 h-8 text-sernet-yellow/[0.05] -translate-y-1/2 rotate-[5deg] pointer-events-none" />
 
           <div className="relative z-10">
             <div className="flex items-center justify-center gap-2 mb-4">
