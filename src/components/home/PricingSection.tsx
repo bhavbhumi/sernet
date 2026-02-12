@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import pricingZero from '@/assets/pricing-zero.svg';
 
 const pricingItems = [
   {
@@ -61,10 +62,7 @@ export const PricingSection = () => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="text-center p-8 rounded-lg border border-border"
             >
-              <div className="mb-2" style={{ color: 'hsl(var(--sernet-yellow))' }}>
-                <span className="text-2xl font-bold">₹</span>
-                <span className="text-6xl font-bold">0</span>
-              </div>
+              <img src={pricingZero} alt="₹0" className="w-28 h-auto mx-auto mb-2" />
               <h3 className="heading-md text-foreground mb-6">{item.title}</h3>
               <ul className="space-y-3 text-left">
                 {item.features.map((feature) => (
