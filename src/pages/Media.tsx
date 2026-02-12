@@ -1,8 +1,9 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { motion } from 'framer-motion';
-import { Calendar, ExternalLink, Search, X } from 'lucide-react';
+import { Calendar, ExternalLink, Search, X, Download, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import sernetLogo from '@/assets/sernet-logo.png';
 
 type PressItem = {
   title: string;
@@ -111,15 +112,82 @@ const pressReleases: PressItem[] = [
     link: "#",
     featured: true,
   },
+  {
+    title: "Sernet India secures funding to accelerate digital broking expansion",
+    source: "Economic Times",
+    date: "12 Nov 2022",
+    year: 2022,
+    link: "#",
+  },
+  {
+    title: "Sernet India opens new regional offices in South India",
+    source: "Mint",
+    date: "05 Jul 2022",
+    year: 2022,
+    link: "#",
+  },
+  {
+    title: "Sernet India partners with fintech startups for seamless onboarding",
+    source: "CNBC TV18",
+    date: "18 Mar 2021",
+    year: 2021,
+    link: "#",
+  },
+  {
+    title: "Sernet India's trading volumes surge during market rally",
+    source: "Money Control",
+    date: "02 Dec 2020",
+    year: 2020,
+    link: "#",
+  },
+  {
+    title: "Sernet India introduces zero-brokerage plans for new investors",
+    source: "Business Standard",
+    date: "15 Aug 2019",
+    year: 2019,
+    link: "#",
+  },
+  {
+    title: "Sernet India wins 'Best Emerging Broker' award at industry summit",
+    source: "Forbes India",
+    date: "20 Jun 2018",
+    year: 2018,
+    link: "#",
+  },
+  {
+    title: "Sernet India launches mobile-first trading app",
+    source: "The Times of India",
+    date: "10 Oct 2017",
+    year: 2017,
+    link: "#",
+  },
+  {
+    title: "Sernet India registered with SEBI as a stockbroker",
+    source: "Economic Times",
+    date: "05 Mar 2016",
+    year: 2016,
+    link: "#",
+  },
 ];
 
-const years = [2025, 2024, 2023];
-const tabs = ['Recent', 'Featured'] as const;
+const years = [2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016];
+const tabs = ['Featured', 'Timeline'] as const;
 
 const Media = () => {
-  const [activeTab, setActiveTab] = useState<'Recent' | 'Featured'>('Recent');
+  const [activeTab, setActiveTab] = useState<'Featured' | 'Timeline'>('Featured');
   const [activeYear, setActiveYear] = useState(2025);
   const [searchQuery, setSearchQuery] = useState('');
+  const yearScrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollYears = (direction: 'left' | 'right') => {
+    if (yearScrollRef.current) {
+      const scrollAmount = 120;
+      yearScrollRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth',
+      });
+    }
+  };
 
   const filteredReleases = useMemo(() => {
     let items = pressReleases;
@@ -128,7 +196,7 @@ const Media = () => {
       items = items.filter((item) => item.featured);
     }
 
-    if (activeTab === 'Recent') {
+    if (activeTab === 'Timeline') {
       items = items.filter((item) => item.year === activeYear);
     }
 
@@ -155,9 +223,12 @@ const Media = () => {
             transition={{ duration: 0.5 }}
             className="text-center mb-10"
           >
-            <h1 className="text-3xl md:text-4xl font-light text-foreground mb-6">
-              Press & media
+            <h1 className="heading-xl mb-3">
+              Press & Media
             </h1>
+            <p className="text-body mb-8">
+              News coverage and press releases about Sernet India
+            </p>
 
             {/* Search */}
             <div className="relative max-w-md mx-auto">
@@ -179,13 +250,13 @@ const Media = () => {
             </div>
           </motion.div>
 
-          {/* Tabs: Recent / Featured */}
+          {/* Tabs: Featured / Timeline */}
           <div className="flex justify-center gap-8 border-b border-border mb-6">
             {tabs.map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`pb-3 text-sm font-medium transition-colors relative ${
+                className={`pb-3 text-[0.9375rem] font-medium transition-colors relative ${
                   activeTab === tab
                     ? 'text-foreground'
                     : 'text-muted-foreground hover:text-foreground'
@@ -202,59 +273,140 @@ const Media = () => {
             ))}
           </div>
 
-          {/* Year pills (only for Recent tab) */}
-          {activeTab === 'Recent' && (
-            <div className="flex flex-wrap justify-center gap-4 mb-10">
-              {years.map((year) => (
-                <button
-                  key={year}
-                  onClick={() => setActiveYear(year)}
-                  className={`text-sm font-medium pb-1 transition-colors border-b-2 ${
-                    activeYear === year
-                      ? 'text-foreground border-primary'
-                      : 'text-muted-foreground border-transparent hover:text-foreground'
-                  }`}
-                >
-                  {year}
-                </button>
-              ))}
+          {/* Year timeline (only for Timeline tab) */}
+          {activeTab === 'Timeline' && (
+            <div className="flex items-center gap-2 mb-10">
+              <button
+                onClick={() => scrollYears('left')}
+                className="flex-shrink-0 p-1 text-muted-foreground hover:text-foreground transition-colors"
+                aria-label="Scroll years left"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <div
+                ref={yearScrollRef}
+                className="flex gap-5 overflow-x-auto scrollbar-hide scroll-smooth"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              >
+                {years.map((year) => (
+                  <button
+                    key={year}
+                    onClick={() => setActiveYear(year)}
+                    className={`text-[0.8125rem] font-medium pb-1 transition-colors border-b-2 whitespace-nowrap flex-shrink-0 ${
+                      activeYear === year
+                        ? 'text-foreground border-primary'
+                        : 'text-muted-foreground border-transparent hover:text-foreground'
+                    }`}
+                  >
+                    {year}
+                  </button>
+                ))}
+              </div>
+              <button
+                onClick={() => scrollYears('right')}
+                className="flex-shrink-0 p-1 text-muted-foreground hover:text-foreground transition-colors"
+                aria-label="Scroll years right"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
             </div>
           )}
 
           {/* Press items */}
           <div className="divide-y divide-border">
             {filteredReleases.length === 0 ? (
-              <p className="text-center text-muted-foreground py-12">
+              <p className="text-center text-muted-foreground py-12 text-[0.9375rem]">
                 No results found.
               </p>
             ) : (
               filteredReleases.map((item, index) => (
                 <motion.a
-                  key={index}
+                  key={`${item.year}-${index}`}
                   href={item.link}
                   target="_blank"
                   rel="noopener noreferrer"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.04 }}
-                  className="block py-6 group hover:bg-muted/30 -mx-4 px-4 rounded-lg transition-colors"
+                  className="block py-5 group hover:bg-muted/30 -mx-4 px-4 rounded-lg transition-colors"
                 >
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
+                  <div className="flex items-center gap-2 text-[0.8125rem] text-muted-foreground mb-1.5">
                     <Calendar className="h-3.5 w-3.5" />
                     <span>{item.date}</span>
-                    <span>—</span>
+                    <span className="text-border">|</span>
                     <span className="font-medium">{item.source}</span>
                   </div>
                   <div className="flex items-start justify-between gap-4">
-                    <h3 className="text-base font-medium text-foreground group-hover:text-primary transition-colors leading-snug">
+                    <h3 className="text-[0.9375rem] font-medium text-foreground group-hover:text-primary transition-colors leading-snug">
                       {item.title}
                     </h3>
-                    <ExternalLink className="h-4 w-4 text-muted-foreground flex-shrink-0 mt-1 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <ExternalLink className="h-4 w-4 text-muted-foreground flex-shrink-0 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
                 </motion.a>
               ))
             )}
           </div>
+
+          {/* Media Kit Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="mt-16 pt-12 border-t border-border"
+          >
+            <h2 className="heading-lg mb-3">Media kit</h2>
+            <p className="text-body mb-8 max-w-xl">
+              Download our brand assets and guidelines for use in press coverage, partnerships, and media publications.
+            </p>
+
+            <div className="grid sm:grid-cols-2 gap-6">
+              {/* Logo Assets */}
+              <div className="border border-border rounded-lg p-6 hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-center h-24 mb-5 bg-secondary/50 rounded-md">
+                  <img
+                    src={sernetLogo}
+                    alt="Sernet India Logo"
+                    className="h-12 w-auto object-contain"
+                  />
+                </div>
+                <h3 className="heading-md text-[1.0625rem] mb-1">Logo assets</h3>
+                <p className="text-small mb-4">
+                  Official Sernet India logos in PNG, SVG, and vector formats for light and dark backgrounds.
+                </p>
+                <a
+                  href="#"
+                  className="inline-flex items-center gap-2 text-[0.8125rem] font-medium text-primary hover:text-primary/80 transition-colors"
+                >
+                  <Download className="h-3.5 w-3.5" />
+                  Download logo pack
+                </a>
+              </div>
+
+              {/* Brand Guidelines */}
+              <div className="border border-border rounded-lg p-6 hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-center h-24 mb-5 bg-secondary/50 rounded-md">
+                  <div className="flex gap-2">
+                    <div className="w-8 h-8 rounded-md bg-primary" />
+                    <div className="w-8 h-8 rounded-md bg-foreground" />
+                    <div className="w-8 h-8 rounded-md bg-muted-foreground" />
+                    <div className="w-8 h-8 rounded-md bg-secondary" />
+                  </div>
+                </div>
+                <h3 className="heading-md text-[1.0625rem] mb-1">Brand guidelines</h3>
+                <p className="text-small mb-4">
+                  Colour palette, typography, spacing rules, and usage guidelines to maintain brand consistency.
+                </p>
+                <a
+                  href="#"
+                  className="inline-flex items-center gap-2 text-[0.8125rem] font-medium text-primary hover:text-primary/80 transition-colors"
+                >
+                  <Download className="h-3.5 w-3.5" />
+                  Download brand guide
+                </a>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
     </Layout>
