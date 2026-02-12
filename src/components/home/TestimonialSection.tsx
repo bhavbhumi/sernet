@@ -1,7 +1,12 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Star, ArrowRight, Play, MapPin } from 'lucide-react';
+import { Star, ArrowRight, Play, MapPin, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 
 // Source icons as simple SVG components
 const GoogleIcon = () => (
@@ -32,6 +37,12 @@ const InstagramIcon = () => (
   </svg>
 );
 
+const LinkedInIcon = () => (
+  <svg viewBox="0 0 24 24" className="w-4 h-4" fill="#0A66C2">
+    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+  </svg>
+);
+
 const MouthshutIcon = () => (
   <svg viewBox="0 0 24 24" className="w-4 h-4 text-orange-500" fill="currentColor">
     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
@@ -42,6 +53,7 @@ const sourceIcons: Record<string, React.ReactNode> = {
   google: <GoogleIcon />,
   facebook: <FacebookIcon />,
   instagram: <InstagramIcon />,
+  linkedin: <LinkedInIcon />,
   mouthshut: <MouthshutIcon />,
 };
 
@@ -178,6 +190,55 @@ const TestimonialCard = ({ name, occupation, city, country, rating, source, hasV
   </div>
 );
 
+const ReviewFormDialog = () => {
+  const [open, setOpen] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setOpen(false);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button variant="default" className="font-medium">
+          Submit Your Review
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Share Your Experience</DialogTitle>
+        </DialogHeader>
+        <form onSubmit={handleSubmit} className="space-y-4 mt-2">
+          <div className="space-y-2">
+            <Label htmlFor="review-name">Name</Label>
+            <Input id="review-name" placeholder="Your name" required />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="review-email">Email</Label>
+            <Input id="review-email" type="email" placeholder="you@example.com" required />
+          </div>
+          <div className="space-y-2">
+            <Label>Rating</Label>
+            <div className="flex items-center gap-1">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <button key={star} type="button" className="text-muted-foreground hover:text-[hsl(var(--sernet-yellow))] transition-colors">
+                  <Star className="w-6 h-6 hover:fill-[hsl(var(--sernet-yellow))]" />
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="review-text">Your Review</Label>
+            <Textarea id="review-text" placeholder="Tell us about your experience..." rows={4} required />
+          </div>
+          <Button type="submit" className="w-full">Submit Review</Button>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 export const TestimonialSection = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
@@ -219,7 +280,7 @@ export const TestimonialSection = () => {
             Trusted by Thousands
           </h2>
           <p className="text-body max-w-xl mx-auto">
-            Hear from our clients who've made smarter financial decisions with SERNET.
+            Client reviews that keeps us motivated to do more
           </p>
         </motion.div>
       </div>
@@ -244,10 +305,13 @@ export const TestimonialSection = () => {
           className="flex flex-col items-center gap-5"
         >
           <div className="flex flex-col sm:flex-row items-center gap-3 text-sm text-muted-foreground">
-            <span>Love SERNET? Share your experience on</span>
+            <span>Share your experience on</span>
             <div className="flex items-center gap-2">
               <a href="https://g.page/r/sernet/review" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border text-xs font-medium text-foreground hover:border-primary hover:text-primary transition-colors">
                 Google
+              </a>
+              <a href="https://www.linkedin.com/company/sernet" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border text-xs font-medium text-foreground hover:border-primary hover:text-primary transition-colors">
+                LinkedIn
               </a>
               <a href="https://www.facebook.com/sernetindia" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border text-xs font-medium text-foreground hover:border-primary hover:text-primary transition-colors">
                 Facebook
@@ -258,10 +322,13 @@ export const TestimonialSection = () => {
             </div>
           </div>
 
-          <Link to="/reviews" className="link-primary font-medium inline-flex items-center gap-1 group">
-            See all reviews
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-          </Link>
+          <div className="flex items-center gap-4">
+            <ReviewFormDialog />
+            <Link to="/reviews" className="link-primary font-medium inline-flex items-center gap-1 group">
+              See all reviews
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+            </Link>
+          </div>
         </motion.div>
       </div>
     </section>

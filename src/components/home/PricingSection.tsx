@@ -64,7 +64,7 @@ export const PricingSection = () => {
             >
               <img src={pricingZero} alt="₹0" className="w-28 h-auto mx-auto mb-2" />
               <h3 className="heading-md text-foreground mb-6">{item.title}</h3>
-              <ul className="space-y-3 text-left">
+              <ul className="space-y-3 text-center">
                 {item.features.map((feature) => (
                   <li key={feature} className="text-body">
                     {feature}
