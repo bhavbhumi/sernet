@@ -55,6 +55,9 @@ export default {
           DEFAULT: "hsl(var(--warning))",
           foreground: "hsl(var(--warning-foreground))",
         },
+        "sernet-yellow": "hsl(var(--sernet-yellow))",
+          foreground: "hsl(var(--warning-foreground))",
+        },
         hero: "hsl(var(--hero-bg))",
         "section-alt": "hsl(var(--section-alt))",
         stat: {

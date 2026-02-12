@@ -61,13 +61,15 @@ export const PricingSection = () => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="text-center p-8 rounded-lg border border-border"
             >
-              <div className="text-5xl font-bold text-primary mb-2">{item.highlight}</div>
+              <div className="mb-2" style={{ color: 'hsl(var(--sernet-yellow))' }}>
+                <span className="text-2xl font-bold">₹</span>
+                <span className="text-6xl font-bold">0</span>
+              </div>
               <h3 className="heading-md text-foreground mb-6">{item.title}</h3>
               <ul className="space-y-3 text-left">
                 {item.features.map((feature) => (
-                  <li key={feature} className="text-body flex items-center gap-2">
-                    <span className="text-primary font-semibold">0</span>
-                    <span>{feature}</span>
+                  <li key={feature} className="text-body">
+                    {feature}
                   </li>
                 ))}
               </ul>
