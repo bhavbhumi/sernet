@@ -37,10 +37,10 @@ const Console = () => {
             transition={{ duration: 0.5 }}
             className="text-center max-w-3xl mx-auto mb-12"
           >
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <h1 className="heading-xl mb-4">
               Console
             </h1>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-body">
               The central dashboard for your Zerodha account. Gain insights into your 
               trades and investments with in-depth reports and visualisations.
             </p>
@@ -79,8 +79,8 @@ const Console = () => {
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
                   <feature.icon className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="font-semibold text-foreground mb-2">{feature.title}</h3>
-                <p className="text-sm text-muted-foreground">{feature.description}</p>
+                <h3 className="heading-md mb-2">{feature.title}</h3>
+                <p className="text-small">{feature.description}</p>
               </motion.div>
             ))}
           </div>

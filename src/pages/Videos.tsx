@@ -51,10 +51,10 @@ const Videos = () => {
             <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-6">
               <Play className="h-8 w-8 text-primary" />
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <h1 className="heading-xl mb-4">
               Video Tutorials
             </h1>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-body">
               Learn trading and investing through our comprehensive video library
             </p>
           </motion.div>
@@ -67,7 +67,7 @@ const Videos = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 * catIndex }}
               >
-                <h2 className="text-xl font-semibold text-foreground mb-6">{category.title}</h2>
+                <h2 className="heading-lg mb-6">{category.title}</h2>
                 <div className="grid md:grid-cols-3 gap-4">
                   {category.videos.map((video) => (
                     <div
@@ -100,8 +100,8 @@ const Videos = () => {
             className="mt-12 bg-primary/10 rounded-lg p-8 text-center"
           >
             <BookOpen className="h-10 w-10 text-primary mx-auto mb-4" />
-            <h2 className="text-xl font-semibold text-foreground mb-2">Want to learn more?</h2>
-            <p className="text-muted-foreground mb-4">
+            <h2 className="heading-md mb-2">Want to learn more?</h2>
+            <p className="text-small mb-4">
               Check out Varsity for comprehensive stock market education
             </p>
             <a href="/products/varsity" className="text-primary font-medium hover:underline">

@@ -37,10 +37,10 @@ const Coin = () => {
             transition={{ duration: 0.5 }}
             className="text-center max-w-3xl mx-auto mb-12"
           >
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <h1 className="heading-xl mb-4">
               Coin
             </h1>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-body">
               Buy direct mutual funds online, commission-free, delivered directly to 
               your Demat account.
             </p>
@@ -79,14 +79,14 @@ const Coin = () => {
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
                   <feature.icon className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="font-semibold text-foreground mb-2">{feature.title}</h3>
-                <p className="text-sm text-muted-foreground">{feature.description}</p>
+                <h3 className="heading-md mb-2">{feature.title}</h3>
+                <p className="text-small">{feature.description}</p>
               </motion.div>
             ))}
           </div>
 
           <div className="mt-16 text-center">
-            <h2 className="text-2xl font-bold text-foreground mb-4">Download Coin</h2>
+            <h2 className="heading-lg mb-4">Download Coin</h2>
             <div className="flex flex-wrap justify-center gap-4">
               <Button variant="outline" className="gap-2">
                 <Smartphone className="h-4 w-4" />

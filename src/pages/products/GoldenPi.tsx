@@ -75,7 +75,7 @@ const GoldenPi = () => {
               <Landmark className="w-4 h-4" />
               Fixed Income
             </div>
-            <h1 className="text-display mb-6">GoldenPi</h1>
+            <h1 className="heading-xl mb-6">GoldenPi</h1>
             <p className="text-body max-w-2xl mx-auto mb-8">
               Invest in bonds directly from Kite. Government securities, corporate bonds, 
               and more with transparent pricing and real-time execution.
@@ -99,7 +99,7 @@ const GoldenPi = () => {
             className="bg-muted/30 rounded-2xl p-8 md:p-12 mb-16"
           >
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-2xl font-semibold text-foreground mb-4">
+              <h2 className="heading-lg mb-4">
                 Why invest in bonds?
               </h2>
               <p className="text-body">
@@ -123,7 +123,7 @@ const GoldenPi = () => {
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <feature.icon className="w-6 h-6 text-primary" />
                 </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">
+                <h3 className="heading-md mb-2">
                   {feature.title}
                 </h3>
                 <p className="text-muted-foreground text-sm">
@@ -139,7 +139,7 @@ const GoldenPi = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="mb-16"
           >
-            <h2 className="text-2xl font-semibold text-foreground text-center mb-8">
+            <h2 className="heading-lg text-center mb-8">
               Types of bonds available
             </h2>
             <div className="grid md:grid-cols-2 gap-6">
@@ -148,7 +148,7 @@ const GoldenPi = () => {
                   key={bond.name}
                   className="bg-card border border-border rounded-lg p-6"
                 >
-                  <h3 className="text-lg font-semibold text-foreground mb-2">
+                  <h3 className="heading-md mb-2">
                     {bond.name}
                   </h3>
                   <p className="text-muted-foreground text-sm mb-4">
@@ -164,7 +164,7 @@ const GoldenPi = () => {
           </motion.div>
 
           <div className="bg-primary/5 rounded-lg p-8 text-center">
-            <h3 className="text-xl font-semibold text-foreground mb-3">
+            <h3 className="heading-md mb-3">
               No additional charges
             </h3>
             <p className="text-muted-foreground max-w-2xl mx-auto">

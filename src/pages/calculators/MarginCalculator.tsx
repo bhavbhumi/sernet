@@ -49,7 +49,7 @@ const MarginCalculator = () => {
             <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-6">
               <Calculator className="h-8 w-8 text-primary" />
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <h1 className="heading-xl mb-4">
               Margin Calculator
             </h1>
             <p className="text-lg text-muted-foreground">

@@ -44,7 +44,7 @@ const OpenAccount = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <h1 className="text-display mb-6">
+              <h1 className="heading-xl mb-6">
                 Open a free <span className="text-primary">demat account</span>
               </h1>
               <p className="text-body mb-8">
@@ -78,7 +78,7 @@ const OpenAccount = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="bg-card border border-border rounded-lg p-8"
             >
-              <h2 className="text-xl font-semibold text-foreground mb-6">
+              <h2 className="heading-md mb-6">
                 Signup now
               </h2>
 
@@ -147,7 +147,7 @@ const OpenAccount = () => {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="mt-20"
           >
-            <h2 className="text-2xl font-semibold text-foreground text-center mb-12">
+            <h2 className="heading-lg text-center mb-12">
               Open your account in 3 simple steps
             </h2>
 
@@ -160,7 +160,7 @@ const OpenAccount = () => {
                   <div className="text-sm text-primary font-medium mb-2">
                     Step {index + 1}
                   </div>
-                  <h3 className="text-lg font-semibold text-foreground mb-2">
+                  <h3 className="heading-md mb-2">
                     {step.title}
                   </h3>
                   <p className="text-muted-foreground text-sm">

@@ -39,10 +39,10 @@ const MarketOverview = () => {
             <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-6">
               <Activity className="h-8 w-8 text-primary" />
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <h1 className="heading-xl mb-4">
               Market Overview
             </h1>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-body">
               Live updates on Indian stock market indices and top movers
             </p>
             <div className="flex items-center justify-center gap-2 mt-4 text-sm text-muted-foreground">
@@ -82,7 +82,7 @@ const MarketOverview = () => {
             >
               <div className="flex items-center gap-2 mb-4">
                 <TrendingUp className="h-5 w-5 text-green-600" />
-                <h2 className="text-lg font-semibold text-foreground">Top Gainers</h2>
+                <h2 className="heading-md">Top Gainers</h2>
               </div>
               <div className="space-y-3">
                 {topGainers.map((stock) => (
@@ -106,7 +106,7 @@ const MarketOverview = () => {
             >
               <div className="flex items-center gap-2 mb-4">
                 <TrendingDown className="h-5 w-5 text-red-600" />
-                <h2 className="text-lg font-semibold text-foreground">Top Losers</h2>
+                <h2 className="heading-md">Top Losers</h2>
               </div>
               <div className="space-y-3">
                 {topLosers.map((stock) => (

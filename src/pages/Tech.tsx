@@ -63,10 +63,10 @@ const Tech = () => {
             <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-6">
               <Code className="h-8 w-8 text-primary" />
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <h1 className="heading-xl mb-4">
               Zerodha.tech
             </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-body max-w-2xl mx-auto">
               Our technology blog and open source projects. We believe in giving back 
               to the developer community.
             </p>
@@ -78,7 +78,7 @@ const Tech = () => {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="mb-12"
           >
-            <h2 className="text-xl font-semibold text-foreground mb-6">Open Source Projects</h2>
+            <h2 className="heading-lg mb-6">Open Source Projects</h2>
             <div className="grid md:grid-cols-2 gap-4">
               {projects.map((project) => (
                 <div
@@ -112,7 +112,7 @@ const Tech = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <h2 className="text-xl font-semibold text-foreground mb-6">Tech Blog</h2>
+            <h2 className="heading-lg mb-6">Tech Blog</h2>
             <div className="grid md:grid-cols-2 gap-4">
               {blogPosts.map((post) => (
                 <a

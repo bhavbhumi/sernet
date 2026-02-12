@@ -166,7 +166,7 @@ const EconomicCalendar = () => {
 
         {/* CTA */}
         <div className="max-w-3xl mx-auto mt-16 text-center">
-          <h2 className="text-2xl font-bold text-foreground mb-4">
+          <h2 className="heading-lg mb-4">
             Never miss an important event
           </h2>
           <p className="text-muted-foreground mb-6">

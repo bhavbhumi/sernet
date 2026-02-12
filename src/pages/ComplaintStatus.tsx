@@ -51,10 +51,10 @@ const ComplaintStatus = () => {
             <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-6">
               <FileText className="h-8 w-8 text-primary" />
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <h1 className="heading-xl mb-4">
               Complaint Status
             </h1>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-body">
               Track the status of your complaints and grievances
             </p>
           </motion.div>
@@ -83,7 +83,7 @@ const ComplaintStatus = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <h2 className="text-lg font-semibold text-foreground mb-6">Your Complaints</h2>
+            <h2 className="heading-md mb-6">Your Complaints</h2>
             <div className="space-y-4">
               {sampleComplaints.map((complaint) => (
                 <div

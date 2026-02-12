@@ -40,10 +40,10 @@ const Complaints = () => {
             <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-6">
               <AlertCircle className="h-8 w-8 text-primary" />
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <h1 className="heading-xl mb-4">
               How to File a Complaint
             </h1>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-body">
               We are committed to resolving your grievances in a fair and timely manner
             </p>
           </motion.div>

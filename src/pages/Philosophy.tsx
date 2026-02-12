@@ -47,7 +47,7 @@ const Philosophy = () => {
             transition={{ duration: 0.6 }}
             className="max-w-4xl mx-auto"
           >
-            <h1 className="text-display text-center mb-6">Our Philosophy</h1>
+            <h1 className="heading-xl text-center mb-6">Our Philosophy</h1>
             <p className="text-body text-center mb-16 max-w-2xl mx-auto">
               The principles that guide everything we do at Zerodha
             </p>
@@ -61,7 +61,7 @@ const Philosophy = () => {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className="border-b border-border pb-8 last:border-0"
                 >
-                  <h2 className="text-xl font-semibold text-foreground mb-3">
+                  <h2 className="heading-md mb-3">
                     {item.title}
                   </h2>
                   <p className="text-body">
@@ -72,7 +72,7 @@ const Philosophy = () => {
             </div>
 
             <div className="mt-16 p-8 bg-muted/50 rounded-lg">
-              <h3 className="text-lg font-semibold text-foreground mb-4">
+              <h3 className="heading-md mb-4">
                 Why we do things differently
               </h3>
               <p className="text-body">
