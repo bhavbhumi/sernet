@@ -1,7 +1,7 @@
 import { useState, useMemo, useRef } from 'react';
 import { Layout } from '@/components/layout/Layout';
-import { motion } from 'framer-motion';
-import { ExternalLink, Search, X, Download, ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Search, X, Download, ChevronLeft, ChevronRight, FileText, Palette, Type, Image } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import sernetLogo from '@/assets/sernet-logo.png';
 
@@ -171,19 +171,19 @@ const pressReleases: PressItem[] = [
 ];
 
 const years = [2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016];
-const tabs = ['Featured', 'Timeline'] as const;
+const tabs = ['Featured', 'Timeline', 'Media Kit'] as const;
+type TabType = (typeof tabs)[number];
 
 const Media = () => {
-  const [activeTab, setActiveTab] = useState<'Featured' | 'Timeline'>('Featured');
+  const [activeTab, setActiveTab] = useState<TabType>('Featured');
   const [activeYear, setActiveYear] = useState(2025);
   const [searchQuery, setSearchQuery] = useState('');
   const yearScrollRef = useRef<HTMLDivElement>(null);
 
   const scrollYears = (direction: 'left' | 'right') => {
     if (yearScrollRef.current) {
-      const scrollAmount = 120;
       yearScrollRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        left: direction === 'left' ? -160 : 160,
         behavior: 'smooth',
       });
     }
@@ -212,10 +212,12 @@ const Media = () => {
     return items;
   }, [activeTab, activeYear, searchQuery]);
 
+  const showSearch = activeTab !== 'Media Kit';
+
   return (
     <Layout>
       <section className="section-padding">
-        <div className="container-zerodha max-w-3xl">
+        <div className="container-zerodha">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -227,27 +229,29 @@ const Media = () => {
               Press & media
             </h1>
 
-            {/* Search */}
-            <div className="relative max-w-md mx-auto">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search by title or publisher"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-10"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              )}
-            </div>
+            {/* Search — hidden on Media Kit tab */}
+            {showSearch && (
+              <div className="relative max-w-md mx-auto">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search by title or publisher"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 pr-10"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                )}
+              </div>
+            )}
           </motion.div>
 
-          {/* Tabs: Featured / Timeline */}
+          {/* Tabs */}
           <div className="flex justify-center gap-8 border-b border-border mb-6">
             {tabs.map((tab) => (
               <button
@@ -270,138 +274,220 @@ const Media = () => {
             ))}
           </div>
 
-          {/* Year timeline (only for Timeline tab) */}
-          {activeTab === 'Timeline' && (
-            <div className="flex items-center gap-1 mb-10 border-b border-border">
-              <button
-                onClick={() => scrollYears('left')}
-                className="flex-shrink-0 p-1.5 text-muted-foreground hover:text-foreground transition-colors"
-                aria-label="Scroll years left"
+          <AnimatePresence mode="wait">
+            {/* ───── Featured & Timeline content ───── */}
+            {activeTab !== 'Media Kit' && (
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.25 }}
+                className="max-w-3xl mx-auto"
               >
-                <ChevronLeft className="h-4 w-4" />
-              </button>
-              <div
-                ref={yearScrollRef}
-                data-year-scroll
-                className="flex gap-0 overflow-x-auto scroll-smooth flex-1"
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
-              >
-                <style>{`[data-year-scroll]::-webkit-scrollbar { display: none; }`}</style>
-                {years.map((year) => (
-                  <button
-                    key={year}
-                    onClick={() => setActiveYear(year)}
-                    className={`text-[0.875rem] px-4 py-2 transition-colors border-b-2 whitespace-nowrap flex-shrink-0 ${
-                      activeYear === year
-                        ? 'text-foreground font-medium border-primary'
-                        : 'text-muted-foreground border-transparent hover:text-foreground'
-                    }`}
-                  >
-                    {year}
-                  </button>
-                ))}
-              </div>
-              <button
-                onClick={() => scrollYears('right')}
-                className="flex-shrink-0 p-1.5 text-muted-foreground hover:text-foreground transition-colors"
-                aria-label="Scroll years right"
-              >
-                <ChevronRight className="h-4 w-4" />
-              </button>
-            </div>
-          )}
-
-          {/* Press items */}
-          <div className="divide-y divide-border">
-            {filteredReleases.length === 0 ? (
-              <p className="text-center text-muted-foreground py-12 text-[0.9375rem]">
-                No results found.
-              </p>
-            ) : (
-              filteredReleases.map((item, index) => (
-                <motion.a
-                  key={`${item.year}-${index}`}
-                  href={item.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.04 }}
-                  className="block py-5 group hover:bg-muted/30 -mx-4 px-4 rounded-lg transition-colors"
-                >
-                  <div className="flex items-center gap-2 text-[0.8125rem] text-muted-foreground mb-1">
-                    <span>{item.date}</span>
-                    <span>—</span>
-                    <span>{item.source}</span>
+                {/* Year timeline (only for Timeline tab) */}
+                {activeTab === 'Timeline' && (
+                  <div className="flex items-center gap-1 mb-10 border-b border-border">
+                    <button
+                      onClick={() => scrollYears('left')}
+                      className="flex-shrink-0 p-1.5 text-muted-foreground hover:text-foreground transition-colors"
+                      aria-label="Scroll years left"
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                    </button>
+                    <div
+                      ref={yearScrollRef}
+                      data-year-scroll
+                      className="flex gap-0 overflow-x-auto scroll-smooth flex-1"
+                      style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
+                    >
+                      <style>{`[data-year-scroll]::-webkit-scrollbar { display: none; }`}</style>
+                      {years.map((year) => (
+                        <button
+                          key={year}
+                          onClick={() => setActiveYear(year)}
+                          className={`text-[0.875rem] px-4 py-2 transition-colors border-b-2 whitespace-nowrap flex-shrink-0 ${
+                            activeYear === year
+                              ? 'text-foreground font-medium border-primary'
+                              : 'text-muted-foreground border-transparent hover:text-foreground'
+                          }`}
+                        >
+                          {year}
+                        </button>
+                      ))}
+                    </div>
+                    <button
+                      onClick={() => scrollYears('right')}
+                      className="flex-shrink-0 p-1.5 text-muted-foreground hover:text-foreground transition-colors"
+                      aria-label="Scroll years right"
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                    </button>
                   </div>
-                  <h3 className="text-[1.0625rem] font-normal text-foreground group-hover:text-primary transition-colors leading-snug">
-                    {item.title}
-                  </h3>
-                </motion.a>
-              ))
+                )}
+
+                {/* Press items */}
+                <div className="divide-y divide-border">
+                  {filteredReleases.length === 0 ? (
+                    <p className="text-center text-muted-foreground py-12 text-[0.9375rem]">
+                      No results found.
+                    </p>
+                  ) : (
+                    filteredReleases.map((item, index) => (
+                      <motion.a
+                        key={`${item.year}-${index}`}
+                        href={item.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3, delay: index * 0.04 }}
+                        className="block py-5 group hover:bg-muted/30 -mx-4 px-4 rounded-lg transition-colors"
+                      >
+                        <div className="flex items-center gap-2 text-[0.8125rem] text-muted-foreground mb-1">
+                          <span>{item.date}</span>
+                          <span>—</span>
+                          <span>{item.source}</span>
+                        </div>
+                        <h3 className="text-[1.0625rem] font-normal text-foreground group-hover:text-primary transition-colors leading-snug">
+                          {item.title}
+                        </h3>
+                      </motion.a>
+                    ))
+                  )}
+                </div>
+              </motion.div>
             )}
-          </div>
 
-          {/* Media Kit Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="mt-16 pt-12 border-t border-border"
-          >
-            <h2 className="heading-lg mb-3">Media kit</h2>
-            <p className="text-body mb-8 max-w-xl">
-              Download our brand assets and guidelines for use in press coverage, partnerships, and media publications.
-            </p>
-
-            <div className="grid sm:grid-cols-2 gap-6">
-              {/* Logo Assets */}
-              <div className="border border-border rounded-lg p-6 hover:shadow-md transition-shadow">
-                <div className="flex items-center justify-center h-24 mb-5 bg-secondary/50 rounded-md">
-                  <img
-                    src={sernetLogo}
-                    alt="Sernet India Logo"
-                    className="h-12 w-auto object-contain"
-                  />
+            {/* ───── Media Kit tab content ───── */}
+            {activeTab === 'Media Kit' && (
+              <motion.div
+                key="media-kit"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.25 }}
+              >
+                <div className="max-w-3xl mx-auto mb-10">
+                  <p className="text-[0.9375rem] text-muted-foreground leading-relaxed">
+                    Download our brand assets and guidelines for use in press coverage, partnerships, and media publications. 
+                    For media enquiries, contact us at <a href="mailto:media@sernetindia.com" className="text-primary hover:underline">media@sernetindia.com</a>.
+                  </p>
                 </div>
-                <h3 className="heading-md text-[1.0625rem] mb-1">Logo assets</h3>
-                <p className="text-small mb-4">
-                  Official Sernet India logos in PNG, SVG, and vector formats for light and dark backgrounds.
-                </p>
-                <a
-                  href="#"
-                  className="inline-flex items-center gap-2 text-[0.8125rem] font-medium text-primary hover:text-primary/80 transition-colors"
-                >
-                  <Download className="h-3.5 w-3.5" />
-                  Download logo pack
-                </a>
-              </div>
 
-              {/* Brand Guidelines */}
-              <div className="border border-border rounded-lg p-6 hover:shadow-md transition-shadow">
-                <div className="flex items-center justify-center h-24 mb-5 bg-secondary/50 rounded-md">
-                  <div className="flex gap-2">
-                    <div className="w-8 h-8 rounded-md bg-primary" />
-                    <div className="w-8 h-8 rounded-md bg-foreground" />
-                    <div className="w-8 h-8 rounded-md bg-muted-foreground" />
-                    <div className="w-8 h-8 rounded-md bg-secondary" />
+                {/* Downloads grid */}
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                  {/* Logo Assets */}
+                  <div className="border border-border rounded-lg p-6 hover:shadow-md transition-shadow group">
+                    <div className="flex items-center justify-center h-28 mb-5 bg-secondary/50 rounded-md">
+                      <img
+                        src={sernetLogo}
+                        alt="Sernet India Logo"
+                        className="h-12 w-auto object-contain"
+                      />
+                    </div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <Image className="h-4 w-4 text-primary" />
+                      <h3 className="text-[1rem] font-medium text-foreground">Logo assets</h3>
+                    </div>
+                    <p className="text-[0.8125rem] text-muted-foreground mb-4 leading-relaxed">
+                      Official logos in PNG, SVG, and vector formats for light and dark backgrounds.
+                    </p>
+                    <a
+                      href="#"
+                      className="inline-flex items-center gap-2 text-[0.8125rem] font-medium text-primary hover:text-primary/80 transition-colors"
+                    >
+                      <Download className="h-3.5 w-3.5" />
+                      Download logo pack
+                    </a>
+                  </div>
+
+                  {/* Brand Guidelines */}
+                  <div className="border border-border rounded-lg p-6 hover:shadow-md transition-shadow group">
+                    <div className="flex items-center justify-center h-28 mb-5 bg-secondary/50 rounded-md">
+                      <div className="flex gap-2">
+                        <div className="w-8 h-8 rounded-md bg-primary" />
+                        <div className="w-8 h-8 rounded-md bg-foreground" />
+                        <div className="w-8 h-8 rounded-md bg-muted-foreground" />
+                        <div className="w-8 h-8 rounded-md bg-secondary border border-border" />
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <Palette className="h-4 w-4 text-primary" />
+                      <h3 className="text-[1rem] font-medium text-foreground">Brand guidelines</h3>
+                    </div>
+                    <p className="text-[0.8125rem] text-muted-foreground mb-4 leading-relaxed">
+                      Colour palette, typography, spacing rules, and usage guidelines for brand consistency.
+                    </p>
+                    <a
+                      href="#"
+                      className="inline-flex items-center gap-2 text-[0.8125rem] font-medium text-primary hover:text-primary/80 transition-colors"
+                    >
+                      <Download className="h-3.5 w-3.5" />
+                      Download brand guide
+                    </a>
+                  </div>
+
+                  {/* Typography */}
+                  <div className="border border-border rounded-lg p-6 hover:shadow-md transition-shadow group">
+                    <div className="flex items-center justify-center h-28 mb-5 bg-secondary/50 rounded-md">
+                      <span className="text-3xl font-light text-foreground tracking-tight">Aa</span>
+                    </div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <Type className="h-4 w-4 text-primary" />
+                      <h3 className="text-[1rem] font-medium text-foreground">Typography</h3>
+                    </div>
+                    <p className="text-[0.8125rem] text-muted-foreground mb-4 leading-relaxed">
+                      Font families, type scale, and typographic guidelines used across the Sernet brand.
+                    </p>
+                    <a
+                      href="#"
+                      className="inline-flex items-center gap-2 text-[0.8125rem] font-medium text-primary hover:text-primary/80 transition-colors"
+                    >
+                      <Download className="h-3.5 w-3.5" />
+                      Download type guide
+                    </a>
                   </div>
                 </div>
-                <h3 className="heading-md text-[1.0625rem] mb-1">Brand guidelines</h3>
-                <p className="text-small mb-4">
-                  Colour palette, typography, spacing rules, and usage guidelines to maintain brand consistency.
-                </p>
-                <a
-                  href="#"
-                  className="inline-flex items-center gap-2 text-[0.8125rem] font-medium text-primary hover:text-primary/80 transition-colors"
-                >
-                  <Download className="h-3.5 w-3.5" />
-                  Download brand guide
-                </a>
-              </div>
-            </div>
-          </motion.div>
+
+                {/* Usage guidelines */}
+                <div className="max-w-3xl mx-auto mt-14">
+                  <h2 className="text-[1.25rem] font-medium text-foreground mb-4">Usage guidelines</h2>
+                  <div className="divide-y divide-border">
+                    {[
+                      { icon: '✓', text: 'Use the official logo without any modifications to colour, proportion, or orientation.' },
+                      { icon: '✓', text: 'Maintain the minimum clear space around the logo as specified in the brand guide.' },
+                      { icon: '✓', text: 'Use the dark logo on light backgrounds and the light logo on dark backgrounds.' },
+                      { icon: '✗', text: 'Do not stretch, rotate, add effects, or alter the logo in any way.' },
+                      { icon: '✗', text: 'Do not use the Sernet name or logo to imply endorsement without written permission.' },
+                    ].map((rule, i) => (
+                      <div key={i} className="flex items-start gap-3 py-3">
+                        <span className={`text-[0.875rem] font-medium mt-0.5 ${rule.icon === '✓' ? 'text-green-600' : 'text-destructive'}`}>
+                          {rule.icon}
+                        </span>
+                        <p className="text-[0.875rem] text-muted-foreground leading-relaxed">{rule.text}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Contact */}
+                <div className="max-w-3xl mx-auto mt-12 p-6 bg-secondary/30 rounded-lg">
+                  <div className="flex items-start gap-3">
+                    <FileText className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                    <div>
+                      <h3 className="text-[0.9375rem] font-medium text-foreground mb-1">Press enquiries</h3>
+                      <p className="text-[0.8125rem] text-muted-foreground leading-relaxed">
+                        For interviews, press releases, or media partnerships, reach out to our communications team at{' '}
+                        <a href="mailto:media@sernetindia.com" className="text-primary hover:underline">media@sernetindia.com</a>.
+                        We typically respond within one business day.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </section>
     </Layout>
