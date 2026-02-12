@@ -53,26 +53,28 @@ export const OpenAccountSection = () => {
       <FloatingShape className="absolute top-12 right-[12%] text-sernet-yellow/40" delay={0.5} duration={3}>
         <Star className="w-5 h-5 fill-current" />
       </FloatingShape>
-      <FloatingShape className="absolute bottom-10 left-[15%] text-sernet-yellow/30" delay={1} duration={4}>
+      <FloatingShape className="absolute bottom-10 left-[15%] text-success/30" delay={1} duration={4}>
         <PartyPopper className="w-5 h-5" />
       </FloatingShape>
-      <FloatingShape className="absolute bottom-8 right-[10%] text-primary/25" delay={0.3} duration={3.2}>
+      <FloatingShape className="absolute bottom-8 right-[10%] text-destructive/25" delay={0.3} duration={3.2}>
         <Star className="w-4 h-4 fill-current" />
       </FloatingShape>
-      <FloatingShape className="absolute top-1/2 left-[5%] text-primary/20" delay={0.8} duration={3.8}>
+      <FloatingShape className="absolute top-1/2 left-[5%] text-destructive/20" delay={0.8} duration={3.8}>
         <Sparkles className="w-4 h-4" />
       </FloatingShape>
-      <FloatingShape className="absolute top-1/3 right-[6%] text-sernet-yellow/25" delay={1.2} duration={2.8}>
+      <FloatingShape className="absolute top-1/3 right-[6%] text-success/25" delay={1.2} duration={2.8}>
         <Sparkles className="w-5 h-5" />
       </FloatingShape>
 
       {/* Confetti dots */}
       <Confetti className="bg-primary/40 top-16 left-[25%]" delay={0.2} />
       <Confetti className="bg-sernet-yellow/50 top-10 right-[20%]" delay={0.6} />
-      <Confetti className="bg-primary/30 bottom-14 left-[30%]" delay={1.1} />
-      <Confetti className="bg-sernet-yellow/40 bottom-12 right-[25%]" delay={0.4} />
-      <Confetti className="bg-primary/25 top-1/2 left-[8%]" delay={0.9} />
-      <Confetti className="bg-sernet-yellow/35 top-1/3 right-[30%]" delay={1.4} />
+      <Confetti className="bg-success/40 bottom-14 left-[30%]" delay={1.1} />
+      <Confetti className="bg-destructive/35 bottom-12 right-[25%]" delay={0.4} />
+      <Confetti className="bg-destructive/30 top-1/2 left-[8%]" delay={0.9} />
+      <Confetti className="bg-success/35 top-1/3 right-[30%]" delay={1.4} />
+      <Confetti className="bg-success/30 top-20 left-[40%]" delay={0.7} />
+      <Confetti className="bg-destructive/25 bottom-16 right-[35%]" delay={1.0} />
 
       <div className="container-zerodha relative z-10">
         <motion.div
