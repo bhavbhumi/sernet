@@ -25,9 +25,6 @@ export const EcosystemSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center"
         >
-          <h2 className="text-lg font-medium text-muted-foreground mb-10">
-            As featured in
-          </h2>
 
           <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-6 mb-12">
             {pressLogos.map((logo, index) => (
@@ -60,7 +57,7 @@ export const EcosystemSection = () => {
               to="/media"
               className="inline-flex items-center gap-2 text-primary font-medium hover:underline underline-offset-4 transition-all"
             >
-              See our PR Coverage
+              Featured in
               <ArrowRight className="h-4 w-4" />
             </Link>
           </motion.div>
