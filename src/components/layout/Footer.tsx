@@ -263,10 +263,6 @@ export const Footer = () => {
         <div className="container-zerodha py-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-[13px]">
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 text-muted-foreground">
-              <Link to="/credit-claim" className="hover:text-primary transition-colors">
-                Credit and Claim Rights
-              </Link>
-              <span className="hidden md:inline">|</span>
               <span>© Made with ♥ in India by SERNET Financial Services Pvt Ltd, 2025</span>
             </div>
             <div className="flex items-center gap-4">
