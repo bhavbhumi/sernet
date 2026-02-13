@@ -67,6 +67,7 @@ const socialLinks = [
 const legalLinks = [
   { name: 'Terms', href: '/terms' },
   { name: 'Privacy', href: '/privacy' },
+  { name: 'Policies', href: '/policies' },
   { name: 'Disclosures', href: '/disclosure' },
 ];
 
