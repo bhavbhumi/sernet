@@ -1,6 +1,7 @@
 import { Layout } from '@/components/layout/Layout';
+import { PageHero } from '@/components/layout/PageHero';
 import { motion } from 'framer-motion';
-import { Users, Target, Award, Heart } from 'lucide-react';
+import { Users, Target, Award, Heart, Building2 } from 'lucide-react';
 
 const teamMembers = [
   {
@@ -41,24 +42,12 @@ const values = [
 const About = () => {
   return (
     <Layout>
-      {/* Hero */}
-      <section className="section-padding bg-hero">
-        <div className="container-zerodha">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="max-w-3xl"
-          >
-            <h1 className="heading-xl text-foreground mb-6">
-              We pioneered the discount broking model in India.
-            </h1>
-            <p className="text-body">
-              Now, we are breaking ground with our technology.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <PageHero
+        title="We pioneered the discount broking model in"
+        highlight="India"
+        description="Now, we are breaking ground with our technology. Discover our story, values, and the people behind our mission."
+        icon={Building2}
+      />
 
       {/* Story */}
       <section className="section-padding bg-background">
