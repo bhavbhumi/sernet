@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { MapPin, Clock, ArrowRight, Upload, Star, Play, Users, Heart, Smile, Award, Target, Shield, X } from 'lucide-react';
+import careersJoinImg from '@/assets/careers-join.webp';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -100,6 +102,56 @@ const ResumeUploadDialog = () => {
   );
 };
 
+// Review Form Dialog (inspired by home TestimonialSection)
+const ReviewFormDialog = () => {
+  const [open, setOpen] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setOpen(false);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button variant="default" className="font-medium">
+          Submit Your Review
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Share Your Experience</DialogTitle>
+        </DialogHeader>
+        <form onSubmit={handleSubmit} className="space-y-4 mt-2">
+          <div className="space-y-2">
+            <Label htmlFor="team-review-name">Name</Label>
+            <Input id="team-review-name" placeholder="Your name" required />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="team-review-email">Email</Label>
+            <Input id="team-review-email" type="email" placeholder="you@example.com" required />
+          </div>
+          <div className="space-y-2">
+            <Label>Rating</Label>
+            <div className="flex items-center gap-1">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <button key={star} type="button" className="text-muted-foreground hover:text-[hsl(var(--sernet-yellow))] transition-colors">
+                  <Star className="w-6 h-6 hover:fill-[hsl(var(--sernet-yellow))]" />
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="team-review-text">Your Review</Label>
+            <Textarea id="team-review-text" placeholder="Tell us about your experience..." rows={4} required />
+          </div>
+          <Button type="submit" className="w-full">Submit Review</Button>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 // Employee Review Card (inspired by TestimonialCard)
 const EmployeeReviewCard = ({ name, role, years, rating, text }: typeof employeeReviews[0]) => (
   <div className="flex-shrink-0 w-[320px] md:w-[380px] p-6 rounded-xl border border-border bg-card relative group hover:border-primary/30 transition-colors duration-300">
@@ -160,32 +212,29 @@ export const CareersContent = () => {
     <>
       {/* Appeal: Join Us */}
       <section className="section-padding" style={{ background: 'var(--gradient-hero)' }}>
-        <div className="container-zerodha text-center max-w-3xl">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="heading-lg text-foreground mb-6"
-          >
-            Join Us
-          </motion.h2>
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="space-y-4 text-body"
-          >
-            <p>
-              At SERNET, we believe that true wealth is created when people are empowered to make informed financial decisions. 
-              If you're driven by purpose and want to be part of a team that's transforming lives through financial literacy and holistic wealth solutions — this is where you belong.
-            </p>
-            <p>
-              We're building a future where prosperity is accessible to everyone. 
-              Join us in this mission to change lives, unlock potential, and help families secure their dreams — one financial decision at a time.
-            </p>
-          </motion.div>
+        <div className="container-zerodha">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <h2 className="heading-lg text-foreground mb-6">Join Us</h2>
+              <p className="text-body">
+                At SERNET, we empower people to make informed financial decisions that transform lives. If you're driven by purpose and want to help families secure their dreams — this is where you belong. Join our mission to make prosperity accessible to everyone.
+              </p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+              className="flex justify-center"
+            >
+              <img src={careersJoinImg} alt="Team collaborating for shared prosperity" className="rounded-xl w-full max-w-md object-cover" />
+            </motion.div>
+          </div>
         </div>
       </section>
 
@@ -280,6 +329,35 @@ export const CareersContent = () => {
           {doubledReviews.map((review, i) => (
             <EmployeeReviewCard key={i} {...review} />
           ))}
+        </div>
+
+        {/* Social sharing + CTAs — inspired by home TestimonialSection */}
+        <div className="container-zerodha mt-10">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="flex flex-col items-center gap-5"
+          >
+            <div className="flex flex-col sm:flex-row items-center gap-3 text-sm text-muted-foreground">
+              <span>Share your experience on</span>
+              <div className="flex items-center gap-2">
+                <a href="https://g.page/r/sernet/review" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border text-xs font-medium text-foreground hover:border-primary hover:text-primary transition-colors">Google</a>
+                <a href="https://www.linkedin.com/company/sernet" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border text-xs font-medium text-foreground hover:border-primary hover:text-primary transition-colors">LinkedIn</a>
+                <a href="https://www.facebook.com/sernetindia" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border text-xs font-medium text-foreground hover:border-primary hover:text-primary transition-colors">Facebook</a>
+                <a href="https://www.instagram.com/sernetindia" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border text-xs font-medium text-foreground hover:border-primary hover:text-primary transition-colors">Instagram</a>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <ReviewFormDialog />
+              <Link to="/reviews" className="link-primary font-medium inline-flex items-center gap-1 group">
+                See all reviews
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+              </Link>
+            </div>
+          </motion.div>
         </div>
       </section>
 
