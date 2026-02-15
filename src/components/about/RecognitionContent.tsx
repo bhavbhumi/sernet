@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import featuredImg from '@/assets/recognition-featured.webp';
+import featuredImg from '@/assets/recognition-featured.png';
 import thumbImg from '@/assets/recognition-thumb.webp';
 
 const featured = {
@@ -65,12 +65,13 @@ export const RecognitionContent = () => {
                 transition={{ duration: 0.3, delay: index * 0.06 }}
                 className="flex items-center gap-4 py-5"
               >
-                <img src={thumbImg} alt="" className="w-12 h-12 rounded-md object-cover flex-shrink-0" />
+                <img src={thumbImg} alt="" className="w-12 h-12 rounded-md object-cover flex-shrink-0 border border-border" />
                 <div className="flex-1 min-w-0">
-                  <h4 className="text-[0.95rem] font-medium text-foreground leading-snug">{item.title}</h4>
-                  <p className="text-sm text-muted-foreground mt-0.5">
-                    {item.month} · {item.event} · From <span className="font-medium text-foreground">{item.from}</span>
-                  </p>
+                  <div className="flex items-center gap-2 text-[0.875rem] text-muted-foreground mb-1">
+                    <span>{item.month}</span><span>—</span><span>{item.event}</span>
+                  </div>
+                  <h3 className="text-[1.1875rem] md:text-[1.25rem] font-normal text-foreground leading-snug">{item.title}</h3>
+                  <p className="text-[0.875rem] text-muted-foreground mt-0.5">From <span className="font-medium text-foreground">{item.from}</span></p>
                 </div>
               </motion.div>
             ))}
