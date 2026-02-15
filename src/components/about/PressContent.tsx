@@ -72,7 +72,6 @@ export const PressContent = () => {
         {/* Section 1: Our Opinion - Press & Media Hero */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center mb-16">
           <div>
-            <p className="text-sm font-medium text-primary mb-2 tracking-wide uppercase">Our Opinion</p>
             <h2 className="text-[2rem] md:text-[2.5rem] font-light text-foreground leading-tight mb-4">
               Press & <span className="text-primary font-normal">Media</span>
             </h2>
@@ -87,8 +86,9 @@ export const PressContent = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
+            className="flex justify-end"
           >
-            <img src={pressHeroImg} alt="Press and Media" className="rounded-xl w-full shadow-md" />
+            <img src={pressHeroImg} alt="Press and Media" className="rounded-xl max-w-[320px] w-full shadow-md" />
           </motion.div>
         </div>
 
