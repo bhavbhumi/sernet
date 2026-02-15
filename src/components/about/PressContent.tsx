@@ -1,8 +1,13 @@
 import { useState, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, X, Download, ChevronLeft, ChevronRight, FileText, Palette, Type, Image } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Download, FileText, Palette, Type, Image, Send, X } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 import sernetLogo from '@/assets/sernet-logo.png';
+import pressHeroImg from '@/assets/press-media-hero.webp';
+import pressThumb from '@/assets/press-thumb.webp';
 
 type PressItem = {
   title: string;
@@ -44,7 +49,7 @@ type TabType = (typeof tabs)[number];
 export const PressContent = () => {
   const [activeTab, setActiveTab] = useState<TabType>('Recent');
   const [activeYear, setActiveYear] = useState(2025);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [showOpinionForm, setShowOpinionForm] = useState(false);
   const yearScrollRef = useRef<HTMLDivElement>(null);
 
   const scrollYears = (direction: 'left' | 'right') => {
@@ -57,37 +62,37 @@ export const PressContent = () => {
     let items = [...pressReleases];
     if (activeTab === 'Featured') items = items.filter((item) => item.featured);
     if (activeTab === 'Recent') items = items.filter((item) => item.year === activeYear);
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase();
-      items = items.filter((item) => item.title.toLowerCase().includes(q) || item.source.toLowerCase().includes(q));
-    }
     return items;
-  }, [activeTab, activeYear, searchQuery]);
-
-  const showSearch = activeTab !== 'Media Kit';
+  }, [activeTab, activeYear]);
 
   return (
     <section className="section-padding bg-background">
       <div className="container-zerodha">
-        {/* Search */}
-        {showSearch && (
-          <div className="relative max-w-lg mx-auto mb-8">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search by title or publisher"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-11 pr-11 h-12 text-[1rem] rounded-md border-border"
-            />
-            {searchQuery && (
-              <button onClick={() => setSearchQuery('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
-                <X className="h-4 w-4" />
-              </button>
-            )}
-          </div>
-        )}
 
-        {/* Sub-tabs */}
+        {/* Section 1: Our Opinion - Press & Media Hero */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center mb-16">
+          <div>
+            <p className="text-sm font-medium text-primary mb-2 tracking-wide uppercase">Our Opinion</p>
+            <h2 className="text-[2rem] md:text-[2.5rem] font-light text-foreground leading-tight mb-4">
+              Press & <span className="text-primary font-normal">Media</span>
+            </h2>
+            <p className="text-body leading-relaxed">
+              Sernet India's voice in the financial world — recognised by leading publications 
+              for our commitment to transparency, client empowerment, and innovation that drives 
+              India's next generation of investors forward.
+            </p>
+          </div>
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <img src={pressHeroImg} alt="Press and Media" className="rounded-xl w-full shadow-md" />
+          </motion.div>
+        </div>
+
+        {/* Section 2 & 3: Tabs + List (no search bar) */}
         <div className="flex justify-center gap-10 border-b border-border mb-0">
           {tabs.map((tab) => (
             <button
@@ -132,11 +137,14 @@ export const PressContent = () => {
                   <p className="text-center text-muted-foreground py-16 text-[1rem]">No results found.</p>
                 ) : (
                   filteredReleases.map((item, index) => (
-                    <motion.a key={`${item.year}-${index}`} href={item.link} target="_blank" rel="noopener noreferrer" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: index * 0.04 }} className="block py-6 group hover:bg-muted/30 -mx-4 px-4 rounded transition-colors">
-                      <div className="flex items-center gap-2 text-[0.875rem] text-muted-foreground mb-1.5">
-                        <span>{item.date}</span><span>—</span><span>{item.source}</span>
+                    <motion.a key={`${item.year}-${index}`} href={item.link} target="_blank" rel="noopener noreferrer" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: index * 0.04 }} className="flex items-center gap-4 py-5 group hover:bg-muted/30 -mx-4 px-4 rounded transition-colors">
+                      <img src={pressThumb} alt="" className="w-12 h-12 rounded-md object-cover flex-shrink-0 border border-border" />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 text-[0.875rem] text-muted-foreground mb-1">
+                          <span>{item.date}</span><span>—</span><span>{item.source}</span>
+                        </div>
+                        <h3 className="text-[1.1875rem] md:text-[1.25rem] font-normal text-foreground group-hover:text-primary transition-colors leading-snug">{item.title}</h3>
                       </div>
-                      <h3 className="text-[1.1875rem] md:text-[1.25rem] font-normal text-foreground group-hover:text-primary transition-colors leading-snug">{item.title}</h3>
                     </motion.a>
                   ))
                 )}
@@ -236,6 +244,80 @@ export const PressContent = () => {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Section 4: Send Your Opinion */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="mt-20 text-center"
+        >
+          <h2 className="text-[2rem] md:text-[2.25rem] font-light text-foreground mb-3">
+            Send Your <span className="text-primary font-normal">Opinion</span>
+          </h2>
+          <p className="text-body max-w-xl mx-auto mb-8">
+            Are you from the press or media? We'd love to hear your perspective — share your thoughts, 
+            queries, or story ideas with our communications team.
+          </p>
+          <Button
+            onClick={() => setShowOpinionForm(true)}
+            className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-[1rem] rounded-md"
+          >
+            <Send className="h-4 w-4 mr-2" />
+            Submit Your Query
+          </Button>
+        </motion.div>
+
+        {/* Opinion Form Dialog */}
+        <Dialog open={showOpinionForm} onOpenChange={setShowOpinionForm}>
+          <DialogContent className="sm:max-w-lg">
+            <DialogHeader>
+              <DialogTitle className="text-xl font-medium">Send Your Opinion</DialogTitle>
+              <DialogDescription>Share your perspective, media query, or story idea with us.</DialogDescription>
+            </DialogHeader>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                setShowOpinionForm(false);
+              }}
+              className="space-y-4 mt-2"
+            >
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <Label htmlFor="opinion-name">Full Name</Label>
+                  <Input id="opinion-name" placeholder="Your name" required />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="opinion-org">Organisation</Label>
+                  <Input id="opinion-org" placeholder="Publication / Outlet" required />
+                </div>
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="opinion-email">Email</Label>
+                <Input id="opinion-email" type="email" placeholder="you@example.com" required />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="opinion-subject">Subject</Label>
+                <Input id="opinion-subject" placeholder="What is this regarding?" required />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="opinion-message">Your Message</Label>
+                <textarea
+                  id="opinion-message"
+                  rows={4}
+                  placeholder="Share your opinion, query, or story idea..."
+                  required
+                  className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring resize-none"
+                />
+              </div>
+              <div className="flex justify-end gap-3 pt-2">
+                <Button type="button" variant="outline" onClick={() => setShowOpinionForm(false)}>Cancel</Button>
+                <Button type="submit" className="bg-primary text-primary-foreground hover:bg-primary/90">Submit Query</Button>
+              </div>
+            </form>
+          </DialogContent>
+        </Dialog>
       </div>
     </section>
   );
