@@ -1,130 +1,104 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { TrendingUp, BarChart3, LineChart, Target, MessageSquare } from 'lucide-react';
+import { Apple, Smartphone, ArrowRight, TrendingUp, BarChart3, Layers, Globe, DollarSign, Rocket, RefreshCw, Landmark } from 'lucide-react';
+import choicefinxLogo from '@/assets/choicefinx-logo.jpeg';
+import tradingShowcase from '@/assets/trading-app-showcase.png';
 
-const tradingProducts = [
-  {
-    icon: TrendingUp,
-    name: 'Kite',
-    tagline: 'Ultra-fast flagship trading platform',
-    description: 'Streaming market data, advanced charts, and an elegant UI across web, Android, and iOS.',
-    link: '/products/kite',
-  },
-  {
-    icon: BarChart3,
-    name: 'Console',
-    tagline: 'Central dashboard for your account',
-    description: 'In-depth reports, visualisations, and insights into your trades and portfolio.',
-    link: '/products/console',
-  },
-  {
-    icon: LineChart,
-    name: 'Streak',
-    tagline: 'Algo trading & backtesting',
-    description: 'Create and backtest strategies without coding. Validate your ideas before going live.',
-    link: '/products/streak',
-  },
-  {
-    icon: Target,
-    name: 'Sensibull',
-    tagline: 'Options trading made simple',
-    description: 'India\'s most advanced options analytics platform. Build strategies and trade with confidence.',
-    link: '/products/sensibull',
-  },
-  {
-    icon: MessageSquare,
-    name: 'Trading Q&A',
-    tagline: 'Community knowledge base',
-    description: 'India\'s most active trading community — ask questions, share knowledge, learn together.',
-    link: '/tradingqna',
-  },
+const stats = [
+  { value: '2.5M+', label: 'Downloads' },
+  { value: '13L+', label: 'Active Clients' },
+  { value: '4.2', label: 'App Rating' },
 ];
 
-const tradingCharges = [
-  { category: 'Equity', items: [{ name: 'Equity delivery', price: 'FREE', description: 'All equity delivery investments (NSE, BSE)' }, { name: 'Equity intraday', price: '₹20', description: '0.03% or ₹20/executed order whichever is lower' }] },
-  { category: 'Derivatives', items: [{ name: 'F&O (Equity)', price: '₹20', description: '0.03% or ₹20/executed order whichever is lower' }, { name: 'F&O (Currency)', price: '₹20', description: '0.03% or ₹20/executed order whichever is lower' }, { name: 'F&O (Commodity)', price: '₹20', description: '0.03% or ₹20/executed order whichever is lower' }] },
-  { category: 'Account', items: [{ name: 'Account opening', price: 'FREE', description: 'Zero cost to open an account' }, { name: 'AMC', price: 'FREE', description: 'No annual maintenance charge' }] },
+const products = [
+  { icon: TrendingUp, name: 'Stocks', description: 'Trade equities across NSE & BSE with real-time data and seamless execution.' },
+  { icon: BarChart3, name: 'F&O', description: 'Futures & Options trading with advanced analytics and strategy tools.' },
+  { icon: Landmark, name: 'Retail Debt', description: 'Access government securities and bonds for stable, fixed-income returns.' },
+  { icon: Layers, name: 'Commodities', description: 'Trade gold, silver, crude oil and more on MCX with competitive margins.' },
+  { icon: Globe, name: 'Currency', description: 'Participate in forex markets with USD/INR, EUR/INR and other currency pairs.' },
+  { icon: Rocket, name: 'IPOs', description: 'Apply for IPOs directly through your account with UPI-based mandates.' },
+  { icon: RefreshCw, name: 'SLBM', description: 'Securities Lending & Borrowing — earn extra returns on your idle holdings.' },
+  { icon: DollarSign, name: 'MTF', description: 'Margin Trade Funding — leverage your capital for delivery trades with flexible funding.' },
 ];
 
 export const TradingServiceContent = () => (
   <>
-    {/* Products We Distribute */}
+    {/* Hero — Choice FinX */}
     <section className="section-padding bg-background">
       <div className="container-zerodha">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          {/* Left */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <img src={choicefinxLogo} alt="Choice FinX" className="h-12 w-auto mb-6 rounded-lg" />
+            <h2 className="heading-lg text-foreground mb-4">
+              Only best in class app you need for your access to trade or invest in stocks, commodities and currency markets
+            </h2>
+            <div className="flex flex-wrap items-center gap-3 mt-8">
+              <a href="#" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-foreground text-background text-sm font-medium hover:opacity-90 transition-opacity">
+                <Apple className="w-4 h-4" />
+                iOS Download
+              </a>
+              <a href="#" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-foreground text-background text-sm font-medium hover:opacity-90 transition-opacity">
+                <Smartphone className="w-4 h-4" />
+                Android Download
+              </a>
+              <Link to="/products/kite" className="link-primary inline-flex items-center gap-1 text-sm font-medium">
+                Know More <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </motion.div>
+
+          {/* Right */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="flex flex-col items-center"
+          >
+            <img src={tradingShowcase} alt="Choice FinX trading app on desktop, tablet and mobile" className="rounded-xl w-full max-w-[480px]" />
+            <div className="flex items-center justify-center gap-8 mt-8">
+              {stats.map((stat, i) => (
+                <div key={i} className="text-center">
+                  <div className="text-2xl font-bold text-foreground">{stat.value}</div>
+                  <div className="text-small">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+
+    {/* Products We Offer */}
+    <section className="section-padding bg-section-alt">
+      <div className="container-zerodha">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">
-          Trading platforms we offer
+          Products we offer
         </motion.h2>
         <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-center mb-12 max-w-2xl mx-auto">
-          Best-in-class tools for every kind of trader — from beginners to professionals.
+          A complete suite of trading instruments across every major asset class.
         </motion.p>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {tradingProducts.map((product, index) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {products.map((product, index) => (
             <motion.div
               key={product.name}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.08 }}
+              transition={{ duration: 0.5, delay: index * 0.06 }}
               className="feature-card group"
             >
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                  <product.icon className="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <h3 className="heading-md text-foreground">{product.name}</h3>
-                  <p className="text-small">{product.tagline}</p>
-                </div>
+              <div className="w-11 h-11 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                <product.icon className="w-5 h-5 text-primary" />
               </div>
-              <p className="text-body text-sm mb-4">{product.description}</p>
-              <Link to={product.link} className="link-primary text-sm font-medium">Learn more →</Link>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    {/* Pricing */}
-    <section className="section-padding bg-section-alt">
-      <div className="container-zerodha">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">
-          Trading charges
-        </motion.h2>
-        <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-center mb-12 max-w-2xl mx-auto">
-          Simple, transparent pricing — no hidden charges, ever.
-        </motion.p>
-
-        {/* Highlights */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center mb-12">
-          {[
-            { price: '₹0', title: 'Free equity delivery', desc: 'All equity delivery investments are absolutely free.' },
-            { price: '₹20', title: 'Intraday and F&O', desc: 'Flat ₹20 or 0.03% (whichever is lower) per executed order.' },
-            { price: '₹0', title: 'Free account', desc: 'Zero cost to open. No annual maintenance charges.' },
-          ].map((item, i) => (
-            <motion.div key={item.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}>
-              <div className="text-5xl font-bold text-primary mb-2">{item.price}</div>
-              <h3 className="heading-md text-foreground mb-2">{item.title}</h3>
-              <p className="text-small">{item.desc}</p>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Detailed table */}
-        <div className="max-w-4xl mx-auto space-y-10">
-          {tradingCharges.map((tier, tierIndex) => (
-            <motion.div key={tier.category} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: tierIndex * 0.1 }}>
-              <h3 className="heading-md text-foreground mb-4">{tier.category}</h3>
-              <div className="bg-card rounded-lg border border-border overflow-hidden">
-                {tier.items.map((item, itemIndex) => (
-                  <div key={item.name} className={`flex items-center justify-between p-4 ${itemIndex !== tier.items.length - 1 ? 'border-b border-border' : ''}`}>
-                    <div>
-                      <h4 className="font-medium text-foreground">{item.name}</h4>
-                      <p className="text-small">{item.description}</p>
-                    </div>
-                    <div className={`text-lg font-bold ${item.price === 'FREE' ? 'text-success' : 'text-primary'}`}>{item.price}</div>
-                  </div>
-                ))}
-              </div>
+              <h3 className="heading-md text-foreground mb-2">{product.name}</h3>
+              <p className="text-small leading-relaxed">{product.description}</p>
             </motion.div>
           ))}
         </div>
