@@ -1,135 +1,74 @@
+import { useState } from 'react';
 import { Layout } from '@/components/layout/Layout';
-import { motion } from 'framer-motion';
-import { Calendar, User, ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { PageHero } from '@/components/layout/PageHero';
+import { Lightbulb } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { AnalysisContent } from '@/components/insights/AnalysisContent';
+import { ReportsContent } from '@/components/insights/ReportsContent';
+import { BulletinContent } from '@/components/insights/BulletinContent';
+import { UpdatesContent } from '@/components/insights/UpdatesContent';
 
-const blogPosts = [
-  {
-    id: 1,
-    title: 'Understanding the new margin rules for F&O trading',
-    excerpt: 'SEBI has introduced new margin rules that affect how traders can use leverage in futures and options trading...',
-    author: 'Nithin Kamath',
-    date: 'Jan 15, 2024',
-    category: 'Regulations',
-  },
-  {
-    id: 2,
-    title: 'How to read and analyze quarterly results',
-    excerpt: 'A comprehensive guide to understanding corporate earnings reports and making informed investment decisions...',
-    author: 'Karthik Rangappa',
-    date: 'Jan 10, 2024',
-    category: 'Education',
-  },
-  {
-    id: 3,
-    title: 'New features in Kite 4.0',
-    excerpt: 'We are excited to announce the latest updates to Kite including advanced charting, new order types, and more...',
-    author: 'Kailash Nadh',
-    date: 'Jan 5, 2024',
-    category: 'Product Updates',
-  },
-  {
-    id: 4,
-    title: 'Tax-saving investment options for FY 2023-24',
-    excerpt: 'As the financial year ends, here are the best tax-saving investment options under Section 80C and beyond...',
-    author: 'Zerodha Team',
-    date: 'Dec 28, 2023',
-    category: 'Tax Planning',
-  },
-  {
-    id: 5,
-    title: 'Understanding index funds and why they matter',
-    excerpt: 'Index funds have become increasingly popular among investors. Learn why they might be right for your portfolio...',
-    author: 'Karthik Rangappa',
-    date: 'Dec 20, 2023',
-    category: 'Education',
-  },
-  {
-    id: 6,
-    title: 'Market outlook for 2024',
-    excerpt: 'Our analysis of market trends and what investors can expect in the coming year...',
-    author: 'Nithin Kamath',
-    date: 'Dec 15, 2023',
-    category: 'Market Analysis',
-  },
-];
+const insightsTabs = ['Analysis', 'Reports', 'Bulletin', 'Updates'] as const;
+type InsightsTab = (typeof insightsTabs)[number];
+
+const tabContent: Record<InsightsTab, React.ReactNode> = {
+  Analysis: <AnalysisContent />,
+  Reports: <ReportsContent />,
+  Bulletin: <BulletinContent />,
+  Updates: <UpdatesContent />,
+};
 
 const ZConnect = () => {
+  const [activeTab, setActiveTab] = useState<InsightsTab>('Analysis');
+
   return (
     <Layout>
-      <section className="section-padding">
-        <div className="container-zerodha">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-12"
-          >
-            <h1 className="heading-xl mb-4">
-              Z-Connect Blog
-            </h1>
-            <p className="text-body">
-              Updates, announcements, and insights from the Zerodha team
-            </p>
-          </motion.div>
+      <PageHero
+        title="Stay ahead with expert"
+        highlight="Insights"
+        description="Market analysis, research reports, important bulletins, and real-time updates — all in one place."
+        icon={Lightbulb}
+      />
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {blogPosts.map((post, index) => (
-              <motion.article
-                key={post.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 * index }}
-                className="bg-muted/30 rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
+      {/* Tab Navigation */}
+      <div className="border-b border-border bg-background sticky top-0 z-20">
+        <div className="container-zerodha">
+          <div className="flex gap-8 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
+            {insightsTabs.map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`pb-3.5 pt-4 text-[1.0625rem] transition-colors relative whitespace-nowrap ${
+                  activeTab === tab
+                    ? 'text-foreground font-medium'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
               >
-                <div className="p-6">
-                  <span className="inline-block px-3 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full mb-4">
-                    {post.category}
-                  </span>
-                  <h2 className="heading-md mb-2 line-clamp-2">
-                    {post.title}
-                  </h2>
-                  <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
-                    {post.excerpt}
-                  </p>
-                  <div className="flex items-center justify-between text-xs text-muted-foreground">
-                    <div className="flex items-center gap-1">
-                      <User className="h-3 w-3" />
-                      <span>{post.author}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Calendar className="h-3 w-3" />
-                      <span>{post.date}</span>
-                    </div>
-                  </div>
-                  <Link
-                    to="#"
-                    className="flex items-center gap-1 text-primary text-sm font-medium mt-4 hover:underline"
-                  >
-                    Read more <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </div>
-              </motion.article>
+                {tab}
+                {activeTab === tab && (
+                  <motion.div
+                    layoutId="insights-tab-underline"
+                    className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-primary"
+                  />
+                )}
+              </button>
             ))}
           </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-            className="text-center mt-12"
-          >
-            <a
-              href="https://zerodha.com/z-connect"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-primary font-medium hover:underline"
-            >
-              View all posts on Z-Connect <ArrowRight className="h-4 w-4" />
-            </a>
-          </motion.div>
         </div>
-      </section>
+      </div>
+
+      {/* Tab Content */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeTab}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.25 }}
+        >
+          {tabContent[activeTab]}
+        </motion.div>
+      </AnimatePresence>
     </Layout>
   );
 };
