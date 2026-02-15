@@ -1,7 +1,17 @@
-import { useState, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Linkedin, Twitter, Star, Lightbulb, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
 import bhaveshVora from '@/assets/bhavesh-vora.png';
+import journeyNextgen from '@/assets/journey/nextgen.jpg';
+import journeyAnniversary from '@/assets/journey/anniversary.jpg';
+import journeyDigital from '@/assets/journey/digital.jpg';
+import journeyNetwork from '@/assets/journey/network.jpg';
+import journeyTechnology from '@/assets/journey/technology.jpg';
+import journeyResilience from '@/assets/journey/resilience.jpg';
+import journeyFounding from '@/assets/journey/founding.jpg';
+import journeyExpertise from '@/assets/journey/expertise.jpg';
+import journeyMarket from '@/assets/journey/market.jpg';
+import journeySpark from '@/assets/journey/spark.jpg';
 
 const sernetValues = [
   { letter: 'S', value: 'Security', description: 'Safeguarding your wealth with robust risk management and compliance frameworks.' },
@@ -21,16 +31,16 @@ const people = [
 
 // Latest first
 const journeyEvents = [
-  { period: 'Jan 2025', title: 'NextGen Platform', description: 'Launching the next generation financial service network with cutting-edge technology and holistic wealth solutions.', image: '🚀' },
-  { period: 'Aug 2024', title: '20 Years of SERNET', description: 'Celebrating two decades of empowering prosperity with a vision to be one\'s first choice for any financial decision.', image: '🎉' },
-  { period: 'Mar 2020', title: 'Digital Transformation', description: 'Accelerated digital-first strategy during the pandemic, ensuring uninterrupted service to all stakeholders.', image: '💻' },
-  { period: 'Jul 2016', title: 'Network Expansion', description: 'Grew the partner and principal network significantly, extending reach across multiple geographies.', image: '🌐' },
-  { period: 'Apr 2012', title: 'Technology Adoption', description: 'Embraced digital trading platforms and online advisory, modernising the client experience.', image: '⚡' },
-  { period: 'Oct 2008', title: 'Weathering the Storm', description: 'Navigated the global financial crisis with client-first principles, strengthening trust and credibility.', image: '🛡️' },
-  { period: 'Aug 2004', title: 'SERNET Founded', description: 'The brand SERNET is born — a fusion of SERVICE and NETWORK — with a mission to make wealth creation holistic and enjoyable.', image: '🏛️' },
-  { period: 'Jun 2000', title: 'Building Expertise', description: 'Expanded into insurance and mutual fund distribution, broadening the financial service horizon.', image: '📊' },
-  { period: 'Mar 1995', title: 'Market Immersion', description: 'Deep dive into equity and commodity markets, gaining invaluable hands-on trading and advisory experience.', image: '📈' },
-  { period: 'Jan 1990', title: 'The Spark', description: 'Bhavesh Vora begins his career in financial services, laying the groundwork for a lifelong mission.', image: '✨' },
+  { period: 'Jan 2025', title: 'NextGen Platform', description: 'Launching the next generation financial service network with cutting-edge technology and holistic wealth solutions.', image: journeyNextgen },
+  { period: 'Aug 2024', title: '20 Years of SERNET', description: 'Celebrating two decades of empowering prosperity with a vision to be one\'s first choice for any financial decision.', image: journeyAnniversary },
+  { period: 'Mar 2020', title: 'Digital Transformation', description: 'Accelerated digital-first strategy during the pandemic, ensuring uninterrupted service to all stakeholders.', image: journeyDigital },
+  { period: 'Jul 2016', title: 'Network Expansion', description: 'Grew the partner and principal network significantly, extending reach across multiple geographies.', image: journeyNetwork },
+  { period: 'Apr 2012', title: 'Technology Adoption', description: 'Embraced digital trading platforms and online advisory, modernising the client experience.', image: journeyTechnology },
+  { period: 'Oct 2008', title: 'Weathering the Storm', description: 'Navigated the global financial crisis with client-first principles, strengthening trust and credibility.', image: journeyResilience },
+  { period: 'Aug 2004', title: 'SERNET Founded', description: 'The brand SERNET is born — a fusion of SERVICE and NETWORK — with a mission to make wealth creation holistic and enjoyable.', image: journeyFounding },
+  { period: 'Jun 2000', title: 'Building Expertise', description: 'Expanded into insurance and mutual fund distribution, broadening the financial service horizon.', image: journeyExpertise },
+  { period: 'Mar 1995', title: 'Market Immersion', description: 'Deep dive into equity and commodity markets, gaining invaluable hands-on trading and advisory experience.', image: journeyMarket },
+  { period: 'Jan 1990', title: 'The Spark', description: 'Bhavesh Vora begins his career in financial services, laying the groundwork for a lifelong mission.', image: journeySpark },
 ];
 
 const socialLinks = [
@@ -54,18 +64,19 @@ const socialLinks = [
   )},
 ];
 
-// Responsive: show 2 on lg, 1 on md, 1 on sm
+// Responsive: show 3 on lg, 2 on md, 1 on sm
 const useVisibleCount = () => {
-  const [count, setCount] = useState(2);
-  useState(() => {
+  const [count, setCount] = useState(3);
+  useEffect(() => {
     const update = () => {
-      if (window.innerWidth >= 1024) setCount(2);
+      if (window.innerWidth >= 1024) setCount(3);
+      else if (window.innerWidth >= 768) setCount(2);
       else setCount(1);
     };
     update();
     window.addEventListener('resize', update);
     return () => window.removeEventListener('resize', update);
-  });
+  }, []);
   return count;
 };
 
@@ -281,9 +292,9 @@ export const CompanyContent = () => {
                 >
                   <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:border-primary/30 transition-all duration-300">
                     <div className="flex flex-col sm:flex-row">
-                      {/* Image / Emoji placeholder */}
-                      <div className="sm:w-28 h-28 sm:h-auto bg-primary/5 flex items-center justify-center flex-shrink-0">
-                        <span className="text-4xl">{event.image}</span>
+                      {/* Image */}
+                      <div className="sm:w-36 h-36 sm:h-auto flex-shrink-0 overflow-hidden">
+                        <img src={event.image} alt={event.title} className="w-full h-full object-cover" />
                       </div>
                       {/* Content */}
                       <div className="p-5 flex-1">
