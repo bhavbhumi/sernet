@@ -33,6 +33,10 @@ import MarketOverview from "./pages/MarketOverview";
 import ZConnect from "./pages/ZConnect";
 import Downloads from "./pages/Downloads";
 import Referral from "./pages/Referral";
+import ClientReferral from "./pages/ClientReferral";
+import PartnerReferral from "./pages/PartnerReferral";
+import Services from "./pages/Services";
+import Network from "./pages/Network";
 import Careers from "./pages/Careers";
 import Media from "./pages/Media";
 import CSR from "./pages/CSR";
@@ -107,6 +111,10 @@ const App = () => (
           
           {/* Company pages */}
           <Route path="/referral" element={<Referral />} />
+          <Route path="/referral/client" element={<ClientReferral />} />
+          <Route path="/referral/partner" element={<PartnerReferral />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/network" element={<Network />} />
           <Route path="/careers" element={<Careers />} />
           <Route path="/media" element={<Media />} />
           <Route path="/csr" element={<CSR />} />
