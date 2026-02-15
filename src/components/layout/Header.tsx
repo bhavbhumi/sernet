@@ -7,8 +7,8 @@ import sernetLogo from '@/assets/sernet-logo.png';
 
 const navLinks = [
   { name: 'About', href: '/about' },
-  { name: 'Products', href: '/products' },
-  { name: 'Pricing', href: '/pricing' },
+  { name: 'Services', href: '/services' },
+  { name: 'Network', href: '/network' },
   { name: 'Insights', href: '/z-connect' },
   { name: 'Contact', href: '/support' },
 ];
@@ -25,37 +25,32 @@ const menuSections = [
     ],
   },
   {
-    title: 'Products',
+    title: 'Services',
     links: [
-      { name: 'Kite', href: '/products/kite', external: false },
-      { name: 'Console', href: '/products/console', external: false },
-      { name: 'Coin', href: '/products/coin', external: false },
-      { name: 'Kite Connect', href: '/products/kite-connect', external: false },
-      { name: 'Varsity', href: '/products/varsity', external: false },
-      { name: 'Streak', href: '/products/streak', external: false },
-      { name: 'Smallcase', href: '/products/smallcase', external: false },
-      { name: 'Sensibull', href: '/products/sensibull', external: false },
-      { name: 'GoldenPi', href: '/products/goldenpi', external: false },
-      { name: 'TradingQ&A', href: '/tradingqna', external: false },
+      { name: 'Trading', href: '/services', external: false },
+      { name: 'Investment', href: '/services', external: false },
+      { name: 'Insurance', href: '/services', external: false },
+      { name: 'All Products', href: '/products', external: false },
     ],
   },
   {
-    title: 'Utilities',
+    title: 'Network',
     links: [
-      { name: 'Brokerage calculator', href: '/calculators/brokerage', external: false },
-      { name: 'Margin calculator', href: '/calculators/margin', external: false },
-      { name: 'SIP calculator', href: '/calculators/sip', external: false },
-      { name: 'Lumpsum calculator', href: '/calculators/lumpsum', external: false },
+      { name: 'Clients', href: '/network', external: false },
+      { name: 'Partners', href: '/network', external: false },
+      { name: 'Principals', href: '/network', external: false },
+      { name: 'Client Referral', href: '/referral/client', external: false },
+      { name: 'Partner Referral', href: '/referral/partner', external: false },
     ],
   },
   {
-    title: 'Updates',
+    title: 'Resources',
     links: [
       { name: 'Market overview', href: '/market-overview', external: false },
-      { name: 'Z-Connect blog', href: '/z-connect', external: false },
-      { name: 'List of charges', href: '/pricing', external: false },
+      { name: 'Insights', href: '/z-connect', external: false },
       { name: 'Downloads', href: '/downloads', external: false },
       { name: 'Videos', href: '/videos', external: false },
+      { name: 'Calculators', href: '/calculators/brokerage', external: false },
     ],
   },
 ];
