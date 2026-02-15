@@ -1,38 +1,82 @@
 import { motion } from 'framer-motion';
-import { Award, Trophy, Star, Medal } from 'lucide-react';
+import featuredImg from '@/assets/recognition-featured.webp';
+import thumbImg from '@/assets/recognition-thumb.webp';
+
+const featured = {
+  title: "Best Investment Advisory Firm",
+  month: "November 2024",
+  event: "Financial Excellence Awards",
+  from: "India Finance Forum",
+};
 
 const recognitions = [
-  { icon: Trophy, title: "Best Investment Advisory Firm", year: "2024", organization: "Financial Excellence Awards" },
-  { icon: Award, title: "Most Trusted Financial Partner", year: "2023", organization: "India Finance Forum" },
-  { icon: Star, title: "Excellence in Customer Service", year: "2023", organization: "BFSI Awards" },
-  { icon: Medal, title: "Best Wealth Management Services", year: "2022", organization: "Economic Times" },
+  { title: "Most Trusted Financial Partner", month: "August 2023", event: "National Finance Summit", from: "India Finance Forum" },
+  { title: "Excellence in Customer Service", month: "March 2023", event: "BFSI Excellence Awards", from: "BFSI Awards Committee" },
+  { title: "Best Wealth Management Services", month: "December 2022", event: "ET Financial Services Awards", from: "Economic Times" },
+  { title: "Innovation in Financial Technology", month: "June 2022", event: "FinTech India Awards", from: "NASSCOM" },
+  { title: "Top Emerging Financial Services Brand", month: "January 2022", event: "Brand Excellence Awards", from: "Business World" },
 ];
 
 export const RecognitionContent = () => {
   return (
     <section className="section-padding bg-background">
       <div className="container-zerodha">
-        <p className="text-body mb-8 max-w-2xl">
-          Over the years, SERNET has been recognized for its commitment to excellence, 
-          innovation, and customer-centric approach in financial services.
-        </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {recognitions.map((item, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
-              className="p-6 border border-border rounded-lg hover:border-primary/50 transition-colors"
-            >
-              <item.icon className="w-10 h-10 text-primary mb-4" />
-              <h3 className="text-lg font-medium text-foreground mb-2">{item.title}</h3>
-              <p className="text-sm text-muted-foreground">{item.year} • {item.organization}</p>
-            </motion.div>
-          ))}
+        {/* Section 1: Featured Recognition */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center mb-16">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <h2 className="text-[2rem] md:text-[2.5rem] font-light text-foreground leading-tight mb-4">
+              {featured.title}
+            </h2>
+            <p className="text-body text-muted-foreground">
+              {featured.month} · {featured.event}
+            </p>
+            <p className="text-sm text-muted-foreground mt-1">
+              From <span className="text-foreground font-medium">{featured.from}</span>
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="flex justify-end"
+          >
+            <img src={featuredImg} alt={featured.title} className="rounded-xl max-w-[320px] w-full shadow-md" />
+          </motion.div>
         </div>
+
+        {/* Section 2: List of Recognitions */}
+        <div>
+          <h3 className="heading-md mb-6">All Recognitions</h3>
+          <div className="divide-y divide-border">
+            {recognitions.map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.3, delay: index * 0.06 }}
+                className="flex items-center gap-4 py-5"
+              >
+                <img src={thumbImg} alt="" className="w-12 h-12 rounded-md object-cover flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <h4 className="text-[0.95rem] font-medium text-foreground leading-snug">{item.title}</h4>
+                  <p className="text-sm text-muted-foreground mt-0.5">
+                    {item.month} · {item.event} · From <span className="font-medium text-foreground">{item.from}</span>
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
       </div>
     </section>
   );
