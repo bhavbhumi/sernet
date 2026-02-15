@@ -48,7 +48,7 @@ export const RecognitionContent = () => {
             transition={{ duration: 0.6 }}
             className="flex justify-end"
           >
-            <img src={featuredImg} alt={featured.title} className="rounded-xl max-w-[320px] w-full shadow-md" />
+            <img src={featuredImg} alt={featured.title} className="rounded-xl max-w-[280px] w-full" />
           </motion.div>
         </div>
 
