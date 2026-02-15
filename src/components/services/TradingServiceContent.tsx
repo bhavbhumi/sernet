@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Apple, Smartphone, ArrowRight, TrendingUp, BarChart3, Layers, Globe, DollarSign, Rocket, RefreshCw, Landmark } from 'lucide-react';
+import { Apple, Smartphone, ArrowRight, TrendingUp, BarChart3, Layers, Globe, DollarSign, Rocket, RefreshCw, Landmark, Check } from 'lucide-react';
 import tradingShowcase from '@/assets/trading-app-showcase.png';
 
 const stats = [
@@ -37,6 +37,14 @@ export const TradingServiceContent = () => (
             <p className="text-body text-muted-foreground mb-8">
               Only best in class app you need for your access to trade or invest in stocks, commodities and currency markets
             </p>
+            <ul className="space-y-2 mb-8">
+              {['No Account Opening Fee for Trading + Demat', 'No AMC for the 1st Year of Demat Account', 'No Auto Square Off Charges', 'No Charges for Call and Trade'].map((hook) => (
+                <li key={hook} className="flex items-center gap-2 text-sm text-foreground">
+                  <Check className="w-4 h-4 text-primary shrink-0" />
+                  {hook}
+                </li>
+              ))}
+            </ul>
             <div className="flex flex-wrap items-center gap-3">
               <a href="#" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors">
                 <Apple className="w-4 h-4" />
