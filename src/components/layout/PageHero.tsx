@@ -1,79 +1,72 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, LucideIcon } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 
 interface PageHeroProps {
   title: string;
   highlight?: string;
   description: string;
-  icon: LucideIcon;
+  icon?: any; // kept for backward compat, no longer rendered
   ctaText?: string;
   ctaLink?: string;
   customImage?: string;
   customImageAlt?: string;
+  breadcrumbLabel?: string;
 }
+
+const routeLabels: Record<string, string> = {
+  '/services': 'Services',
+  '/z-connect': 'Insights',
+  '/about': 'About',
+  '/network': 'Network',
+  '/pricing': 'Pricing',
+  '/client-referral': 'Client Referral',
+  '/partner-referral': 'Partner Referral',
+};
 
 export const PageHero = ({
   title,
   highlight,
   description,
-  icon: Icon,
-  ctaText = 'Schedule a Call',
-  ctaLink = '/schedule-call',
-  customImage,
-  customImageAlt,
+  breadcrumbLabel,
 }: PageHeroProps) => {
+  const { pathname } = useLocation();
+  const label = breadcrumbLabel || routeLabels[pathname] || pathname.replace('/', '').replace(/-/g, ' ');
+
   return (
-    <section className="section-padding" style={{ background: 'var(--gradient-hero)' }}>
+    <section className="py-12 md:py-16" style={{ background: 'var(--gradient-hero)' }}>
       <div className="container-zerodha">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-          {/* Icon / Custom Image — shows first on mobile */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-            className="flex justify-center lg:justify-end lg:order-2"
-          >
-            {customImage ? (
-              <img
-                src={customImage}
-                alt={customImageAlt || 'Illustration'}
-                className="w-full max-w-[420px] lg:max-w-[500px] h-auto mix-blend-multiply"
-              />
-            ) : (
-              <div className="w-40 h-40 md:w-56 md:h-56 rounded-full bg-primary/10 flex items-center justify-center">
-                <Icon className="w-20 h-20 md:w-28 md:h-28 text-primary" strokeWidth={1.2} />
-              </div>
+        {/* Breadcrumbs */}
+        <motion.nav
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="flex items-center gap-1.5 text-sm text-muted-foreground mb-6"
+          aria-label="Breadcrumb"
+        >
+          <Link to="/" className="hover:text-foreground transition-colors">Home</Link>
+          <ChevronRight className="w-3.5 h-3.5" />
+          <span className="text-foreground font-medium capitalize">{label}</span>
+        </motion.nav>
+
+        {/* Title & Description */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="max-w-2xl"
+        >
+          <h1 className="text-[2.25rem] md:text-[2.75rem] font-light text-foreground leading-[1.15] mb-3 tracking-tight">
+            {title}
+            {highlight && (
+              <>
+                {' '}
+                <span className="text-primary font-normal">{highlight}</span>
+              </>
             )}
-          </motion.div>
-
-          {/* Content */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="lg:order-1"
-          >
-            <h1 className="text-[2.25rem] md:text-[2.75rem] font-light text-foreground leading-[1.15] mb-4 tracking-tight">
-              {title}
-              {highlight && (
-                <>
-                  {' '}
-                  <span className="text-primary font-normal">{highlight}</span>
-                </>
-              )}
-            </h1>
-            <p className="text-body max-w-lg mb-8">{description}</p>
-
-            <Link
-              to={ctaLink}
-              className="btn-primary px-8 py-3.5 text-base inline-flex items-center"
-            >
-              {ctaText}
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-          </motion.div>
-        </div>
+          </h1>
+          <p className="text-body">{description}</p>
+        </motion.div>
       </div>
     </section>
   );
