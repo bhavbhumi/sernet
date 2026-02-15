@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Users, Target, Award, Heart, Key, Lightbulb, Shield, Compass } from 'lucide-react';
+import { Key, Lightbulb, Shield, Compass, Linkedin, Twitter } from 'lucide-react';
 import bhaveshVora from '@/assets/bhavesh-vora.png';
 
 const values = [
@@ -26,6 +27,8 @@ const values = [
 ];
 
 export const CompanyContent = () => {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
     <>
       {/* Story */}
@@ -55,20 +58,60 @@ export const CompanyContent = () => {
               </div>
             </motion.div>
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.7, type: 'spring', stiffness: 100 }}
               className="flex justify-center"
             >
-              <div className="text-center">
-                <img
-                  src={bhaveshVora}
-                  alt="Bhavesh Vora - Founder, SERNET"
-                  className="rounded-2xl shadow-lg max-w-[320px] w-full h-auto mx-auto"
+              <div
+                className="relative group cursor-pointer"
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+              >
+                {/* Decorative background glow */}
+                <motion.div
+                  className="absolute -inset-4 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 blur-xl"
+                  animate={{ opacity: isHovered ? 0.8 : 0.4 }}
+                  transition={{ duration: 0.3 }}
                 />
-                <h3 className="heading-md text-foreground mt-5 mb-1">Bhavesh Vora</h3>
-                <p className="text-primary text-sm font-medium">Founder & Promoter</p>
+                <div className="relative overflow-hidden rounded-2xl shadow-lg">
+                  <motion.img
+                    src={bhaveshVora}
+                    alt="Bhavesh Vora - Founder, SERNET"
+                    className="max-w-[280px] w-full h-auto object-cover"
+                    whileHover={{ scale: 1.03 }}
+                    transition={{ duration: 0.4 }}
+                  />
+                  {/* Hover overlay with name & social links */}
+                  <motion.div
+                    className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent px-5 py-5 flex flex-col items-center"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 20 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <h3 className="text-white text-lg font-semibold">Bhavesh Vora</h3>
+                    <p className="text-white/70 text-sm mb-3">Founder & Promoter</p>
+                    <div className="flex gap-3">
+                      <a
+                        href="https://www.linkedin.com/in/bhaveshvora"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-9 h-9 rounded-full bg-white/15 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-colors"
+                      >
+                        <Linkedin className="w-4 h-4 text-white" />
+                      </a>
+                      <a
+                        href="https://x.com/bhaveshvora"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-9 h-9 rounded-full bg-white/15 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-colors"
+                      >
+                        <Twitter className="w-4 h-4 text-white" />
+                      </a>
+                    </div>
+                  </motion.div>
+                </div>
               </div>
             </motion.div>
           </div>
@@ -107,7 +150,6 @@ export const CompanyContent = () => {
           </div>
         </div>
       </section>
-
     </>
   );
 };

@@ -2,7 +2,9 @@ import { useState } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { PageHero } from '@/components/layout/PageHero';
 import { Building2 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import sernetIcon from '@/assets/sernet-icon.png';
+import { motion } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { CompanyContent } from '@/components/about/CompanyContent';
 import { CareersContent } from '@/components/about/CareersContent';
 import { PressContent } from '@/components/about/PressContent';
@@ -30,6 +32,8 @@ const About = () => {
         highlight="Service Network"
         description="Always on the journey of engaging, enabling and empowering prosperity globally"
         icon={Building2}
+        customImage={sernetIcon}
+        customImageAlt="SERNET Logo"
       />
 
       {/* Tab Navigation */}
