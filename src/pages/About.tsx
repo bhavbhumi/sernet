@@ -26,9 +26,9 @@ const About = () => {
   return (
     <Layout>
       <PageHero
-        title="We pioneered the discount broking model in"
-        highlight="India"
-        description="Now, we are breaking ground with our technology. Discover our story, values, and the people behind our mission."
+        title="NextGen Financial"
+        highlight="Service Network"
+        description="Always on the journey of engaging, enabling and empowering prosperity globally"
         icon={Building2}
       />
 
