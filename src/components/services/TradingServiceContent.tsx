@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Apple, Smartphone, ArrowRight, TrendingUp, BarChart3, Layers, Globe, DollarSign, Rocket, RefreshCw, Landmark } from 'lucide-react';
-import choicefinxLogo from '@/assets/choicefinx-logo.jpeg';
 import tradingShowcase from '@/assets/trading-app-showcase.png';
 
 const stats = [
@@ -34,16 +33,16 @@ export const TradingServiceContent = () => (
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <img src={choicefinxLogo} alt="Choice FinX" className="h-12 w-auto mb-6 rounded-lg" />
-            <h2 className="heading-lg text-foreground mb-4">
+            <h2 className="heading-lg text-foreground mb-3">Choice FinX</h2>
+            <p className="text-body text-muted-foreground mb-8">
               Only best in class app you need for your access to trade or invest in stocks, commodities and currency markets
-            </h2>
-            <div className="flex flex-wrap items-center gap-3 mt-8">
-              <a href="#" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-foreground text-background text-sm font-medium hover:opacity-90 transition-opacity">
+            </p>
+            <div className="flex flex-wrap items-center gap-3">
+              <a href="#" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors">
                 <Apple className="w-4 h-4" />
                 iOS Download
               </a>
-              <a href="#" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-foreground text-background text-sm font-medium hover:opacity-90 transition-opacity">
+              <a href="#" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors">
                 <Smartphone className="w-4 h-4" />
                 Android Download
               </a>
@@ -59,7 +58,7 @@ export const TradingServiceContent = () => (
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.15 }}
-            className="flex flex-col items-center"
+            className="flex flex-col items-center justify-center h-full"
           >
             <img src={tradingShowcase} alt="Choice FinX trading app on desktop, tablet and mobile" className="rounded-xl w-full max-w-[480px]" />
             <div className="flex items-center justify-center gap-8 mt-8">
