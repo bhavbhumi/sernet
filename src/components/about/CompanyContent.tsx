@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { Linkedin, Twitter, Star, Lightbulb, Heart, Calendar } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Linkedin, Twitter, Star, Lightbulb, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
 import bhaveshVora from '@/assets/bhavesh-vora.png';
 
 const sernetValues = [
@@ -19,17 +19,18 @@ const people = [
   { name: 'Akshat Vora', relation: 'Son', role: 'The Bright Future', icon: Lightbulb },
 ];
 
+// Latest first
 const journeyEvents = [
-  { period: 'Jan 1990', title: 'The Spark', description: 'Bhavesh Vora begins his career in financial services, laying the groundwork for a lifelong mission.' },
-  { period: 'Mar 1995', title: 'Market Immersion', description: 'Deep dive into equity and commodity markets, gaining invaluable hands-on trading and advisory experience.' },
-  { period: 'Jun 2000', title: 'Building Expertise', description: 'Expanded into insurance and mutual fund distribution, broadening the financial service horizon.' },
-  { period: 'Aug 2004', title: 'SERNET Founded', description: 'The brand SERNET is born — a fusion of SERVICE and NETWORK — with a mission to make wealth creation holistic and enjoyable.' },
-  { period: 'Oct 2008', title: 'Weathering the Storm', description: 'Navigated the global financial crisis with client-first principles, strengthening trust and credibility.' },
-  { period: 'Apr 2012', title: 'Technology Adoption', description: 'Embraced digital trading platforms and online advisory, modernising the client experience.' },
-  { period: 'Jul 2016', title: 'Network Expansion', description: 'Grew the partner and principal network significantly, extending reach across multiple geographies.' },
-  { period: 'Mar 2020', title: 'Digital Transformation', description: 'Accelerated digital-first strategy during the pandemic, ensuring uninterrupted service to all stakeholders.' },
-  { period: 'Aug 2024', title: '20 Years of SERNET', description: 'Celebrating two decades of empowering prosperity with a vision to be one\'s first choice for any financial decision.' },
-  { period: 'Jan 2025', title: 'NextGen Platform', description: 'Launching the next generation financial service network with cutting-edge technology and holistic wealth solutions.' },
+  { period: 'Jan 2025', title: 'NextGen Platform', description: 'Launching the next generation financial service network with cutting-edge technology and holistic wealth solutions.', image: '🚀' },
+  { period: 'Aug 2024', title: '20 Years of SERNET', description: 'Celebrating two decades of empowering prosperity with a vision to be one\'s first choice for any financial decision.', image: '🎉' },
+  { period: 'Mar 2020', title: 'Digital Transformation', description: 'Accelerated digital-first strategy during the pandemic, ensuring uninterrupted service to all stakeholders.', image: '💻' },
+  { period: 'Jul 2016', title: 'Network Expansion', description: 'Grew the partner and principal network significantly, extending reach across multiple geographies.', image: '🌐' },
+  { period: 'Apr 2012', title: 'Technology Adoption', description: 'Embraced digital trading platforms and online advisory, modernising the client experience.', image: '⚡' },
+  { period: 'Oct 2008', title: 'Weathering the Storm', description: 'Navigated the global financial crisis with client-first principles, strengthening trust and credibility.', image: '🛡️' },
+  { period: 'Aug 2004', title: 'SERNET Founded', description: 'The brand SERNET is born — a fusion of SERVICE and NETWORK — with a mission to make wealth creation holistic and enjoyable.', image: '🏛️' },
+  { period: 'Jun 2000', title: 'Building Expertise', description: 'Expanded into insurance and mutual fund distribution, broadening the financial service horizon.', image: '📊' },
+  { period: 'Mar 1995', title: 'Market Immersion', description: 'Deep dive into equity and commodity markets, gaining invaluable hands-on trading and advisory experience.', image: '📈' },
+  { period: 'Jan 1990', title: 'The Spark', description: 'Bhavesh Vora begins his career in financial services, laying the groundwork for a lifelong mission.', image: '✨' },
 ];
 
 const socialLinks = [
@@ -53,9 +54,30 @@ const socialLinks = [
   )},
 ];
 
+// Responsive: show 2 on lg, 1 on md, 1 on sm
+const useVisibleCount = () => {
+  const [count, setCount] = useState(2);
+  useState(() => {
+    const update = () => {
+      if (window.innerWidth >= 1024) setCount(2);
+      else setCount(1);
+    };
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  });
+  return count;
+};
+
 export const CompanyContent = () => {
   const [isHovered, setIsHovered] = useState(false);
-  const timelineRef = useRef<HTMLDivElement>(null);
+  const [timelineIndex, setTimelineIndex] = useState(0);
+  const visibleCount = useVisibleCount();
+  const maxIndex = journeyEvents.length - visibleCount;
+
+  const scrollLeft = () => setTimelineIndex((prev) => Math.max(0, prev - 1));
+  const scrollRight = () => setTimelineIndex((prev) => Math.min(maxIndex, prev + 1));
+
   return (
     <>
       {/* Story */}
@@ -92,20 +114,13 @@ export const CompanyContent = () => {
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
               >
-                {/* Animated glowing border */}
-                <motion.div
-                  className="absolute -inset-[3px] rounded-2xl bg-gradient-to-r from-primary via-accent to-primary bg-[length:200%_100%]"
-                  animate={{ backgroundPosition: ['0% 0%', '200% 0%'] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
-                  style={{ filter: 'blur(0px)' }}
-                />
-                <motion.div
-                  className="absolute -inset-[3px] rounded-2xl bg-gradient-to-r from-primary via-accent to-primary bg-[length:200%_100%] opacity-60"
-                  animate={{ backgroundPosition: ['0% 0%', '200% 0%'] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
-                  style={{ filter: 'blur(12px)' }}
-                />
-                <div className="relative overflow-hidden rounded-2xl bg-background">
+                {/* Newsletter-style glow: box-shadow based */}
+                <div
+                  className="relative overflow-hidden rounded-2xl bg-background border border-primary/30"
+                  style={{
+                    boxShadow: '0 0 25px -5px hsl(var(--primary) / 0.3), 0 0 10px -5px hsl(var(--sernet-yellow) / 0.2)',
+                  }}
+                >
                   <motion.img
                     src={bhaveshVora}
                     alt="Bhavesh Vora - Founder, SERNET"
@@ -216,62 +231,71 @@ export const CompanyContent = () => {
         </div>
       </section>
 
-      {/* Journey So Far - Horizontal Scrolling Timeline */}
+      {/* Journey So Far - Horizontal with arrows */}
       <section className="section-padding bg-section-alt overflow-hidden">
         <div className="container-zerodha">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="heading-lg text-foreground mb-4 text-center"
-          >
-            Journey So Far
-          </motion.h2>
-          <p className="text-muted-foreground text-center mb-10">Scroll to explore our 35-year timeline →</p>
-        </div>
-
-        <div
-          ref={timelineRef}
-          className="overflow-x-auto pb-6 px-6 md:px-12"
-          style={{ scrollbarWidth: 'thin' }}
-        >
-          <div className="relative flex gap-0 min-w-max">
-            {/* Horizontal line */}
-            <div className="absolute top-[52px] left-0 right-0 h-px bg-border" />
-
-            {journeyEvents.map((event, index) => (
-              <motion.div
-                key={event.period}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.08 }}
-                className="relative flex flex-col items-center w-[300px] flex-shrink-0"
+          <div className="flex items-center justify-between mb-10">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="heading-lg text-foreground"
+            >
+              Journey So Far
+            </motion.h2>
+            <div className="flex gap-2">
+              <button
+                onClick={scrollLeft}
+                disabled={timelineIndex === 0}
+                className="w-10 h-10 rounded-full border border-border bg-card flex items-center justify-center hover:border-primary/50 hover:text-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
               >
-                {/* Period badge */}
-                <div className="flex items-center gap-2 mb-4">
-                  <Calendar className="w-4 h-4 text-primary" />
-                  <span className="text-sm font-semibold text-primary">{event.period}</span>
-                </div>
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button
+                onClick={scrollRight}
+                disabled={timelineIndex >= maxIndex}
+                className="w-10 h-10 rounded-full border border-border bg-card flex items-center justify-center hover:border-primary/50 hover:text-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
 
-                {/* Dot on the line */}
-                <div className="relative z-10 mb-6">
-                  <div className="w-4 h-4 rounded-full bg-primary border-4 border-background shadow-md" />
-                  <motion.div
-                    className="absolute -inset-2 rounded-full bg-primary/20"
-                    animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: index * 0.3 }}
-                  />
-                </div>
-
-                {/* Card */}
-                <div className="bg-card border border-border rounded-xl p-5 mx-3 shadow-sm hover:shadow-md hover:border-primary/30 transition-all duration-300 h-full">
-                  <h3 className="heading-md text-foreground mb-2">{event.title}</h3>
-                  <p className="text-small leading-relaxed">{event.description}</p>
-                </div>
-              </motion.div>
-            ))}
+          <div className="overflow-hidden">
+            <motion.div
+              className="flex gap-6"
+              animate={{ x: `-${timelineIndex * (100 / visibleCount)}%` }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+              style={{ width: `${(journeyEvents.length / visibleCount) * 100}%` }}
+            >
+              {journeyEvents.map((event, index) => (
+                <motion.div
+                  key={event.period}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.05 }}
+                  className="flex-shrink-0"
+                  style={{ width: `${100 / journeyEvents.length}%` }}
+                >
+                  <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:border-primary/30 transition-all duration-300">
+                    <div className="flex flex-col sm:flex-row">
+                      {/* Image / Emoji placeholder */}
+                      <div className="sm:w-28 h-28 sm:h-auto bg-primary/5 flex items-center justify-center flex-shrink-0">
+                        <span className="text-4xl">{event.image}</span>
+                      </div>
+                      {/* Content */}
+                      <div className="p-5 flex-1">
+                        <span className="text-xs font-semibold text-primary tracking-wide uppercase">{event.period}</span>
+                        <h3 className="heading-md text-foreground mt-1 mb-2">{event.title}</h3>
+                        <p className="text-small leading-relaxed">{event.description}</p>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
           </div>
         </div>
       </section>
