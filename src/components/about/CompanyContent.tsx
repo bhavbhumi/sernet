@@ -1,39 +1,27 @@
 import { motion } from 'framer-motion';
-import { Users, Target, Award, Heart } from 'lucide-react';
-
-const teamMembers = [
-  {
-    name: 'Nithin Kamath',
-    role: 'Founder, CEO',
-    description: 'Nithin bootstrapped and founded Zerodha in 2010 to overcome the hurdles he faced during his decade long stint as a trader.',
-  },
-  {
-    name: 'Nikhil Kamath',
-    role: 'Co-founder',
-    description: 'Nikhil is an astute investor who started trading at 17, and along with his brother Nithin, co-founded Zerodha.',
-  },
-];
+import { Users, Target, Award, Heart, Key, Lightbulb, Shield, Compass } from 'lucide-react';
+import bhaveshVora from '@/assets/bhavesh-vora.png';
 
 const values = [
   {
-    icon: Users,
-    title: 'Customer-first',
-    description: 'We put our customers at the heart of everything we do.',
+    icon: Key,
+    title: 'Luck',
+    description: 'Fortune favours those who take the first step towards financial freedom.',
   },
   {
-    icon: Target,
-    title: 'Transparency',
-    description: 'We believe in being open and honest with our customers.',
+    icon: Lightbulb,
+    title: 'Wisdom',
+    description: 'Informed decisions driven by knowledge and deep market understanding.',
   },
   {
-    icon: Award,
-    title: 'Excellence',
-    description: 'We strive for excellence in all our products and services.',
+    icon: Shield,
+    title: 'Courage',
+    description: 'Bold conviction to stay the course and seize opportunities.',
   },
   {
-    icon: Heart,
-    title: 'Integrity',
-    description: 'We conduct our business with the highest ethical standards.',
+    icon: Compass,
+    title: 'Control',
+    description: 'Discipline and strategy to master your financial journey.',
   },
 ];
 
@@ -53,16 +41,16 @@ export const CompanyContent = () => {
               <h2 className="heading-lg text-foreground mb-6">Our Story</h2>
               <div className="space-y-4 text-body">
                 <p>
-                  Zerodha was founded by Nithin Kamath in 2010 with the aim to break all barriers that traders and investors face in India in terms of cost, support, and technology.
+                  SERNET was founded by Bhavesh Vora in 2004 with a mission to make wealth creation holistic and enjoyable for the world.
                 </p>
                 <p>
-                  We named the company Zerodha, a combination of Zero and "Rodha", the Sanskrit word for barrier.
+                  Our <span className="text-primary font-medium">Vision</span> is to be one's first choice for any financial decision and execution.
                 </p>
                 <p>
-                  Today, our disruptive pricing models and in-house technology have made us the biggest stock broker in India.
+                  And our strategy to achieve is through creative futuristic solutions with an ethical approach and giving excellent service experience.
                 </p>
                 <p>
-                  Over 1.6+ crore customers place millions of orders every day through our powerful ecosystem of investment platforms, contributing to over 15% of all Indian retail trading volumes.
+                  We named our brand <span className="text-primary font-medium">SERNET</span>, as a fusion of "<strong>SER</strong>VICE" and "<strong>NET</strong>WORK", two most basic ingredients for Prosperity. Our logo reveals four keys of <em>Luck, Wisdom, Courage</em> and <em>Control</em> to achieve required financial success.
                 </p>
               </div>
             </motion.div>
@@ -73,14 +61,15 @@ export const CompanyContent = () => {
               transition={{ duration: 0.6 }}
               className="flex justify-center"
             >
-              <img
-                src="https://zerodha.com/static/images/founder.jpg"
-                alt="Zerodha Founders"
-                className="rounded-lg shadow-lg max-w-full h-auto"
-                onError={(e) => {
-                  e.currentTarget.src = 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&h=400&fit=crop';
-                }}
-              />
+              <div className="text-center">
+                <img
+                  src={bhaveshVora}
+                  alt="Bhavesh Vora - Founder, SERNET"
+                  className="rounded-2xl shadow-lg max-w-[320px] w-full h-auto mx-auto"
+                />
+                <h3 className="heading-md text-foreground mt-5 mb-1">Bhavesh Vora</h3>
+                <p className="text-primary text-sm font-medium">Founder & Promoter</p>
+              </div>
             </motion.div>
           </div>
         </div>
@@ -119,36 +108,6 @@ export const CompanyContent = () => {
         </div>
       </section>
 
-      {/* Team */}
-      <section className="section-padding bg-background">
-        <div className="container-zerodha">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="heading-lg text-foreground mb-12 text-center"
-          >
-            People
-          </motion.h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {teamMembers.map((member, index) => (
-              <motion.div
-                key={member.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="feature-card"
-              >
-                <h3 className="heading-md text-foreground mb-1">{member.name}</h3>
-                <p className="text-primary text-sm font-medium mb-3">{member.role}</p>
-                <p className="text-body text-sm">{member.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
     </>
   );
 };
