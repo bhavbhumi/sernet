@@ -68,23 +68,6 @@ const Services = () => {
         </motion.div>
       </AnimatePresence>
 
-      {/* CTA */}
-      <section className="section-padding bg-section-alt">
-        <div className="container-zerodha">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center max-w-2xl mx-auto"
-          >
-            <h2 className="heading-lg text-foreground mb-4">Ready to get started?</h2>
-            <p className="text-body mb-8">
-              Open your account today and access our full suite of financial services with transparent pricing.
-            </p>
-            <a href="/signup" className="btn-primary">Sign up for free</a>
-          </motion.div>
-        </div>
-      </section>
     </Layout>
   );
 };

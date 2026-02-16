@@ -113,6 +113,32 @@ export const TradingServiceContent = () => (
       </div>
     </section>
 
+    {/* FAQs */}
+    <section className="section-padding bg-section-alt">
+      <div className="container-zerodha max-w-3xl">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">
+          Frequently Asked Questions
+        </motion.h2>
+        <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-center mb-12">
+          Everything you need to know about trading with Choice FinX
+        </motion.p>
+        <Accordion type="single" collapsible className="w-full">
+          {[
+            { q: 'What documents do I need to open a trading account?', a: 'You need your PAN card, Aadhaar card (linked to mobile number for e-verification), a cancelled cheque or bank statement, and a passport-size photograph. The entire KYC process can be completed digitally through the Choice FinX app.' },
+            { q: 'How long does it take to open an account?', a: 'With our fully digital onboarding, your account can be activated within 15–30 minutes once all documents are verified. In-person video verification is completed instantly during the sign-up flow.' },
+            { q: 'What are the brokerage charges for trading?', a: 'We offer the lowest full-service brokerage rates in the industry. Delivery trades on equity have zero brokerage. For intraday, F&O and other segments, we offer highly competitive flat-fee plans. Contact us for detailed rate cards.' },
+            { q: 'Can I trade on both mobile and desktop?', a: 'Yes, Choice FinX is available on iOS, Android, and web platforms. Your account, watchlists, and positions sync seamlessly across all devices so you can trade from anywhere.' },
+            { q: 'How do I add funds to my trading account?', a: 'You can add funds instantly via UPI, Net Banking, or through NEFT/RTGS bank transfers. You can also set up Autopay Mandates for automatic margin funding when needed.' },
+          ].map((faq, index) => (
+            <AccordionItem key={index} value={`faq-${index}`}>
+              <AccordionTrigger className="text-left">{faq.q}</AccordionTrigger>
+              <AccordionContent className="text-muted-foreground">{faq.a}</AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </div>
+    </section>
+
     {/* Ready to Get Started */}
     <section className="section-padding bg-background">
       <div className="container-zerodha">
@@ -146,32 +172,6 @@ export const TradingServiceContent = () => (
             </motion.div>
           ))}
         </div>
-      </div>
-    </section>
-
-    {/* FAQs */}
-    <section className="section-padding bg-section-alt">
-      <div className="container-zerodha max-w-3xl">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">
-          Frequently Asked Questions
-        </motion.h2>
-        <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-center mb-12">
-          Everything you need to know about trading with Choice FinX
-        </motion.p>
-        <Accordion type="single" collapsible className="w-full">
-          {[
-            { q: 'What documents do I need to open a trading account?', a: 'You need your PAN card, Aadhaar card (linked to mobile number for e-verification), a cancelled cheque or bank statement, and a passport-size photograph. The entire KYC process can be completed digitally through the Choice FinX app.' },
-            { q: 'How long does it take to open an account?', a: 'With our fully digital onboarding, your account can be activated within 15–30 minutes once all documents are verified. In-person video verification is completed instantly during the sign-up flow.' },
-            { q: 'What are the brokerage charges for trading?', a: 'We offer the lowest full-service brokerage rates in the industry. Delivery trades on equity have zero brokerage. For intraday, F&O and other segments, we offer highly competitive flat-fee plans. Contact us for detailed rate cards.' },
-            { q: 'Can I trade on both mobile and desktop?', a: 'Yes, Choice FinX is available on iOS, Android, and web platforms. Your account, watchlists, and positions sync seamlessly across all devices so you can trade from anywhere.' },
-            { q: 'How do I add funds to my trading account?', a: 'You can add funds instantly via UPI, Net Banking, or through NEFT/RTGS bank transfers. You can also set up Autopay Mandates for automatic margin funding when needed.' },
-          ].map((faq, index) => (
-            <AccordionItem key={index} value={`faq-${index}`}>
-              <AccordionTrigger className="text-left">{faq.q}</AccordionTrigger>
-              <AccordionContent className="text-muted-foreground">{faq.a}</AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
       </div>
     </section>
   </>
