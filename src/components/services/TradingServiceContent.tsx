@@ -124,7 +124,7 @@ export const TradingServiceContent = () => (
     </section>
 
     {/* Portfolio Health Check CTA */}
-    <section className="section-padding bg-background">
+    <section className="section-padding">
       <div className="container-zerodha">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
