@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Apple, Smartphone, ArrowRight, TrendingUp, BarChart3, Layers, Globe, DollarSign, Rocket, RefreshCw, Landmark, Check } from 'lucide-react';
+import { Apple, Smartphone, ArrowRight, TrendingUp, BarChart3, Layers, Globe, DollarSign, Rocket, RefreshCw, Landmark, Check, Download, UserCheck, Wallet, Play } from 'lucide-react';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import tradingShowcase from '@/assets/trading-app-showcase.png';
 
 const stats = [
@@ -35,10 +36,10 @@ export const TradingServiceContent = () => (
           >
             <h2 className="heading-lg text-foreground mb-3">Choice FinX</h2>
             <p className="text-body text-muted-foreground mb-8">
-              Only best in class app you need for your access to trade or invest in stocks, commodities and currency markets
+              Only best in class app you need for your access to trade or invest in stocks, commodities and currency markets with lightening fast execution
             </p>
             <ul className="space-y-2 mb-8">
-              {['No Account Opening Fee for Trading + Demat', 'No AMC for the 1st Year of Demat Account', 'No Auto Square Off Charges', 'No Charges for Call and Trade'].map((hook) => (
+              {['No Account Opening Fee for Trading + Demat', 'No AMC for the 1st Year of Demat Account', 'No Auto Square Off Charges', 'No Charges for Call and Trade', 'Lowest Full Service Brokerage Rates'].map((hook) => (
                 <li key={hook} className="flex items-center gap-2 text-sm text-foreground">
                   <Check className="w-4 h-4 text-primary shrink-0" />
                   {hook}
@@ -109,6 +110,68 @@ export const TradingServiceContent = () => (
             </motion.div>
           ))}
         </div>
+      </div>
+    </section>
+
+    {/* Ready to Get Started */}
+    <section className="section-padding bg-background">
+      <div className="container-zerodha">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">
+          Ready to get started?
+        </motion.h2>
+        <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-center mb-12 max-w-2xl mx-auto">
+          Get up and running in four simple steps
+        </motion.p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[
+            { icon: Download, step: '01', title: 'Download', description: 'Search "Choice FinX" on Google Play or Apple App Store & download our Mobile Trading App.' },
+            { icon: UserCheck, step: '02', title: 'Install KYC', description: 'Sign up with Mobile No., Complete Aadhaar e‑Verification, Upload PAN, Add Bank Details and Finish In Person Video verification.' },
+            { icon: Wallet, step: '03', title: 'Fund Your Account', description: 'Add funds via UPI, Net Banking or NEFT / RTGS. Set up Autopay Mandates for margin needs.' },
+            { icon: Play, step: '04', title: 'Start Trading', description: 'Unlock all features, explore markets, place trades and grow your portfolio.' },
+          ].map((card, index) => (
+            <motion.div
+              key={card.step}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="feature-card relative"
+            >
+              <span className="text-4xl font-bold text-primary/10 absolute top-4 right-4">{card.step}</span>
+              <div className="w-11 h-11 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                <card.icon className="w-5 h-5 text-primary" />
+              </div>
+              <h3 className="heading-md text-foreground mb-2">{card.title}</h3>
+              <p className="text-small leading-relaxed">{card.description}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* FAQs */}
+    <section className="section-padding bg-section-alt">
+      <div className="container-zerodha max-w-3xl">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">
+          Frequently Asked Questions
+        </motion.h2>
+        <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-center mb-12">
+          Everything you need to know about trading with Choice FinX
+        </motion.p>
+        <Accordion type="single" collapsible className="w-full">
+          {[
+            { q: 'What documents do I need to open a trading account?', a: 'You need your PAN card, Aadhaar card (linked to mobile number for e-verification), a cancelled cheque or bank statement, and a passport-size photograph. The entire KYC process can be completed digitally through the Choice FinX app.' },
+            { q: 'How long does it take to open an account?', a: 'With our fully digital onboarding, your account can be activated within 15–30 minutes once all documents are verified. In-person video verification is completed instantly during the sign-up flow.' },
+            { q: 'What are the brokerage charges for trading?', a: 'We offer the lowest full-service brokerage rates in the industry. Delivery trades on equity have zero brokerage. For intraday, F&O and other segments, we offer highly competitive flat-fee plans. Contact us for detailed rate cards.' },
+            { q: 'Can I trade on both mobile and desktop?', a: 'Yes, Choice FinX is available on iOS, Android, and web platforms. Your account, watchlists, and positions sync seamlessly across all devices so you can trade from anywhere.' },
+            { q: 'How do I add funds to my trading account?', a: 'You can add funds instantly via UPI, Net Banking, or through NEFT/RTGS bank transfers. You can also set up Autopay Mandates for automatic margin funding when needed.' },
+          ].map((faq, index) => (
+            <AccordionItem key={index} value={`faq-${index}`}>
+              <AccordionTrigger className="text-left">{faq.q}</AccordionTrigger>
+              <AccordionContent className="text-muted-foreground">{faq.a}</AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
       </div>
     </section>
   </>
