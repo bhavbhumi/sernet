@@ -123,6 +123,73 @@ export const TradingServiceContent = () => (
       </div>
     </section>
 
+    {/* Portfolio Health Check CTA */}
+    <section className="section-padding bg-background">
+      <div className="container-zerodha">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="rounded-2xl bg-primary/5 border border-primary/10 p-8 md:p-12 lg:p-16 flex flex-col lg:flex-row items-center gap-8 lg:gap-16"
+        >
+          <div className="flex-1 text-center lg:text-left">
+            <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wide uppercase mb-4">
+              Free Service
+            </span>
+            <h2 className="heading-lg text-foreground mb-3">Free Stock Portfolio Health Check</h2>
+            <p className="text-body text-muted-foreground mb-6 max-w-xl">
+              Get a comprehensive analysis of your existing stock portfolio by our expert research team. We'll evaluate your holdings, identify risks, and suggest actionable improvements — completely free of charge.
+            </p>
+            <ul className="space-y-2 mb-8">
+              {['Detailed risk assessment of your current holdings', 'Sector diversification analysis', 'Personalized recommendations from SEBI-registered analysts', 'No obligation — 100% free'].map((item) => (
+                <li key={item} className="flex items-center gap-2 text-sm text-foreground justify-center lg:justify-start">
+                  <Check className="w-4 h-4 text-primary shrink-0" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <a
+              href="https://ekyc.choiceindia.com/open-free-demat-account"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-8 py-3 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
+            >
+              Get Your Free Health Check
+              <ArrowRight className="w-4 h-4" />
+            </a>
+          </div>
+          <div className="flex-shrink-0 w-full max-w-[280px] lg:max-w-[320px]">
+            <div className="rounded-xl bg-background border border-border p-6 shadow-sm space-y-4">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                  <BarChart3 className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-foreground">Portfolio Score</p>
+                  <p className="text-xs text-muted-foreground">Sample Report</p>
+                </div>
+              </div>
+              <div className="space-y-3">
+                <div>
+                  <div className="flex justify-between text-xs mb-1"><span className="text-muted-foreground">Diversification</span><span className="text-foreground font-medium">72%</span></div>
+                  <div className="h-2 rounded-full bg-muted"><div className="h-2 rounded-full bg-primary" style={{ width: '72%' }} /></div>
+                </div>
+                <div>
+                  <div className="flex justify-between text-xs mb-1"><span className="text-muted-foreground">Risk Level</span><span className="text-foreground font-medium">Moderate</span></div>
+                  <div className="h-2 rounded-full bg-muted"><div className="h-2 rounded-full bg-accent" style={{ width: '55%' }} /></div>
+                </div>
+                <div>
+                  <div className="flex justify-between text-xs mb-1"><span className="text-muted-foreground">Growth Potential</span><span className="text-foreground font-medium">85%</span></div>
+                  <div className="h-2 rounded-full bg-muted"><div className="h-2 rounded-full bg-primary" style={{ width: '85%' }} /></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+
     {/* FAQs */}
     <section className="section-padding bg-section-alt">
       <div className="container-zerodha max-w-3xl">
