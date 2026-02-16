@@ -11,8 +11,8 @@ const stats = [
 ];
 
 const products = [
-  { icon: PieChart, name: 'Mutual Funds & SIF', description: 'Invest in direct mutual funds and Systematic Investment Facilities with zero commission across 5,000+ schemes.' },
-  { icon: Briefcase, name: 'PMS & AIF', description: 'Portfolio Management Services and Alternative Investment Funds for HNI investors seeking alpha-driven strategies.' },
+  { icon: PieChart, name: 'Mutual Funds & SIF', description: 'Invest in regular mutual funds and Systematic Investment Facilities across 5,000+ schemes from top AMCs with personalised guidance.' },
+  { icon: Briefcase, name: 'PMS & AIF', description: 'Portfolio Management Services and Alternative Investment Funds for HNI investors seeking alpha-driven strategies from leading fund managers.' },
   { icon: Landmark, name: 'Bonds', description: 'Government securities, corporate bonds, and tax-free bonds for stable, fixed-income returns with transparent pricing.' },
   { icon: Building2, name: 'Company FD', description: 'Fixed deposits from top-rated corporates offering higher interest rates than traditional bank FDs with flexible tenures.' },
   { icon: Gem, name: 'Digital Gold & Silver', description: 'Buy, sell, and accumulate 24K digital gold and 999 purity silver in any amount — stored securely in insured vaults.' },
@@ -20,7 +20,7 @@ const products = [
 
 export const InvestmentServiceContent = () => (
   <>
-    {/* Hero — Investment Platform */}
+    {/* Hero — Tick Funds */}
     <section className="section-padding bg-background">
       <div className="container-zerodha">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -31,12 +31,12 @@ export const InvestmentServiceContent = () => (
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="heading-lg text-foreground mb-3">Smart Investments, Simplified</h2>
+            <h2 className="heading-lg text-foreground mb-3">Tick Funds</h2>
             <p className="text-body text-muted-foreground mb-8">
-              Build long-term wealth with our comprehensive investment platform. Access mutual funds, PMS, bonds, and more — all with expert guidance and zero hidden charges.
+              Build long-term wealth with our comprehensive investment distribution platform. As an AMFI-registered Mutual Fund Distributor, we help you access the best mutual funds, bonds, and more — with personalised guidance at every step.
             </p>
             <ul className="space-y-2 mb-8">
-              {['Zero Commission on Direct Mutual Funds', 'SEBI-Registered Investment Advisory', 'Curated PMS & AIF for HNI Investors', 'Digital Gold & Silver with Insured Vaults', 'Dedicated Relationship Manager'].map((hook) => (
+              {['AMFI-Registered Mutual Fund Distributor', 'Regular Plans with Personalised Advisory', 'Curated PMS & AIF for HNI Investors', 'Digital Gold & Silver with Insured Vaults', 'Dedicated Relationship Manager'].map((hook) => (
                 <li key={hook} className="flex items-center gap-2 text-sm text-foreground">
                   <Check className="w-4 h-4 text-primary shrink-0" />
                   {hook}
@@ -97,7 +97,7 @@ export const InvestmentServiceContent = () => (
           Products we offer
         </motion.h2>
         <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-center mb-12 max-w-2xl mx-auto">
-          A comprehensive range of investment products to help you build and grow your wealth.
+          A comprehensive range of investment products distributed through our trusted AMC and principal partnerships.
         </motion.p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {products.map((product, index) => (
@@ -136,10 +136,10 @@ export const InvestmentServiceContent = () => (
             </span>
             <h2 className="heading-lg text-foreground mb-3">Free Investment Portfolio Health Checkup</h2>
             <p className="text-body text-muted-foreground mb-6 max-w-xl">
-              Get a comprehensive review of your mutual fund, bond, and equity holdings by our expert advisory team. We'll evaluate your asset allocation, identify gaps, and recommend improvements — completely free of charge.
+              Get a comprehensive review of your mutual fund, bond, and equity holdings by our experienced advisory team. We'll evaluate your asset allocation, identify gaps, and recommend improvements — completely free of charge.
             </p>
             <ul className="space-y-2 mb-8">
-              {['Asset allocation and rebalancing analysis', 'Fund overlap and expense ratio review', 'Goal-based investment gap assessment', 'Personalized recommendations from SEBI-registered advisors', 'No obligation — 100% free'].map((item) => (
+              {['Asset allocation and rebalancing analysis', 'Fund overlap and expense ratio review', 'Goal-based investment gap assessment', 'Personalised recommendations from our expert team', 'No obligation — 100% free'].map((item) => (
                 <li key={item} className="flex items-center gap-2 text-sm text-foreground justify-center lg:justify-start">
                   <Check className="w-4 h-4 text-primary shrink-0" />
                   {item}
@@ -194,14 +194,14 @@ export const InvestmentServiceContent = () => (
           Frequently Asked Questions
         </motion.h2>
         <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-center mb-12">
-          Everything you need to know about investing with Choice
+          Everything you need to know about investing with Tick Funds
         </motion.p>
         <Accordion type="single" collapsible className="w-full">
           {[
             { q: 'What is the minimum amount to start investing in mutual funds?', a: 'You can start investing in mutual funds with as little as ₹500 through a SIP (Systematic Investment Plan). Lump-sum investments typically start from ₹1,000 depending on the fund house.' },
+            { q: 'Are you a SEBI-registered Investment Advisor?', a: 'No, we are an AMFI-registered Mutual Fund Distributor (MFD) engaged in regular distribution. We earn commissions from the AMCs and respective entities who are our principals or partners. We do not charge any advisory fees to our investors.' },
+            { q: 'What is the difference between regular and direct mutual fund plans?', a: 'Regular plans include a distributor commission built into the expense ratio, which compensates us for the personalised guidance, portfolio reviews, and ongoing support we provide. Direct plans have a slightly lower expense ratio but come without any advisory or hand-holding support.' },
             { q: 'What is the difference between PMS and AIF?', a: 'PMS (Portfolio Management Services) involves direct stock investments managed by a portfolio manager with a minimum investment of ₹50 lakhs. AIF (Alternative Investment Funds) pool money from investors for specialized strategies like venture capital, private equity, or hedge funds with a minimum of ₹1 crore.' },
-            { q: 'Are there any charges for investing in direct mutual funds?', a: 'No, we offer zero commission on direct mutual fund investments. You save the distributor commission (typically 0.5%–1.5% annually) compared to regular plans, which can significantly boost your long-term returns.' },
-            { q: 'How do Company FDs differ from bank FDs?', a: 'Company FDs typically offer 1%–3% higher interest rates than bank FDs. However, they carry slightly higher credit risk. We only offer FDs from top-rated corporates (AAA/AA+ rated) to balance returns with safety.' },
             { q: 'Is digital gold safe to invest in?', a: 'Yes, digital gold purchased through our platform is 24K, 999.9 purity gold stored in MMTC-PAMP insured vaults. You can buy any amount starting from ₹1, and it can be converted to physical gold or redeemed for cash anytime.' },
           ].map((faq, index) => (
             <AccordionItem key={index} value={`faq-${index}`}>
