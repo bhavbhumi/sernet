@@ -151,7 +151,7 @@ export const TradingServiceContent = () => (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
             { icon: Download, step: '01', title: 'Download', description: 'Search "Choice FinX" on Google Play or Apple App Store & download our Mobile Trading App.' },
-            { icon: UserCheck, step: '02', title: 'Install KYC', description: 'Sign up with Mobile No., Complete Aadhaar e‑Verification, Upload PAN, Add Bank Details and Finish In Person Video verification.' },
+            { icon: UserCheck, step: '02', title: 'Complete KYC', description: 'Sign up with Mobile No., Complete Aadhaar e‑Verification, Upload PAN, Add Bank Details and Finish In Person Video verification.' },
             { icon: Wallet, step: '03', title: 'Fund Your Account', description: 'Add funds via UPI, Net Banking or NEFT / RTGS. Set up Autopay Mandates for margin needs.' },
             { icon: Play, step: '04', title: 'Start Trading', description: 'Unlock all features, explore markets, place trades and grow your portfolio.' },
           ].map((card, index) => (
@@ -172,6 +172,23 @@ export const TradingServiceContent = () => (
             </motion.div>
           ))}
         </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="text-center mt-12"
+        >
+          <a
+            href="https://ekyc.choiceindia.com/open-free-demat-account"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-8 py-3 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
+          >
+            Open Demat + Trading Account
+            <ArrowRight className="w-4 h-4" />
+          </a>
+        </motion.div>
       </div>
     </section>
   </>
