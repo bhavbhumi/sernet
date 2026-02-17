@@ -46,7 +46,8 @@ const menuSections = [
 export const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
-  const langRef = useRef<HTMLDivElement>(null);
+  const desktopLangRef = useRef<HTMLDivElement>(null);
+  const mobileLangRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const { t, i18n } = useTranslation();
 
@@ -54,7 +55,10 @@ export const Header = () => {
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (langRef.current && !langRef.current.contains(e.target as Node)) {
+      if (
+        desktopLangRef.current && !desktopLangRef.current.contains(e.target as Node) &&
+        mobileLangRef.current && !mobileLangRef.current.contains(e.target as Node)
+      ) {
         setLangOpen(false);
       }
     };
@@ -97,7 +101,7 @@ export const Header = () => {
           <ThemeToggle />
 
           {/* Language Dropdown */}
-          <div ref={langRef} className="relative">
+          <div ref={desktopLangRef} className="relative">
             <button
               type="button"
               className="flex items-center gap-1 text-[14px] text-muted-foreground hover:text-primary transition-colors"
@@ -139,7 +143,7 @@ export const Header = () => {
         {/* Mobile/Tablet: theme + language + hamburger */}
         <div className="lg:hidden flex items-center gap-1">
           <ThemeToggle />
-          <div ref={langRef} className="relative">
+          <div ref={mobileLangRef} className="relative">
             <button
               type="button"
               className="p-2 text-muted-foreground hover:text-primary transition-colors"
