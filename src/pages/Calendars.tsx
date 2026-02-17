@@ -4,13 +4,15 @@ import { PageHero } from '@/components/layout/PageHero';
 import { motion, AnimatePresence } from 'framer-motion';
 import MarketHolidaysContent from '@/components/calendars/MarketHolidaysContent';
 import EconomicCalendarContent from '@/components/calendars/EconomicCalendarContent';
+import CorporateEventsContent from '@/components/calendars/CorporateEventsContent';
 
-const calendarTabs = ['Market Holidays', 'Economic Calendar'] as const;
+const calendarTabs = ['Market Holidays', 'Economic Calendar', 'Corporate Events'] as const;
 type CalendarTab = (typeof calendarTabs)[number];
 
 const tabContent: Record<CalendarTab, React.ReactNode> = {
   'Market Holidays': <MarketHolidaysContent />,
   'Economic Calendar': <EconomicCalendarContent />,
+  'Corporate Events': <CorporateEventsContent />,
 };
 
 const Calendars = () => {
