@@ -31,7 +31,7 @@ const features = [
 
 export const TrustSection = () => {
   return (
-    <section className="section-padding" style={{ background: 'var(--gradient-section-warm)' }}>
+    <section className="section-padding bg-background">
       <div className="container-zerodha">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-start">
           {/* Left Part */}
@@ -74,7 +74,7 @@ export const TrustSection = () => {
               className="w-full max-w-lg h-auto mix-blend-multiply"
             />
             <Link
-              to="/products"
+              to="/services"
               className="text-primary font-medium text-body hover:underline underline-offset-4 transition-colors inline-flex items-center gap-1"
             >
               Explore our Products →

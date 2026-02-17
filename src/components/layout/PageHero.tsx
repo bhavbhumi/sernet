@@ -37,7 +37,7 @@ export const PageHero = ({
   const label = breadcrumbLabel || routeLabels[pathname] || pathname.replace('/', '').replace(/-/g, ' ');
 
   return (
-    <section className="py-12 md:py-16" style={{ background: 'var(--gradient-hero)' }}>
+    <section className="py-12 md:py-16 bg-section-alt">
       <div className="container-zerodha">
         {/* Breadcrumbs */}
         <motion.nav

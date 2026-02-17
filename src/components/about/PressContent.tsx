@@ -79,7 +79,7 @@ export const PressContent = () => {
   }, [activeYear, activeMedium]);
 
   return (
-    <section className="section-padding" style={{ background: 'var(--gradient-hero)' }}>
+    <section className="section-padding bg-background">
       <div className="container-zerodha">
 
         {/* Section 1: Title + Featured Post Carousel */}

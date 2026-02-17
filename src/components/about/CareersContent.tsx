@@ -224,7 +224,7 @@ export const CareersContent = () => {
   return (
     <>
       {/* Section 1: Title + Featured Positions Carousel */}
-      <section className="section-padding" style={{ background: 'var(--gradient-hero)' }}>
+      <section className="section-padding bg-background">
         <div className="container-zerodha">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch">
             <motion.div
@@ -363,7 +363,7 @@ export const CareersContent = () => {
       </section>
 
       {/* Section 3: Employee Reviews — auto-scrolling carousel */}
-      <section className="section-padding overflow-hidden" style={{ background: 'var(--gradient-testimonial)' }}>
+      <section className="section-padding overflow-hidden bg-section-alt">
         <div className="container-zerodha mb-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -463,7 +463,7 @@ export const CareersContent = () => {
       </section>
 
       {/* Section 5: Upload Resume */}
-      <section className="section-padding" style={{ background: 'var(--gradient-cta)' }}>
+      <section className="section-padding bg-section-alt">
         <div className="container-zerodha text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
