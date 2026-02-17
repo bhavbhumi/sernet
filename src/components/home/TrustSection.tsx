@@ -51,7 +51,7 @@ export const TrustSection = () => {
             <img
               src={productShowcase}
               alt="Sernet product ecosystem — Tick Funds, Tushil, ChoiceFinX, Findemy"
-              className="w-full max-w-lg h-auto mix-blend-multiply"
+              className="w-full max-w-lg h-auto dark:bg-white dark:rounded-xl dark:p-3"
             />
             <Link
               to="/services"

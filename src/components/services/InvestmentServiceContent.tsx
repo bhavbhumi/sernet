@@ -90,7 +90,7 @@ export const InvestmentServiceContent = () => (
             transition={{ duration: 0.6, delay: 0.15 }}
             className="flex flex-col items-center justify-center h-full"
           >
-            <img src={choicefinxShowcase} alt="Choice investment platform on desktop, tablet and mobile" className="rounded-xl w-full max-w-[520px] max-h-[400px] object-contain" />
+            <img src={choicefinxShowcase} alt="Choice investment platform on desktop, tablet and mobile" className="rounded-xl w-full max-w-[520px] max-h-[400px] object-contain dark:bg-white dark:p-3" />
           </motion.div>
         </div>
       </div>

@@ -142,7 +142,7 @@ export const ClientsNetworkContent = () => (
             <img
               src={networkClientsImg}
               alt="SERNET client network"
-              className="w-full max-w-[480px] max-h-[400px] h-auto object-contain mix-blend-multiply"
+              className="w-full max-w-[480px] max-h-[400px] h-auto object-contain dark:bg-white dark:rounded-xl dark:p-3"
             />
           </motion.div>
         </div>

@@ -79,7 +79,7 @@ const Tushil = () => (
             </div>
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.15 }} className="flex items-center justify-center">
-            <img src={choicefinxShowcase} alt="Tushil insurance platform" className="rounded-xl w-full max-w-[540px] object-contain" />
+            <img src={choicefinxShowcase} alt="Tushil insurance platform" className="rounded-xl w-full max-w-[540px] object-contain dark:bg-white dark:p-3" />
           </motion.div>
         </div>
       </div>
