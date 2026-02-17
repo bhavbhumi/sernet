@@ -1,6 +1,7 @@
 import { useState, useMemo, useRef } from 'react';
 import { Star, ArrowRight, Play, MapPin, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Button } from '@/components/ui/button';
 
 const GoogleIcon = () => (
   <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none">
@@ -77,60 +78,71 @@ export const ReviewsContent = () => {
     <section className="section-padding bg-background">
       <div className="container-zerodha">
 
-        {/* Section 1: Featured Review */}
+        {/* Section 1: Title + Featured Review */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch mb-16">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="flex flex-col justify-center"
-          >
-            <div className="flex items-center gap-2 mb-3">
-              <span className="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-[0.6875rem] font-medium">Featured Review</span>
-              <span className="text-sm text-muted-foreground">{featuredReview.date}</span>
-            </div>
-            <p className="text-[1.375rem] md:text-[1.625rem] font-light text-foreground leading-relaxed italic mb-6">
-              "{featuredReview.review}"
-            </p>
-            <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded-full bg-primary/10 flex items-center justify-center text-base font-medium text-primary">
-                {featuredReview.name.charAt(0)}
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <p className="text-base font-medium text-foreground">{featuredReview.name}</p>
-                  <div className="flex items-center gap-0.5">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className={`w-3.5 h-3.5 ${i < Math.floor(featuredReview.rating) ? 'fill-[hsl(var(--sernet-yellow))] text-[hsl(var(--sernet-yellow))]' : 'text-muted-foreground/30'}`} />
-                    ))}
-                  </div>
-                </div>
-                <p className="text-sm text-muted-foreground">{featuredReview.occupation} · {featuredReview.city}</p>
-              </div>
-            </div>
-          </motion.div>
-
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-            className="flex items-center justify-center"
+            transition={{ duration: 0.5 }}
+            className="flex flex-col justify-center"
           >
-            {/* Aggregate Rating Card */}
-            <div className="text-center p-10 rounded-2xl border border-border bg-section-alt">
-              <div className="text-[4rem] font-light text-foreground leading-none mb-2">4.9</div>
-              <div className="flex items-center justify-center gap-1 mb-3">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 fill-[hsl(var(--sernet-yellow))] text-[hsl(var(--sernet-yellow))]" />
-                ))}
+            <h2 className="text-[2rem] md:text-[2.5rem] font-light text-foreground leading-tight mb-4">
+              Client <span className="text-primary font-normal">Reviews</span>
+            </h2>
+            <p className="text-body leading-relaxed mb-2">
+              Reviews could be from Client, Partner, Employee, or Principal — real voices sharing their experience with SERNET across every relationship.
+            </p>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="text-[2.5rem] font-light text-foreground leading-none">4.9</div>
+              <div>
+                <div className="flex items-center gap-0.5">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-[hsl(var(--sernet-yellow))] text-[hsl(var(--sernet-yellow))]" />
+                  ))}
+                </div>
+                <p className="text-xs text-muted-foreground mt-0.5">Based on {reviews.length}+ reviews</p>
               </div>
-              <p className="text-sm text-muted-foreground mb-1">Based on {reviews.length}+ reviews</p>
-              <div className="flex items-center justify-center gap-3 mt-4">
-                <div className="w-6 h-6 flex items-center justify-center opacity-60"><GoogleIcon /></div>
-                <div className="w-6 h-6 flex items-center justify-center opacity-60"><FacebookIcon /></div>
-                <div className="w-6 h-6 flex items-center justify-center opacity-60"><InstagramIcon /></div>
+            </div>
+            <div>
+              <Button className="gap-2 px-8 py-3 text-base">
+                <Star className="w-4 h-4" />
+                Submit your Review
+              </Button>
+            </div>
+          </motion.div>
+
+          {/* Right: Featured Review */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="flex items-center"
+          >
+            <div className="w-full p-6 rounded-xl border border-border bg-card">
+              <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
+                <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[0.6875rem] font-medium">Featured Review</span>
+                <span>{featuredReview.date}</span>
+              </div>
+              <p className="text-[1.125rem] font-light text-foreground leading-relaxed italic mb-5">
+                "{featuredReview.review}"
+              </p>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-sm font-medium text-primary">
+                    {featuredReview.name.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-foreground">{featuredReview.name}</p>
+                    <p className="text-xs text-muted-foreground">{featuredReview.occupation} · {featuredReview.city}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-0.5">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className={`w-3.5 h-3.5 ${i < Math.floor(featuredReview.rating) ? 'fill-[hsl(var(--sernet-yellow))] text-[hsl(var(--sernet-yellow))]' : 'text-muted-foreground/30'}`} />
+                  ))}
+                </div>
               </div>
             </div>
           </motion.div>
