@@ -272,5 +272,14 @@ export const InsuranceServiceContent = () => (
         </motion.div>
       </div>
     </section>
+
+    {/* Disclaimer */}
+    <section className="py-6 bg-muted/30">
+      <div className="container-zerodha">
+        <p className="text-xs text-muted-foreground text-center max-w-4xl mx-auto leading-relaxed">
+          <strong>Disclaimer:</strong> Insurance is the subject matter of solicitation. IRDAI is not involved in activities like selling, endorsing, or soliciting insurance. For more details on risk factors, please read the sales brochure carefully before concluding a sale. SERNET facilitates insurance distribution through its principal partner Srigoda Insurance Broking Services. Premium amounts and benefits are subject to the terms and conditions of the respective insurance company.
+        </p>
+      </div>
+    </section>
   </>
 );

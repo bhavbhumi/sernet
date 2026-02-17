@@ -69,8 +69,8 @@ export const AutoScrollShowcase = ({
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
-          {/* Left — Item List */}
-          <div className="lg:col-span-2 border-r border-border">
+          {/* Left — Item List (horizontal scroll on mobile) */}
+          <div className="lg:col-span-2 lg:border-r border-border flex lg:flex-col overflow-x-auto lg:overflow-x-visible" style={{ scrollbarWidth: 'none' }}>
             {items.map((item, index) => {
               const isActive = index === activeIndex;
               const Icon = item.icon;
@@ -78,7 +78,7 @@ export const AutoScrollShowcase = ({
                 <button
                   key={item.title}
                   onClick={() => setActiveIndex(index)}
-                  className={`w-full text-left px-5 py-4 flex items-center gap-4 transition-all duration-300 border-b border-border last:border-b-0 relative ${
+                  className={`text-left px-5 py-4 flex items-center gap-4 transition-all duration-300 border-b lg:border-b border-r lg:border-r-0 border-border last:border-b-0 last:border-r-0 relative whitespace-nowrap lg:whitespace-normal min-w-[200px] lg:min-w-0 w-auto lg:w-full ${
                     isActive
                       ? 'bg-primary/8'
                       : 'hover:bg-muted/50'
