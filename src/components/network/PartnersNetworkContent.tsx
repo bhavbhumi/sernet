@@ -1,13 +1,13 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Handshake, Check, User, Briefcase, Megaphone, ArrowRightLeft } from 'lucide-react';
+import { ArrowRight, Handshake, Check, User, Briefcase, Megaphone, ArrowRightLeft, Clock, Layers } from 'lucide-react';
 import networkPartnersImg from '@/assets/network-partners.webp';
 import { AutoScrollShowcase, type ShowcaseItem } from './AutoScrollShowcase';
 
 const partnerStats = [
-  { value: '50+', label: 'Partner Institutions' },
-  { value: '5000+', label: 'Products Distributed' },
-  { value: '35+', label: 'Years of Partnerships' },
+  { icon: Handshake, value: '50+', label: 'Partner Institutions' },
+  { icon: Layers, value: '5000+', label: 'Products Distributed' },
+  { icon: Clock, value: '35+', label: 'Years of Partnerships' },
 ];
 
 const pointers = [
@@ -119,19 +119,17 @@ export const PartnersNetworkContent = () => (
               </Link>
             </div>
             {/* 3 Stats */}
-            <div className="flex flex-wrap gap-6 lg:gap-10">
+            <div className="flex flex-wrap gap-6 lg:gap-8">
               {partnerStats.map((stat, i) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: i * 0.1 }}
-                  className="text-center"
-                >
-                  <p className="text-[2rem] md:text-[2.5rem] font-light text-foreground leading-tight tracking-tight">{stat.value}</p>
-                  <p className="text-sm text-muted-foreground mt-1">{stat.label}</p>
-                </motion.div>
+                <div key={stat.label} className="flex items-center gap-2.5">
+                  <div className="flex items-center justify-center w-9 h-9 rounded-full bg-primary/10">
+                    <stat.icon className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-foreground leading-tight">{stat.value}</p>
+                    <p className="text-xs text-muted-foreground">{stat.label}</p>
+                  </div>
+                </div>
               ))}
             </div>
           </motion.div>

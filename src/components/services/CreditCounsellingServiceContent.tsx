@@ -4,9 +4,9 @@ import { ArrowRight, Check, FileText, UserCheck, Download, Play, CreditCard, Tre
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 const stats = [
-  { value: '10,000+', label: 'Cases Resolved' },
-  { value: '750+', label: 'Score Improvements' },
-  { value: '98%', label: 'Client Satisfaction' },
+  { icon: ShieldCheck, value: '10,000+', label: 'Cases Resolved' },
+  { icon: TrendingUp, value: '750+', label: 'Score Improvements' },
+  { icon: User, value: '98%', label: 'Client Satisfaction' },
 ];
 
 const products = [
@@ -60,6 +60,9 @@ export const CreditCounsellingServiceContent = () => (
             <div className="flex flex-wrap gap-6 lg:gap-8">
               {stats.map((stat, i) => (
                 <div key={i} className="flex items-center gap-2.5">
+                  <div className="flex items-center justify-center w-9 h-9 rounded-full bg-primary/10">
+                    <stat.icon className="w-4 h-4 text-primary" />
+                  </div>
                   <div>
                     <p className="text-sm font-medium text-foreground leading-tight">{stat.value}</p>
                     <p className="text-xs text-muted-foreground">{stat.label}</p>

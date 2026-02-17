@@ -5,9 +5,9 @@ import networkPrincipalsImg from '@/assets/network-principals.webp';
 import { AutoScrollShowcase, type ShowcaseItem } from './AutoScrollShowcase';
 
 const principalStats = [
-  { value: '10+', label: 'Principal Partners' },
-  { value: '500+', label: 'Products Available' },
-  { value: '₹500Cr+', label: 'Assets Managed' },
+  { icon: Shield, value: '10+', label: 'Principal Partners' },
+  { icon: Award, value: '500+', label: 'Products Available' },
+  { icon: Landmark, value: '₹500Cr+', label: 'Assets Managed' },
 ];
 
 const principalShowcaseItems: ShowcaseItem[] = [
@@ -194,19 +194,17 @@ export const PrincipalsNetworkContent = () => (
               </Link>
             </div>
             {/* 3 Stats */}
-            <div className="flex flex-wrap gap-6 lg:gap-10">
+            <div className="flex flex-wrap gap-6 lg:gap-8">
               {principalStats.map((stat, i) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: i * 0.1 }}
-                  className="text-center"
-                >
-                  <p className="text-[2rem] md:text-[2.5rem] font-light text-foreground leading-tight tracking-tight">{stat.value}</p>
-                  <p className="text-sm text-muted-foreground mt-1">{stat.label}</p>
-                </motion.div>
+                <div key={stat.label} className="flex items-center gap-2.5">
+                  <div className="flex items-center justify-center w-9 h-9 rounded-full bg-primary/10">
+                    <stat.icon className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-foreground leading-tight">{stat.value}</p>
+                    <p className="text-xs text-muted-foreground">{stat.label}</p>
+                  </div>
+                </div>
               ))}
             </div>
           </motion.div>

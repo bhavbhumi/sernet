@@ -1,13 +1,13 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Apple, Smartphone, ArrowRight, TrendingUp, BarChart3, Layers, Globe, DollarSign, Rocket, RefreshCw, Landmark, Check, Download, UserCheck, Wallet, Play } from 'lucide-react';
+import { Apple, Smartphone, ArrowRight, TrendingUp, BarChart3, Layers, Globe, DollarSign, Rocket, RefreshCw, Landmark, Check, Download, UserCheck, Wallet, Play, Users, Star } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import choicefinxShowcase from '@/assets/choicefinx-showcase.png';
 
 const stats = [
-  { value: '2.5M+', label: 'Downloads' },
-  { value: '13L+', label: 'Active Clients' },
-  { value: '4.2', label: 'App Rating' },
+  { icon: Download, value: '2.5M+', label: 'Downloads' },
+  { icon: Users, value: '13L+', label: 'Active Clients' },
+  { icon: Star, value: '4.2', label: 'App Rating' },
 ];
 
 const products = [
@@ -73,6 +73,9 @@ export const TradingServiceContent = () => (
             <div className="flex flex-wrap gap-6 lg:gap-8">
               {stats.map((stat, i) => (
                 <div key={i} className="flex items-center gap-2.5">
+                  <div className="flex items-center justify-center w-9 h-9 rounded-full bg-primary/10">
+                    <stat.icon className="w-4 h-4 text-primary" />
+                  </div>
                   <div>
                     <p className="text-sm font-medium text-foreground leading-tight">{stat.value}</p>
                     <p className="text-xs text-muted-foreground">{stat.label}</p>

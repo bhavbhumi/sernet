@@ -4,9 +4,9 @@ import { ArrowRight, Check, FileText, Users, Shield, Scale, ScrollText, Landmark
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 const stats = [
-  { value: '5,000+', label: 'Wills Drafted' },
-  { value: '1,200+', label: 'Trusts Created' },
-  { value: '₹2,500Cr+', label: 'Assets Planned' },
+  { icon: ScrollText, value: '5,000+', label: 'Wills Drafted' },
+  { icon: Users, value: '1,200+', label: 'Trusts Created' },
+  { icon: Landmark, value: '₹2,500Cr+', label: 'Assets Planned' },
 ];
 
 const products = [
@@ -60,6 +60,9 @@ export const EstatePlanningServiceContent = () => (
             <div className="flex flex-wrap gap-6 lg:gap-8">
               {stats.map((stat, i) => (
                 <div key={i} className="flex items-center gap-2.5">
+                  <div className="flex items-center justify-center w-9 h-9 rounded-full bg-primary/10">
+                    <stat.icon className="w-4 h-4 text-primary" />
+                  </div>
                   <div>
                     <p className="text-sm font-medium text-foreground leading-tight">{stat.value}</p>
                     <p className="text-xs text-muted-foreground">{stat.label}</p>
