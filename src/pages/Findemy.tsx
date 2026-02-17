@@ -48,12 +48,12 @@ const testimonials = [
 const Findemy = () => (
   <Layout>
     {/* Hero */}
-    <section className="py-16 md:py-24 bg-background">
+    <section className="section-padding bg-background">
       <div className="container-zerodha">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wide uppercase mb-4">Financial Education</span>
-            <h1 className="heading-xl mb-4">Master your finances with <span className="gradient-text">Findemy</span></h1>
+            <h1 className="heading-xl mb-4">Master your finances with <span className="text-primary font-normal">Findemy</span></h1>
             <p className="text-body text-muted-foreground mb-8 max-w-lg">
               From free awareness content to expert-led training programs — financial education that turns beginners into confident market participants.
             </p>

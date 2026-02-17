@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { PageHero } from '@/components/layout/PageHero';
-import { Lightbulb } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArticlesContent } from '@/components/insights/ArticlesContent';
 import { AnalysisContent } from '@/components/insights/AnalysisContent';
@@ -27,7 +26,7 @@ const ZConnect = () => {
         title="Stay ahead with expert"
         highlight="Insights"
         description="Articles, market analysis, research reports, and important bulletins — all in one place."
-        icon={Lightbulb}
+        
       />
 
       {/* Tab Navigation */}

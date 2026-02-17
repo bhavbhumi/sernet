@@ -44,14 +44,14 @@ const testimonials = [
 const ChoiceFinX = () => (
   <Layout>
     {/* Hero */}
-    <section className="py-16 md:py-24 bg-background">
+    <section className="section-padding bg-background">
       <div className="container-zerodha">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wide uppercase mb-4">
               Trading Platform
             </span>
-            <h1 className="heading-xl mb-4">The only app you need to <span className="gradient-text">trade & invest</span></h1>
+            <h1 className="heading-xl mb-4">The only app you need to <span className="text-primary font-normal">trade & invest</span></h1>
             <p className="text-body text-muted-foreground mb-8 max-w-lg">
               Access stocks, commodities, currency, F&O and more with lightning-fast execution, advanced charting, and zero hassle — all from one powerful app.
             </p>
