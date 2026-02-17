@@ -59,7 +59,7 @@ export const RecognitionContent = () => {
   }, [activeYear, activeCategory]);
 
   return (
-    <section className="section-padding bg-background">
+    <section className="section-padding" style={{ background: 'var(--gradient-hero)' }}>
       <div className="container-zerodha">
 
         {/* Section 1: Title + Featured Recognition Carousel */}

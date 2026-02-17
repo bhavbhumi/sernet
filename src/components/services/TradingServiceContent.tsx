@@ -24,9 +24,9 @@ const products = [
 export const TradingServiceContent = () => (
   <>
     {/* Hero — Choice FinX */}
-    <section className="section-padding bg-background">
+    <section className="section-padding" style={{ background: 'var(--gradient-hero)' }}>
       <div className="container-zerodha">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-stretch">
           {/* Left */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
