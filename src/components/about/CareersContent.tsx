@@ -210,7 +210,7 @@ export const CareersContent = () => {
 
   return (
     <>
-      {/* Appeal: Join Us */}
+      {/* Section 1: Title + Featured */}
       <section className="section-padding" style={{ background: 'var(--gradient-hero)' }}>
         <div className="container-zerodha">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch">
@@ -221,10 +221,15 @@ export const CareersContent = () => {
               transition={{ duration: 0.6 }}
               className="flex flex-col justify-center"
             >
-              <h2 className="heading-lg text-foreground mb-6">Join Us</h2>
-              <p className="text-body">
-                At SERNET, we empower people to make informed financial decisions that transform lives. If you're driven by purpose and want to help families secure their dreams — this is where you belong. Join our mission to make prosperity accessible to everyone.
+              <h2 className="text-[2rem] md:text-[2.5rem] font-light text-foreground leading-tight mb-4">
+                Careers at <span className="text-primary font-normal">SERNET</span>
+              </h2>
+              <p className="text-body leading-relaxed mb-6">
+                At SERNET, we empower people to make informed financial decisions that transform lives. If you're driven by purpose and want to help families secure their dreams — this is where you belong.
               </p>
+              <div>
+                <ResumeUploadDialog />
+              </div>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, x: 30 }}

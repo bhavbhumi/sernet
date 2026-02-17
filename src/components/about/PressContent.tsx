@@ -66,30 +66,25 @@ export const PressContent = () => {
     <section className="section-padding bg-background">
       <div className="container-zerodha">
 
-        {/* Section 1: Featured Post + Media Kit Downloads */}
+        {/* Section 1: Title + Featured Post */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch mb-16">
-          <div className="flex flex-col justify-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="flex flex-col justify-center"
+          >
             <h2 className="text-[2rem] md:text-[2.5rem] font-light text-foreground leading-tight mb-4">
               Press & <span className="text-primary font-normal">Media</span>
             </h2>
             <p className="text-body leading-relaxed mb-2">
-              Sernet India's voice in the financial world — recognised by leading publications 
+              Coverage could be on Web, Print, Radio or TV — recognised by leading publications 
               for our commitment to transparency, client empowerment, and innovation.
             </p>
 
-            {/* Featured Post */}
-            <a href={featuredPost.link} target="_blank" rel="noopener noreferrer" className="mt-4 p-4 rounded-lg border border-primary/20 bg-primary/5 hover:border-primary/40 transition-colors group block">
-              <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1.5">
-                <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[0.6875rem] font-medium">Featured</span>
-                <span>{featuredPost.date}</span>
-                <span>—</span>
-                <span>{featuredPost.source}</span>
-              </div>
-              <h3 className="text-[1.0625rem] font-medium text-foreground group-hover:text-primary transition-colors leading-snug">{featuredPost.title}</h3>
-            </a>
-
-            {/* Media Kit Downloads — compact inline */}
-            <div className="flex flex-wrap gap-3 mt-6">
+            {/* Media Kit Downloads */}
+            <div className="flex flex-wrap gap-3 mt-4 mb-6">
               <a href="#" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border text-sm text-foreground hover:border-primary hover:text-primary transition-colors">
                 <Image className="h-3.5 w-3.5" /> Logo Pack
               </a>
@@ -100,16 +95,33 @@ export const PressContent = () => {
                 <Type className="h-3.5 w-3.5" /> Typography
               </a>
             </div>
-          </div>
 
+            <div>
+              <Button onClick={() => setShowOpinionForm(true)} className="gap-2 px-8 py-3 text-base">
+                <Send className="w-4 h-4" />
+                Ask your Query
+              </Button>
+            </div>
+          </motion.div>
+
+          {/* Right: Featured Post */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="flex justify-end items-center"
+            className="flex items-center"
           >
-            <img src={pressHeroImg} alt="Press and Media" className="rounded-xl max-w-[320px] w-full shadow-md" />
+            <a href={featuredPost.link} target="_blank" rel="noopener noreferrer" className="w-full p-6 rounded-xl border border-border bg-card hover:border-primary/30 transition-colors group block">
+              <img src={pressThumb} alt="" className="w-full h-48 rounded-lg object-cover mb-4 border border-border" />
+              <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
+                <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[0.6875rem] font-medium">Featured</span>
+                <span>{featuredPost.date}</span>
+                <span>—</span>
+                <span>{featuredPost.source}</span>
+              </div>
+              <h3 className="text-[1.1875rem] md:text-[1.25rem] font-normal text-foreground group-hover:text-primary transition-colors leading-snug">{featuredPost.title}</h3>
+            </a>
           </motion.div>
         </div>
 
@@ -154,29 +166,6 @@ export const PressContent = () => {
           </motion.div>
         </AnimatePresence>
 
-        {/* Send Your Opinion */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="mt-20 text-center"
-        >
-          <h2 className="text-[2rem] md:text-[2.25rem] font-light text-foreground mb-3">
-            Send Your <span className="text-primary font-normal">Opinion</span>
-          </h2>
-          <p className="text-body max-w-xl mx-auto mb-8">
-            Are you from the press or media? We'd love to hear your perspective — share your thoughts, 
-            queries, or story ideas with our communications team.
-          </p>
-          <Button
-            onClick={() => setShowOpinionForm(true)}
-            className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-[1rem] rounded-md"
-          >
-            <Send className="h-4 w-4 mr-2" />
-            Submit Your Query
-          </Button>
-        </motion.div>
 
         {/* Opinion Form Dialog */}
         <Dialog open={showOpinionForm} onOpenChange={setShowOpinionForm}>

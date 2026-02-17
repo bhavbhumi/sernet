@@ -34,38 +34,42 @@ export const RecognitionContent = () => {
     <section className="section-padding bg-background">
       <div className="container-zerodha">
 
-        {/* Section 1: Featured Recognition */}
+        {/* Section 1: Title + Featured Recognition */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch mb-16">
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
             className="flex flex-col justify-center"
           >
-            <div className="flex items-center gap-2 mb-3">
-              <span className="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-[0.6875rem] font-medium">Featured</span>
-              <span className="text-sm text-muted-foreground">{featuredItem.month}</span>
-            </div>
             <h2 className="text-[2rem] md:text-[2.5rem] font-light text-foreground leading-tight mb-4">
-              {featuredItem.title}
+              Recognition & <span className="text-primary font-normal">Awards</span>
             </h2>
-            <p className="text-body text-muted-foreground">
-              {featuredItem.event}
-            </p>
-            <p className="text-sm text-muted-foreground mt-1">
-              From <span className="text-foreground font-medium">{featuredItem.from}</span>
+            <p className="text-body leading-relaxed">
+              Recognition could be in Trading, Investment, Insurance category and Mutual Fund, Life or Health Insurance, Company FD etc sub category — honouring our commitment to excellence across every service vertical.
             </p>
           </motion.div>
 
+          {/* Right: Featured Recognition Item */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="flex justify-end items-center"
+            className="flex items-center"
           >
-            <img src={featuredImg} alt={featuredItem.title} className="rounded-xl max-w-[280px] w-full" />
+            <div className="w-full p-6 rounded-xl border border-border bg-card">
+              <img src={featuredImg} alt={featuredItem.title} className="w-full h-48 rounded-lg object-cover mb-4" />
+              <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
+                <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[0.6875rem] font-medium">Featured</span>
+                <span>{featuredItem.month}</span>
+                <span>—</span>
+                <span>{featuredItem.event}</span>
+              </div>
+              <h3 className="text-[1.1875rem] md:text-[1.25rem] font-normal text-foreground leading-snug">{featuredItem.title}</h3>
+              <p className="text-[0.875rem] text-muted-foreground mt-1">From <span className="font-medium text-foreground">{featuredItem.from}</span></p>
+            </div>
           </motion.div>
         </div>
 
