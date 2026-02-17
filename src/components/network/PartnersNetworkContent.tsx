@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { TrendingUp, Shield, Building, Landmark, ArrowRight, Handshake } from 'lucide-react';
+import { ArrowRight, Handshake, DollarSign, ShieldCheck, Wallet, User, Briefcase, Megaphone, ArrowRightLeft } from 'lucide-react';
 import networkPartnersImg from '@/assets/network-partners.webp';
 import { AutoScrollShowcase, type ShowcaseItem } from './AutoScrollShowcase';
 
@@ -10,64 +10,70 @@ const partnerStats = [
   { value: '35+', label: 'Years of Partnerships' },
 ];
 
+const pointers = [
+  { icon: DollarSign, text: 'Competitive Revenue Sharing' },
+  { icon: ShieldCheck, text: 'Succession Proof Income Source' },
+  { icon: Wallet, text: 'Periodical Cash Flow' },
+];
+
 const partnerShowcaseItems: ShowcaseItem[] = [
   {
-    icon: TrendingUp,
-    title: 'Stock Exchanges & Depositories',
-    subtitle: 'NSE · BSE · MCX · NSDL · CDSL',
+    icon: User,
+    title: 'Freelancers',
+    subtitle: 'Accountants · Tax Consultants · Bookkeepers',
     detail: {
-      heading: 'Exchange & Depository Partners',
-      description: 'Registered with all major exchanges and depositories for seamless trade execution, settlement, and custody services.',
+      heading: 'Freelance Financial Professionals',
+      description: 'Independent accountants and tax professionals who already advise clients on financial matters — extend your value by offering investment and trading solutions alongside your existing services.',
       points: [
-        'Direct market access across equity, commodity, and currency segments',
-        'Real-time settlement via NSDL and CDSL depository accounts',
-        'Regulatory compliance and investor grievance redressal',
-        'Multi-exchange order routing for best execution',
+        'Monetise your existing client relationships with zero capital investment',
+        'Offer your clients a one-stop financial ecosystem beyond accounting',
+        'Earn recurring revenue on every client who trades or invests',
+        'Dedicated partner support and co-branded marketing collateral',
       ],
     },
   },
   {
-    icon: Building,
-    title: 'Mutual Fund Houses',
-    subtitle: 'HDFC MF · SBI MF · ICICI Pru · Axis MF',
+    icon: Briefcase,
+    title: 'Fiduciary Professionals',
+    subtitle: 'CA · CS · CMA',
     detail: {
-      heading: 'AMC Partnerships',
-      description: 'Empanelled with leading Asset Management Companies to distribute direct and regular mutual fund schemes across categories.',
+      heading: 'Chartered & Company Professionals',
+      description: 'Chartered Accountants, Company Secretaries, and Cost & Management Accountants hold deep trust with their clients — partner with SERNET to convert that trust into a sustainable revenue stream.',
       points: [
-        'Access to 5000+ schemes across equity, debt, and hybrid categories',
-        'SIP, STP, and SWP facilitation with auto-debit setup',
-        'Consolidated portfolio tracking and NAV-based reporting',
-        'NFO participation and switch advisory',
+        'Leverage your professional credibility to onboard high-value investors',
+        'Access exclusive revenue-sharing models designed for licensed professionals',
+        'Provide holistic financial advisory — compliance, tax, and investments under one roof',
+        'Priority onboarding and dedicated relationship manager for your referred clients',
       ],
     },
   },
   {
-    icon: Shield,
-    title: 'Insurance Companies',
-    subtitle: 'LIC · HDFC Life · ICICI Pru · Max Life',
+    icon: Megaphone,
+    title: 'Finfluencers',
+    subtitle: 'Social Media Influencers · Content Creators',
     detail: {
-      heading: 'Insurance Partners',
-      description: 'Partnered with top insurance providers to offer comprehensive life, health, and general insurance solutions.',
+      heading: 'Financial Content Creators',
+      description: 'If you educate audiences about money, markets, or personal finance on social media — turn your influence into income by partnering with a trusted, SEBI-registered financial services firm.',
       points: [
-        'Term life, whole life, and endowment plans',
-        'Health and critical illness coverage with cashless networks',
-        'Claims support and policy management services',
-        'Group insurance solutions for corporate clients',
+        'Earn attractive commissions for every follower who opens an account',
+        'Co-create branded educational content with our research team',
+        'Access real-time market data and insights to power your content',
+        'Transparent tracking dashboard to monitor referrals and earnings',
       ],
     },
   },
   {
-    icon: Landmark,
-    title: 'Technology Partners',
-    subtitle: 'Kite · Streak · Sensibull · Smallcase',
+    icon: ArrowRightLeft,
+    title: 'Cross Professionals',
+    subtitle: 'Insurance Agents · Small Financial Product Distributors',
     detail: {
-      heading: 'Fintech Integrations',
-      description: 'Integrated with best-in-class fintech platforms for superior trading, analytics, and thematic investment experiences.',
+      heading: 'Adjacent Financial Professionals',
+      description: 'Insurance agents and small-scale distributors already operate within the financial ecosystem — expand your product suite and earn more from the same client base without additional licensing overhead.',
       points: [
-        'Advanced charting and algorithmic trading via Streak',
-        'Options strategy builder with Sensibull integration',
-        'Thematic and model portfolio investing through Smallcase',
-        'API-driven connectivity for custom trading solutions',
+        'Cross-sell equity, mutual funds, and bonds alongside your existing insurance book',
+        'No conflict — complementary products that enhance your client\u2019s portfolio',
+        'Seamless digital onboarding for your referred clients in under 10 minutes',
+        'Succession-proof income that continues even if you step back from active selling',
       ],
     },
   },
@@ -90,15 +96,35 @@ export const PartnersNetworkContent = () => (
             <h2 className="heading-lg text-foreground mb-3">
               Strength in <span className="text-primary">partnerships</span>
             </h2>
-            <p className="text-body max-w-lg mb-8">
-              We collaborate with leading financial institutions and technology providers to deliver comprehensive, best-in-class solutions to our clients.
+            <p className="text-body max-w-lg mb-6">
+              Join a partner ecosystem built on trust, transparency, and long-term wealth creation — designed for professionals who want to earn while they serve.
             </p>
+
+            {/* Pointers */}
+            <div className="space-y-3 mb-8">
+              {pointers.map((p, i) => (
+                <motion.div
+                  key={p.text}
+                  initial={{ opacity: 0, x: -12 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.35, delay: 0.15 + i * 0.08 }}
+                  className="flex items-center gap-3"
+                >
+                  <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10">
+                    <p.icon className="w-4 h-4 text-primary" />
+                  </span>
+                  <span className="text-sm text-foreground font-medium">{p.text}</span>
+                </motion.div>
+              ))}
+            </div>
+
             <div className="flex flex-wrap gap-4 mb-10">
               <Link to="/referral/partner" className="btn-primary inline-flex items-center">
                 Become a Partner <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
-              <Link to="/schedule-call" className="btn-secondary inline-flex items-center">
-                Schedule a Call
+              <Link to="/referral/partner" className="btn-secondary inline-flex items-center">
+                Refer a Partner
               </Link>
             </div>
             {/* 3 Stats */}
@@ -139,8 +165,8 @@ export const PartnersNetworkContent = () => (
 
     {/* Section 2 — Auto-Scroll Showcase */}
     <AutoScrollShowcase
-      sectionTitle="Our partner ecosystem"
-      sectionSubtitle="We collaborate with leading financial institutions and technology providers to deliver comprehensive solutions."
+      sectionTitle="Suitable Partner Ecosystem"
+      sectionSubtitle="From independent professionals to digital creators — discover where you fit in our growing partner network and start earning today."
       items={partnerShowcaseItems}
     />
 
