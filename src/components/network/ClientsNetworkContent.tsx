@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Users, Building2, Globe, ArrowRight, Gift, UserCheck } from 'lucide-react';
+import { Users, Building2, Globe, ArrowRight, Gift, UserCheck, Check } from 'lucide-react';
 import networkClientsImg from '@/assets/network-clients.webp';
 import { AutoScrollShowcase, type ShowcaseItem } from './AutoScrollShowcase';
 
@@ -90,9 +90,17 @@ export const ClientsNetworkContent = () => (
             <h2 className="heading-lg text-foreground mb-3">
               Empowering <span className="text-primary">every investor</span>
             </h2>
-            <p className="text-body max-w-lg mb-8">
+            <p className="text-body max-w-lg mb-6">
               From first-time investors to seasoned HNIs — personalised strategies for wealth creation, preservation, and growth across every life stage.
             </p>
+            <ul className="space-y-2 mb-8">
+              {['Personalised Wealth Strategies', 'Multi-Asset Portfolio Access', 'Dedicated Relationship Manager'].map((hook) => (
+                <li key={hook} className="flex items-center gap-2 text-sm text-foreground">
+                  <Check className="w-4 h-4 text-primary shrink-0" />
+                  {hook}
+                </li>
+              ))}
+            </ul>
             <div className="flex flex-wrap gap-4 mb-10">
               <Link to="/open-account" className="btn-primary inline-flex items-center">
                 Open an Account <ArrowRight className="ml-2 h-4 w-4" />
@@ -112,8 +120,8 @@ export const ClientsNetworkContent = () => (
                   transition={{ duration: 0.4, delay: i * 0.1 }}
                   className="text-center"
                 >
-                  <p className="text-[1.75rem] md:text-[2rem] font-light text-foreground leading-tight">{stat.value}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">{stat.label}</p>
+                  <p className="text-[2rem] md:text-[2.5rem] font-light text-foreground leading-tight tracking-tight">{stat.value}</p>
+                  <p className="text-sm text-muted-foreground mt-1">{stat.label}</p>
                 </motion.div>
               ))}
             </div>

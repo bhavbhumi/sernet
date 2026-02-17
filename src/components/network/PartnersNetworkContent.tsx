@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Handshake, DollarSign, ShieldCheck, Wallet, User, Briefcase, Megaphone, ArrowRightLeft } from 'lucide-react';
+import { ArrowRight, Handshake, Check, User, Briefcase, Megaphone, ArrowRightLeft } from 'lucide-react';
 import networkPartnersImg from '@/assets/network-partners.webp';
 import { AutoScrollShowcase, type ShowcaseItem } from './AutoScrollShowcase';
 
@@ -11,9 +11,9 @@ const partnerStats = [
 ];
 
 const pointers = [
-  { icon: DollarSign, text: 'Competitive Revenue Sharing' },
-  { icon: ShieldCheck, text: 'Succession Proof Income Source' },
-  { icon: Wallet, text: 'Periodical Cash Flow' },
+  'Competitive Revenue Sharing',
+  'Succession Proof Income Source',
+  'Periodical Cash Flow',
 ];
 
 const partnerShowcaseItems: ShowcaseItem[] = [
@@ -101,23 +101,14 @@ export const PartnersNetworkContent = () => (
             </p>
 
             {/* Pointers */}
-            <div className="space-y-3 mb-8">
-              {pointers.map((p, i) => (
-                <motion.div
-                  key={p.text}
-                  initial={{ opacity: 0, x: -12 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.35, delay: 0.15 + i * 0.08 }}
-                  className="flex items-center gap-3"
-                >
-                  <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10">
-                    <p.icon className="w-4 h-4 text-primary" />
-                  </span>
-                  <span className="text-sm text-foreground font-medium">{p.text}</span>
-                </motion.div>
+            <ul className="space-y-2 mb-8">
+              {pointers.map((hook) => (
+                <li key={hook} className="flex items-center gap-2 text-sm text-foreground">
+                  <Check className="w-4 h-4 text-primary shrink-0" />
+                  {hook}
+                </li>
               ))}
-            </div>
+            </ul>
 
             <div className="flex flex-wrap gap-4 mb-10">
               <Link to="/referral/partner" className="btn-primary inline-flex items-center">
@@ -138,8 +129,8 @@ export const PartnersNetworkContent = () => (
                   transition={{ duration: 0.4, delay: i * 0.1 }}
                   className="text-center"
                 >
-                  <p className="text-[1.75rem] md:text-[2rem] font-light text-foreground leading-tight">{stat.value}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">{stat.label}</p>
+                  <p className="text-[2rem] md:text-[2.5rem] font-light text-foreground leading-tight tracking-tight">{stat.value}</p>
+                  <p className="text-sm text-muted-foreground mt-1">{stat.label}</p>
                 </motion.div>
               ))}
             </div>

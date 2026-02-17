@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Shield, TrendingUp, Landmark, Award, ArrowRight, Banknote, Heart, FileText, Coins, ScrollText, CreditCard, Scale } from 'lucide-react';
+import { Shield, TrendingUp, Landmark, Award, ArrowRight, Banknote, Heart, Coins, ScrollText, CreditCard, Scale, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import networkPrincipalsImg from '@/assets/network-principals.webp';
 import { AutoScrollShowcase, type ShowcaseItem } from './AutoScrollShowcase';
@@ -174,9 +174,17 @@ export const PrincipalsNetworkContent = () => (
             <h2 className="heading-lg text-foreground mb-3">
               Backed by <span className="text-primary">strong principals</span>
             </h2>
-            <p className="text-body max-w-lg mb-8">
-              We operate under the authority of India's leading financial institutions, exchanges, and regulatory bodies — ensuring trust, compliance, and investor protection.
+            <p className="text-body max-w-lg mb-6">
+              We operate under the authority of India&#39;s leading financial institutions, exchanges, and regulatory bodies — ensuring trust, compliance, and investor protection.
             </p>
+            <ul className="space-y-2 mb-8">
+              {['SEBI & IRDAI Regulated Partners', 'Multi-Product Financial Ecosystem', 'Full Compliance & Investor Protection'].map((hook) => (
+                <li key={hook} className="flex items-center gap-2 text-sm text-foreground">
+                  <Check className="w-4 h-4 text-primary shrink-0" />
+                  {hook}
+                </li>
+              ))}
+            </ul>
             <div className="flex flex-wrap gap-4 mb-10">
               <Link to="/schedule-call" className="btn-primary inline-flex items-center">
                 Schedule a Call <ArrowRight className="ml-2 h-4 w-4" />
@@ -196,8 +204,8 @@ export const PrincipalsNetworkContent = () => (
                   transition={{ duration: 0.4, delay: i * 0.1 }}
                   className="text-center"
                 >
-                  <p className="text-[1.75rem] md:text-[2rem] font-light text-foreground leading-tight">{stat.value}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">{stat.label}</p>
+                  <p className="text-[2rem] md:text-[2.5rem] font-light text-foreground leading-tight tracking-tight">{stat.value}</p>
+                  <p className="text-sm text-muted-foreground mt-1">{stat.label}</p>
                 </motion.div>
               ))}
             </div>
