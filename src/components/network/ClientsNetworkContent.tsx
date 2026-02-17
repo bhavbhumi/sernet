@@ -77,7 +77,7 @@ const clientShowcaseItems: ShowcaseItem[] = [
 export const ClientsNetworkContent = () => (
   <>
     {/* Section 1 — Hero Split */}
-    <section className="section-padding bg-background" style={{ background: 'var(--gradient-hero)' }}>
+    <section className="section-padding bg-background">
       <div className="container-zerodha">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-stretch">
           {/* Left */}

@@ -204,7 +204,7 @@ export const Footer = () => {
             <span className="font-semibold text-foreground">Compliance Officer:</span> Mr Gaurav V Shah | <a href="mailto:compliance@sernetindia.com" className="text-primary hover:underline">compliance@sernetindia.com</a>. For any complaints, please write to <a href="mailto:complaint@sernetindia.com" className="text-primary hover:underline">complaint@sernetindia.com</a>. Please ensure you carefully read the <Link to="/disclosure" className="text-primary hover:underline">Mandatory Documents</Link> as prescribed by SEBI.
           </p>
           <p className="text-[12px] text-muted-foreground leading-relaxed">
-            Financial Products and Services are provided by SERNET, it's Group Companies and third party service partners as mentioned <Link to="/partners" className="text-primary hover:underline">here</Link>.
+            Financial Products and Services are provided by SERNET, it's Group Companies and third party service partners as mentioned <Link to="/network" className="text-primary hover:underline">here</Link>.
           </p>
           <p className="text-[12px] text-muted-foreground leading-relaxed">
             We do not guarantee returns on any financial products or services what so ever. The tax treatment of these financial products is subject to individual circumstances and may change in the future.

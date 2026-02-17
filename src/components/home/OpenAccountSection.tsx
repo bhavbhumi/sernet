@@ -45,7 +45,7 @@ const Confetti = ({ className, delay = 0 }: { className?: string; delay?: number
 
 export const OpenAccountSection = () => {
   return (
-    <section className="section-padding relative overflow-hidden" style={{ background: 'var(--gradient-cta)' }}>
+    <section className="section-padding relative overflow-hidden bg-section-alt">
       {/* Floating celebration elements */}
       <FloatingShape className="absolute top-8 left-[10%] text-primary/30" delay={0} duration={3.5}>
         <Sparkles className="w-6 h-6" />

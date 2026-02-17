@@ -48,7 +48,7 @@ const testimonials = [
 const Findemy = () => (
   <Layout>
     {/* Hero */}
-    <section className="py-16 md:py-24" style={{ background: 'var(--gradient-hero)' }}>
+    <section className="py-16 md:py-24 bg-background">
       <div className="container-zerodha">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
@@ -225,7 +225,7 @@ const Findemy = () => (
     </section>
 
     {/* Final CTA */}
-    <section className="py-16 md:py-20" style={{ background: 'var(--gradient-cta)' }}>
+    <section className="py-16 md:py-20 bg-section-alt">
       <div className="container-zerodha text-center">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-4">Your financial education starts here</motion.h2>
         <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-muted-foreground mb-8 max-w-xl mx-auto">Join 10,000+ learners who are mastering their finances with Findemy.</motion.p>
