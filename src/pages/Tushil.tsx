@@ -42,12 +42,12 @@ const testimonials = [
 const Tushil = () => (
   <Layout>
     {/* Hero */}
-    <section className="py-16 md:py-24 bg-background">
+    <section className="section-padding bg-background">
       <div className="container-zerodha">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wide uppercase mb-4">Insurance Distribution</span>
-            <h1 className="heading-xl mb-4">Insurance with <span className="gradient-text">claims support</span> that matters</h1>
+            <h1 className="heading-xl mb-4">Insurance with <span className="text-primary font-normal">claims support</span> that matters</h1>
             <p className="text-body text-muted-foreground mb-8 max-w-lg">
               We work with 30+ leading insurers to bring you the best policies — backed by dedicated claims support that makes all the difference when you need it most.
             </p>

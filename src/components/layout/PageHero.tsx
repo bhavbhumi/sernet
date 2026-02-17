@@ -7,11 +7,6 @@ interface PageHeroProps {
   title: string;
   highlight?: string;
   description: string;
-  icon?: any;
-  ctaText?: string;
-  ctaLink?: string;
-  customImage?: string;
-  customImageAlt?: string;
   breadcrumbLabel?: string;
 }
 

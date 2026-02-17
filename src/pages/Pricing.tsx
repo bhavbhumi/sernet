@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { PageHero } from '@/components/layout/PageHero';
-import { IndianRupee, Check } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
@@ -189,7 +189,7 @@ const Pricing = () => {
         title="Simple, transparent"
         highlight="pricing"
         description="We pioneered the concept of discount broking and price transparency in India. No hidden charges, ever."
-        icon={IndianRupee}
+        
       />
 
       {/* Tab Navigation */}

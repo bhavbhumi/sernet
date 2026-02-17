@@ -213,10 +213,7 @@
     @apply text-sm text-muted-foreground;
   }
 
-  /* Gradient text */
-  .gradient-text {
-    @apply bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent;
-  }
+  /* Removed gradient-text — using flat text-primary instead */
 }
 
 @layer utilities {
