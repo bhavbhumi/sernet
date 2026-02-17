@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Building2, Shield, TrendingUp, Landmark, Award, ArrowRight, Banknote, Heart } from 'lucide-react';
+import { Shield, TrendingUp, Landmark, Award, ArrowRight, Banknote, Heart, FileText, Coins, ScrollText, CreditCard, Scale } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import networkPrincipalsImg from '@/assets/network-principals.webp';
 import { AutoScrollShowcase, type ShowcaseItem } from './AutoScrollShowcase';
@@ -13,76 +13,145 @@ const principalStats = [
 const principalShowcaseItems: ShowcaseItem[] = [
   {
     icon: TrendingUp,
-    title: 'Broker',
-    subtitle: 'Choice Equity Broking Pvt. Ltd.',
+    title: 'Stock Broker & Depositories',
+    subtitle: 'IPOs · Stocks · F&O · Commodities · Currencies · ETFs',
     detail: {
-      heading: 'Stock Broking',
-      description: 'Registered sub-broker under Choice Equity Broking for equities, derivatives, and commodity trading across NSE, BSE, and MCX.',
+      heading: 'Choice Equity Broking Pvt. Ltd.',
+      description: 'SERNET is a registered sub-broker under Choice Equity Broking Pvt. Ltd., a SEBI-registered full-service stockbroking firm offering trading and depository services across NSE, BSE, MCX, and NCDEX.',
       points: [
-        'Equity delivery, intraday, and F&O trading',
-        'Commodity and currency derivative access',
-        'Real-time market data and research reports',
-        'Dedicated dealing desk for HNI clients',
+        'SEBI Registration No: INZ000160131 (Stock Broking)',
+        'CDSL Depository Participant — IN-DP-529-2021',
+        'Full-service broking: Equity delivery, Intraday, F&O, Commodity & Currency derivatives',
+        'IPO applications, ETF investments, and portfolio tracking',
+        'Disclaimer: Investments in securities market are subject to market risks. Read all related documents carefully before investing. Registration granted by SEBI and certification from NISM in no way guarantee performance or provide any assurance of returns.',
       ],
     },
   },
   {
     icon: Landmark,
-    title: 'Funds',
-    subtitle: 'Mutual Funds · SIFs · PMS & AIFs',
+    title: 'Fund Houses',
+    subtitle: 'Mutual Funds · SIFs · PMS · AIFs',
     detail: {
-      heading: 'Investment Funds',
-      description: 'Empanelled with leading AMCs and fund managers for distributing mutual funds, specialized investment funds, and alternative investments.',
+      heading: 'Regular Fund Distribution Services',
+      description: 'SERNET is an AMFI-registered Mutual Fund Distributor (MFD) empanelled with leading Asset Management Companies for the regular distribution of mutual funds, Specialized Investment Funds (SIFs), PMS, and AIFs.',
       points: [
-        'Access to 5000+ mutual fund schemes (Direct & Regular)',
-        'SIF allocations for sophisticated investors',
-        'PMS and AIF curated selection for HNI/UHNI',
-        'Consolidated portfolio tracking and reporting',
-      ],
-    },
-  },
-  {
-    icon: Banknote,
-    title: 'Company FD',
-    subtitle: 'NBFC Companies',
-    detail: {
-      heading: 'Corporate Fixed Deposits',
-      description: 'Distribute high-yield corporate FDs from trusted NBFCs for clients seeking stable, predictable returns.',
-      points: [
-        'Curated NBFC FDs with competitive interest rates',
-        'Credit rating-based risk assessment',
-        'Flexible tenure options from 1 to 5 years',
-        'Auto-renewal and interest payout management',
-      ],
-    },
-  },
-  {
-    icon: Award,
-    title: 'Bonds',
-    subtitle: 'Northern Arc Capital',
-    detail: {
-      heading: 'Bond Investments',
-      description: 'Partnered with Northern Arc Capital to offer secured and unsecured bond opportunities across credit profiles.',
-      points: [
-        'Investment-grade and high-yield bond options',
-        'Monthly and quarterly interest payout bonds',
-        'Tax-efficient bond structuring',
-        'Secondary market bond liquidity support',
+        'AMFI ARN No: ARN-274029 | Valid till: 22-Feb-2028',
+        'APMI Membership for PMS distribution services',
+        'Access to 5,000+ mutual fund schemes across 40+ AMCs (Regular Plans)',
+        'SIF, PMS & AIF curated selection for HNI/UHNI investors',
+        'Disclaimer: Mutual fund investments are subject to market risks. Read all scheme-related documents carefully. Past performance is not indicative of future returns. SERNET acts as a distributor and does not provide investment advisory services.',
       ],
     },
   },
   {
     icon: Heart,
-    title: 'Insurance',
-    subtitle: 'Srigoda Insurance',
+    title: 'Insurance Companies',
+    subtitle: 'Life · Health · Motor · Travel · Employee Benefits',
     detail: {
-      heading: 'Insurance Solutions',
-      description: 'Comprehensive life, health, and general insurance distribution through our partnership with Srigoda Insurance.',
+      heading: 'Srigoda Insurance Broking Services',
+      description: 'Insurance products are distributed through Srigoda Insurance Broking Services, an IRDAI-licensed composite insurance broker offering life, health, general, and employee benefit solutions from leading insurers.',
       points: [
-        'Term life and whole life insurance plans',
-        'Health and critical illness coverage',
-        'Unit-linked insurance plans (ULIPs)',
-        'Claims support and policy servicing',
+        'IRDAI Registration No: IRDA/DB/XXX/XX (Composite Broker)',
+        'Insurance4life.in — Digital insurance platform by Srigoda',
+        'Life, health, motor, travel, and critical illness coverage',
+        'Group health and employee benefit schemes for corporates',
+        'Disclaimer: Insurance is the subject matter of solicitation. IRDAI is not involved in activities like selling, endorsing or soliciting insurance. For more details on risk factors, please read the sales brochure carefully before concluding a sale.',
+      ],
+    },
+  },
+  {
+    icon: Banknote,
+    title: 'FD Issuers',
+    subtitle: 'NBFC Company Fixed Deposits',
+    detail: {
+      heading: 'Corporate Fixed Deposit Distribution',
+      description: 'SERNET distributes high-yield corporate fixed deposits from trusted NBFC companies, offering stable and predictable returns for conservative investors seeking alternatives to traditional bank FDs.',
+      points: [
+        'Curated NBFC FDs with competitive interest rates and CRISIL/ICRA ratings',
+        'Flexible tenure options from 12 months to 60 months',
+        'Cumulative and non-cumulative interest payout options',
+        'Senior citizen additional interest rate benefits available',
+        'Disclaimer: Corporate FDs are not insured by DICGC. Returns are subject to the creditworthiness of the issuing NBFC. Investors are advised to check the credit rating and financial health of the company before investing. RBI does not guarantee returns on NBFC deposits.',
+      ],
+    },
+  },
+  {
+    icon: Award,
+    title: 'OBPP Bond Broker',
+    subtitle: 'GILT · SDL · Corporate Bonds',
+    detail: {
+      heading: 'Northern Arc Capital Ltd.',
+      description: 'SERNET partners with Northern Arc Capital, a SEBI-registered Online Bond Platform Provider (OBPP), to offer listed retail debt securities including Government Securities (G-Sec), State Development Loans (SDLs), and corporate bonds.',
+      points: [
+        'SEBI-registered OBPP — Northern Arc Capital Ltd.',
+        'Listed GILT securities, SDL bonds, and investment-grade corporate bonds',
+        'Secondary market trading and liquidity for retail debt investors',
+        'Tax-efficient bond structuring with monthly/quarterly payout options',
+        'Disclaimer: Investments in debt securities are subject to credit risk, interest rate risk, and liquidity risk. Past performance is not indicative of future returns. Please read the offer document and risk disclosure carefully before investing in bonds.',
+      ],
+    },
+  },
+  {
+    icon: Coins,
+    title: 'Bullion Providers & Custodians',
+    subtitle: 'Phygital Gold & Silver',
+    detail: {
+      heading: 'Augmont Gold Ltd.',
+      description: 'SERNET enables digital and physical gold and silver investments through Augmont Gold, one of India\'s leading bullion dealers, refiners, and custodians with LBMA and BIS certifications.',
+      points: [
+        'Augmont Gold Ltd. — LBMA-certified refiner and custodian',
+        'Buy, sell, and store 24K 999.9 purity gold and silver digitally',
+        'Convert digital holdings to physical coins, bars, and jewellery',
+        'Vault storage with full insurance and real-time pricing',
+        'Disclaimer: Digital gold is not regulated by SEBI or RBI. The value of gold and silver is subject to market fluctuations. Investors should carefully evaluate the risks before making any purchase.',
+      ],
+    },
+  },
+  {
+    icon: ScrollText,
+    title: 'Estate Planners',
+    subtitle: 'Will Writing · Family Trust Setup',
+    detail: {
+      heading: 'WillGenie',
+      description: 'SERNET partners with WillGenie to offer professional estate planning services including legally valid will drafting, family trust creation, and succession planning for individuals and families.',
+      points: [
+        'Legally valid will writing compliant with Indian Succession Act',
+        'Family trust setup and structuring for wealth preservation',
+        'Nomination and beneficiary management advisory',
+        'Executor appointment and estate administration guidance',
+        'Advisory Note: Writing a will is a personal legal document. It is advisable to consult a qualified legal professional before finalizing. Trust structures should be evaluated for tax implications and family requirements.',
+      ],
+    },
+  },
+  {
+    icon: CreditCard,
+    title: 'Loan Aggregators',
+    subtitle: 'LAMF · Loan Against Securities',
+    detail: {
+      heading: '50Fin',
+      description: 'Through our partnership with 50Fin, SERNET facilitates Loan Against Mutual Funds (LAMF) and Loan Against Securities (LAS), enabling investors to unlock liquidity without liquidating their portfolio.',
+      points: [
+        '50Fin — RBI-regulated lending partner aggregator',
+        'Loan Against Mutual Funds (LAMF) at competitive interest rates',
+        'Loan Against Securities (LAS) including equities and bonds',
+        'Quick digital processing with minimal documentation',
+        'Disclaimer: Loans are subject to the terms and conditions of the lending partners. Borrowers should carefully assess their repayment capacity. Default on loan payments may result in liquidation of pledged securities. SERNET acts only as a referral partner.',
+      ],
+    },
+  },
+  {
+    icon: Scale,
+    title: 'Credit Counsellors',
+    subtitle: 'Credit Repair for Individuals & Corporates',
+    detail: {
+      heading: 'Athena Credexpert',
+      description: 'SERNET has partnered with Athena Credexpert to offer professional credit counselling and credit repair services for individuals and corporate entities looking to improve their credit health and financial standing.',
+      points: [
+        'Athena Credexpert — Certified credit counselling service',
+        'CIBIL, Experian, CRIF, and Equifax score improvement programs',
+        'Dispute resolution for incorrect entries and defaults',
+        'Corporate credit health assessments and improvement strategies',
+        'Disclaimer: Credit counselling is an advisory service and does not guarantee specific credit score improvements. Results vary based on individual credit history and circumstances. SERNET acts solely as a referral partner and is not responsible for outcomes.',
       ],
     },
   },
