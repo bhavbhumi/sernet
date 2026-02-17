@@ -34,9 +34,6 @@ import ZConnect from "./pages/ZConnect";
 import DownloadsPage from "./pages/DownloadsPage";
 import Calculators from "./pages/Calculators";
 import Calendars from "./pages/Calendars";
-import Referral from "./pages/Referral";
-import ClientReferral from "./pages/ClientReferral";
-import PartnerReferral from "./pages/PartnerReferral";
 import Services from "./pages/Services";
 import Network from "./pages/Network";
 import Careers from "./pages/Careers";
@@ -117,9 +114,6 @@ const App = () => (
           <Route path="/calendars" element={<Calendars />} />
           
           {/* Company pages */}
-          <Route path="/referral" element={<Referral />} />
-          <Route path="/referral/client" element={<ClientReferral />} />
-          <Route path="/referral/partner" element={<PartnerReferral />} />
           <Route path="/services" element={<Services />} />
           <Route path="/network" element={<Network />} />
           <Route path="/careers" element={<Careers />} />
