@@ -10,7 +10,7 @@ const navLinks = [
   { name: 'Services', href: '/services' },
   { name: 'Network', href: '/network' },
   { name: 'Insights', href: '/z-connect' },
-  { name: 'Contact', href: '/support' },
+  { name: 'Contact', href: '/contact' },
 ];
 
 const languages = ['English', 'Hindi', 'Marathi', 'Gujarati', 'Punjabi'];
