@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { TrendingUp, Shield, Building, Landmark, ArrowRight, Handshake } from 'lucide-react';
 import networkPartnersImg from '@/assets/network-partners.webp';
+import { AutoScrollShowcase, type ShowcaseItem } from './AutoScrollShowcase';
 
 const partnerStats = [
   { value: '50+', label: 'Partner Institutions' },
@@ -9,34 +10,66 @@ const partnerStats = [
   { value: '35+', label: 'Years of Partnerships' },
 ];
 
-const partnerTypes = [
+const partnerShowcaseItems: ShowcaseItem[] = [
   {
     icon: TrendingUp,
     title: 'Stock Exchanges & Depositories',
-    partners: ['NSE', 'BSE', 'MCX', 'NSDL', 'CDSL'],
-    description: 'Registered with all major exchanges and depositories for seamless trade execution and settlement.',
-    value: 'Direct market access, real-time settlement, and regulatory compliance.',
+    subtitle: 'NSE · BSE · MCX · NSDL · CDSL',
+    detail: {
+      heading: 'Exchange & Depository Partners',
+      description: 'Registered with all major exchanges and depositories for seamless trade execution, settlement, and custody services.',
+      points: [
+        'Direct market access across equity, commodity, and currency segments',
+        'Real-time settlement via NSDL and CDSL depository accounts',
+        'Regulatory compliance and investor grievance redressal',
+        'Multi-exchange order routing for best execution',
+      ],
+    },
   },
   {
     icon: Building,
     title: 'Mutual Fund Houses',
-    partners: ['HDFC MF', 'SBI MF', 'ICICI Prudential', 'Axis MF', 'Kotak MF', 'Nippon India'],
-    description: 'Empanelled with leading AMCs to distribute direct and regular mutual fund schemes.',
-    value: 'Access to 5000+ schemes, SIP facilities, and consolidated portfolio tracking.',
+    subtitle: 'HDFC MF · SBI MF · ICICI Pru · Axis MF',
+    detail: {
+      heading: 'AMC Partnerships',
+      description: 'Empanelled with leading Asset Management Companies to distribute direct and regular mutual fund schemes across categories.',
+      points: [
+        'Access to 5000+ schemes across equity, debt, and hybrid categories',
+        'SIP, STP, and SWP facilitation with auto-debit setup',
+        'Consolidated portfolio tracking and NAV-based reporting',
+        'NFO participation and switch advisory',
+      ],
+    },
   },
   {
     icon: Shield,
     title: 'Insurance Companies',
-    partners: ['LIC', 'HDFC Life', 'ICICI Prudential', 'Max Life', 'Bajaj Allianz'],
-    description: 'Partnered with top insurers to offer life, health, and general insurance solutions.',
-    value: 'Best-in-class products, claims support, and policy management.',
+    subtitle: 'LIC · HDFC Life · ICICI Pru · Max Life',
+    detail: {
+      heading: 'Insurance Partners',
+      description: 'Partnered with top insurance providers to offer comprehensive life, health, and general insurance solutions.',
+      points: [
+        'Term life, whole life, and endowment plans',
+        'Health and critical illness coverage with cashless networks',
+        'Claims support and policy management services',
+        'Group insurance solutions for corporate clients',
+      ],
+    },
   },
   {
     icon: Landmark,
     title: 'Technology Partners',
-    partners: ['Kite', 'Streak', 'Sensibull', 'Smallcase'],
-    description: 'Integrated with best-in-class fintech platforms for superior trading and investment experiences.',
-    value: 'Advanced analytics, algo trading, options strategies, and thematic investing.',
+    subtitle: 'Kite · Streak · Sensibull · Smallcase',
+    detail: {
+      heading: 'Fintech Integrations',
+      description: 'Integrated with best-in-class fintech platforms for superior trading, analytics, and thematic investment experiences.',
+      points: [
+        'Advanced charting and algorithmic trading via Streak',
+        'Options strategy builder with Sensibull integration',
+        'Thematic and model portfolio investing through Smallcase',
+        'API-driven connectivity for custom trading solutions',
+      ],
+    },
   },
 ];
 
@@ -104,38 +137,12 @@ export const PartnersNetworkContent = () => (
       </div>
     </section>
 
-    {/* Section 2 — Partner Ecosystem */}
-    <section className="section-padding bg-background">
-      <div className="container-zerodha">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">
-          Our partner ecosystem
-        </motion.h2>
-        <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-center mb-12 max-w-2xl mx-auto">
-          We collaborate with leading financial institutions and technology providers to deliver comprehensive solutions.
-        </motion.p>
-        <div className="space-y-8">
-          {partnerTypes.map((type, index) => (
-            <motion.div key={type.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: index * 0.08 }} className="feature-card">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <type.icon className="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <h3 className="heading-md text-foreground">{type.title}</h3>
-                  <p className="text-small">{type.description}</p>
-                </div>
-              </div>
-              <div className="flex flex-wrap gap-2 mb-3">
-                {type.partners.map((partner) => (
-                  <span key={partner} className="px-3 py-1 bg-muted/50 text-sm text-muted-foreground rounded-full">{partner}</span>
-                ))}
-              </div>
-              <p className="text-small italic border-l-2 border-primary/30 pl-3">{type.value}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
+    {/* Section 2 — Auto-Scroll Showcase */}
+    <AutoScrollShowcase
+      sectionTitle="Our partner ecosystem"
+      sectionSubtitle="We collaborate with leading financial institutions and technology providers to deliver comprehensive solutions."
+      items={partnerShowcaseItems}
+    />
 
     {/* Partner Referral CTA */}
     <section className="section-padding bg-section-alt">
