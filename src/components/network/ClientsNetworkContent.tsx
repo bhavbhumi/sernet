@@ -114,59 +114,77 @@ export const ClientsNetworkContent = () => (
           Tailored financial solutions for every type of investor across segments.
         </motion.p>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
-          {/* Left — Categories List */}
-          <div className="space-y-6">
-            {clientCategories.map((cat, index) => (
-              <motion.div
-                key={cat.title}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.08 }}
-                className="feature-card"
-              >
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <cat.icon className="w-5 h-5 text-primary" />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+          {/* Left — Categories List (stacked cards) */}
+          <div className="space-y-4">
+            {clientCategories.map((cat, index) => {
+              const bgColors = [
+                'bg-primary/8 border-primary/15',
+                'bg-accent/60 border-accent/30',
+                'bg-secondary/50 border-secondary/30',
+                'bg-muted/60 border-muted-foreground/10',
+              ];
+              return (
+                <motion.div
+                  key={cat.title}
+                  initial={{ opacity: 0, x: -16 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: index * 0.08 }}
+                  className={`rounded-xl p-5 border ${bgColors[index % bgColors.length]} transition-shadow hover:shadow-md`}
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="w-11 h-11 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <cat.icon className="w-5 h-5 text-primary" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-base font-semibold text-foreground mb-1">{cat.title}</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        {cat.items.join(' · ')}
+                      </p>
+                    </div>
                   </div>
-                  <h3 className="heading-md text-foreground">{cat.title}</h3>
-                </div>
-                <div className="flex flex-wrap gap-2 pl-[52px]">
-                  {cat.items.map((item) => (
-                    <span key={item} className="px-3 py-1 bg-muted/50 text-sm text-muted-foreground rounded-full">
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </div>
 
-          {/* Right — Investor Profiling */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="feature-card bg-muted/20 h-fit"
-          >
-            <h3 className="heading-md text-foreground mb-1">Investor Profiling</h3>
-            <p className="text-small mb-6">How we personalise your investment journey</p>
-            <div className="space-y-5">
-              {investorProfile.map((point, i) => (
-                <div key={point.label} className="flex gap-3">
-                  <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-xs font-medium text-primary">{i + 1}</span>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-foreground">{point.label}</p>
-                    <p className="text-small">{point.desc}</p>
-                  </div>
-                </div>
-              ))}
+          {/* Right — Investor Profiling (stacked cards) */}
+          <div className="space-y-4">
+            <div className="mb-2">
+              <h3 className="heading-md text-foreground mb-1">Investor Profiling</h3>
+              <p className="text-small">How we personalise your investment journey</p>
             </div>
-          </motion.div>
+            {investorProfile.map((point, i) => {
+              const bgColors = [
+                'bg-primary/8 border-primary/15',
+                'bg-accent/60 border-accent/30',
+                'bg-secondary/50 border-secondary/30',
+                'bg-muted/60 border-muted-foreground/10',
+                'bg-primary/5 border-primary/10',
+              ];
+              return (
+                <motion.div
+                  key={point.label}
+                  initial={{ opacity: 0, x: 16 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.08 }}
+                  className={`rounded-xl p-5 border ${bgColors[i % bgColors.length]} transition-shadow hover:shadow-md`}
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <span className="text-xs font-semibold text-primary">{i + 1}</span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-foreground mb-0.5">{point.label}</p>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{point.desc}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
