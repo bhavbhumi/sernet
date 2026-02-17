@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { MapPin, Clock, ArrowRight, Upload, Star, Play, Users, Heart, Smile, Award, Target, Shield, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { MapPin, Clock, ArrowRight, Upload, Star, Play, Users, Heart, Smile, Award, Target, Shield, X, Briefcase } from 'lucide-react';
 import careersJoinImg from '@/assets/careers-join.webp';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -48,6 +48,9 @@ const openings = [
   { title: 'Operations Associate', department: 'Operations', location: 'Mumbai', type: 'Full-time' },
   { title: 'Full-Stack Developer', department: 'Technology', location: 'Remote', type: 'Full-time' },
 ];
+
+// 3 Featured Positions for carousel
+const featuredPositions = openings.slice(0, 3);
 
 // Resume Upload Dialog
 const ResumeUploadDialog = () => {
@@ -189,7 +192,9 @@ const EmployeeReviewCard = ({ name, role, years, rating, text }: typeof employee
 export const CareersContent = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
+  const [featuredIndex, setFeaturedIndex] = useState(0);
 
+  // Auto-scroll reviews carousel
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
@@ -208,9 +213,17 @@ export const CareersContent = () => {
     return () => cancelAnimationFrame(animationId);
   }, [isPaused]);
 
+  // Auto-cycle featured positions
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFeaturedIndex((prev) => (prev + 1) % featuredPositions.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <>
-      {/* Section 1: Title + Featured */}
+      {/* Section 1: Title + Featured Positions Carousel */}
       <section className="section-padding" style={{ background: 'var(--gradient-hero)' }}>
         <div className="container-zerodha">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch">
@@ -236,9 +249,46 @@ export const CareersContent = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.15 }}
-              className="flex justify-center items-center"
+              className="flex items-center"
             >
-              <img src={careersJoinImg} alt="Team collaborating for shared prosperity" className="rounded-xl w-full max-w-md object-cover" />
+              <div className="w-full relative">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={featuredIndex}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -12 }}
+                    transition={{ duration: 0.35 }}
+                    className="w-full p-6 rounded-xl border border-border bg-card"
+                  >
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
+                      <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[0.6875rem] font-medium">Featured Position</span>
+                      <span>{featuredPositions[featuredIndex].type}</span>
+                    </div>
+                    <h3 className="text-[1.1875rem] md:text-[1.25rem] font-normal text-foreground leading-snug mb-2">
+                      {featuredPositions[featuredIndex].title}
+                    </h3>
+                    <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-4">
+                      <span className="flex items-center gap-1"><Briefcase className="w-3.5 h-3.5" />{featuredPositions[featuredIndex].department}</span>
+                      <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" />{featuredPositions[featuredIndex].location}</span>
+                      <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{featuredPositions[featuredIndex].type}</span>
+                    </div>
+                    <Button variant="outline" size="sm" className="gap-2">
+                      Apply Now <ArrowRight className="h-3.5 w-3.5" />
+                    </Button>
+                  </motion.div>
+                </AnimatePresence>
+                {/* Dots */}
+                <div className="flex justify-center gap-2 mt-4">
+                  {featuredPositions.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setFeaturedIndex(i)}
+                      className={`w-2 h-2 rounded-full transition-colors ${i === featuredIndex ? 'bg-primary' : 'bg-border'}`}
+                    />
+                  ))}
+                </div>
+              </div>
             </motion.div>
           </div>
         </div>
@@ -337,7 +387,7 @@ export const CareersContent = () => {
           ))}
         </div>
 
-        {/* Social sharing + CTAs — inspired by home TestimonialSection */}
+        {/* Social sharing + CTAs */}
         <div className="container-zerodha mt-10">
           <motion.div
             initial={{ opacity: 0, y: 16 }}

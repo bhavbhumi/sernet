@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import { Star, ArrowRight, Play, MapPin, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -46,22 +46,41 @@ const sourceIcons: Record<string, React.ReactNode> = {
 
 const countryFlags: Record<string, string> = { IN: "🇮🇳", US: "🇺🇸", UK: "🇬🇧", AE: "🇦🇪" };
 
-const reviews = [
-  { name: "Rajesh Kumar", occupation: "Business Owner", city: "Mumbai", country: "IN", rating: 4.8, source: "google", hasVideo: true, review: "SERNET has been instrumental in growing my portfolio. Their personalized approach and deep market knowledge have helped me achieve my financial goals.", date: "Jan 2025", year: 2025 },
-  { name: "Priya Sharma", occupation: "IT Professional", city: "Delhi", country: "IN", rating: 5.0, source: "facebook", hasVideo: false, review: "The team at SERNET is incredibly professional and knowledgeable. They've been managing my family's investments for over 10 years with excellent returns.", date: "Dec 2024", year: 2024 },
-  { name: "Anand Mehta", occupation: "Chartered Accountant", city: "Bangalore", country: "IN", rating: 4.9, source: "google", hasVideo: true, review: "Exceptional service and transparent communication. I highly recommend SERNET for anyone looking for reliable investment advisory services.", date: "Nov 2024", year: 2024 },
-  { name: "Sunita Patel", occupation: "Homemaker & Investor", city: "Ahmedabad", country: "IN", rating: 5.0, source: "instagram", hasVideo: false, review: "From insurance planning to equity investments, SERNET has provided comprehensive solutions for all my financial needs. Truly a one-stop destination.", date: "Oct 2024", year: 2024 },
-  { name: "Vikram Singh", occupation: "Retired Army Officer", city: "Jaipur", country: "IN", rating: 4.7, source: "mouthshut", hasVideo: false, review: "Switched from a big-name broker and couldn't be happier. Personal attention and zero hidden charges make SERNET stand out from the crowd.", date: "Sep 2024", year: 2024 },
-  { name: "Meera Nair", occupation: "Doctor", city: "Kochi", country: "IN", rating: 4.9, source: "google", hasVideo: true, review: "Their research reports are top-notch. I've made informed decisions that consistently outperform the market benchmarks.", date: "Aug 2024", year: 2024 },
-  { name: "Deepak Verma", occupation: "Software Engineer", city: "Lucknow", country: "IN", rating: 4.8, source: "google", hasVideo: false, review: "The onboarding process was seamless and the support team is always just a call away. Great experience overall with SERNET.", date: "Jul 2024", year: 2024 },
-  { name: "Kavita Joshi", occupation: "School Principal", city: "Pune", country: "IN", rating: 5.0, source: "facebook", hasVideo: true, review: "I trust SERNET with my retirement planning. Their long-term vision and disciplined approach give me complete peace of mind.", date: "Jun 2024", year: 2024 },
+type ReviewItem = {
+  name: string;
+  occupation: string;
+  city: string;
+  country: string;
+  rating: number;
+  source: string;
+  hasVideo: boolean;
+  review: string;
+  date: string;
+  year: number;
+  type?: string;
+};
+
+const reviews: ReviewItem[] = [
+  { name: "Rajesh Kumar", occupation: "Business Owner", city: "Mumbai", country: "IN", rating: 4.8, source: "google", hasVideo: true, review: "SERNET has been instrumental in growing my portfolio. Their personalized approach and deep market knowledge have helped me achieve my financial goals.", date: "Jan 2025", year: 2025, type: "Client" },
+  { name: "Priya Sharma", occupation: "IT Professional", city: "Delhi", country: "IN", rating: 5.0, source: "facebook", hasVideo: false, review: "The team at SERNET is incredibly professional and knowledgeable. They've been managing my family's investments for over 10 years with excellent returns.", date: "Dec 2024", year: 2024, type: "Client" },
+  { name: "Anand Mehta", occupation: "Chartered Accountant", city: "Bangalore", country: "IN", rating: 4.9, source: "google", hasVideo: true, review: "Exceptional service and transparent communication. I highly recommend SERNET for anyone looking for reliable investment advisory services.", date: "Nov 2024", year: 2024, type: "Partner" },
+  { name: "Sunita Patel", occupation: "Homemaker & Investor", city: "Ahmedabad", country: "IN", rating: 5.0, source: "instagram", hasVideo: false, review: "From insurance planning to equity investments, SERNET has provided comprehensive solutions for all my financial needs. Truly a one-stop destination.", date: "Oct 2024", year: 2024, type: "Client" },
+  { name: "Vikram Singh", occupation: "Retired Army Officer", city: "Jaipur", country: "IN", rating: 4.7, source: "mouthshut", hasVideo: false, review: "Switched from a big-name broker and couldn't be happier. Personal attention and zero hidden charges make SERNET stand out from the crowd.", date: "Sep 2024", year: 2024, type: "Employee" },
+  { name: "Meera Nair", occupation: "Doctor", city: "Kochi", country: "IN", rating: 4.9, source: "google", hasVideo: true, review: "Their research reports are top-notch. I've made informed decisions that consistently outperform the market benchmarks.", date: "Aug 2024", year: 2024, type: "Principal" },
+  { name: "Deepak Verma", occupation: "Software Engineer", city: "Lucknow", country: "IN", rating: 4.8, source: "google", hasVideo: false, review: "The onboarding process was seamless and the support team is always just a call away. Great experience overall with SERNET.", date: "Jul 2024", year: 2024, type: "Client" },
+  { name: "Kavita Joshi", occupation: "School Principal", city: "Pune", country: "IN", rating: 5.0, source: "facebook", hasVideo: true, review: "I trust SERNET with my retirement planning. Their long-term vision and disciplined approach give me complete peace of mind.", date: "Jun 2024", year: 2024, type: "Partner" },
 ];
 
-const featuredReview = reviews[0];
 const years = [...new Set(reviews.map((r) => r.year))].sort((a, b) => b - a);
+const reviewTypes = ['All', 'Client', 'Partner', 'Employee', 'Principal'] as const;
+
+// 3 Featured reviews for carousel
+const featuredReviews = reviews.slice(0, 3);
 
 export const ReviewsContent = () => {
   const [activeYear, setActiveYear] = useState(years[0]);
+  const [activeType, setActiveType] = useState<string>('All');
+  const [featuredIndex, setFeaturedIndex] = useState(0);
   const yearScrollRef = useRef<HTMLDivElement>(null);
 
   const scrollYears = (direction: 'left' | 'right') => {
@@ -70,15 +89,27 @@ export const ReviewsContent = () => {
     }
   };
 
+  // Auto-cycle featured reviews
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFeaturedIndex((prev) => (prev + 1) % featuredReviews.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
   const filteredReviews = useMemo(() => {
-    return reviews.filter((r) => r.year === activeYear);
-  }, [activeYear]);
+    return reviews.filter((r) => {
+      const yearMatch = r.year === activeYear;
+      const typeMatch = activeType === 'All' || r.type === activeType;
+      return yearMatch && typeMatch;
+    });
+  }, [activeYear, activeType]);
 
   return (
     <section className="section-padding bg-background">
       <div className="container-zerodha">
 
-        {/* Section 1: Title + Featured Review */}
+        {/* Section 1: Title + Featured Review Carousel */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch mb-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -112,7 +143,7 @@ export const ReviewsContent = () => {
             </div>
           </motion.div>
 
-          {/* Right: Featured Review */}
+          {/* Right: Featured Review Carousel */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -120,29 +151,50 @@ export const ReviewsContent = () => {
             transition={{ duration: 0.6 }}
             className="flex items-center"
           >
-            <div className="w-full p-6 rounded-xl border border-border bg-card">
-              <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
-                <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[0.6875rem] font-medium">Featured Review</span>
-                <span>{featuredReview.date}</span>
-              </div>
-              <p className="text-[1.125rem] font-light text-foreground leading-relaxed italic mb-5">
-                "{featuredReview.review}"
-              </p>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-sm font-medium text-primary">
-                    {featuredReview.name.charAt(0)}
+            <div className="w-full relative">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={featuredIndex}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.35 }}
+                  className="w-full p-6 rounded-xl border border-border bg-card"
+                >
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
+                    <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[0.6875rem] font-medium">Featured Review</span>
+                    <span>{featuredReviews[featuredIndex].date}</span>
                   </div>
-                  <div>
-                    <p className="text-sm font-medium text-foreground">{featuredReview.name}</p>
-                    <p className="text-xs text-muted-foreground">{featuredReview.occupation} · {featuredReview.city}</p>
+                  <p className="text-[1.125rem] font-light text-foreground leading-relaxed italic mb-5">
+                    "{featuredReviews[featuredIndex].review}"
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-sm font-medium text-primary">
+                        {featuredReviews[featuredIndex].name.charAt(0)}
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-foreground">{featuredReviews[featuredIndex].name}</p>
+                        <p className="text-xs text-muted-foreground">{featuredReviews[featuredIndex].occupation} · {featuredReviews[featuredIndex].city}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-0.5">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className={`w-3.5 h-3.5 ${i < Math.floor(featuredReviews[featuredIndex].rating) ? 'fill-[hsl(var(--sernet-yellow))] text-[hsl(var(--sernet-yellow))]' : 'text-muted-foreground/30'}`} />
+                      ))}
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-center gap-0.5">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className={`w-3.5 h-3.5 ${i < Math.floor(featuredReview.rating) ? 'fill-[hsl(var(--sernet-yellow))] text-[hsl(var(--sernet-yellow))]' : 'text-muted-foreground/30'}`} />
-                  ))}
-                </div>
+                </motion.div>
+              </AnimatePresence>
+              {/* Dots */}
+              <div className="flex justify-center gap-2 mt-4">
+                {featuredReviews.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setFeaturedIndex(i)}
+                    className={`w-2 h-2 rounded-full transition-colors ${i === featuredIndex ? 'bg-primary' : 'bg-border'}`}
+                  />
+                ))}
               </div>
             </div>
           </motion.div>
@@ -166,9 +218,22 @@ export const ReviewsContent = () => {
           </button>
         </div>
 
+        {/* Type Filters */}
+        <div className="flex flex-wrap gap-2 pt-4 pb-2">
+          {reviewTypes.map((type) => (
+            <button
+              key={type}
+              onClick={() => setActiveType(type)}
+              className={`px-4 py-1.5 rounded-full text-sm transition-colors ${activeType === type ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:text-foreground'}`}
+            >
+              {type}
+            </button>
+          ))}
+        </div>
+
         {/* Reviews Grid */}
         <AnimatePresence mode="wait">
-          <motion.div key={activeYear} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.25 }}>
+          <motion.div key={`${activeYear}-${activeType}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.25 }}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-8">
               {filteredReviews.length === 0 ? (
                 <p className="text-center text-muted-foreground py-16 text-[1rem] col-span-full">No reviews for this year.</p>
@@ -190,8 +255,11 @@ export const ReviewsContent = () => {
                           ))}
                         </div>
                       </div>
-                      <div className="w-6 h-6 flex items-center justify-center opacity-60 group-hover:opacity-100 transition-opacity" title={`via ${review.source}`}>
-                        {sourceIcons[review.source]}
+                      <div className="flex items-center gap-2">
+                        {review.type && <span className="px-2 py-0.5 rounded-full bg-muted text-[0.75rem] text-muted-foreground">{review.type}</span>}
+                        <div className="w-6 h-6 flex items-center justify-center opacity-60 group-hover:opacity-100 transition-opacity" title={`via ${review.source}`}>
+                          {sourceIcons[review.source]}
+                        </div>
                       </div>
                     </div>
 
