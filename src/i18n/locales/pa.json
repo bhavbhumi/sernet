@@ -1,0 +1,100 @@
+{
+  "nav": {
+    "about": "ਸਾਡੇ ਬਾਰੇ",
+    "services": "ਸੇਵਾਵਾਂ",
+    "network": "ਨੈੱਟਵਰਕ",
+    "insights": "ਸੂਝ",
+    "contact": "ਸੰਪਰਕ"
+  },
+  "menu": {
+    "signupLogin": "ਸਾਈਨਅੱਪ / ਲੌਗਇਨ",
+    "resources": "ਸਰੋਤ",
+    "updates": "ਅੱਪਡੇਟ",
+    "calculators": "ਕੈਲਕੁਲੇਟਰ",
+    "calendars": "ਕੈਲੰਡਰ",
+    "downloads": "ਡਾਊਨਲੋਡ",
+    "news": "ਖ਼ਬਰਾਂ",
+    "circulars": "ਸਰਕੁਲਰ"
+  },
+  "footer": {
+    "company": "ਕੰਪਨੀ",
+    "explore": "ਖੋਜੋ",
+    "support": "ਸਹਾਇਤਾ",
+    "careers": "ਕਰੀਅਰ",
+    "press": "ਪ੍ਰੈਸ",
+    "recognition": "ਮਾਨਤਾ",
+    "reviews": "ਸਮੀਖਿਆਵਾਂ",
+    "contactUs": "ਸਾਡੇ ਨਾਲ ਸੰਪਰਕ ਕਰੋ",
+    "helpDesk": "ਹੈਲਪ ਡੈਸਕ",
+    "opinions": "ਰਾਏ",
+    "quickLinks": "ਤੇਜ਼ ਲਿੰਕ",
+    "investorCharter": "ਨਿਵੇਸ਼ਕ ਚਾਰਟਰ",
+    "terms": "ਸ਼ਰਤਾਂ",
+    "privacy": "ਗੋਪਨੀਯਤਾ",
+    "policies": "ਨੀਤੀਆਂ",
+    "disclosures": "ਖੁਲਾਸੇ",
+    "madeWith": "SERNET Financial Services Pvt Ltd ਦੁਆਰਾ ਭਾਰਤ ਵਿੱਚ ♥ ਨਾਲ ਬਣਾਇਆ"
+  },
+  "common": {
+    "learnMore": "ਹੋਰ ਜਾਣੋ",
+    "getStarted": "ਸ਼ੁਰੂ ਕਰੋ",
+    "knowMore": "ਹੋਰ ਜਾਣੋ",
+    "openAccount": "ਖਾਤਾ ਖੋਲੋ",
+    "downloadApp": "ਐਪ ਡਾਊਨਲੋਡ ਕਰੋ",
+    "bookConsultation": "ਸਲਾਹ ਬੁੱਕ ਕਰੋ",
+    "getItOn": "GET IT ON",
+    "appStore": "App Store",
+    "googlePlay": "Google Play"
+  },
+  "hero": {
+    "title": "ਨੈਕਸਟਜੈਨ ਵਿੱਤੀ",
+    "highlight": "ਸੇਵਾ ਨੈੱਟਵਰਕ",
+    "description": "ਸਭ ਵਿੱਚ ਨਿਵੇਸ਼ ਕਰੋ — ਸਟਾਕ, IPO, ਮਿਊਚੁਅਲ ਫੰਡ, ਬੀਮਾ, ਡਿਜੀਟਲ ਗੋਲਡ ਅਤੇ ਹੋਰ",
+    "cta": "ਖਾਤਾ ਖੋਲੋ"
+  },
+  "about": {
+    "title": "ਨੈਕਸਟਜੈਨ ਵਿੱਤੀ",
+    "highlight": "ਸੇਵਾ ਨੈੱਟਵਰਕ",
+    "description": "ਗਲੋਬਲ ਖੁਸ਼ਹਾਲੀ ਨੂੰ ਜੋੜਨ, ਸਮਰੱਥ ਬਣਾਉਣ ਅਤੇ ਸਸ਼ਕਤ ਕਰਨ ਦੀ ਯਾਤਰਾ 'ਤੇ ਹਮੇਸ਼ਾ",
+    "tabs": {
+      "company": "ਕੰਪਨੀ",
+      "careers": "ਕਰੀਅਰ",
+      "press": "ਪ੍ਰੈਸ",
+      "recognition": "ਮਾਨਤਾ",
+      "reviews": "ਸਮੀਖਿਆਵਾਂ"
+    }
+  },
+  "services": {
+    "title": "ਵਿਆਪਕ ਵਿੱਤੀ",
+    "highlight": "ਸੇਵਾਵਾਂ",
+    "description": "ਟ੍ਰੇਡਿੰਗ ਅਤੇ ਨਿਵੇਸ਼ ਤੋਂ ਲੈ ਕੇ ਬੀਮੇ ਤੱਕ — ਅਸੀਂ ਪਾਰਦਰਸ਼ੀ ਮੁੱਲ ਅਤੇ ਸਮਰਪਿਤ ਸਹਾਇਤਾ ਨਾਲ ਸਭ ਤੋਂ ਵਧੀਆ ਵਿੱਤੀ ਉਤਪਾਦ ਵੰਡਦੇ ਹਾਂ।",
+    "tabs": {
+      "trading": "ਟ੍ਰੇਡਿੰਗ",
+      "investment": "ਨਿਵੇਸ਼",
+      "insurance": "ਬੀਮਾ",
+      "education": "ਸਿੱਖਿਆ",
+      "estatePlanning": "ਐਸਟੇਟ ਪਲੈਨਿੰਗ",
+      "creditCounselling": "ਕ੍ਰੈਡਿਟ ਕਾਊਂਸਲਿੰਗ"
+    }
+  },
+  "network": {
+    "title": "ਸਾਡਾ ਵਧਦਾ",
+    "highlight": "ਨੈੱਟਵਰਕ",
+    "description": "35+ ਸਾਲਾਂ ਦੇ ਭਰੋਸੇ 'ਤੇ ਬਣਿਆ — ਵਿੱਤੀ ਸੇਵਾ ਈਕੋਸਿਸਟਮ ਵਿੱਚ ਗਾਹਕਾਂ, ਭਾਈਵਾਲਾਂ ਅਤੇ ਪ੍ਰਿੰਸੀਪਲਾਂ ਨੂੰ ਜੋੜਨਾ।",
+    "tabs": {
+      "clients": "ਗਾਹਕ",
+      "partners": "ਭਾਈਵਾਲ",
+      "principals": "ਪ੍ਰਿੰਸੀਪਲ"
+    }
+  },
+  "contact": {
+    "title": "ਸਾਡੇ ਨਾਲ ਸੰਪਰਕ",
+    "highlight": "ਕਰੋ",
+    "description": "ਕਾਲ ਸ਼ੈਡਿਊਲ ਕਰੋ, ਸਾਨੂੰ ਸੁਨੇਹਾ ਭੇਜੋ, ਜਾਂ ਸਾਡੇ ਕਿਸੇ ਦਫ਼ਤਰ ਵਿੱਚ ਆਓ — ਅਸੀਂ ਮਦਦ ਲਈ ਇੱਥੇ ਹਾਂ।",
+    "tabs": {
+      "scheduleCall": "ਕਾਲ ਸ਼ੈਡਿਊਲ ਕਰੋ",
+      "askUs": "ਸਾਨੂੰ ਪੁੱਛੋ",
+      "visitUs": "ਸਾਨੂੰ ਮਿਲੋ"
+    }
+  }
+}

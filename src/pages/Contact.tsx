@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Layout } from '@/components/layout/Layout';
 import { PageHero } from '@/components/layout/PageHero';
+import { SEOHead } from '@/components/shared/SEOHead';
 import { motion, AnimatePresence } from 'framer-motion';
 import ScheduleCallContent from '@/components/contact/ScheduleCallContent';
 import AskUsContent from '@/components/contact/AskUsContent';
@@ -16,10 +18,30 @@ const tabContent: Record<ContactTab, React.ReactNode> = {
 };
 
 const Contact = () => {
-  const [activeTab, setActiveTab] = useState<ContactTab>('Schedule a Call');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const tabParam = searchParams.get('tab') as ContactTab | null;
+  const [activeTab, setActiveTab] = useState<ContactTab>(
+    tabParam && contactTabs.includes(tabParam) ? tabParam : 'Schedule a Call'
+  );
+
+  useEffect(() => {
+    if (tabParam && contactTabs.includes(tabParam) && tabParam !== activeTab) {
+      setActiveTab(tabParam);
+    }
+  }, [tabParam]);
+
+  const handleTabChange = (tab: ContactTab) => {
+    setActiveTab(tab);
+    setSearchParams({ tab });
+  };
 
   return (
     <Layout>
+      <SEOHead
+        title="Contact Us"
+        description="Get in touch with SERNET Financial Services. Schedule a call, send us a message, or visit our offices."
+        path="/contact"
+      />
       <PageHero
         title="Get in touch"
         highlight="with us"
@@ -33,7 +55,7 @@ const Contact = () => {
             {contactTabs.map((tab) => (
               <button
                 key={tab}
-                onClick={() => setActiveTab(tab)}
+                onClick={() => handleTabChange(tab)}
                 className={`pb-3.5 pt-4 text-[1.0625rem] transition-colors relative whitespace-nowrap ${
                   activeTab === tab ? 'text-foreground font-medium' : 'text-muted-foreground hover:text-foreground'
                 }`}

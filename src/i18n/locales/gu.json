@@ -1,0 +1,100 @@
+{
+  "nav": {
+    "about": "અમારા વિશે",
+    "services": "સેવાઓ",
+    "network": "નેટવર્ક",
+    "insights": "આંતરદૃષ્ટિ",
+    "contact": "સંપર્ક"
+  },
+  "menu": {
+    "signupLogin": "સાઇનઅપ / લૉગિન",
+    "resources": "સંસાધનો",
+    "updates": "અપડેટ્સ",
+    "calculators": "કેલ્ક્યુલેટર",
+    "calendars": "કેલેન્ડર",
+    "downloads": "ડાઉનલોડ્સ",
+    "news": "સમાચાર",
+    "circulars": "પરિપત્રો"
+  },
+  "footer": {
+    "company": "કંપની",
+    "explore": "એક્સપ્લોર",
+    "support": "સહાય",
+    "careers": "કારકિર્દી",
+    "press": "પ્રેસ",
+    "recognition": "માન્યતા",
+    "reviews": "સમીક્ષાઓ",
+    "contactUs": "અમારો સંપર્ક કરો",
+    "helpDesk": "હેલ્પ ડેસ્ક",
+    "opinions": "અભિપ્રાયો",
+    "quickLinks": "ઝડપી લિંક્સ",
+    "investorCharter": "રોકાણકાર ચાર્ટર",
+    "terms": "શરતો",
+    "privacy": "ગોપનીયતા",
+    "policies": "નીતિઓ",
+    "disclosures": "ખુલાસાઓ",
+    "madeWith": "SERNET Financial Services Pvt Ltd દ્વારા ભારતમાં ♥ થી બનાવેલ"
+  },
+  "common": {
+    "learnMore": "વધુ જાણો",
+    "getStarted": "શરૂ કરો",
+    "knowMore": "વધુ જાણો",
+    "openAccount": "ખાતું ખોલો",
+    "downloadApp": "એપ ડાઉનલોડ કરો",
+    "bookConsultation": "પરામર્શ બુક કરો",
+    "getItOn": "GET IT ON",
+    "appStore": "App Store",
+    "googlePlay": "Google Play"
+  },
+  "hero": {
+    "title": "નેક્સ્ટજેન ફાઇનાન્શિયલ",
+    "highlight": "સર્વિસ નેટવર્ક",
+    "description": "બધામાં રોકાણ કરો — સ્ટૉક્સ, IPO, મ્યુચ્યુઅલ ફંડ, વીમો, ડિજિટલ ગોલ્ડ અને વધુ",
+    "cta": "ખાતું ખોલો"
+  },
+  "about": {
+    "title": "નેક્સ્ટજેન ફાઇનાન્શિયલ",
+    "highlight": "સર્વિસ નેટવર્ક",
+    "description": "વૈશ્વિક સમૃદ્ધિને જોડવા, સક્ષમ કરવા અને સશક્ત કરવાની યાત્રા પર હંમેશા",
+    "tabs": {
+      "company": "કંપની",
+      "careers": "કારકિર્દી",
+      "press": "પ્રેસ",
+      "recognition": "માન્યતા",
+      "reviews": "સમીક્ષાઓ"
+    }
+  },
+  "services": {
+    "title": "વ્યાપક નાણાકીય",
+    "highlight": "સેવાઓ",
+    "description": "ટ્રેડિંગ અને રોકાણથી લઈને વીમા સુધી — અમે પારદર્શક કિંમત અને સમર્પિત સહાય સાથે શ્રેષ્ઠ નાણાકીય ઉત્પાદનો વિતરિત કરીએ છીએ.",
+    "tabs": {
+      "trading": "ટ્રેડિંગ",
+      "investment": "રોકાણ",
+      "insurance": "વીમો",
+      "education": "શિક્ષણ",
+      "estatePlanning": "એસ્ટેટ પ્લાનિંગ",
+      "creditCounselling": "ક્રેડિટ કાઉન્સેલિંગ"
+    }
+  },
+  "network": {
+    "title": "અમારું વધતું",
+    "highlight": "નેટવર્ક",
+    "description": "35+ વર્ષના વિશ્વાસ પર બાંધેલું — નાણાકીય સેવા ઇકોસિસ્ટમમાં ગ્રાહકો, ભાગીદારો અને પ્રિન્સિપલ્સને જોડવું.",
+    "tabs": {
+      "clients": "ગ્રાહકો",
+      "partners": "ભાગીદારો",
+      "principals": "પ્રિન્સિપલ્સ"
+    }
+  },
+  "contact": {
+    "title": "અમારો સંપર્ક",
+    "highlight": "કરો",
+    "description": "કૉલ શેડ્યૂલ કરો, અમને સંદેશ મોકલો, અથવા અમારી ઑફિસની મુલાકાત લો — અમે મદદ માટે અહીં છીએ.",
+    "tabs": {
+      "scheduleCall": "કૉલ શેડ્યૂલ કરો",
+      "askUs": "અમને પૂછો",
+      "visitUs": "અમને મળો"
+    }
+  }
+}
