@@ -17,40 +17,27 @@ const languages = ['English', 'Hindi', 'Marathi', 'Gujarati', 'Punjabi'];
 
 const menuSections = [
   {
-    title: 'Signup/Login',
+    title: 'Signup / Login',
     links: [
-      { name: 'Signup', href: '/signup', external: false },
-      { name: 'Login to Kite', href: 'https://kite.zerodha.com', external: true },
-      { name: 'Login to Console', href: 'https://console.zerodha.com', external: true },
-    ],
-  },
-  {
-    title: 'Services',
-    links: [
-      { name: 'Trading', href: '/services', external: false },
-      { name: 'Investment', href: '/services', external: false },
-      { name: 'Insurance', href: '/services', external: false },
-      { name: 'All Products', href: '/products', external: false },
-    ],
-  },
-  {
-    title: 'Network',
-    links: [
-      { name: 'Clients', href: '/network', external: false },
-      { name: 'Partners', href: '/network', external: false },
-      { name: 'Principals', href: '/network', external: false },
-      { name: 'Client Referral', href: '/referral/client', external: false },
-      { name: 'Partner Referral', href: '/referral/partner', external: false },
+      { name: 'Tick Funds', href: '/services', external: false },
+      { name: 'Tushil', href: '/services', external: false },
+      { name: 'Findemy', href: '/z-connect', external: false },
+      { name: 'Choice FinX', href: '/services', external: false },
     ],
   },
   {
     title: 'Resources',
     links: [
-      { name: 'Market overview', href: '/market-overview', external: false },
-      { name: 'Insights', href: '/z-connect', external: false },
-      { name: 'Downloads', href: '/downloads', external: false },
-      { name: 'Videos', href: '/videos', external: false },
       { name: 'Calculators', href: '/calculators/brokerage', external: false },
+      { name: 'Calendars', href: '/market-holidays', external: false },
+      { name: 'Downloads', href: '/downloads', external: false },
+    ],
+  },
+  {
+    title: 'Updates',
+    links: [
+      { name: 'News', href: '/z-connect', external: false },
+      { name: 'Circulars', href: '/z-connect', external: false },
     ],
   },
 ];
@@ -204,7 +191,7 @@ export const Header = () => {
               </div>
 
               {/* Menu sections in grid */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
                 {menuSections.map((section) => (
                   <div key={section.title}>
                     <h3 className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider mb-3">
