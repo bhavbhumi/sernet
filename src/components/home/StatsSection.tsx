@@ -1,38 +1,14 @@
 import { motion, useMotionValue, useTransform, animate, useInView } from 'framer-motion';
 import { Calendar, TrendingUp, MapPin, Globe, Award } from 'lucide-react';
 import { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const stats = [
-  {
-    number: 35,
-    suffix: '',
-    label: 'Years of Practice',
-    icon: Calendar,
-  },
-  {
-    number: 94.5,
-    suffix: '%',
-    label: 'Client Retention Rate',
-    icon: TrendingUp,
-  },
-  {
-    number: 500,
-    suffix: '+',
-    label: 'Products & Solutions',
-    icon: Award,
-  },
-  {
-    number: 54,
-    suffix: '',
-    label: 'Cities Domestic Reach',
-    icon: MapPin,
-  },
-  {
-    number: 18,
-    suffix: '',
-    label: 'Countries International Reach',
-    icon: Globe,
-  },
+  { number: 35, suffix: '', labelKey: 'stats.yearsOfPractice', icon: Calendar },
+  { number: 94.5, suffix: '%', labelKey: 'stats.clientRetention', icon: TrendingUp },
+  { number: 500, suffix: '+', labelKey: 'stats.products', icon: Award },
+  { number: 54, suffix: '', labelKey: 'stats.citiesDomestic', icon: MapPin },
+  { number: 18, suffix: '', labelKey: 'stats.countriesIntl', icon: Globe },
 ];
 
 const AnimatedCounter = ({ value, suffix, decimals = 0 }: { value: number; suffix: string; decimals?: number }) => {
@@ -58,6 +34,8 @@ const AnimatedCounter = ({ value, suffix, decimals = 0 }: { value: number; suffi
 };
 
 export const StatsSection = () => {
+  const { t } = useTranslation();
+
   return (
     <section className="section-padding bg-section-alt">
       <div className="container-zerodha">
@@ -66,7 +44,7 @@ export const StatsSection = () => {
             const IconComponent = stat.icon;
             return (
               <motion.div
-                key={stat.label}
+                key={stat.labelKey}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -84,7 +62,7 @@ export const StatsSection = () => {
                   />
                 </div>
                 <div className="text-[0.875rem] text-muted-foreground mt-1">
-                  {stat.label}
+                  {t(stat.labelKey)}
                 </div>
               </motion.div>
             );

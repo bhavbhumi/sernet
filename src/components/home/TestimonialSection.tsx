@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Star, ArrowRight, Play, MapPin, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -192,6 +193,7 @@ const TestimonialCard = ({ name, occupation, city, country, rating, source, hasV
 
 const ReviewFormDialog = () => {
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -202,24 +204,24 @@ const ReviewFormDialog = () => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="default" className="font-medium">
-          Submit Your Review
+          {t('testimonials.submitReview')}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Share Your Experience</DialogTitle>
+          <DialogTitle>{t('testimonials.dialogTitle')}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4 mt-2">
           <div className="space-y-2">
-            <Label htmlFor="review-name">Name</Label>
-            <Input id="review-name" placeholder="Your name" required />
+            <Label htmlFor="review-name">{t('testimonials.name')}</Label>
+            <Input id="review-name" placeholder={t('testimonials.namePlaceholder')} required />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="review-email">Email</Label>
-            <Input id="review-email" type="email" placeholder="you@example.com" required />
+            <Label htmlFor="review-email">{t('testimonials.email')}</Label>
+            <Input id="review-email" type="email" placeholder={t('testimonials.emailPlaceholder')} required />
           </div>
           <div className="space-y-2">
-            <Label>Rating</Label>
+            <Label>{t('testimonials.rating')}</Label>
             <div className="flex items-center gap-1">
               {[1, 2, 3, 4, 5].map((star) => (
                 <button key={star} type="button" className="text-muted-foreground hover:text-[hsl(var(--sernet-yellow))] transition-colors">
@@ -229,10 +231,10 @@ const ReviewFormDialog = () => {
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="review-text">Your Review</Label>
-            <Textarea id="review-text" placeholder="Tell us about your experience..." rows={4} required />
+            <Label htmlFor="review-text">{t('testimonials.yourReview')}</Label>
+            <Textarea id="review-text" placeholder={t('testimonials.reviewPlaceholder')} rows={4} required />
           </div>
-          <Button type="submit" className="w-full">Submit Review</Button>
+          <Button type="submit" className="w-full">{t('testimonials.submit')}</Button>
         </form>
       </DialogContent>
     </Dialog>
@@ -242,6 +244,7 @@ const ReviewFormDialog = () => {
 export const TestimonialSection = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -277,10 +280,10 @@ export const TestimonialSection = () => {
           className="text-center"
         >
           <h2 className="heading-lg text-foreground mb-3">
-            Trusted by Thousands
+            {t('testimonials.heading')}
           </h2>
           <p className="text-body max-w-xl mx-auto">
-            Client reviews that keeps us motivated to do more
+            {t('testimonials.subheading')}
           </p>
         </motion.div>
       </div>
@@ -305,7 +308,7 @@ export const TestimonialSection = () => {
           className="flex flex-col items-center gap-5"
         >
           <div className="flex flex-col sm:flex-row items-center gap-3 text-sm text-muted-foreground">
-            <span>Share your experience on</span>
+            <span>{t('testimonials.shareExperience')}</span>
             <div className="flex items-center gap-2">
               <a href="https://g.page/r/sernet/review" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border text-xs font-medium text-foreground hover:border-primary hover:text-primary transition-colors">
                 Google
@@ -325,7 +328,7 @@ export const TestimonialSection = () => {
           <div className="flex items-center gap-4">
             <ReviewFormDialog />
             <Link to="/reviews" className="link-primary font-medium inline-flex items-center gap-1 group">
-              See all reviews
+              {t('testimonials.seeAllReviews')}
               <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
             </Link>
           </div>

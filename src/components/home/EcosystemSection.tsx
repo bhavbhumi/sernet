@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const pressLogos = [
   { name: 'Economic Times', width: 140 },
@@ -14,6 +15,8 @@ const pressLogos = [
 ];
 
 export const EcosystemSection = () => {
+  const { t } = useTranslation();
+
   return (
     <section className="section-padding bg-section-alt">
       <div className="container-zerodha">
@@ -57,7 +60,7 @@ export const EcosystemSection = () => {
               to="/media"
               className="inline-flex items-center gap-2 text-primary font-medium hover:underline underline-offset-4 transition-all"
             >
-              Featured in
+              {t('ecosystem.featuredIn')}
               <ArrowRight className="h-4 w-4" />
             </Link>
           </motion.div>

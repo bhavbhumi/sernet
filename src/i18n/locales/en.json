@@ -61,6 +61,81 @@
     "clientRetention": "94.5% Client",
     "retentionRate": "Retention Rate"
   },
+  "stats": {
+    "yearsOfPractice": "Years of Practice",
+    "clientRetention": "Client Retention Rate",
+    "products": "Products & Solutions",
+    "citiesDomestic": "Cities Domestic Reach",
+    "countriesIntl": "Countries International Reach"
+  },
+  "ecosystem": {
+    "featuredIn": "Featured in"
+  },
+  "trust": {
+    "heading": "Achieve and Prosper",
+    "subheading": "Your financial progress, our priority.",
+    "feature1Title": "Trust and Confidence",
+    "feature1Desc": "Thousands trust us for easy, convenient & efficient Investments, Insurance and Trading platforms crafted around your financial goals — because your growth is our measure of success.",
+    "feature2Title": "Clarity Over Chaos",
+    "feature2Desc": "No flashy gimmicks, no sales traps. Just transparent, high-quality financial services built for your success.",
+    "feature3Title": "Beyond Transactions, Towards Transformation",
+    "feature3Desc": "Not just a platform, but a financial ecosystem. From equities and bullion to fixed income, we help you build wealth effortlessly.",
+    "exploreProducts": "Explore our Products →"
+  },
+  "pricing": {
+    "heading": "Best Value Pricing",
+    "description": "We provide Full Service Broking*, Regular Distribution for Investment and Insurance Products. Honest upfront and transparent always.",
+    "trading": "Trading",
+    "investment": "Investment",
+    "insurance": "Insurance",
+    "accountOpening": "Account Opening Fee",
+    "amc": "AMC for the 1st Year",
+    "autoSquareOff": "Auto Square Off Charges",
+    "callAndTrade": "Call and Trade",
+    "multipleProfiles": "Multiple Profiles & Family Login",
+    "portfolioCheckup": "Portfolio Health Checkup",
+    "premiumReports": "Premium Reports",
+    "assistedExecution": "Assisted Execution",
+    "familyLogin": "Family Login",
+    "policyReview": "Policy Portfolio Review",
+    "seePricing": "See pricing →"
+  },
+  "testimonials": {
+    "heading": "Trusted by Thousands",
+    "subheading": "Client reviews that keeps us motivated to do more",
+    "shareExperience": "Share your experience on",
+    "submitReview": "Submit Your Review",
+    "seeAllReviews": "See all reviews",
+    "dialogTitle": "Share Your Experience",
+    "name": "Name",
+    "namePlaceholder": "Your name",
+    "email": "Email",
+    "emailPlaceholder": "you@example.com",
+    "rating": "Rating",
+    "yourReview": "Your Review",
+    "reviewPlaceholder": "Tell us about your experience...",
+    "submit": "Submit Review",
+    "subscribed": "Subscribed!"
+  },
+  "insights": {
+    "label": "Insights",
+    "heading": "Latest from SERNET",
+    "viewAll": "View all articles",
+    "minRead": "min read",
+    "newsletter": "Subscribe to our Newsletter",
+    "resources": "Resources",
+    "articles": "Articles",
+    "promotion": "Promotion",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "emailPlaceholder": "Valid eMail address",
+    "subscribe": "Subscribe"
+  },
+  "openAccount": {
+    "heading": "Open a SERNET Account",
+    "description": "Modern and Simple Tools to Invest, Insure and Trade",
+    "cta": "Signup for FREE"
+  },
   "about": {
     "title": "NextGen Financial",
     "highlight": "Service Network",
