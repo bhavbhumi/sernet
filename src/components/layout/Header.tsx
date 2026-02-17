@@ -198,9 +198,9 @@ export const Header = () => {
               </div>
 
               {/* Menu sections in grid */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
-                {menuSections.map((section) => (
-                  <div key={section.title}>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-3xl">
+                {menuSections.map((section, index) => (
+                  <div key={section.title} className={index === 0 ? 'bg-muted/50 rounded-lg p-3 -m-3' : ''}>
                     <h3 className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider mb-3">
                       {section.title}
                     </h3>
