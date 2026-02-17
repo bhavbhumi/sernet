@@ -55,7 +55,7 @@ export const EducationServiceContent = () => (
                   <span className="text-sm font-semibold">Findemy.com</span>
                 </div>
               </a>
-              <Link to="/z-connect" className="link-primary inline-flex items-center gap-1 text-sm font-medium">
+              <Link to="/findemy" className="link-primary inline-flex items-center gap-1 text-sm font-medium">
                 Explore Content <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
