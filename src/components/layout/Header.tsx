@@ -80,12 +80,12 @@ export const Header = () => {
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden lg:flex items-center gap-5 xl:gap-8">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               to={link.href}
-              className={`text-[16px] transition-colors hover:text-primary active:text-primary ${
+              className={`text-[14px] xl:text-[16px] whitespace-nowrap transition-colors hover:text-primary active:text-primary ${
                 location.pathname === link.href ? 'text-primary' : 'text-muted-foreground'
               }`}
             >
@@ -136,8 +136,8 @@ export const Header = () => {
           </button>
         </div>
 
-        {/* Mobile: theme + language + hamburger */}
-        <div className="md:hidden flex items-center gap-1">
+        {/* Mobile/Tablet: theme + language + hamburger */}
+        <div className="lg:hidden flex items-center gap-1">
           <ThemeToggle />
           <div ref={langRef} className="relative">
             <button
@@ -186,8 +186,8 @@ export const Header = () => {
             className="absolute right-0 top-16 w-full md:w-auto md:right-4 bg-background border border-border shadow-lg z-50"
           >
             <div className="p-6">
-              {/* Mobile nav links */}
-              <div className="md:hidden border-b border-border pb-4 mb-4">
+              {/* Mobile/Tablet nav links */}
+              <div className="lg:hidden border-b border-border pb-4 mb-4">
                 {navLinks.map((link) => (
                   <Link
                     key={link.href}
