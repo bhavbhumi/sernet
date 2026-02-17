@@ -35,9 +35,9 @@ export const EducationServiceContent = () => (
             </p>
             <ul className="space-y-2 mb-8">
               {[
-                'Free awareness content — no barriers to learning',
-                'Affordable coaching by real market practitioners',
-                'Industry-recognized certification courses',
+                'Free Financial Awareness for Beginners — no barriers to financial freedom',
+                'Affordable Coaching for Certification Courses',
+                'Training for Soft and Finishing Skills',
                 'Self-paced & live learning formats',
                 'Practical, hands-on curriculum — not just theory',
               ].map((hook) => (
@@ -127,9 +127,9 @@ export const EducationServiceContent = () => (
             <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wide uppercase mb-4">
               Why Findemy
             </span>
-            <h2 className="heading-lg text-foreground mb-3">Learn from practitioners, not just professors</h2>
+            <h2 className="heading-lg text-foreground mb-3">Learning paths, irrespective of programs</h2>
             <p className="text-body text-muted-foreground mb-6 max-w-xl">
-              Our courses are built by active market professionals who bring real-world experience into every lesson. From free awareness modules to advanced certification programs — education that actually prepares you for the markets.
+              Adaptive learning is at the core of our education initiative. Everyone has an ability to master the knowledge or a skill they aspire, but with discipline and dedication. Financial education that prepares you.
             </p>
             <ul className="space-y-2 mb-8">
               {[
@@ -216,13 +216,14 @@ export const EducationServiceContent = () => (
           Ready to start learning?
         </motion.h2>
         <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-center mb-12 max-w-2xl mx-auto">
-          Begin your financial education journey in three simple steps
+          Begin your financial education journey in four simple steps
         </motion.p>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
-            { icon: Globe, step: '01', title: 'Visit Findemy', description: 'Head to Findemy.com or explore our free awareness content to get started with zero commitment.' },
-            { icon: UserCheck, step: '02', title: 'Choose Your Path', description: 'Pick from free awareness modules, affordable coaching sessions, or structured training programs based on your goals.' },
-            { icon: Play, step: '03', title: 'Start Learning', description: 'Access video lessons, join live sessions, complete assignments, and earn certificates as you progress.' },
+            { icon: Globe, step: '01', title: 'Visit & Sign Up', description: 'Head to Findemy.com and create your free account to unlock your learning dashboard.' },
+            { icon: BookOpen, step: '02', title: 'Choose Your Program', description: 'Pick from free Awareness modules, affordable Coaching sessions, or structured Training courses.' },
+            { icon: UserCheck, step: '03', title: 'Decide Your Path', description: 'Select a learning path tailored to your goals — whether beginner, intermediate, or advanced.' },
+            { icon: Play, step: '04', title: 'Start Learning', description: 'Access video lessons, join live sessions, complete assignments, and earn certificates as you progress.' },
           ].map((card, index) => (
             <motion.div
               key={card.step}
