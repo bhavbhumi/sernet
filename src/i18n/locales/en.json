@@ -1,4 +1,7 @@
 {
+  "breadcrumb": {
+    "home": "Home"
+  },
   "nav": {
     "about": "About",
     "services": "Services",
@@ -47,10 +50,16 @@
     "googlePlay": "Google Play"
   },
   "hero": {
-    "title": "NextGen Financial",
-    "highlight": "Service Network",
-    "description": "Invest in everything — Stocks, IPOs, Mutual Funds, Insurance, Digital Gold & more",
-    "cta": "Open Account"
+    "title": "Unlock your path to",
+    "highlight": "Prosperity",
+    "description": "Grow, Preserve, Protect and Manage your Wealth. Trade, Invest and Insure with Awareness through Simple and Friendly Online Platforms.",
+    "cta": "Open Account",
+    "amfiRegistered": "AMFI Registered",
+    "regulated": "Regulated & Compliant",
+    "years": "35+ Years",
+    "ofPractice": "of Practice",
+    "clientRetention": "94.5% Client",
+    "retentionRate": "Retention Rate"
   },
   "about": {
     "title": "NextGen Financial",

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Layout } from '@/components/layout/Layout';
 import { PageHero } from '@/components/layout/PageHero';
 import { SEOHead } from '@/components/shared/SEOHead';
@@ -15,6 +16,15 @@ import { CreditCounsellingServiceContent } from '@/components/services/CreditCou
 const servicesTabs = ['Trading', 'Investment', 'Insurance', 'Education', 'Estate Planning', 'Credit Counselling'] as const;
 type ServicesTab = (typeof servicesTabs)[number];
 
+const tabI18nKeys: Record<ServicesTab, string> = {
+  Trading: 'services.tabs.trading',
+  Investment: 'services.tabs.investment',
+  Insurance: 'services.tabs.insurance',
+  Education: 'services.tabs.education',
+  'Estate Planning': 'services.tabs.estatePlanning',
+  'Credit Counselling': 'services.tabs.creditCounselling',
+};
+
 const tabContent: Record<ServicesTab, React.ReactNode> = {
   Trading: <TradingServiceContent />,
   Investment: <InvestmentServiceContent />,
@@ -25,6 +35,7 @@ const tabContent: Record<ServicesTab, React.ReactNode> = {
 };
 
 const Services = () => {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const tabParam = searchParams.get('tab') as ServicesTab | null;
   const [activeTab, setActiveTab] = useState<ServicesTab>(
@@ -50,10 +61,10 @@ const Services = () => {
         path="/services"
       />
       <PageHero
-        title="Comprehensive financial"
-        highlight="services"
-        description="From trading and investments to insurance — we distribute the best financial products with transparent pricing and dedicated support."
-        icon={Briefcase}
+        title={t('services.title')}
+        highlight={t('services.highlight')}
+        description={t('services.description')}
+        breadcrumbLabel={t('nav.services')}
       />
 
       <div className="border-b border-border bg-background sticky top-0 z-20">
@@ -67,7 +78,7 @@ const Services = () => {
                   activeTab === tab ? 'text-foreground font-medium' : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
-                {tab}
+                {t(tabI18nKeys[tab])}
                 {activeTab === tab && (
                   <motion.div layoutId="services-tab-underline" className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-primary" />
                 )}

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Layout } from '@/components/layout/Layout';
 import { PageHero } from '@/components/layout/PageHero';
 import { SEOHead } from '@/components/shared/SEOHead';
@@ -13,6 +14,14 @@ import { ReviewsContent } from '@/components/about/ReviewsContent';
 const aboutTabs = ['Company', 'Careers', 'Press', 'Recognition', 'Reviews'] as const;
 type AboutTab = (typeof aboutTabs)[number];
 
+const tabI18nKeys: Record<AboutTab, string> = {
+  Company: 'about.tabs.company',
+  Careers: 'about.tabs.careers',
+  Press: 'about.tabs.press',
+  Recognition: 'about.tabs.recognition',
+  Reviews: 'about.tabs.reviews',
+};
+
 const tabContent: Record<AboutTab, React.ReactNode> = {
   Company: <CompanyContent />,
   Careers: <CareersContent />,
@@ -22,6 +31,7 @@ const tabContent: Record<AboutTab, React.ReactNode> = {
 };
 
 const About = () => {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const tabParam = searchParams.get('tab') as AboutTab | null;
   const [activeTab, setActiveTab] = useState<AboutTab>(
@@ -47,10 +57,10 @@ const About = () => {
         path="/about"
       />
       <PageHero
-        title="NextGen Financial"
-        highlight="Service Network"
-        description="Always on the journey of engaging, enabling and empowering prosperity globally"
-        breadcrumbLabel="About"
+        title={t('about.title')}
+        highlight={t('about.highlight')}
+        description={t('about.description')}
+        breadcrumbLabel={t('nav.about')}
       />
       <div className="border-b border-border bg-background sticky top-0 z-20">
         <div className="container-zerodha">
@@ -63,7 +73,7 @@ const About = () => {
                   activeTab === tab ? 'text-foreground font-medium' : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
-                {tab}
+                {t(tabI18nKeys[tab])}
                 {activeTab === tab && (
                   <motion.div layoutId="about-tab-underline" className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-primary" />
                 )}
