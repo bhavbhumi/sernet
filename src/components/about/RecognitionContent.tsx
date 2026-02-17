@@ -1,23 +1,35 @@
-import { motion } from 'framer-motion';
+import { useState, useMemo, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import featuredImg from '@/assets/recognition-featured.png';
 import thumbImg from '@/assets/recognition-thumb.webp';
 
-const featured = {
-  title: "Best Investment Advisory Firm",
-  month: "November 2024",
-  event: "Financial Excellence Awards",
-  from: "India Finance Forum",
-};
-
 const recognitions = [
-  { title: "Most Trusted Financial Partner", month: "August 2023", event: "National Finance Summit", from: "India Finance Forum" },
-  { title: "Excellence in Customer Service", month: "March 2023", event: "BFSI Excellence Awards", from: "BFSI Awards Committee" },
-  { title: "Best Wealth Management Services", month: "December 2022", event: "ET Financial Services Awards", from: "Economic Times" },
-  { title: "Innovation in Financial Technology", month: "June 2022", event: "FinTech India Awards", from: "NASSCOM" },
-  { title: "Top Emerging Financial Services Brand", month: "January 2022", event: "Brand Excellence Awards", from: "Business World" },
+  { title: "Best Investment Advisory Firm", month: "November 2024", event: "Financial Excellence Awards", from: "India Finance Forum", year: 2024, featured: true },
+  { title: "Most Trusted Financial Partner", month: "August 2023", event: "National Finance Summit", from: "India Finance Forum", year: 2023 },
+  { title: "Excellence in Customer Service", month: "March 2023", event: "BFSI Excellence Awards", from: "BFSI Awards Committee", year: 2023 },
+  { title: "Best Wealth Management Services", month: "December 2022", event: "ET Financial Services Awards", from: "Economic Times", year: 2022 },
+  { title: "Innovation in Financial Technology", month: "June 2022", event: "FinTech India Awards", from: "NASSCOM", year: 2022 },
+  { title: "Top Emerging Financial Services Brand", month: "January 2022", event: "Brand Excellence Awards", from: "Business World", year: 2022 },
 ];
 
+const featuredItem = recognitions[0];
+const years = [...new Set(recognitions.map((r) => r.year))].sort((a, b) => b - a);
+
 export const RecognitionContent = () => {
+  const [activeYear, setActiveYear] = useState(years[0]);
+  const yearScrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollYears = (direction: 'left' | 'right') => {
+    if (yearScrollRef.current) {
+      yearScrollRef.current.scrollBy({ left: direction === 'left' ? -160 : 160, behavior: 'smooth' });
+    }
+  };
+
+  const filteredRecognitions = useMemo(() => {
+    return recognitions.filter((item) => item.year === activeYear);
+  }, [activeYear]);
+
   return (
     <section className="section-padding bg-background">
       <div className="container-zerodha">
@@ -31,14 +43,18 @@ export const RecognitionContent = () => {
             transition={{ duration: 0.5 }}
             className="flex flex-col justify-center"
           >
+            <div className="flex items-center gap-2 mb-3">
+              <span className="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-[0.6875rem] font-medium">Featured</span>
+              <span className="text-sm text-muted-foreground">{featuredItem.month}</span>
+            </div>
             <h2 className="text-[2rem] md:text-[2.5rem] font-light text-foreground leading-tight mb-4">
-              {featured.title}
+              {featuredItem.title}
             </h2>
             <p className="text-body text-muted-foreground">
-              {featured.month} · {featured.event}
+              {featuredItem.event}
             </p>
             <p className="text-sm text-muted-foreground mt-1">
-              From <span className="text-foreground font-medium">{featured.from}</span>
+              From <span className="text-foreground font-medium">{featuredItem.from}</span>
             </p>
           </motion.div>
 
@@ -49,35 +65,57 @@ export const RecognitionContent = () => {
             transition={{ duration: 0.6 }}
             className="flex justify-end items-center"
           >
-            <img src={featuredImg} alt={featured.title} className="rounded-xl max-w-[280px] w-full" />
+            <img src={featuredImg} alt={featuredItem.title} className="rounded-xl max-w-[280px] w-full" />
           </motion.div>
         </div>
 
-        {/* Section 2: List of Recognitions */}
-        <div>
-          <h3 className="heading-md mb-6">All Recognitions</h3>
-          <div className="divide-y divide-border">
-            {recognitions.map((item, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3, delay: index * 0.06 }}
-                className="flex items-center gap-4 py-5"
-              >
-                <img src={thumbImg} alt="" className="w-12 h-12 rounded-md object-cover flex-shrink-0 border border-border" />
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 text-[0.875rem] text-muted-foreground mb-1">
-                    <span>{item.month}</span><span>—</span><span>{item.event}</span>
-                  </div>
-                  <h3 className="text-[1.1875rem] md:text-[1.25rem] font-normal text-foreground leading-snug">{item.title}</h3>
-                  <p className="text-[0.875rem] text-muted-foreground mt-0.5">From <span className="font-medium text-foreground">{item.from}</span></p>
-                </div>
-              </motion.div>
+        {/* Year Timeline */}
+        <div className="flex items-center gap-1 border-b border-border">
+          <button onClick={() => scrollYears('left')} className="flex-shrink-0 p-2 text-muted-foreground hover:text-foreground transition-colors md:hidden" aria-label="Scroll years left">
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <div ref={yearScrollRef} data-year-scroll-recog className="flex gap-0 overflow-x-auto scroll-smooth flex-1" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}>
+            <style>{`[data-year-scroll-recog]::-webkit-scrollbar { display: none; }`}</style>
+            {years.map((year) => (
+              <button key={year} onClick={() => setActiveYear(year)} className={`text-[1rem] px-5 py-3 transition-colors border-b-[2.5px] whitespace-nowrap flex-shrink-0 ${activeYear === year ? 'text-foreground font-medium border-primary' : 'text-muted-foreground border-transparent hover:text-foreground'}`}>
+                {year}
+              </button>
             ))}
           </div>
+          <button onClick={() => scrollYears('right')} className="flex-shrink-0 p-2 text-muted-foreground hover:text-foreground transition-colors md:hidden" aria-label="Scroll years right">
+            <ChevronRight className="h-4 w-4" />
+          </button>
         </div>
+
+        {/* Recognition List */}
+        <AnimatePresence mode="wait">
+          <motion.div key={activeYear} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.25 }}>
+            <div className="divide-y divide-border">
+              {filteredRecognitions.length === 0 ? (
+                <p className="text-center text-muted-foreground py-16 text-[1rem]">No recognitions for this year.</p>
+              ) : (
+                filteredRecognitions.map((item, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.06 }}
+                    className="flex items-center gap-4 py-5 group hover:bg-muted/30 -mx-4 px-4 rounded transition-colors"
+                  >
+                    <img src={thumbImg} alt="" className="w-12 h-12 rounded-md object-cover flex-shrink-0 border border-border" />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 text-[0.875rem] text-muted-foreground mb-1">
+                        <span>{item.month}</span><span>—</span><span>{item.event}</span>
+                      </div>
+                      <h3 className="text-[1.1875rem] md:text-[1.25rem] font-normal text-foreground leading-snug">{item.title}</h3>
+                      <p className="text-[0.875rem] text-muted-foreground mt-0.5">From <span className="font-medium text-foreground">{item.from}</span></p>
+                    </div>
+                  </motion.div>
+                ))
+              )}
+            </div>
+          </motion.div>
+        </AnimatePresence>
 
       </div>
     </section>
