@@ -31,7 +31,9 @@ import LumpsumCalculator from "./pages/calculators/LumpsumCalculator";
 // Other pages
 import MarketOverview from "./pages/MarketOverview";
 import ZConnect from "./pages/ZConnect";
-import Downloads from "./pages/Downloads";
+import DownloadsPage from "./pages/DownloadsPage";
+import Calculators from "./pages/Calculators";
+import Calendars from "./pages/Calendars";
 import Referral from "./pages/Referral";
 import ClientReferral from "./pages/ClientReferral";
 import PartnerReferral from "./pages/PartnerReferral";
@@ -105,11 +107,13 @@ const App = () => (
           {/* Updates & Resources */}
           <Route path="/market-overview" element={<MarketOverview />} />
           <Route path="/z-connect" element={<ZConnect />} />
-          <Route path="/downloads" element={<Downloads />} />
+          <Route path="/downloads" element={<DownloadsPage />} />
           <Route path="/videos" element={<Videos />} />
           <Route path="/tradingqna" element={<TradingQnA />} />
           <Route path="/market-holidays" element={<MarketHolidays />} />
           <Route path="/economic-calendar" element={<EconomicCalendar />} />
+          <Route path="/calculators" element={<Calculators />} />
+          <Route path="/calendars" element={<Calendars />} />
           
           {/* Company pages */}
           <Route path="/referral" element={<Referral />} />
