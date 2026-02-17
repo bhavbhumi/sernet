@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, Clock, Calendar, Heart, MessageCircle, Share2, Mail, BookOpen, FileText, Megaphone, Newspaper, FolderOpen, Send } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -37,6 +38,8 @@ const articles = [
 ];
 
 export const InsightsSection = () => {
+  const { t } = useTranslation();
+
   return (
     <section className="section-padding bg-muted/30">
       <div className="container-zerodha">
@@ -48,14 +51,14 @@ export const InsightsSection = () => {
           className="flex items-end justify-between mb-12"
         >
           <div>
-            <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">Insights</p>
-            <h2 className="heading-lg text-foreground">Latest from SERNET</h2>
+            <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">{t('insights.label')}</p>
+            <h2 className="heading-lg text-foreground">{t('insights.heading')}</h2>
           </div>
           <Link
             to="/z-connect"
             className="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
           >
-            View all articles <ArrowRight className="w-4 h-4" />
+            {t('insights.viewAll')} <ArrowRight className="w-4 h-4" />
           </Link>
         </motion.div>
 
@@ -119,7 +122,7 @@ export const InsightsSection = () => {
             to="/z-connect"
             className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
           >
-            View all articles <ArrowRight className="w-4 h-4" />
+            {t('insights.viewAll')} <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
 
@@ -148,13 +151,17 @@ export const InsightsSection = () => {
           <div className="relative z-10">
             <div className="flex items-center justify-center gap-2 mb-4">
               <Mail className="w-5 h-5 text-primary" />
-              <h3 className="text-lg font-semibold text-foreground">Subscribe to our Newsletter</h3>
+              <h3 className="text-lg font-semibold text-foreground">{t('insights.newsletter')}</h3>
             </div>
             <div className="flex items-center justify-center gap-6 mb-4">
-              {['Resources', 'Articles', 'Promotion'].map((label) => (
-                <label key={label} className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer">
+              {[
+                { key: 'insights.resources', label: t('insights.resources') },
+                { key: 'insights.articles', label: t('insights.articles') },
+                { key: 'insights.promotion', label: t('insights.promotion') },
+              ].map((item) => (
+                <label key={item.key} className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer">
                   <Checkbox defaultChecked />
-                  {label}
+                  {item.label}
                 </label>
               ))}
             </div>
@@ -171,6 +178,7 @@ const NewsletterForm = () => {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const { t } = useTranslation();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -187,7 +195,7 @@ const NewsletterForm = () => {
     <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row items-center gap-3 max-w-2xl mx-auto">
       <Input
         type="text"
-        placeholder="First Name"
+        placeholder={t('insights.firstName')}
         value={firstName}
         onChange={(e) => setFirstName(e.target.value)}
         required
@@ -195,21 +203,21 @@ const NewsletterForm = () => {
       />
       <Input
         type="text"
-        placeholder="Last Name"
+        placeholder={t('insights.lastName')}
         value={lastName}
         onChange={(e) => setLastName(e.target.value)}
         className="flex-1 h-10"
       />
       <Input
         type="email"
-        placeholder="Valid eMail address"
+        placeholder={t('insights.emailPlaceholder')}
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
         className="flex-[2] h-12 text-base"
       />
       <Button type="submit" className="w-full sm:w-auto">
-        {submitted ? 'Subscribed!' : 'Subscribe'}
+        {submitted ? t('testimonials.subscribed') : t('insights.subscribe')}
       </Button>
     </form>
   );

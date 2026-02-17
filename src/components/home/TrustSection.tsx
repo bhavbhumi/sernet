@@ -1,66 +1,46 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import productShowcase from '@/assets/product-showcase.png';
 
-const features = [
-  {
-    title: 'Trust and Confidence',
-    description: (
-      <>
-        Thousands trust us for <span className="font-semibold text-foreground">easy, convenient & efficient</span> Investments, Insurance and Trading platforms crafted around your financial goals — because your growth is our measure of success.
-      </>
-    ),
-  },
-  {
-    title: 'Clarity Over Chaos',
-    description: (
-      <>
-        No flashy gimmicks, no sales traps. Just <span className="font-semibold text-foreground">transparent, high-quality</span> financial services built for your success.
-      </>
-    ),
-  },
-  {
-    title: 'Beyond Transactions, Towards Transformation',
-    description: (
-      <>
-        Not just a platform, but a <span className="font-semibold text-foreground">financial ecosystem</span>. From equities and bullion to fixed income, we help you build wealth effortlessly.
-      </>
-    ),
-  },
-];
-
 export const TrustSection = () => {
+  const { t } = useTranslation();
+
+  const features = [
+    { titleKey: 'trust.feature1Title', descKey: 'trust.feature1Desc' },
+    { titleKey: 'trust.feature2Title', descKey: 'trust.feature2Desc' },
+    { titleKey: 'trust.feature3Title', descKey: 'trust.feature3Desc' },
+  ];
+
   return (
     <section className="section-padding bg-background">
       <div className="container-zerodha">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-start">
-          {/* Left Part */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="heading-lg text-foreground mb-2">Achieve and Prosper</h2>
-            <p className="text-muted-foreground text-body mb-10">Your financial progress, our priority.</p>
+            <h2 className="heading-lg text-foreground mb-2">{t('trust.heading')}</h2>
+            <p className="text-muted-foreground text-body mb-10">{t('trust.subheading')}</p>
 
             <div className="space-y-7">
               {features.map((feature, index) => (
                 <motion.div
-                  key={feature.title}
+                  key={feature.titleKey}
                   initial={{ opacity: 0, y: 15 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
                 >
-                  <h3 className="heading-md text-foreground mb-1">{feature.title}</h3>
-                  <p className="text-body">{feature.description}</p>
+                  <h3 className="heading-md text-foreground mb-1">{t(feature.titleKey)}</h3>
+                  <p className="text-body">{t(feature.descKey)}</p>
                 </motion.div>
               ))}
             </div>
           </motion.div>
 
-          {/* Right Part */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -77,7 +57,7 @@ export const TrustSection = () => {
               to="/services"
               className="text-primary font-medium text-body hover:underline underline-offset-4 transition-colors inline-flex items-center gap-1"
             >
-              Explore our Products →
+              {t('trust.exploreProducts')}
             </Link>
           </motion.div>
         </div>
