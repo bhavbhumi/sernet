@@ -43,11 +43,11 @@ const pressReleases: PressItem[] = [
 ];
 
 const years = [2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016];
-const tabs = ['Recent', 'Featured', 'Media Kit'] as const;
-type TabType = (typeof tabs)[number];
+
+// Featured = first item
+const featuredPost = pressReleases[0];
 
 export const PressContent = () => {
-  const [activeTab, setActiveTab] = useState<TabType>('Recent');
   const [activeYear, setActiveYear] = useState(2025);
   const [showOpinionForm, setShowOpinionForm] = useState(false);
   const yearScrollRef = useRef<HTMLDivElement>(null);
@@ -59,28 +59,49 @@ export const PressContent = () => {
   };
 
   const filteredReleases = useMemo(() => {
-    let items = [...pressReleases];
-    if (activeTab === 'Featured') items = items.filter((item) => item.featured);
-    if (activeTab === 'Recent') items = items.filter((item) => item.year === activeYear);
-    return items;
-  }, [activeTab, activeYear]);
+    return pressReleases.filter((item) => item.year === activeYear);
+  }, [activeYear]);
 
   return (
     <section className="section-padding bg-background">
       <div className="container-zerodha">
 
-        {/* Section 1: Our Opinion - Press & Media Hero */}
+        {/* Section 1: Featured Post + Media Kit Downloads */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch mb-16">
           <div className="flex flex-col justify-center">
             <h2 className="text-[2rem] md:text-[2.5rem] font-light text-foreground leading-tight mb-4">
               Press & <span className="text-primary font-normal">Media</span>
             </h2>
-            <p className="text-body leading-relaxed">
+            <p className="text-body leading-relaxed mb-2">
               Sernet India's voice in the financial world — recognised by leading publications 
-              for our commitment to transparency, client empowerment, and innovation that drives 
-              India's next generation of investors forward.
+              for our commitment to transparency, client empowerment, and innovation.
             </p>
+
+            {/* Featured Post */}
+            <a href={featuredPost.link} target="_blank" rel="noopener noreferrer" className="mt-4 p-4 rounded-lg border border-primary/20 bg-primary/5 hover:border-primary/40 transition-colors group block">
+              <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1.5">
+                <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[0.6875rem] font-medium">Featured</span>
+                <span>{featuredPost.date}</span>
+                <span>—</span>
+                <span>{featuredPost.source}</span>
+              </div>
+              <h3 className="text-[1.0625rem] font-medium text-foreground group-hover:text-primary transition-colors leading-snug">{featuredPost.title}</h3>
+            </a>
+
+            {/* Media Kit Downloads — compact inline */}
+            <div className="flex flex-wrap gap-3 mt-6">
+              <a href="#" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border text-sm text-foreground hover:border-primary hover:text-primary transition-colors">
+                <Image className="h-3.5 w-3.5" /> Logo Pack
+              </a>
+              <a href="#" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border text-sm text-foreground hover:border-primary hover:text-primary transition-colors">
+                <Palette className="h-3.5 w-3.5" /> Brand Guide
+              </a>
+              <a href="#" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border text-sm text-foreground hover:border-primary hover:text-primary transition-colors">
+                <Type className="h-3.5 w-3.5" /> Typography
+              </a>
+            </div>
           </div>
+
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -92,160 +113,48 @@ export const PressContent = () => {
           </motion.div>
         </div>
 
-        {/* Section 2 & 3: Tabs + List (no search bar) */}
-        <div className="flex justify-center gap-10 border-b border-border mb-0">
-          {tabs.map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`pb-3.5 text-[1.0625rem] transition-colors relative ${
-                activeTab === tab ? 'text-foreground font-medium' : 'text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              {tab}
-              {activeTab === tab && (
-                <motion.div layoutId="press-tab-underline" className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-primary" />
-              )}
-            </button>
-          ))}
+        {/* Year Timeline */}
+        <div className="flex items-center gap-1 border-b border-border">
+          <button onClick={() => scrollYears('left')} className="flex-shrink-0 p-2 text-muted-foreground hover:text-foreground transition-colors md:hidden" aria-label="Scroll years left">
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <div ref={yearScrollRef} data-year-scroll className="flex gap-0 overflow-x-auto scroll-smooth flex-1" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}>
+            <style>{`[data-year-scroll]::-webkit-scrollbar { display: none; }`}</style>
+            {years.map((year) => (
+              <button key={year} onClick={() => setActiveYear(year)} className={`text-[1rem] px-5 py-3 transition-colors border-b-[2.5px] whitespace-nowrap flex-shrink-0 ${activeYear === year ? 'text-foreground font-medium border-primary' : 'text-muted-foreground border-transparent hover:text-foreground'}`}>
+                {year}
+              </button>
+            ))}
+          </div>
+          <button onClick={() => scrollYears('right')} className="flex-shrink-0 p-2 text-muted-foreground hover:text-foreground transition-colors md:hidden" aria-label="Scroll years right">
+            <ChevronRight className="h-4 w-4" />
+          </button>
         </div>
 
+        {/* Press List */}
         <AnimatePresence mode="wait">
-          {activeTab !== 'Media Kit' && (
-            <motion.div key={activeTab} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.25 }}>
-              {activeTab === 'Recent' && (
-                <div className="flex items-center gap-1 border-b border-border">
-                  <button onClick={() => scrollYears('left')} className="flex-shrink-0 p-2 text-muted-foreground hover:text-foreground transition-colors md:hidden" aria-label="Scroll years left">
-                    <ChevronLeft className="h-4 w-4" />
-                  </button>
-                  <div ref={yearScrollRef} data-year-scroll className="flex gap-0 overflow-x-auto scroll-smooth flex-1" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}>
-                    <style>{`[data-year-scroll]::-webkit-scrollbar { display: none; }`}</style>
-                    {years.map((year) => (
-                      <button key={year} onClick={() => setActiveYear(year)} className={`text-[1rem] px-5 py-3 transition-colors border-b-[2.5px] whitespace-nowrap flex-shrink-0 ${activeYear === year ? 'text-foreground font-medium border-primary' : 'text-muted-foreground border-transparent hover:text-foreground'}`}>
-                        {year}
-                      </button>
-                    ))}
-                  </div>
-                  <button onClick={() => scrollYears('right')} className="flex-shrink-0 p-2 text-muted-foreground hover:text-foreground transition-colors md:hidden" aria-label="Scroll years right">
-                    <ChevronRight className="h-4 w-4" />
-                  </button>
-                </div>
-              )}
-
-              <div className="divide-y divide-border">
-                {filteredReleases.length === 0 ? (
-                  <p className="text-center text-muted-foreground py-16 text-[1rem]">No results found.</p>
-                ) : (
-                  filteredReleases.map((item, index) => (
-                    <motion.a key={`${item.year}-${index}`} href={item.link} target="_blank" rel="noopener noreferrer" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: index * 0.04 }} className="flex items-center gap-4 py-5 group hover:bg-muted/30 -mx-4 px-4 rounded transition-colors">
-                      <img src={pressThumb} alt="" className="w-12 h-12 rounded-md object-cover flex-shrink-0 border border-border" />
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 text-[0.875rem] text-muted-foreground mb-1">
-                          <span>{item.date}</span><span>—</span><span>{item.source}</span>
-                        </div>
-                        <h3 className="text-[1.1875rem] md:text-[1.25rem] font-normal text-foreground group-hover:text-primary transition-colors leading-snug">{item.title}</h3>
+          <motion.div key={activeYear} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.25 }}>
+            <div className="divide-y divide-border">
+              {filteredReleases.length === 0 ? (
+                <p className="text-center text-muted-foreground py-16 text-[1rem]">No results found.</p>
+              ) : (
+                filteredReleases.map((item, index) => (
+                  <motion.a key={`${item.year}-${index}`} href={item.link} target="_blank" rel="noopener noreferrer" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: index * 0.04 }} className="flex items-center gap-4 py-5 group hover:bg-muted/30 -mx-4 px-4 rounded transition-colors">
+                    <img src={pressThumb} alt="" className="w-12 h-12 rounded-md object-cover flex-shrink-0 border border-border" />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 text-[0.875rem] text-muted-foreground mb-1">
+                        <span>{item.date}</span><span>—</span><span>{item.source}</span>
                       </div>
-                    </motion.a>
-                  ))
-                )}
-              </div>
-            </motion.div>
-          )}
-
-          {activeTab === 'Media Kit' && (
-            <motion.div key="media-kit" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.25 }} className="pt-10">
-              <div className="max-w-3xl mx-auto mb-10">
-                <p className="text-[1rem] text-muted-foreground leading-relaxed">
-                  Download our brand assets and guidelines for use in press coverage, partnerships, and media publications.
-                  For media enquiries, contact us at <a href="mailto:media@sernetindia.com" className="text-primary hover:underline">media@sernetindia.com</a>.
-                </p>
-              </div>
-
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
-                <div className="border border-border rounded-lg p-6 hover:shadow-md transition-shadow group">
-                  <div className="flex items-center justify-center h-28 mb-5 bg-secondary/50 rounded-md">
-                    <img src={sernetLogo} alt="Sernet India Logo" className="h-12 w-auto object-contain" />
-                  </div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Image className="h-4 w-4 text-primary" />
-                    <h3 className="text-[1.0625rem] font-medium text-foreground">Logo assets</h3>
-                  </div>
-                  <p className="text-[0.875rem] text-muted-foreground mb-4 leading-relaxed">Official logos in PNG, SVG, and vector formats for light and dark backgrounds.</p>
-                  <a href="#" className="inline-flex items-center gap-2 text-[0.875rem] font-medium text-primary hover:text-primary/80 transition-colors">
-                    <Download className="h-3.5 w-3.5" /> Download logo pack
-                  </a>
-                </div>
-
-                <div className="border border-border rounded-lg p-6 hover:shadow-md transition-shadow group">
-                  <div className="flex items-center justify-center h-28 mb-5 bg-secondary/50 rounded-md">
-                    <div className="flex gap-2">
-                      <div className="w-8 h-8 rounded-md bg-primary" />
-                      <div className="w-8 h-8 rounded-md bg-foreground" />
-                      <div className="w-8 h-8 rounded-md bg-muted-foreground" />
-                      <div className="w-8 h-8 rounded-md bg-secondary border border-border" />
+                      <h3 className="text-[1.1875rem] md:text-[1.25rem] font-normal text-foreground group-hover:text-primary transition-colors leading-snug">{item.title}</h3>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Palette className="h-4 w-4 text-primary" />
-                    <h3 className="text-[1.0625rem] font-medium text-foreground">Brand guidelines</h3>
-                  </div>
-                  <p className="text-[0.875rem] text-muted-foreground mb-4 leading-relaxed">Colour palette, typography, spacing rules, and usage guidelines for brand consistency.</p>
-                  <a href="#" className="inline-flex items-center gap-2 text-[0.875rem] font-medium text-primary hover:text-primary/80 transition-colors">
-                    <Download className="h-3.5 w-3.5" /> Download brand guide
-                  </a>
-                </div>
-
-                <div className="border border-border rounded-lg p-6 hover:shadow-md transition-shadow group">
-                  <div className="flex items-center justify-center h-28 mb-5 bg-secondary/50 rounded-md">
-                    <span className="text-3xl font-light text-foreground tracking-tight">Aa</span>
-                  </div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Type className="h-4 w-4 text-primary" />
-                    <h3 className="text-[1.0625rem] font-medium text-foreground">Typography</h3>
-                  </div>
-                  <p className="text-[0.875rem] text-muted-foreground mb-4 leading-relaxed">Font families, type scale, and typographic guidelines used across the Sernet brand.</p>
-                  <a href="#" className="inline-flex items-center gap-2 text-[0.875rem] font-medium text-primary hover:text-primary/80 transition-colors">
-                    <Download className="h-3.5 w-3.5" /> Download type guide
-                  </a>
-                </div>
-              </div>
-
-              <div className="max-w-3xl mx-auto mt-14">
-                <h2 className="text-[1.375rem] font-medium text-foreground mb-4">Usage guidelines</h2>
-                <div className="divide-y divide-border">
-                  {[
-                    { icon: '✓', text: 'Use the official logo without any modifications to colour, proportion, or orientation.' },
-                    { icon: '✓', text: 'Maintain the minimum clear space around the logo as specified in the brand guide.' },
-                    { icon: '✓', text: 'Use the dark logo on light backgrounds and the light logo on dark backgrounds.' },
-                    { icon: '✗', text: 'Do not stretch, rotate, add effects, or alter the logo in any way.' },
-                    { icon: '✗', text: 'Do not use the Sernet name or logo to imply endorsement without written permission.' },
-                  ].map((rule, i) => (
-                    <div key={i} className="flex items-start gap-3 py-3.5">
-                      <span className={`text-[0.9375rem] font-medium mt-0.5 ${rule.icon === '✓' ? 'text-green-600' : 'text-destructive'}`}>{rule.icon}</span>
-                      <p className="text-[0.9375rem] text-muted-foreground leading-relaxed">{rule.text}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="max-w-3xl mx-auto mt-12 p-6 bg-secondary/30 rounded-lg">
-                <div className="flex items-start gap-3">
-                  <FileText className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                  <div>
-                    <h3 className="text-[1rem] font-medium text-foreground mb-1">Press enquiries</h3>
-                    <p className="text-[0.875rem] text-muted-foreground leading-relaxed">
-                      For interviews, press releases, or media partnerships, reach out to our communications team at{' '}
-                      <a href="mailto:media@sernetindia.com" className="text-primary hover:underline">media@sernetindia.com</a>.
-                      We typically respond within one business day.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
+                  </motion.a>
+                ))
+              )}
+            </div>
+          </motion.div>
         </AnimatePresence>
 
-        {/* Section 4: Send Your Opinion */}
+        {/* Send Your Opinion */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
