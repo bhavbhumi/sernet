@@ -6,14 +6,16 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { TradingServiceContent } from '@/components/services/TradingServiceContent';
 import { InvestmentServiceContent } from '@/components/services/InvestmentServiceContent';
 import { InsuranceServiceContent } from '@/components/services/InsuranceServiceContent';
+import { EducationServiceContent } from '@/components/services/EducationServiceContent';
 
-const servicesTabs = ['Trading', 'Investment', 'Insurance'] as const;
+const servicesTabs = ['Trading', 'Investment', 'Insurance', 'Education'] as const;
 type ServicesTab = (typeof servicesTabs)[number];
 
 const tabContent: Record<ServicesTab, React.ReactNode> = {
   Trading: <TradingServiceContent />,
   Investment: <InvestmentServiceContent />,
   Insurance: <InsuranceServiceContent />,
+  Education: <EducationServiceContent />,
 };
 
 const Services = () => {
