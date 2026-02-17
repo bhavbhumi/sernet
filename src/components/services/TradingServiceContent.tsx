@@ -274,5 +274,14 @@ export const TradingServiceContent = () => (
         </motion.div>
       </div>
     </section>
+
+    {/* Disclaimer */}
+    <section className="py-6 bg-muted/30">
+      <div className="container-zerodha">
+        <p className="text-xs text-muted-foreground text-center max-w-4xl mx-auto leading-relaxed">
+          <strong>Disclaimer:</strong> Investments in securities market are subject to market risks. Read all related documents carefully before investing. Registration granted by SEBI and certification from NISM in no way guarantee performance or provide any assurance of returns. SERNET facilitates trading services through its principal partner Choice Equity Broking Pvt. Ltd. (SEBI Reg. No: INZ000160131). Brokerage will not exceed SEBI prescribed limits.
+        </p>
+      </div>
+    </section>
   </>
 );

@@ -271,5 +271,14 @@ export const InvestmentServiceContent = () => (
         </motion.div>
       </div>
     </section>
+
+    {/* Disclaimer */}
+    <section className="py-6 bg-muted/30">
+      <div className="container-zerodha">
+        <p className="text-xs text-muted-foreground text-center max-w-4xl mx-auto leading-relaxed">
+          <strong>Disclaimer:</strong> Mutual fund investments are subject to market risks. Read all scheme-related documents carefully before investing. Past performance is not indicative of future returns. SERNET is an AMFI-registered Mutual Fund Distributor (ARN-274029) and earns commissions from AMCs for regular plan distribution. SERNET does not provide SEBI-registered investment advisory services. The information provided herein is for general informational purposes only.
+        </p>
+      </div>
+    </section>
   </>
 );

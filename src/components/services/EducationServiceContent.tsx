@@ -265,5 +265,14 @@ export const EducationServiceContent = () => (
         </motion.div>
       </div>
     </section>
+
+    {/* Advisory Note */}
+    <section className="py-6 bg-muted/30">
+      <div className="container-zerodha">
+        <p className="text-xs text-muted-foreground text-center max-w-4xl mx-auto leading-relaxed">
+          <strong>Advisory Note:</strong> Financial education content provided through Findemy is for informational and learning purposes only and does not constitute investment advice, stock recommendations, or financial planning guidance. Learners are advised to consult qualified financial professionals before making any investment decisions. SERNET facilitates education services through Findemy and is not responsible for individual trading or investment outcomes based on course content.
+        </p>
+      </div>
+    </section>
   </>
 );
