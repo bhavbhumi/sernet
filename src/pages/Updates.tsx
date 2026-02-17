@@ -1,40 +1,36 @@
 import { useState } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { PageHero } from '@/components/layout/PageHero';
-import { Lightbulb } from 'lucide-react';
+import { Bell } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArticlesContent } from '@/components/insights/ArticlesContent';
-import { AnalysisContent } from '@/components/insights/AnalysisContent';
-import { ReportsContent } from '@/components/insights/ReportsContent';
-import { BulletinContent } from '@/components/insights/BulletinContent';
+import { NewsContent } from '@/components/updates/NewsContent';
+import { CircularsContent } from '@/components/updates/CircularsContent';
 
-const insightsTabs = ['Articles', 'Analysis', 'Reports', 'Bulletin'] as const;
-type InsightsTab = (typeof insightsTabs)[number];
+const updatesTabs = ['News', 'Circulars'] as const;
+type UpdatesTab = (typeof updatesTabs)[number];
 
-const tabContent: Record<InsightsTab, React.ReactNode> = {
-  Articles: <ArticlesContent />,
-  Analysis: <AnalysisContent />,
-  Reports: <ReportsContent />,
-  Bulletin: <BulletinContent />,
+const tabContent: Record<UpdatesTab, React.ReactNode> = {
+  News: <NewsContent />,
+  Circulars: <CircularsContent />,
 };
 
-const ZConnect = () => {
-  const [activeTab, setActiveTab] = useState<InsightsTab>('Articles');
+const UpdatesPage = () => {
+  const [activeTab, setActiveTab] = useState<UpdatesTab>('News');
 
   return (
     <Layout>
       <PageHero
-        title="Stay ahead with expert"
-        highlight="Insights"
-        description="Articles, market analysis, research reports, and important bulletins — all in one place."
-        icon={Lightbulb}
+        title="Stay informed with latest"
+        highlight="Updates"
+        description="Market news, regulatory circulars, exchange notices, and policy changes — all in one place."
+        breadcrumbLabel="Updates"
       />
 
       {/* Tab Navigation */}
       <div className="border-b border-border bg-background sticky top-0 z-20">
         <div className="container-zerodha">
           <div className="flex gap-8 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
-            {insightsTabs.map((tab) => (
+            {updatesTabs.map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -47,7 +43,7 @@ const ZConnect = () => {
                 {tab}
                 {activeTab === tab && (
                   <motion.div
-                    layoutId="insights-tab-underline"
+                    layoutId="updates-tab-underline"
                     className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-primary"
                   />
                 )}
@@ -73,4 +69,4 @@ const ZConnect = () => {
   );
 };
 
-export default ZConnect;
+export default UpdatesPage;

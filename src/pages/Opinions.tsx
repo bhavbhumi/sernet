@@ -1,40 +1,36 @@
 import { useState } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { PageHero } from '@/components/layout/PageHero';
-import { Lightbulb } from 'lucide-react';
+import { MessageSquare } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArticlesContent } from '@/components/insights/ArticlesContent';
-import { AnalysisContent } from '@/components/insights/AnalysisContent';
-import { ReportsContent } from '@/components/insights/ReportsContent';
-import { BulletinContent } from '@/components/insights/BulletinContent';
+import { SurveysContent } from '@/components/opinions/SurveysContent';
+import { PollsContent } from '@/components/opinions/PollsContent';
 
-const insightsTabs = ['Articles', 'Analysis', 'Reports', 'Bulletin'] as const;
-type InsightsTab = (typeof insightsTabs)[number];
+const opinionsTabs = ['Surveys', 'Polls'] as const;
+type OpinionsTab = (typeof opinionsTabs)[number];
 
-const tabContent: Record<InsightsTab, React.ReactNode> = {
-  Articles: <ArticlesContent />,
-  Analysis: <AnalysisContent />,
-  Reports: <ReportsContent />,
-  Bulletin: <BulletinContent />,
+const tabContent: Record<OpinionsTab, React.ReactNode> = {
+  Surveys: <SurveysContent />,
+  Polls: <PollsContent />,
 };
 
-const ZConnect = () => {
-  const [activeTab, setActiveTab] = useState<InsightsTab>('Articles');
+const Opinions = () => {
+  const [activeTab, setActiveTab] = useState<OpinionsTab>('Surveys');
 
   return (
     <Layout>
       <PageHero
-        title="Stay ahead with expert"
-        highlight="Insights"
-        description="Articles, market analysis, research reports, and important bulletins — all in one place."
-        icon={Lightbulb}
+        title="Your voice shapes our"
+        highlight="future"
+        description="Share your feedback through surveys and polls — help us improve products, services, and your overall experience."
+        breadcrumbLabel="Opinions"
       />
 
       {/* Tab Navigation */}
       <div className="border-b border-border bg-background sticky top-0 z-20">
         <div className="container-zerodha">
           <div className="flex gap-8 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
-            {insightsTabs.map((tab) => (
+            {opinionsTabs.map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -47,7 +43,7 @@ const ZConnect = () => {
                 {tab}
                 {activeTab === tab && (
                   <motion.div
-                    layoutId="insights-tab-underline"
+                    layoutId="opinions-tab-underline"
                     className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-primary"
                   />
                 )}
@@ -73,4 +69,4 @@ const ZConnect = () => {
   );
 };
 
-export default ZConnect;
+export default Opinions;

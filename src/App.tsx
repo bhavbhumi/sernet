@@ -66,6 +66,8 @@ import Partners from "./pages/Partners";
 import QuickLinks from "./pages/QuickLinks";
 import CreditClaim from "./pages/CreditClaim";
 import ScheduleCall from "./pages/ScheduleCall";
+import Opinions from "./pages/Opinions";
+import UpdatesPage from "./pages/Updates";
 
 const queryClient = new QueryClient();
 
@@ -142,7 +144,8 @@ const App = () => (
           <Route path="/quick-links" element={<QuickLinks />} />
           <Route path="/credit-claim" element={<CreditClaim />} />
           <Route path="/schedule-call" element={<ScheduleCall />} />
-          
+          <Route path="/opinions" element={<Opinions />} />
+          <Route path="/updates" element={<UpdatesPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
