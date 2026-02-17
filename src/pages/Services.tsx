@@ -7,8 +7,10 @@ import { TradingServiceContent } from '@/components/services/TradingServiceConte
 import { InvestmentServiceContent } from '@/components/services/InvestmentServiceContent';
 import { InsuranceServiceContent } from '@/components/services/InsuranceServiceContent';
 import { EducationServiceContent } from '@/components/services/EducationServiceContent';
+import { EstatePlanningServiceContent } from '@/components/services/EstatePlanningServiceContent';
+import { CreditCounsellingServiceContent } from '@/components/services/CreditCounsellingServiceContent';
 
-const servicesTabs = ['Trading', 'Investment', 'Insurance', 'Education'] as const;
+const servicesTabs = ['Trading', 'Investment', 'Insurance', 'Education', 'Estate Planning', 'Credit Counselling'] as const;
 type ServicesTab = (typeof servicesTabs)[number];
 
 const tabContent: Record<ServicesTab, React.ReactNode> = {
@@ -16,6 +18,8 @@ const tabContent: Record<ServicesTab, React.ReactNode> = {
   Investment: <InvestmentServiceContent />,
   Insurance: <InsuranceServiceContent />,
   Education: <EducationServiceContent />,
+  'Estate Planning': <EstatePlanningServiceContent />,
+  'Credit Counselling': <CreditCounsellingServiceContent />,
 };
 
 const Services = () => {
