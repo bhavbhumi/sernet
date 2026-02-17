@@ -70,8 +70,8 @@ export const PressContent = () => {
       <div className="container-zerodha">
 
         {/* Section 1: Our Opinion - Press & Media Hero */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center mb-16">
-          <div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch mb-16">
+          <div className="flex flex-col justify-center">
             <h2 className="text-[2rem] md:text-[2.5rem] font-light text-foreground leading-tight mb-4">
               Press & <span className="text-primary font-normal">Media</span>
             </h2>
@@ -86,7 +86,7 @@ export const PressContent = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="flex justify-end"
+            className="flex justify-end items-center"
           >
             <img src={pressHeroImg} alt="Press and Media" className="rounded-xl max-w-[320px] w-full shadow-md" />
           </motion.div>

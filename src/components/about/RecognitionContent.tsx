@@ -23,12 +23,13 @@ export const RecognitionContent = () => {
       <div className="container-zerodha">
 
         {/* Section 1: Featured Recognition */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch mb-16">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
+            className="flex flex-col justify-center"
           >
             <h2 className="text-[2rem] md:text-[2.5rem] font-light text-foreground leading-tight mb-4">
               {featured.title}
@@ -46,7 +47,7 @@ export const RecognitionContent = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="flex justify-end"
+            className="flex justify-end items-center"
           >
             <img src={featuredImg} alt={featured.title} className="rounded-xl max-w-[280px] w-full" />
           </motion.div>

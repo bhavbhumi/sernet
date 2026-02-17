@@ -94,12 +94,13 @@ export const CompanyContent = () => {
       {/* Story */}
       <section className="section-padding bg-background">
         <div className="container-zerodha">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
+              className="flex flex-col justify-center"
             >
               <h2 className="heading-lg text-foreground mb-6">Our Story</h2>
               <div className="space-y-4 text-body">
@@ -118,7 +119,7 @@ export const CompanyContent = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, type: 'spring', stiffness: 100 }}
-              className="flex justify-center"
+              className="flex justify-center items-center"
             >
               <div
                 className="relative group cursor-pointer"

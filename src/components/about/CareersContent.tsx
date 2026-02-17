@@ -213,12 +213,13 @@ export const CareersContent = () => {
       {/* Appeal: Join Us */}
       <section className="section-padding" style={{ background: 'var(--gradient-hero)' }}>
         <div className="container-zerodha">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
+              className="flex flex-col justify-center"
             >
               <h2 className="heading-lg text-foreground mb-6">Join Us</h2>
               <p className="text-body">
@@ -230,7 +231,7 @@ export const CareersContent = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.15 }}
-              className="flex justify-center"
+              className="flex justify-center items-center"
             >
               <img src={careersJoinImg} alt="Team collaborating for shared prosperity" className="rounded-xl w-full max-w-md object-cover" />
             </motion.div>
