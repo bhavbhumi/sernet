@@ -1,6 +1,13 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { TrendingUp, Shield, Building, Landmark, ArrowRight, Handshake } from 'lucide-react';
+import networkPartnersImg from '@/assets/network-partners.webp';
+
+const partnerStats = [
+  { value: '50+', label: 'Partner Institutions' },
+  { value: '5000+', label: 'Products Distributed' },
+  { value: '35+', label: 'Years of Partnerships' },
+];
 
 const partnerTypes = [
   {
@@ -35,6 +42,69 @@ const partnerTypes = [
 
 export const PartnersNetworkContent = () => (
   <>
+    {/* Section 1 — Hero Split */}
+    <section className="section-padding bg-background" style={{ background: 'var(--gradient-hero)' }}>
+      <div className="container-zerodha">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-stretch">
+          {/* Left */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col justify-center"
+          >
+            <h2 className="heading-lg text-foreground mb-3">
+              Strength in <span className="text-primary">partnerships</span>
+            </h2>
+            <p className="text-body max-w-lg mb-8">
+              We collaborate with leading financial institutions and technology providers to deliver comprehensive, best-in-class solutions to our clients.
+            </p>
+            <div className="flex flex-wrap gap-4 mb-10">
+              <Link to="/referral/partner" className="btn-primary inline-flex items-center">
+                Become a Partner <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+              <Link to="/schedule-call" className="btn-secondary inline-flex items-center">
+                Schedule a Call
+              </Link>
+            </div>
+            {/* 3 Stats */}
+            <div className="flex flex-wrap gap-6 lg:gap-10">
+              {partnerStats.map((stat, i) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.1 }}
+                  className="text-center"
+                >
+                  <p className="text-[1.75rem] md:text-[2rem] font-light text-foreground leading-tight">{stat.value}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">{stat.label}</p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Right — Image */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="flex items-center justify-center lg:justify-end"
+          >
+            <img
+              src={networkPartnersImg}
+              alt="SERNET partner ecosystem"
+              className="w-full max-w-[480px] h-auto mix-blend-multiply"
+            />
+          </motion.div>
+        </div>
+      </div>
+    </section>
+
+    {/* Section 2 — Partner Ecosystem */}
     <section className="section-padding bg-background">
       <div className="container-zerodha">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">
