@@ -6,26 +6,20 @@ import sernetLogo from '@/assets/sernet-logo.png';
 const footerLinks = {
   company: [
     { name: 'About', href: '/about' },
-    { name: 'Careers', href: '/careers' },
-    { name: 'Press', href: '/media' },
-    { name: 'Recognitions', href: '/recognitions' },
-    { name: 'Reviews', href: '/reviews' },
-    { name: 'Clients', href: '/clients' },
-    { name: 'Partners', href: '/partners' },
-    { name: 'Referral Program', href: '/referral' },
   ],
   explore: [
-    { name: 'Products', href: '/products' },
-    { name: 'Blog', href: '/z-connect' },
-    { name: 'Macro Board', href: '/market-overview' },
-    { name: 'Calculators', href: '/calculators/brokerage' },
+    { name: 'Tick Funds', href: '/services' },
+    { name: 'Tushil', href: '/services' },
+    { name: 'Choice FinX', href: '/services' },
+    { name: 'Findemy', href: '/z-connect' },
+    { name: 'Insights', href: '/z-connect' },
+    { name: 'Resources', href: '/downloads' },
+    { name: 'Updates', href: '/z-connect' },
   ],
   support: [
-    { name: 'Contact us', href: '/support' },
+    { name: 'Contact Us', href: '/support' },
     { name: 'Help Desk', href: '/support' },
-    { name: 'Calendar', href: '/market-holidays', subItems: ['Holiday', 'Economic'] },
-    { name: 'Updates', href: '/z-connect', subItems: ['Circulars', 'Bulletin'] },
-    { name: 'Downloads', href: '/downloads', subItems: ['Forms', 'Formats'] },
+    { name: 'Survey', href: '/support' },
     { name: 'Quick Links', href: '/quick-links' },
     { name: 'Investor Charter', href: '/investor-charter' },
   ],
@@ -188,44 +182,16 @@ export const Footer = () => {
           <div>
             <h3 className="text-[15px] font-medium text-foreground mb-4">Support</h3>
             <ul className="space-y-2.5">
-              <li>
-                <Link to="/support" className="text-[14px] text-muted-foreground hover:text-primary transition-colors">
-                  Contact us
-                </Link>
-              </li>
-              <li>
-                <Link to="/support" className="text-[14px] text-muted-foreground hover:text-primary transition-colors">
-                  Help Desk
-                </Link>
-              </li>
-              <li>
-                <span className="text-[14px] text-muted-foreground">Calendar</span>
-                <span className="text-[12px] text-muted-foreground/70 ml-1">
-                  (<Link to="/market-holidays" className="hover:text-primary transition-colors">Holiday</Link>, <Link to="/economic-calendar" className="hover:text-primary transition-colors">Economic</Link>)
-                </span>
-              </li>
-              <li>
-                <span className="text-[14px] text-muted-foreground">Updates</span>
-                <span className="text-[12px] text-muted-foreground/70 ml-1">
-                  (<Link to="/z-connect" className="hover:text-primary transition-colors">Circulars</Link>, <Link to="/z-connect" className="hover:text-primary transition-colors">Bulletin</Link>)
-                </span>
-              </li>
-              <li>
-                <span className="text-[14px] text-muted-foreground">Downloads</span>
-                <span className="text-[12px] text-muted-foreground/70 ml-1">
-                  (<Link to="/downloads" className="hover:text-primary transition-colors">Forms</Link>, <Link to="/downloads" className="hover:text-primary transition-colors">Formats</Link>)
-                </span>
-              </li>
-              <li>
-                <Link to="/quick-links" className="text-[14px] text-muted-foreground hover:text-primary transition-colors">
-                  Quick Links
-                </Link>
-              </li>
-              <li>
-                <Link to="/investor-charter" className="text-[14px] text-muted-foreground hover:text-primary transition-colors">
-                  Investor Charter
-                </Link>
-              </li>
+              {footerLinks.support.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    to={link.href}
+                    className="text-[14px] text-muted-foreground hover:text-primary active:text-primary visited:text-muted-foreground transition-colors"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
