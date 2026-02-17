@@ -6,6 +6,11 @@ import sernetLogo from '@/assets/sernet-logo.png';
 const footerLinks = {
   company: [
     { name: 'About', href: '/about' },
+    { name: 'Careers', href: '/about' },
+    { name: 'Press', href: '/about' },
+    { name: 'Recognition', href: '/about' },
+    { name: 'Reviews', href: '/about' },
+    { name: 'Referral Programs', href: '/referral' },
   ],
   explore: [
     { name: 'Tick Funds', href: '/services' },
