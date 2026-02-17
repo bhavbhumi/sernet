@@ -1,29 +1,30 @@
 import { Link } from 'react-router-dom';
 import { MapPin, Phone, Mail } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import sernetLogo from '@/assets/sernet-logo.png';
 
 const footerLinks = {
   company: [
-    { name: 'About', href: '/about' },
-    { name: 'Careers', href: '/about' },
-    { name: 'Press', href: '/about' },
-    { name: 'Recognition', href: '/about' },
-    { name: 'Reviews', href: '/about' },
+    { nameKey: 'about.tabs.company', href: '/about?tab=Company' },
+    { nameKey: 'footer.careers', href: '/about?tab=Careers' },
+    { nameKey: 'footer.press', href: '/about?tab=Press' },
+    { nameKey: 'footer.recognition', href: '/about?tab=Recognition' },
+    { nameKey: 'footer.reviews', href: '/about?tab=Reviews' },
   ],
   explore: [
-    { name: 'Tick Funds', href: '/services' },
-    { name: 'Tushil', href: '/services' },
-    { name: 'Choice FinX', href: '/services' },
-    { name: 'Findemy', href: '/z-connect' },
-    { name: 'Insights', href: '/z-connect' },
+    { nameKey: 'common.knowMore', label: 'Tick Funds', href: '/tickfunds' },
+    { nameKey: 'common.knowMore', label: 'Tushil', href: '/tushil' },
+    { nameKey: 'common.knowMore', label: 'Choice FinX', href: '/choicefinx' },
+    { nameKey: 'common.knowMore', label: 'Findemy', href: '/findemy' },
+    { nameKey: 'nav.insights', href: '/z-connect' },
   ],
   support: [
-    { name: 'Contact Us', href: '/support' },
-    { name: 'Help Desk', href: '/support' },
-    { name: 'Opinions', href: '/opinions' },
-    { name: 'Quick Links', href: '/quick-links' },
-    { name: 'Investor Charter', href: '/investor-charter' },
+    { nameKey: 'footer.contactUs', href: '/contact' },
+    { nameKey: 'footer.helpDesk', href: '/support' },
+    { nameKey: 'footer.opinions', href: '/opinions' },
+    { nameKey: 'footer.quickLinks', href: '/quick-links' },
+    { nameKey: 'footer.investorCharter', href: '/investor-charter' },
   ],
 };
 
@@ -61,13 +62,15 @@ const socialLinks = [
 ];
 
 const legalLinks = [
-  { name: 'Terms', href: '/terms' },
-  { name: 'Privacy', href: '/privacy' },
-  { name: 'Policies', href: '/policies' },
-  { name: 'Disclosures', href: '/disclosure' },
+  { nameKey: 'footer.terms', href: '/terms' },
+  { nameKey: 'footer.privacy', href: '/privacy' },
+  { nameKey: 'footer.policies', href: '/policies' },
+  { nameKey: 'footer.disclosures', href: '/disclosure' },
 ];
 
 export const Footer = () => {
+  const { t } = useTranslation();
+
   return (
     <footer className="bg-muted/30 border-t border-border">
       <div className="container-zerodha section-padding">
@@ -129,7 +132,7 @@ export const Footer = () => {
               </a>
             </div>
 
-            {/* Social Icons - 2 rows of 3 */}
+            {/* Social Icons */}
             <div className="grid grid-cols-6 gap-3">
               {socialLinks.map((social) => (
                 <a 
@@ -148,15 +151,15 @@ export const Footer = () => {
 
           {/* Company Column */}
           <div>
-            <h3 className="text-[15px] font-medium text-foreground mb-4">Company</h3>
+            <h3 className="text-[15px] font-medium text-foreground mb-4">{t('footer.company')}</h3>
             <ul className="space-y-2.5">
               {footerLinks.company.map((link) => (
-                <li key={link.name}>
+                <li key={link.href}>
                   <Link
                     to={link.href}
                     className="text-[14px] text-muted-foreground hover:text-primary active:text-primary visited:text-muted-foreground transition-colors"
                   >
-                    {link.name}
+                    {t(link.nameKey)}
                   </Link>
                 </li>
               ))}
@@ -165,15 +168,15 @@ export const Footer = () => {
 
           {/* Explore Column */}
           <div>
-            <h3 className="text-[15px] font-medium text-foreground mb-4">Explore</h3>
+            <h3 className="text-[15px] font-medium text-foreground mb-4">{t('footer.explore')}</h3>
             <ul className="space-y-2.5">
               {footerLinks.explore.map((link) => (
-                <li key={link.name}>
+                <li key={link.href}>
                   <Link
                     to={link.href}
                     className="text-[14px] text-muted-foreground hover:text-primary active:text-primary visited:text-muted-foreground transition-colors"
                   >
-                    {link.name}
+                    {link.label || t(link.nameKey)}
                   </Link>
                 </li>
               ))}
@@ -182,15 +185,15 @@ export const Footer = () => {
 
           {/* Support Column */}
           <div>
-            <h3 className="text-[15px] font-medium text-foreground mb-4">Support</h3>
+            <h3 className="text-[15px] font-medium text-foreground mb-4">{t('footer.support')}</h3>
             <ul className="space-y-2.5">
               {footerLinks.support.map((link) => (
-                <li key={link.name}>
+                <li key={link.href}>
                   <Link
                     to={link.href}
                     className="text-[14px] text-muted-foreground hover:text-primary active:text-primary visited:text-muted-foreground transition-colors"
                   >
-                    {link.name}
+                    {t(link.nameKey)}
                   </Link>
                 </li>
               ))}
@@ -232,16 +235,16 @@ export const Footer = () => {
         <div className="container-zerodha py-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-[13px]">
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 text-muted-foreground">
-              <span>© Made with ♥ in India by SERNET Financial Services Pvt Ltd, 2025</span>
+              <span>© {t('footer.madeWith')}, 2025</span>
             </div>
             <div className="flex items-center gap-4">
               {legalLinks.map((link, index) => (
-                <span key={link.name} className="flex items-center gap-4">
+                <span key={link.href} className="flex items-center gap-4">
                   <Link 
                     to={link.href}
                     className="text-muted-foreground hover:text-primary transition-colors"
                   >
-                    {link.name}
+                    {t(link.nameKey)}
                   </Link>
                   {index < legalLinks.length - 1 && <span className="text-muted-foreground/50">|</span>}
                 </span>

@@ -1,0 +1,100 @@
+{
+  "nav": {
+    "about": "आमच्याबद्दल",
+    "services": "सेवा",
+    "network": "नेटवर्क",
+    "insights": "अंतर्दृष्टी",
+    "contact": "संपर्क"
+  },
+  "menu": {
+    "signupLogin": "साइनअप / लॉगिन",
+    "resources": "संसाधने",
+    "updates": "अपडेट्स",
+    "calculators": "कॅल्क्युलेटर",
+    "calendars": "कॅलेंडर",
+    "downloads": "डाउनलोड्स",
+    "news": "बातम्या",
+    "circulars": "परिपत्रके"
+  },
+  "footer": {
+    "company": "कंपनी",
+    "explore": "एक्सप्लोर",
+    "support": "सहाय्य",
+    "careers": "करिअर",
+    "press": "प्रेस",
+    "recognition": "मान्यता",
+    "reviews": "पुनरावलोकने",
+    "contactUs": "संपर्क करा",
+    "helpDesk": "हेल्प डेस्क",
+    "opinions": "मते",
+    "quickLinks": "जलद दुवे",
+    "investorCharter": "गुंतवणूकदार चार्टर",
+    "terms": "अटी",
+    "privacy": "गोपनीयता",
+    "policies": "धोरणे",
+    "disclosures": "खुलासे",
+    "madeWith": "SERNET Financial Services Pvt Ltd द्वारे भारतात ♥ ने बनवले"
+  },
+  "common": {
+    "learnMore": "अधिक जाणून घ्या",
+    "getStarted": "सुरू करा",
+    "knowMore": "अधिक जाणा",
+    "openAccount": "खाते उघडा",
+    "downloadApp": "अॅप डाउनलोड करा",
+    "bookConsultation": "सल्लामसलत बुक करा",
+    "getItOn": "GET IT ON",
+    "appStore": "App Store",
+    "googlePlay": "Google Play"
+  },
+  "hero": {
+    "title": "नेक्स्टजेन फायनान्शिअल",
+    "highlight": "सर्व्हिस नेटवर्क",
+    "description": "सर्वांमध्ये गुंतवणूक करा — स्टॉक्स, IPO, म्युच्युअल फंड, विमा, डिजिटल गोल्ड आणि बरेच काही",
+    "cta": "खाते उघडा"
+  },
+  "about": {
+    "title": "नेक्स्टजेन फायनान्शिअल",
+    "highlight": "सर्व्हिस नेटवर्क",
+    "description": "जागतिक समृद्धीसाठी सहभागी, सक्षम आणि सशक्त करण्याच्या प्रवासावर सदैव",
+    "tabs": {
+      "company": "कंपनी",
+      "careers": "करिअर",
+      "press": "प्रेस",
+      "recognition": "मान्यता",
+      "reviews": "पुनरावलोकने"
+    }
+  },
+  "services": {
+    "title": "सर्वसमावेशक आर्थिक",
+    "highlight": "सेवा",
+    "description": "ट्रेडिंग आणि गुंतवणुकीपासून विम्यापर्यंत — आम्ही पारदर्शक किंमती आणि समर्पित सहाय्यासह सर्वोत्तम आर्थिक उत्पादने वितरित करतो.",
+    "tabs": {
+      "trading": "ट्रेडिंग",
+      "investment": "गुंतवणूक",
+      "insurance": "विमा",
+      "education": "शिक्षण",
+      "estatePlanning": "एस्टेट प्लॅनिंग",
+      "creditCounselling": "क्रेडिट काउंसलिंग"
+    }
+  },
+  "network": {
+    "title": "आमचे वाढते",
+    "highlight": "नेटवर्क",
+    "description": "35+ वर्षांच्या विश्वासावर बांधलेले — आर्थिक सेवा परिसंस्थेत ग्राहक, भागीदार आणि प्रिन्सिपल यांना जोडणे.",
+    "tabs": {
+      "clients": "ग्राहक",
+      "partners": "भागीदार",
+      "principals": "प्रिन्सिपल"
+    }
+  },
+  "contact": {
+    "title": "आमच्याशी संपर्क",
+    "highlight": "करा",
+    "description": "कॉल शेड्यूल करा, आम्हाला संदेश पाठवा, किंवा आमच्या कार्यालयाला भेट द्या — आम्ही मदतीसाठी येथे आहोत.",
+    "tabs": {
+      "scheduleCall": "कॉल शेड्यूल करा",
+      "askUs": "आम्हाला विचारा",
+      "visitUs": "आम्हाला भेटा"
+    }
+  }
+}

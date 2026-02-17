@@ -1,0 +1,100 @@
+{
+  "nav": {
+    "about": "About",
+    "services": "Services",
+    "network": "Network",
+    "insights": "Insights",
+    "contact": "Contact"
+  },
+  "menu": {
+    "signupLogin": "Signup / Login",
+    "resources": "Resources",
+    "updates": "Updates",
+    "calculators": "Calculators",
+    "calendars": "Calendars",
+    "downloads": "Downloads",
+    "news": "News",
+    "circulars": "Circulars"
+  },
+  "footer": {
+    "company": "Company",
+    "explore": "Explore",
+    "support": "Support",
+    "careers": "Careers",
+    "press": "Press",
+    "recognition": "Recognition",
+    "reviews": "Reviews",
+    "contactUs": "Contact Us",
+    "helpDesk": "Help Desk",
+    "opinions": "Opinions",
+    "quickLinks": "Quick Links",
+    "investorCharter": "Investor Charter",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "policies": "Policies",
+    "disclosures": "Disclosures",
+    "madeWith": "Made with ♥ in India by SERNET Financial Services Pvt Ltd"
+  },
+  "common": {
+    "learnMore": "Learn More",
+    "getStarted": "Get Started",
+    "knowMore": "Know More",
+    "openAccount": "Open Account",
+    "downloadApp": "Download App",
+    "bookConsultation": "Book a Consultation",
+    "getItOn": "GET IT ON",
+    "appStore": "App Store",
+    "googlePlay": "Google Play"
+  },
+  "hero": {
+    "title": "NextGen Financial",
+    "highlight": "Service Network",
+    "description": "Invest in everything — Stocks, IPOs, Mutual Funds, Insurance, Digital Gold & more",
+    "cta": "Open Account"
+  },
+  "about": {
+    "title": "NextGen Financial",
+    "highlight": "Service Network",
+    "description": "Always on the journey of engaging, enabling and empowering prosperity globally",
+    "tabs": {
+      "company": "Company",
+      "careers": "Careers",
+      "press": "Press",
+      "recognition": "Recognition",
+      "reviews": "Reviews"
+    }
+  },
+  "services": {
+    "title": "Comprehensive financial",
+    "highlight": "services",
+    "description": "From trading and investments to insurance — we distribute the best financial products with transparent pricing and dedicated support.",
+    "tabs": {
+      "trading": "Trading",
+      "investment": "Investment",
+      "insurance": "Insurance",
+      "education": "Education",
+      "estatePlanning": "Estate Planning",
+      "creditCounselling": "Credit Counselling"
+    }
+  },
+  "network": {
+    "title": "Our growing",
+    "highlight": "network",
+    "description": "Built over 35+ years of trust — connecting clients, partners, and principals across the financial services ecosystem.",
+    "tabs": {
+      "clients": "Clients",
+      "partners": "Partners",
+      "principals": "Principals"
+    }
+  },
+  "contact": {
+    "title": "Get in touch",
+    "highlight": "with us",
+    "description": "Schedule a call, send us a message, or visit one of our offices — we're here to help.",
+    "tabs": {
+      "scheduleCall": "Schedule a Call",
+      "askUs": "Ask Us",
+      "visitUs": "Visit Us"
+    }
+  }
+}

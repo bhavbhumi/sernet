@@ -1,0 +1,100 @@
+{
+  "nav": {
+    "about": "हमारे बारे में",
+    "services": "सेवाएं",
+    "network": "नेटवर्क",
+    "insights": "अंतर्दृष्टि",
+    "contact": "संपर्क करें"
+  },
+  "menu": {
+    "signupLogin": "साइनअप / लॉगिन",
+    "resources": "संसाधन",
+    "updates": "अपडेट",
+    "calculators": "कैलकुलेटर",
+    "calendars": "कैलेंडर",
+    "downloads": "डाउनलोड",
+    "news": "समाचार",
+    "circulars": "सर्कुलर"
+  },
+  "footer": {
+    "company": "कंपनी",
+    "explore": "एक्सप्लोर",
+    "support": "सहायता",
+    "careers": "करियर",
+    "press": "प्रेस",
+    "recognition": "पहचान",
+    "reviews": "समीक्षाएं",
+    "contactUs": "संपर्क करें",
+    "helpDesk": "हेल्प डेस्क",
+    "opinions": "राय",
+    "quickLinks": "त्वरित लिंक",
+    "investorCharter": "निवेशक चार्टर",
+    "terms": "शर्तें",
+    "privacy": "गोपनीयता",
+    "policies": "नीतियां",
+    "disclosures": "प्रकटीकरण",
+    "madeWith": "SERNET Financial Services Pvt Ltd द्वारा भारत में ♥ से निर्मित"
+  },
+  "common": {
+    "learnMore": "और जानें",
+    "getStarted": "शुरू करें",
+    "knowMore": "अधिक जानें",
+    "openAccount": "खाता खोलें",
+    "downloadApp": "ऐप डाउनलोड करें",
+    "bookConsultation": "परामर्श बुक करें",
+    "getItOn": "GET IT ON",
+    "appStore": "App Store",
+    "googlePlay": "Google Play"
+  },
+  "hero": {
+    "title": "नेक्स्टजेन फाइनेंशियल",
+    "highlight": "सर्विस नेटवर्क",
+    "description": "सब कुछ में निवेश करें — स्टॉक, IPO, म्यूचुअल फंड, बीमा, डिजिटल गोल्ड और बहुत कुछ",
+    "cta": "खाता खोलें"
+  },
+  "about": {
+    "title": "नेक्स्टजेन फाइनेंशियल",
+    "highlight": "सर्विस नेटवर्क",
+    "description": "वैश्विक समृद्धि को संलग्न, सक्षम और सशक्त बनाने की यात्रा पर हमेशा",
+    "tabs": {
+      "company": "कंपनी",
+      "careers": "करियर",
+      "press": "प्रेस",
+      "recognition": "पहचान",
+      "reviews": "समीक्षाएं"
+    }
+  },
+  "services": {
+    "title": "व्यापक वित्तीय",
+    "highlight": "सेवाएं",
+    "description": "ट्रेडिंग और निवेश से लेकर बीमा तक — हम पारदर्शी मूल्य निर्धारण और समर्पित सहायता के साथ सर्वोत्तम वित्तीय उत्पाद वितरित करते हैं।",
+    "tabs": {
+      "trading": "ट्रेडिंग",
+      "investment": "निवेश",
+      "insurance": "बीमा",
+      "education": "शिक्षा",
+      "estatePlanning": "एस्टेट प्लानिंग",
+      "creditCounselling": "क्रेडिट काउंसलिंग"
+    }
+  },
+  "network": {
+    "title": "हमारा बढ़ता",
+    "highlight": "नेटवर्क",
+    "description": "35+ वर्षों के विश्वास पर निर्मित — वित्तीय सेवा पारिस्थितिकी तंत्र में ग्राहकों, भागीदारों और प्रिंसिपलों को जोड़ना।",
+    "tabs": {
+      "clients": "ग्राहक",
+      "partners": "भागीदार",
+      "principals": "प्रिंसिपल"
+    }
+  },
+  "contact": {
+    "title": "हमसे संपर्क",
+    "highlight": "करें",
+    "description": "कॉल शेड्यूल करें, हमें संदेश भेजें, या हमारे किसी कार्यालय पर आएं — हम यहाँ मदद के लिए हैं।",
+    "tabs": {
+      "scheduleCall": "कॉल शेड्यूल करें",
+      "askUs": "हमसे पूछें",
+      "visitUs": "हमसे मिलें"
+    }
+  }
+}

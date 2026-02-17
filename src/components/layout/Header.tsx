@@ -2,42 +2,43 @@ import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ExternalLink, Globe, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
+import { languageOptions } from '@/i18n';
+import { ThemeToggle } from '@/components/shared/ThemeToggle';
 
 import sernetLogo from '@/assets/sernet-logo.png';
 
 const navLinks = [
-  { name: 'About', href: '/about' },
-  { name: 'Services', href: '/services' },
-  { name: 'Network', href: '/network' },
-  { name: 'Insights', href: '/z-connect' },
-  { name: 'Contact', href: '/contact' },
+  { nameKey: 'nav.about', href: '/about' },
+  { nameKey: 'nav.services', href: '/services' },
+  { nameKey: 'nav.network', href: '/network' },
+  { nameKey: 'nav.insights', href: '/z-connect' },
+  { nameKey: 'nav.contact', href: '/contact' },
 ];
-
-const languages = ['English', 'Hindi', 'Marathi', 'Gujarati', 'Punjabi'];
 
 const menuSections = [
   {
-    title: 'Signup / Login',
+    titleKey: 'menu.signupLogin',
     links: [
-      { name: 'Tick Funds', href: '/services', external: false },
-      { name: 'Tushil', href: '/services', external: false },
-      { name: 'Findemy', href: '/services', external: false },
-      { name: 'Choice FinX', href: '/services', external: false },
+      { name: 'Tick Funds', href: '/tickfunds', external: false },
+      { name: 'Tushil', href: '/tushil', external: false },
+      { name: 'Findemy', href: '/findemy', external: false },
+      { name: 'Choice FinX', href: '/choicefinx', external: false },
     ],
   },
   {
-    title: 'Resources',
+    titleKey: 'menu.resources',
     links: [
-      { name: 'Calculators', href: '/calculators', external: false },
-      { name: 'Calendars', href: '/calendars', external: false },
-      { name: 'Downloads', href: '/downloads', external: false },
+      { nameKey: 'menu.calculators', href: '/calculators', external: false },
+      { nameKey: 'menu.calendars', href: '/calendars', external: false },
+      { nameKey: 'menu.downloads', href: '/downloads', external: false },
     ],
   },
   {
-    title: 'Updates',
+    titleKey: 'menu.updates',
     links: [
-      { name: 'News', href: '/updates', external: false },
-      { name: 'Circulars', href: '/updates', external: false },
+      { nameKey: 'menu.news', href: '/updates', external: false },
+      { nameKey: 'menu.circulars', href: '/updates', external: false },
     ],
   },
 ];
@@ -45,9 +46,11 @@ const menuSections = [
 export const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
-  const [selectedLang, setSelectedLang] = useState('English');
   const langRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
+  const { t, i18n } = useTranslation();
+
+  const currentLang = languageOptions.find(l => l.code === i18n.language) || languageOptions[0];
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -58,6 +61,11 @@ export const Header = () => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  const handleLangChange = (code: string) => {
+    i18n.changeLanguage(code);
+    setLangOpen(false);
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-background border-b border-border">
@@ -75,15 +83,18 @@ export const Header = () => {
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <Link
-              key={link.name}
+              key={link.href}
               to={link.href}
-              className={`text-[16px] text-muted-foreground transition-colors hover:text-primary active:text-primary visited:text-muted-foreground ${
+              className={`text-[16px] transition-colors hover:text-primary active:text-primary ${
                 location.pathname === link.href ? 'text-primary' : 'text-muted-foreground'
               }`}
             >
-              {link.name}
+              {t(link.nameKey)}
             </Link>
           ))}
+
+          {/* Theme Toggle */}
+          <ThemeToggle />
 
           {/* Language Dropdown */}
           <div ref={langRef} className="relative">
@@ -93,20 +104,21 @@ export const Header = () => {
               onClick={() => setLangOpen(!langOpen)}
             >
               <Globe className="h-4 w-4" />
-              <span className="hidden lg:inline">{selectedLang}</span>
+              <span className="hidden lg:inline">{currentLang.nativeLabel}</span>
               <ChevronDown className="h-3 w-3" />
             </button>
             {langOpen && (
-              <div className="absolute right-0 top-full mt-2 w-36 bg-background border border-border rounded-md shadow-lg z-50 py-1">
-                {languages.map((lang) => (
+              <div className="absolute right-0 top-full mt-2 w-40 bg-background border border-border rounded-md shadow-lg z-50 py-1">
+                {languageOptions.map((lang) => (
                   <button
-                    key={lang}
+                    key={lang.code}
                     className={`block w-full text-left px-4 py-2 text-[14px] hover:bg-muted transition-colors ${
-                      selectedLang === lang ? 'text-primary font-medium' : 'text-muted-foreground'
+                      i18n.language === lang.code ? 'text-primary font-medium' : 'text-muted-foreground'
                     }`}
-                    onClick={() => { setSelectedLang(lang); setLangOpen(false); }}
+                    onClick={() => handleLangChange(lang.code)}
                   >
-                    {lang}
+                    <span>{lang.nativeLabel}</span>
+                    <span className="text-muted-foreground/60 ml-2 text-[12px]">{lang.label}</span>
                   </button>
                 ))}
               </div>
@@ -124,8 +136,9 @@ export const Header = () => {
           </button>
         </div>
 
-        {/* Mobile: language + hamburger */}
-        <div className="md:hidden flex items-center gap-2">
+        {/* Mobile: theme + language + hamburger */}
+        <div className="md:hidden flex items-center gap-1">
+          <ThemeToggle />
           <div ref={langRef} className="relative">
             <button
               type="button"
@@ -135,16 +148,17 @@ export const Header = () => {
               <Globe className="h-5 w-5" />
             </button>
             {langOpen && (
-              <div className="absolute right-0 top-full mt-2 w-36 bg-background border border-border rounded-md shadow-lg z-50 py-1">
-                {languages.map((lang) => (
+              <div className="absolute right-0 top-full mt-2 w-40 bg-background border border-border rounded-md shadow-lg z-50 py-1">
+                {languageOptions.map((lang) => (
                   <button
-                    key={lang}
+                    key={lang.code}
                     className={`block w-full text-left px-4 py-2 text-[14px] hover:bg-muted transition-colors ${
-                      selectedLang === lang ? 'text-primary font-medium' : 'text-muted-foreground'
+                      i18n.language === lang.code ? 'text-primary font-medium' : 'text-muted-foreground'
                     }`}
-                    onClick={() => { setSelectedLang(lang); setLangOpen(false); }}
+                    onClick={() => handleLangChange(lang.code)}
                   >
-                    {lang}
+                    <span>{lang.nativeLabel}</span>
+                    <span className="text-muted-foreground/60 ml-2 text-[12px]">{lang.label}</span>
                   </button>
                 ))}
               </div>
@@ -176,16 +190,16 @@ export const Header = () => {
               <div className="md:hidden border-b border-border pb-4 mb-4">
                 {navLinks.map((link) => (
                   <Link
-                    key={link.name}
+                    key={link.href}
                     to={link.href}
-                    className={`block py-2 text-[16px] font-medium transition-colors hover:text-primary active:text-primary visited:text-muted-foreground ${
+                    className={`block py-2 text-[16px] font-medium transition-colors hover:text-primary active:text-primary ${
                       location.pathname === link.href
                         ? 'text-primary'
                         : 'text-muted-foreground'
                     }`}
                     onClick={() => setMenuOpen(false)}
                   >
-                    {link.name}
+                    {t(link.nameKey)}
                   </Link>
                 ))}
               </div>
@@ -193,31 +207,31 @@ export const Header = () => {
               {/* Menu sections in grid */}
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 max-w-2xl">
                 {menuSections.map((section, index) => (
-                  <div key={section.title} className={index === 0 ? 'bg-muted/50 rounded-lg p-3 -m-3' : ''}>
+                  <div key={section.titleKey} className={index === 0 ? 'bg-muted/50 rounded-lg p-3 -m-3' : ''}>
                     <h3 className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider mb-3">
-                      {section.title}
+                      {t(section.titleKey)}
                     </h3>
                     <ul className="space-y-2">
                       {section.links.map((link) => (
-                        <li key={link.name}>
+                        <li key={link.name || link.nameKey}>
                           {link.external ? (
                             <a
                               href={link.href}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-1 text-[15px] text-muted-foreground hover:text-primary active:text-primary visited:text-muted-foreground transition-colors"
+                              className="flex items-center gap-1 text-[15px] text-muted-foreground hover:text-primary active:text-primary transition-colors"
                               onClick={() => setMenuOpen(false)}
                             >
-                              {link.name}
+                              {link.name || t(link.nameKey!)}
                               <ExternalLink className="h-3 w-3" />
                             </a>
                           ) : (
                             <Link
                               to={link.href}
-                              className="text-[15px] text-muted-foreground hover:text-primary active:text-primary visited:text-muted-foreground transition-colors"
+                              className="text-[15px] text-muted-foreground hover:text-primary active:text-primary transition-colors"
                               onClick={() => setMenuOpen(false)}
                             >
-                              {link.name}
+                              {link.name || t(link.nameKey!)}
                             </Link>
                           )}
                         </li>
