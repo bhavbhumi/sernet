@@ -21,23 +21,23 @@ const menuSections = [
     links: [
       { name: 'Tick Funds', href: '/services', external: false },
       { name: 'Tushil', href: '/services', external: false },
-      { name: 'Findemy', href: '/z-connect', external: false },
+      { name: 'Findemy', href: '/services', external: false },
       { name: 'Choice FinX', href: '/services', external: false },
     ],
   },
   {
     title: 'Resources',
     links: [
-      { name: 'Calculators', href: '/calculators/brokerage', external: false },
-      { name: 'Calendars', href: '/market-holidays', external: false },
+      { name: 'Calculators', href: '/calculators', external: false },
+      { name: 'Calendars', href: '/calendars', external: false },
       { name: 'Downloads', href: '/downloads', external: false },
     ],
   },
   {
     title: 'Updates',
     links: [
-      { name: 'News', href: '/z-connect', external: false },
-      { name: 'Circulars', href: '/z-connect', external: false },
+      { name: 'News', href: '/updates', external: false },
+      { name: 'Circulars', href: '/updates', external: false },
     ],
   },
 ];
