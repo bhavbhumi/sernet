@@ -1,13 +1,13 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Check, Download, UserCheck, FileText, Play, Shield, Heart, Car, Plane, Home, Users, BarChart3 } from 'lucide-react';
+import { ArrowRight, Check, Download, UserCheck, FileText, Play, Shield, Heart, Car, Plane, Home, Users, BarChart3, BadgeCheck, Handshake } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import choicefinxShowcase from '@/assets/choicefinx-showcase.png';
 
 const stats = [
-  { value: '₹500Cr+', label: 'Claims Settled' },
-  { value: '2L+', label: 'Policies Served' },
-  { value: '30+', label: 'Insurer Partners' },
+  { icon: BadgeCheck, value: '₹500Cr+', label: 'Claims Settled' },
+  { icon: Shield, value: '2L+', label: 'Policies Served' },
+  { icon: Handshake, value: '30+', label: 'Insurer Partners' },
 ];
 
 const products = [
@@ -71,6 +71,9 @@ export const InsuranceServiceContent = () => (
             <div className="flex flex-wrap gap-6 lg:gap-8">
               {stats.map((stat, i) => (
                 <div key={i} className="flex items-center gap-2.5">
+                  <div className="flex items-center justify-center w-9 h-9 rounded-full bg-primary/10">
+                    <stat.icon className="w-4 h-4 text-primary" />
+                  </div>
                   <div>
                     <p className="text-sm font-medium text-foreground leading-tight">{stat.value}</p>
                     <p className="text-xs text-muted-foreground">{stat.label}</p>
