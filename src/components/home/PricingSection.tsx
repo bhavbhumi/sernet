@@ -48,7 +48,7 @@ export const PricingSection = () => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="text-center p-8 rounded-lg border border-border"
             >
-              <img src={pricingZero} alt="₹0" className="w-28 h-auto mx-auto mb-2" />
+              <img src={pricingZero} alt="₹0" className="w-28 h-auto mx-auto mb-2 dark:bg-white dark:rounded-lg dark:p-1" />
               <h3 className="heading-md text-foreground mb-6">{t(item.titleKey)}</h3>
               <ul className="space-y-3 text-center">
                 {item.featureKeys.map((key) => (

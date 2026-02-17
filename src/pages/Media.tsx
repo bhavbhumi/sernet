@@ -383,7 +383,7 @@ const Media = () => {
                       <img
                         src={sernetLogo}
                         alt="Sernet India Logo"
-                        className="h-12 w-auto object-contain"
+                        className="h-12 w-auto object-contain dark:brightness-0 dark:invert"
                       />
                     </div>
                     <div className="flex items-center gap-2 mb-2">

@@ -79,7 +79,7 @@ export const Header = () => {
           <img 
             src={sernetLogo}
             alt="Sernet"
-            className="h-[25px] w-auto"
+            className="h-[25px] w-auto dark:brightness-0 dark:invert"
           />
         </Link>
 
