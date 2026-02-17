@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Layout } from '@/components/layout/Layout';
 import { PageHero } from '@/components/layout/PageHero';
 import { SEOHead } from '@/components/shared/SEOHead';
@@ -12,6 +13,12 @@ import { PrincipalsNetworkContent } from '@/components/network/PrincipalsNetwork
 const networkTabs = ['Clients', 'Partners', 'Principals'] as const;
 type NetworkTab = (typeof networkTabs)[number];
 
+const tabI18nKeys: Record<NetworkTab, string> = {
+  Clients: 'network.tabs.clients',
+  Partners: 'network.tabs.partners',
+  Principals: 'network.tabs.principals',
+};
+
 const tabContent: Record<NetworkTab, React.ReactNode> = {
   Clients: <ClientsNetworkContent />,
   Partners: <PartnersNetworkContent />,
@@ -19,6 +26,7 @@ const tabContent: Record<NetworkTab, React.ReactNode> = {
 };
 
 const Network = () => {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const tabParam = searchParams.get('tab') as NetworkTab | null;
   const [activeTab, setActiveTab] = useState<NetworkTab>(
@@ -44,10 +52,10 @@ const Network = () => {
         path="/network"
       />
       <PageHero
-        title="Our growing"
-        highlight="network"
-        description="Built over 35+ years of trust — connecting clients, partners, and principals across the financial services ecosystem."
-        icon={Globe}
+        title={t('network.title')}
+        highlight={t('network.highlight')}
+        description={t('network.description')}
+        breadcrumbLabel={t('nav.network')}
       />
 
       <div className="border-b border-border bg-background sticky top-0 z-20">
@@ -61,7 +69,7 @@ const Network = () => {
                   activeTab === tab ? 'text-foreground font-medium' : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
-                {tab}
+                {t(tabI18nKeys[tab])}
                 {activeTab === tab && (
                   <motion.div layoutId="network-tab-underline" className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-primary" />
                 )}

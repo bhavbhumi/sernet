@@ -1,12 +1,13 @@
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface PageHeroProps {
   title: string;
   highlight?: string;
   description: string;
-  icon?: any; // kept for backward compat, no longer rendered
+  icon?: any;
   ctaText?: string;
   ctaLink?: string;
   customImage?: string;
@@ -34,12 +35,12 @@ export const PageHero = ({
   breadcrumbLabel,
 }: PageHeroProps) => {
   const { pathname } = useLocation();
+  const { t } = useTranslation();
   const label = breadcrumbLabel || routeLabels[pathname] || pathname.replace('/', '').replace(/-/g, ' ');
 
   return (
     <section className="py-12 md:py-16 bg-section-alt">
       <div className="container-zerodha">
-        {/* Breadcrumbs */}
         <motion.nav
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
@@ -47,12 +48,11 @@ export const PageHero = ({
           className="flex items-center gap-1.5 text-sm text-muted-foreground mb-6"
           aria-label="Breadcrumb"
         >
-          <Link to="/" className="hover:text-foreground transition-colors">Home</Link>
+          <Link to="/" className="hover:text-foreground transition-colors">{t('breadcrumb.home', 'Home')}</Link>
           <ChevronRight className="w-3.5 h-3.5" />
           <span className="text-foreground font-medium capitalize">{label}</span>
         </motion.nav>
 
-        {/* Title & Description */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
