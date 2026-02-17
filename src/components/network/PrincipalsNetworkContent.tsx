@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion';
-import { Shield, TrendingUp, Landmark, Award, ArrowRight, Banknote, Heart, Coins, ScrollText, CreditCard, Scale, Check } from 'lucide-react';
+import { Shield, TrendingUp, Landmark, Award, ArrowRight, Banknote, Heart, Coins, ScrollText, CreditCard, Scale, Check, Handshake } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import networkPrincipalsImg from '@/assets/network-principals.webp';
 import { AutoScrollShowcase, type ShowcaseItem } from './AutoScrollShowcase';
+import { TieupFormDialog } from '@/components/shared/TieupFormDialog';
 
 const principalStats = [
   { icon: Shield, value: '10+', label: 'Principal Partners' },
@@ -189,9 +190,13 @@ export const PrincipalsNetworkContent = () => (
               <Link to="/schedule-call" className="btn-primary inline-flex items-center">
                 Schedule a Call <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
-              <Link to="/about" className="btn-secondary inline-flex items-center">
-                About SERNET
-              </Link>
+              <TieupFormDialog
+                trigger={
+                  <button className="btn-secondary inline-flex items-center">
+                    Propose a Tieup <Handshake className="ml-2 h-4 w-4" />
+                  </button>
+                }
+              />
             </div>
             {/* 3 Stats */}
             <div className="flex flex-wrap gap-6 lg:gap-8">
