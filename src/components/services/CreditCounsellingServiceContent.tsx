@@ -43,7 +43,7 @@ export const CreditCounsellingServiceContent = () => (
                 </li>
               ))}
             </ul>
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3 mb-10">
               <a
                 href="https://ekyc.choiceindia.com/open-free-demat-account"
                 target="_blank"
@@ -55,6 +55,17 @@ export const CreditCounsellingServiceContent = () => (
               <Link to="/contact" className="link-primary inline-flex items-center gap-1 text-sm font-medium">
                 Book a Session <ArrowRight className="w-4 h-4" />
               </Link>
+            </div>
+            {/* Trust strip stats */}
+            <div className="flex flex-wrap gap-6 lg:gap-8">
+              {stats.map((stat, i) => (
+                <div key={i} className="flex items-center gap-2.5">
+                  <div>
+                    <p className="text-sm font-medium text-foreground leading-tight">{stat.value}</p>
+                    <p className="text-xs text-muted-foreground">{stat.label}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </motion.div>
 
@@ -102,14 +113,6 @@ export const CreditCounsellingServiceContent = () => (
                   </div>
                 ))}
               </div>
-            </div>
-            <div className="flex items-center justify-center gap-8 mt-8">
-              {stats.map((stat, i) => (
-                <div key={i} className="text-center">
-                  <div className="text-2xl font-bold text-foreground">{stat.value}</div>
-                  <div className="text-small">{stat.label}</div>
-                </div>
-              ))}
             </div>
           </motion.div>
         </div>
