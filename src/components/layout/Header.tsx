@@ -40,6 +40,13 @@ const menuSections = [
       { name: 'Circulars', href: '/updates', external: false },
     ],
   },
+  {
+    title: 'Referral Programs',
+    links: [
+      { name: 'Client Referral Program', href: '/referral/client', external: false },
+      { name: 'Partner Referral Program', href: '/referral/partner', external: false },
+    ],
+  },
 ];
 
 export const Header = () => {
@@ -191,7 +198,7 @@ export const Header = () => {
               </div>
 
               {/* Menu sections in grid */}
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
                 {menuSections.map((section) => (
                   <div key={section.title}>
                     <h3 className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider mb-3">
