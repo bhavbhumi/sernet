@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
 import { ArrowRight, Handshake, Check, User, Briefcase, Megaphone, ArrowRightLeft, Clock, Layers } from 'lucide-react';
 import networkPartnersImg from '@/assets/network-partners.webp';
 import { AutoScrollShowcase, type ShowcaseItem } from './AutoScrollShowcase';
+import { ReferralFormDialog } from '@/components/shared/ReferralFormDialog';
 
 const partnerStats = [
   { icon: Handshake, value: '50+', label: 'Partner Institutions' },
@@ -111,12 +111,22 @@ export const PartnersNetworkContent = () => (
             </ul>
 
             <div className="flex flex-wrap gap-4 mb-10">
-              <Link to="/referral/partner" className="btn-primary inline-flex items-center">
-                Become a Partner <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-              <Link to="/referral/partner" className="btn-secondary inline-flex items-center">
-                Refer a Partner
-              </Link>
+              <ReferralFormDialog
+                type="partner"
+                trigger={
+                  <button className="btn-primary inline-flex items-center">
+                    Become a Partner <ArrowRight className="ml-2 h-4 w-4" />
+                  </button>
+                }
+              />
+              <ReferralFormDialog
+                type="partner"
+                trigger={
+                  <button className="btn-secondary inline-flex items-center">
+                    Refer a Partner
+                  </button>
+                }
+              />
             </div>
             {/* 3 Stats */}
             <div className="flex flex-wrap gap-6 lg:gap-8">
@@ -159,18 +169,23 @@ export const PartnersNetworkContent = () => (
       items={partnerShowcaseItems}
     />
 
-    {/* Partner Referral CTA */}
+    {/* Partner CTA */}
     <section className="section-padding bg-section-alt">
       <div className="container-zerodha">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-3xl mx-auto p-8 rounded-lg border border-primary/20 bg-primary/5 text-center">
           <Handshake className="w-10 h-10 text-primary mx-auto mb-4" />
-          <h3 className="heading-md text-foreground mb-3">Partner Referral Programme</h3>
+          <h3 className="heading-md text-foreground mb-3">Know someone who could partner with us?</h3>
           <p className="text-body text-sm mb-6 max-w-xl mx-auto">
-            Are you a financial advisor, CA, or business? Partner with SERNET and earn attractive referral commissions while your clients get access to premium financial services.
+            Are you a financial advisor, CA, or business? Share your details and our partnerships team will get in touch.
           </p>
-          <Link to="/referral/partner" className="btn-primary inline-flex items-center">
-            Become a partner <ArrowRight className="ml-2 h-4 w-4" />
-          </Link>
+          <ReferralFormDialog
+            type="partner"
+            trigger={
+              <button className="btn-primary inline-flex items-center">
+                Become a Partner <ArrowRight className="ml-2 h-4 w-4" />
+              </button>
+            }
+          />
         </motion.div>
       </div>
     </section>

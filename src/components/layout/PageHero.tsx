@@ -20,8 +20,6 @@ const routeLabels: Record<string, string> = {
   '/about': 'About',
   '/network': 'Network',
   '/pricing': 'Pricing',
-  '/client-referral': 'Client Referral',
-  '/partner-referral': 'Partner Referral',
   '/opinions': 'Opinions',
   '/updates': 'Updates',
   '/calculators': 'Calculators',
