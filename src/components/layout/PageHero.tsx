@@ -24,6 +24,9 @@ const routeLabels: Record<string, string> = {
   '/partner-referral': 'Partner Referral',
   '/opinions': 'Opinions',
   '/updates': 'Updates',
+  '/calculators': 'Calculators',
+  '/calendars': 'Calendars',
+  '/downloads': 'Downloads',
 };
 
 export const PageHero = ({
