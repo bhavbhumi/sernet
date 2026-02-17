@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
-import { User, Mail, Phone, MessageSquare, Headphones, BarChart3, Receipt, Newspaper } from 'lucide-react';
+import { User, Mail, Phone, MessageSquare, Headphones, BarChart3, Receipt, Newspaper, Tag, Clock, CalendarDays, SunMedium, ChevronRight, ArrowUpRight } from 'lucide-react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const departments = [
   {
@@ -33,8 +34,15 @@ const departments = [
   },
 ];
 
+const escalationMatrix = [
+  { level: 'Level 1', designation: 'Customer Support Executive', contact: 'support@sernetindia.com', phone: '+91-22-35000567', timeline: 'Within 24 hours' },
+  { level: 'Level 2', designation: 'Branch Manager / Team Lead', contact: 'escalation@sernetindia.com', phone: '+91-22-35000568', timeline: 'Within 3 working days' },
+  { level: 'Level 3', designation: 'Compliance Officer', contact: 'compliance@sernetindia.com', phone: '+91-22-35000569', timeline: 'Within 7 working days' },
+  { level: 'Level 4', designation: 'Managing Director', contact: 'md@sernetindia.com', phone: '+91-22-35000570', timeline: 'Within 15 working days' },
+];
+
 const AskUsContent = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', topic: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -44,29 +52,29 @@ const AskUsContent = () => {
 
   return (
     <>
-      {/* Ask Form + Illustration */}
+      {/* Ask Form + Contact Info */}
       <section className="section-padding bg-background">
         <div className="container-zerodha max-w-5xl">
-          <div className="grid md:grid-cols-2 gap-12 items-start">
-            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
+          <div className="grid md:grid-cols-2 gap-12 items-stretch">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} className="flex flex-col">
               <h2 className="text-[1.75rem] md:text-[2rem] font-normal text-foreground mb-2">
                 Have something to <span className="text-primary font-medium underline underline-offset-4">Ask?</span>
               </h2>
               <p className="text-muted-foreground mb-8">Fill the form! We will be happy to get back to you.</p>
 
               {submitted ? (
-                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-card border border-border rounded-lg p-8 text-center">
+                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-card border border-border rounded-lg p-8 text-center flex-1 flex flex-col items-center justify-center">
                   <div className="w-16 h-16 rounded-full bg-green-100 mx-auto mb-4 flex items-center justify-center">
                     <MessageSquare className="w-8 h-8 text-green-600" />
                   </div>
                   <h3 className="text-lg font-medium text-foreground mb-2">Message Sent!</h3>
                   <p className="text-muted-foreground mb-6">We'll get back to you within 24 hours.</p>
-                  <button onClick={() => { setSubmitted(false); setFormData({ name: '', email: '', phone: '', message: '' }); }} className="bg-primary text-primary-foreground px-6 py-2.5 rounded-md text-sm hover:bg-primary/90 transition-colors">
+                  <button onClick={() => { setSubmitted(false); setFormData({ name: '', email: '', phone: '', topic: '', message: '' }); }} className="bg-primary text-primary-foreground px-6 py-2.5 rounded-md text-sm hover:bg-primary/90 transition-colors">
                     Send Another
                   </button>
                 </motion.div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4 flex-1 flex flex-col">
                   <div>
                     <div className="relative">
                       <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -83,8 +91,12 @@ const AskUsContent = () => {
                       <input type="tel" maxLength={15} value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} className="w-full pl-10 pr-4 py-3 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary" placeholder="Mobile Number (Optional)" />
                     </div>
                   </div>
-                  <textarea required maxLength={1000} rows={4} value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="w-full px-4 py-3 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary resize-none" placeholder="Message us" />
-                  <button type="submit" disabled={!formData.name || !formData.email || !formData.message} className="bg-primary text-primary-foreground px-8 py-3 rounded-md text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                  <div className="relative">
+                    <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <input type="text" required maxLength={150} value={formData.topic} onChange={(e) => setFormData({ ...formData, topic: e.target.value })} className="w-full pl-10 pr-4 py-3 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary" placeholder="Topic of your inquiry" />
+                  </div>
+                  <textarea required maxLength={1000} rows={4} value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="w-full px-4 py-3 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary resize-none flex-1 min-h-[100px]" placeholder="Message us" />
+                  <button type="submit" disabled={!formData.name || !formData.email || !formData.topic || !formData.message} className="bg-primary text-primary-foreground px-8 py-3 rounded-md text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
                     Submit
                   </button>
                 </form>
@@ -92,25 +104,46 @@ const AskUsContent = () => {
             </motion.div>
 
             {/* Contact Info */}
-            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.15 }}>
-              <div className="bg-card border border-border rounded-lg p-6 mb-6">
-                <h3 className="text-xl font-medium text-foreground mb-4">Contact Us</h3>
-                <p className="text-muted-foreground mb-4">
-                  Call us on <a href="tel:+912235000567" className="text-primary hover:underline font-medium">+91-22-35000567</a>
-                </p>
-                <div className="space-y-4 text-sm">
-                  <div>
-                    <h4 className="font-medium text-foreground mb-1">Working hours</h4>
-                    <p className="text-muted-foreground">Monday to Friday</p>
-                    <p className="text-muted-foreground">10.00 am to 5.00 pm</p>
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.15 }} className="flex flex-col">
+              <div className="bg-card border border-border rounded-lg p-6 flex-1 flex flex-col justify-between">
+                <div>
+                  <h3 className="text-xl font-medium text-foreground mb-4">Contact Us</h3>
+                  <p className="text-muted-foreground mb-6">
+                    Call us on <a href="tel:+912235000567" className="text-primary hover:underline font-medium">+91-22-35000567</a>
+                  </p>
+                </div>
+                <div className="space-y-5 text-sm">
+                  <div className="flex items-start gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
+                      <Clock className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-foreground mb-1">Week Days</h4>
+                      <p className="text-muted-foreground">Monday to Friday</p>
+                      <p className="text-muted-foreground">10:00 am to 6:00 pm</p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="font-medium text-foreground mb-1">4th Saturday</h4>
-                    <p className="text-muted-foreground">10.00 am to 1.00 pm</p>
+                  <div className="flex items-start gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
+                      <CalendarDays className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-foreground mb-1">Weekend</h4>
+                      <p className="text-muted-foreground">All Saturdays</p>
+                      <p className="text-muted-foreground">10:00 am to 3:00 pm</p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="font-medium text-foreground mb-1">Regular Holidays</h4>
-                    <p className="text-muted-foreground">All Sundays, 2nd & 4th Saturdays, and public holidays.</p>
+                  <div className="flex items-start gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
+                      <SunMedium className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-foreground mb-1">Holidays</h4>
+                      <p className="text-muted-foreground">All Sundays, Public Holidays</p>
+                      <Link to="/calendars" className="text-primary text-sm hover:underline inline-flex items-center gap-1 mt-1">
+                        View Market Holidays <ArrowUpRight className="w-3.5 h-3.5" />
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -122,6 +155,9 @@ const AskUsContent = () => {
       {/* Department Cards */}
       <section className="section-padding bg-section-alt">
         <div className="container-zerodha max-w-5xl">
+          <h3 className="text-xl md:text-2xl font-normal text-foreground mb-8">
+            Reach the right <span className="text-primary font-medium">department</span>
+          </h3>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {departments.map((dept, i) => (
               <motion.div
@@ -130,15 +166,60 @@ const AskUsContent = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.08 }}
-                className="bg-card border border-border rounded-lg p-5"
+                className="group bg-card border border-border rounded-lg p-5 hover:shadow-lg hover:border-primary/20 hover:-translate-y-1 transition-all duration-300"
               >
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-3 group-hover:bg-primary/20 transition-colors">
                   <dept.icon className="w-5 h-5 text-primary" />
                 </div>
                 <h4 className="font-medium text-foreground mb-1">{dept.title}</h4>
                 <a href={`tel:${dept.phone.replace(/-/g, '')}`} className="text-primary text-sm hover:underline block mb-1">{dept.phone}</a>
                 <p className="text-xs text-muted-foreground mb-2">{dept.description}</p>
                 <a href={`mailto:${dept.email}`} className="text-primary text-sm hover:underline">{dept.email}</a>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Escalation Matrix */}
+      <section className="section-padding bg-background">
+        <div className="container-zerodha max-w-5xl">
+          <h3 className="text-xl md:text-2xl font-normal text-foreground mb-2">
+            Escalation <span className="text-primary font-medium">Matrix</span>
+          </h3>
+          <p className="text-muted-foreground mb-8 text-sm">If your concern is not resolved satisfactorily, you may escalate as follows.</p>
+
+          <div className="space-y-4">
+            {escalationMatrix.map((item, i) => (
+              <motion.div
+                key={item.level}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.1 }}
+                className="group bg-card border border-border rounded-lg p-5 flex flex-col sm:flex-row sm:items-center gap-4 hover:shadow-lg hover:border-primary/20 transition-all duration-300"
+              >
+                <div className="flex items-center gap-4 sm:w-48 shrink-0">
+                  <span className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold text-sm group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                    {i + 1}
+                  </span>
+                  <div>
+                    <p className="text-xs text-muted-foreground">{item.level}</p>
+                    <p className="font-medium text-foreground text-sm">{item.designation}</p>
+                  </div>
+                </div>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 flex-1 text-sm">
+                  <a href={`mailto:${item.contact}`} className="text-primary hover:underline flex items-center gap-1">
+                    <Mail className="w-3.5 h-3.5" /> {item.contact}
+                  </a>
+                  <a href={`tel:${item.phone.replace(/-/g, '')}`} className="text-primary hover:underline flex items-center gap-1">
+                    <Phone className="w-3.5 h-3.5" /> {item.phone}
+                  </a>
+                </div>
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground sm:w-44 shrink-0 justify-end">
+                  <ChevronRight className="w-3.5 h-3.5" />
+                  <span>{item.timeline}</span>
+                </div>
               </motion.div>
             ))}
           </div>
