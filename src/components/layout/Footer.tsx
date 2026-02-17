@@ -10,7 +10,6 @@ const footerLinks = {
     { name: 'Press', href: '/about' },
     { name: 'Recognition', href: '/about' },
     { name: 'Reviews', href: '/about' },
-    { name: 'Referral Programs', href: '/referral' },
   ],
   explore: [
     { name: 'Tick Funds', href: '/services' },
@@ -18,8 +17,6 @@ const footerLinks = {
     { name: 'Choice FinX', href: '/services' },
     { name: 'Findemy', href: '/z-connect' },
     { name: 'Insights', href: '/z-connect' },
-    { name: 'Resources', href: '/downloads' },
-    { name: 'Updates', href: '/updates' },
   ],
   support: [
     { name: 'Contact Us', href: '/support' },
