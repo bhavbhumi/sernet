@@ -65,7 +65,7 @@ export const TradingServiceContent = () => (
                   <span className="text-sm font-semibold">Google Play</span>
                 </div>
               </a>
-              <Link to="/products/kite" className="link-primary inline-flex items-center gap-1 text-sm font-medium">
+              <Link to="/choicefinx" className="link-primary inline-flex items-center gap-1 text-sm font-medium">
                 Know More <ArrowRight className="w-4 h-4" />
               </Link>
             </div>

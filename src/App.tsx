@@ -69,6 +69,12 @@ import Opinions from "./pages/Opinions";
 import UpdatesPage from "./pages/Updates";
 import Contact from "./pages/Contact";
 
+// Product landing pages
+import ChoiceFinX from "./pages/ChoiceFinX";
+import TickFunds from "./pages/TickFunds";
+import TushilPage from "./pages/Tushil";
+import Findemy from "./pages/Findemy";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -146,6 +152,12 @@ const App = () => (
           <Route path="/contact" element={<Contact />} />
           <Route path="/opinions" element={<Opinions />} />
           <Route path="/updates" element={<UpdatesPage />} />
+          
+          {/* Product landing pages */}
+          <Route path="/choicefinx" element={<ChoiceFinX />} />
+          <Route path="/tickfunds" element={<TickFunds />} />
+          <Route path="/tushil" element={<TushilPage />} />
+          <Route path="/findemy" element={<Findemy />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
