@@ -89,7 +89,7 @@ export const Header = () => {
             <Link
               key={link.href}
               to={link.href}
-              className={`text-[14px] xl:text-[16px] whitespace-nowrap transition-colors hover:text-primary active:text-primary ${
+              className={`text-[15px] xl:text-[17px] whitespace-nowrap transition-colors hover:text-primary active:text-primary ${
                 location.pathname === link.href ? 'text-primary' : 'text-muted-foreground'
               }`}
             >
@@ -104,7 +104,7 @@ export const Header = () => {
           <div ref={desktopLangRef} className="relative">
             <button
               type="button"
-              className="flex items-center gap-1 text-[14px] text-muted-foreground hover:text-primary transition-colors"
+              className="flex items-center gap-1 text-[15px] text-muted-foreground hover:text-primary transition-colors"
               onClick={() => setLangOpen(!langOpen)}
             >
               <Globe className="h-4 w-4" />
