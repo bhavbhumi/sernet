@@ -699,6 +699,7 @@ export type Database = {
           section: string
           sort_order: number | null
           status: string
+          tab_name: string | null
           title: string
           updated_at: string
         }
@@ -713,6 +714,7 @@ export type Database = {
           section?: string
           sort_order?: number | null
           status?: string
+          tab_name?: string | null
           title: string
           updated_at?: string
         }
@@ -727,6 +729,7 @@ export type Database = {
           section?: string
           sort_order?: number | null
           status?: string
+          tab_name?: string | null
           title?: string
           updated_at?: string
         }
