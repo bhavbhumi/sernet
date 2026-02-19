@@ -45,12 +45,8 @@ export default function ArticleDetail() {
   const handleShare = async () => {
     const url = window.location.href;
     await recordShare();
-    if (navigator.share) {
-      navigator.share({ title: article?.title, url }).catch(() => {});
-    } else {
-      navigator.clipboard.writeText(url);
-      toast({ title: 'Link copied!', description: 'Article link copied to clipboard.' });
-    }
+    navigator.clipboard.writeText(url);
+    toast({ title: '🔗 Link copied!', description: 'Paste it anywhere to share this article.' });
   };
 
   if (isLoading) {
