@@ -32,7 +32,6 @@ function TableOfContents({ toc, activeSlug }: { toc: TocEntry[]; activeSlug: str
       initial={{ opacity: 0, x: -10 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.4, delay: 0.3 }}
-      className="hidden lg:block"
     >
       <div className="sticky top-24 bg-muted/40 border border-border/60 rounded-xl p-4 w-56">
         <div className="flex items-center gap-2 mb-3 text-sm font-semibold text-foreground">
@@ -208,10 +207,10 @@ export default function ArticleDetail() {
         <div className="flex gap-8 items-start">
           {/* LEFT: TOC sidebar (only shown when there are 2+ headings) */}
           {toc.length >= 2 && (
-            <div className="shrink-0">
+            <div className="shrink-0 hidden lg:block sticky top-24 self-start">
               {/* Media / thumbnail at top of sidebar column */}
               {hasMedia && (
-                <div className="hidden lg:block w-56 mb-4">
+                <div className="w-56 mb-4">
                   {article.thumbnail_url && (
                     <div className="rounded-xl overflow-hidden border border-border mb-3">
                       <img src={article.thumbnail_url} alt={article.title} className="w-full object-cover" />
