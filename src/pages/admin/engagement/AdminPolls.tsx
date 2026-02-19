@@ -121,19 +121,24 @@ export default function AdminPolls() {
         ) : polls.length === 0 ? (
           <div className="py-16 text-center text-muted-foreground">No polls yet. Create one!</div>
         ) : polls.map(poll => (
-          <div key={poll.id} className="bg-card border border-border rounded-xl p-5 flex gap-4 items-start">
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-1 flex-wrap">
-                <Badge variant="secondary">{poll.category}</Badge>
-                <Badge variant={poll.status === 'active' ? 'default' : 'secondary'}>{poll.status}</Badge>
-              </div>
-              <p className="font-medium text-foreground">{poll.question}</p>
-              {poll.ends_at && <p className="text-xs text-muted-foreground mt-1">Ends: {new Date(poll.ends_at).toLocaleDateString()}</p>}
+          <div key={poll.id} className="bg-card border border-border rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-1 flex-wrap">
+              <Badge variant="secondary">{poll.category}</Badge>
+              <Badge variant={poll.status === 'active' ? 'default' : 'secondary'}>{poll.status}</Badge>
             </div>
-            <div className="flex items-center gap-1 shrink-0">
-              <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => viewResults(poll)} title="View Results"><BarChart2 className="h-4 w-4" /></Button>
-              <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openEdit(poll)}><Pencil className="h-4 w-4" /></Button>
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive" onClick={() => handleDelete(poll.id)}><Trash2 className="h-4 w-4" /></Button>
+            <p className="font-medium text-foreground">{poll.question}</p>
+            {poll.ends_at && <p className="text-xs text-muted-foreground mt-1">Ends: {new Date(poll.ends_at).toLocaleDateString()}</p>}
+            {/* Horizontal action bar */}
+            <div className="flex items-center gap-1 pt-2 mt-2 border-t border-border/60 flex-wrap">
+              <Button variant="ghost" size="sm" className="h-7 px-2 text-xs gap-1.5" onClick={() => viewResults(poll)}>
+                <BarChart2 className="h-3 w-3" /> Results
+              </Button>
+              <Button variant="ghost" size="sm" className="h-7 px-2 text-xs gap-1.5" onClick={() => openEdit(poll)}>
+                <Pencil className="h-3 w-3" /> Edit
+              </Button>
+              <Button variant="ghost" size="sm" className="h-7 px-2 text-xs gap-1.5 text-destructive hover:text-destructive ml-auto" onClick={() => handleDelete(poll.id)}>
+                <Trash2 className="h-3 w-3" /> Delete
+              </Button>
             </div>
           </div>
         ))}

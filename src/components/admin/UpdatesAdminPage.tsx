@@ -225,7 +225,7 @@ export default function UpdatesAdminPage({ mode }: UpdatesAdminPageProps) {
                 <th className="px-4 py-3 text-left font-medium text-muted-foreground w-28">Source</th>
                 <th className="px-4 py-3 text-left font-medium text-muted-foreground w-20">Type</th>
                 <th className="px-4 py-3 text-left font-medium text-muted-foreground w-24">Status</th>
-                <th className="px-4 py-3 text-right font-medium text-muted-foreground w-28">Actions</th>
+                <th className="px-4 py-3 w-4" />
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
@@ -240,6 +240,18 @@ export default function UpdatesAdminPage({ mode }: UpdatesAdminPageProps) {
                   <td className="px-4 py-3">
                     <p className="font-medium text-foreground line-clamp-1">{item.title}</p>
                     {item.summary && <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">{item.summary}</p>}
+                    {/* Horizontal action bar */}
+                    <div className="flex items-center gap-0.5 mt-1.5">
+                      <Button variant="ghost" size="sm" className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground gap-1" onClick={() => toggleStatus(item)}>
+                        {item.status === 'published' ? <><EyeOff className="h-3 w-3" /> Unpublish</> : <><Eye className="h-3 w-3" /> Publish</>}
+                      </Button>
+                      <Button variant="ghost" size="sm" className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground gap-1" onClick={() => openEdit(item)}>
+                        <Pencil className="h-3 w-3" /> Edit
+                      </Button>
+                      <Button variant="ghost" size="sm" className="h-6 px-2 text-xs text-destructive hover:text-destructive gap-1" onClick={() => handleDelete(item.id)}>
+                        <Trash2 className="h-3 w-3" /> Delete
+                      </Button>
+                    </div>
                   </td>
                   <td className="px-4 py-3 text-muted-foreground">
                     <span className="line-clamp-1 text-xs">{item.category}</span>
@@ -255,19 +267,7 @@ export default function UpdatesAdminPage({ mode }: UpdatesAdminPageProps) {
                   <td className="px-4 py-3">
                     <Badge variant={item.status === 'published' ? 'default' : 'secondary'}>{item.status}</Badge>
                   </td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center justify-end gap-1">
-                      <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => toggleStatus(item)} title={item.status === 'published' ? 'Unpublish' : 'Publish'}>
-                        {item.status === 'published' ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
-                      </Button>
-                      <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => openEdit(item)}>
-                        <Pencil className="h-3.5 w-3.5" />
-                      </Button>
-                      <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive hover:text-destructive" onClick={() => handleDelete(item.id)}>
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </Button>
-                    </div>
-                  </td>
+                  <td className="px-4 py-3 w-4" />
                 </tr>
               ))}
             </tbody>
