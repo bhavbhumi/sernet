@@ -278,7 +278,7 @@ export const SurveysContent = () => {
   useEffect(() => {
     if (surveys.length === 0) return;
     surveys.forEach(async (s) => {
-      const { count } = await db('survey_responses').select('id', { count: 'exact', head: true }).eq('survey_id', s.id);
+      const { count } = await db('survey_responses').select('*', { count: 'exact', head: true }).eq('survey_id', s.id);
       setResponseCounts(prev => ({ ...prev, [s.id]: count ?? 0 }));
     });
   }, [surveys]);
