@@ -3,6 +3,33 @@ import { motion } from 'framer-motion';
 import {
   AlertCircle, Calendar, ExternalLink, Filter, Rss, Loader2, ArrowRight,
 } from 'lucide-react';
+
+// ─── Source Logo ──────────────────────────────────────────────────────────────
+
+function SourceLogo({ feedUrl, source }: { feedUrl: string | null; source: string }) {
+  const [failed, setFailed] = useState(false);
+  const domain = feedUrl ? (() => { try { return new URL(feedUrl).hostname; } catch { return null; } })() : null;
+  const faviconUrl = domain ? `https://www.google.com/s2/favicons?domain=${domain}&sz=64` : null;
+
+  if (!faviconUrl || failed) {
+    return (
+      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+        <Rss className="w-5 h-5 text-primary" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center shrink-0 overflow-hidden border border-border/50">
+      <img
+        src={faviconUrl}
+        alt={source}
+        className="w-6 h-6 object-contain"
+        onError={() => setFailed(true)}
+      />
+    </div>
+  );
+}
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { format, parseISO, isValid } from 'date-fns';
@@ -91,9 +118,7 @@ function RssFeedBlock({ dbItem, index }: { dbItem: DbCircularItem; index: number
           transition={{ duration: 0.3, delay: 0.04 * (index + i) }}
           className="flex gap-4 p-5 bg-muted/30 rounded-lg border border-border/50 hover:shadow-md hover:border-primary/20 transition-all group"
         >
-          <div className="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center shrink-0">
-            <Rss className="w-5 h-5 text-red-500" />
-          </div>
+          <SourceLogo feedUrl={dbItem.rss_feed_url} source={item.source} />
           <div className="flex-1 min-w-0">
             <a
               href={item.link}
