@@ -111,12 +111,41 @@ export function GenericCMSPage({
     return matchSearch && matchStatus;
   });
 
+  // Status counts for stat chips
+  const statusCounts = hasStatus ? {
+    all: items.length,
+    draft: items.filter(i => i.status === 'draft').length,
+    published: items.filter(i => i.status === 'published').length,
+    archived: items.filter(i => i.status === 'archived').length,
+  } : null;
+
   return (
     <AdminLayout
       title={title}
       subtitle={subtitle}
       actions={<Button onClick={openNew} size="sm"><Plus className="h-4 w-4 mr-1.5" /> New</Button>}
     >
+      {/* Status stat chips */}
+      {statusCounts && (
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+          {([
+            { key: 'all', label: 'Total' },
+            { key: 'published', label: 'Published' },
+            { key: 'draft', label: 'Draft' },
+            { key: 'archived', label: 'Archived' },
+          ] as const).map(({ key, label }) => (
+            <button
+              key={key}
+              onClick={() => setFilterStatus(key)}
+              className={`border rounded-lg p-3 text-left transition-colors ${filterStatus === key ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/30'}`}
+            >
+              <p className="text-xs text-muted-foreground">{label}</p>
+              <p className="text-2xl font-semibold text-foreground">{statusCounts[key]}</p>
+            </button>
+          ))}
+        </div>
+      )}
+
       <div className="flex gap-3 mb-5 flex-wrap">
         <div className="relative flex-1 min-w-[200px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -154,11 +183,27 @@ export function GenericCMSPage({
               ) : filtered.length === 0 ? (
                 <tr><td colSpan={tableColumns.length + 1} className="px-4 py-12 text-center text-muted-foreground">No items found. Click "New" to add one.</td></tr>
               ) : filtered.map(item => (
-                <tr key={String(item.id)} className="hover:bg-muted/20">
+                <tr key={String(item.id)} className="hover:bg-muted/20 group">
                   {tableColumns.map(col => (
                     <td key={col.key} className="px-4 py-3 text-muted-foreground">
                     {col.key === 'title' ? (
-                        <p className="font-medium text-foreground line-clamp-1">{String(item[col.key] ?? '')}</p>
+                        <div>
+                          <p className="font-medium text-foreground line-clamp-1">{String(item[col.key] ?? '')}</p>
+                          {/* Inline action bar below title */}
+                          <div className="flex items-center gap-0.5 mt-1.5">
+                            {hasStatus && (
+                              <Button variant="ghost" size="sm" className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground gap-1" onClick={() => toggleStatus(item)} title={item.status === 'published' ? 'Unpublish' : 'Publish'}>
+                                {item.status === 'published' ? <><EyeOff className="h-3 w-3" /> Unpublish</> : <><Eye className="h-3 w-3" /> Publish</>}
+                              </Button>
+                            )}
+                            <Button variant="ghost" size="sm" className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground gap-1" onClick={() => openEdit(item)}>
+                              <Pencil className="h-3 w-3" /> Edit
+                            </Button>
+                            <Button variant="ghost" size="sm" className="h-6 px-2 text-xs text-destructive hover:text-destructive gap-1" onClick={() => handleDelete(String(item.id))}>
+                              <Trash2 className="h-3 w-3" /> Delete
+                            </Button>
+                          </div>
+                        </div>
                       ) : col.key === 'status' ? (
                         <Badge variant={item[col.key] === 'published' ? 'default' : 'secondary'}>
                           {String(item[col.key] ?? '')}
@@ -172,21 +217,7 @@ export function GenericCMSPage({
                       )}
                     </td>
                   ))}
-                  <td className="px-4 py-3">
-                    <div className="flex items-center justify-end gap-1">
-                      {hasStatus && (
-                        <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => toggleStatus(item)} title={item.status === 'published' ? 'Unpublish' : 'Publish'}>
-                          {item.status === 'published' ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
-                        </Button>
-                      )}
-                      <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => openEdit(item)}>
-                        <Pencil className="h-3.5 w-3.5" />
-                      </Button>
-                      <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive hover:text-destructive" onClick={() => handleDelete(String(item.id))}>
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </Button>
-                    </div>
-                  </td>
+                  <td className="px-4 py-3 w-6" />
                 </tr>
               ))}
             </tbody>
