@@ -20,7 +20,7 @@ import { FieldInfoTooltip } from '@/components/admin/FieldInfoTooltip';
 export interface FieldDef {
   key: string;
   label: string;
-  type: 'text' | 'textarea' | 'select' | 'number' | 'url' | 'html';
+  type: 'text' | 'textarea' | 'select' | 'number' | 'url' | 'html' | 'checkbox';
   options?: string[];
   placeholder?: string;
   required?: boolean;
@@ -150,11 +150,15 @@ export function GenericCMSPage({
                 <tr key={String(item.id)} className="hover:bg-muted/20">
                   {tableColumns.map(col => (
                     <td key={col.key} className="px-4 py-3 text-muted-foreground">
-                      {col.key === 'title' ? (
+                    {col.key === 'title' ? (
                         <p className="font-medium text-foreground line-clamp-1">{String(item[col.key] ?? '')}</p>
                       ) : col.key === 'status' ? (
                         <Badge variant={item[col.key] === 'published' ? 'default' : 'secondary'}>
                           {String(item[col.key] ?? '')}
+                        </Badge>
+                      ) : typeof item[col.key] === 'boolean' ? (
+                        <Badge variant={item[col.key] ? 'default' : 'secondary'}>
+                          {item[col.key] ? 'Yes' : 'No'}
                         </Badge>
                       ) : (
                         <span className="line-clamp-1">{String(item[col.key] ?? '')}</span>
@@ -227,6 +231,17 @@ export function GenericCMSPage({
                       {field.options.map(opt => <SelectItem key={opt} value={opt}>{opt}</SelectItem>)}
                     </SelectContent>
                   </Select>
+                )}
+                {field.type === 'checkbox' && (
+                  <label className="flex items-center gap-2 cursor-pointer mt-1">
+                    <input
+                      type="checkbox"
+                      checked={Boolean(form[field.key])}
+                      onChange={e => setForm(f => ({ ...f, [field.key]: e.target.checked }))}
+                      className="w-4 h-4 accent-primary rounded"
+                    />
+                    <span className="text-sm text-muted-foreground">{field.placeholder || `Enable ${field.label}`}</span>
+                  </label>
                 )}
               </div>
             ))}
