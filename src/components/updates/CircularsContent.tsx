@@ -36,15 +36,16 @@ interface RssFeedItem {
 // ─── RSS feed block ───────────────────────────────────────────────────────────
 
 function RssFeedBlock({ dbItem, index }: { dbItem: DbCircularItem; index: number }) {
-  const { data: feedItems = [], isLoading, isError } = useQuery({
+  const { data: feedItems = [], isLoading, isError, error } = useQuery<RssFeedItem[], Error>({
     queryKey: ['rss_feed_circular', dbItem.id],
     enabled: !!dbItem.is_rss && !!dbItem.rss_feed_url,
     staleTime: 5 * 60 * 1000,
+    retry: 1,
     queryFn: async (): Promise<RssFeedItem[]> => {
       const { data, error } = await supabase.functions.invoke('rss-fetch', {
         body: { feedUrl: dbItem.rss_feed_url, limit: 20 },
       });
-      if (error) throw error;
+      if (error) throw new Error(error.message);
       if (!data?.success) throw new Error(data?.error ?? 'Feed error');
       return (data.items as RssFeedItem[]).map((item) => ({
         ...item,
@@ -65,10 +66,17 @@ function RssFeedBlock({ dbItem, index }: { dbItem: DbCircularItem; index: number
   }
 
   if (isError || feedItems.length === 0) {
+    const errorMsg = isError && error?.message ? error.message : `No items found in feed from ${dbItem.source}.`;
     return (
-      <div className="flex items-center gap-2 py-4 px-5 text-muted-foreground text-sm">
-        <AlertCircle className="h-4 w-4 opacity-50" />
-        Could not load feed from {dbItem.source}.
+      <div className="flex gap-3 items-start py-4 px-5 bg-destructive/5 border border-destructive/20 rounded-lg text-sm">
+        <AlertCircle className="h-4 w-4 text-destructive shrink-0 mt-0.5" />
+        <div>
+          <p className="font-medium text-foreground">{dbItem.source} — Feed unavailable</p>
+          <p className="text-muted-foreground mt-0.5">{errorMsg}</p>
+          {dbItem.rss_feed_url && (
+            <p className="text-muted-foreground mt-1 text-xs break-all">URL: {dbItem.rss_feed_url}</p>
+          )}
+        </div>
       </div>
     );
   }

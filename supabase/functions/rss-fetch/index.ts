@@ -10,21 +10,18 @@ function stripCdata(val: string): string {
 }
 
 function extractTag(xml: string, tag: string): string {
-  // Matches <tag ...>content</tag> or <tag>content</tag>, unwrapping CDATA
   const re = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, 'i');
   const m = xml.match(re);
   return m ? stripCdata(m[1]).trim() : '';
 }
 
 function extractAtom(xml: string): RssItem[] {
-  // Atom feeds use <entry> elements
   const items: RssItem[] = [];
   const entryRe = /<entry[^>]*>([\s\S]*?)<\/entry>/g;
   let m;
   while ((m = entryRe.exec(xml)) !== null) {
     const body = m[1];
     const title = extractTag(body, 'title');
-    // Atom link: <link href="..." />
     const linkMatch = body.match(/<link[^>]+href=["']([^"']+)["'][^>]*\/>/i)
       || body.match(/<link[^>]+href=["']([^"']+)["'][^>]*>/i);
     const link = linkMatch ? linkMatch[1] : '';
@@ -45,7 +42,6 @@ interface RssItem {
 }
 
 function parseRSS(xml: string): RssItem[] {
-  // Detect Atom feed
   if (xml.includes('<feed') && xml.includes('</feed>')) {
     return extractAtom(xml);
   }
@@ -57,21 +53,17 @@ function parseRSS(xml: string): RssItem[] {
     const body = m[1];
     const title = extractTag(body, 'title');
 
-    // RSS <link> can be bare text node (not inside tags) or inside <link>...</link>
     let link = extractTag(body, 'link');
     if (!link) {
-      // Try text node between <link/> and next tag — some RSS feeds omit closing tag
       const bare = body.match(/<link\s*\/?>([\s\S]*?)(?=<)/i);
       link = bare ? bare[1].trim() : '';
     }
     if (!link) {
-      // Try <guid isPermaLink="true">
       const guidPerm = body.match(/<guid[^>]*isPermaLink=["']true["'][^>]*>([\s\S]*?)<\/guid>/i);
       link = guidPerm ? stripCdata(guidPerm[1]).trim() : '';
     }
 
     const summary = extractTag(body, 'description') || extractTag(body, 'summary') || extractTag(body, 'content:encoded');
-    // Strip HTML tags from summary
     const cleanSummary = summary.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').trim().slice(0, 300);
 
     const pubDate = extractTag(body, 'pubDate') || extractTag(body, 'dc:date') || extractTag(body, 'published');
@@ -103,28 +95,60 @@ Deno.serve(async (req) => {
 
     console.log('Fetching RSS feed:', feedUrl);
 
-    const response = await fetch(feedUrl, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; SernetRSSReader/1.0)',
-        'Accept': 'application/rss+xml, application/atom+xml, application/xml, text/xml, */*',
-      },
-      signal: AbortSignal.timeout(10000),
-    });
+    // Try multiple User-Agent strings for sites that block bots
+    const userAgents = [
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+      'Mozilla/5.0 (compatible; SernetRSSReader/1.0; +https://sernet.in)',
+      'Feedly/1.0 (+http://www.feedly.com/fetcher.html; like FeedFetcher-Google)',
+    ];
 
-    if (!response.ok) {
+    let response: Response | null = null;
+    let lastStatus = 0;
+
+    for (const ua of userAgents) {
+      try {
+        response = await fetch(feedUrl, {
+          redirect: 'follow',
+          headers: {
+            'User-Agent': ua,
+            'Accept': 'application/rss+xml, application/atom+xml, application/xml, text/xml, text/html, */*',
+            'Accept-Language': 'en-US,en;q=0.9',
+            'Cache-Control': 'no-cache',
+          },
+          signal: AbortSignal.timeout(15000),
+        });
+        lastStatus = response.status;
+        if (response.ok) break;
+      } catch (_) {
+        // Try next UA
+      }
+    }
+
+    if (!response || !response.ok) {
+      const errorMsg = lastStatus
+        ? `Feed URL returned HTTP ${lastStatus}. The URL may have changed or the source may be blocking automated requests.`
+        : 'Could not reach the feed URL. Please check the URL is correct and accessible.';
       return new Response(
-        JSON.stringify({ success: false, error: `Feed returned HTTP ${response.status}` }),
+        JSON.stringify({ success: false, error: errorMsg, httpStatus: lastStatus }),
         { status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
     const xml = await response.text();
-    const items = parseRSS(xml).slice(0, limit);
 
+    // Sanity-check: must look like XML/RSS
+    if (!xml.includes('<item') && !xml.includes('<entry') && !xml.includes('<rss') && !xml.includes('<feed')) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'The URL did not return a valid RSS/Atom feed. It may require authentication or have moved.' }),
+        { status: 422, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const items = parseRSS(xml).slice(0, limit);
     console.log(`Parsed ${items.length} items from feed`);
 
     return new Response(
-      JSON.stringify({ success: true, items }),
+      JSON.stringify({ success: true, items, finalUrl: response.url }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (err) {
