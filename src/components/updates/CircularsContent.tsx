@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { AlertCircle, Calendar, ExternalLink, Filter, Rss, Loader2 } from 'lucide-react';
+import { AlertCircle, Calendar, ExternalLink, Filter, Rss, Loader2, ArrowRight } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { format } from 'date-fns';
+import { Link } from 'react-router-dom';
 
 interface CircularItem {
   id: string;
@@ -118,22 +119,17 @@ export const CircularsContent = () => {
                   }
                 </div>
                 <div className="flex-1 min-w-0">
-                  {item.link ? (
-                    <a
-                      href={item.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-base font-semibold text-foreground hover:text-primary transition-colors group-hover:text-primary"
-                    >
-                      {item.title}
-                    </a>
-                  ) : (
-                    <p className="text-base font-semibold text-foreground">{item.title}</p>
-                  )}
+                  {/* Title always routes to internal detail page */}
+                  <Link
+                    to={`/updates/circulars/${item.id}`}
+                    className="text-base font-semibold text-foreground hover:text-primary transition-colors group-hover:text-primary"
+                  >
+                    {item.title}
+                  </Link>
                   {item.summary && (
-                    <p className="text-sm text-muted-foreground mb-2 mt-1">{item.summary}</p>
+                    <p className="text-sm text-muted-foreground mb-2 mt-1 line-clamp-2">{item.summary}</p>
                   )}
-                  <div className="flex items-center gap-3 flex-wrap">
+                  <div className="flex items-center gap-3 flex-wrap mt-1">
                     <span className="px-2.5 py-0.5 text-xs font-medium rounded-full bg-red-500/10 text-red-600">
                       {item.category}
                     </span>
@@ -151,16 +147,14 @@ export const CircularsContent = () => {
                     )}
                   </div>
                 </div>
-                {item.link && (
-                  <a
-                    href={item.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="self-center shrink-0 p-2 rounded-full hover:bg-muted transition-colors"
-                  >
-                    <ExternalLink className="w-4 h-4 text-muted-foreground" />
-                  </a>
-                )}
+                {/* Arrow → detail page */}
+                <Link
+                  to={`/updates/circulars/${item.id}`}
+                  className="self-center shrink-0 p-2 rounded-full hover:bg-muted transition-colors"
+                  aria-label="Read more"
+                >
+                  <ArrowRight className="w-4 h-4 text-muted-foreground" />
+                </Link>
               </motion.div>
             ))}
           </div>
