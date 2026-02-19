@@ -1,71 +1,45 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { AlertCircle, Calendar, ExternalLink, Filter, Rss } from 'lucide-react';
+import { AlertCircle, Calendar, ExternalLink, Filter, Rss, Loader2 } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
+import { format } from 'date-fns';
 
-type CircularCategory = 'All' | 'SEBI Circulars' | 'Exchange Notices' | 'Policy Updates';
-
-const circularItems = [
-  {
-    id: 1,
-    title: 'SEBI Enhances Cybersecurity Framework for Stock Exchanges and Depositories',
-    source: 'SEBI',
-    date: 'Feb 14, 2026',
-    category: 'SEBI Circulars' as CircularCategory,
-    link: '#',
-    summary: 'New guidelines mandate enhanced cybersecurity measures including SOC operations, incident response plans, and regular audits.',
-  },
-  {
-    id: 2,
-    title: 'NSE Circular: Revised Lot Sizes for F&O Contracts Effective March 2026',
-    source: 'NSE',
-    date: 'Feb 13, 2026',
-    category: 'Exchange Notices' as CircularCategory,
-    link: '#',
-    summary: 'NSE has revised lot sizes for 45 F&O stocks to align with the SEBI mandate of ₹5-10 lakh contract value.',
-  },
-  {
-    id: 3,
-    title: 'SEBI Circular: T+0 Settlement for Top 500 Stocks from April 2026',
-    source: 'SEBI',
-    date: 'Feb 11, 2026',
-    category: 'SEBI Circulars' as CircularCategory,
-    link: '#',
-    summary: 'SEBI extends optional T+0 settlement to top 500 stocks by market cap, marking a significant infrastructure upgrade.',
-  },
-  {
-    id: 4,
-    title: 'New KYC Rules: Aadhaar-Based E-KYC Mandatory for All Demat Accounts',
-    source: 'CDSL',
-    date: 'Feb 9, 2026',
-    category: 'Policy Updates' as CircularCategory,
-    link: '#',
-    summary: 'All existing and new demat accounts must complete Aadhaar e-KYC verification by June 30, 2026.',
-  },
-  {
-    id: 5,
-    title: 'BSE Notice: Change in Trading Hours for Currency Derivatives',
-    source: 'BSE',
-    date: 'Feb 8, 2026',
-    category: 'Exchange Notices' as CircularCategory,
-    link: '#',
-    summary: 'Currency derivatives trading hours extended to 7:30 PM IST to align with global forex market timings.',
-  },
-];
-
-const categories: CircularCategory[] = ['All', 'SEBI Circulars', 'Exchange Notices', 'Policy Updates'];
-
-const categoryColors: Record<string, string> = {
-  'SEBI Circulars': 'bg-red-500/10 text-red-600',
-  'Exchange Notices': 'bg-amber-500/10 text-amber-600',
-  'Policy Updates': 'bg-purple-500/10 text-purple-600',
-};
+interface CircularItem {
+  id: string;
+  title: string;
+  source: string;
+  category: string;
+  link: string | null;
+  summary: string | null;
+  is_rss: boolean | null;
+  rss_feed_url: string | null;
+  published_at: string | null;
+}
 
 export const CircularsContent = () => {
-  const [activeCategory, setActiveCategory] = useState<CircularCategory>('All');
+  const [activeCategory, setActiveCategory] = useState<string>('All');
+
+  const { data: items = [], isLoading } = useQuery({
+    queryKey: ['circulars_public'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('circulars')
+        .select('*')
+        .eq('status', 'published')
+        .order('published_at', { ascending: false });
+      if (error) throw error;
+      return data as CircularItem[];
+    },
+  });
+
+  // Build dynamic category list from actual data
+  const categorySet = new Set(items.map(i => i.category));
+  const categories = ['All', ...Array.from(categorySet)];
 
   const filteredItems = activeCategory === 'All'
-    ? circularItems
-    : circularItems.filter((item) => item.category === activeCategory);
+    ? items
+    : items.filter(item => item.category === activeCategory);
 
   return (
     <section className="section-padding">
@@ -84,63 +58,113 @@ export const CircularsContent = () => {
         </motion.div>
 
         {/* Category Filter */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.1 }}
-          className="flex items-center gap-2 mb-8 overflow-x-auto pb-2"
-          style={{ scrollbarWidth: 'none' }}
-        >
-          <Filter className="w-4 h-4 text-muted-foreground shrink-0" />
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-4 py-2 text-sm rounded-full whitespace-nowrap transition-colors ${
-                activeCategory === cat
-                  ? 'bg-primary text-primary-foreground font-medium'
-                  : 'bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </motion.div>
+        {categories.length > 1 && (
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
+            className="flex items-center gap-2 mb-8 overflow-x-auto pb-2"
+            style={{ scrollbarWidth: 'none' }}
+          >
+            <Filter className="w-4 h-4 text-muted-foreground shrink-0" />
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`px-4 py-2 text-sm rounded-full whitespace-nowrap transition-colors ${
+                  activeCategory === cat
+                    ? 'bg-primary text-primary-foreground font-medium'
+                    : 'bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </motion.div>
+        )}
+
+        {/* Loading */}
+        {isLoading && (
+          <div className="flex items-center justify-center py-20 text-muted-foreground gap-2">
+            <Loader2 className="h-5 w-5 animate-spin" />
+            <span>Loading circulars...</span>
+          </div>
+        )}
+
+        {/* Empty */}
+        {!isLoading && filteredItems.length === 0 && (
+          <div className="text-center py-20 text-muted-foreground">
+            <AlertCircle className="h-10 w-10 mx-auto mb-3 opacity-30" />
+            <p className="font-medium">No circulars available yet.</p>
+            <p className="text-sm mt-1">Check back soon for the latest regulatory updates.</p>
+          </div>
+        )}
 
         {/* Circular Items */}
-        <div className="space-y-3">
-          {filteredItems.map((item, index) => (
-            <motion.div
-              key={item.id}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35, delay: 0.05 * index }}
-              className="flex gap-4 p-5 bg-muted/30 rounded-lg border border-border/50 hover:shadow-md hover:border-primary/20 transition-all group"
-            >
-              <div className="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center shrink-0">
-                <AlertCircle className="w-5 h-5 text-red-500" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <a href={item.link} className="text-base font-semibold text-foreground hover:text-primary transition-colors group-hover:text-primary">
-                  {item.title}
-                </a>
-                <p className="text-sm text-muted-foreground mb-2 mt-1">{item.summary}</p>
-                <div className="flex items-center gap-3 flex-wrap">
-                  <span className={`px-2.5 py-0.5 text-xs font-medium rounded-full ${categoryColors[item.category] || 'bg-muted text-muted-foreground'}`}>
-                    {item.category}
-                  </span>
-                  <span className="text-xs text-muted-foreground flex items-center gap-1">
-                    <Calendar className="h-3 w-3" /> {item.date}
-                  </span>
-                  <span className="text-xs text-muted-foreground">via {item.source}</span>
+        {!isLoading && filteredItems.length > 0 && (
+          <div className="space-y-3">
+            {filteredItems.map((item, index) => (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, delay: 0.05 * index }}
+                className="flex gap-4 p-5 bg-muted/30 rounded-lg border border-border/50 hover:shadow-md hover:border-primary/20 transition-all group"
+              >
+                <div className="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center shrink-0">
+                  {item.is_rss
+                    ? <Rss className="w-5 h-5 text-red-500" />
+                    : <AlertCircle className="w-5 h-5 text-red-500" />
+                  }
                 </div>
-              </div>
-              <a href={item.link} className="self-center shrink-0 p-2 rounded-full hover:bg-muted transition-colors">
-                <ExternalLink className="w-4 h-4 text-muted-foreground" />
-              </a>
-            </motion.div>
-          ))}
-        </div>
+                <div className="flex-1 min-w-0">
+                  {item.link ? (
+                    <a
+                      href={item.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-base font-semibold text-foreground hover:text-primary transition-colors group-hover:text-primary"
+                    >
+                      {item.title}
+                    </a>
+                  ) : (
+                    <p className="text-base font-semibold text-foreground">{item.title}</p>
+                  )}
+                  {item.summary && (
+                    <p className="text-sm text-muted-foreground mb-2 mt-1">{item.summary}</p>
+                  )}
+                  <div className="flex items-center gap-3 flex-wrap">
+                    <span className="px-2.5 py-0.5 text-xs font-medium rounded-full bg-red-500/10 text-red-600">
+                      {item.category}
+                    </span>
+                    {item.published_at && (
+                      <span className="text-xs text-muted-foreground flex items-center gap-1">
+                        <Calendar className="h-3 w-3" />
+                        {format(new Date(item.published_at), 'MMM d, yyyy')}
+                      </span>
+                    )}
+                    <span className="text-xs text-muted-foreground">via {item.source}</span>
+                    {item.is_rss && (
+                      <span className="text-xs text-muted-foreground flex items-center gap-1">
+                        <Rss className="h-3 w-3" /> RSS
+                      </span>
+                    )}
+                  </div>
+                </div>
+                {item.link && (
+                  <a
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="self-center shrink-0 p-2 rounded-full hover:bg-muted transition-colors"
+                  >
+                    <ExternalLink className="w-4 h-4 text-muted-foreground" />
+                  </a>
+                )}
+              </motion.div>
+            ))}
+          </div>
+        )}
 
         {/* RSS Subscribe Banner */}
         <motion.div
