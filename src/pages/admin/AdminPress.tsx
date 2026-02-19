@@ -13,7 +13,7 @@ export default function AdminPress() {
         { key: 'source', label: 'Publication / Source', type: 'text', placeholder: 'e.g. Economic Times', required: true },
         { key: 'medium', label: 'Medium', type: 'select', required: true, options: ['Web', 'Print', 'TV', 'Radio', 'Podcast'] },
         { key: 'link', label: 'Article URL', type: 'url', placeholder: 'https://...', colSpan: 2 },
-        { key: 'published_at', label: 'Publication Date', type: 'text', placeholder: 'YYYY-MM-DD' },
+        { key: 'published_at', label: 'Article Date', type: 'date', placeholder: 'Date the article was originally published', tip: 'Enter the date the press article was actually published. This drives the year timeline on the Press page.' },
         { key: 'status', label: 'Status', type: 'select', options: ['draft', 'published', 'archived'] },
         { key: 'is_featured', label: 'Featured', type: 'checkbox', placeholder: 'Show in featured carousel on Press page', colSpan: 2 },
       ]}

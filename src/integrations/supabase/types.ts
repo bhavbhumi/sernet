@@ -24,6 +24,7 @@ export type Database = {
           excerpt: string | null
           icon_name: string | null
           id: string
+          item_date: string | null
           published_at: string | null
           status: Database["public"]["Enums"]["content_status"]
           title: string
@@ -38,6 +39,7 @@ export type Database = {
           excerpt?: string | null
           icon_name?: string | null
           id?: string
+          item_date?: string | null
           published_at?: string | null
           status?: Database["public"]["Enums"]["content_status"]
           title: string
@@ -52,6 +54,7 @@ export type Database = {
           excerpt?: string | null
           icon_name?: string | null
           id?: string
+          item_date?: string | null
           published_at?: string | null
           status?: Database["public"]["Enums"]["content_status"]
           title?: string
@@ -111,6 +114,7 @@ export type Database = {
           excerpt: string | null
           format: Database["public"]["Enums"]["article_format"]
           id: string
+          item_date: string | null
           media_url: string | null
           published_at: string | null
           read_time: string | null
@@ -128,6 +132,7 @@ export type Database = {
           excerpt?: string | null
           format?: Database["public"]["Enums"]["article_format"]
           id?: string
+          item_date?: string | null
           media_url?: string | null
           published_at?: string | null
           read_time?: string | null
@@ -145,6 +150,7 @@ export type Database = {
           excerpt?: string | null
           format?: Database["public"]["Enums"]["article_format"]
           id?: string
+          item_date?: string | null
           media_url?: string | null
           published_at?: string | null
           read_time?: string | null

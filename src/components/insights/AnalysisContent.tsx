@@ -51,7 +51,9 @@ export const AnalysisContent = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {analyses.map((item, index) => {
               const Icon = iconMap[item.icon_name ?? 'TrendingUp'] ?? TrendingUp;
-              const dateStr = item.published_at
+              const dateStr = (item as any).item_date
+                ? new Date((item as any).item_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+                : item.published_at
                 ? new Date(item.published_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
                 : '';
               return (

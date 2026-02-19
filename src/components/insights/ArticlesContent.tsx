@@ -43,7 +43,9 @@ function ArticleCard({ article, index }: { article: any; index: number }) {
 
   const FormatIcon = formatIcons[article.format] ?? FileText;
   const fmtColor = formatColors[article.format] ?? formatColors['Text'];
-  const dateStr = article.published_at
+  const dateStr = article.item_date
+    ? new Date(article.item_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+    : article.published_at
     ? new Date(article.published_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
     : '';
 

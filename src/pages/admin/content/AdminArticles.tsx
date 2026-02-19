@@ -30,12 +30,13 @@ interface Article {
   body: string;
   media_url: string;
   thumbnail_url: string;
+  item_date: string | null;
 }
 
 const emptyForm = {
   title: '', excerpt: '', body: '', author: 'Research Desk',
   format: 'Text', category: '', read_time: '', media_url: '',
-  thumbnail_url: '', status: 'draft',
+  thumbnail_url: '', status: 'draft', item_date: '',
 };
 
 export default function AdminArticles() {
@@ -105,7 +106,7 @@ export default function AdminArticles() {
   useEffect(() => { fetchArticles(); }, []);
 
   const openNew = () => { setEditItem(null); setForm(emptyForm); setDialogOpen(true); };
-  const openEdit = (item: Article) => { setEditItem(item); setForm({ ...item }); setDialogOpen(true); };
+  const openEdit = (item: Article) => { setEditItem(item); setForm({ ...item, item_date: item.item_date ?? '' }); setDialogOpen(true); };
 
   const handleSave = async () => {
     if (!form.title || !form.category) {
@@ -124,6 +125,7 @@ export default function AdminArticles() {
       media_url: form.media_url,
       thumbnail_url: form.thumbnail_url,
       status: form.status as 'draft' | 'published' | 'archived',
+      item_date: form.item_date || null,
       published_at: form.status === 'published' ? new Date().toISOString() : null,
     };
     const { error } = editItem
@@ -350,6 +352,10 @@ export default function AdminArticles() {
               {form.thumbnail_url && (
                 <img src={form.thumbnail_url} alt="Thumbnail preview" className="mt-2 h-24 rounded-lg object-cover border border-border" />
               )}
+            </div>
+            <div className="space-y-1.5">
+              <Label>Article Date <span className="text-muted-foreground text-xs">(shown on card)</span></Label>
+              <Input type="date" value={form.item_date} onChange={e => setForm(f => ({ ...f, item_date: e.target.value }))} />
             </div>
             <div className="space-y-1.5">
               <Label>Status</Label>
