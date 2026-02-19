@@ -197,13 +197,13 @@ export default function AdminArticles() {
                 <th className="px-4 py-3 text-left font-medium text-muted-foreground w-24">Author</th>
                 <th className="px-4 py-3 text-left font-medium text-muted-foreground w-24">Status</th>
                 <th className="px-4 py-3 text-left font-medium text-muted-foreground w-28">Engagement</th>
-                <th className="px-4 py-3 text-right font-medium text-muted-foreground w-28">Actions</th>
+                <th className="px-4 py-3 w-4" />
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
               {loading ? (
                 Array(5).fill(0).map((_, i) => (
-                  <tr key={i}><td colSpan={6} className="px-4 py-3"><div className="h-4 bg-muted animate-pulse rounded" /></td></tr>
+                  <tr key={i}><td colSpan={7} className="px-4 py-3"><div className="h-4 bg-muted animate-pulse rounded" /></td></tr>
                 ))
               ) : filtered.length === 0 ? (
                 <tr><td colSpan={7} className="px-4 py-12 text-center text-muted-foreground">No articles found</td></tr>
@@ -212,6 +212,18 @@ export default function AdminArticles() {
                   <td className="px-4 py-3">
                     <p className="font-medium text-foreground line-clamp-1">{item.title}</p>
                     <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">{item.excerpt}</p>
+                    {/* Horizontal action bar */}
+                    <div className="flex items-center gap-0.5 mt-1.5">
+                      <Button variant="ghost" size="sm" className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground gap-1" onClick={() => toggleStatus(item)}>
+                        {item.status === 'published' ? <><EyeOff className="h-3 w-3" /> Unpublish</> : <><Eye className="h-3 w-3" /> Publish</>}
+                      </Button>
+                      <Button variant="ghost" size="sm" className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground gap-1" onClick={() => openEdit(item)}>
+                        <Pencil className="h-3 w-3" /> Edit
+                      </Button>
+                      <Button variant="ghost" size="sm" className="h-6 px-2 text-xs text-destructive hover:text-destructive gap-1" onClick={() => handleDelete(item.id)}>
+                        <Trash2 className="h-3 w-3" /> Delete
+                      </Button>
+                    </div>
                   </td>
                   <td className="px-4 py-3"><Badge variant="secondary">{item.format}</Badge></td>
                   <td className="px-4 py-3 text-muted-foreground">{item.category}</td>
@@ -233,19 +245,7 @@ export default function AdminArticles() {
                       </span>
                     </div>
                   </td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center justify-end gap-1">
-                      <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => toggleStatus(item)} title={item.status === 'published' ? 'Unpublish' : 'Publish'}>
-                        {item.status === 'published' ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
-                      </Button>
-                      <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => openEdit(item)}>
-                        <Pencil className="h-3.5 w-3.5" />
-                      </Button>
-                      <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive hover:text-destructive" onClick={() => handleDelete(item.id)}>
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </Button>
-                    </div>
-                  </td>
+                  <td className="px-4 py-3 w-4" />
                 </tr>
               ))}
             </tbody>
