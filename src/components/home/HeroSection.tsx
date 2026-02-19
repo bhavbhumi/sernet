@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, BadgeCheck, Clock, Heart } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import heroIllustration from '@/assets/hero-illustration.webp';
+import heroIllustration from '@/assets/hero-illustration-transparent.png';
 
 export const HeroSection = () => {
   const { t } = useTranslation();
@@ -18,15 +18,11 @@ export const HeroSection = () => {
             transition={{ duration: 0.6, delay: 0.15 }}
             className="flex justify-center lg:justify-end lg:order-2"
           >
-            <div className="relative">
-              <img
-                src={heroIllustration}
-                alt="Sernet wealth management - Trade, Invest and Insure with awareness"
-                className="w-full max-w-[420px] lg:max-w-[500px] h-auto dark:brightness-[0.75] dark:contrast-[1.1] dark:saturate-[0.85] transition-all duration-300"
-              />
-              {/* Dark mode subtle overlay to unify with background */}
-              <div className="absolute inset-0 rounded-2xl bg-background/0 dark:bg-background/15 pointer-events-none transition-all duration-300" />
-            </div>
+            <img
+              src={heroIllustration}
+              alt="Sernet wealth management - Trade, Invest and Insure with awareness"
+              className="w-full max-w-[420px] lg:max-w-[500px] h-auto"
+            />
           </motion.div>
 
           {/* Content */}
