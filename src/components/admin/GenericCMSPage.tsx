@@ -20,7 +20,7 @@ import { FieldInfoTooltip } from '@/components/admin/FieldInfoTooltip';
 export interface FieldDef {
   key: string;
   label: string;
-  type: 'text' | 'textarea' | 'select' | 'number' | 'url' | 'html' | 'checkbox';
+  type: 'text' | 'textarea' | 'select' | 'number' | 'url' | 'html' | 'checkbox' | 'date';
   options?: string[];
   placeholder?: string;
   required?: boolean;
@@ -69,9 +69,14 @@ export function GenericCMSPage({
 
   const handleSave = async () => {
     setSaving(true);
+    // Build payload — preserve any admin-entered published_at (e.g. press item date).
+    // Only auto-set published_at when publishing AND the field is currently empty.
+    const adminEnteredDate = form.published_at ? String(form.published_at).trim() : '';
     const payload = {
       ...form,
-      ...(hasStatus && form.status === 'published' ? { published_at: new Date().toISOString() } : {}),
+      ...(hasStatus && form.status === 'published' && !adminEnteredDate
+        ? { published_at: new Date().toISOString() }
+        : {}),
     };
     const { error } = editItem
       ? await db(tableName).update(payload).eq('id', editItem.id as string)
@@ -90,9 +95,11 @@ export function GenericCMSPage({
 
   const toggleStatus = async (item: Record<string, unknown>) => {
     const newStatus = item.status === 'published' ? 'draft' : 'published';
+    // Preserve admin-entered published_at; only auto-fill when empty
+    const existingDate = item.published_at ? String(item.published_at).trim() : '';
     await db(tableName).update({
       status: newStatus,
-      published_at: newStatus === 'published' ? new Date().toISOString() : null
+      ...(newStatus === 'published' && !existingDate ? { published_at: new Date().toISOString() } : {}),
     }).eq('id', item.id as string);
     fetchItems();
   };
@@ -219,6 +226,14 @@ export function GenericCMSPage({
                 {(field.type === 'text' || field.type === 'url' || field.type === 'number') && (
                   <Input
                     type={field.type === 'number' ? 'number' : 'text'}
+                    placeholder={field.placeholder}
+                    value={String(form[field.key] ?? '')}
+                    onChange={e => setForm(f => ({ ...f, [field.key]: e.target.value }))}
+                  />
+                )}
+                {field.type === 'date' && (
+                  <Input
+                    type="date"
                     placeholder={field.placeholder}
                     value={String(form[field.key] ?? '')}
                     onChange={e => setForm(f => ({ ...f, [field.key]: e.target.value }))}
