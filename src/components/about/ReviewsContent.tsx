@@ -1,7 +1,14 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
-import { Star, ArrowRight, Play, MapPin, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Star, ArrowRight, Play, MapPin, ChevronLeft, ChevronRight, Heart, Share2, X, CheckCircle2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const db = (t: string) => supabase.from(t as any) as any;
 
 const GoogleIcon = () => (
   <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none">
@@ -31,57 +38,259 @@ const InstagramIcon = () => (
   </svg>
 );
 
-const MouthshutIcon = () => (
-  <svg viewBox="0 0 24 24" className="w-4 h-4 text-warning" fill="currentColor">
-    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
-  </svg>
-);
-
 const sourceIcons: Record<string, React.ReactNode> = {
   google: <GoogleIcon />,
   facebook: <FacebookIcon />,
   instagram: <InstagramIcon />,
-  mouthshut: <MouthshutIcon />,
+  website: <span className="text-xs font-bold text-primary">W</span>,
 };
 
 const countryFlags: Record<string, string> = { IN: "🇮🇳", US: "🇺🇸", UK: "🇬🇧", AE: "🇦🇪" };
 
-type ReviewItem = {
+interface DbReview {
+  id: string;
   name: string;
-  occupation: string;
-  city: string;
-  country: string;
+  occupation: string | null;
+  city: string | null;
+  country: string | null;
   rating: number;
-  source: string;
-  hasVideo: boolean;
+  source: string | null;
+  has_video: boolean | null;
   review: string;
-  date: string;
-  year: number;
-  type?: string;
-};
+  published_at: string | null;
+  review_type: string | null;
+  is_featured: boolean | null;
+  video_url: string | null;
+}
 
-const reviews: ReviewItem[] = [
-  { name: "Rajesh Kumar", occupation: "Business Owner", city: "Mumbai", country: "IN", rating: 4.8, source: "google", hasVideo: true, review: "SERNET has been instrumental in growing my portfolio. Their personalized approach and deep market knowledge have helped me achieve my financial goals.", date: "Jan 2025", year: 2025, type: "Client" },
-  { name: "Priya Sharma", occupation: "IT Professional", city: "Delhi", country: "IN", rating: 5.0, source: "facebook", hasVideo: false, review: "The team at SERNET is incredibly professional and knowledgeable. They've been managing my family's investments for over 10 years with excellent returns.", date: "Dec 2024", year: 2024, type: "Client" },
-  { name: "Anand Mehta", occupation: "Chartered Accountant", city: "Bangalore", country: "IN", rating: 4.9, source: "google", hasVideo: true, review: "Exceptional service and transparent communication. I highly recommend SERNET for anyone looking for reliable investment advisory services.", date: "Nov 2024", year: 2024, type: "Partner" },
-  { name: "Sunita Patel", occupation: "Homemaker & Investor", city: "Ahmedabad", country: "IN", rating: 5.0, source: "instagram", hasVideo: false, review: "From insurance planning to equity investments, SERNET has provided comprehensive solutions for all my financial needs. Truly a one-stop destination.", date: "Oct 2024", year: 2024, type: "Client" },
-  { name: "Vikram Singh", occupation: "Retired Army Officer", city: "Jaipur", country: "IN", rating: 4.7, source: "mouthshut", hasVideo: false, review: "Switched from a big-name broker and couldn't be happier. Personal attention and zero hidden charges make SERNET stand out from the crowd.", date: "Sep 2024", year: 2024, type: "Employee" },
-  { name: "Meera Nair", occupation: "Doctor", city: "Kochi", country: "IN", rating: 4.9, source: "google", hasVideo: true, review: "Their research reports are top-notch. I've made informed decisions that consistently outperform the market benchmarks.", date: "Aug 2024", year: 2024, type: "Principal" },
-  { name: "Deepak Verma", occupation: "Software Engineer", city: "Lucknow", country: "IN", rating: 4.8, source: "google", hasVideo: false, review: "The onboarding process was seamless and the support team is always just a call away. Great experience overall with SERNET.", date: "Jul 2024", year: 2024, type: "Client" },
-  { name: "Kavita Joshi", occupation: "School Principal", city: "Pune", country: "IN", rating: 5.0, source: "facebook", hasVideo: true, review: "I trust SERNET with my retirement planning. Their long-term vision and disciplined approach give me complete peace of mind.", date: "Jun 2024", year: 2024, type: "Partner" },
-];
-
-const years = [...new Set(reviews.map((r) => r.year))].sort((a, b) => b - a);
 const reviewTypes = ['All', 'Client', 'Partner', 'Employee', 'Principal'] as const;
 
-// 3 Featured reviews for carousel
-const featuredReviews = reviews.slice(0, 3);
+// ── Submit Review Dialog ─────────────────────────────────────────────────────
+function SubmitReviewDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const { toast } = useToast();
+  const [form, setForm] = useState({
+    name: '', occupation: '', city: '', country: 'IN',
+    rating: 0, review: '', review_type: 'Client', source: 'website',
+  });
+  const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [hoverRating, setHoverRating] = useState(0);
+
+  const handleSubmit = async () => {
+    if (!form.name.trim() || !form.review.trim() || form.rating === 0) {
+      toast({ title: 'Please fill in all required fields and select a rating.', variant: 'destructive' });
+      return;
+    }
+    setSubmitting(true);
+    const { error } = await db('reviews').insert([{
+      name: form.name.trim(),
+      occupation: form.occupation.trim() || null,
+      city: form.city.trim() || null,
+      country: form.country || 'IN',
+      rating: form.rating,
+      review: form.review.trim(),
+      review_type: form.review_type,
+      source: form.source,
+      status: 'pending',
+    }]);
+    if (error) {
+      toast({ title: 'Error submitting review', description: error.message, variant: 'destructive' });
+    } else {
+      setSubmitted(true);
+    }
+    setSubmitting(false);
+  };
+
+  const handleClose = () => {
+    setSubmitted(false);
+    setForm({ name: '', occupation: '', city: '', country: 'IN', rating: 0, review: '', review_type: 'Client', source: 'website' });
+    onClose();
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={handleClose}>
+      <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Share Your Experience</DialogTitle>
+          <DialogDescription>Your review will be reviewed by our team before publishing.</DialogDescription>
+        </DialogHeader>
+
+        {submitted ? (
+          <div className="py-10 flex flex-col items-center gap-3 text-center">
+            <CheckCircle2 className="w-12 h-12 text-emerald-500" />
+            <h3 className="text-lg font-semibold text-foreground">Thank you!</h3>
+            <p className="text-sm text-muted-foreground">Your review has been submitted and will appear after approval.</p>
+            <button onClick={handleClose} className="mt-2 px-5 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors">Done</button>
+          </div>
+        ) : (
+          <div className="space-y-4 mt-2">
+            {/* Rating */}
+            <div className="space-y-1.5">
+              <label className="text-sm font-medium text-foreground">Rating <span className="text-destructive">*</span></label>
+              <div className="flex gap-1.5" onMouseLeave={() => setHoverRating(0)}>
+                {[1, 2, 3, 4, 5].map(r => (
+                  <button
+                    key={r}
+                    onMouseEnter={() => setHoverRating(r)}
+                    onClick={() => setForm(f => ({ ...f, rating: r }))}
+                    className="transition-transform hover:scale-110"
+                  >
+                    <Star className={`w-7 h-7 transition-colors ${r <= (hoverRating || form.rating) ? 'fill-[hsl(var(--sernet-yellow))] text-[hsl(var(--sernet-yellow))]' : 'text-muted-foreground/30'}`} />
+                  </button>
+                ))}
+                {form.rating > 0 && <span className="ml-2 text-sm text-muted-foreground self-center">{form.rating}.0</span>}
+              </div>
+            </div>
+
+            {/* Type & Source */}
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium text-foreground">I am a <span className="text-destructive">*</span></label>
+                <select
+                  value={form.review_type}
+                  onChange={e => setForm(f => ({ ...f, review_type: e.target.value }))}
+                  className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background focus:outline-none focus:ring-1 focus:ring-primary"
+                >
+                  <option value="Client">Client</option>
+                  <option value="Partner">Partner</option>
+                  <option value="Employee">Employee</option>
+                  <option value="Principal">Principal</option>
+                </select>
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium text-foreground">Source</label>
+                <select
+                  value={form.source}
+                  onChange={e => setForm(f => ({ ...f, source: e.target.value }))}
+                  className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background focus:outline-none focus:ring-1 focus:ring-primary"
+                >
+                  <option value="website">Website</option>
+                  <option value="google">Google</option>
+                  <option value="facebook">Facebook</option>
+                  <option value="instagram">Instagram</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Name & Occupation */}
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium text-foreground">Full Name <span className="text-destructive">*</span></label>
+                <input
+                  className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background focus:outline-none focus:ring-1 focus:ring-primary"
+                  placeholder="Your name"
+                  value={form.name}
+                  onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium text-foreground">Occupation</label>
+                <input
+                  className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background focus:outline-none focus:ring-1 focus:ring-primary"
+                  placeholder="e.g. Business Owner"
+                  value={form.occupation}
+                  onChange={e => setForm(f => ({ ...f, occupation: e.target.value }))}
+                />
+              </div>
+            </div>
+
+            {/* City & Country */}
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium text-foreground">City</label>
+                <input
+                  className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background focus:outline-none focus:ring-1 focus:ring-primary"
+                  placeholder="Mumbai"
+                  value={form.city}
+                  onChange={e => setForm(f => ({ ...f, city: e.target.value }))}
+                />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium text-foreground">Country</label>
+                <select
+                  value={form.country}
+                  onChange={e => setForm(f => ({ ...f, country: e.target.value }))}
+                  className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background focus:outline-none focus:ring-1 focus:ring-primary"
+                >
+                  <option value="IN">🇮🇳 India</option>
+                  <option value="US">🇺🇸 USA</option>
+                  <option value="UK">🇬🇧 UK</option>
+                  <option value="AE">🇦🇪 UAE</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Review text */}
+            <div className="space-y-1.5">
+              <label className="text-sm font-medium text-foreground">Your Review <span className="text-destructive">*</span></label>
+              <textarea
+                rows={4}
+                className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background focus:outline-none focus:ring-1 focus:ring-primary resize-none"
+                placeholder="Share your experience with SERNET..."
+                value={form.review}
+                onChange={e => setForm(f => ({ ...f, review: e.target.value }))}
+              />
+              <p className="text-xs text-muted-foreground text-right">{form.review.length}/1000</p>
+            </div>
+
+            <div className="flex justify-end gap-2 pt-1 border-t border-border">
+              <button onClick={handleClose} className="px-4 py-2 rounded-lg border border-border text-sm hover:bg-muted transition-colors">Cancel</button>
+              <button
+                onClick={handleSubmit}
+                disabled={submitting}
+                className="px-5 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
+              >
+                {submitting ? 'Submitting...' : 'Submit Review'}
+              </button>
+            </div>
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+}
 
 export const ReviewsContent = () => {
-  const [activeYear, setActiveYear] = useState(years[0]);
+  const { toast } = useToast();
+  const [activeYear, setActiveYear] = useState<number | null>(null);
   const [activeType, setActiveType] = useState<string>('All');
   const [featuredIndex, setFeaturedIndex] = useState(0);
+  const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
   const yearScrollRef = useRef<HTMLDivElement>(null);
+
+  // Fetch approved reviews from DB
+  const { data: reviews = [], isLoading } = useQuery({
+    queryKey: ['reviews_public'],
+    queryFn: async () => {
+      const { data } = await db('reviews')
+        .select('*')
+        .eq('status', 'approved')
+        .order('published_at', { ascending: false });
+      return (data ?? []) as DbReview[];
+    },
+  });
+
+  const years = useMemo(() => {
+    const yrs = [...new Set(reviews.map(r => new Date(r.published_at ?? r.id).getFullYear()))].sort((a, b) => b - a);
+    return yrs;
+  }, [reviews]);
+
+  useEffect(() => {
+    if (years.length > 0 && activeYear === null) {
+      setActiveYear(years[0]);
+    }
+  }, [years, activeYear]);
+
+  const featuredReviews = useMemo(() => reviews.filter(r => r.is_featured).slice(0, 3), [reviews]);
+
+  // Auto-cycle featured reviews
+  useEffect(() => {
+    if (featuredReviews.length === 0) return;
+    const interval = setInterval(() => {
+      setFeaturedIndex(prev => (prev + 1) % featuredReviews.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [featuredReviews.length]);
 
   const scrollYears = (direction: 'left' | 'right') => {
     if (yearScrollRef.current) {
@@ -89,21 +298,25 @@ export const ReviewsContent = () => {
     }
   };
 
-  // Auto-cycle featured reviews
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setFeaturedIndex((prev) => (prev + 1) % featuredReviews.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
-
   const filteredReviews = useMemo(() => {
-    return reviews.filter((r) => {
-      const yearMatch = r.year === activeYear;
-      const typeMatch = activeType === 'All' || r.type === activeType;
+    return reviews.filter(r => {
+      const reviewYear = new Date(r.published_at ?? '').getFullYear();
+      const yearMatch = activeYear === null || reviewYear === activeYear;
+      const typeMatch = activeType === 'All' || r.review_type === activeType;
       return yearMatch && typeMatch;
     });
-  }, [activeYear, activeType]);
+  }, [reviews, activeYear, activeType]);
+
+  const avgRating = reviews.length > 0
+    ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
+    : '4.9';
+
+  const currentFeatured = featuredReviews[featuredIndex];
+
+  const handleShare = async () => {
+    await navigator.clipboard.writeText(window.location.href);
+    toast({ title: 'Link copied!', description: 'Page link copied to clipboard.' });
+  };
 
   return (
     <section className="section-padding bg-background">
@@ -125,7 +338,7 @@ export const ReviewsContent = () => {
               Reviews could be from Client, Partner, Employee, or Principal — real voices sharing their experience with SERNET across every relationship.
             </p>
             <div className="flex items-center gap-3 mb-6">
-              <div className="text-[2.5rem] font-light text-foreground leading-none">4.9</div>
+              <div className="text-[2.5rem] font-light text-foreground leading-none">{avgRating}</div>
               <div>
                 <div className="flex items-center gap-0.5">
                   {[...Array(5)].map((_, i) => (
@@ -135,10 +348,13 @@ export const ReviewsContent = () => {
                 <p className="text-xs text-muted-foreground mt-0.5">Based on {reviews.length}+ reviews</p>
               </div>
             </div>
-            <div>
-              <Button className="gap-2 px-8 py-3 text-base">
+            <div className="flex gap-3 flex-wrap">
+              <Button className="gap-2 px-8 py-3 text-base" onClick={() => setReviewDialogOpen(true)}>
                 <Star className="w-4 h-4" />
                 Submit your Review
+              </Button>
+              <Button variant="outline" className="gap-2" onClick={handleShare}>
+                <Share2 className="w-4 h-4" /> Share
               </Button>
             </div>
           </motion.div>
@@ -152,75 +368,85 @@ export const ReviewsContent = () => {
             className="flex items-center"
           >
             <div className="w-full relative">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={featuredIndex}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -12 }}
-                  transition={{ duration: 0.35 }}
-                  className="w-full p-6 rounded-xl border border-border bg-card"
-                >
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
-                    <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[0.6875rem] font-medium">Featured Review</span>
-                    <span>{featuredReviews[featuredIndex].date}</span>
-                  </div>
-                  <p className="text-[1.125rem] font-light text-foreground leading-relaxed italic mb-5">
-                    "{featuredReviews[featuredIndex].review}"
-                  </p>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-sm font-medium text-primary">
-                        {featuredReviews[featuredIndex].name.charAt(0)}
+              {isLoading ? (
+                <div className="h-48 bg-muted animate-pulse rounded-xl" />
+              ) : currentFeatured ? (
+                <>
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={featuredIndex}
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -12 }}
+                      transition={{ duration: 0.35 }}
+                      className="w-full p-6 rounded-xl border border-border bg-card"
+                    >
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
+                        <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[0.6875rem] font-medium">Featured Review</span>
+                        {currentFeatured.review_type && <span className="px-2 py-0.5 rounded-full bg-muted text-[0.6875rem]">{currentFeatured.review_type}</span>}
                       </div>
-                      <div>
-                        <p className="text-sm font-medium text-foreground">{featuredReviews[featuredIndex].name}</p>
-                        <p className="text-xs text-muted-foreground">{featuredReviews[featuredIndex].occupation} · {featuredReviews[featuredIndex].city}</p>
+                      <p className="text-[1.125rem] font-light text-foreground leading-relaxed italic mb-5">
+                        "{currentFeatured.review}"
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-sm font-medium text-primary">
+                            {currentFeatured.name.charAt(0)}
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-foreground">{currentFeatured.name}</p>
+                            <p className="text-xs text-muted-foreground">{currentFeatured.occupation} · {currentFeatured.city}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-0.5">
+                          {[...Array(5)].map((_, i) => (
+                            <Star key={i} className={`w-3.5 h-3.5 ${i < Math.floor(currentFeatured.rating) ? 'fill-[hsl(var(--sernet-yellow))] text-[hsl(var(--sernet-yellow))]' : 'text-muted-foreground/30'}`} />
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-0.5">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className={`w-3.5 h-3.5 ${i < Math.floor(featuredReviews[featuredIndex].rating) ? 'fill-[hsl(var(--sernet-yellow))] text-[hsl(var(--sernet-yellow))]' : 'text-muted-foreground/30'}`} />
-                      ))}
-                    </div>
+                    </motion.div>
+                  </AnimatePresence>
+                  <div className="flex justify-center gap-2 mt-4">
+                    {featuredReviews.map((_, i) => (
+                      <button key={i} onClick={() => setFeaturedIndex(i)} className={`w-2 h-2 rounded-full transition-colors ${i === featuredIndex ? 'bg-primary' : 'bg-border'}`} />
+                    ))}
                   </div>
-                </motion.div>
-              </AnimatePresence>
-              {/* Dots */}
-              <div className="flex justify-center gap-2 mt-4">
-                {featuredReviews.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setFeaturedIndex(i)}
-                    className={`w-2 h-2 rounded-full transition-colors ${i === featuredIndex ? 'bg-primary' : 'bg-border'}`}
-                  />
-                ))}
-              </div>
+                </>
+              ) : (
+                <div className="w-full p-8 rounded-xl border border-border bg-muted/30 text-center text-muted-foreground text-sm">
+                  No featured reviews yet. Be the first to submit!
+                </div>
+              )}
             </div>
           </motion.div>
         </div>
 
         {/* Year Timeline */}
-        <div className="flex items-center gap-1 border-b border-border">
-          <button onClick={() => scrollYears('left')} className="flex-shrink-0 p-2 text-muted-foreground hover:text-foreground transition-colors md:hidden" aria-label="Scroll years left">
-            <ChevronLeft className="h-4 w-4" />
-          </button>
-          <div ref={yearScrollRef} data-year-scroll-reviews className="flex gap-0 overflow-x-auto scroll-smooth flex-1" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}>
-            <style>{`[data-year-scroll-reviews]::-webkit-scrollbar { display: none; }`}</style>
-            {years.map((year) => (
-              <button key={year} onClick={() => setActiveYear(year)} className={`text-[1rem] px-5 py-3 transition-colors border-b-[2.5px] whitespace-nowrap flex-shrink-0 ${activeYear === year ? 'text-foreground font-medium border-primary' : 'text-muted-foreground border-transparent hover:text-foreground'}`}>
-                {year}
-              </button>
-            ))}
+        {years.length > 0 && (
+          <div className="flex items-center gap-1 border-b border-border">
+            <button onClick={() => scrollYears('left')} className="flex-shrink-0 p-2 text-muted-foreground hover:text-foreground transition-colors md:hidden">
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <div ref={yearScrollRef} className="flex gap-0 overflow-x-auto scroll-smooth flex-1" style={{ scrollbarWidth: 'none' }}>
+              {years.map(year => (
+                <button
+                  key={year}
+                  onClick={() => setActiveYear(year)}
+                  className={`text-[1rem] px-5 py-3 transition-colors border-b-[2.5px] whitespace-nowrap flex-shrink-0 ${activeYear === year ? 'text-foreground font-medium border-primary' : 'text-muted-foreground border-transparent hover:text-foreground'}`}
+                >
+                  {year}
+                </button>
+              ))}
+            </div>
+            <button onClick={() => scrollYears('right')} className="flex-shrink-0 p-2 text-muted-foreground hover:text-foreground transition-colors md:hidden">
+              <ChevronRight className="h-4 w-4" />
+            </button>
           </div>
-          <button onClick={() => scrollYears('right')} className="flex-shrink-0 p-2 text-muted-foreground hover:text-foreground transition-colors md:hidden" aria-label="Scroll years right">
-            <ChevronRight className="h-4 w-4" />
-          </button>
-        </div>
+        )}
 
         {/* Type Filters */}
         <div className="flex flex-wrap gap-2 pt-4 pb-2">
-          {reviewTypes.map((type) => (
+          {reviewTypes.map(type => (
             <button
               key={type}
               onClick={() => setActiveType(type)}
@@ -235,12 +461,16 @@ export const ReviewsContent = () => {
         <AnimatePresence mode="wait">
           <motion.div key={`${activeYear}-${activeType}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.25 }}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-8">
-              {filteredReviews.length === 0 ? (
-                <p className="text-center text-muted-foreground py-16 text-[1rem] col-span-full">No reviews for this year.</p>
+              {isLoading ? (
+                Array(4).fill(0).map((_, i) => <div key={i} className="h-48 bg-muted animate-pulse rounded-xl" />)
+              ) : filteredReviews.length === 0 ? (
+                <p className="text-center text-muted-foreground py-16 text-[1rem] col-span-full">
+                  {reviews.length === 0 ? 'No approved reviews yet. Be the first to share your experience!' : 'No reviews for this filter.'}
+                </p>
               ) : (
                 filteredReviews.map((review, index) => (
                   <motion.div
-                    key={index}
+                    key={review.id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: index * 0.05 }}
@@ -248,7 +478,7 @@ export const ReviewsContent = () => {
                   >
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-semibold text-foreground">{review.rating.toFixed(1)}</span>
+                        <span className="text-sm font-semibold text-foreground">{Number(review.rating).toFixed(1)}</span>
                         <div className="flex items-center gap-0.5">
                           {[...Array(5)].map((_, i) => (
                             <Star key={i} className={`w-3.5 h-3.5 ${i < Math.floor(review.rating) ? 'fill-[hsl(var(--sernet-yellow))] text-[hsl(var(--sernet-yellow))]' : 'text-muted-foreground/30'}`} />
@@ -256,9 +486,9 @@ export const ReviewsContent = () => {
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        {review.type && <span className="px-2 py-0.5 rounded-full bg-muted text-[0.75rem] text-muted-foreground">{review.type}</span>}
+                        {review.review_type && <span className="px-2 py-0.5 rounded-full bg-muted text-[0.75rem] text-muted-foreground">{review.review_type}</span>}
                         <div className="w-6 h-6 flex items-center justify-center opacity-60 group-hover:opacity-100 transition-opacity" title={`via ${review.source}`}>
-                          {sourceIcons[review.source]}
+                          {sourceIcons[review.source ?? 'website'] ?? sourceIcons.website}
                         </div>
                       </div>
                     </div>
@@ -271,22 +501,28 @@ export const ReviewsContent = () => {
                         <div>
                           <div className="flex items-center gap-2">
                             <p className="text-sm font-medium text-foreground">{review.name}</p>
-                            {review.hasVideo && (
-                              <button className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-200 group/play">
-                                <Play className="w-2.5 h-2.5 text-primary group-hover/play:text-primary-foreground fill-current" />
-                              </button>
+                            {review.has_video && review.video_url && (
+                              <a href={review.video_url} target="_blank" rel="noopener noreferrer" className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-200">
+                                <Play className="w-2.5 h-2.5 text-primary fill-current" />
+                              </a>
                             )}
                           </div>
                           <p className="text-xs text-muted-foreground">{review.occupation}</p>
                         </div>
                       </div>
                       <div className="flex flex-col items-end gap-0.5">
-                        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                          <MapPin className="w-3 h-3" />
-                          <span>{review.city}</span>
-                          <span className="text-sm leading-none">{countryFlags[review.country]}</span>
-                        </div>
-                        <span className="text-[10px] text-muted-foreground/60">{review.date}</span>
+                        {(review.city || review.country) && (
+                          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                            <MapPin className="w-3 h-3" />
+                            <span>{review.city}</span>
+                            {review.country && <span className="text-sm leading-none">{countryFlags[review.country]}</span>}
+                          </div>
+                        )}
+                        {review.published_at && (
+                          <span className="text-[10px] text-muted-foreground/60">
+                            {new Date(review.published_at).toLocaleDateString('en-IN', { month: 'short', year: 'numeric' })}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </motion.div>
@@ -306,21 +542,23 @@ export const ReviewsContent = () => {
         >
           <h2 className="heading-md text-foreground mb-2">Share Your Experience</h2>
           <p className="text-sm text-muted-foreground mb-6 max-w-md mx-auto">
-            Had a great experience with SERNET? We'd love to hear from you. Leave us a review on your favourite platform.
+            Had a great experience with SERNET? We'd love to hear from you. Submit directly or leave us a review on your favourite platform.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
+            <Button onClick={() => setReviewDialogOpen(true)} className="gap-2">
+              <Star className="w-4 h-4" /> Submit Review
+            </Button>
             <a href="https://g.page/r/sernet/review" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-border text-sm font-medium text-foreground hover:border-primary hover:text-primary transition-colors">
               Review on Google <ArrowRight className="w-3.5 h-3.5" />
             </a>
             <a href="https://www.facebook.com/sernetindia" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-border text-sm font-medium text-foreground hover:border-primary hover:text-primary transition-colors">
               Review on Facebook <ArrowRight className="w-3.5 h-3.5" />
             </a>
-            <a href="https://www.instagram.com/sernetindia" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-border text-sm font-medium text-foreground hover:border-primary hover:text-primary transition-colors">
-              Review on Instagram <ArrowRight className="w-3.5 h-3.5" />
-            </a>
           </div>
         </motion.div>
       </div>
+
+      <SubmitReviewDialog open={reviewDialogOpen} onClose={() => setReviewDialogOpen(false)} />
     </section>
   );
 };
