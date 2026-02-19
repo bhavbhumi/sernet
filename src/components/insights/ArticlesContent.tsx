@@ -1,103 +1,11 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FileText, Image, Headphones, Video, ArrowRight, Calendar, User, Filter } from 'lucide-react';
+import { FileText, Image, Headphones, Video, ArrowRight, Calendar, User, Filter, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
 type ArticleFormat = 'All' | 'Text' | 'Image' | 'Audio' | 'Video';
-
-interface Article {
-  id: number;
-  title: string;
-  excerpt: string;
-  author: string;
-  date: string;
-  format: Exclude<ArticleFormat, 'All'>;
-  category: string;
-  readTime: string;
-}
-
-const articles: Article[] = [
-  {
-    id: 1,
-    title: 'Understanding P/E Ratios: A Beginner\'s Guide to Valuation',
-    excerpt: 'Learn how to use price-to-earnings ratios to evaluate whether a stock is overvalued or undervalued.',
-    author: 'Research Desk',
-    date: 'Feb 15, 2026',
-    format: 'Text',
-    category: 'Fundamentals',
-    readTime: '6 min read',
-  },
-  {
-    id: 2,
-    title: 'Infographic: India\'s Top Performing Sectors in FY26',
-    excerpt: 'A visual breakdown of sector-wise returns, FII flows, and market cap changes across Indian equities.',
-    author: 'Design Team',
-    date: 'Feb 13, 2026',
-    format: 'Image',
-    category: 'Markets',
-    readTime: '2 min view',
-  },
-  {
-    id: 3,
-    title: 'Podcast: Navigating Volatile Markets — Expert Panel Discussion',
-    excerpt: 'Our panel of market experts discuss strategies for protecting your portfolio during periods of high volatility.',
-    author: 'Insights Studio',
-    date: 'Feb 12, 2026',
-    format: 'Audio',
-    category: 'Strategy',
-    readTime: '25 min listen',
-  },
-  {
-    id: 4,
-    title: 'Video: How to Read Candlestick Charts Like a Pro',
-    excerpt: 'A step-by-step visual guide to reading and interpreting candlestick patterns for better trading decisions.',
-    author: 'Education Team',
-    date: 'Feb 10, 2026',
-    format: 'Video',
-    category: 'Technical',
-    readTime: '12 min watch',
-  },
-  {
-    id: 5,
-    title: 'The Power of Compounding: Why Starting Early Matters',
-    excerpt: 'A deep dive into how compound interest works and why time in the market beats timing the market.',
-    author: 'Research Desk',
-    date: 'Feb 8, 2026',
-    format: 'Text',
-    category: 'Wealth Building',
-    readTime: '8 min read',
-  },
-  {
-    id: 6,
-    title: 'Audio Explainer: Union Budget 2026 Impact on Markets',
-    excerpt: 'Breaking down the key budget announcements and their implications for equity, debt, and commodity markets.',
-    author: 'Insights Studio',
-    date: 'Feb 5, 2026',
-    format: 'Audio',
-    category: 'Economy',
-    readTime: '18 min listen',
-  },
-  {
-    id: 7,
-    title: 'Visual Guide: ETF vs Index Fund — Which One Should You Pick?',
-    excerpt: 'An illustrated comparison of ETFs and index funds covering costs, liquidity, tracking error, and tax efficiency.',
-    author: 'Design Team',
-    date: 'Feb 3, 2026',
-    format: 'Image',
-    category: 'Products',
-    readTime: '3 min view',
-  },
-  {
-    id: 8,
-    title: 'Video: Setting Up Your First SIP — Complete Walkthrough',
-    excerpt: 'A hands-on tutorial showing you exactly how to start a Systematic Investment Plan from scratch.',
-    author: 'Education Team',
-    date: 'Feb 1, 2026',
-    format: 'Video',
-    category: 'Getting Started',
-    readTime: '8 min watch',
-  },
-];
 
 const formatIcons: Record<string, typeof FileText> = {
   Text: FileText,
@@ -117,6 +25,19 @@ const formats: ArticleFormat[] = ['All', 'Text', 'Image', 'Audio', 'Video'];
 
 export const ArticlesContent = () => {
   const [activeFormat, setActiveFormat] = useState<ArticleFormat>('All');
+
+  const { data: articles = [], isLoading } = useQuery({
+    queryKey: ['articles'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('articles')
+        .select('*')
+        .eq('status', 'published')
+        .order('published_at', { ascending: false });
+      if (error) throw error;
+      return data;
+    },
+  });
 
   const filteredArticles = activeFormat === 'All'
     ? articles
@@ -166,54 +87,89 @@ export const ArticlesContent = () => {
           })}
         </motion.div>
 
+        {/* Loading */}
+        {isLoading && (
+          <div className="flex items-center justify-center py-20">
+            <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+          </div>
+        )}
+
+        {/* Empty state */}
+        {!isLoading && filteredArticles.length === 0 && (
+          <div className="text-center py-20 text-muted-foreground">
+            <FileText className="w-10 h-10 mx-auto mb-3 opacity-30" />
+            <p>No articles published yet.</p>
+          </div>
+        )}
+
         {/* Articles Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredArticles.map((article, index) => {
-            const FormatIcon = formatIcons[article.format];
-            return (
-              <motion.article
-                key={article.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.08 * index }}
-                className="bg-muted/30 rounded-lg p-6 hover:shadow-lg transition-shadow border border-border/50"
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${formatColors[article.format]}`}>
-                    <FormatIcon className="w-5 h-5" />
+        {!isLoading && filteredArticles.length > 0 && (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredArticles.map((article, index) => {
+              const FormatIcon = formatIcons[article.format] ?? FileText;
+              const fmtColor = formatColors[article.format] ?? formatColors['Text'];
+              const dateStr = article.published_at
+                ? new Date(article.published_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+                : '';
+              return (
+                <motion.article
+                  key={article.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.08 * index }}
+                  className="bg-muted/30 rounded-lg p-6 hover:shadow-lg transition-shadow border border-border/50"
+                >
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${fmtColor}`}>
+                      <FormatIcon className="w-5 h-5" />
+                    </div>
+                    <div className="flex gap-2 flex-wrap">
+                      <span className="px-3 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full">
+                        {article.category}
+                      </span>
+                      <span className={`px-2.5 py-1 text-xs font-medium rounded-full ${fmtColor}`}>
+                        {article.format}
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex gap-2">
-                    <span className="px-3 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full">
-                      {article.category}
-                    </span>
-                    <span className={`px-2.5 py-1 text-xs font-medium rounded-full ${formatColors[article.format]}`}>
-                      {article.format}
-                    </span>
+                  <h3 className="text-lg font-semibold text-foreground mb-2 line-clamp-2">{article.title}</h3>
+                  <p className="text-sm text-muted-foreground mb-4 line-clamp-3">{article.excerpt}</p>
+                  <div className="flex items-center justify-between text-xs text-muted-foreground mb-4">
+                    <div className="flex items-center gap-1">
+                      <User className="h-3 w-3" />
+                      <span>{article.author}</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      {article.read_time && <span>{article.read_time}</span>}
+                      {dateStr && (
+                        <span className="flex items-center gap-1">
+                          <Calendar className="h-3 w-3" />
+                          {dateStr}
+                        </span>
+                      )}
+                    </div>
                   </div>
-                </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2 line-clamp-2">{article.title}</h3>
-                <p className="text-sm text-muted-foreground mb-4 line-clamp-3">{article.excerpt}</p>
-                <div className="flex items-center justify-between text-xs text-muted-foreground mb-4">
-                  <div className="flex items-center gap-1">
-                    <User className="h-3 w-3" />
-                    <span>{article.author}</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span>{article.readTime}</span>
-                    <span className="flex items-center gap-1">
-                      <Calendar className="h-3 w-3" />
-                      {article.date}
-                    </span>
-                  </div>
-                </div>
-                <Link to="#" className="flex items-center gap-1 text-primary text-sm font-medium hover:underline">
-                  {article.format === 'Audio' ? 'Listen now' : article.format === 'Video' ? 'Watch now' : 'Read more'}
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </motion.article>
-            );
-          })}
-        </div>
+                  {article.media_url ? (
+                    <a
+                      href={article.media_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 text-primary text-sm font-medium hover:underline"
+                    >
+                      {article.format === 'Audio' ? 'Listen now' : article.format === 'Video' ? 'Watch now' : 'Read more'}
+                      <ArrowRight className="h-4 w-4" />
+                    </a>
+                  ) : (
+                    <Link to="#" className="flex items-center gap-1 text-primary text-sm font-medium hover:underline">
+                      {article.format === 'Audio' ? 'Listen now' : article.format === 'Video' ? 'Watch now' : 'Read more'}
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  )}
+                </motion.article>
+              );
+            })}
+          </div>
+        )}
       </div>
     </section>
   );
