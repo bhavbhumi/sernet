@@ -9,9 +9,10 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Pencil, Trash2, Search, Eye, EyeOff, Upload, X, Loader2 } from 'lucide-react';
+import { Plus, Pencil, Trash2, Search, Eye, EyeOff, Upload, X, Loader2, Heart, Share2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
+import { useQuery } from '@tanstack/react-query';
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
@@ -52,6 +53,27 @@ export default function AdminArticles() {
   const [uploadingThumb, setUploadingThumb] = useState(false);
   const mediaInputRef = useRef<HTMLInputElement>(null);
   const thumbInputRef = useRef<HTMLInputElement>(null);
+
+  // Engagement counts
+  const { data: likeCounts = {} } = useQuery({
+    queryKey: ['admin-article-likes'],
+    queryFn: async () => {
+      const { data } = await supabase.from('article_likes').select('article_id');
+      const counts: Record<string, number> = {};
+      (data ?? []).forEach(r => { counts[r.article_id] = (counts[r.article_id] ?? 0) + 1; });
+      return counts;
+    },
+  });
+
+  const { data: shareCounts = {} } = useQuery({
+    queryKey: ['admin-article-shares'],
+    queryFn: async () => {
+      const { data } = await supabase.from('article_shares').select('article_id');
+      const counts: Record<string, number> = {};
+      (data ?? []).forEach(r => { counts[r.article_id] = (counts[r.article_id] ?? 0) + 1; });
+      return counts;
+    },
+  });
 
   const uploadFile = async (file: File, field: 'media_url' | 'thumbnail_url') => {
     if (file.size > MAX_FILE_SIZE) {
@@ -172,6 +194,7 @@ export default function AdminArticles() {
                 <th className="px-4 py-3 text-left font-medium text-muted-foreground w-28">Category</th>
                 <th className="px-4 py-3 text-left font-medium text-muted-foreground w-24">Author</th>
                 <th className="px-4 py-3 text-left font-medium text-muted-foreground w-24">Status</th>
+                <th className="px-4 py-3 text-left font-medium text-muted-foreground w-28">Engagement</th>
                 <th className="px-4 py-3 text-right font-medium text-muted-foreground w-28">Actions</th>
               </tr>
             </thead>
@@ -181,7 +204,7 @@ export default function AdminArticles() {
                   <tr key={i}><td colSpan={6} className="px-4 py-3"><div className="h-4 bg-muted animate-pulse rounded" /></td></tr>
                 ))
               ) : filtered.length === 0 ? (
-                <tr><td colSpan={6} className="px-4 py-12 text-center text-muted-foreground">No articles found</td></tr>
+                <tr><td colSpan={7} className="px-4 py-12 text-center text-muted-foreground">No articles found</td></tr>
               ) : filtered.map(item => (
                 <tr key={item.id} className="hover:bg-muted/20">
                   <td className="px-4 py-3">
@@ -195,6 +218,18 @@ export default function AdminArticles() {
                     <Badge variant={item.status === 'published' ? 'default' : 'secondary'}>
                       {item.status}
                     </Badge>
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                      <span className="flex items-center gap-1">
+                        <Heart className="h-3.5 w-3.5 text-red-400" />
+                        {likeCounts[item.id] ?? 0}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Share2 className="h-3.5 w-3.5 text-blue-400" />
+                        {shareCounts[item.id] ?? 0}
+                      </span>
+                    </div>
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center justify-end gap-1">

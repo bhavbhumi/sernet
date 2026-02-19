@@ -59,6 +59,48 @@ export type Database = {
         }
         Relationships: []
       }
+      article_likes: {
+        Row: {
+          article_id: string
+          created_at: string
+          fingerprint: string
+          id: string
+        }
+        Insert: {
+          article_id: string
+          created_at?: string
+          fingerprint: string
+          id?: string
+        }
+        Update: {
+          article_id?: string
+          created_at?: string
+          fingerprint?: string
+          id?: string
+        }
+        Relationships: []
+      }
+      article_shares: {
+        Row: {
+          article_id: string
+          created_at: string
+          fingerprint: string | null
+          id: string
+        }
+        Insert: {
+          article_id: string
+          created_at?: string
+          fingerprint?: string | null
+          id?: string
+        }
+        Update: {
+          article_id?: string
+          created_at?: string
+          fingerprint?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
       articles: {
         Row: {
           author: string

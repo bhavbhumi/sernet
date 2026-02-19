@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FileText, Image, Headphones, Video, ArrowRight, Calendar, User, Filter, Loader2 } from 'lucide-react';
+import { FileText, Image, Headphones, Video, ArrowRight, Calendar, User, Filter, Loader2, Heart, Share2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { useArticleEngagement } from '@/hooks/useArticleEngagement';
+import { useToast } from '@/hooks/use-toast';
 
 type ArticleFormat = 'All' | 'Text' | 'Image' | 'Audio' | 'Video';
 
@@ -22,6 +24,105 @@ const formatColors: Record<string, string> = {
 };
 
 const formats: ArticleFormat[] = ['All', 'Text', 'Image', 'Audio', 'Video'];
+
+function ArticleCard({ article, index }: { article: any; index: number }) {
+  const { toast } = useToast();
+  const { likeCount, liked, shareCount, toggleLike, recordShare } = useArticleEngagement(article.id);
+
+  const handleShare = async () => {
+    const url = `${window.location.origin}/z-connect/articles/${article.id}`;
+    await recordShare();
+    if (navigator.share) {
+      navigator.share({ title: article.title, url }).catch(() => {});
+    } else {
+      navigator.clipboard.writeText(url);
+      toast({ title: 'Link copied!', description: 'Article link copied to clipboard.' });
+    }
+  };
+
+  const FormatIcon = formatIcons[article.format] ?? FileText;
+  const fmtColor = formatColors[article.format] ?? formatColors['Text'];
+  const dateStr = article.published_at
+    ? new Date(article.published_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+    : '';
+
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: 0.08 * index }}
+      className="bg-muted/30 rounded-lg p-6 hover:shadow-lg transition-shadow border border-border/50 flex flex-col"
+    >
+      <div className="flex items-center gap-3 mb-4">
+        <div className={`w-10 h-10 rounded-full flex items-center justify-center ${fmtColor}`}>
+          <FormatIcon className="w-5 h-5" />
+        </div>
+        <div className="flex gap-2 flex-wrap">
+          <span className="px-3 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full">
+            {article.category}
+          </span>
+          <span className={`px-2.5 py-1 text-xs font-medium rounded-full ${fmtColor}`}>
+            {article.format}
+          </span>
+        </div>
+      </div>
+
+      {article.thumbnail_url && (
+        <div className="mb-4 rounded-lg overflow-hidden border border-border/40">
+          <img src={article.thumbnail_url} alt={article.title} className="w-full h-40 object-cover" />
+        </div>
+      )}
+
+      <Link to={`/z-connect/articles/${article.id}`}>
+        <h3 className="text-lg font-semibold text-foreground mb-2 line-clamp-2 hover:text-primary transition-colors">{article.title}</h3>
+      </Link>
+      <p className="text-sm text-muted-foreground mb-4 line-clamp-3 flex-1">{article.excerpt}</p>
+
+      <div className="flex items-center justify-between text-xs text-muted-foreground mb-4">
+        <div className="flex items-center gap-1">
+          <User className="h-3 w-3" />
+          <span>{article.author}</span>
+        </div>
+        <div className="flex items-center gap-3">
+          {article.read_time && <span>{article.read_time}</span>}
+          {dateStr && (
+            <span className="flex items-center gap-1">
+              <Calendar className="h-3 w-3" />
+              {dateStr}
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* Footer: Read more + engagement */}
+      <div className="flex items-center justify-between pt-3 border-t border-border/40">
+        <Link to={`/z-connect/articles/${article.id}`} className="flex items-center gap-1 text-primary text-sm font-medium hover:underline">
+          {article.format === 'Audio' ? 'Listen now' : article.format === 'Video' ? 'Watch now' : 'Read more'}
+          <ArrowRight className="h-4 w-4" />
+        </Link>
+
+        <div className="flex items-center gap-3">
+          <button
+            onClick={toggleLike}
+            className={`flex items-center gap-1 text-xs transition-colors ${liked ? 'text-red-500' : 'text-muted-foreground hover:text-red-500'}`}
+            aria-label="Like"
+          >
+            <Heart className={`h-4 w-4 ${liked ? 'fill-red-500' : ''}`} />
+            {likeCount > 0 && <span>{likeCount}</span>}
+          </button>
+          <button
+            onClick={handleShare}
+            className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors"
+            aria-label="Share"
+          >
+            <Share2 className="h-4 w-4" />
+            {shareCount > 0 && <span>{shareCount}</span>}
+          </button>
+        </div>
+      </div>
+    </motion.article>
+  );
+}
 
 export const ArticlesContent = () => {
   const [activeFormat, setActiveFormat] = useState<ArticleFormat>('All');
@@ -105,59 +206,9 @@ export const ArticlesContent = () => {
         {/* Articles Grid */}
         {!isLoading && filteredArticles.length > 0 && (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredArticles.map((article, index) => {
-              const FormatIcon = formatIcons[article.format] ?? FileText;
-              const fmtColor = formatColors[article.format] ?? formatColors['Text'];
-              const dateStr = article.published_at
-                ? new Date(article.published_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
-                : '';
-              return (
-                <motion.article
-                  key={article.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.08 * index }}
-                  className="bg-muted/30 rounded-lg p-6 hover:shadow-lg transition-shadow border border-border/50"
-                >
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${fmtColor}`}>
-                      <FormatIcon className="w-5 h-5" />
-                    </div>
-                    <div className="flex gap-2 flex-wrap">
-                      <span className="px-3 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full">
-                        {article.category}
-                      </span>
-                      <span className={`px-2.5 py-1 text-xs font-medium rounded-full ${fmtColor}`}>
-                        {article.format}
-                      </span>
-                    </div>
-                  </div>
-                  <Link to={`/z-connect/articles/${article.id}`}>
-                    <h3 className="text-lg font-semibold text-foreground mb-2 line-clamp-2 hover:text-primary transition-colors">{article.title}</h3>
-                  </Link>
-                  <p className="text-sm text-muted-foreground mb-4 line-clamp-3">{article.excerpt}</p>
-                  <div className="flex items-center justify-between text-xs text-muted-foreground mb-4">
-                    <div className="flex items-center gap-1">
-                      <User className="h-3 w-3" />
-                      <span>{article.author}</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      {article.read_time && <span>{article.read_time}</span>}
-                      {dateStr && (
-                        <span className="flex items-center gap-1">
-                          <Calendar className="h-3 w-3" />
-                          {dateStr}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                  <Link to={`/z-connect/articles/${article.id}`} className="flex items-center gap-1 text-primary text-sm font-medium hover:underline">
-                    {article.format === 'Audio' ? 'Listen now' : article.format === 'Video' ? 'Watch now' : 'Read more'}
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </motion.article>
-              );
-            })}
+            {filteredArticles.map((article, index) => (
+              <ArticleCard key={article.id} article={article} index={index} />
+            ))}
           </div>
         )}
       </div>
