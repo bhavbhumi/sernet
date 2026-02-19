@@ -12,7 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Pencil, Trash2, Search, Eye, EyeOff } from 'lucide-react';
+import { Plus, Pencil, Trash2, Search, Eye, EyeOff, Star } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { FieldInfoTooltip } from '@/components/admin/FieldInfoTooltip';
@@ -36,13 +36,14 @@ interface GenericCMSPageProps {
   emptyForm: Record<string, string | number | boolean>;
   tableColumns: { key: string; label: string; width?: string }[];
   hasStatus?: boolean;
+  hasFeatured?: boolean; // enables Feature/Unfeature action button
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db = (tableName: string) => supabase.from(tableName as any) as any;
 
 export function GenericCMSPage({
-  title, subtitle, tableName, fields, emptyForm: defaultForm, tableColumns, hasStatus = true
+  title, subtitle, tableName, fields, emptyForm: defaultForm, tableColumns, hasStatus = true, hasFeatured = false
 }: GenericCMSPageProps) {
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
@@ -90,6 +91,11 @@ export function GenericCMSPage({
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this item?')) return;
     await db(tableName).delete().eq('id', id);
+    fetchItems();
+  };
+
+  const toggleFeatured = async (item: Record<string, unknown>) => {
+    await db(tableName).update({ is_featured: !item.is_featured }).eq('id', item.id as string);
     fetchItems();
   };
 
@@ -191,9 +197,15 @@ export function GenericCMSPage({
                           <p className="font-medium text-foreground line-clamp-1">{String(item[col.key] ?? '')}</p>
                           {/* Inline action bar below first column */}
                           <div className="flex items-center gap-0.5 mt-1.5">
-                            {hasStatus && (
+                          {hasStatus && (
                               <Button variant="ghost" size="sm" className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground gap-1" onClick={() => toggleStatus(item)} title={item.status === 'published' ? 'Unpublish' : 'Publish'}>
                                 {item.status === 'published' ? <><EyeOff className="h-3 w-3" /> Unpublish</> : <><Eye className="h-3 w-3" /> Publish</>}
+                              </Button>
+                            )}
+                            {hasFeatured && (
+                              <Button variant="ghost" size="sm" className={`h-6 px-2 text-xs gap-1 ${item.is_featured ? 'text-yellow-500 hover:text-yellow-600' : 'text-muted-foreground hover:text-foreground'}`} onClick={() => toggleFeatured(item)}>
+                                <Star className={`h-3 w-3 ${item.is_featured ? 'fill-yellow-400' : ''}`} />
+                                {item.is_featured ? 'Unfeature' : 'Feature'}
                               </Button>
                             )}
                             <Button variant="ghost" size="sm" className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground gap-1" onClick={() => openEdit(item)}>

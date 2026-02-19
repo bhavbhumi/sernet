@@ -80,6 +80,8 @@ import AdminTeamMembers from "./pages/admin/careers/AdminTeamMembers";
 import AdminPress from "./pages/admin/AdminPress";
 import AdminRSSSettings from "./pages/admin/settings/AdminRSSSettings";
 import AdminUsers from "./pages/admin/settings/AdminUsers";
+import AdminSitePages from "./pages/admin/site/AdminSitePages";
+import Sitemap from "./pages/Sitemap";
 
 const queryClient = new QueryClient();
 
@@ -171,8 +173,12 @@ const App = () => (
           <Route path="/admin/careers/applications" element={<AdminApplications />} />
           <Route path="/admin/careers/team" element={<AdminTeamMembers />} />
           <Route path="/admin/press" element={<AdminPress />} />
+          <Route path="/admin/site/pages" element={<AdminSitePages />} />
           <Route path="/admin/settings/rss" element={<AdminRSSSettings />} />
           <Route path="/admin/settings/users" element={<AdminUsers />} />
+
+          {/* Sitemap */}
+          <Route path="/sitemap" element={<Sitemap />} />
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

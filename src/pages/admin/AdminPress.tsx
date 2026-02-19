@@ -7,6 +7,7 @@ export default function AdminPress() {
       title="Press & Media"
       subtitle="Manage press mentions, media coverage, and publications"
       tableName="press_items"
+      hasFeatured
       emptyForm={{ title: '', source: '', medium: 'Web', link: '', is_featured: false, status: 'draft', published_at: '' }}
       fields={[
         { key: 'title', label: 'Headline', type: 'text', placeholder: 'Press mention headline', required: true, colSpan: 2 },

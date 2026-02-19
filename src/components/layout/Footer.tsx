@@ -61,11 +61,12 @@ const socialLinks = [
   )},
 ];
 
-const legalLinks = [
+const legalLinks: { nameKey?: string; label?: string; href: string }[] = [
   { nameKey: 'footer.terms', href: '/terms' },
   { nameKey: 'footer.privacy', href: '/privacy' },
   { nameKey: 'footer.policies', href: '/policies' },
   { nameKey: 'footer.disclosures', href: '/disclosure' },
+  { label: 'Sitemap', href: '/sitemap' },
 ];
 
 export const Footer = () => {
@@ -244,7 +245,7 @@ export const Footer = () => {
                     to={link.href}
                     className="text-muted-foreground hover:text-primary transition-colors"
                   >
-                    {t(link.nameKey)}
+                    {link.label ?? t(link.nameKey!)}
                   </Link>
                   {index < legalLinks.length - 1 && <span className="text-muted-foreground/50">|</span>}
                 </span>
