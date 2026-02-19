@@ -15,6 +15,7 @@ import { Badge } from '@/components/ui/badge';
 import { Plus, Pencil, Trash2, Search, Eye, EyeOff } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
+import { FieldInfoTooltip } from '@/components/admin/FieldInfoTooltip';
 
 export interface FieldDef {
   key: string;
@@ -24,6 +25,7 @@ export interface FieldDef {
   placeholder?: string;
   required?: boolean;
   colSpan?: number;
+  tip?: string; // info tooltip text
 }
 
 interface GenericCMSPageProps {
@@ -189,7 +191,10 @@ export function GenericCMSPage({
           <div className="grid grid-cols-2 gap-4 mt-2">
             {fields.map(field => (
               <div key={field.key} className={`space-y-1.5 ${field.colSpan === 2 ? 'col-span-2' : ''}`}>
-                <Label>{field.label}{field.required ? ' *' : ''}</Label>
+                <div className="flex items-center gap-1.5">
+                  <Label>{field.label}{field.required ? <span className="text-destructive ml-0.5">*</span> : ''}</Label>
+                  {field.tip && <FieldInfoTooltip tip={field.tip} />}
+                </div>
                 {field.type === 'textarea' && (
                   <Textarea
                     placeholder={field.placeholder}
