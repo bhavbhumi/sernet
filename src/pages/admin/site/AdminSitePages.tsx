@@ -1,172 +1,235 @@
 
 import { useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ExternalLink } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ExternalLink, Pencil, Eye, EyeOff, AlertTriangle, CheckCircle2, Search } from 'lucide-react';
+import { toast } from 'sonner';
 
-// All public routes grouped by section
-const sitePages: { section: string; pages: { title: string; path: string; description: string; status: 'live' | 'beta' | 'hidden' }[] }[] = [
-  {
-    section: 'Main',
-    pages: [
-      { title: 'Home', path: '/', description: 'Hero, Stats, Pricing, Testimonials, Ecosystem', status: 'live' },
-      { title: 'Services', path: '/services', description: 'Trading, Investment, Insurance, Estate Planning, Education, Credit Counselling', status: 'live' },
-      { title: 'Pricing', path: '/pricing', description: 'Zero brokerage pricing plans', status: 'live' },
-      { title: 'Open Account', path: '/open-account', description: 'Account opening flow', status: 'live' },
-    ],
-  },
-  {
-    section: 'About',
-    pages: [
-      { title: 'About (Company)', path: '/about?tab=Company', description: 'Company overview, journey, philosophy', status: 'live' },
-      { title: 'Careers', path: '/about?tab=Careers', description: 'Job openings & team', status: 'live' },
-      { title: 'Press & Media', path: '/about?tab=Press', description: 'Press mentions & featured coverage', status: 'live' },
-      { title: 'Recognition', path: '/about?tab=Recognition', description: 'Awards & achievements', status: 'live' },
-      { title: 'Reviews', path: '/about?tab=Reviews', description: 'Client testimonials', status: 'live' },
-    ],
-  },
-  {
-    section: 'Network',
-    pages: [
-      { title: 'Network', path: '/network', description: 'Clients, Partners, Principals', status: 'live' },
-      { title: 'Tick Funds', path: '/tickfunds', description: 'Tick Funds product page', status: 'live' },
-      { title: 'Tushil', path: '/tushil', description: 'Tushil platform page', status: 'live' },
-      { title: 'Choice FinX', path: '/choicefinx', description: 'Choice FinX product page', status: 'live' },
-      { title: 'Findemy', path: '/findemy', description: 'Findemy product page', status: 'live' },
-    ],
-  },
-  {
-    section: 'Insights',
-    pages: [
-      { title: 'Z-Connect (Insights Hub)', path: '/z-connect', description: 'Articles, Analysis, Reports, Bulletin', status: 'live' },
-      { title: 'Article Detail', path: '/z-connect/articles/:id', description: 'Individual article view', status: 'live' },
-      { title: 'Updates', path: '/updates', description: 'News & Circulars', status: 'live' },
-      { title: 'Videos', path: '/videos', description: 'Video library', status: 'live' },
-      { title: 'Trading Q&A', path: '/tradingqna', description: 'Trading questions and answers', status: 'live' },
-    ],
-  },
-  {
-    section: 'Tools',
-    pages: [
-      { title: 'Calculators Hub', path: '/calculators', description: 'All calculators landing page', status: 'live' },
-      { title: 'SIP Calculator', path: '/calculators/sip', description: 'SIP returns calculator', status: 'live' },
-      { title: 'Lumpsum Calculator', path: '/calculators/lumpsum', description: 'Lumpsum returns calculator', status: 'live' },
-      { title: 'Brokerage Calculator', path: '/calculators/brokerage', description: 'Brokerage fee calculator', status: 'live' },
-      { title: 'Margin Calculator', path: '/calculators/margin', description: 'Margin requirement calculator', status: 'live' },
-      { title: 'Market Overview', path: '/market-overview', description: 'Live market data widget', status: 'live' },
-      { title: 'Calendars', path: '/calendars', description: 'Economic & corporate calendars', status: 'live' },
-      { title: 'Market Holidays', path: '/market-holidays', description: 'Exchange holiday list', status: 'live' },
-      { title: 'Economic Calendar', path: '/economic-calendar', description: 'Macro economic events', status: 'live' },
-    ],
-  },
-  {
-    section: 'Engagement',
-    pages: [
-      { title: 'Opinions', path: '/opinions', description: 'Polls & Surveys', status: 'live' },
-      { title: 'Reviews', path: '/reviews', description: 'All public reviews', status: 'live' },
-    ],
-  },
-  {
-    section: 'Support & Contact',
-    pages: [
-      { title: 'Contact', path: '/contact', description: 'Ask Us, Schedule Call, Visit Us', status: 'live' },
-      { title: 'Support / Help Desk', path: '/support', description: 'Help desk & ticket submission', status: 'live' },
-      { title: 'Quick Links', path: '/quick-links', description: 'Broker quick links', status: 'live' },
-      { title: 'Schedule Call', path: '/schedule-call', description: 'Book a consultation call', status: 'live' },
-      { title: 'Fund Transfer', path: '/fund-transfer', description: 'Fund transfer instructions', status: 'live' },
-      { title: 'Complaints', path: '/complaints', description: 'Lodge a complaint', status: 'live' },
-      { title: 'Complaint Status', path: '/complaints/status', description: 'Check complaint status', status: 'live' },
-      { title: 'Credit Claim', path: '/credit-claim', description: 'Credit claim form', status: 'live' },
-    ],
-  },
-  {
-    section: 'Legal & Compliance',
-    pages: [
-      { title: 'Terms & Conditions', path: '/terms', description: 'Terms of service', status: 'live' },
-      { title: 'Privacy Policy', path: '/privacy', description: 'Privacy & data handling', status: 'live' },
-      { title: 'Policies', path: '/policies', description: 'All policies', status: 'live' },
-      { title: 'Disclosures', path: '/disclosure', description: 'SEBI mandatory disclosures', status: 'live' },
-      { title: 'Investor Charter', path: '/investor-charter', description: 'SEBI investor charter', status: 'live' },
-      { title: 'Signup', path: '/signup', description: 'Account signup form', status: 'live' },
-      { title: 'Sitemap', path: '/sitemap', description: 'Full site directory', status: 'live' },
-    ],
-  },
-  {
-    section: 'Downloads & Media',
-    pages: [
-      { title: 'Downloads', path: '/downloads', description: 'Apps & document downloads', status: 'live' },
-      { title: 'CSR', path: '/csr', description: 'Corporate social responsibility', status: 'live' },
-      { title: 'Technology', path: '/tech', description: 'Technology & infrastructure', status: 'live' },
-      { title: 'Media', path: '/media', description: 'Media & press gallery', status: 'live' },
-      { title: 'Philosophy', path: '/about/philosophy', description: 'Investment philosophy', status: 'live' },
-    ],
-  },
+interface SitePage {
+  id: string;
+  title: string;
+  path: string;
+  section: string;
+  description: string | null;
+  meta_title: string | null;
+  meta_description: string | null;
+  maintenance_mode: boolean;
+  status: string;
+  sort_order: number;
+  updated_at: string;
+}
+
+const STATUS_OPTIONS = [
+  { value: 'live', label: 'Live', color: 'bg-green-500/10 text-green-700 dark:text-green-400 border-green-200' },
+  { value: 'hidden', label: 'Hidden', color: 'bg-muted text-muted-foreground border-border' },
+  { value: 'coming_soon', label: 'Coming Soon', color: 'bg-yellow-500/10 text-yellow-700 dark:text-yellow-400 border-yellow-200' },
 ];
 
-const allSections = ['All', ...sitePages.map(s => s.section)];
+function StatusBadge({ status, maintenance }: { status: string; maintenance: boolean }) {
+  if (maintenance) {
+    return (
+      <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full border bg-orange-500/10 text-orange-700 dark:text-orange-400 border-orange-200">
+        <AlertTriangle className="h-3 w-3" /> Maintenance
+      </span>
+    );
+  }
+  const s = STATUS_OPTIONS.find(o => o.value === status) ?? STATUS_OPTIONS[0];
+  return (
+    <span className={`inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full border ${s.color}`}>
+      {status === 'live' && <CheckCircle2 className="h-3 w-3" />}
+      {s.label}
+    </span>
+  );
+}
 
 export default function AdminSitePages() {
+  const queryClient = useQueryClient();
   const [activeTab, setActiveTab] = useState('All');
-  const baseUrl = window.location.origin;
+  const [search, setSearch] = useState('');
+  const [editPage, setEditPage] = useState<SitePage | null>(null);
+  const baseUrl = window.location.origin.replace(/\/admin.*/, '');
 
-  const displayedSections = activeTab === 'All' ? sitePages : sitePages.filter(s => s.section === activeTab);
-  const totalPages = sitePages.reduce((sum, s) => sum + s.pages.length, 0);
+  const { data: pages = [], isLoading } = useQuery({
+    queryKey: ['site_pages'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('site_pages' as any)
+        .select('*')
+        .order('sort_order');
+      if (error) throw error;
+      return (data as unknown) as SitePage[];
+    },
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: async (updates: Partial<SitePage> & { id: string }) => {
+      const { id, ...rest } = updates;
+      const { error } = await supabase.from('site_pages' as any).update(rest).eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['site_pages'] });
+      toast.success('Page updated');
+      setEditPage(null);
+    },
+    onError: () => toast.error('Failed to update page'),
+  });
+
+  const sections = ['All', ...Array.from(new Set(pages.map(p => p.section)))];
+
+  const filtered = pages.filter(p => {
+    const inSection = activeTab === 'All' || p.section === activeTab;
+    const inSearch = search === '' || p.title.toLowerCase().includes(search.toLowerCase()) || p.path.toLowerCase().includes(search.toLowerCase());
+    return inSection && inSearch;
+  });
+
+  const grouped = sections
+    .filter(s => s !== 'All')
+    .map(s => ({ section: s, pages: filtered.filter(p => p.section === s) }))
+    .filter(g => g.pages.length > 0);
+
+  const displayGroups = activeTab === 'All' ? grouped : grouped.filter(g => g.section === activeTab);
+
+  // Stats
+  const total = pages.length;
+  const live = pages.filter(p => p.status === 'live' && !p.maintenance_mode).length;
+  const maintenance = pages.filter(p => p.maintenance_mode).length;
+  const hidden = pages.filter(p => p.status === 'hidden').length;
+  const seoMissing = pages.filter(p => !p.meta_title || !p.meta_description).length;
+
+  const handleQuickToggle = (page: SitePage, field: 'maintenance_mode' | 'status') => {
+    if (field === 'maintenance_mode') {
+      updateMutation.mutate({ id: page.id, maintenance_mode: !page.maintenance_mode });
+    } else {
+      updateMutation.mutate({ id: page.id, status: page.status === 'live' ? 'hidden' : 'live' });
+    }
+  };
 
   return (
     <AdminLayout
-      title="Site & Pages"
-      subtitle={`Complete page directory — ${totalPages} pages across ${sitePages.length} sections`}
+      title="Page Directory"
+      subtitle="Manage SEO metadata, visibility and maintenance status for every page"
     >
+      {/* Stat chips */}
+      <div className="flex flex-wrap gap-2 mb-5">
+        {[
+          { label: 'Total Pages', value: total, color: 'bg-muted/60 text-foreground border-border' },
+          { label: 'Live', value: live, color: 'bg-green-500/10 text-green-700 dark:text-green-400 border-green-200' },
+          { label: 'Maintenance', value: maintenance, color: 'bg-orange-500/10 text-orange-700 dark:text-orange-400 border-orange-200' },
+          { label: 'Hidden', value: hidden, color: 'bg-muted text-muted-foreground border-border' },
+          { label: 'SEO Incomplete', value: seoMissing, color: 'bg-red-500/10 text-red-700 dark:text-red-400 border-red-200' },
+        ].map(chip => (
+          <span key={chip.label} className={`text-xs font-medium px-3 py-1 rounded-full border ${chip.color}`}>
+            {chip.label}: <span className="font-bold">{chip.value}</span>
+          </span>
+        ))}
+      </div>
+
+      {/* Search */}
+      <div className="relative mb-4 max-w-sm">
+        <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+        <Input
+          placeholder="Search pages..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          className="pl-8 h-8 text-sm"
+        />
+      </div>
+
       {/* Section tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
         <TabsList className="flex flex-wrap h-auto gap-1 bg-muted/40 p-1">
-          {allSections.map(s => (
-            <TabsTrigger key={s} value={s} className="text-xs px-3 py-1.5">
-              {s}
-            </TabsTrigger>
+          {sections.map(s => (
+            <TabsTrigger key={s} value={s} className="text-xs px-3 py-1.5">{s}</TabsTrigger>
           ))}
         </TabsList>
 
         <TabsContent value={activeTab} className="mt-4 space-y-6">
-          {displayedSections.map(section => (
-            <div key={section.section}>
+          {isLoading ? (
+            <p className="text-sm text-muted-foreground py-8 text-center">Loading pages…</p>
+          ) : displayGroups.length === 0 ? (
+            <p className="text-sm text-muted-foreground py-8 text-center">No pages found.</p>
+          ) : displayGroups.map(group => (
+            <div key={group.section}>
               <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
-                {section.section}
-                <Badge variant="secondary" className="text-xs font-normal">{section.pages.length} pages</Badge>
+                {group.section}
+                <Badge variant="secondary" className="text-xs font-normal">{group.pages.length} pages</Badge>
               </h3>
               <div className="bg-card border border-border rounded-xl overflow-hidden">
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-border bg-muted/30">
-                      <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Page</th>
-                      <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Path</th>
-                      <th className="px-4 py-2.5 text-left font-medium text-muted-foreground hidden md:table-cell">Description</th>
-                      <th className="px-4 py-2.5 text-left font-medium text-muted-foreground w-20">Status</th>
-                      <th className="px-4 py-2.5 w-16" />
+                      <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Page / Path</th>
+                      <th className="px-4 py-2.5 text-left font-medium text-muted-foreground hidden lg:table-cell">SEO Title</th>
+                      <th className="px-4 py-2.5 text-left font-medium text-muted-foreground hidden xl:table-cell">Meta Description</th>
+                      <th className="px-4 py-2.5 text-left font-medium text-muted-foreground w-32">Status</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
-                    {section.pages.map(page => (
-                      <tr key={page.path} className="hover:bg-muted/20">
-                        <td className="px-4 py-3 font-medium text-foreground">{page.title}</td>
-                        <td className="px-4 py-3 text-muted-foreground font-mono text-xs">{page.path}</td>
-                        <td className="px-4 py-3 text-muted-foreground hidden md:table-cell text-xs">{page.description}</td>
+                    {group.pages.map(page => (
+                      <tr key={page.id} className="hover:bg-muted/20">
                         <td className="px-4 py-3">
-                          <Badge variant={page.status === 'live' ? 'default' : page.status === 'beta' ? 'secondary' : 'outline'}>
-                            {page.status}
-                          </Badge>
+                          <p className="font-medium text-foreground">{page.title}</p>
+                          <p className="text-xs text-muted-foreground font-mono mt-0.5">{page.path}</p>
+                          {/* Action bar */}
+                          <div className="flex items-center gap-0.5 mt-1.5">
+                            <Button
+                              variant="ghost" size="sm"
+                              className="h-6 px-2 text-xs gap-1 text-muted-foreground hover:text-foreground"
+                              onClick={() => setEditPage(page)}
+                            >
+                              <Pencil className="h-3 w-3" /> Edit SEO
+                            </Button>
+                            <Button
+                              variant="ghost" size="sm"
+                              className={`h-6 px-2 text-xs gap-1 ${page.maintenance_mode ? 'text-orange-600' : 'text-muted-foreground'} hover:text-foreground`}
+                              onClick={() => handleQuickToggle(page, 'maintenance_mode')}
+                            >
+                              <AlertTriangle className="h-3 w-3" />
+                              {page.maintenance_mode ? 'Live Mode' : 'Maintenance'}
+                            </Button>
+                            <Button
+                              variant="ghost" size="sm"
+                              className="h-6 px-2 text-xs gap-1 text-muted-foreground hover:text-foreground"
+                              onClick={() => window.open(`${baseUrl}${page.path}`, '_blank')}
+                            >
+                              <ExternalLink className="h-3 w-3" /> Visit
+                            </Button>
+                          </div>
+                        </td>
+                        <td className="px-4 py-3 hidden lg:table-cell">
+                          {page.meta_title
+                            ? <span className="text-xs text-foreground">{page.meta_title}</span>
+                            : <span className="text-xs text-red-500 italic">Missing</span>
+                          }
+                        </td>
+                        <td className="px-4 py-3 hidden xl:table-cell">
+                          {page.meta_description
+                            ? <span className="text-xs text-muted-foreground line-clamp-2">{page.meta_description}</span>
+                            : <span className="text-xs text-red-500 italic">Missing</span>
+                          }
                         </td>
                         <td className="px-4 py-3">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-7 px-2 text-xs gap-1 text-muted-foreground hover:text-foreground"
-                            onClick={() => window.open(`${baseUrl}${page.path.replace(':id', 'sample')}`, '_blank')}
-                          >
-                            <ExternalLink className="h-3 w-3" /> Visit
-                          </Button>
+                          <StatusBadge status={page.status} maintenance={page.maintenance_mode} />
+                          <div className="mt-1.5">
+                            <Button
+                              variant="ghost" size="sm"
+                              className="h-6 px-2 text-xs gap-1 text-muted-foreground hover:text-foreground"
+                              onClick={() => handleQuickToggle(page, 'status')}
+                            >
+                              {page.status === 'live' ? <><EyeOff className="h-3 w-3" /> Hide</> : <><Eye className="h-3 w-3" /> Show</>}
+                            </Button>
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -177,6 +240,87 @@ export default function AdminSitePages() {
           ))}
         </TabsContent>
       </Tabs>
+
+      {/* Edit SEO Dialog */}
+      {editPage && (
+        <Dialog open onOpenChange={() => setEditPage(null)}>
+          <DialogContent className="max-w-lg">
+            <DialogHeader>
+              <DialogTitle>Edit Page — {editPage.title}</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 py-2">
+              <div>
+                <Label className="text-xs text-muted-foreground">Page Path</Label>
+                <p className="font-mono text-sm text-muted-foreground mt-0.5">{editPage.path}</p>
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="meta_title">SEO Meta Title <span className="text-muted-foreground text-xs">(60 chars max)</span></Label>
+                <Input
+                  id="meta_title"
+                  maxLength={60}
+                  value={editPage.meta_title ?? ''}
+                  onChange={e => setEditPage({ ...editPage, meta_title: e.target.value })}
+                  placeholder="e.g. SERNET – Zero Brokerage Trading"
+                />
+                <p className="text-xs text-muted-foreground text-right">{(editPage.meta_title ?? '').length}/60</p>
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="meta_desc">SEO Meta Description <span className="text-muted-foreground text-xs">(160 chars max)</span></Label>
+                <Textarea
+                  id="meta_desc"
+                  maxLength={160}
+                  rows={3}
+                  value={editPage.meta_description ?? ''}
+                  onChange={e => setEditPage({ ...editPage, meta_description: e.target.value })}
+                  placeholder="Short description shown in search results…"
+                />
+                <p className="text-xs text-muted-foreground text-right">{(editPage.meta_description ?? '').length}/160</p>
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="pg_status">Page Status</Label>
+                <Select
+                  value={editPage.status}
+                  onValueChange={v => setEditPage({ ...editPage, status: v })}
+                >
+                  <SelectTrigger id="pg_status" className="h-9">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {STATUS_OPTIONS.map(o => (
+                      <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex items-center justify-between p-3 rounded-lg border border-border bg-muted/30">
+                <div>
+                  <p className="text-sm font-medium">Maintenance Mode</p>
+                  <p className="text-xs text-muted-foreground">Visitors will see a maintenance notice</p>
+                </div>
+                <Switch
+                  checked={editPage.maintenance_mode}
+                  onCheckedChange={v => setEditPage({ ...editPage, maintenance_mode: v })}
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setEditPage(null)}>Cancel</Button>
+              <Button
+                onClick={() => updateMutation.mutate({
+                  id: editPage.id,
+                  meta_title: editPage.meta_title,
+                  meta_description: editPage.meta_description,
+                  status: editPage.status,
+                  maintenance_mode: editPage.maintenance_mode,
+                })}
+                disabled={updateMutation.isPending}
+              >
+                Save Changes
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
     </AdminLayout>
   );
 }
