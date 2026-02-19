@@ -1,8 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
-// Simple browser fingerprint (no library needed)
+// Simple browser fingerprint stored in localStorage
 function getFingerprint(): string {
   const key = 'sernet_fp';
   let fp = localStorage.getItem(key);
@@ -11,6 +11,16 @@ function getFingerprint(): string {
     localStorage.setItem(key, fp);
   }
   return fp;
+}
+
+// Track whether this device has already shared this article
+function hasShared(articleId: string): boolean {
+  const key = `sernet_shared_${articleId}`;
+  return localStorage.getItem(key) === '1';
+}
+
+function markShared(articleId: string) {
+  localStorage.setItem(`sernet_shared_${articleId}`, '1');
 }
 
 export function useArticleEngagement(articleId: string) {
@@ -60,15 +70,23 @@ export function useArticleEngagement(articleId: string) {
     onSuccess: () => qc.invalidateQueries({ queryKey: ['article-likes', articleId] }),
   });
 
-  const recordShare = useCallback(async () => {
+  // Share: record only once per device per article
+  const recordShare = useCallback(async (): Promise<boolean> => {
+    if (hasShared(articleId)) {
+      // Already shared from this device — don't add another row, just copy the link
+      return false;
+    }
     await supabase.from('article_shares').insert({ article_id: articleId, fingerprint: fp });
+    markShared(articleId);
     qc.invalidateQueries({ queryKey: ['article-shares', articleId] });
+    return true;
   }, [articleId, fp, qc]);
 
   return {
     likeCount: likesData?.count ?? 0,
     liked: likesData?.liked ?? false,
     shareCount: sharesData ?? 0,
+    alreadyShared: hasShared(articleId),
     toggleLike: () => likeMutation.mutate(),
     recordShare,
   };
