@@ -415,6 +415,27 @@ export type Database = {
         }
         Relationships: []
       }
+      poll_likes: {
+        Row: {
+          created_at: string
+          fingerprint: string
+          id: string
+          poll_id: string
+        }
+        Insert: {
+          created_at?: string
+          fingerprint: string
+          id?: string
+          poll_id: string
+        }
+        Update: {
+          created_at?: string
+          fingerprint?: string
+          id?: string
+          poll_id?: string
+        }
+        Relationships: []
+      }
       poll_options: {
         Row: {
           id: string
@@ -657,6 +678,27 @@ export type Database = {
           status?: string
           updated_at?: string
           video_url?: string | null
+        }
+        Relationships: []
+      }
+      survey_likes: {
+        Row: {
+          created_at: string
+          fingerprint: string
+          id: string
+          survey_id: string
+        }
+        Insert: {
+          created_at?: string
+          fingerprint: string
+          id?: string
+          survey_id: string
+        }
+        Update: {
+          created_at?: string
+          fingerprint?: string
+          id?: string
+          survey_id?: string
         }
         Relationships: []
       }
