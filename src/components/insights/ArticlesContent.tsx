@@ -132,7 +132,9 @@ export const ArticlesContent = () => {
                       </span>
                     </div>
                   </div>
-                  <h3 className="text-lg font-semibold text-foreground mb-2 line-clamp-2">{article.title}</h3>
+                  <Link to={`/z-connect/articles/${article.id}`}>
+                    <h3 className="text-lg font-semibold text-foreground mb-2 line-clamp-2 hover:text-primary transition-colors">{article.title}</h3>
+                  </Link>
                   <p className="text-sm text-muted-foreground mb-4 line-clamp-3">{article.excerpt}</p>
                   <div className="flex items-center justify-between text-xs text-muted-foreground mb-4">
                     <div className="flex items-center gap-1">
@@ -149,22 +151,10 @@ export const ArticlesContent = () => {
                       )}
                     </div>
                   </div>
-                  {article.media_url ? (
-                    <a
-                      href={article.media_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1 text-primary text-sm font-medium hover:underline"
-                    >
-                      {article.format === 'Audio' ? 'Listen now' : article.format === 'Video' ? 'Watch now' : 'Read more'}
-                      <ArrowRight className="h-4 w-4" />
-                    </a>
-                  ) : (
-                    <Link to="#" className="flex items-center gap-1 text-primary text-sm font-medium hover:underline">
-                      {article.format === 'Audio' ? 'Listen now' : article.format === 'Video' ? 'Watch now' : 'Read more'}
-                      <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  )}
+                  <Link to={`/z-connect/articles/${article.id}`} className="flex items-center gap-1 text-primary text-sm font-medium hover:underline">
+                    {article.format === 'Audio' ? 'Listen now' : article.format === 'Video' ? 'Watch now' : 'Read more'}
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
                 </motion.article>
               );
             })}
