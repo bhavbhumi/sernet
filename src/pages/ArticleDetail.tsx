@@ -2,8 +2,10 @@ import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Layout } from '@/components/layout/Layout';
-import { ArrowLeft, Calendar, User, Clock, FileText, Image, Headphones, Video } from 'lucide-react';
+import { ArrowLeft, Calendar, User, Clock, FileText, Image, Headphones, Video, Heart, Share2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useArticleEngagement } from '@/hooks/useArticleEngagement';
+import { useToast } from '@/hooks/use-toast';
 
 const formatIcons: Record<string, React.ElementType> = {
   Text: FileText,
@@ -21,6 +23,7 @@ const formatColors: Record<string, string> = {
 
 export default function ArticleDetail() {
   const { id } = useParams<{ id: string }>();
+  const { toast } = useToast();
 
   const { data: article, isLoading } = useQuery({
     queryKey: ['article', id],
@@ -36,6 +39,19 @@ export default function ArticleDetail() {
     },
     enabled: !!id,
   });
+
+  const { likeCount, liked, shareCount, toggleLike, recordShare } = useArticleEngagement(id ?? '');
+
+  const handleShare = async () => {
+    const url = window.location.href;
+    await recordShare();
+    if (navigator.share) {
+      navigator.share({ title: article?.title, url }).catch(() => {});
+    } else {
+      navigator.clipboard.writeText(url);
+      toast({ title: 'Link copied!', description: 'Article link copied to clipboard.' });
+    }
+  };
 
   if (isLoading) {
     return (
@@ -101,11 +117,35 @@ export default function ArticleDetail() {
         {/* Title */}
         <h1 className="text-3xl font-bold text-foreground leading-tight mb-4">{article.title}</h1>
 
-        {/* Meta */}
-        <div className="flex items-center gap-5 text-sm text-muted-foreground mb-8 flex-wrap">
-          <span className="flex items-center gap-1.5"><User className="h-4 w-4" />{article.author}</span>
-          {dateStr && <span className="flex items-center gap-1.5"><Calendar className="h-4 w-4" />{dateStr}</span>}
-          {article.read_time && <span className="flex items-center gap-1.5"><Clock className="h-4 w-4" />{article.read_time}</span>}
+        {/* Meta + Engagement row */}
+        <div className="flex items-center justify-between mb-8 flex-wrap gap-3">
+          <div className="flex items-center gap-5 text-sm text-muted-foreground flex-wrap">
+            <span className="flex items-center gap-1.5"><User className="h-4 w-4" />{article.author}</span>
+            {dateStr && <span className="flex items-center gap-1.5"><Calendar className="h-4 w-4" />{dateStr}</span>}
+            {article.read_time && <span className="flex items-center gap-1.5"><Clock className="h-4 w-4" />{article.read_time}</span>}
+          </div>
+
+          {/* Like & Share */}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={toggleLike}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm border transition-colors ${
+                liked
+                  ? 'bg-red-50 border-red-200 text-red-500 dark:bg-red-950/30 dark:border-red-800'
+                  : 'border-border text-muted-foreground hover:border-red-300 hover:text-red-500'
+              }`}
+            >
+              <Heart className={`h-4 w-4 ${liked ? 'fill-red-500' : ''}`} />
+              <span>{likeCount > 0 ? likeCount : ''} {liked ? 'Liked' : 'Like'}</span>
+            </button>
+            <button
+              onClick={handleShare}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm border border-border text-muted-foreground hover:border-primary hover:text-primary transition-colors"
+            >
+              <Share2 className="h-4 w-4" />
+              <span>{shareCount > 0 ? `${shareCount} ` : ''}Share</span>
+            </button>
+          </div>
         </div>
 
         {/* Thumbnail */}
@@ -152,6 +192,31 @@ export default function ArticleDetail() {
             {article.body}
           </div>
         )}
+
+        {/* Bottom engagement bar */}
+        <div className="mt-12 pt-6 border-t border-border flex items-center justify-between flex-wrap gap-3">
+          <p className="text-sm text-muted-foreground">Was this article helpful?</p>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={toggleLike}
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm border transition-colors ${
+                liked
+                  ? 'bg-red-50 border-red-200 text-red-500 dark:bg-red-950/30 dark:border-red-800'
+                  : 'border-border text-muted-foreground hover:border-red-300 hover:text-red-500'
+              }`}
+            >
+              <Heart className={`h-4 w-4 ${liked ? 'fill-red-500' : ''}`} />
+              <span>{likeCount > 0 ? `${likeCount} ` : ''}Like{likeCount !== 1 ? 's' : ''}</span>
+            </button>
+            <button
+              onClick={handleShare}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-full text-sm border border-border text-muted-foreground hover:border-primary hover:text-primary transition-colors"
+            >
+              <Share2 className="h-4 w-4" />
+              <span>{shareCount > 0 ? `${shareCount} ` : ''}Share{shareCount !== 1 ? 's' : ''}</span>
+            </button>
+          </div>
+        </div>
       </motion.article>
     </Layout>
   );
