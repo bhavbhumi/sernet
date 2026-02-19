@@ -59,7 +59,27 @@ import TickFunds from "./pages/TickFunds";
 import TushilPage from "./pages/Tushil";
 import Findemy from "./pages/Findemy";
 
+// Admin pages
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminArticles from "./pages/admin/content/AdminArticles";
+import AdminAnalysis from "./pages/admin/content/AdminAnalysis";
+import AdminReports from "./pages/admin/content/AdminReports";
+import AdminBulletin from "./pages/admin/content/AdminBulletin";
+import AdminNews from "./pages/admin/updates/AdminNews";
+import AdminCirculars from "./pages/admin/updates/AdminCirculars";
+import AdminPolls from "./pages/admin/engagement/AdminPolls";
+import AdminSurveys from "./pages/admin/engagement/AdminSurveys";
+import AdminReviews from "./pages/admin/engagement/AdminReviews";
+import AdminJobOpenings from "./pages/admin/careers/AdminJobOpenings";
+import AdminApplications from "./pages/admin/careers/AdminApplications";
+import AdminTeamMembers from "./pages/admin/careers/AdminTeamMembers";
+import AdminPress from "./pages/admin/AdminPress";
+import AdminRSSSettings from "./pages/admin/settings/AdminRSSSettings";
+import AdminUsers from "./pages/admin/settings/AdminUsers";
+
 const queryClient = new QueryClient();
+
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -126,6 +146,26 @@ const App = () => (
           <Route path="/tickfunds" element={<TickFunds />} />
           <Route path="/tushil" element={<TushilPage />} />
           <Route path="/findemy" element={<Findemy />} />
+
+          {/* Admin CMS */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/content/articles" element={<AdminArticles />} />
+          <Route path="/admin/content/analysis" element={<AdminAnalysis />} />
+          <Route path="/admin/content/reports" element={<AdminReports />} />
+          <Route path="/admin/content/bulletin" element={<AdminBulletin />} />
+          <Route path="/admin/updates/news" element={<AdminNews />} />
+          <Route path="/admin/updates/circulars" element={<AdminCirculars />} />
+          <Route path="/admin/engagement/polls" element={<AdminPolls />} />
+          <Route path="/admin/engagement/surveys" element={<AdminSurveys />} />
+          <Route path="/admin/engagement/reviews" element={<AdminReviews />} />
+          <Route path="/admin/careers/openings" element={<AdminJobOpenings />} />
+          <Route path="/admin/careers/applications" element={<AdminApplications />} />
+          <Route path="/admin/careers/team" element={<AdminTeamMembers />} />
+          <Route path="/admin/press" element={<AdminPress />} />
+          <Route path="/admin/settings/rss" element={<AdminRSSSettings />} />
+          <Route path="/admin/settings/users" element={<AdminUsers />} />
+
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
