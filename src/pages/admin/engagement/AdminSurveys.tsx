@@ -205,21 +205,26 @@ export default function AdminSurveys() {
         ) : surveys.length === 0 ? (
           <div className="py-16 text-center text-muted-foreground">No surveys yet. Create one!</div>
         ) : surveys.map(survey => (
-          <div key={survey.id} className="bg-card border border-border rounded-xl p-5 flex gap-4 items-start">
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-1 flex-wrap">
-                <Badge variant="secondary">{survey.category}</Badge>
-                <Badge variant={survey.status === 'active' ? 'default' : 'secondary'}>{survey.status}</Badge>
-                {survey.estimated_time && <span className="text-xs text-muted-foreground">⏱ {survey.estimated_time}</span>}
-              </div>
-              <p className="font-medium text-foreground">{survey.title}</p>
-              {survey.description && <p className="text-xs text-muted-foreground mt-1 line-clamp-1">{survey.description}</p>}
-              {survey.deadline_at && <p className="text-xs text-muted-foreground mt-1">Deadline: {new Date(survey.deadline_at).toLocaleDateString()}</p>}
+          <div key={survey.id} className="bg-card border border-border rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-1 flex-wrap">
+              <Badge variant="secondary">{survey.category}</Badge>
+              <Badge variant={survey.status === 'active' ? 'default' : 'secondary'}>{survey.status}</Badge>
+              {survey.estimated_time && <span className="text-xs text-muted-foreground">⏱ {survey.estimated_time}</span>}
             </div>
-            <div className="flex items-center gap-1 shrink-0">
-              <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => viewResponses(survey)} title="View Responses"><MessageSquare className="h-4 w-4" /></Button>
-              <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openEdit(survey)}><Pencil className="h-4 w-4" /></Button>
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive" onClick={() => handleDelete(survey.id)}><Trash2 className="h-4 w-4" /></Button>
+            <p className="font-medium text-foreground">{survey.title}</p>
+            {survey.description && <p className="text-xs text-muted-foreground mt-1 line-clamp-1">{survey.description}</p>}
+            {survey.deadline_at && <p className="text-xs text-muted-foreground mt-1">Deadline: {new Date(survey.deadline_at).toLocaleDateString()}</p>}
+            {/* Horizontal action bar */}
+            <div className="flex items-center gap-1 pt-2 mt-2 border-t border-border/60 flex-wrap">
+              <Button variant="ghost" size="sm" className="h-7 px-2 text-xs gap-1.5" onClick={() => viewResponses(survey)}>
+                <MessageSquare className="h-3 w-3" /> Responses
+              </Button>
+              <Button variant="ghost" size="sm" className="h-7 px-2 text-xs gap-1.5" onClick={() => openEdit(survey)}>
+                <Pencil className="h-3 w-3" /> Edit
+              </Button>
+              <Button variant="ghost" size="sm" className="h-7 px-2 text-xs gap-1.5 text-destructive hover:text-destructive ml-auto" onClick={() => handleDelete(survey.id)}>
+                <Trash2 className="h-3 w-3" /> Delete
+              </Button>
             </div>
           </div>
         ))}
