@@ -195,49 +195,58 @@ export default function AdminReviews() {
         ) : filtered.length === 0 ? (
           <div className="py-16 text-center text-muted-foreground">No reviews found</div>
         ) : filtered.map(review => (
-          <div key={review.id} className="bg-card border border-border rounded-xl p-5 flex gap-4">
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-3 mb-2 flex-wrap">
-                <div className="flex items-center gap-0.5">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className={`h-3.5 w-3.5 ${i < Math.floor(review.rating) ? 'fill-yellow-400 text-yellow-400' : 'text-muted-foreground/30'}`} />
-                  ))}
-                  <span className="text-sm font-semibold ml-1">{review.rating}</span>
-                </div>
-                <Badge variant="secondary">{review.review_type}</Badge>
-                <Badge variant={review.status === 'approved' ? 'default' : review.status === 'rejected' ? 'destructive' : 'secondary'}>
-                  {review.status}
-                </Badge>
-                {review.is_featured && <Badge>Featured</Badge>}
-                {review.has_video && <Badge variant="outline">📹 Video</Badge>}
+          <div key={review.id} className="bg-card border border-border rounded-xl p-5">
+            <div className="flex items-start gap-3 mb-3 flex-wrap">
+              <div className="flex items-center gap-0.5">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className={`h-3.5 w-3.5 ${i < Math.floor(review.rating) ? 'fill-yellow-400 text-yellow-400' : 'text-muted-foreground/30'}`} />
+                ))}
+                <span className="text-sm font-semibold ml-1">{review.rating}</span>
               </div>
-              <p className="text-sm text-muted-foreground italic line-clamp-2 mb-2">"{review.review}"</p>
-              <div className="flex items-center gap-3 text-xs text-muted-foreground flex-wrap">
-                <span className="font-medium text-foreground">{review.name}</span>
-                {review.occupation && <span>{review.occupation}</span>}
-                {(review.city || review.country) && <span>{[review.city, review.country].filter(Boolean).join(', ')}</span>}
-                {review.source && <span>via {review.source}</span>}
-                <span>{new Date(review.created_at).toLocaleDateString()}</span>
-              </div>
+              <Badge variant="secondary">{review.review_type}</Badge>
+              <Badge variant={review.status === 'approved' ? 'default' : review.status === 'rejected' ? 'destructive' : 'secondary'}>
+                {review.status}
+              </Badge>
+              {review.is_featured && <Badge>Featured</Badge>}
+              {review.has_video && <Badge variant="outline">📹 Video</Badge>}
             </div>
-            <div className="flex flex-col gap-1.5 shrink-0">
-              <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setSelectedReview(review)} title="View"><Eye className="h-4 w-4" /></Button>
-              <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openEdit(review)} title="Edit"><Pencil className="h-4 w-4" /></Button>
+            <p className="text-sm text-muted-foreground italic line-clamp-2 mb-2">"{review.review}"</p>
+            <div className="flex items-center gap-3 text-xs text-muted-foreground flex-wrap mb-3">
+              <span className="font-medium text-foreground">{review.name}</span>
+              {review.occupation && <span>{review.occupation}</span>}
+              {(review.city || review.country) && <span>{[review.city, review.country].filter(Boolean).join(', ')}</span>}
+              {review.source && <span>via {review.source}</span>}
+              <span>{new Date(review.created_at).toLocaleDateString()}</span>
+            </div>
+            {/* Horizontal action bar */}
+            <div className="flex items-center gap-1 pt-2 border-t border-border/60 flex-wrap">
+              <Button variant="ghost" size="sm" className="h-7 px-2 text-xs gap-1.5" onClick={() => setSelectedReview(review)}>
+                <Eye className="h-3 w-3" /> View
+              </Button>
+              <Button variant="ghost" size="sm" className="h-7 px-2 text-xs gap-1.5" onClick={() => openEdit(review)}>
+                <Pencil className="h-3 w-3" /> Edit
+              </Button>
               {review.status !== 'approved' && (
-                <Button variant="ghost" size="icon" className="h-8 w-8 text-emerald-600 hover:text-emerald-600" onClick={() => updateStatus(review.id, 'approved')} title="Approve">
-                  <CheckCircle className="h-4 w-4" />
+                <Button variant="ghost" size="sm" className="h-7 px-2 text-xs gap-1.5 text-emerald-600 hover:text-emerald-600" onClick={() => updateStatus(review.id, 'approved')}>
+                  <CheckCircle className="h-3 w-3" /> Approve
                 </Button>
               )}
               {review.status !== 'rejected' && (
-                <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive" onClick={() => updateStatus(review.id, 'rejected')} title="Reject">
-                  <XCircle className="h-4 w-4" />
+                <Button variant="ghost" size="sm" className="h-7 px-2 text-xs gap-1.5 text-destructive hover:text-destructive" onClick={() => updateStatus(review.id, 'rejected')}>
+                  <XCircle className="h-3 w-3" /> Reject
                 </Button>
               )}
-              <Button variant="ghost" size="icon" className={`h-8 w-8 ${review.is_featured ? 'text-yellow-500' : ''}`} onClick={() => toggleFeatured(review)} title="Toggle Featured">
-                <Star className={`h-4 w-4 ${review.is_featured ? 'fill-yellow-400' : ''}`} />
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`h-7 px-2 text-xs gap-1.5 ${review.is_featured ? 'text-yellow-500' : ''}`}
+                onClick={() => toggleFeatured(review)}
+              >
+                <Star className={`h-3 w-3 ${review.is_featured ? 'fill-yellow-400' : ''}`} />
+                {review.is_featured ? 'Unfeature' : 'Feature'}
               </Button>
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive" onClick={() => handleDelete(review.id)} title="Delete">
-                <Trash2 className="h-4 w-4" />
+              <Button variant="ghost" size="sm" className="h-7 px-2 text-xs gap-1.5 text-destructive hover:text-destructive ml-auto" onClick={() => handleDelete(review.id)}>
+                <Trash2 className="h-3 w-3" /> Delete
               </Button>
             </div>
           </div>
