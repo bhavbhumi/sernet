@@ -52,6 +52,7 @@ import CreditClaim from "./pages/CreditClaim";
 import ScheduleCall from "./pages/ScheduleCall";
 import Opinions from "./pages/Opinions";
 import UpdatesPage from "./pages/Updates";
+import UpdatesDetail from "./pages/UpdatesDetail";
 import Contact from "./pages/Contact";
 
 // Product landing pages
@@ -142,6 +143,7 @@ const App = () => (
           <Route path="/contact" element={<Contact />} />
           <Route path="/opinions" element={<Opinions />} />
           <Route path="/updates" element={<UpdatesPage />} />
+          <Route path="/updates/:mode/:id" element={<UpdatesDetail />} />
           
           {/* Product landing pages */}
           <Route path="/choicefinx" element={<ChoiceFinX />} />
