@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, BadgeCheck, Clock, Heart } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import heroIllustration from '@/assets/hero-illustration.webp';
+import heroIllustration from '@/assets/hero-illustration-transparent.png';
 
 export const HeroSection = () => {
   const { t } = useTranslation();
@@ -21,7 +21,7 @@ export const HeroSection = () => {
             <img
               src={heroIllustration}
               alt="Sernet wealth management - Trade, Invest and Insure with awareness"
-              className="w-full max-w-[420px] lg:max-w-[500px] h-auto dark:brightness-95"
+              className="w-full max-w-[420px] lg:max-w-[500px] h-auto"
             />
           </motion.div>
 
