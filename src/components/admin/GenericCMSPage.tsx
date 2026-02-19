@@ -184,12 +184,12 @@ export function GenericCMSPage({
                 <tr><td colSpan={tableColumns.length + 1} className="px-4 py-12 text-center text-muted-foreground">No items found. Click "New" to add one.</td></tr>
               ) : filtered.map(item => (
                 <tr key={String(item.id)} className="hover:bg-muted/20 group">
-                  {tableColumns.map(col => (
+                  {tableColumns.map((col, colIdx) => (
                     <td key={col.key} className="px-4 py-3 text-muted-foreground">
-                    {col.key === 'title' ? (
+                    {colIdx === 0 ? (
                         <div>
                           <p className="font-medium text-foreground line-clamp-1">{String(item[col.key] ?? '')}</p>
-                          {/* Inline action bar below title */}
+                          {/* Inline action bar below first column */}
                           <div className="flex items-center gap-0.5 mt-1.5">
                             {hasStatus && (
                               <Button variant="ghost" size="sm" className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground gap-1" onClick={() => toggleStatus(item)} title={item.status === 'published' ? 'Unpublish' : 'Publish'}>
