@@ -82,6 +82,12 @@ export default function AdminJobOpenings() {
     fetchJobs();
   };
 
+  const toggleFeatured = async (item: JobOpening) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await (supabase.from('job_openings') as any).update({ is_featured: !item.is_featured }).eq('id', item.id);
+    fetchJobs();
+  };
+
   const filtered = jobs.filter(j =>
     j.title.toLowerCase().includes(search.toLowerCase()) ||
     j.department.toLowerCase().includes(search.toLowerCase())
@@ -127,6 +133,14 @@ export default function AdminJobOpenings() {
                     <div className="flex items-center gap-0.5 mt-1.5">
                       <Button variant="ghost" size="sm" className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground gap-1" onClick={() => toggleStatus(job)}>
                         {job.status === 'published' ? <><EyeOff className="h-3 w-3" /> Unpublish</> : <><Eye className="h-3 w-3" /> Publish</>}
+                      </Button>
+                      <Button
+                        variant="ghost" size="sm"
+                        className={`h-6 px-2 text-xs gap-1 ${job.is_featured ? 'text-yellow-500 hover:text-yellow-600' : 'text-muted-foreground hover:text-foreground'}`}
+                        onClick={() => toggleFeatured(job)}
+                      >
+                        <Star className={`h-3 w-3 ${job.is_featured ? 'fill-yellow-400' : ''}`} />
+                        {job.is_featured ? 'Unfeature' : 'Feature'}
                       </Button>
                       <Button variant="ghost" size="sm" className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground gap-1" onClick={() => openEdit(job)}>
                         <Pencil className="h-3 w-3" /> Edit
