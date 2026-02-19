@@ -60,6 +60,7 @@ import TushilPage from "./pages/Tushil";
 import Findemy from "./pages/Findemy";
 
 // Admin pages
+import AdminSetup from "./pages/admin/AdminSetup";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminArticles from "./pages/admin/content/AdminArticles";
@@ -148,6 +149,7 @@ const App = () => (
           <Route path="/findemy" element={<Findemy />} />
 
           {/* Admin CMS */}
+          <Route path="/admin/setup" element={<AdminSetup />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/content/articles" element={<AdminArticles />} />
