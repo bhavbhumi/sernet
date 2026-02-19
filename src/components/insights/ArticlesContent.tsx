@@ -32,12 +32,8 @@ function ArticleCard({ article, index }: { article: any; index: number }) {
   const handleShare = async () => {
     const url = `${window.location.origin}/z-connect/articles/${article.id}`;
     await recordShare();
-    if (navigator.share) {
-      navigator.share({ title: article.title, url }).catch(() => {});
-    } else {
-      navigator.clipboard.writeText(url);
-      toast({ title: 'Link copied!', description: 'Article link copied to clipboard.' });
-    }
+    navigator.clipboard.writeText(url);
+    toast({ title: '🔗 Link copied!', description: 'Paste it anywhere to share this article.' });
   };
 
   const FormatIcon = formatIcons[article.format] ?? FileText;
