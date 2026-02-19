@@ -15,11 +15,13 @@ export default function AdminPress() {
         { key: 'link', label: 'Article URL', type: 'url', placeholder: 'https://...', colSpan: 2 },
         { key: 'published_at', label: 'Publication Date', type: 'text', placeholder: 'YYYY-MM-DD' },
         { key: 'status', label: 'Status', type: 'select', options: ['draft', 'published', 'archived'] },
+        { key: 'is_featured', label: 'Featured', type: 'checkbox', placeholder: 'Show in featured carousel on Press page', colSpan: 2 },
       ]}
       tableColumns={[
         { key: 'title', label: 'Headline' },
         { key: 'source', label: 'Source', width: 'w-36' },
         { key: 'medium', label: 'Medium', width: 'w-24' },
+        { key: 'is_featured', label: 'Featured', width: 'w-24' },
         { key: 'status', label: 'Status', width: 'w-24' },
       ]}
     />
