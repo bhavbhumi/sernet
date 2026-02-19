@@ -82,6 +82,7 @@ import AdminRSSSettings from "./pages/admin/settings/AdminRSSSettings";
 import AdminUsers from "./pages/admin/settings/AdminUsers";
 import AdminSitePages from "./pages/admin/site/AdminSitePages";
 import AdminSiteSettings from "./pages/admin/site/AdminSiteSettings";
+import AdminMediaLibrary from "./pages/admin/site/AdminMediaLibrary";
 import Sitemap from "./pages/Sitemap";
 
 const queryClient = new QueryClient();
@@ -176,6 +177,7 @@ const App = () => (
           <Route path="/admin/press" element={<AdminPress />} />
           <Route path="/admin/site/pages" element={<AdminSitePages />} />
           <Route path="/admin/site/settings" element={<AdminSiteSettings />} />
+          <Route path="/admin/site/media" element={<AdminMediaLibrary />} />
           <Route path="/admin/settings/rss" element={<AdminRSSSettings />} />
           <Route path="/admin/settings/users" element={<AdminUsers />} />
 
