@@ -20,7 +20,7 @@ import { FieldInfoTooltip } from '@/components/admin/FieldInfoTooltip';
 export interface FieldDef {
   key: string;
   label: string;
-  type: 'text' | 'textarea' | 'select' | 'number' | 'url' | 'html' | 'checkbox' | 'date';
+  type: 'text' | 'textarea' | 'select' | 'multiselect' | 'number' | 'url' | 'html' | 'checkbox' | 'date';
   options?: string[];
   placeholder?: string;
   required?: boolean;
@@ -33,7 +33,7 @@ interface GenericCMSPageProps {
   subtitle: string;
   tableName: string;
   fields: FieldDef[];
-  emptyForm: Record<string, string | number | boolean>;
+  emptyForm: Record<string, string | number | boolean | string[]>;
   tableColumns: { key: string; label: string; width?: string }[];
   hasStatus?: boolean;
   hasFeatured?: boolean;
@@ -301,6 +301,8 @@ export function GenericCMSPage({
                         <Badge variant={item[col.key] === 'published' ? 'default' : 'secondary'}>
                           {String(item[col.key] ?? '')}
                         </Badge>
+                      ) : Array.isArray(item[col.key]) ? (
+                        <span className="line-clamp-1">{(item[col.key] as string[]).join(', ')}</span>
                       ) : typeof item[col.key] === 'boolean' ? (
                         <Badge variant={item[col.key] ? 'default' : 'secondary'}>
                           {item[col.key] ? 'Yes' : 'No'}
@@ -354,6 +356,30 @@ export function GenericCMSPage({
                       {field.options.map(opt => <SelectItem key={opt} value={opt}>{opt}</SelectItem>)}
                     </SelectContent>
                   </Select>
+                )}
+                {field.type === 'multiselect' && field.options && (
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    {field.options.map(opt => {
+                      const raw = form[field.key];
+                      const selected: string[] = Array.isArray(raw) ? (raw as string[]) : (raw ? String(raw).split(',').map(s => s.trim()).filter(Boolean) : []);
+                      const isChecked = selected.includes(opt);
+                      return (
+                        <label key={opt} className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border cursor-pointer text-sm transition-colors ${isChecked ? 'border-primary bg-primary/10 text-primary font-medium' : 'border-border text-muted-foreground hover:border-primary/40'}`}>
+                          <input
+                            type="checkbox"
+                            checked={isChecked}
+                            onChange={e => {
+                              const cur: string[] = Array.isArray(raw) ? (raw as string[]) : (raw ? String(raw).split(',').map(s => s.trim()).filter(Boolean) : []);
+                              const next = e.target.checked ? [...cur, opt] : cur.filter(v => v !== opt);
+                              setForm(f => ({ ...f, [field.key]: next }));
+                            }}
+                            className="w-3.5 h-3.5 accent-primary"
+                          />
+                          {opt}
+                        </label>
+                      );
+                    })}
+                  </div>
                 )}
                 {field.type === 'checkbox' && (
                   <label className="flex items-center gap-2 cursor-pointer mt-1">
