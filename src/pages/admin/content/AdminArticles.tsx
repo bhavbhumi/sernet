@@ -333,6 +333,10 @@ export default function AdminArticles() {
               <Input placeholder="e.g. Fundamentals, Markets" value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))} />
             </div>
             <div className="space-y-1.5">
+              <Label>Article Date <span className="text-muted-foreground text-xs">(shown on card)</span></Label>
+              <Input type="date" value={form.item_date} onChange={e => setForm(f => ({ ...f, item_date: e.target.value }))} />
+            </div>
+            <div className="space-y-1.5">
               <Label>Author</Label>
               <Input placeholder="Research Desk" value={form.author} onChange={e => setForm(f => ({ ...f, author: e.target.value }))} />
             </div>
@@ -372,10 +376,6 @@ export default function AdminArticles() {
                 {form.thumbnail_url && (<Button type="button" variant="ghost" size="icon" onClick={() => setForm(f => ({ ...f, thumbnail_url: '' }))}><X className="h-4 w-4" /></Button>)}
               </div>
               {form.thumbnail_url && (<img src={form.thumbnail_url} alt="Thumbnail preview" className="mt-2 h-24 rounded-lg object-cover border border-border" />)}
-            </div>
-            <div className="space-y-1.5">
-              <Label>Article Date <span className="text-muted-foreground text-xs">(shown on card)</span></Label>
-              <Input type="date" value={form.item_date} onChange={e => setForm(f => ({ ...f, item_date: e.target.value }))} />
             </div>
             <div className="space-y-1.5">
               <Label>Status</Label>
