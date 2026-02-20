@@ -959,6 +959,21 @@ export type Database = {
     Functions: {
       is_admin: { Args: { _user_id: string }; Returns: boolean }
       is_super_admin: { Args: { _user_id: string }; Returns: boolean }
+      search_content: {
+        Args: { query_text: string; result_limit?: number }
+        Returns: {
+          category: string
+          content_type: string
+          excerpt: string
+          id: string
+          published_at: string
+          rank: number
+          title: string
+          url: string
+        }[]
+      }
+      show_limit: { Args: never; Returns: number }
+      show_trgm: { Args: { "": string }; Returns: string[] }
     }
     Enums: {
       app_role: "super_admin" | "admin" | "editor"
