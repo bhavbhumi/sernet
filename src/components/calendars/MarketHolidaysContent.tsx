@@ -4,29 +4,46 @@ import { supabase } from '@/integrations/supabase/client';
 import { Calendar, Clock, Info, Download, Search } from 'lucide-react';
 import { format, isAfter, isSameDay, parseISO } from 'date-fns';
 
-const fallbackHolidays = [
-  { holiday_date: '2025-01-26', holiday_name: 'Republic Day', day_of_week: 'Sunday', markets: 'NSE, BSE, MCX', notes: null, holiday_type: 'Market' },
-  { holiday_date: '2025-03-14', holiday_name: 'Holi', day_of_week: 'Friday', markets: 'NSE, BSE', notes: null, holiday_type: 'Market' },
-  { holiday_date: '2025-04-14', holiday_name: 'Dr. Ambedkar Jayanti', day_of_week: 'Monday', markets: 'NSE, BSE', notes: null, holiday_type: 'Market' },
-  { holiday_date: '2025-04-18', holiday_name: 'Good Friday', day_of_week: 'Friday', markets: 'NSE, BSE, MCX', notes: null, holiday_type: 'Market' },
-  { holiday_date: '2025-08-15', holiday_name: 'Independence Day', day_of_week: 'Friday', markets: 'NSE, BSE, MCX', notes: null, holiday_type: 'Market' },
-  { holiday_date: '2025-10-02', holiday_name: 'Mahatma Gandhi Jayanti', day_of_week: 'Thursday', markets: 'NSE, BSE, MCX', notes: null, holiday_type: 'Market' },
-  { holiday_date: '2025-10-21', holiday_name: 'Diwali (Laxmi Pujan)', day_of_week: 'Tuesday', markets: 'NSE, BSE', notes: null, holiday_type: 'Market' },
-  { holiday_date: '2025-11-05', holiday_name: 'Guru Nanak Jayanti', day_of_week: 'Wednesday', markets: 'NSE, BSE', notes: null, holiday_type: 'Market' },
-  { holiday_date: '2025-12-25', holiday_name: 'Christmas', day_of_week: 'Thursday', markets: 'NSE, BSE, MCX', notes: null, holiday_type: 'Market' },
+type HolidayRow = {
+  id: string;
+  holiday_date: string;
+  holiday_name: string;
+  holiday_type: string[] | string; // DB now returns string[]
+  day_of_week: string | null;
+  markets: string;
+  notes: string | null;
+  status: string;
+  year: number;
+  created_at: string;
+  updated_at: string;
+  created_by: string | null;
+};
+
+const fallbackHolidays: HolidayRow[] = [
+  { id: '1', holiday_date: '2025-01-26', holiday_name: 'Republic Day', day_of_week: 'Sunday', markets: 'NSE, BSE, MCX', notes: null, holiday_type: ['Market'], status: 'published', year: 2025, created_at: '', updated_at: '', created_by: null },
+  { id: '2', holiday_date: '2025-03-14', holiday_name: 'Holi', day_of_week: 'Friday', markets: 'NSE, BSE', notes: null, holiday_type: ['Market'], status: 'published', year: 2025, created_at: '', updated_at: '', created_by: null },
+  { id: '3', holiday_date: '2025-04-14', holiday_name: 'Dr. Ambedkar Jayanti', day_of_week: 'Monday', markets: 'NSE, BSE', notes: null, holiday_type: ['Market'], status: 'published', year: 2025, created_at: '', updated_at: '', created_by: null },
+  { id: '4', holiday_date: '2025-04-18', holiday_name: 'Good Friday', day_of_week: 'Friday', markets: 'NSE, BSE, MCX', notes: null, holiday_type: ['Market', 'Settlement'], status: 'published', year: 2025, created_at: '', updated_at: '', created_by: null },
+  { id: '5', holiday_date: '2025-08-15', holiday_name: 'Independence Day', day_of_week: 'Friday', markets: 'NSE, BSE, MCX', notes: null, holiday_type: ['Market'], status: 'published', year: 2025, created_at: '', updated_at: '', created_by: null },
+  { id: '6', holiday_date: '2025-10-02', holiday_name: 'Mahatma Gandhi Jayanti', day_of_week: 'Thursday', markets: 'NSE, BSE, MCX', notes: null, holiday_type: ['Market'], status: 'published', year: 2025, created_at: '', updated_at: '', created_by: null },
+  { id: '7', holiday_date: '2025-10-21', holiday_name: 'Diwali (Laxmi Pujan)', day_of_week: 'Tuesday', markets: 'NSE, BSE', notes: 'Muhurat trading session in evening', holiday_type: ['Market', 'Settlement'], status: 'published', year: 2025, created_at: '', updated_at: '', created_by: null },
+  { id: '8', holiday_date: '2025-11-05', holiday_name: 'Guru Nanak Jayanti', day_of_week: 'Wednesday', markets: 'NSE, BSE', notes: null, holiday_type: ['Market'], status: 'published', year: 2025, created_at: '', updated_at: '', created_by: null },
+  { id: '9', holiday_date: '2025-12-25', holiday_name: 'Christmas', day_of_week: 'Thursday', markets: 'NSE, BSE, MCX', notes: null, holiday_type: ['Market'], status: 'published', year: 2025, created_at: '', updated_at: '', created_by: null },
 ];
 
 const currentYear = new Date().getFullYear();
 const years = [currentYear - 1, currentYear, currentYear + 1];
 
-const getHolidayTypeStyle = (type: string) => {
-  switch (type) {
-    case 'Settlement':
-      return 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400';
-    case 'Market':
-    default:
-      return 'bg-primary/10 text-primary';
-  }
+// Normalize holiday_type to always be an array
+const getTypes = (h: HolidayRow): string[] => {
+  if (Array.isArray(h.holiday_type)) return h.holiday_type;
+  if (typeof h.holiday_type === 'string' && h.holiday_type) return [h.holiday_type];
+  return ['Market'];
+};
+
+const TYPE_STYLES: Record<string, string> = {
+  Market: 'bg-primary/10 text-primary border border-primary/20',
+  Settlement: 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400 border border-orange-200 dark:border-orange-800',
 };
 
 const MarketHolidaysContent = () => {
@@ -47,11 +64,11 @@ const MarketHolidaysContent = () => {
         .eq('status', 'published')
         .order('holiday_date', { ascending: true });
       if (error) throw error;
-      return data ?? [];
+      return (data ?? []) as HolidayRow[];
     },
   });
 
-  const displayData = holidays.length > 0 ? holidays : (selectedYear === currentYear ? fallbackHolidays : []);
+  const displayData: HolidayRow[] = holidays.length > 0 ? holidays : (selectedYear === currentYear ? fallbackHolidays : []);
 
   // Find the next upcoming holiday (today or future)
   const nextHolidayIndex = useMemo(() => {
@@ -64,7 +81,7 @@ const MarketHolidaysContent = () => {
 
   const filtered = useMemo(() => {
     let data = displayData;
-    if (typeFilter !== 'All') data = data.filter(h => (h as any).holiday_type === typeFilter);
+    if (typeFilter !== 'All') data = data.filter(h => getTypes(h).includes(typeFilter));
     if (search) {
       const q = search.toLowerCase();
       data = data.filter(h =>
@@ -77,7 +94,7 @@ const MarketHolidaysContent = () => {
 
   const handleExport = () => {
     const csv = ['Date,Day,Holiday,Type,Markets,Notes']
-      .concat(filtered.map(h => `${h.holiday_date},${h.day_of_week || ''},${h.holiday_name},${(h as any).holiday_type || 'Market'},${h.markets},${(h as any).notes || ''}`))
+      .concat(filtered.map(h => `${h.holiday_date},${h.day_of_week || ''},${h.holiday_name},"${getTypes(h).join(' & ')}",${h.markets},${h.notes || ''}`))
       .join('\n');
     const blob = new Blob([csv], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
@@ -185,6 +202,7 @@ const MarketHolidaysContent = () => {
                       const originalIndex = displayData.indexOf(holiday);
                       const isNext = originalIndex === nextHolidayIndex;
                       const isPast = !isNext && parseISO(holiday.holiday_date) < today;
+                      const types = getTypes(holiday);
                       return (
                         <tr
                           key={index}
@@ -199,8 +217,8 @@ const MarketHolidaysContent = () => {
                               )}
                               <div>
                                 <p className="text-foreground font-medium">{format(parseISO(holiday.holiday_date), 'MMMM d, yyyy')}</p>
-                                {(holiday as any).notes && (
-                                  <p className="text-xs text-muted-foreground mt-0.5 italic">{(holiday as any).notes}</p>
+                                {holiday.notes && (
+                                  <p className="text-xs text-muted-foreground mt-0.5 italic">{holiday.notes}</p>
                                 )}
                               </div>
                             </div>
@@ -208,9 +226,13 @@ const MarketHolidaysContent = () => {
                           <td className="py-4 px-6 text-muted-foreground">{holiday.day_of_week || format(parseISO(holiday.holiday_date), 'EEEE')}</td>
                           <td className="py-4 px-6 text-foreground font-medium">{holiday.holiday_name}</td>
                           <td className="py-4 px-6">
-                            <span className={`inline-block px-2.5 py-1 text-xs font-medium rounded-full ${getHolidayTypeStyle((holiday as any).holiday_type || 'Market')}`}>
-                              {(holiday as any).holiday_type || 'Market'}
-                            </span>
+                            <div className="flex flex-wrap gap-1">
+                              {types.map(t => (
+                                <span key={t} className={`inline-block px-2.5 py-0.5 text-xs font-medium rounded-full ${TYPE_STYLES[t] ?? 'bg-muted text-muted-foreground'}`}>
+                                  {t}
+                                </span>
+                              ))}
+                            </div>
                           </td>
                           <td className="py-4 px-6">
                             <span className="inline-block px-3 py-1 bg-muted text-muted-foreground text-sm rounded-full">{holiday.markets}</span>
@@ -233,7 +255,7 @@ const MarketHolidaysContent = () => {
               <li>• Holiday data sourced from NSE/BSE official calendars via Zerodha MarketIntel.</li>
               <li>• The holiday list is subject to change. Please check the official exchange websites for the latest updates.</li>
               <li>• On days with special trading sessions (like Muhurat trading), timings may differ from regular trading hours.</li>
-              <li>• <strong className="text-foreground">Market</strong> holidays = trading is closed. <strong className="text-foreground">Settlement</strong> holidays = settlement/clearing is closed; trading may still occur.</li>
+              <li>• <strong className="text-foreground">Market</strong> = trading closed. <strong className="text-foreground">Settlement</strong> = settlement/clearing closed (trading may occur). Some holidays are both.</li>
               <li>• MCX has separate holiday schedules. Holidays falling on Saturday or Sunday are not included.</li>
             </ul>
           </div>

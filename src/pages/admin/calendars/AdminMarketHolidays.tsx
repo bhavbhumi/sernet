@@ -5,7 +5,7 @@ import type { FieldDef } from '@/components/admin/GenericCMSPage';
 const fields: FieldDef[] = [
   { key: 'holiday_date', label: 'Holiday Date', type: 'date', required: true, tip: 'The date of the market holiday.' },
   { key: 'holiday_name', label: 'Holiday Name', type: 'text', required: true, placeholder: 'e.g. Republic Day', tip: 'Official name of the holiday.' },
-  { key: 'holiday_type', label: 'Holiday Type', type: 'select', options: ['Market', 'Settlement'], required: true, tip: 'Market = trading closed. Settlement = clearing/settlement closed but trading may occur.' },
+  { key: 'holiday_type', label: 'Holiday Type', type: 'multiselect', options: ['Market', 'Settlement'], required: true, tip: 'Select all types that apply. Market = trading closed. Settlement = clearing/settlement closed but trading may occur.' },
   { key: 'day_of_week', label: 'Day of Week', type: 'select', options: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], tip: 'Day will auto-derive but you can override.' },
   { key: 'markets', label: 'Markets Closed', type: 'text', placeholder: 'NSE, BSE, MCX', tip: 'Comma-separated list of affected exchanges.', required: true },
   { key: 'year', label: 'Year', type: 'number', required: true, tip: 'Calendar year this holiday belongs to.' },
@@ -16,7 +16,7 @@ const fields: FieldDef[] = [
 const emptyForm = {
   holiday_date: '',
   holiday_name: '',
-  holiday_type: 'Market',
+  holiday_type: ['Market'] as string[],
   day_of_week: '',
   markets: 'NSE, BSE',
   year: new Date().getFullYear(),
