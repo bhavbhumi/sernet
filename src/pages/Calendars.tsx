@@ -6,17 +6,17 @@ import MarketHolidaysContent from '@/components/calendars/MarketHolidaysContent'
 import EconomicCalendarContent from '@/components/calendars/EconomicCalendarContent';
 import CorporateEventsContent from '@/components/calendars/CorporateEventsContent';
 
-const calendarTabs = ['Market Holidays', 'Economic Calendar', 'Corporate Events'] as const;
+const calendarTabs = ['Holiday Events', 'Economic Events', 'Corporate Events'] as const;
 type CalendarTab = (typeof calendarTabs)[number];
 
 const tabContent: Record<CalendarTab, React.ReactNode> = {
-  'Market Holidays': <MarketHolidaysContent />,
-  'Economic Calendar': <EconomicCalendarContent />,
+  'Holiday Events': <MarketHolidaysContent />,
+  'Economic Events': <EconomicCalendarContent />,
   'Corporate Events': <CorporateEventsContent />,
 };
 
 const Calendars = () => {
-  const [activeTab, setActiveTab] = useState<CalendarTab>('Market Holidays');
+  const [activeTab, setActiveTab] = useState<CalendarTab>('Holiday Events');
 
   return (
     <Layout>

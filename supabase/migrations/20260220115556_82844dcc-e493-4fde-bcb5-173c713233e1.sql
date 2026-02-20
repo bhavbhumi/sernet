@@ -1,0 +1,1 @@
+ALTER TABLE public.market_holidays ADD COLUMN IF NOT EXISTS holiday_type text NOT NULL DEFAULT 'Market';

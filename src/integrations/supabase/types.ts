@@ -623,6 +623,7 @@ export type Database = {
           day_of_week: string | null
           holiday_date: string
           holiday_name: string
+          holiday_type: string
           id: string
           markets: string
           notes: string | null
@@ -636,6 +637,7 @@ export type Database = {
           day_of_week?: string | null
           holiday_date: string
           holiday_name: string
+          holiday_type?: string
           id?: string
           markets?: string
           notes?: string | null
@@ -649,6 +651,7 @@ export type Database = {
           day_of_week?: string | null
           holiday_date?: string
           holiday_name?: string
+          holiday_type?: string
           id?: string
           markets?: string
           notes?: string | null
