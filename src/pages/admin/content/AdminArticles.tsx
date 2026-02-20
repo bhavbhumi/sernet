@@ -251,12 +251,12 @@ export default function AdminArticles() {
             <thead>
               <tr className="border-b border-border bg-muted/30">
                 <th className="px-4 py-3 text-left font-medium text-muted-foreground">Title</th>
+                <th className="px-4 py-3 text-left font-medium text-muted-foreground w-28">Date</th>
                 <th className="px-4 py-3 text-left font-medium text-muted-foreground w-24">Format</th>
                 <th className="px-4 py-3 text-left font-medium text-muted-foreground w-28">Category</th>
                 <th className="px-4 py-3 text-left font-medium text-muted-foreground w-24">Author</th>
                 <th className="px-4 py-3 text-left font-medium text-muted-foreground w-24">Status</th>
                 <th className="px-4 py-3 text-left font-medium text-muted-foreground w-28">Engagement</th>
-                <th className="px-4 py-3 w-4" />
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
@@ -283,6 +283,9 @@ export default function AdminArticles() {
                       </Button>
                     </div>
                   </td>
+                  <td className="px-4 py-3 text-muted-foreground text-xs">
+                    {item.item_date ? new Date(item.item_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '—'}
+                  </td>
                   <td className="px-4 py-3"><Badge variant="secondary">{item.format}</Badge></td>
                   <td className="px-4 py-3 text-muted-foreground">{item.category}</td>
                   <td className="px-4 py-3 text-muted-foreground">{item.author}</td>
@@ -291,11 +294,10 @@ export default function AdminArticles() {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                      <span className="flex items-center gap-1"><Heart className="h-3.5 w-3.5 text-red-400" />{likeCounts[item.id] ?? 0}</span>
-                      <span className="flex items-center gap-1"><Share2 className="h-3.5 w-3.5 text-blue-400" />{shareCounts[item.id] ?? 0}</span>
+                      <span className="flex items-center gap-1"><Heart className="h-3.5 w-3.5 text-rose-400" />{likeCounts[item.id] ?? 0}</span>
+                      <span className="flex items-center gap-1"><Share2 className="h-3.5 w-3.5 text-sky-400" />{shareCounts[item.id] ?? 0}</span>
                     </div>
                   </td>
-                  <td className="px-4 py-3 w-4" />
                 </tr>
               ))}
             </tbody>

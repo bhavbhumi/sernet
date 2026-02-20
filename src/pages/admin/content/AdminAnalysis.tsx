@@ -78,6 +78,7 @@ export default function AdminAnalysis() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [filterCategory, setFilterCategory] = useState('all');
   const [page, setPage] = useState(1);
   const [dialogOpen, setDialogOpen] = useState(searchParams.get('action') === 'new');
   const [editItem, setEditItem] = useState<Analysis | null>(null);
@@ -150,15 +151,18 @@ export default function AdminAnalysis() {
   const filtered = items.filter(a => {
     const matchSearch = a.title.toLowerCase().includes(search.toLowerCase());
     const matchStatus = filterStatus === 'all' || a.status === filterStatus;
-    return matchSearch && matchStatus;
+    const matchCat = filterCategory === 'all' || a.category === filterCategory;
+    return matchSearch && matchStatus && matchCat;
   });
 
+  const categoryOptions = ['all', ...Array.from(new Set(items.map(a => a.category).filter(Boolean))).sort()];
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
   const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   const handlePage = (p: number) => { setPage(p); window.scrollTo({ top: 0, behavior: 'smooth' }); };
   const handleFilterStatus = (v: string) => { setFilterStatus(v); setPage(1); };
   const handleSearch = (v: string) => { setSearch(v); setPage(1); };
+  const handleFilterCategory = (v: string) => { setFilterCategory(v); setPage(1); };
 
   const statusCounts = {
     all: items.length,
@@ -203,6 +207,14 @@ export default function AdminAnalysis() {
             <SelectItem value="archived">Archived</SelectItem>
           </SelectContent>
         </Select>
+        <Select value={filterCategory} onValueChange={handleFilterCategory}>
+          <SelectTrigger className="w-44"><SelectValue placeholder="All Categories" /></SelectTrigger>
+          <SelectContent>
+            {categoryOptions.map(cat => (
+              <SelectItem key={cat} value={cat}>{cat === 'all' ? 'All Categories' : cat}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
         <div className="ml-auto">
           <AdminPagination page={page} totalPages={totalPages} total={filtered.length} onPage={handlePage} />
         </div>
@@ -215,21 +227,20 @@ export default function AdminAnalysis() {
             <thead>
               <tr className="border-b border-border bg-muted/30">
                 <th className="px-4 py-3 text-left font-medium text-muted-foreground">Title</th>
+                <th className="px-4 py-3 text-left font-medium text-muted-foreground w-28">Date</th>
                 <th className="px-4 py-3 text-left font-medium text-muted-foreground w-32">Category</th>
                 <th className="px-4 py-3 text-left font-medium text-muted-foreground w-28">Author</th>
-                <th className="px-4 py-3 text-left font-medium text-muted-foreground w-24">Date</th>
                 <th className="px-4 py-3 text-left font-medium text-muted-foreground w-24">Status</th>
                 <th className="px-4 py-3 text-left font-medium text-muted-foreground w-28">Engagement</th>
-                <th className="px-4 py-3 w-4" />
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
               {loading ? (
                 Array(5).fill(0).map((_, i) => (
-                  <tr key={i}><td colSpan={7} className="px-4 py-3"><div className="h-4 bg-muted animate-pulse rounded" /></td></tr>
+                  <tr key={i}><td colSpan={6} className="px-4 py-3"><div className="h-4 bg-muted animate-pulse rounded" /></td></tr>
                 ))
               ) : paginated.length === 0 ? (
-                <tr><td colSpan={7} className="px-4 py-12 text-center text-muted-foreground">No analysis found</td></tr>
+                <tr><td colSpan={6} className="px-4 py-12 text-center text-muted-foreground">No analysis found</td></tr>
               ) : paginated.map(item => (
                 <tr key={item.id} className="hover:bg-muted/20">
                   <td className="px-4 py-3">
@@ -247,21 +258,20 @@ export default function AdminAnalysis() {
                       </Button>
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-muted-foreground">{item.category}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{item.author}</td>
                   <td className="px-4 py-3 text-muted-foreground text-xs">
                     {item.item_date ? new Date(item.item_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '—'}
                   </td>
+                  <td className="px-4 py-3 text-muted-foreground">{item.category}</td>
+                  <td className="px-4 py-3 text-muted-foreground">{item.author}</td>
                   <td className="px-4 py-3">
                     <Badge variant={item.status === 'published' ? 'default' : 'secondary'}>{item.status}</Badge>
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                      <span className="flex items-center gap-1"><Heart className="h-3.5 w-3.5 text-red-400" />{likeCounts[item.id] ?? 0}</span>
-                      <span className="flex items-center gap-1"><Share2 className="h-3.5 w-3.5 text-blue-400" />{shareCounts[item.id] ?? 0}</span>
+                      <span className="flex items-center gap-1"><Heart className="h-3.5 w-3.5 text-rose-400" />{likeCounts[item.id] ?? 0}</span>
+                      <span className="flex items-center gap-1"><Share2 className="h-3.5 w-3.5 text-sky-400" />{shareCounts[item.id] ?? 0}</span>
                     </div>
                   </td>
-                  <td className="px-4 py-3 w-4" />
                 </tr>
               ))}
             </tbody>

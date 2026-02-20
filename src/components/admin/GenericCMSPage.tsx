@@ -37,6 +37,7 @@ interface GenericCMSPageProps {
   tableColumns: { key: string; label: string; width?: string }[];
   hasStatus?: boolean;
   hasFeatured?: boolean;
+  categoryField?: string; // e.g. 'category', 'report_type' — enables category filter dropdown
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -90,7 +91,7 @@ function AdminPagination({ page, totalPages, total, onPage }: { page: number; to
 }
 
 export function GenericCMSPage({
-  title, subtitle, tableName, fields, emptyForm: defaultForm, tableColumns, hasStatus = true, hasFeatured = false
+  title, subtitle, tableName, fields, emptyForm: defaultForm, tableColumns, hasStatus = true, hasFeatured = false, categoryField
 }: GenericCMSPageProps) {
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
@@ -98,6 +99,7 @@ export function GenericCMSPage({
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [filterCategory, setFilterCategory] = useState('all');
   const [page, setPage] = useState(1);
   const [dialogOpen, setDialogOpen] = useState(searchParams.get('action') === 'new');
   const [editItem, setEditItem] = useState<Record<string, unknown> | null>(null);
@@ -159,8 +161,13 @@ export function GenericCMSPage({
     const titleVal = String(item.title ?? '');
     const matchSearch = titleVal.toLowerCase().includes(search.toLowerCase());
     const matchStatus = !hasStatus || filterStatus === 'all' || item.status === filterStatus;
-    return matchSearch && matchStatus;
+    const matchCat = !categoryField || filterCategory === 'all' || String(item[categoryField] ?? '') === filterCategory;
+    return matchSearch && matchStatus && matchCat;
   });
+
+  const categoryOptions = categoryField
+    ? ['all', ...Array.from(new Set(items.map(i => String(i[categoryField] ?? '')).filter(Boolean))).sort()]
+    : [];
 
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
   const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
@@ -173,6 +180,7 @@ export function GenericCMSPage({
   // Reset page when filter changes
   const handleFilterStatus = (v: string) => { setFilterStatus(v); setPage(1); };
   const handleSearch = (v: string) => { setSearch(v); setPage(1); };
+  const handleFilterCategory = (v: string) => { setFilterCategory(v); setPage(1); };
 
   // Status counts for stat chips
   const statusCounts = hasStatus ? {
@@ -211,8 +219,8 @@ export function GenericCMSPage({
         </div>
       )}
 
-      {/* Search + status filter */}
-      <div className="flex gap-3 mb-4 flex-wrap">
+      {/* Search + status + category filter */}
+      <div className="flex gap-3 mb-4 flex-wrap items-center">
         <div className="relative flex-1 min-w-[200px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input placeholder="Search..." className="pl-9" value={search} onChange={e => handleSearch(e.target.value)} />
@@ -225,6 +233,16 @@ export function GenericCMSPage({
               <SelectItem value="draft">Draft</SelectItem>
               <SelectItem value="published">Published</SelectItem>
               <SelectItem value="archived">Archived</SelectItem>
+            </SelectContent>
+          </Select>
+        )}
+        {categoryField && categoryOptions.length > 1 && (
+          <Select value={filterCategory} onValueChange={handleFilterCategory}>
+            <SelectTrigger className="w-44"><SelectValue placeholder="All Categories" /></SelectTrigger>
+            <SelectContent>
+              {categoryOptions.map(cat => (
+                <SelectItem key={cat} value={cat}>{cat === 'all' ? 'All Categories' : cat}</SelectItem>
+              ))}
             </SelectContent>
           </Select>
         )}

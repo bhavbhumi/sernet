@@ -7,6 +7,7 @@ export default function AdminBulletin() {
       title="Bulletin Board"
       subtitle="Manage important notices, platform updates, and announcements"
       tableName="bulletins"
+      categoryField="priority"
       emptyForm={{ title: '', description: '', priority: 'info', status: 'draft', expires_at: '' }}
       fields={[
         { key: 'title', label: 'Title', type: 'text', placeholder: 'Bulletin title', required: true, colSpan: 2, tip: 'Short, clear headline for the bulletin (e.g. "System maintenance on 20 Feb"). This is the first thing readers see.' },
