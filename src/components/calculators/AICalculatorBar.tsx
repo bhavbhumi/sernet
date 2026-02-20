@@ -4,7 +4,7 @@ import { Sparkles, Send, Loader2, ChevronDown, ChevronUp, User, Phone, ArrowRigh
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
-type ProductType = 'sip' | 'lumpsum' | 'brokerage' | 'margin' | 'insurance';
+type ProductType = 'sip' | 'lumpsum' | 'brokerage' | 'margin' | 'insurance' | 'goal';
 
 interface AIResult {
   product: ProductType;
@@ -33,9 +33,10 @@ interface AICalculatorBarProps {
 const PRODUCT_LABELS: Record<ProductType, string> = {
   sip: 'SIP Calculator',
   lumpsum: 'Lumpsum Calculator',
+  goal: 'Goal Planner',
   brokerage: 'Brokerage Calculator',
   margin: 'Margin Calculator',
-  insurance: 'Insurance Estimator',
+  insurance: 'Insurance Need Estimator',
 };
 
 const EXAMPLES = [

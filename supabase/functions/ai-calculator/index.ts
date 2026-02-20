@@ -32,17 +32,18 @@ serve(async (req) => {
 
     const systemPrompt = `You are an expert financial planner for SerNet, an AMFI-registered Mutual Fund Distributor and financial services firm in India.
 A user has described their financial goal in natural language. Your job is to:
-1. Identify the best product/calculator to use (sip, lumpsum, brokerage, margin, insurance)
+1. Identify the best product/calculator to use (sip, lumpsum, goal, brokerage, margin, insurance)
 2. Extract structured parameters from their goal
 3. Calculate results where possible
 4. Write a short, friendly explanation in plain English
 
 Products available:
-- sip: Systematic Investment Plan (monthly investment for long-term wealth creation)
-- lumpsum: One-time investment in mutual funds
-- brokerage: Trading cost calculator
-- margin: Margin/leverage calculator for traders
-- insurance: Life or health insurance needs estimator
+- sip: Systematic Investment Plan (monthly investment, growth projection over time)
+- lumpsum: One-time investment projection in mutual funds
+- goal: Goal-based investment planner — use when user mentions a TARGET amount and wants to know HOW MUCH to invest (monthly or lumpsum) to get there. Also use for goals like retirement, child's education, wedding etc.
+- brokerage: Trading cost calculator (brokerage, STT, charges)
+- margin: Margin/leverage calculator for equity or F&O traders
+- insurance: Life insurance need estimator — use when user mentions family cover, life insurance, term plan, or protecting dependents
 
 Indian number formatting: use ₹, Lakh (L), Crore (Cr).
 Return ONLY valid JSON matching the tool schema.`;
@@ -71,8 +72,8 @@ Return ONLY valid JSON matching the tool schema.`;
                 properties: {
                   product: {
                     type: "string",
-                    enum: ["sip", "lumpsum", "brokerage", "margin", "insurance"],
-                    description: "Which calculator best fits the user's goal",
+                    enum: ["sip", "lumpsum", "goal", "brokerage", "margin", "insurance"],
+                    description: "Which calculator best fits the user's goal. Use 'goal' when user wants to reach a target amount.",
                   },
                   params: {
                     type: "object",
