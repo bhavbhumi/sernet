@@ -368,6 +368,108 @@ export type Database = {
         }
         Relationships: []
       }
+      corporate_events: {
+        Row: {
+          amount: string | null
+          company_name: string
+          created_at: string
+          created_by: string | null
+          event_date: string
+          event_details: string | null
+          event_type: string
+          ex_date: string | null
+          id: string
+          record_date: string | null
+          status: string
+          ticker: string | null
+          updated_at: string
+        }
+        Insert: {
+          amount?: string | null
+          company_name: string
+          created_at?: string
+          created_by?: string | null
+          event_date: string
+          event_details?: string | null
+          event_type?: string
+          ex_date?: string | null
+          id?: string
+          record_date?: string | null
+          status?: string
+          ticker?: string | null
+          updated_at?: string
+        }
+        Update: {
+          amount?: string | null
+          company_name?: string
+          created_at?: string
+          created_by?: string | null
+          event_date?: string
+          event_details?: string | null
+          event_type?: string
+          ex_date?: string | null
+          id?: string
+          record_date?: string | null
+          status?: string
+          ticker?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      economic_events: {
+        Row: {
+          actual_value: string | null
+          category: string
+          country: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          event_date: string
+          event_name: string
+          event_time: string | null
+          forecast_value: string | null
+          id: string
+          impact: string
+          previous_value: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          actual_value?: string | null
+          category?: string
+          country?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          event_date: string
+          event_name: string
+          event_time?: string | null
+          forecast_value?: string | null
+          id?: string
+          impact?: string
+          previous_value?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          actual_value?: string | null
+          category?: string
+          country?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          event_date?: string
+          event_name?: string
+          event_time?: string | null
+          forecast_value?: string | null
+          id?: string
+          impact?: string
+          previous_value?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       job_applications: {
         Row: {
           applied_at: string
@@ -511,6 +613,48 @@ export type Database = {
           source?: string
           status?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      market_holidays: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          day_of_week: string | null
+          holiday_date: string
+          holiday_name: string
+          id: string
+          markets: string
+          notes: string | null
+          status: string
+          updated_at: string
+          year: number
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          day_of_week?: string | null
+          holiday_date: string
+          holiday_name: string
+          id?: string
+          markets?: string
+          notes?: string | null
+          status?: string
+          updated_at?: string
+          year?: number
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          day_of_week?: string | null
+          holiday_date?: string
+          holiday_name?: string
+          id?: string
+          markets?: string
+          notes?: string | null
+          status?: string
+          updated_at?: string
+          year?: number
         }
         Relationships: []
       }
