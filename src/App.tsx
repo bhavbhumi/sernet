@@ -95,7 +95,7 @@ import Sitemap from "./pages/Sitemap";
 
 const queryClient = new QueryClient();
 
-
+// rebranded: ZConnect → Insights (cache bust)
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
