@@ -8,50 +8,16 @@ import SIPCalcContent from '@/components/calculators/SIPCalcContent';
 import LumpsumCalcContent from '@/components/calculators/LumpsumCalcContent';
 import GoalCalcContent from '@/components/calculators/GoalCalcContent';
 import InsuranceNeedCalcContent from '@/components/calculators/InsuranceNeedCalcContent';
-import { AICalculatorBar } from '@/components/calculators/AICalculatorBar';
 
-// ─── Service Tabs ────────────────────────────────────────────────────────────
 type ServiceTab = 'Trading' | 'Investment' | 'Insurance';
 const serviceTabs: ServiceTab[] = ['Trading', 'Investment', 'Insurance'];
 
-// ─── Sub-tabs per service ────────────────────────────────────────────────────
 const subTabs: Record<ServiceTab, string[]> = {
   Trading: ['Brokerage', 'Margin'],
   Investment: ['SIP', 'Lumpsum', 'Goal Planner'],
   Insurance: ['Need Estimator'],
 };
 
-// ─── AI product mapping ──────────────────────────────────────────────────────
-type ProductType = 'sip' | 'lumpsum' | 'brokerage' | 'margin' | 'insurance' | 'goal';
-
-interface AIParams {
-  monthlyInvestment?: number;
-  lumpsum?: number;
-  targetAmount?: number;
-  expectedReturn?: number;
-  timePeriod?: number;
-  coverAmount?: number;
-}
-
-const productToService: Record<ProductType, ServiceTab> = {
-  sip: 'Investment',
-  lumpsum: 'Investment',
-  goal: 'Investment',
-  brokerage: 'Trading',
-  margin: 'Trading',
-  insurance: 'Insurance',
-};
-
-const productToSubTab: Record<ProductType, string> = {
-  sip: 'SIP',
-  lumpsum: 'Lumpsum',
-  goal: 'Goal Planner',
-  brokerage: 'Brokerage',
-  margin: 'Margin',
-  insurance: 'Need Estimator',
-};
-
-// ─── Service tab descriptions ────────────────────────────────────────────────
 const serviceDescriptions: Record<ServiceTab, string> = {
   Trading: 'Estimate brokerage costs, margins & leverage for your trades',
   Investment: 'Plan SIPs, lumpsum investments, and goal-based wealth creation',
@@ -61,16 +27,6 @@ const serviceDescriptions: Record<ServiceTab, string> = {
 const Calculators = () => {
   const [activeService, setActiveService] = useState<ServiceTab>('Investment');
   const [activeSubTab, setActiveSubTab] = useState<string>('SIP');
-  const [aiPreFill, setAiPreFill] = useState<AIParams | null>(null);
-
-  const handleAIResult = (product: ProductType, params: AIParams) => {
-    const service = productToService[product];
-    const sub = productToSubTab[product];
-    setAiPreFill(params);
-    setActiveService(service);
-    setActiveSubTab(sub);
-    setTimeout(() => setAiPreFill(null), 2500);
-  };
 
   const handleServiceChange = (service: ServiceTab) => {
     setActiveService(service);
@@ -83,31 +39,12 @@ const Calculators = () => {
       if (activeSubTab === 'Margin') return <MarginCalcContent />;
     }
     if (activeService === 'Investment') {
-      if (activeSubTab === 'SIP') return (
-        <SIPCalcContent
-          prefillMonthly={aiPreFill?.monthlyInvestment}
-          prefillReturn={aiPreFill?.expectedReturn}
-          prefillYears={aiPreFill?.timePeriod}
-        />
-      );
-      if (activeSubTab === 'Lumpsum') return (
-        <LumpsumCalcContent
-          prefillAmount={aiPreFill?.lumpsum}
-          prefillReturn={aiPreFill?.expectedReturn}
-          prefillYears={aiPreFill?.timePeriod}
-        />
-      );
-      if (activeSubTab === 'Goal Planner') return (
-        <GoalCalcContent
-          prefillTargetAmount={aiPreFill?.targetAmount}
-          prefillReturn={aiPreFill?.expectedReturn}
-          prefillYears={aiPreFill?.timePeriod}
-          prefillMonthly={aiPreFill?.monthlyInvestment}
-        />
-      );
+      if (activeSubTab === 'SIP') return <SIPCalcContent />;
+      if (activeSubTab === 'Lumpsum') return <LumpsumCalcContent />;
+      if (activeSubTab === 'Goal Planner') return <GoalCalcContent />;
     }
     if (activeService === 'Insurance') {
-      return <InsuranceNeedCalcContent prefillCoverAmount={aiPreFill?.coverAmount} />;
+      return <InsuranceNeedCalcContent />;
     }
     return null;
   };
@@ -120,9 +57,6 @@ const Calculators = () => {
         description="Trading costs, margins, SIP returns, goal planning, and insurance needs — calculate it all in one place."
         breadcrumbLabel="Calculators"
       />
-
-      {/* AI Goal Planner bar */}
-      <AICalculatorBar onResult={handleAIResult} />
 
       {/* ── Service tabs (primary) ── */}
       <div className="border-b border-border bg-background sticky top-0 z-20">
@@ -152,9 +86,8 @@ const Calculators = () => {
       </div>
 
       {/* ── Sub-tabs + description ── */}
-      <div className="border-b border-border/60 bg-muted/30">
+      <div className="border-b border-border/60 bg-muted/20">
         <div className="container-zerodha py-3 flex flex-col sm:flex-row sm:items-center gap-3">
-          {/* sub-tab pills */}
           <div className="flex gap-2 flex-wrap">
             {subTabs[activeService].map((sub) => (
               <button
@@ -170,7 +103,6 @@ const Calculators = () => {
               </button>
             ))}
           </div>
-          {/* description */}
           <p className="text-xs text-muted-foreground sm:ml-auto hidden sm:block">
             {serviceDescriptions[activeService]}
           </p>
