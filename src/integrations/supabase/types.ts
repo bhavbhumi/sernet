@@ -200,6 +200,36 @@ export type Database = {
         }
         Relationships: []
       }
+      calculator_ai_logs: {
+        Row: {
+          calc_type: string
+          created_at: string
+          id: string
+          lead_captured: boolean
+          session_id: string
+          turn_count: number
+          updated_at: string
+        }
+        Insert: {
+          calc_type: string
+          created_at?: string
+          id?: string
+          lead_captured?: boolean
+          session_id: string
+          turn_count?: number
+          updated_at?: string
+        }
+        Update: {
+          calc_type?: string
+          created_at?: string
+          id?: string
+          lead_captured?: boolean
+          session_id?: string
+          turn_count?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       calculator_leads: {
         Row: {
           calculated_result: Json | null

@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -10,9 +11,31 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { messages, calcType, aiContext } = await req.json();
+    const { messages, calcType, aiContext, sessionId, leadCaptured } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
+
+    // Log session to DB (fire-and-forget, don't block the AI response)
+    if (sessionId) {
+      const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+      const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+      const db = createClient(supabaseUrl, supabaseKey);
+      const turnCount = messages.filter((m: { role: string }) => m.role === "user").length;
+
+      // Upsert: update turn_count & lead_captured on existing session rows
+      db.from("calculator_ai_logs")
+        .upsert(
+          {
+            session_id: sessionId,
+            calc_type: calcType,
+            turn_count: turnCount,
+            lead_captured: leadCaptured ?? false,
+          },
+          { onConflict: "session_id" }
+        )
+        .then(() => {}) // fire-and-forget
+        .catch(() => {}); // silently ignore logging errors
+    }
 
     // Build param extraction tool
     const paramTool = {
