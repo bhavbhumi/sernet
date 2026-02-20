@@ -2,24 +2,27 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, BadgeCheck, Clock, Heart } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { HeroVisual } from './HeroVisual';
+import heroIllustration from '@/assets/hero-illustration-transparent.png';
 
 export const HeroSection = () => {
   const { t } = useTranslation();
 
   return (
-    <section className="section-padding bg-background overflow-hidden">
+    <section className="section-padding bg-background">
       <div className="container-zerodha">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-8 items-center">
-
-          {/* Visual — shows first on mobile */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+          {/* Image - shows first on mobile */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
+            transition={{ duration: 0.6, delay: 0.15 }}
             className="flex justify-center lg:justify-end lg:order-2"
           >
-            <HeroVisual />
+            <img
+              src={heroIllustration}
+              alt="Sernet wealth management - Trade, Invest and Insure with awareness"
+              className="w-full max-w-[420px] lg:max-w-[500px] h-auto"
+            />
           </motion.div>
 
           {/* Content */}
