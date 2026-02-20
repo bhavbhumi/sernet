@@ -284,7 +284,9 @@ export default function AdminArticles() {
                     </div>
                   </td>
                   <td className="px-4 py-3 text-muted-foreground text-xs">
-                    {item.item_date ? new Date(item.item_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '—'}
+                    {(item.item_date || item.published_at)
+                      ? new Date(item.item_date ?? item.published_at!).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+                      : '—'}
                   </td>
                   <td className="px-4 py-3"><Badge variant="secondary">{item.format}</Badge></td>
                   <td className="px-4 py-3 text-muted-foreground">{item.category}</td>
