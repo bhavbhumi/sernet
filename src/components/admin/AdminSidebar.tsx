@@ -5,7 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import {
   LayoutDashboard, FileText, BarChart3, BookOpen, Bell, Newspaper, AlertCircle,
   Vote, ClipboardList, Star, Briefcase, Users, Mic2, Settings, LogOut,
-  ChevronDown, ChevronRight, Menu, X, Rss, Shield, Globe, Map, Palette, Type, ScanSearch, Images
+  ChevronDown, ChevronRight, Menu, X, Rss, Shield, Globe, Map, Palette, Type, ScanSearch, Images, Download
 } from 'lucide-react';
 import sernetLogo from '@/assets/sernet-logo.png';
 import { cn } from '@/lib/utils';
@@ -22,6 +22,7 @@ const navItems: NavItem[] = [
   {
     label: 'Content', icon: BookOpen, children: [
       { label: 'Articles', icon: FileText, href: '/admin/content/articles' },
+      { label: 'Import Articles', icon: Download, href: '/admin/content/import' },
       { label: 'Analysis', icon: BarChart3, href: '/admin/content/analysis' },
       { label: 'Reports', icon: BookOpen, href: '/admin/content/reports' },
       { label: 'Bulletin', icon: Bell, href: '/admin/content/bulletin' },
