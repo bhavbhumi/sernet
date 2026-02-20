@@ -23,8 +23,8 @@ const emptyForm = {
 };
 
 const tableColumns = [
-  { key: 'holiday_date', label: 'Date' },
   { key: 'holiday_name', label: 'Holiday' },
+  { key: 'holiday_date', label: 'Date' },
   { key: 'day_of_week', label: 'Day' },
   { key: 'markets', label: 'Markets' },
   { key: 'year', label: 'Year' },

@@ -147,8 +147,11 @@ const MarketHolidaysContent = () => {
                   <tbody>
                     {filtered.map((holiday, index) => (
                       <tr key={index} className="border-t border-border hover:bg-muted/30 transition-colors">
-                        <td className="py-4 px-6 text-foreground font-medium">
-                          {format(new Date(holiday.holiday_date + 'T00:00:00'), 'MMMM d, yyyy')}
+                        <td className="py-4 px-6">
+                          <p className="text-foreground font-medium">{format(new Date(holiday.holiday_date + 'T00:00:00'), 'MMMM d, yyyy')}</p>
+                          {(holiday as any).notes && (
+                            <p className="text-xs text-muted-foreground mt-0.5 italic">{(holiday as any).notes}</p>
+                          )}
                         </td>
                         <td className="py-4 px-6 text-muted-foreground">{holiday.day_of_week || format(new Date(holiday.holiday_date + 'T00:00:00'), 'EEEE')}</td>
                         <td className="py-4 px-6 text-foreground font-medium">{holiday.holiday_name}</td>
