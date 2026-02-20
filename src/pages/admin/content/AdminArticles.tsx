@@ -46,6 +46,7 @@ export default function AdminArticles() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [filterCategory, setFilterCategory] = useState('all');
   const [dialogOpen, setDialogOpen] = useState(searchParams.get('action') === 'new');
   const [editItem, setEditItem] = useState<Article | null>(null);
   const [form, setForm] = useState(emptyForm);
@@ -159,8 +160,11 @@ export default function AdminArticles() {
   const filtered = articles.filter(a => {
     const matchSearch = a.title.toLowerCase().includes(search.toLowerCase());
     const matchStatus = filterStatus === 'all' || a.status === filterStatus;
-    return matchSearch && matchStatus;
+    const matchCat = filterCategory === 'all' || a.category === filterCategory;
+    return matchSearch && matchStatus && matchCat;
   });
+
+  const categoryOptions = ['all', ...Array.from(new Set(articles.map(a => a.category).filter(Boolean))).sort()];
 
   return (
     <AdminLayout
@@ -181,6 +185,16 @@ export default function AdminArticles() {
             <SelectItem value="draft">Draft</SelectItem>
             <SelectItem value="published">Published</SelectItem>
             <SelectItem value="archived">Archived</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select value={filterCategory} onValueChange={setFilterCategory}>
+          <SelectTrigger className="w-44"><SelectValue placeholder="All Categories" /></SelectTrigger>
+          <SelectContent>
+            {categoryOptions.map(cat => (
+              <SelectItem key={cat} value={cat}>
+                {cat === 'all' ? 'All Categories' : cat}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>

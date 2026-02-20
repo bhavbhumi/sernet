@@ -25,6 +25,9 @@ const formatColors: Record<string, string> = {
 
 const formats: ArticleFormat[] = ['All', 'Text', 'Image', 'Audio', 'Video'];
 
+const CATEGORY_FILTERS = ['All', 'IPO Basket', 'Economy', 'Investment', 'Trading', 'Fundamentals', 'Markets'] as const;
+type CategoryFilter = (typeof CATEGORY_FILTERS)[number];
+
 const PAGE_SIZE = 12;
 
 function Pagination({
@@ -184,6 +187,7 @@ function ArticleCard({ article, index }: { article: any; index: number }) {
 
 export const ArticlesContent = () => {
   const [activeFormat, setActiveFormat] = useState<ArticleFormat>('All');
+  const [activeCategory, setActiveCategory] = useState<CategoryFilter>('All');
   const [page, setPage] = useState(1);
 
   const { data: articles = [], isLoading } = useQuery({
@@ -199,15 +203,22 @@ export const ArticlesContent = () => {
     },
   });
 
-  const filteredArticles = activeFormat === 'All'
-    ? articles
-    : articles.filter((a) => a.format === activeFormat);
+  const filteredArticles = articles.filter((a) => {
+    const matchFormat = activeFormat === 'All' || a.format === activeFormat;
+    const matchCategory = activeCategory === 'All' || a.category === activeCategory;
+    return matchFormat && matchCategory;
+  });
 
   const totalPages = Math.ceil(filteredArticles.length / PAGE_SIZE);
   const paginated = filteredArticles.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   const handleFormat = (fmt: ArticleFormat) => {
     setActiveFormat(fmt);
+    setPage(1);
+  };
+
+  const handleCategory = (cat: CategoryFilter) => {
+    setActiveCategory(cat);
     setPage(1);
   };
 
@@ -237,7 +248,7 @@ export const ArticlesContent = () => {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.1 }}
-          className="flex items-center gap-2 mb-8 overflow-x-auto pb-2"
+          className="flex items-center gap-2 mb-3 overflow-x-auto pb-1"
           style={{ scrollbarWidth: 'none' }}
         >
           <Filter className="w-4 h-4 text-muted-foreground shrink-0" />
@@ -260,6 +271,30 @@ export const ArticlesContent = () => {
           })}
         </motion.div>
 
+        {/* Category Filter */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.15 }}
+          className="flex items-center gap-2 mb-8 overflow-x-auto pb-2"
+          style={{ scrollbarWidth: 'none' }}
+        >
+          <span className="w-4 shrink-0" />
+          {CATEGORY_FILTERS.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => handleCategory(cat)}
+              className={`px-3 py-1.5 text-xs rounded-full whitespace-nowrap transition-colors font-medium border ${
+                activeCategory === cat
+                  ? 'bg-primary/10 text-primary border-primary/30'
+                  : 'border-border text-muted-foreground hover:text-foreground hover:border-border/80 bg-transparent'
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </motion.div>
+
         {/* Loading */}
         {isLoading && (
           <div className="flex items-center justify-center py-20">
@@ -271,7 +306,7 @@ export const ArticlesContent = () => {
         {!isLoading && filteredArticles.length === 0 && (
           <div className="text-center py-20 text-muted-foreground">
             <FileText className="w-10 h-10 mx-auto mb-3 opacity-30" />
-            <p>No articles published yet.</p>
+            <p>No articles found for the selected filters.</p>
           </div>
         )}
 
@@ -286,7 +321,7 @@ export const ArticlesContent = () => {
         {!isLoading && paginated.length > 0 && (
           <AnimatePresence mode="wait">
             <motion.div
-              key={`${activeFormat}-${page}`}
+              key={`${activeFormat}-${activeCategory}-${page}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
