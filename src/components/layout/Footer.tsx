@@ -223,10 +223,10 @@ export const Footer = () => {
       <div className="bg-primary/10 border-y border-primary/20 py-2 overflow-hidden">
         <div className="animate-marquee whitespace-nowrap">
           <span className="text-[13px] text-primary mx-8">
-            📢 Announcement: Invest wisely with SERNET - Your trusted partner in wealth creation since 1989. | 35 Years of Excellence | 1500+ Families Served | 94.5% Client Retention Rate | Serving 54 Cities across 18 Countries
+            🌟 From your First Salary to a Lasting Fortune — SERNET is with you every step of the way. &nbsp;|&nbsp; 35+ Years of Practice &nbsp;|&nbsp; 1,500+ Families Served &nbsp;|&nbsp; 94.5% Client Retention Rate &nbsp;|&nbsp; 54 Cities — Domestic Reach &nbsp;|&nbsp; 18 Countries — International Reach &nbsp;|&nbsp; Clarity Over Chaos — No gimmicks, no sales traps, just transparent financial services. &nbsp;|&nbsp; Trading · Investment · Insurance · Education · Estate Planning · Credit Counselling &nbsp;|&nbsp; Trusted by Economic Times · The Hindu · Financial Express &nbsp;|&nbsp; Serving Resident Individuals · NRIs · SMEs · Institutions &nbsp;|&nbsp; Smart Money, Smarter Choices — Maximize every rupee with SERNET. &nbsp;&nbsp;&nbsp;
           </span>
           <span className="text-[13px] text-primary mx-8">
-            📢 Announcement: Invest wisely with SERNET - Your trusted partner in wealth creation since 1989. | 35 Years of Excellence | 1500+ Families Served | 94.5% Client Retention Rate | Serving 54 Cities across 18 Countries
+            🌟 From your First Salary to a Lasting Fortune — SERNET is with you every step of the way. &nbsp;|&nbsp; 35+ Years of Practice &nbsp;|&nbsp; 1,500+ Families Served &nbsp;|&nbsp; 94.5% Client Retention Rate &nbsp;|&nbsp; 54 Cities — Domestic Reach &nbsp;|&nbsp; 18 Countries — International Reach &nbsp;|&nbsp; Clarity Over Chaos — No gimmicks, no sales traps, just transparent financial services. &nbsp;|&nbsp; Trading · Investment · Insurance · Education · Estate Planning · Credit Counselling &nbsp;|&nbsp; Trusted by Economic Times · The Hindu · Financial Express &nbsp;|&nbsp; Serving Resident Individuals · NRIs · SMEs · Institutions &nbsp;|&nbsp; Smart Money, Smarter Choices — Maximize every rupee with SERNET. &nbsp;&nbsp;&nbsp;
           </span>
         </div>
       </div>
