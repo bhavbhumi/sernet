@@ -25,7 +25,7 @@ const formatColors: Record<string, string> = {
 
 const formats: ArticleFormat[] = ['All', 'Text', 'Image', 'Audio', 'Video'];
 
-const CATEGORY_FILTERS = ['All', 'IPO Basket', 'Economy', 'Investment', 'Trading', 'Fundamentals', 'Markets'] as const;
+const CATEGORY_FILTERS = ['All', 'IPO Basket', 'Investment', 'Trading', 'Fundamentals', 'Markets'] as const;
 type CategoryFilter = (typeof CATEGORY_FILTERS)[number];
 
 const PAGE_SIZE = 12;
