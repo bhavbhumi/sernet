@@ -200,6 +200,39 @@ export type Database = {
         }
         Relationships: []
       }
+      calculator_leads: {
+        Row: {
+          calculated_result: Json | null
+          created_at: string
+          email: string | null
+          goal_text: string
+          id: string
+          name: string
+          phone: string
+          product_type: string
+        }
+        Insert: {
+          calculated_result?: Json | null
+          created_at?: string
+          email?: string | null
+          goal_text: string
+          id?: string
+          name: string
+          phone: string
+          product_type?: string
+        }
+        Update: {
+          calculated_result?: Json | null
+          created_at?: string
+          email?: string | null
+          goal_text?: string
+          id?: string
+          name?: string
+          phone?: string
+          product_type?: string
+        }
+        Relationships: []
+      }
       circulars: {
         Row: {
           category: string

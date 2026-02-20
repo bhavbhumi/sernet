@@ -2,3 +2,6 @@ project_id = "mmlovfyrjynvofhbnfqq"
 
 [functions.summarize-content]
 verify_jwt = false
+
+[functions.ai-calculator]
+verify_jwt = false
