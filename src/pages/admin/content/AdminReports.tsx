@@ -7,6 +7,7 @@ export default function AdminReports() {
       title="Research Reports"
       subtitle="Manage downloadable PDF reports — monthly, quarterly, annual, and special"
       tableName="reports"
+      categoryField="report_type"
       emptyForm={{ title: '', description: '', report_type: 'Monthly', pages: 0, file_url: '', status: 'draft' }}
       fields={[
         { key: 'title', label: 'Title', type: 'text', placeholder: 'Report title', required: true, colSpan: 2, tip: 'The display name for this report (e.g. "Monthly Market Outlook – Jan 2026"). Shown as the card heading.' },
@@ -18,7 +19,7 @@ export default function AdminReports() {
       ]}
       tableColumns={[
         { key: 'title', label: 'Title' },
-        { key: 'report_type', label: 'Type', width: 'w-24' },
+        { key: 'report_type', label: 'Type', width: 'w-28' },
         { key: 'pages', label: 'Pages', width: 'w-20' },
         { key: 'status', label: 'Status', width: 'w-24' },
       ]}
