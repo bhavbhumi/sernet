@@ -1,4 +1,3 @@
-import { AdminLayout } from '@/components/admin/AdminLayout';
 import { GenericCMSPage } from '@/components/admin/GenericCMSPage';
 import type { FieldDef } from '@/components/admin/GenericCMSPage';
 
@@ -34,18 +33,16 @@ const tableColumns = [
 ];
 
 const AdminMarketHolidays = () => (
-  <AdminLayout title="Holiday Events" subtitle="Manage NSE, BSE, and MCX trading holidays by year.">
-    <GenericCMSPage
-      title="Holiday Events"
-      subtitle="Manage NSE, BSE, and MCX trading holidays by year."
-      tableName="market_holidays"
-      fields={fields}
-      emptyForm={emptyForm}
-      tableColumns={tableColumns}
-      hasStatus
-      categoryField="year"
-    />
-  </AdminLayout>
+  <GenericCMSPage
+    title="Holiday Events"
+    subtitle="Manage NSE, BSE, and MCX trading holidays by year."
+    tableName="market_holidays"
+    fields={fields}
+    emptyForm={emptyForm}
+    tableColumns={tableColumns}
+    hasStatus
+    categoryField="year"
+  />
 );
 
 export default AdminMarketHolidays;

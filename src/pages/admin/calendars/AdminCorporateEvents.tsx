@@ -1,4 +1,3 @@
-import { AdminLayout } from '@/components/admin/AdminLayout';
 import { GenericCMSPage } from '@/components/admin/GenericCMSPage';
 import type { FieldDef } from '@/components/admin/GenericCMSPage';
 
@@ -36,18 +35,16 @@ const tableColumns = [
 ];
 
 const AdminCorporateEvents = () => (
-  <AdminLayout title="Corporate Events" subtitle="Manage board meetings, dividends, AGMs, bonus issues, splits, and buybacks.">
-    <GenericCMSPage
-      title="Corporate Events"
-      subtitle="Manage board meetings, dividends, AGMs, bonus issues, splits, and buybacks."
-      tableName="corporate_events"
-      fields={fields}
-      emptyForm={emptyForm}
-      tableColumns={tableColumns}
-      hasStatus
-      categoryField="event_type"
-    />
-  </AdminLayout>
+  <GenericCMSPage
+    title="Corporate Events"
+    subtitle="Manage board meetings, dividends, AGMs, bonus issues, splits, and buybacks."
+    tableName="corporate_events"
+    fields={fields}
+    emptyForm={emptyForm}
+    tableColumns={tableColumns}
+    hasStatus
+    categoryField="event_type"
+  />
 );
 
 export default AdminCorporateEvents;
