@@ -52,6 +52,7 @@ const navItems: NavItem[] = [
     label: 'Calendars', icon: CalendarDays, children: [
       { label: 'Market Holidays', icon: CalendarDays, href: '/admin/calendars/holidays' },
       { label: 'Economic Events', icon: BarChart3, href: '/admin/calendars/economic' },
+      { label: 'Import Economic Events', icon: Download, href: '/admin/calendars/import-economic' },
       { label: 'Corporate Events', icon: Briefcase, href: '/admin/calendars/corporate' },
     ]
   },

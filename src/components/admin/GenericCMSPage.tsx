@@ -38,6 +38,7 @@ interface GenericCMSPageProps {
   hasStatus?: boolean;
   hasFeatured?: boolean;
   categoryField?: string; // e.g. 'category', 'report_type' — enables category filter dropdown
+  headerActions?: React.ReactNode; // optional extra buttons in the header bar
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -91,7 +92,7 @@ function AdminPagination({ page, totalPages, total, onPage }: { page: number; to
 }
 
 export function GenericCMSPage({
-  title, subtitle, tableName, fields, emptyForm: defaultForm, tableColumns, hasStatus = true, hasFeatured = false, categoryField
+  title, subtitle, tableName, fields, emptyForm: defaultForm, tableColumns, hasStatus = true, hasFeatured = false, categoryField, headerActions
 }: GenericCMSPageProps) {
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
@@ -196,7 +197,7 @@ export function GenericCMSPage({
     <AdminLayout
       title={title}
       subtitle={subtitle}
-      actions={<Button onClick={openNew} size="sm"><Plus className="h-4 w-4 mr-1.5" /> New</Button>}
+      actions={<div className="flex items-center gap-2">{headerActions}<Button onClick={openNew} size="sm"><Plus className="h-4 w-4 mr-1.5" /> New</Button></div>}
     >
       {/* Status stat chips */}
       {statusCounts && (
