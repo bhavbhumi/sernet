@@ -13,7 +13,7 @@ const iconMap: Record<string, React.ElementType> = {
   PieChart,
 };
 
-const categories = ['All', 'Weekly Update', 'Technical', 'Fundamental', 'Macro', 'Sectoral', 'Quantitative', 'Derivatives'];
+const categories = ['All', 'Market Wrap', 'Market Outlook', 'Macro'];
 
 const PAGE_SIZE = 12;
 
