@@ -5,7 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import {
   LayoutDashboard, FileText, BarChart3, BookOpen, Bell, Newspaper, AlertCircle,
   Vote, ClipboardList, Star, Briefcase, Users, Mic2, Settings, LogOut,
-  ChevronDown, ChevronRight, Menu, X, Rss, Shield, Globe, Map, Palette, Type, ScanSearch, Images, Download, Sparkles, Calculator, UserCheck
+  ChevronDown, ChevronRight, Menu, X, Rss, Shield, Globe, Map, Palette, Type, ScanSearch, Images, Download, Sparkles, Calculator, UserCheck, CalendarDays
 } from 'lucide-react';
 import sernetLogo from '@/assets/sernet-logo.png';
 import { cn } from '@/lib/utils';
@@ -46,6 +46,13 @@ const navItems: NavItem[] = [
       { label: 'Job Openings', icon: Briefcase, href: '/admin/careers/openings' },
       { label: 'Applications', icon: Users, href: '/admin/careers/applications' },
       { label: 'Team Members', icon: Users, href: '/admin/careers/team' },
+    ]
+  },
+  {
+    label: 'Calendars', icon: CalendarDays, children: [
+      { label: 'Market Holidays', icon: CalendarDays, href: '/admin/calendars/holidays' },
+      { label: 'Economic Events', icon: BarChart3, href: '/admin/calendars/economic' },
+      { label: 'Corporate Events', icon: Briefcase, href: '/admin/calendars/corporate' },
     ]
   },
   { label: 'Press & Media', icon: Mic2, href: '/admin/press' },

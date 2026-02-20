@@ -88,6 +88,9 @@ import AdminSitePages from "./pages/admin/site/AdminSitePages";
 import AdminSiteSettings from "./pages/admin/site/AdminSiteSettings";
 import AdminMediaLibrary from "./pages/admin/site/AdminMediaLibrary";
 import AdminImportArticles from "./pages/admin/content/AdminImportArticles";
+import AdminMarketHolidays from "./pages/admin/calendars/AdminMarketHolidays";
+import AdminEconomicEvents from "./pages/admin/calendars/AdminEconomicEvents";
+import AdminCorporateEvents from "./pages/admin/calendars/AdminCorporateEvents";
 import Sitemap from "./pages/Sitemap";
 
 const queryClient = new QueryClient();
@@ -190,6 +193,9 @@ const App = () => (
           <Route path="/admin/settings/calculator-leads" element={<AdminCalculatorLeads />} />
           <Route path="/admin/leads" element={<AdminLeads />} />
           <Route path="/admin/content/import" element={<AdminImportArticles />} />
+          <Route path="/admin/calendars/holidays" element={<AdminMarketHolidays />} />
+          <Route path="/admin/calendars/economic" element={<AdminEconomicEvents />} />
+          <Route path="/admin/calendars/corporate" element={<AdminCorporateEvents />} />
 
           {/* Sitemap */}
           <Route path="/sitemap" element={<Sitemap />} />
