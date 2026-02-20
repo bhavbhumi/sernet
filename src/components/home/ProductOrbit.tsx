@@ -43,17 +43,30 @@ const OrbitItem = ({
   size?: number;
   reverse?: boolean;
 }) => {
+  const s = size ?? 48;
+  // Convert initial angle to radians to compute starting x/y position
+  const rad = (angle * Math.PI) / 180;
+  const startX = Math.cos(rad) * radius;
+  const startY = Math.sin(rad) * radius;
+
   return (
+    // Wrapper sits at centre; we use CSS transform to place the logo along the orbit
     <motion.div
       className="absolute"
       style={{
         top: '50%',
         left: '50%',
-        marginTop: -(size ?? 48) / 2,
-        marginLeft: -(size ?? 48) / 2,
+        width: s,
+        height: s,
+        marginTop: -s / 2,
+        marginLeft: -s / 2,
+        // translate to starting position, then rotate around centre
+        transformOrigin: `${-startX}px ${-startY}px`,
+        x: startX,
+        y: startY,
       }}
       animate={{
-        rotate: reverse ? [angle, angle - 360] : [angle, angle + 360],
+        rotate: reverse ? [0, -360] : [0, 360],
       }}
       transition={{
         duration,
@@ -61,9 +74,8 @@ const OrbitItem = ({
         ease: 'linear',
       }}
     >
-      {/* Move outward from center, then counter-rotate so logo stays upright */}
+      {/* Counter-rotate the logo so it always faces upright */}
       <motion.div
-        style={{ x: radius, y: 0 }}
         animate={{
           rotate: reverse ? [0, 360] : [0, -360],
         }}
@@ -72,8 +84,9 @@ const OrbitItem = ({
           repeat: Infinity,
           ease: 'linear',
         }}
+        style={{ width: s, height: s }}
       >
-        <OrbitLogo src={src} alt={alt} size={size ?? 48} />
+        <OrbitLogo src={src} alt={alt} size={s} />
       </motion.div>
     </motion.div>
   );
