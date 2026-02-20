@@ -1,0 +1,1 @@
+ALTER TABLE public.calculator_ai_logs ADD CONSTRAINT calculator_ai_logs_session_id_unique UNIQUE (session_id);
