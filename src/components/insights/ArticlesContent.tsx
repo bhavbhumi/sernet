@@ -70,12 +70,6 @@ function ArticleCard({ article, index }: { article: any; index: number }) {
         </div>
       </div>
 
-      {article.thumbnail_url && (
-        <div className="mb-4 rounded-lg overflow-hidden border border-border/40">
-          <img src={article.thumbnail_url} alt={article.title} className="w-full h-40 object-cover" />
-        </div>
-      )}
-
       <Link to={`/z-connect/articles/${article.id}`}>
         <h3 className="text-lg font-semibold text-foreground mb-2 line-clamp-2 hover:text-primary transition-colors">{article.title}</h3>
       </Link>
@@ -137,7 +131,7 @@ export const ArticlesContent = () => {
         .from('articles')
         .select('*')
         .eq('status', 'published')
-        .order('published_at', { ascending: false });
+        .order('item_date', { ascending: false, nullsFirst: false });
       if (error) throw error;
       return data;
     },
