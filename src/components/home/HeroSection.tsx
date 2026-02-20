@@ -28,6 +28,7 @@ export const HeroSection = () => {
               src={heroIllustrationDark}
               alt="Sernet wealth management - Trade, Invest and Insure with awareness"
               className="w-full max-w-[420px] lg:max-w-[500px] h-auto hidden dark:block"
+              style={{ mixBlendMode: 'lighten' }}
             />
           </motion.div>
 
