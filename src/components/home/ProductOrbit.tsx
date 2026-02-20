@@ -9,20 +9,24 @@ interface OrbitLogoProps {
   src: string;
   alt: string;
   size?: number;
-  bgWhite?: boolean;
 }
 
-const OrbitLogo = ({ src, alt, size = 48, bgWhite = true }: OrbitLogoProps) => (
+const OrbitLogo = ({ src, alt, size = 48 }: OrbitLogoProps) => (
   <div
-    className="rounded-xl shadow-lg flex items-center justify-center overflow-hidden border border-border"
+    className="rounded-xl shadow-md flex items-center justify-center overflow-hidden border border-border/40 backdrop-blur-sm"
     style={{
       width: size,
       height: size,
-      background: bgWhite ? 'hsl(var(--background))' : undefined,
+      background: 'hsl(var(--card))',
       flexShrink: 0,
     }}
   >
-    <img src={src} alt={alt} className="w-full h-full object-contain p-1" />
+    <img
+      src={src}
+      alt={alt}
+      className="w-full h-full object-contain p-1.5"
+      style={{ mixBlendMode: 'multiply' }}
+    />
   </div>
 );
 
