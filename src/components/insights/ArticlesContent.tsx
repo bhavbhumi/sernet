@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { FileText, Image, Headphones, Video, ArrowRight, Calendar, User, Filter, Loader2, Heart, Share2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FileText, Image, Headphones, Video, ArrowRight, Calendar, User, Filter, Loader2, Heart, Share2, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -24,6 +24,67 @@ const formatColors: Record<string, string> = {
 };
 
 const formats: ArticleFormat[] = ['All', 'Text', 'Image', 'Audio', 'Video'];
+
+const PAGE_SIZE = 12;
+
+function Pagination({
+  page,
+  totalPages,
+  onPage,
+}: {
+  page: number;
+  totalPages: number;
+  onPage: (p: number) => void;
+}) {
+  if (totalPages <= 1) return null;
+
+  const pages: (number | '…')[] = [];
+  for (let i = 1; i <= totalPages; i++) {
+    if (i === 1 || i === totalPages || Math.abs(i - page) <= 1) {
+      pages.push(i);
+    } else if (pages[pages.length - 1] !== '…') {
+      pages.push('…');
+    }
+  }
+
+  return (
+    <div className="flex items-center justify-center gap-1.5 mt-12 flex-wrap">
+      <button
+        onClick={() => onPage(page - 1)}
+        disabled={page === 1}
+        className="flex items-center gap-1 px-3 py-2 text-sm rounded-lg border border-border text-muted-foreground hover:text-foreground hover:border-primary/50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+      >
+        <ChevronLeft className="h-4 w-4" /> Prev
+      </button>
+
+      {pages.map((p, i) =>
+        p === '…' ? (
+          <span key={`ellipsis-${i}`} className="px-2 py-2 text-sm text-muted-foreground">…</span>
+        ) : (
+          <button
+            key={p}
+            onClick={() => onPage(p as number)}
+            className={`min-w-[36px] h-9 px-2 text-sm rounded-lg border transition-colors font-medium ${
+              page === p
+                ? 'bg-primary text-primary-foreground border-primary'
+                : 'border-border text-muted-foreground hover:text-foreground hover:border-primary/50'
+            }`}
+          >
+            {p}
+          </button>
+        )
+      )}
+
+      <button
+        onClick={() => onPage(page + 1)}
+        disabled={page === totalPages}
+        className="flex items-center gap-1 px-3 py-2 text-sm rounded-lg border border-border text-muted-foreground hover:text-foreground hover:border-primary/50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+      >
+        Next <ChevronRight className="h-4 w-4" />
+      </button>
+    </div>
+  );
+}
 
 function ArticleCard({ article, index }: { article: any; index: number }) {
   const { toast } = useToast();
@@ -53,7 +114,7 @@ function ArticleCard({ article, index }: { article: any; index: number }) {
     <motion.article
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: 0.08 * index }}
+      transition={{ duration: 0.35, delay: Math.min(0.06 * index, 0.4) }}
       className="bg-muted/30 rounded-lg p-6 hover:shadow-lg transition-shadow border border-border/50 flex flex-col"
     >
       <div className="flex items-center gap-3 mb-4">
@@ -123,6 +184,7 @@ function ArticleCard({ article, index }: { article: any; index: number }) {
 
 export const ArticlesContent = () => {
   const [activeFormat, setActiveFormat] = useState<ArticleFormat>('All');
+  const [page, setPage] = useState(1);
 
   const { data: articles = [], isLoading } = useQuery({
     queryKey: ['articles'],
@@ -140,6 +202,19 @@ export const ArticlesContent = () => {
   const filteredArticles = activeFormat === 'All'
     ? articles
     : articles.filter((a) => a.format === activeFormat);
+
+  const totalPages = Math.ceil(filteredArticles.length / PAGE_SIZE);
+  const paginated = filteredArticles.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  const handleFormat = (fmt: ArticleFormat) => {
+    setActiveFormat(fmt);
+    setPage(1);
+  };
+
+  const handlePage = (p: number) => {
+    setPage(p);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <section className="section-padding">
@@ -171,7 +246,7 @@ export const ArticlesContent = () => {
             return (
               <button
                 key={fmt}
-                onClick={() => setActiveFormat(fmt)}
+                onClick={() => handleFormat(fmt)}
                 className={`px-4 py-2 text-sm rounded-full whitespace-nowrap transition-colors flex items-center gap-1.5 ${
                   activeFormat === fmt
                     ? 'bg-primary text-primary-foreground font-medium'
@@ -200,14 +275,33 @@ export const ArticlesContent = () => {
           </div>
         )}
 
-        {/* Articles Grid */}
+        {/* Results count */}
         {!isLoading && filteredArticles.length > 0 && (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredArticles.map((article, index) => (
-              <ArticleCard key={article.id} article={article} index={index} />
-            ))}
-          </div>
+          <p className="text-xs text-muted-foreground mb-4">
+            Showing {(page - 1) * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE, filteredArticles.length)} of {filteredArticles.length}
+          </p>
         )}
+
+        {/* Articles Grid */}
+        {!isLoading && paginated.length > 0 && (
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`${activeFormat}-${page}`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
+              {paginated.map((article, index) => (
+                <ArticleCard key={article.id} article={article} index={index} />
+              ))}
+            </motion.div>
+          </AnimatePresence>
+        )}
+
+        {/* Pagination */}
+        <Pagination page={page} totalPages={totalPages} onPage={handlePage} />
       </div>
     </section>
   );

@@ -3,9 +3,11 @@ import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Layout } from '@/components/layout/Layout';
-import { ArrowLeft, Calendar, User, Clock, TrendingUp, BarChart3, PieChart, List } from 'lucide-react';
+import { ArrowLeft, Calendar, User, TrendingUp, BarChart3, PieChart, List, Heart, Share2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { ArticleBodyRenderer, extractToc, TocEntry } from '@/components/shared/ArticleBodyRenderer';
+import { useArticleEngagement } from '@/hooks/useArticleEngagement';
+import { useToast } from '@/hooks/use-toast';
 
 const iconMap: Record<string, React.ElementType> = {
   TrendingUp,
@@ -15,7 +17,6 @@ const iconMap: Record<string, React.ElementType> = {
 
 function TableOfContents({ toc, activeSlug }: { toc: TocEntry[]; activeSlug: string }) {
   if (toc.length < 2) return null;
-
   return (
     <motion.aside
       initial={{ opacity: 0, x: -10 }}
@@ -51,6 +52,7 @@ function TableOfContents({ toc, activeSlug }: { toc: TocEntry[]; activeSlug: str
 
 export default function AnalysisDetail() {
   const { id } = useParams<{ id: string }>();
+  const { toast } = useToast();
   const [activeSlug, setActiveSlug] = useState('');
 
   const { data: analysis, isLoading } = useQuery({
@@ -68,13 +70,14 @@ export default function AnalysisDetail() {
     enabled: !!id,
   });
 
+  const { likeCount, liked, shareCount, alreadyShared, toggleLike, recordShare } = useArticleEngagement(id ?? '');
+
   const toc: TocEntry[] = analysis?.body ? extractToc(analysis.body) : [];
 
   useEffect(() => {
     if (!toc.length) return;
     const headingEls = toc.map(({ slug }) => document.getElementById(slug)).filter(Boolean) as HTMLElement[];
     if (!headingEls.length) return;
-
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries.filter((e) => e.isIntersecting);
@@ -85,6 +88,18 @@ export default function AnalysisDetail() {
     headingEls.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, [toc.length, analysis?.body]);
+
+  const handleShare = async () => {
+    const url = window.location.href;
+    const isNew = await recordShare();
+    navigator.clipboard.writeText(url);
+    toast({
+      title: '🔗 Link copied!',
+      description: isNew
+        ? 'Share count recorded. Paste it anywhere to share!'
+        : 'Link copied to clipboard. Paste it anywhere to share.',
+    });
+  };
 
   if (isLoading) {
     return (
@@ -118,6 +133,39 @@ export default function AnalysisDetail() {
   const dateStr = (analysis.item_date || analysis.published_at)
     ? new Date(analysis.item_date || analysis.published_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })
     : '';
+
+  const LikeButton = ({ size = 'sm' }: { size?: 'sm' | 'md' }) => (
+    <button
+      onClick={toggleLike}
+      className={`flex items-center gap-1.5 rounded-full text-sm border transition-colors ${
+        size === 'md' ? 'px-4 py-2' : 'px-3 py-1.5'
+      } ${
+        liked
+          ? 'bg-red-50 border-red-200 text-red-500 dark:bg-red-950/30 dark:border-red-800'
+          : 'border-border text-muted-foreground hover:border-red-300 hover:text-red-500'
+      }`}
+    >
+      <Heart className={`h-4 w-4 ${liked ? 'fill-red-500' : ''}`} />
+      <span>{likeCount > 0 ? `${likeCount} ` : ''}{liked ? 'Liked' : 'Like'}</span>
+    </button>
+  );
+
+  const ShareButton = ({ size = 'sm' }: { size?: 'sm' | 'md' }) => (
+    <button
+      onClick={handleShare}
+      className={`flex items-center gap-1.5 rounded-full text-sm border transition-colors ${
+        size === 'md' ? 'px-4 py-2' : 'px-3 py-1.5'
+      } ${
+        alreadyShared
+          ? 'border-primary/40 text-primary bg-primary/5'
+          : 'border-border text-muted-foreground hover:border-primary hover:text-primary'
+      }`}
+      title={alreadyShared ? 'Copy link again' : 'Copy & share link'}
+    >
+      <Share2 className="h-4 w-4" />
+      <span>{shareCount > 0 ? `${shareCount} ` : ''}Share</span>
+    </button>
+  );
 
   return (
     <Layout>
@@ -160,10 +208,16 @@ export default function AnalysisDetail() {
             {/* Title */}
             <h1 className="text-3xl font-bold text-foreground leading-tight mb-4">{analysis.title}</h1>
 
-            {/* Meta row */}
-            <div className="flex items-center gap-5 text-sm text-muted-foreground flex-wrap mb-6">
-              <span className="flex items-center gap-1.5"><User className="h-4 w-4" />{analysis.author}</span>
-              {dateStr && <span className="flex items-center gap-1.5"><Calendar className="h-4 w-4" />{dateStr}</span>}
+            {/* Meta + Engagement row */}
+            <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+              <div className="flex items-center gap-5 text-sm text-muted-foreground flex-wrap">
+                <span className="flex items-center gap-1.5"><User className="h-4 w-4" />{analysis.author}</span>
+                {dateStr && <span className="flex items-center gap-1.5"><Calendar className="h-4 w-4" />{dateStr}</span>}
+              </div>
+              <div className="flex items-center gap-3">
+                <LikeButton />
+                <ShareButton />
+              </div>
             </div>
 
             {/* Mobile TOC */}
@@ -203,8 +257,16 @@ export default function AnalysisDetail() {
               </div>
             )}
 
-            {/* Bottom bar */}
-            <div className="mt-12 pt-6 border-t border-border">
+            {/* Bottom engagement bar */}
+            <div className="mt-12 pt-6 border-t border-border flex items-center justify-between flex-wrap gap-3">
+              <p className="text-sm text-muted-foreground">Was this analysis helpful?</p>
+              <div className="flex items-center gap-3">
+                <LikeButton size="md" />
+                <ShareButton size="md" />
+              </div>
+            </div>
+
+            <div className="mt-6">
               <Link
                 to="/z-connect"
                 className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
