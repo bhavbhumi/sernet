@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Layout } from '@/components/layout/Layout';
 import { ArrowLeft, Calendar, User, TrendingUp, BarChart3, PieChart, List, Heart, Share2 } from 'lucide-react';
+import { AISummarizer } from '@/components/shared/AISummarizer';
 import { motion } from 'framer-motion';
 import { ArticleBodyRenderer, extractToc, TocEntry } from '@/components/shared/ArticleBodyRenderer';
 import { useArticleEngagement } from '@/hooks/useArticleEngagement';
@@ -245,9 +246,18 @@ export default function AnalysisDetail() {
 
             {/* Excerpt */}
             {analysis.excerpt && (
-              <p className="text-lg text-muted-foreground mb-8 leading-relaxed border-l-4 border-primary/40 pl-4 italic">
+              <p className="text-lg text-muted-foreground mb-6 leading-relaxed border-l-4 border-primary/40 pl-4 italic">
                 {analysis.excerpt}
               </p>
+            )}
+
+            {/* AI Summarizer */}
+            {analysis.body && (
+              <AISummarizer
+                title={analysis.title}
+                body={analysis.body}
+                contentType="analysis"
+              />
             )}
 
             {/* Body */}
