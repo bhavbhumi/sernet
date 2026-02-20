@@ -1,6 +1,6 @@
 
 // Generic CMS table page factory for simple content types
-// Used by: Analysis, Reports, Bulletin, News, Circulars, Press
+// Used by: Reports, Bulletin, News, Circulars, Press
 
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
@@ -12,7 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Pencil, Trash2, Search, Eye, EyeOff, Star } from 'lucide-react';
+import { Plus, Pencil, Trash2, Search, Eye, EyeOff, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { FieldInfoTooltip } from '@/components/admin/FieldInfoTooltip';
@@ -25,7 +25,7 @@ export interface FieldDef {
   placeholder?: string;
   required?: boolean;
   colSpan?: number;
-  tip?: string; // info tooltip text
+  tip?: string;
 }
 
 interface GenericCMSPageProps {
@@ -36,11 +36,58 @@ interface GenericCMSPageProps {
   emptyForm: Record<string, string | number | boolean>;
   tableColumns: { key: string; label: string; width?: string }[];
   hasStatus?: boolean;
-  hasFeatured?: boolean; // enables Feature/Unfeature action button
+  hasFeatured?: boolean;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db = (tableName: string) => supabase.from(tableName as any) as any;
+
+const PAGE_SIZE = 25;
+
+function AdminPagination({ page, totalPages, total, onPage }: { page: number; totalPages: number; total: number; onPage: (p: number) => void }) {
+  if (totalPages <= 1) return null;
+  const pages: (number | '…')[] = [];
+  for (let i = 1; i <= totalPages; i++) {
+    if (i === 1 || i === totalPages || Math.abs(i - page) <= 1) pages.push(i);
+    else if (pages[pages.length - 1] !== '…') pages.push('…');
+  }
+  const start = (page - 1) * PAGE_SIZE + 1;
+  const end = Math.min(page * PAGE_SIZE, total);
+  return (
+    <div className="flex items-center justify-end gap-1.5 flex-wrap">
+      <span className="text-xs text-muted-foreground mr-2">{start}–{end} of {total}</span>
+      <button
+        onClick={() => onPage(page - 1)}
+        disabled={page === 1}
+        className="flex items-center gap-0.5 px-2 py-1.5 text-xs rounded-md border border-border text-muted-foreground hover:text-foreground hover:border-primary/40 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+      >
+        <ChevronLeft className="h-3.5 w-3.5" /> Prev
+      </button>
+      {pages.map((p, i) =>
+        p === '…' ? (
+          <span key={`e-${i}`} className="px-1 text-xs text-muted-foreground">…</span>
+        ) : (
+          <button
+            key={p}
+            onClick={() => onPage(p as number)}
+            className={`min-w-[28px] h-7 px-1.5 text-xs rounded-md border transition-colors font-medium ${
+              page === p ? 'bg-primary text-primary-foreground border-primary' : 'border-border text-muted-foreground hover:text-foreground hover:border-primary/40'
+            }`}
+          >
+            {p}
+          </button>
+        )
+      )}
+      <button
+        onClick={() => onPage(page + 1)}
+        disabled={page === totalPages}
+        className="flex items-center gap-0.5 px-2 py-1.5 text-xs rounded-md border border-border text-muted-foreground hover:text-foreground hover:border-primary/40 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+      >
+        Next <ChevronRight className="h-3.5 w-3.5" />
+      </button>
+    </div>
+  );
+}
 
 export function GenericCMSPage({
   title, subtitle, tableName, fields, emptyForm: defaultForm, tableColumns, hasStatus = true, hasFeatured = false
@@ -51,6 +98,7 @@ export function GenericCMSPage({
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [page, setPage] = useState(1);
   const [dialogOpen, setDialogOpen] = useState(searchParams.get('action') === 'new');
   const [editItem, setEditItem] = useState<Record<string, unknown> | null>(null);
   const [form, setForm] = useState<Record<string, unknown>>(defaultForm);
@@ -70,8 +118,6 @@ export function GenericCMSPage({
 
   const handleSave = async () => {
     setSaving(true);
-    // Build payload — preserve any admin-entered published_at (e.g. press item date).
-    // Only auto-set published_at when publishing AND the field is currently empty.
     const adminEnteredDate = form.published_at ? String(form.published_at).trim() : '';
     const payload = {
       ...form,
@@ -101,7 +147,6 @@ export function GenericCMSPage({
 
   const toggleStatus = async (item: Record<string, unknown>) => {
     const newStatus = item.status === 'published' ? 'draft' : 'published';
-    // Preserve admin-entered published_at; only auto-fill when empty
     const existingDate = item.published_at ? String(item.published_at).trim() : '';
     await db(tableName).update({
       status: newStatus,
@@ -117,6 +162,18 @@ export function GenericCMSPage({
     return matchSearch && matchStatus;
   });
 
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  const handlePage = (p: number) => {
+    setPage(p);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Reset page when filter changes
+  const handleFilterStatus = (v: string) => { setFilterStatus(v); setPage(1); };
+  const handleSearch = (v: string) => { setSearch(v); setPage(1); };
+
   // Status counts for stat chips
   const statusCounts = hasStatus ? {
     all: items.length,
@@ -124,6 +181,8 @@ export function GenericCMSPage({
     published: items.filter(i => i.status === 'published').length,
     archived: items.filter(i => i.status === 'archived').length,
   } : null;
+
+  const colSpan = tableColumns.length + 1;
 
   return (
     <AdminLayout
@@ -142,7 +201,7 @@ export function GenericCMSPage({
           ] as const).map(({ key, label }) => (
             <button
               key={key}
-              onClick={() => setFilterStatus(key)}
+              onClick={() => handleFilterStatus(key)}
               className={`border rounded-lg p-3 text-left transition-colors ${filterStatus === key ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/30'}`}
             >
               <p className="text-xs text-muted-foreground">{label}</p>
@@ -152,13 +211,14 @@ export function GenericCMSPage({
         </div>
       )}
 
-      <div className="flex gap-3 mb-5 flex-wrap">
+      {/* Search + status filter */}
+      <div className="flex gap-3 mb-4 flex-wrap">
         <div className="relative flex-1 min-w-[200px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input placeholder="Search..." className="pl-9" value={search} onChange={e => setSearch(e.target.value)} />
+          <Input placeholder="Search..." className="pl-9" value={search} onChange={e => handleSearch(e.target.value)} />
         </div>
         {hasStatus && (
-          <Select value={filterStatus} onValueChange={setFilterStatus}>
+          <Select value={filterStatus} onValueChange={handleFilterStatus}>
             <SelectTrigger className="w-36"><SelectValue /></SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Status</SelectItem>
@@ -168,6 +228,10 @@ export function GenericCMSPage({
             </SelectContent>
           </Select>
         )}
+        {/* Top pagination — right-aligned */}
+        <div className="ml-auto">
+          <AdminPagination page={page} totalPages={totalPages} total={filtered.length} onPage={handlePage} />
+        </div>
       </div>
 
       <div className="bg-card border border-border rounded-xl overflow-hidden">
@@ -184,20 +248,19 @@ export function GenericCMSPage({
             <tbody className="divide-y divide-border">
               {loading ? (
                 Array(5).fill(0).map((_, i) => (
-                  <tr key={i}><td colSpan={tableColumns.length + 1} className="px-4 py-3"><div className="h-4 bg-muted animate-pulse rounded" /></td></tr>
+                  <tr key={i}><td colSpan={colSpan} className="px-4 py-3"><div className="h-4 bg-muted animate-pulse rounded" /></td></tr>
                 ))
-              ) : filtered.length === 0 ? (
-                <tr><td colSpan={tableColumns.length + 1} className="px-4 py-12 text-center text-muted-foreground">No items found. Click "New" to add one.</td></tr>
-              ) : filtered.map(item => (
+              ) : paginated.length === 0 ? (
+                <tr><td colSpan={colSpan} className="px-4 py-12 text-center text-muted-foreground">No items found. Click "New" to add one.</td></tr>
+              ) : paginated.map(item => (
                 <tr key={String(item.id)} className="hover:bg-muted/20 group">
                   {tableColumns.map((col, colIdx) => (
                     <td key={col.key} className="px-4 py-3 text-muted-foreground">
-                    {colIdx === 0 ? (
+                      {colIdx === 0 ? (
                         <div>
                           <p className="font-medium text-foreground line-clamp-1">{String(item[col.key] ?? '')}</p>
-                          {/* Inline action bar below first column */}
                           <div className="flex items-center gap-0.5 mt-1.5">
-                          {hasStatus && (
+                            {hasStatus && (
                               <Button variant="ghost" size="sm" className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground gap-1" onClick={() => toggleStatus(item)} title={item.status === 'published' ? 'Unpublish' : 'Publish'}>
                                 {item.status === 'published' ? <><EyeOff className="h-3 w-3" /> Unpublish</> : <><Eye className="h-3 w-3" /> Publish</>}
                               </Button>
@@ -237,6 +300,11 @@ export function GenericCMSPage({
         </div>
       </div>
 
+      {/* Bottom pagination — right-aligned */}
+      <div className="mt-4 flex justify-end">
+        <AdminPagination page={page} totalPages={totalPages} total={filtered.length} onPage={handlePage} />
+      </div>
+
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
@@ -250,37 +318,16 @@ export function GenericCMSPage({
                   {field.tip && <FieldInfoTooltip tip={field.tip} />}
                 </div>
                 {field.type === 'textarea' && (
-                  <Textarea
-                    placeholder={field.placeholder}
-                    rows={3}
-                    value={String(form[field.key] ?? '')}
-                    onChange={e => setForm(f => ({ ...f, [field.key]: e.target.value }))}
-                  />
+                  <Textarea placeholder={field.placeholder} rows={3} value={String(form[field.key] ?? '')} onChange={e => setForm(f => ({ ...f, [field.key]: e.target.value }))} />
                 )}
                 {field.type === 'html' && (
-                  <Textarea
-                    placeholder={field.placeholder}
-                    rows={8}
-                    value={String(form[field.key] ?? '')}
-                    onChange={e => setForm(f => ({ ...f, [field.key]: e.target.value }))}
-                    className="font-mono text-xs"
-                  />
+                  <Textarea placeholder={field.placeholder} rows={8} value={String(form[field.key] ?? '')} onChange={e => setForm(f => ({ ...f, [field.key]: e.target.value }))} className="font-mono text-xs" />
                 )}
                 {(field.type === 'text' || field.type === 'url' || field.type === 'number') && (
-                  <Input
-                    type={field.type === 'number' ? 'number' : 'text'}
-                    placeholder={field.placeholder}
-                    value={String(form[field.key] ?? '')}
-                    onChange={e => setForm(f => ({ ...f, [field.key]: e.target.value }))}
-                  />
+                  <Input type={field.type === 'number' ? 'number' : 'text'} placeholder={field.placeholder} value={String(form[field.key] ?? '')} onChange={e => setForm(f => ({ ...f, [field.key]: e.target.value }))} />
                 )}
                 {field.type === 'date' && (
-                  <Input
-                    type="date"
-                    placeholder={field.placeholder}
-                    value={String(form[field.key] ?? '')}
-                    onChange={e => setForm(f => ({ ...f, [field.key]: e.target.value }))}
-                  />
+                  <Input type="date" placeholder={field.placeholder} value={String(form[field.key] ?? '')} onChange={e => setForm(f => ({ ...f, [field.key]: e.target.value }))} />
                 )}
                 {field.type === 'select' && field.options && (
                   <Select value={String(form[field.key] ?? '')} onValueChange={v => setForm(f => ({ ...f, [field.key]: v }))}>
@@ -292,12 +339,7 @@ export function GenericCMSPage({
                 )}
                 {field.type === 'checkbox' && (
                   <label className="flex items-center gap-2 cursor-pointer mt-1">
-                    <input
-                      type="checkbox"
-                      checked={Boolean(form[field.key])}
-                      onChange={e => setForm(f => ({ ...f, [field.key]: e.target.checked }))}
-                      className="w-4 h-4 accent-primary rounded"
-                    />
+                    <input type="checkbox" checked={Boolean(form[field.key])} onChange={e => setForm(f => ({ ...f, [field.key]: e.target.checked }))} className="w-4 h-4 accent-primary rounded" />
                     <span className="text-sm text-muted-foreground">{field.placeholder || `Enable ${field.label}`}</span>
                   </label>
                 )}

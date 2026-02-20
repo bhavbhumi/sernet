@@ -9,12 +9,13 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Pencil, Trash2, Search, Eye, EyeOff, Upload, X, Loader2, Heart, Share2 } from 'lucide-react';
+import { Plus, Pencil, Trash2, Search, Eye, EyeOff, Upload, X, Loader2, Heart, Share2, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { useQuery } from '@tanstack/react-query';
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
+const PAGE_SIZE = 25;
 
 interface Article {
   id: string;
@@ -39,6 +40,35 @@ const emptyForm = {
   thumbnail_url: '', status: 'draft', item_date: '',
 };
 
+function AdminPagination({ page, totalPages, total, onPage }: { page: number; totalPages: number; total: number; onPage: (p: number) => void }) {
+  if (totalPages <= 1) return null;
+  const pages: (number | '…')[] = [];
+  for (let i = 1; i <= totalPages; i++) {
+    if (i === 1 || i === totalPages || Math.abs(i - page) <= 1) pages.push(i);
+    else if (pages[pages.length - 1] !== '…') pages.push('…');
+  }
+  const start = (page - 1) * PAGE_SIZE + 1;
+  const end = Math.min(page * PAGE_SIZE, total);
+  return (
+    <div className="flex items-center justify-end gap-1.5 flex-wrap">
+      <span className="text-xs text-muted-foreground mr-2">{start}–{end} of {total}</span>
+      <button onClick={() => onPage(page - 1)} disabled={page === 1} className="flex items-center gap-0.5 px-2 py-1.5 text-xs rounded-md border border-border text-muted-foreground hover:text-foreground hover:border-primary/40 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+        <ChevronLeft className="h-3.5 w-3.5" /> Prev
+      </button>
+      {pages.map((p, i) =>
+        p === '…' ? (
+          <span key={`e-${i}`} className="px-1 text-xs text-muted-foreground">…</span>
+        ) : (
+          <button key={p} onClick={() => onPage(p as number)} className={`min-w-[28px] h-7 px-1.5 text-xs rounded-md border transition-colors font-medium ${page === p ? 'bg-primary text-primary-foreground border-primary' : 'border-border text-muted-foreground hover:text-foreground hover:border-primary/40'}`}>{p}</button>
+        )
+      )}
+      <button onClick={() => onPage(page + 1)} disabled={page === totalPages} className="flex items-center gap-0.5 px-2 py-1.5 text-xs rounded-md border border-border text-muted-foreground hover:text-foreground hover:border-primary/40 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+        Next <ChevronRight className="h-3.5 w-3.5" />
+      </button>
+    </div>
+  );
+}
+
 export default function AdminArticles() {
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
@@ -47,6 +77,7 @@ export default function AdminArticles() {
   const [search, setSearch] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [filterCategory, setFilterCategory] = useState('all');
+  const [page, setPage] = useState(1);
   const [dialogOpen, setDialogOpen] = useState(searchParams.get('action') === 'new');
   const [editItem, setEditItem] = useState<Article | null>(null);
   const [form, setForm] = useState(emptyForm);
@@ -56,7 +87,6 @@ export default function AdminArticles() {
   const mediaInputRef = useRef<HTMLInputElement>(null);
   const thumbInputRef = useRef<HTMLInputElement>(null);
 
-  // Engagement counts
   const { data: likeCounts = {} } = useQuery({
     queryKey: ['admin-article-likes'],
     queryFn: async () => {
@@ -116,29 +146,17 @@ export default function AdminArticles() {
     }
     setSaving(true);
     const payload = {
-      title: form.title,
-      excerpt: form.excerpt,
-      body: form.body,
-      author: form.author,
-      format: form.format as 'Text' | 'Image' | 'Audio' | 'Video',
-      category: form.category,
-      read_time: form.read_time,
-      media_url: form.media_url,
-      thumbnail_url: form.thumbnail_url,
-      status: form.status as 'draft' | 'published' | 'archived',
-      item_date: form.item_date || null,
+      title: form.title, excerpt: form.excerpt, body: form.body, author: form.author,
+      format: form.format as 'Text' | 'Image' | 'Audio' | 'Video', category: form.category,
+      read_time: form.read_time, media_url: form.media_url, thumbnail_url: form.thumbnail_url,
+      status: form.status as 'draft' | 'published' | 'archived', item_date: form.item_date || null,
       published_at: form.status === 'published' ? new Date().toISOString() : null,
     };
     const { error } = editItem
       ? await supabase.from('articles').update(payload).eq('id', editItem.id)
       : await supabase.from('articles').insert([payload]);
-
     if (error) toast({ title: 'Error', description: error.message, variant: 'destructive' });
-    else {
-      toast({ title: editItem ? 'Article updated' : 'Article created' });
-      setDialogOpen(false);
-      fetchArticles();
-    }
+    else { toast({ title: editItem ? 'Article updated' : 'Article created' }); setDialogOpen(false); fetchArticles(); }
     setSaving(false);
   };
 
@@ -150,10 +168,7 @@ export default function AdminArticles() {
 
   const toggleStatus = async (item: Article) => {
     const newStatus = item.status === 'published' ? 'draft' : 'published';
-    await supabase.from('articles').update({
-      status: newStatus,
-      published_at: newStatus === 'published' ? new Date().toISOString() : null
-    }).eq('id', item.id);
+    await supabase.from('articles').update({ status: newStatus, published_at: newStatus === 'published' ? new Date().toISOString() : null }).eq('id', item.id);
     fetchArticles();
   };
 
@@ -165,6 +180,20 @@ export default function AdminArticles() {
   });
 
   const categoryOptions = ['all', ...Array.from(new Set(articles.map(a => a.category).filter(Boolean))).sort()];
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  const handlePage = (p: number) => { setPage(p); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+  const handleFilterStatus = (v: string) => { setFilterStatus(v); setPage(1); };
+  const handleSearch = (v: string) => { setSearch(v); setPage(1); };
+  const handleFilterCategory = (v: string) => { setFilterCategory(v); setPage(1); };
+
+  const statusCounts = {
+    all: articles.length,
+    published: articles.filter(a => a.status === 'published').length,
+    draft: articles.filter(a => a.status === 'draft').length,
+    archived: articles.filter(a => a.status === 'archived').length,
+  };
 
   return (
     <AdminLayout
@@ -172,13 +201,28 @@ export default function AdminArticles() {
       subtitle="Manage insight articles — text, image, audio, and video formats"
       actions={<Button onClick={openNew} size="sm"><Plus className="h-4 w-4 mr-1.5" /> New Article</Button>}
     >
-      {/* Filters */}
-      <div className="flex gap-3 mb-5 flex-wrap">
+      {/* Stat chips */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+        {([
+          { key: 'all', label: 'Total' },
+          { key: 'published', label: 'Published' },
+          { key: 'draft', label: 'Draft' },
+          { key: 'archived', label: 'Archived' },
+        ] as const).map(({ key, label }) => (
+          <button key={key} onClick={() => handleFilterStatus(key)} className={`border rounded-lg p-3 text-left transition-colors ${filterStatus === key ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/30'}`}>
+            <p className="text-xs text-muted-foreground">{label}</p>
+            <p className="text-2xl font-semibold text-foreground">{statusCounts[key]}</p>
+          </button>
+        ))}
+      </div>
+
+      {/* Filters + top pagination */}
+      <div className="flex gap-3 mb-4 flex-wrap items-center">
         <div className="relative flex-1 min-w-[200px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input placeholder="Search articles..." className="pl-9" value={search} onChange={e => setSearch(e.target.value)} />
+          <Input placeholder="Search articles..." className="pl-9" value={search} onChange={e => handleSearch(e.target.value)} />
         </div>
-        <Select value={filterStatus} onValueChange={setFilterStatus}>
+        <Select value={filterStatus} onValueChange={handleFilterStatus}>
           <SelectTrigger className="w-36"><SelectValue /></SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Status</SelectItem>
@@ -187,16 +231,17 @@ export default function AdminArticles() {
             <SelectItem value="archived">Archived</SelectItem>
           </SelectContent>
         </Select>
-        <Select value={filterCategory} onValueChange={setFilterCategory}>
+        <Select value={filterCategory} onValueChange={handleFilterCategory}>
           <SelectTrigger className="w-44"><SelectValue placeholder="All Categories" /></SelectTrigger>
           <SelectContent>
             {categoryOptions.map(cat => (
-              <SelectItem key={cat} value={cat}>
-                {cat === 'all' ? 'All Categories' : cat}
-              </SelectItem>
+              <SelectItem key={cat} value={cat}>{cat === 'all' ? 'All Categories' : cat}</SelectItem>
             ))}
           </SelectContent>
         </Select>
+        <div className="ml-auto">
+          <AdminPagination page={page} totalPages={totalPages} total={filtered.length} onPage={handlePage} />
+        </div>
       </div>
 
       {/* Table */}
@@ -219,14 +264,13 @@ export default function AdminArticles() {
                 Array(5).fill(0).map((_, i) => (
                   <tr key={i}><td colSpan={7} className="px-4 py-3"><div className="h-4 bg-muted animate-pulse rounded" /></td></tr>
                 ))
-              ) : filtered.length === 0 ? (
+              ) : paginated.length === 0 ? (
                 <tr><td colSpan={7} className="px-4 py-12 text-center text-muted-foreground">No articles found</td></tr>
-              ) : filtered.map(item => (
+              ) : paginated.map(item => (
                 <tr key={item.id} className="hover:bg-muted/20">
                   <td className="px-4 py-3">
                     <p className="font-medium text-foreground line-clamp-1">{item.title}</p>
                     <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">{item.excerpt}</p>
-                    {/* Horizontal action bar */}
                     <div className="flex items-center gap-0.5 mt-1.5">
                       <Button variant="ghost" size="sm" className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground gap-1" onClick={() => toggleStatus(item)}>
                         {item.status === 'published' ? <><EyeOff className="h-3 w-3" /> Unpublish</> : <><Eye className="h-3 w-3" /> Publish</>}
@@ -243,20 +287,12 @@ export default function AdminArticles() {
                   <td className="px-4 py-3 text-muted-foreground">{item.category}</td>
                   <td className="px-4 py-3 text-muted-foreground">{item.author}</td>
                   <td className="px-4 py-3">
-                    <Badge variant={item.status === 'published' ? 'default' : 'secondary'}>
-                      {item.status}
-                    </Badge>
+                    <Badge variant={item.status === 'published' ? 'default' : 'secondary'}>{item.status}</Badge>
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                      <span className="flex items-center gap-1">
-                        <Heart className="h-3.5 w-3.5 text-red-400" />
-                        {likeCounts[item.id] ?? 0}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Share2 className="h-3.5 w-3.5 text-blue-400" />
-                        {shareCounts[item.id] ?? 0}
-                      </span>
+                      <span className="flex items-center gap-1"><Heart className="h-3.5 w-3.5 text-red-400" />{likeCounts[item.id] ?? 0}</span>
+                      <span className="flex items-center gap-1"><Share2 className="h-3.5 w-3.5 text-blue-400" />{shareCounts[item.id] ?? 0}</span>
                     </div>
                   </td>
                   <td className="px-4 py-3 w-4" />
@@ -265,6 +301,11 @@ export default function AdminArticles() {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* Bottom pagination */}
+      <div className="mt-4 flex justify-end">
+        <AdminPagination page={page} totalPages={totalPages} total={filtered.length} onPage={handlePage} />
       </div>
 
       {/* Create/Edit Dialog */}
@@ -282,9 +323,7 @@ export default function AdminArticles() {
               <Label>Format</Label>
               <Select value={form.format} onValueChange={v => setForm(f => ({ ...f, format: v }))}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  {['Text', 'Image', 'Audio', 'Video'].map(v => <SelectItem key={v} value={v}>{v}</SelectItem>)}
-                </SelectContent>
+                <SelectContent>{['Text', 'Image', 'Audio', 'Video'].map(v => <SelectItem key={v} value={v}>{v}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div className="space-y-1.5">
@@ -307,65 +346,30 @@ export default function AdminArticles() {
               <Label>Body Content (HTML supported)</Label>
               <Textarea placeholder="Full article body..." rows={8} value={form.body} onChange={e => setForm(f => ({ ...f, body: e.target.value }))} className="font-mono text-xs" />
             </div>
-            {/* Media file / URL */}
             <div className="col-span-2 space-y-1.5">
               <Label>Media File <span className="text-muted-foreground text-xs">(audio/video/image — max 5MB)</span></Label>
               <div className="flex gap-2">
-                <Input
-                  placeholder="Paste URL or upload a file →"
-                  value={form.media_url}
-                  onChange={e => setForm(f => ({ ...f, media_url: e.target.value }))}
-                  className="flex-1"
-                />
-                <input
-                  ref={mediaInputRef}
-                  type="file"
-                  accept="audio/*,video/*,image/*"
-                  className="hidden"
-                  onChange={e => { const f = e.target.files?.[0]; if (f) uploadFile(f, 'media_url'); }}
-                />
+                <Input placeholder="Paste URL or upload a file →" value={form.media_url} onChange={e => setForm(f => ({ ...f, media_url: e.target.value }))} className="flex-1" />
+                <input ref={mediaInputRef} type="file" accept="audio/*,video/*,image/*" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) uploadFile(f, 'media_url'); }} />
                 <Button type="button" variant="outline" size="sm" disabled={uploadingMedia} onClick={() => mediaInputRef.current?.click()}>
                   {uploadingMedia ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
                   <span className="ml-1.5">{uploadingMedia ? 'Uploading…' : 'Upload'}</span>
                 </Button>
-                {form.media_url && (
-                  <Button type="button" variant="ghost" size="icon" onClick={() => setForm(f => ({ ...f, media_url: '' }))}>
-                    <X className="h-4 w-4" />
-                  </Button>
-                )}
+                {form.media_url && (<Button type="button" variant="ghost" size="icon" onClick={() => setForm(f => ({ ...f, media_url: '' }))}><X className="h-4 w-4" /></Button>)}
               </div>
             </div>
-
-            {/* Thumbnail file / URL */}
             <div className="col-span-2 space-y-1.5">
               <Label>Thumbnail <span className="text-muted-foreground text-xs">(image — max 5MB)</span></Label>
               <div className="flex gap-2">
-                <Input
-                  placeholder="Paste image URL or upload →"
-                  value={form.thumbnail_url}
-                  onChange={e => setForm(f => ({ ...f, thumbnail_url: e.target.value }))}
-                  className="flex-1"
-                />
-                <input
-                  ref={thumbInputRef}
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={e => { const f = e.target.files?.[0]; if (f) uploadFile(f, 'thumbnail_url'); }}
-                />
+                <Input placeholder="Paste image URL or upload →" value={form.thumbnail_url} onChange={e => setForm(f => ({ ...f, thumbnail_url: e.target.value }))} className="flex-1" />
+                <input ref={thumbInputRef} type="file" accept="image/*" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) uploadFile(f, 'thumbnail_url'); }} />
                 <Button type="button" variant="outline" size="sm" disabled={uploadingThumb} onClick={() => thumbInputRef.current?.click()}>
                   {uploadingThumb ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
                   <span className="ml-1.5">{uploadingThumb ? 'Uploading…' : 'Upload'}</span>
                 </Button>
-                {form.thumbnail_url && (
-                  <Button type="button" variant="ghost" size="icon" onClick={() => setForm(f => ({ ...f, thumbnail_url: '' }))}>
-                    <X className="h-4 w-4" />
-                  </Button>
-                )}
+                {form.thumbnail_url && (<Button type="button" variant="ghost" size="icon" onClick={() => setForm(f => ({ ...f, thumbnail_url: '' }))}><X className="h-4 w-4" /></Button>)}
               </div>
-              {form.thumbnail_url && (
-                <img src={form.thumbnail_url} alt="Thumbnail preview" className="mt-2 h-24 rounded-lg object-cover border border-border" />
-              )}
+              {form.thumbnail_url && (<img src={form.thumbnail_url} alt="Thumbnail preview" className="mt-2 h-24 rounded-lg object-cover border border-border" />)}
             </div>
             <div className="space-y-1.5">
               <Label>Article Date <span className="text-muted-foreground text-xs">(shown on card)</span></Label>
