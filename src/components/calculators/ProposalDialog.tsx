@@ -13,6 +13,7 @@ interface ProposalDialogProps {
   result: CalculatorResult;
   aiContext: string;
   calcType: string;
+  onLeadCaptured?: () => void;
 }
 
 type Step = 'lead' | 'proposal';
@@ -24,6 +25,7 @@ export const ProposalDialog = ({
   result,
   aiContext,
   calcType,
+  onLeadCaptured,
 }: ProposalDialogProps) => {
   const [step, setStep] = useState<Step>('lead');
   const [name, setName] = useState('');
@@ -64,6 +66,7 @@ export const ProposalDialog = ({
       if (error) throw error;
       setLeadSaved(true);
       setStep('proposal');
+      onLeadCaptured?.();
     } catch (err) {
       toast.error('Could not save your details. Please try again.');
     } finally {

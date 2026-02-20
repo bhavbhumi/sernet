@@ -1,9 +1,12 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, FileText, Send, Loader2, Bot, User, RotateCcw } from 'lucide-react';
+import { Sparkles, FileText, Send, Bot, User, RotateCcw } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { ProposalDialog } from './ProposalDialog';
+
+// Generate a stable session ID per component mount
+const generateSessionId = () => `calc_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
 
 export type CalcMode = 'form' | 'ai';
 
@@ -60,7 +63,10 @@ export const CalculatorShell = ({
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [showProposal, setShowProposal] = useState(false);
+  const [leadCaptured, setLeadCaptured] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
+  // Stable session ID for this component mount
+  const sessionId = useMemo(() => generateSessionId(), []);
 
   const scrollToBottom = () => {
     setTimeout(() => chatEndRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
@@ -83,6 +89,8 @@ export const CalculatorShell = ({
           messages: nextMessages,
           calcType,
           aiContext,
+          sessionId,
+          leadCaptured,
         },
       });
 
@@ -334,6 +342,7 @@ export const CalculatorShell = ({
         result={result}
         aiContext={aiContext}
         calcType={calcType}
+        onLeadCaptured={() => setLeadCaptured(true)}
       />
     </div>
   );
