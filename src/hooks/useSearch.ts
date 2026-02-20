@@ -22,8 +22,8 @@ const TYPE_LABEL: Record<string, string> = {
 };
 
 const TYPE_ROUTE: Record<string, (id: string, url?: string | null) => string> = {
-  article: (id) => `/article/${id}`,
-  analysis: (id) => `/analysis/${id}`,
+  article: (id) => `/z-connect/articles/${id}`,
+  analysis: (id) => `/z-connect/analysis/${id}`,
   circular: (_id, url) => url || '/updates',
   news: (_id, url) => url || '/updates',
   bulletin: () => '/z-connect',
