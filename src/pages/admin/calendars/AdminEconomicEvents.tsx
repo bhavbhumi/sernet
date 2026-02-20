@@ -1,4 +1,3 @@
-import { AdminLayout } from '@/components/admin/AdminLayout';
 import { GenericCMSPage } from '@/components/admin/GenericCMSPage';
 import type { FieldDef } from '@/components/admin/GenericCMSPage';
 
@@ -41,18 +40,16 @@ const tableColumns = [
 ];
 
 const AdminEconomicEvents = () => (
-  <AdminLayout title="Economic Events" subtitle="Manage economic calendar events, data releases, and policy meetings.">
-    <GenericCMSPage
-      title="Economic Events"
-      subtitle="Manage economic calendar events, data releases, and policy meetings."
-      tableName="economic_events"
-      fields={fields}
-      emptyForm={emptyForm}
-      tableColumns={tableColumns}
-      hasStatus
-      categoryField="impact"
-    />
-  </AdminLayout>
+  <GenericCMSPage
+    title="Economic Events"
+    subtitle="Manage economic calendar events, data releases, and policy meetings."
+    tableName="economic_events"
+    fields={fields}
+    emptyForm={emptyForm}
+    tableColumns={tableColumns}
+    hasStatus
+    categoryField="impact"
+  />
 );
 
 export default AdminEconomicEvents;
