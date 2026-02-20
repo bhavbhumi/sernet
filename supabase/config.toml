@@ -5,3 +5,7 @@ verify_jwt = false
 
 [functions.ai-calculator]
 verify_jwt = false
+
+[functions.sync-economic-actuals]
+verify_jwt = false
+

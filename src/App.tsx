@@ -90,6 +90,7 @@ import AdminMediaLibrary from "./pages/admin/site/AdminMediaLibrary";
 import AdminImportArticles from "./pages/admin/content/AdminImportArticles";
 import AdminMarketHolidays from "./pages/admin/calendars/AdminMarketHolidays";
 import AdminEconomicEvents from "./pages/admin/calendars/AdminEconomicEvents";
+import AdminImportEconomicEvents from "./pages/admin/calendars/AdminImportEconomicEvents";
 import AdminCorporateEvents from "./pages/admin/calendars/AdminCorporateEvents";
 import Sitemap from "./pages/Sitemap";
 
@@ -195,6 +196,7 @@ const App = () => (
           <Route path="/admin/content/import" element={<AdminImportArticles />} />
           <Route path="/admin/calendars/holidays" element={<AdminMarketHolidays />} />
           <Route path="/admin/calendars/economic" element={<AdminEconomicEvents />} />
+          <Route path="/admin/calendars/import-economic" element={<AdminImportEconomicEvents />} />
           <Route path="/admin/calendars/corporate" element={<AdminCorporateEvents />} />
 
           {/* Sitemap */}
