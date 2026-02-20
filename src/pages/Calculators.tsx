@@ -6,19 +6,60 @@ import BrokerageCalcContent from '@/components/calculators/BrokerageCalcContent'
 import MarginCalcContent from '@/components/calculators/MarginCalcContent';
 import SIPCalcContent from '@/components/calculators/SIPCalcContent';
 import LumpsumCalcContent from '@/components/calculators/LumpsumCalcContent';
+import { AICalculatorBar } from '@/components/calculators/AICalculatorBar';
 
 const calcTabs = ['Brokerage', 'Margin', 'SIP', 'Lumpsum'] as const;
 type CalcTab = (typeof calcTabs)[number];
 
-const tabContent: Record<CalcTab, React.ReactNode> = {
-  Brokerage: <BrokerageCalcContent />,
-  Margin: <MarginCalcContent />,
-  SIP: <SIPCalcContent />,
-  Lumpsum: <LumpsumCalcContent />,
+type ProductType = 'sip' | 'lumpsum' | 'brokerage' | 'margin' | 'insurance';
+
+interface AIParams {
+  monthlyInvestment?: number;
+  lumpsum?: number;
+  targetAmount?: number;
+  expectedReturn?: number;
+  timePeriod?: number;
+  coverAmount?: number;
+}
+
+const productToTab: Record<ProductType, CalcTab> = {
+  sip: 'SIP',
+  lumpsum: 'Lumpsum',
+  brokerage: 'Brokerage',
+  margin: 'Margin',
+  insurance: 'SIP', // fallback — no insurance tab yet
 };
 
 const Calculators = () => {
   const [activeTab, setActiveTab] = useState<CalcTab>('Brokerage');
+  const [aiPreFill, setAiPreFill] = useState<AIParams | null>(null);
+
+  const handleAIResult = (product: ProductType, params: AIParams) => {
+    const tab = productToTab[product];
+    setActiveTab(tab);
+    setAiPreFill(params);
+    // Clear prefill after 100ms so calculator picks it up on remount
+    setTimeout(() => setAiPreFill(null), 100);
+  };
+
+  const tabContent: Record<CalcTab, React.ReactNode> = {
+    Brokerage: <BrokerageCalcContent />,
+    Margin: <MarginCalcContent />,
+    SIP: (
+      <SIPCalcContent
+        prefillMonthly={aiPreFill?.monthlyInvestment}
+        prefillReturn={aiPreFill?.expectedReturn}
+        prefillYears={aiPreFill?.timePeriod}
+      />
+    ),
+    Lumpsum: (
+      <LumpsumCalcContent
+        prefillAmount={aiPreFill?.lumpsum}
+        prefillReturn={aiPreFill?.expectedReturn}
+        prefillYears={aiPreFill?.timePeriod}
+      />
+    ),
+  };
 
   return (
     <Layout>
@@ -28,6 +69,9 @@ const Calculators = () => {
         description="Brokerage charges, margin requirements, SIP returns, and lumpsum growth — calculate it all in one place."
         breadcrumbLabel="Calculators"
       />
+
+      {/* AI Goal Planner bar */}
+      <AICalculatorBar onResult={handleAIResult} />
 
       <div className="border-b border-border bg-background sticky top-0 z-20">
         <div className="container-zerodha">

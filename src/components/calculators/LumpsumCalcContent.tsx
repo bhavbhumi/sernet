@@ -1,13 +1,25 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { TrendingUp } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const LumpsumCalcContent = () => {
+interface LumpsumCalcContentProps {
+  prefillAmount?: number;
+  prefillReturn?: number;
+  prefillYears?: number;
+}
+
+const LumpsumCalcContent = ({ prefillAmount, prefillReturn, prefillYears }: LumpsumCalcContentProps) => {
   const [investment, setInvestment] = useState('100000');
   const [expectedReturn, setExpectedReturn] = useState('12');
   const [timePeriod, setTimePeriod] = useState('10');
+
+  useEffect(() => {
+    if (prefillAmount) setInvestment(String(Math.round(prefillAmount)));
+    if (prefillReturn) setExpectedReturn(String(prefillReturn));
+    if (prefillYears) setTimePeriod(String(prefillYears));
+  }, [prefillAmount, prefillReturn, prefillYears]);
 
   const calculateLumpsum = () => {
     const P = parseFloat(investment) || 0;

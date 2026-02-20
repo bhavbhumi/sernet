@@ -82,6 +82,7 @@ import AdminPress from "./pages/admin/AdminPress";
 import AdminRSSSettings from "./pages/admin/settings/AdminRSSSettings";
 import AdminUsers from "./pages/admin/settings/AdminUsers";
 import AdminAIUsage from "./pages/admin/settings/AdminAIUsage";
+import AdminCalculatorLeads from "./pages/admin/settings/AdminCalculatorLeads";
 import AdminSitePages from "./pages/admin/site/AdminSitePages";
 import AdminSiteSettings from "./pages/admin/site/AdminSiteSettings";
 import AdminMediaLibrary from "./pages/admin/site/AdminMediaLibrary";
@@ -185,6 +186,7 @@ const App = () => (
           <Route path="/admin/settings/rss" element={<AdminRSSSettings />} />
           <Route path="/admin/settings/users" element={<AdminUsers />} />
           <Route path="/admin/settings/ai-usage" element={<AdminAIUsage />} />
+          <Route path="/admin/settings/calculator-leads" element={<AdminCalculatorLeads />} />
           <Route path="/admin/content/import" element={<AdminImportArticles />} />
 
           {/* Sitemap */}
