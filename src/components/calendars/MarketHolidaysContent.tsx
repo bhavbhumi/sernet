@@ -252,7 +252,7 @@ const MarketHolidaysContent = () => {
           <div className="bg-primary/5 border border-primary/20 rounded-lg p-6">
             <h3 className="font-semibold text-foreground mb-3">Important Notes</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>• Holiday data sourced from NSE/BSE official calendars via Zerodha MarketIntel.</li>
+              <li>• Holiday data sourced from NSE/BSE official calendars via SERNET.</li>
               <li>• The holiday list is subject to change. Please check the official exchange websites for the latest updates.</li>
               <li>• On days with special trading sessions (like Muhurat trading), timings may differ from regular trading hours.</li>
               <li>• <strong className="text-foreground">Market</strong> = trading closed. <strong className="text-foreground">Settlement</strong> = settlement/clearing closed (trading may occur). Some holidays are both.</li>
