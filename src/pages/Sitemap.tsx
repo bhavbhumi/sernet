@@ -37,7 +37,7 @@ const sitemapSections = [
   {
     title: 'Insights',
     links: [
-      { label: 'Z-Connect Hub', href: '/z-connect' },
+      { label: 'Insights Hub', href: '/insights' },
       { label: 'Updates (News & Circulars)', href: '/updates' },
       { label: 'Videos', href: '/videos' },
       { label: 'Trading Q&A', href: '/tradingqna' },

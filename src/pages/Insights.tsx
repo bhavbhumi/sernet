@@ -17,7 +17,7 @@ const tabContent: Record<InsightsTab, React.ReactNode> = {
   Bulletin: <BulletinContent />,
 };
 
-const ZConnect = () => {
+const Insights = () => {
   const [activeTab, setActiveTab] = useState<InsightsTab>('Articles');
 
   return (
@@ -72,4 +72,4 @@ const ZConnect = () => {
   );
 };
 
-export default ZConnect;
+export default Insights;

@@ -87,8 +87,8 @@ const Privacy = () => {
               <h2 className="text-2xl font-semibold text-foreground mb-4">7. Contact Us</h2>
               <p>
                 If you have any questions about this Privacy Policy, please contact us at:<br />
-                Email: privacy@zerodha.com<br />
-                Address: #153/154, 4th Cross, Dollars Colony, J.P Nagar 4th Phase, Bengaluru - 560078
+                Email: privacy@sernetindia.com<br />
+                Address: Sernet Financial Services Pvt. Ltd., Mumbai
               </p>
             </section>
 

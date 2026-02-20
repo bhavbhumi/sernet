@@ -111,7 +111,7 @@ const InvestorCharter = () => {
               <div className="bg-muted/30 p-4 rounded-lg">
                 <h3 className="font-semibold text-foreground mb-2">Level 1: Stock Broker</h3>
                 <p className="text-muted-foreground text-sm">
-                  Write to complaints@zerodha.com. We aim to resolve complaints within 30 days.
+                  Write to complaint@sernetindia.com. We aim to resolve complaints within 30 days.
                 </p>
               </div>
               <div className="bg-muted/30 p-4 rounded-lg">

@@ -88,7 +88,7 @@ const Disclosure = () => {
             <section className="bg-card border border-border rounded-lg p-6">
               <h2 className="text-xl font-semibold text-foreground mb-4">Depository Services</h2>
               <p className="text-muted-foreground mb-4">
-                Zerodha Broking Ltd. offers depository services as a Depository Participant 
+                SERNET Financial Services Pvt. Ltd. offers depository services as a Depository Participant 
                 with CDSL and NSDL.
               </p>
               <div className="grid grid-cols-2 gap-4 text-sm">

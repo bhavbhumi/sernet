@@ -61,8 +61,8 @@ const FundTransfer = () => {
                 Transfer money from your bank account to start trading
               </p>
               <Button asChild>
-                <a href="https://kite.zerodha.com" target="_blank" rel="noopener noreferrer">
-                  Add Funds in Kite <ArrowRight className="h-4 w-4 ml-2" />
+                <a href="https://sernetindia.com/open-account" target="_blank" rel="noopener noreferrer">
+                  Add Funds <ArrowRight className="h-4 w-4 ml-2" />
                 </a>
               </Button>
             </motion.div>
@@ -78,8 +78,8 @@ const FundTransfer = () => {
                 Transfer your available balance back to your bank
               </p>
               <Button variant="outline" asChild>
-                <a href="https://console.zerodha.com" target="_blank" rel="noopener noreferrer">
-                  Withdraw in Console <ArrowRight className="h-4 w-4 ml-2" />
+                <a href="https://sernetindia.com/contact" target="_blank" rel="noopener noreferrer">
+                  Withdraw Funds <ArrowRight className="h-4 w-4 ml-2" />
                 </a>
               </Button>
             </motion.div>

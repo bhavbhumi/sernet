@@ -101,10 +101,10 @@ const Policies = () => {
               Contact our compliance team for detailed policy documents
             </p>
             <a
-              href="mailto:compliance@zerodha.com"
+              href="mailto:compliance@sernetindia.com"
               className="text-primary hover:underline"
             >
-              compliance@zerodha.com
+              compliance@sernetindia.com
             </a>
           </div>
         </div>

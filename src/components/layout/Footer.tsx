@@ -17,7 +17,7 @@ const footerLinks = {
     { nameKey: 'common.knowMore', label: 'Tushil', href: '/tushil' },
     { nameKey: 'common.knowMore', label: 'Choice FinX', href: '/choicefinx' },
     { nameKey: 'common.knowMore', label: 'Findemy', href: '/findemy' },
-    { nameKey: 'nav.insights', href: '/z-connect' },
+    { nameKey: 'nav.insights', href: '/insights' },
   ],
   support: [
     { nameKey: 'footer.contactUs', href: '/contact' },

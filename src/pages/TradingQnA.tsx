@@ -25,8 +25,8 @@ const TradingQnA = () => {
     },
     {
       icon: Users,
-      title: 'Zerodha Platforms',
-      description: 'Kite, Console, Coin usage questions and tips',
+      title: 'SERNET Platforms',
+      description: 'Platform usage questions, tips and guides',
       topics: 421,
     },
   ];

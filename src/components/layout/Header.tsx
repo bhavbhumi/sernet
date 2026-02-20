@@ -13,7 +13,7 @@ const navLinks = [
   { nameKey: 'nav.about', href: '/about' },
   { nameKey: 'nav.services', href: '/services' },
   { nameKey: 'nav.network', href: '/network' },
-  { nameKey: 'nav.insights', href: '/z-connect' },
+  { nameKey: 'nav.insights', href: '/insights' },
   { nameKey: 'nav.contact', href: '/contact' },
 ];
 

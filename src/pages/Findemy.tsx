@@ -67,7 +67,7 @@ const Findemy = () => (
                 <Globe className="w-5 h-5" />
                 <div className="flex flex-col leading-tight"><span className="text-[10px] opacity-80">Visit</span><span className="text-sm font-semibold">Findemy.com</span></div>
               </a>
-              <Link to="/z-connect" className="btn-secondary text-sm">Explore Free Content <ArrowRight className="w-4 h-4 ml-2" /></Link>
+              <Link to="/insights" className="btn-secondary text-sm">Explore Free Content <ArrowRight className="w-4 h-4 ml-2" /></Link>
             </div>
             <div className="flex flex-wrap gap-6 lg:gap-8">
               {stats.map((stat, i) => (

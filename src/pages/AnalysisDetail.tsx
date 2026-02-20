@@ -122,7 +122,7 @@ export default function AnalysisDetail() {
       <Layout>
         <div className="container-zerodha py-24 text-center">
           <h1 className="text-2xl font-semibold mb-4">Analysis not found</h1>
-          <Link to="/z-connect" className="text-primary hover:underline flex items-center gap-1 justify-center">
+          <Link to="/insights" className="text-primary hover:underline flex items-center gap-1 justify-center">
             <ArrowLeft className="h-4 w-4" /> Back to Insights
           </Link>
         </div>
@@ -178,7 +178,7 @@ export default function AnalysisDetail() {
       >
         {/* Back link */}
         <Link
-          to="/z-connect"
+          to="/insights"
           className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground mb-8 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" /> Back to Insights
@@ -279,7 +279,7 @@ export default function AnalysisDetail() {
 
             <div className="mt-6">
               <Link
-                to="/z-connect"
+                to="/insights"
                 className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 <ArrowLeft className="h-4 w-4" /> Back to Insights

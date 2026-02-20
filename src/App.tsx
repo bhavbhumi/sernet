@@ -20,7 +20,7 @@ import LumpsumCalculator from "./pages/calculators/LumpsumCalculator";
 
 // Other pages
 import MarketOverview from "./pages/MarketOverview";
-import ZConnect from "./pages/ZConnect";
+import Insights from "./pages/Insights";
 import DownloadsPage from "./pages/DownloadsPage";
 import Calculators from "./pages/Calculators";
 import Calendars from "./pages/Calendars";
@@ -117,7 +117,7 @@ const App = () => (
           
           {/* Updates & Resources */}
           <Route path="/market-overview" element={<MarketOverview />} />
-          <Route path="/z-connect" element={<ZConnect />} />
+          <Route path="/insights" element={<Insights />} />
           <Route path="/downloads" element={<DownloadsPage />} />
           <Route path="/videos" element={<Videos />} />
           <Route path="/tradingqna" element={<TradingQnA />} />
@@ -164,8 +164,8 @@ const App = () => (
           <Route path="/findemy" element={<Findemy />} />
 
           {/* Article & Analysis detail */}
-          <Route path="/z-connect/articles/:id" element={<ArticleDetail />} />
-          <Route path="/z-connect/analysis/:id" element={<AnalysisDetail />} />
+          <Route path="/insights/articles/:id" element={<ArticleDetail />} />
+          <Route path="/insights/analysis/:id" element={<AnalysisDetail />} />
 
           {/* Admin CMS */}
           <Route path="/admin/setup" element={<AdminSetup />} />

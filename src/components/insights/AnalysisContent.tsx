@@ -29,7 +29,7 @@ function AnalysisCard({ item, index }: { item: any; index: number }) {
     : '';
 
   const handleShare = async () => {
-    const url = `${window.location.origin}/z-connect/analysis/${item.id}`;
+    const url = `${window.location.origin}/insights/analysis/${item.id}`;
     const isNew = await recordShare();
     navigator.clipboard.writeText(url);
     toast({
@@ -54,7 +54,7 @@ function AnalysisCard({ item, index }: { item: any; index: number }) {
         </span>
       </div>
 
-      <Link to={`/z-connect/analysis/${item.id}`}>
+      <Link to={`/insights/analysis/${item.id}`}>
         <h3 className="text-lg font-semibold text-foreground mb-2 line-clamp-2 hover:text-primary transition-colors">
           {item.title}
         </h3>
@@ -79,7 +79,7 @@ function AnalysisCard({ item, index }: { item: any; index: number }) {
       {/* Footer: Read more + engagement */}
       <div className="flex items-center justify-between pt-3 border-t border-border/40">
         <Link
-          to={`/z-connect/analysis/${item.id}`}
+          to={`/insights/analysis/${item.id}`}
           className="flex items-center gap-1 text-primary text-sm font-medium hover:underline"
         >
           Read more <ArrowRight className="h-4 w-4" />
