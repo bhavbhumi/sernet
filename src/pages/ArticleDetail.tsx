@@ -344,6 +344,7 @@ export default function ArticleDetail() {
             {/* AI Summarizer */}
             {article.body && (
               <AISummarizer
+                contentId={article.id}
                 title={article.title}
                 body={article.body}
                 contentType="article"

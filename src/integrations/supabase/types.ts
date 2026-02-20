@@ -272,6 +272,39 @@ export type Database = {
         }
         Relationships: []
       }
+      content_summaries: {
+        Row: {
+          content_id: string
+          content_type: string
+          created_at: string
+          id: string
+          key_points: Json
+          read_time: string
+          sentiment: string
+          tldr: string
+        }
+        Insert: {
+          content_id: string
+          content_type: string
+          created_at?: string
+          id?: string
+          key_points?: Json
+          read_time?: string
+          sentiment?: string
+          tldr: string
+        }
+        Update: {
+          content_id?: string
+          content_type?: string
+          created_at?: string
+          id?: string
+          key_points?: Json
+          read_time?: string
+          sentiment?: string
+          tldr?: string
+        }
+        Relationships: []
+      }
       job_applications: {
         Row: {
           applied_at: string

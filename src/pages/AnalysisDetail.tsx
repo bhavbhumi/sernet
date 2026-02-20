@@ -254,6 +254,7 @@ export default function AnalysisDetail() {
             {/* AI Summarizer */}
             {analysis.body && (
               <AISummarizer
+                contentId={analysis.id}
                 title={analysis.title}
                 body={analysis.body}
                 contentType="analysis"

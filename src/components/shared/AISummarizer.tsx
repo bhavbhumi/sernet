@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, TrendingUp, TrendingDown, Minus, ChevronDown, ChevronUp, Loader2 } from 'lucide-react';
+import { Sparkles, TrendingUp, TrendingDown, Minus, ChevronDown, ChevronUp, Loader2, Zap } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
@@ -12,6 +12,7 @@ interface Summary {
 }
 
 interface AISummarizerProps {
+  contentId: string;
   title: string;
   body: string;
   contentType?: 'article' | 'analysis';
@@ -35,8 +36,9 @@ const sentimentConfig = {
   },
 };
 
-export function AISummarizer({ title, body, contentType = 'article' }: AISummarizerProps) {
+export function AISummarizer({ contentId, title, body, contentType = 'article' }: AISummarizerProps) {
   const [summary, setSummary] = useState<Summary | null>(null);
+  const [isCached, setIsCached] = useState(false);
   const [loading, setLoading] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const { toast } = useToast();
@@ -50,7 +52,7 @@ export function AISummarizer({ title, body, contentType = 'article' }: AISummari
     setLoading(true);
     try {
       const { data, error } = await supabase.functions.invoke('summarize-content', {
-        body: { title, body, contentType },
+        body: { contentId, title, body, contentType },
       });
 
       if (error) throw error;
@@ -61,6 +63,7 @@ export function AISummarizer({ title, body, contentType = 'article' }: AISummari
       }
 
       setSummary(data.summary);
+      setIsCached(data.cached === true);
       setCollapsed(false);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Could not generate summary';
@@ -120,6 +123,11 @@ export function AISummarizer({ title, body, contentType = 'article' }: AISummari
                   <Sparkles className="h-4 w-4 text-primary" />
                   <span className="text-sm font-semibold text-foreground">AI Summary</span>
                   <span className="text-xs text-muted-foreground">· {summary.readTime}</span>
+                  {isCached && (
+                    <span className="inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
+                      <Zap className="h-2.5 w-2.5" /> cached
+                    </span>
+                  )}
                 </div>
                 {sentiment && (
                   <span
