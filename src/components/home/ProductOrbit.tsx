@@ -13,19 +13,13 @@ interface OrbitLogoProps {
 
 const OrbitLogo = ({ src, alt, size = 48 }: OrbitLogoProps) => (
   <div
-    className="rounded-xl shadow-md flex items-center justify-center overflow-hidden border border-border/40 backdrop-blur-sm"
-    style={{
-      width: size,
-      height: size,
-      background: 'hsl(var(--card))',
-      flexShrink: 0,
-    }}
+    className="rounded-xl shadow-md flex items-center justify-center overflow-hidden border border-border/40 bg-card dark:bg-white"
+    style={{ width: size, height: size, flexShrink: 0 }}
   >
     <img
       src={src}
       alt={alt}
-      className="w-full h-full object-contain p-1.5"
-      style={{ mixBlendMode: 'multiply' }}
+      className="w-full h-full object-contain p-1.5 [mix-blend-mode:multiply]"
     />
   </div>
 );
