@@ -98,11 +98,12 @@ export const SearchCommandPalette = ({ open, onClose }: SearchCommandPaletteProp
 
           {/* Palette */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.97, y: -10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.97, y: -10 }}
+            initial={{ opacity: 0, scale: 0.97 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.97 }}
             transition={{ duration: 0.18, ease: 'easeOut' }}
-            className="fixed top-[10vh] left-1/2 -translate-x-1/2 z-[101] w-full max-w-2xl px-4"
+            className="fixed top-[10vh] z-[101] w-full max-w-2xl px-4"
+            style={{ left: '50%', x: '-50%' }}
           >
             <div className="bg-background border border-border rounded-xl shadow-2xl overflow-hidden">
               {/* Search Input */}
