@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Layout } from '@/components/layout/Layout';
 import { ArrowLeft, Calendar, User, Clock, FileText, Image, Headphones, Video, Heart, Share2, List } from 'lucide-react';
+import { AISummarizer } from '@/components/shared/AISummarizer';
 import { motion } from 'framer-motion';
 import { useArticleEngagement } from '@/hooks/useArticleEngagement';
 import { useToast } from '@/hooks/use-toast';
@@ -335,9 +336,18 @@ export default function ArticleDetail() {
 
             {/* Excerpt */}
             {article.excerpt && (
-              <p className="text-lg text-muted-foreground mb-8 leading-relaxed border-l-4 border-primary/40 pl-4 italic">
+              <p className="text-lg text-muted-foreground mb-6 leading-relaxed border-l-4 border-primary/40 pl-4 italic">
                 {article.excerpt}
               </p>
+            )}
+
+            {/* AI Summarizer */}
+            {article.body && (
+              <AISummarizer
+                title={article.title}
+                body={article.body}
+                contentType="article"
+              />
             )}
 
             {/* Body — rich renderer */}
