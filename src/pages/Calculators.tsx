@@ -36,10 +36,11 @@ const Calculators = () => {
 
   const handleAIResult = (product: ProductType, params: AIParams) => {
     const tab = productToTab[product];
-    setActiveTab(tab);
+    // Set prefill BEFORE switching tab so it's available when the new tab mounts
     setAiPreFill(params);
-    // Clear prefill after 100ms so calculator picks it up on remount
-    setTimeout(() => setAiPreFill(null), 100);
+    setActiveTab(tab);
+    // Keep prefill alive long enough for calculator to consume it
+    setTimeout(() => setAiPreFill(null), 2000);
   };
 
   const tabContent: Record<CalcTab, React.ReactNode> = {

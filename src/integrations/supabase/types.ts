@@ -439,6 +439,51 @@ export type Database = {
         }
         Relationships: []
       }
+      leads: {
+        Row: {
+          assigned_to: string | null
+          context: Json | null
+          created_at: string
+          email: string | null
+          id: string
+          lead_type: string
+          name: string
+          notes: string | null
+          phone: string
+          source: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          context?: Json | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          lead_type?: string
+          name: string
+          notes?: string | null
+          phone: string
+          source?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          assigned_to?: string | null
+          context?: Json | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          lead_type?: string
+          name?: string
+          notes?: string | null
+          phone?: string
+          source?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       news_items: {
         Row: {
           category: string

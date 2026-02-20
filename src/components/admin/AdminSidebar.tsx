@@ -5,7 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import {
   LayoutDashboard, FileText, BarChart3, BookOpen, Bell, Newspaper, AlertCircle,
   Vote, ClipboardList, Star, Briefcase, Users, Mic2, Settings, LogOut,
-  ChevronDown, ChevronRight, Menu, X, Rss, Shield, Globe, Map, Palette, Type, ScanSearch, Images, Download, Sparkles, Calculator
+  ChevronDown, ChevronRight, Menu, X, Rss, Shield, Globe, Map, Palette, Type, ScanSearch, Images, Download, Sparkles, Calculator, UserCheck
 } from 'lucide-react';
 import sernetLogo from '@/assets/sernet-logo.png';
 import { cn } from '@/lib/utils';
@@ -49,6 +49,7 @@ const navItems: NavItem[] = [
     ]
   },
   { label: 'Press & Media', icon: Mic2, href: '/admin/press' },
+  { label: 'Leads', icon: UserCheck, href: '/admin/leads' },
   {
     label: 'Site', icon: Globe, children: [
       { label: 'Site Settings', icon: Palette, href: '/admin/site/settings' },
@@ -62,7 +63,6 @@ const navItems: NavItem[] = [
       { label: 'CMS Source', icon: Settings, href: '/admin/settings/cms-source' },
       { label: 'Admin Users', icon: Shield, href: '/admin/settings/users' },
       { label: 'AI Usage', icon: Sparkles, href: '/admin/settings/ai-usage' },
-      { label: 'Calculator Leads', icon: Calculator, href: '/admin/settings/calculator-leads' },
     ]
   },
 ];

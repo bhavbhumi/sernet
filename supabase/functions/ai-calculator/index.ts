@@ -149,13 +149,27 @@ Return ONLY valid JSON matching the tool schema.`;
 
     const parsed = JSON.parse(toolCall.function.arguments);
 
-    // Save lead if provided
+    // Save lead if provided — write to unified leads table
     if (saveLead?.name && saveLead?.phone) {
-      const supabase = createClient(
+      const db = createClient(
         Deno.env.get("SUPABASE_URL")!,
         Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
       );
-      await supabase.from("calculator_leads").insert({
+      // Write to unified leads table
+      await db.from("leads").insert({
+        name: saveLead.name.slice(0, 100),
+        phone: saveLead.phone.slice(0, 20),
+        email: saveLead.email?.slice(0, 255) ?? null,
+        source: "calculator",
+        lead_type: "self",
+        context: {
+          goal_text: goalText.slice(0, 1000),
+          product_type: parsed.product,
+          calculated_result: parsed.result ?? null,
+        },
+      });
+      // Also keep legacy calculator_leads for backward compat
+      await db.from("calculator_leads").insert({
         name: saveLead.name.slice(0, 100),
         phone: saveLead.phone.slice(0, 20),
         email: saveLead.email?.slice(0, 255) ?? null,
