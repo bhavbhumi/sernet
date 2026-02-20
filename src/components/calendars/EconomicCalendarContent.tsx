@@ -22,7 +22,7 @@ const getImpactColor = (impact: string) => {
   }
 };
 
-const categories = ['All', 'Interest Rates', 'Inflation Data', 'GDP & Growth', 'Trade Data', 'Employment', 'Manufacturing', 'General'];
+const categories = ['All', 'Inflation', 'Growth', 'External Sector', 'Fiscal', 'Business Activity', 'Monetary Policy', 'Fiscal Policy', 'Financial System', 'Interest Rates', 'Inflation Data', 'GDP & Growth', 'Trade Data', 'Employment', 'Manufacturing', 'General'];
 const impacts = ['All', 'high', 'medium', 'low'];
 const countries = ['All', 'India', 'USA', 'Europe', 'China', 'Japan', 'UK'];
 
