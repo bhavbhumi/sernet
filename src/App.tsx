@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import ArticleDetail from "./pages/ArticleDetail";
+import AnalysisDetail from "./pages/AnalysisDetail";
 import About from "./pages/About";
 import Pricing from "./pages/Pricing";
 import Support from "./pages/Support";
@@ -156,8 +157,9 @@ const App = () => (
           <Route path="/tushil" element={<TushilPage />} />
           <Route path="/findemy" element={<Findemy />} />
 
-          {/* Article detail */}
+          {/* Article & Analysis detail */}
           <Route path="/z-connect/articles/:id" element={<ArticleDetail />} />
+          <Route path="/z-connect/analysis/:id" element={<AnalysisDetail />} />
 
           {/* Admin CMS */}
           <Route path="/admin/setup" element={<AdminSetup />} />
