@@ -82,11 +82,11 @@ const Complaints = () => {
               <div className="space-y-3 text-sm">
                 <div>
                   <p className="text-muted-foreground">Support:</p>
-                  <a href="mailto:support@zerodha.com" className="text-primary">support@zerodha.com</a>
+                  <a href="mailto:support@sernetindia.com" className="text-primary">support@sernetindia.com</a>
                 </div>
                 <div>
                   <p className="text-muted-foreground">Compliance Officer:</p>
-                  <a href="mailto:compliance@zerodha.com" className="text-primary">compliance@zerodha.com</a>
+                  <a href="mailto:compliance@sernetindia.com" className="text-primary">compliance@sernetindia.com</a>
                 </div>
               </div>
             </div>

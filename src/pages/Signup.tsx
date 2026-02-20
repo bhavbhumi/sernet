@@ -36,10 +36,10 @@ const Signup = () => {
             >
               <h1 className="heading-xl text-foreground mb-6">
                 Open a free <br />
-                <span className="text-primary">Zerodha</span> account
+                <span className="text-primary">SERNET</span> account
               </h1>
               <p className="text-body mb-8">
-                Join 1.6+ crore investors and traders who are already using Zerodha.
+                Join 1500+ families who trust SERNET for their financial journey.
               </p>
               
               <div className="space-y-4">

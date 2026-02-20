@@ -6,9 +6,9 @@ const videoCategories = [
   {
     title: 'Getting Started',
     videos: [
-      { title: 'How to open a Zerodha account', duration: '5:30' },
-      { title: 'Setting up Kite for the first time', duration: '8:15' },
-      { title: 'Understanding the Kite dashboard', duration: '12:00' },
+      { title: 'How to open a SERNET account', duration: '5:30' },
+      { title: 'Setting up your trading platform for the first time', duration: '8:15' },
+      { title: 'Understanding your investment dashboard', duration: '12:00' },
     ],
   },
   {

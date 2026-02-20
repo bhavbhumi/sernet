@@ -94,7 +94,7 @@ function ArticleCard({ article, index }: { article: any; index: number }) {
   const { likeCount, liked, shareCount, toggleLike, recordShare } = useArticleEngagement(article.id);
 
   const handleShare = async () => {
-    const url = `${window.location.origin}/z-connect/articles/${article.id}`;
+    const url = `${window.location.origin}/insights/articles/${article.id}`;
     const isNew = await recordShare();
     navigator.clipboard.writeText(url);
     toast({
@@ -134,7 +134,7 @@ function ArticleCard({ article, index }: { article: any; index: number }) {
         </div>
       </div>
 
-      <Link to={`/z-connect/articles/${article.id}`}>
+      <Link to={`/insights/articles/${article.id}`}>
         <h3 className="text-lg font-semibold text-foreground mb-2 line-clamp-2 hover:text-primary transition-colors">{article.title}</h3>
       </Link>
       <p className="text-sm text-muted-foreground mb-4 line-clamp-3 flex-1">{article.excerpt}</p>
@@ -157,7 +157,7 @@ function ArticleCard({ article, index }: { article: any; index: number }) {
 
       {/* Footer: Read more + engagement */}
       <div className="flex items-center justify-between pt-3 border-t border-border/40">
-        <Link to={`/z-connect/articles/${article.id}`} className="flex items-center gap-1 text-primary text-sm font-medium hover:underline">
+        <Link to={`/insights/articles/${article.id}`} className="flex items-center gap-1 text-primary text-sm font-medium hover:underline">
           {article.format === 'Audio' ? 'Listen now' : article.format === 'Video' ? 'Watch now' : 'Read more'}
           <ArrowRight className="h-4 w-4" />
         </Link>

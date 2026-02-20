@@ -11,7 +11,7 @@ const Terms = () => {
             <section>
               <h2 className="text-2xl font-semibold text-foreground mb-4">1. Agreement to Terms</h2>
               <p>
-                By accessing and using Zerodha's services, you agree to be bound by these Terms and Conditions, 
+                By accessing and using SERNET's services, you agree to be bound by these Terms and Conditions, 
                 all applicable laws and regulations, and agree that you are responsible for compliance with any 
                 applicable local laws.
               </p>
@@ -54,14 +54,14 @@ const Terms = () => {
               <p>
                 All content, trademarks, and data on this platform, including but not limited to software, 
                 databases, text, graphics, icons, hyperlinks, private information, designs, and agreements, 
-                are the property of Zerodha Broking Ltd.
+                are the property of SERNET Financial Services Pvt. Ltd.
               </p>
             </section>
 
             <section>
               <h2 className="text-2xl font-semibold text-foreground mb-4">6. Limitation of Liability</h2>
               <p>
-                Zerodha shall not be liable for any direct, indirect, incidental, special, consequential, 
+                SERNET shall not be liable for any direct, indirect, incidental, special, consequential, 
                 or punitive damages resulting from your access to or use of, or inability to access or use, 
                 the services.
               </p>
@@ -79,7 +79,7 @@ const Terms = () => {
               <h2 className="text-2xl font-semibold text-foreground mb-4">8. Contact Information</h2>
               <p>
                 For any questions regarding these Terms & Conditions, please contact us at:<br />
-                Email: support@zerodha.com<br />
+                Email: support@sernetindia.com<br />
                 Phone: 080-47181888
               </p>
             </section>

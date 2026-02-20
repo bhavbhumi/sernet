@@ -12,7 +12,7 @@ interface PageHeroProps {
 
 const routeLabels: Record<string, string> = {
   '/services': 'Services',
-  '/z-connect': 'Insights',
+  '/insights': 'Insights',
   '/about': 'About',
   '/network': 'Network',
   '/pricing': 'Pricing',

@@ -7,7 +7,7 @@ import { useState } from 'react';
 const faqs = [
   {
     question: 'How do I open an account?',
-    answer: 'You can open a Zerodha account online in a few minutes. All you need is your Aadhaar, PAN, and a bank account. The entire process is paperless and can be completed from your phone or computer.',
+    answer: 'You can open a SERNET account online in a few minutes. All you need is your Aadhaar, PAN, and a bank account. The entire process is paperless and can be completed from your phone or computer.',
   },
   {
     question: 'What documents are required?',
@@ -27,7 +27,7 @@ const faqs = [
   },
   {
     question: 'What is the brokerage for equity delivery?',
-    answer: 'Equity delivery is absolutely free on Zerodha. You pay zero brokerage on all equity delivery trades across NSE and BSE.',
+    answer: 'Equity delivery is absolutely free with SERNET. You pay zero brokerage on all equity delivery trades across NSE and BSE.',
   },
 ];
 
@@ -184,7 +184,7 @@ const Support = () => {
               <div className="feature-card">
                 <Mail className="w-8 h-8 text-primary mx-auto mb-4" />
                 <h3 className="font-semibold text-foreground mb-2">Email</h3>
-                <p className="text-body">support@zerodha.com</p>
+                <p className="text-body">support@sernetindia.com</p>
               </div>
             </div>
           </motion.div>
@@ -205,7 +205,7 @@ const Support = () => {
               Ready to get started?
             </h2>
             <p className="text-body mb-8">
-              Open a Zerodha account today and start investing.
+              Open a SERNET account today and start your wealth journey.
             </p>
             <Link to="/signup" className="btn-primary">
               Sign up for free

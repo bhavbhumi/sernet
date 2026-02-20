@@ -64,7 +64,7 @@ const Tech = () => {
               <Code className="h-8 w-8 text-primary" />
             </div>
             <h1 className="heading-xl mb-4">
-              Zerodha.tech
+              SERNET.tech
             </h1>
             <p className="text-body max-w-2xl mx-auto">
               Our technology blog and open source projects. We believe in giving back 
@@ -99,7 +99,7 @@ const Tech = () => {
             </div>
             <div className="text-center mt-6">
               <Button variant="outline" asChild>
-                <a href="https://github.com/zerodha" target="_blank" rel="noopener noreferrer">
+                <a href="https://github.com/sernetindia" target="_blank" rel="noopener noreferrer">
                   <Github className="h-4 w-4 mr-2" />
                   View all on GitHub
                 </a>
@@ -130,8 +130,8 @@ const Tech = () => {
             </div>
             <div className="text-center mt-6">
               <Button variant="outline" asChild>
-                <a href="https://zerodha.tech" target="_blank" rel="noopener noreferrer">
-                  Visit zerodha.tech <ExternalLink className="h-4 w-4 ml-2" />
+                <a href="https://sernetindia.com/tech" target="_blank" rel="noopener noreferrer">
+                  Visit sernet.tech <ExternalLink className="h-4 w-4 ml-2" />
                 </a>
               </Button>
             </div>

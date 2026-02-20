@@ -55,7 +55,7 @@ export const InsightsSection = () => {
             <h2 className="heading-lg text-foreground">{t('insights.heading')}</h2>
           </div>
           <Link
-            to="/z-connect"
+            to="/insights"
             className="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
           >
             {t('insights.viewAll')} <ArrowRight className="w-4 h-4" />
@@ -119,7 +119,7 @@ export const InsightsSection = () => {
 
         <div className="sm:hidden mt-8 text-center">
           <Link
-            to="/z-connect"
+            to="/insights"
             className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
           >
             {t('insights.viewAll')} <ArrowRight className="w-4 h-4" />

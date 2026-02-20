@@ -49,7 +49,7 @@ const Philosophy = () => {
           >
             <h1 className="heading-xl text-center mb-6">Our Philosophy</h1>
             <p className="text-body text-center mb-16 max-w-2xl mx-auto">
-              The principles that guide everything we do at Zerodha
+              The principles that guide everything we do at SERNET
             </p>
 
             <div className="space-y-12">

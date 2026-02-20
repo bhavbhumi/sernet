@@ -48,8 +48,8 @@ const OpenAccount = () => {
                 Open a free <span className="text-primary">demat account</span>
               </h1>
               <p className="text-body mb-8">
-                Join 1.6+ crore Indians who trust Zerodha for their investments. 
-                Modern platforms, ₹0 brokerage for investments, and flat ₹20 for F&O.
+                Join 1500+ families who trust SERNET for their financial journey.
+                Holistic wealth management, transparent fees, and expert guidance.
               </p>
 
               <ul className="space-y-3 mb-8">
