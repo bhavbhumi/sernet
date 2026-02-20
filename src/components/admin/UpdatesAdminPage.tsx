@@ -8,7 +8,38 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
-import { Plus, Pencil, Trash2, Search, Eye, EyeOff, Rss, Link } from 'lucide-react';
+import { Plus, Pencil, Trash2, Search, Eye, EyeOff, Rss, Link, ChevronLeft, ChevronRight } from 'lucide-react';
+
+const PAGE_SIZE = 25;
+
+function AdminPagination({ page, totalPages, total, onPage }: { page: number; totalPages: number; total: number; onPage: (p: number) => void }) {
+  if (totalPages <= 1) return null;
+  const pages: (number | '…')[] = [];
+  for (let i = 1; i <= totalPages; i++) {
+    if (i === 1 || i === totalPages || Math.abs(i - page) <= 1) pages.push(i);
+    else if (pages[pages.length - 1] !== '…') pages.push('…');
+  }
+  const start = (page - 1) * PAGE_SIZE + 1;
+  const end = Math.min(page * PAGE_SIZE, total);
+  return (
+    <div className="flex items-center justify-end gap-1.5 flex-wrap">
+      <span className="text-xs text-muted-foreground mr-2">{start}–{end} of {total}</span>
+      <button onClick={() => onPage(page - 1)} disabled={page === 1} className="flex items-center gap-0.5 px-2 py-1.5 text-xs rounded-md border border-border text-muted-foreground hover:text-foreground hover:border-primary/40 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+        <ChevronLeft className="h-3.5 w-3.5" /> Prev
+      </button>
+      {pages.map((p, i) =>
+        p === '…' ? (
+          <span key={`e-${i}`} className="px-1 text-xs text-muted-foreground">…</span>
+        ) : (
+          <button key={p} onClick={() => onPage(p as number)} className={`min-w-[28px] h-7 px-1.5 text-xs rounded-md border transition-colors font-medium ${page === p ? 'bg-primary text-primary-foreground border-primary' : 'border-border text-muted-foreground hover:text-foreground hover:border-primary/40'}`}>{p}</button>
+        )
+      )}
+      <button onClick={() => onPage(page + 1)} disabled={page === totalPages} className="flex items-center gap-0.5 px-2 py-1.5 text-xs rounded-md border border-border text-muted-foreground hover:text-foreground hover:border-primary/40 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+        Next <ChevronRight className="h-3.5 w-3.5" />
+      </button>
+    </div>
+  );
+}
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { CategoryTreeManager, type CategoryNode } from '@/components/admin/CategoryTreeManager';
@@ -98,6 +129,7 @@ export default function UpdatesAdminPage({ mode }: UpdatesAdminPageProps) {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [page, setPage] = useState(1);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editItem, setEditItem] = useState<NewsItem | null>(null);
   const [saving, setSaving] = useState(false);
@@ -191,19 +223,47 @@ export default function UpdatesAdminPage({ mode }: UpdatesAdminPageProps) {
     return matchSearch && matchStatus;
   });
 
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const handlePage = (p: number) => { setPage(p); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+  const handleFilterStatus = (v: string) => { setFilterStatus(v); setPage(1); };
+  const handleSearch = (v: string) => { setSearch(v); setPage(1); };
+
+  const statusCounts = {
+    all: items.length,
+    published: items.filter(i => i.status === 'published').length,
+    draft: items.filter(i => i.status === 'draft').length,
+    archived: items.filter(i => i.status === 'archived').length,
+  };
+
   return (
     <AdminLayout
       title={title}
       subtitle={subtitle}
       actions={<Button onClick={openNew} size="sm"><Plus className="h-4 w-4 mr-1.5" /> New</Button>}
     >
-      {/* Filters */}
-      <div className="flex gap-3 mb-5 flex-wrap">
+      {/* Stat chips */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+        {([
+          { key: 'all', label: 'Total' },
+          { key: 'published', label: 'Published' },
+          { key: 'draft', label: 'Draft' },
+          { key: 'archived', label: 'Archived' },
+        ] as const).map(({ key, label }) => (
+          <button key={key} onClick={() => handleFilterStatus(key)} className={`border rounded-lg p-3 text-left transition-colors ${filterStatus === key ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/30'}`}>
+            <p className="text-xs text-muted-foreground">{label}</p>
+            <p className="text-2xl font-semibold text-foreground">{statusCounts[key]}</p>
+          </button>
+        ))}
+      </div>
+
+      {/* Filters + top pagination */}
+      <div className="flex gap-3 mb-4 flex-wrap items-center">
         <div className="relative flex-1 min-w-[200px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input placeholder="Search by title..." className="pl-9" value={search} onChange={e => setSearch(e.target.value)} />
+          <Input placeholder="Search by title..." className="pl-9" value={search} onChange={e => handleSearch(e.target.value)} />
         </div>
-        <Select value={filterStatus} onValueChange={setFilterStatus}>
+        <Select value={filterStatus} onValueChange={handleFilterStatus}>
           <SelectTrigger className="w-36"><SelectValue /></SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Status</SelectItem>
@@ -212,7 +272,11 @@ export default function UpdatesAdminPage({ mode }: UpdatesAdminPageProps) {
             <SelectItem value="archived">Archived</SelectItem>
           </SelectContent>
         </Select>
+        <div className="ml-auto">
+          <AdminPagination page={page} totalPages={totalPages} total={filtered.length} onPage={handlePage} />
+        </div>
       </div>
+
 
       {/* Table */}
       <div className="bg-card border border-border rounded-xl overflow-hidden">
@@ -233,14 +297,13 @@ export default function UpdatesAdminPage({ mode }: UpdatesAdminPageProps) {
                 Array(5).fill(0).map((_, i) => (
                   <tr key={i}><td colSpan={6} className="px-4 py-3"><div className="h-4 bg-muted animate-pulse rounded" /></td></tr>
                 ))
-              ) : filtered.length === 0 ? (
+              ) : paginated.length === 0 ? (
                 <tr><td colSpan={6} className="px-4 py-12 text-center text-muted-foreground">No items found. Click "New" to add one.</td></tr>
-              ) : filtered.map(item => (
+              ) : paginated.map(item => (
                 <tr key={item.id} className="hover:bg-muted/20">
                   <td className="px-4 py-3">
                     <p className="font-medium text-foreground line-clamp-1">{item.title}</p>
                     {item.summary && <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">{item.summary}</p>}
-                    {/* Horizontal action bar */}
                     <div className="flex items-center gap-0.5 mt-1.5">
                       <Button variant="ghost" size="sm" className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground gap-1" onClick={() => toggleStatus(item)}>
                         {item.status === 'published' ? <><EyeOff className="h-3 w-3" /> Unpublish</> : <><Eye className="h-3 w-3" /> Publish</>}
@@ -275,7 +338,12 @@ export default function UpdatesAdminPage({ mode }: UpdatesAdminPageProps) {
         </div>
       </div>
 
-      {/* Dialog */}
+      {/* Bottom pagination */}
+      <div className="mt-4 flex justify-end">
+        <AdminPagination page={page} totalPages={totalPages} total={filtered.length} onPage={handlePage} />
+      </div>
+
+
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
