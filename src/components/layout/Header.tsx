@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ExternalLink, Globe, ChevronDown } from 'lucide-react';
+import { Menu, X, ExternalLink, Globe, ChevronDown, Search } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { languageOptions } from '@/i18n';
 import { ThemeToggle } from '@/components/shared/ThemeToggle';
+import { SearchCommandPalette } from '@/components/shared/SearchCommandPalette';
 
 import sernetLogo from '@/assets/sernet-logo.png';
 
@@ -46,12 +47,25 @@ const menuSections = [
 export const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const desktopLangRef = useRef<HTMLDivElement>(null);
   const mobileLangRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const { t, i18n } = useTranslation();
 
   const currentLang = languageOptions.find(l => l.code === i18n.language) || languageOptions[0];
+
+  // ⌘K / Ctrl+K keyboard shortcut
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setSearchOpen(prev => !prev);
+      }
+    };
+    document.addEventListener('keydown', handleKey);
+    return () => document.removeEventListener('keydown', handleKey);
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -97,6 +111,18 @@ export const Header = () => {
             </Link>
           ))}
 
+          {/* Search Button */}
+          <button
+            type="button"
+            onClick={() => setSearchOpen(true)}
+            className="flex items-center gap-2 px-3 py-1.5 rounded-md border border-border text-[13px] text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            title="Search (⌘K)"
+          >
+            <Search className="h-3.5 w-3.5" />
+            <span className="hidden xl:inline">Search</span>
+            <kbd className="hidden xl:inline text-[10px] font-mono opacity-60 ml-1">⌘K</kbd>
+          </button>
+
           {/* Theme Toggle */}
           <ThemeToggle />
 
@@ -140,8 +166,16 @@ export const Header = () => {
           </button>
         </div>
 
-        {/* Mobile/Tablet: theme + language + hamburger */}
+        {/* Mobile/Tablet: search + theme + language + hamburger */}
         <div className="lg:hidden flex items-center gap-1">
+          <button
+            type="button"
+            onClick={() => setSearchOpen(true)}
+            className="p-2 text-muted-foreground hover:text-primary transition-colors"
+            title="Search"
+          >
+            <Search className="h-5 w-5" />
+          </button>
           <ThemeToggle />
           <div ref={mobileLangRef} className="relative">
             <button
@@ -256,6 +290,9 @@ export const Header = () => {
           onClick={() => setMenuOpen(false)}
         />
       )}
+
+      {/* Search Command Palette */}
+      <SearchCommandPalette open={searchOpen} onClose={() => setSearchOpen(false)} />
     </header>
   );
 };
