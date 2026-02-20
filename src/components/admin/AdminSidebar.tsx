@@ -22,10 +22,10 @@ const navItems: NavItem[] = [
   {
     label: 'Content', icon: BookOpen, children: [
       { label: 'Articles', icon: FileText, href: '/admin/content/articles' },
-      { label: 'Import Articles', icon: Download, href: '/admin/content/import' },
       { label: 'Analysis', icon: BarChart3, href: '/admin/content/analysis' },
       { label: 'Reports', icon: BookOpen, href: '/admin/content/reports' },
       { label: 'Bulletin', icon: Bell, href: '/admin/content/bulletin' },
+      { label: 'Import Articles', icon: Download, href: '/admin/content/import' },
     ]
   },
   {
