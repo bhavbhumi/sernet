@@ -48,7 +48,7 @@ export const InsightsSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="flex items-end justify-between mb-12"
+          className="flex items-end justify-between mb-8"
         >
           <div>
             <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">{t('insights.label')}</p>
@@ -62,7 +62,7 @@ export const InsightsSection = () => {
           </Link>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {articles.map((article, index) => (
             <motion.article
               key={article.id}
@@ -132,7 +132,7 @@ export const InsightsSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="relative mt-16 rounded-2xl bg-muted/50 border border-primary/30 p-6 md:p-8 text-center overflow-hidden shadow-[0_0_25px_-5px_hsl(var(--primary)/0.3),0_0_10px_-5px_hsl(var(--sernet-yellow)/0.2)]"
+          className="relative mt-10 rounded-2xl bg-muted/50 border border-primary/30 p-5 md:p-6 text-center overflow-hidden shadow-[0_0_25px_-5px_hsl(var(--primary)/0.3),0_0_10px_-5px_hsl(var(--sernet-yellow)/0.2)]"
         >
           {/* Background watermark elements */}
           {/* Background visual elements - Resources */}

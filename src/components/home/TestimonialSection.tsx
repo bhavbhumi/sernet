@@ -271,7 +271,7 @@ export const TestimonialSection = () => {
 
   return (
     <section className="section-padding overflow-hidden bg-section-alt">
-      <div className="container-zerodha mb-10">
+      <div className="container-zerodha mb-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -299,7 +299,7 @@ export const TestimonialSection = () => {
         ))}
       </div>
 
-      <div className="container-zerodha mt-10">
+      <div className="container-zerodha mt-6">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}

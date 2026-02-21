@@ -32,13 +32,13 @@ export const PricingSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="text-center mb-8"
         >
           <h2 className="heading-lg text-foreground mb-4">{t('pricing.heading')}</h2>
           <p className="text-body max-w-2xl mx-auto">{t('pricing.description')}</p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {pricingItems.map((item, index) => (
             <motion.div
               key={item.titleKey}
@@ -64,7 +64,7 @@ export const PricingSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="text-center mt-12"
+          className="text-center mt-8"
         >
           <Link to="/pricing" className="link-primary font-medium">
             {t('pricing.seePricing')}

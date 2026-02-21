@@ -47,12 +47,12 @@ export const HeroSection = () => {
               {t('hero.title')}{' '}
               <span className="text-primary font-normal">{t('hero.highlight')}</span>
             </h1>
-            <p className="text-body max-w-lg mb-8">
+            <p className="text-body max-w-lg mb-6">
               {t('hero.description')}
             </p>
 
             {/* Dual CTAs */}
-            <div className="flex flex-wrap gap-4 mb-10">
+            <div className="flex flex-wrap gap-4 mb-8">
               <Link
                 to="/schedule-call"
                 className="btn-primary px-8 py-3.5 text-base"
