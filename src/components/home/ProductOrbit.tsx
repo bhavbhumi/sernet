@@ -94,15 +94,25 @@ const OrbitItem = ({
 
 export const ProductOrbit = () => {
   return (
-    <div className="relative flex items-center justify-center" style={{ width: 400, height: 400 }}>
+    <div className="relative flex items-center justify-center" style={{ width: 420, height: 420 }}>
 
-      {/* Outer orbit ring — dashed */}
+      {/* Outermost orbit ring — dashed */}
       <div
         className="absolute rounded-full border border-dashed"
         style={{
-          width: 320,
-          height: 320,
-          borderColor: 'hsl(var(--primary) / 0.25)',
+          width: 380,
+          height: 380,
+          borderColor: 'hsl(var(--primary) / 0.35)',
+        }}
+      />
+
+      {/* Middle orbit ring — dashed */}
+      <div
+        className="absolute rounded-full border border-dashed"
+        style={{
+          width: 260,
+          height: 260,
+          borderColor: 'hsl(var(--primary) / 0.3)',
         }}
       />
 
@@ -110,9 +120,9 @@ export const ProductOrbit = () => {
       <div
         className="absolute rounded-full border border-dashed"
         style={{
-          width: 200,
-          height: 200,
-          borderColor: 'hsl(var(--primary) / 0.18)',
+          width: 140,
+          height: 140,
+          borderColor: 'hsl(var(--primary) / 0.25)',
         }}
       />
 
@@ -122,7 +132,7 @@ export const ProductOrbit = () => {
         style={{
           width: 110,
           height: 110,
-          background: 'radial-gradient(circle, hsl(var(--primary) / 0.15) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, hsl(var(--primary) / 0.2) 0%, transparent 70%)',
         }}
       />
 
@@ -142,7 +152,7 @@ export const ProductOrbit = () => {
       <OrbitItem
         src={tickFundsLogo}
         alt="Tick Funds"
-        radius={100}
+        radius={130}
         angle={0}
         duration={18}
         size={52}
@@ -150,7 +160,7 @@ export const ProductOrbit = () => {
       <OrbitItem
         src={tushilLogo}
         alt="Tushil"
-        radius={100}
+        radius={130}
         angle={180}
         duration={18}
         size={52}
@@ -160,7 +170,7 @@ export const ProductOrbit = () => {
       <OrbitItem
         src={choiceFinxLogo}
         alt="ChoiceFinX"
-        radius={160}
+        radius={190}
         angle={60}
         duration={26}
         size={56}
@@ -169,7 +179,7 @@ export const ProductOrbit = () => {
       <OrbitItem
         src={findemyLogo}
         alt="Findemy"
-        radius={160}
+        radius={190}
         angle={240}
         duration={26}
         size={56}
@@ -184,7 +194,7 @@ export const ProductOrbit = () => {
           style={{
             width: 6,
             height: 6,
-            background: 'hsl(var(--primary) / 0.4)',
+            background: 'hsl(var(--primary) / 0.5)',
             top: '50%',
             left: '50%',
             marginTop: -3,
@@ -193,7 +203,7 @@ export const ProductOrbit = () => {
           animate={{ rotate: [deg, deg + 360] }}
           transition={{ duration: 26, repeat: Infinity, ease: 'linear' }}
         >
-          <div style={{ transform: `translateX(160px)` }} className="w-1.5 h-1.5 rounded-full bg-primary opacity-40" />
+          <div style={{ transform: `translateX(190px)` }} className="w-1.5 h-1.5 rounded-full bg-primary opacity-50" />
         </motion.div>
       ))}
     </div>
