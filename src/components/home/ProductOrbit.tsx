@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
 import sernetIcon from '@/assets/sernet-icon.png';
-import tickFundsLogo from '@/assets/tickfunds-logo.png';
-import tushilLogo from '@/assets/tushil-logo.png';
-import choiceFinxLogo from '@/assets/choicefinx-showcase.png';
+import tickFundsLogo from '@/assets/tickfunds-icon.png';
+import tushilLogo from '@/assets/tushil-icon.png';
+import choiceFinxLogo from '@/assets/choicefinx-icon.png';
 import findemyLogo from '@/assets/findemy-logo.png';
 
 interface OrbitLogoProps {
@@ -94,7 +94,7 @@ const OrbitItem = ({
 
 export const ProductOrbit = () => {
   return (
-    <div className="relative flex items-center justify-center" style={{ width: 360, height: 360 }}>
+    <div className="relative flex items-center justify-center" style={{ width: 400, height: 400 }}>
 
       {/* Outer orbit ring — dashed */}
       <div
