@@ -186,25 +186,27 @@ export const ProductOrbit = () => {
         reverse
       />
 
-      {/* Decorative dots on outer ring */}
-      {[0, 90, 180, 270].map((deg) => (
-        <motion.div
-          key={deg}
+      {/* Decorative dots on different rings in SERNET brand colors */}
+      {[
+        { angle: 45, radius: 70, color: 'hsl(210 80% 55% / 0.5)', duration: 18 },    // blue - inner ring
+        { angle: 200, radius: 130, color: 'hsl(45 90% 50% / 0.45)', duration: 18 },   // gold - middle ring
+        { angle: 320, radius: 130, color: 'hsl(0 70% 50% / 0.4)', duration: 26 },     // red - middle ring
+        { angle: 135, radius: 200, color: 'hsl(145 60% 40% / 0.45)', duration: 26 },  // green - outer ring
+      ].map((dot, i) => (
+        <div
+          key={i}
           className="absolute rounded-full"
           style={{
-            width: 6,
-            height: 6,
-            background: 'hsl(var(--primary) / 0.5)',
+            width: 7,
+            height: 7,
+            background: dot.color,
             top: '50%',
             left: '50%',
-            marginTop: -3,
-            marginLeft: -3,
+            marginTop: -3.5,
+            marginLeft: -3.5,
+            transform: `translate(${Math.cos((dot.angle * Math.PI) / 180) * dot.radius}px, ${Math.sin((dot.angle * Math.PI) / 180) * dot.radius}px)`,
           }}
-          animate={{ rotate: [deg, deg + 360] }}
-          transition={{ duration: 26, repeat: Infinity, ease: 'linear' }}
-        >
-          <div style={{ transform: `translateX(190px)` }} className="w-1.5 h-1.5 rounded-full bg-primary opacity-50" />
-        </motion.div>
+        />
       ))}
     </div>
   );
