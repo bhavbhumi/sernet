@@ -19,16 +19,20 @@ export const HeroSection = () => {
             transition={{ duration: 0.6, delay: 0.15 }}
             className="flex justify-center lg:justify-end lg:order-2"
           >
-            <img
+            <motion.img
               src={heroIllustration}
               alt="Sernet wealth management - Trade, Invest and Insure with awareness"
               className="w-full max-w-[420px] lg:max-w-[500px] h-auto dark:hidden"
+              animate={{ y: [0, -12, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
             />
-            <img
+            <motion.img
               src={heroIllustrationDark}
               alt="Sernet wealth management - Trade, Invest and Insure with awareness"
               className="w-full max-w-[420px] lg:max-w-[500px] h-auto hidden dark:block"
               style={{ mixBlendMode: 'lighten' }}
+              animate={{ y: [0, -12, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
             />
           </motion.div>
 
