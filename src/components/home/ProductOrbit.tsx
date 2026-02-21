@@ -2,8 +2,8 @@ import { motion } from 'framer-motion';
 import sernetIcon from '@/assets/sernet-icon.png';
 import tickFundsLogo from '@/assets/tickfunds-logo.png';
 import tushilLogo from '@/assets/tushil-logo.png';
-import choiceFinxLogo from '@/assets/choicefinx-logo.jpeg';
-import findemyShowcase from '@/assets/findemy-showcase.png';
+import choiceFinxLogo from '@/assets/choicefinx-showcase.png';
+import findemyLogo from '@/assets/findemy-logo.png';
 
 interface OrbitLogoProps {
   src: string;
@@ -167,7 +167,7 @@ export const ProductOrbit = () => {
         reverse
       />
       <OrbitItem
-        src={findemyShowcase}
+        src={findemyLogo}
         alt="Findemy"
         radius={160}
         angle={240}
