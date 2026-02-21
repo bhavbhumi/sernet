@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Phone, Mail } from 'lucide-react';
+import { MapPin, Phone, Mail, ChevronDown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import sernetLogo from '@/assets/sernet-logo.png';
@@ -69,12 +70,48 @@ const legalLinks: { nameKey?: string; label?: string; href: string }[] = [
   { label: 'Sitemap', href: '/sitemap' },
 ];
 
+const FooterDisclosure = () => {
+  const [expanded, setExpanded] = useState(false);
+  
+  return (
+    <div className="mt-8 pt-6 border-t border-border">
+      {/* First paragraph always visible */}
+      <p className="text-[12px] text-muted-foreground leading-relaxed">
+        <span className="font-semibold text-foreground">Compliance Officer:</span> Mr Gaurav V Shah | <a href="mailto:compliance@sernetindia.com" className="text-primary hover:underline">compliance@sernetindia.com</a>. For any complaints, please write to <a href="mailto:complaint@sernetindia.com" className="text-primary hover:underline">complaint@sernetindia.com</a>. Please ensure you carefully read the <Link to="/disclosure" className="text-primary hover:underline">Mandatory Documents</Link> as prescribed by SEBI.
+      </p>
+      
+      {/* Collapsible rest */}
+      <div className={`space-y-3 mt-3 overflow-hidden transition-all duration-300 ${expanded ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0 md:max-h-[1000px] md:opacity-100'}`}>
+        <p className="text-[12px] text-muted-foreground leading-relaxed">
+          Financial Products and Services are provided by SERNET, it's Group Companies and third party service partners as mentioned <Link to="/network" className="text-primary hover:underline">here</Link>.
+        </p>
+        <p className="text-[12px] text-muted-foreground leading-relaxed">
+          We do not guarantee returns on any financial products or services what so ever. The tax treatment of these financial products is subject to individual circumstances and may change in the future.
+        </p>
+        <p className="text-[12px] text-muted-foreground leading-relaxed">
+          <span className="font-semibold text-foreground">Issued in the interest of investors:</span> Prevent unauthorised transactions in your account. Update your mobile numbers/email IDs with your stock brokers. Receive information of your transactions directly from Exchange on your mobile/email at the end of the day | KYC is one time exercise while dealing in securities markets – once KYC is done through a SEBI registered intermediary (broker, DP, Mutual Fund etc.), you need not undergo the same process again when you approach another intermediary | Dear Investor, if you are subscribing to an IPO, there is no need to issue a cheque. Please write the Bank account number and sign the IPO application form to authorize your bank to make payment in case of allotment. In case of non allotment the funds will remain in your bank account | As a business we don't give stock tips, and have not authorized anyone to trade on behalf of others. If you find anyone claiming to be part of SERNET and offering such services, please create a ticket <Link to="/support" className="text-primary hover:underline">here</Link>.
+        </p>
+      </div>
+      
+      {/* Mobile toggle */}
+      <button
+        type="button"
+        onClick={() => setExpanded(!expanded)}
+        className="md:hidden flex items-center gap-1 mt-2 text-xs text-primary hover:underline"
+      >
+        {expanded ? 'Show less' : 'Read full disclaimer'}
+        <ChevronDown className={`w-3 h-3 transition-transform ${expanded ? 'rotate-180' : ''}`} />
+      </button>
+    </div>
+  );
+};
+
 export const Footer = () => {
   const { t } = useTranslation();
 
   return (
     <footer className="bg-muted/30 border-t border-border">
-      <div className="container-zerodha section-padding">
+      <div className="container-zerodha py-8 md:py-10">
         {/* Main Footer Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Brand & Contact Column */}
@@ -202,21 +239,8 @@ export const Footer = () => {
           </div>
         </div>
 
-        {/* Disclosure Section */}
-        <div className="mt-10 pt-8 border-t border-border space-y-4">
-          <p className="text-[12px] text-muted-foreground leading-relaxed">
-            <span className="font-semibold text-foreground">Compliance Officer:</span> Mr Gaurav V Shah | <a href="mailto:compliance@sernetindia.com" className="text-primary hover:underline">compliance@sernetindia.com</a>. For any complaints, please write to <a href="mailto:complaint@sernetindia.com" className="text-primary hover:underline">complaint@sernetindia.com</a>. Please ensure you carefully read the <Link to="/disclosure" className="text-primary hover:underline">Mandatory Documents</Link> as prescribed by SEBI.
-          </p>
-          <p className="text-[12px] text-muted-foreground leading-relaxed">
-            Financial Products and Services are provided by SERNET, it's Group Companies and third party service partners as mentioned <Link to="/network" className="text-primary hover:underline">here</Link>.
-          </p>
-          <p className="text-[12px] text-muted-foreground leading-relaxed">
-            We do not guarantee returns on any financial products or services what so ever. The tax treatment of these financial products is subject to individual circumstances and may change in the future.
-          </p>
-          <p className="text-[12px] text-muted-foreground leading-relaxed">
-            <span className="font-semibold text-foreground">Issued in the interest of investors:</span> Prevent unauthorised transactions in your account. Update your mobile numbers/email IDs with your stock brokers. Receive information of your transactions directly from Exchange on your mobile/email at the end of the day | KYC is one time exercise while dealing in securities markets – once KYC is done through a SEBI registered intermediary (broker, DP, Mutual Fund etc.), you need not undergo the same process again when you approach another intermediary | Dear Investor, if you are subscribing to an IPO, there is no need to issue a cheque. Please write the Bank account number and sign the IPO application form to authorize your bank to make payment in case of allotment. In case of non allotment the funds will remain in your bank account | As a business we don't give stock tips, and have not authorized anyone to trade on behalf of others. If you find anyone claiming to be part of SERNET and offering such services, please create a ticket <Link to="/support" className="text-primary hover:underline">here</Link>.
-          </p>
-        </div>
+        {/* Disclosure Section - collapsible on mobile */}
+        <FooterDisclosure />
       </div>
 
       {/* Marquee Ribbon */}

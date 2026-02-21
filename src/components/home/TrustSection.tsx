@@ -23,9 +23,9 @@ export const TrustSection = () => {
             transition={{ duration: 0.6 }}
           >
             <h2 className="heading-lg text-foreground mb-2">{t('trust.heading')}</h2>
-            <p className="text-muted-foreground text-body mb-10">{t('trust.subheading')}</p>
+            <p className="text-muted-foreground text-body mb-6">{t('trust.subheading')}</p>
 
-            <div className="space-y-7">
+            <div className="space-y-5">
               {features.map((feature, index) => (
                 <motion.div
                   key={feature.titleKey}

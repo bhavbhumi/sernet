@@ -29,7 +29,7 @@ export const EcosystemSection = () => {
           className="text-center"
         >
 
-          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-6 mb-12">
+          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-5 mb-8">
             {pressLogos.map((logo, index) => (
               <motion.div
                 key={logo.name}
