@@ -94,14 +94,14 @@ const OrbitItem = ({
 
 export const ProductOrbit = () => {
   return (
-    <div className="relative flex items-center justify-center" style={{ width: 420, height: 420 }}>
+    <div className="relative flex items-center justify-center overflow-visible" style={{ width: 460, height: 460 }}>
 
       {/* Outermost orbit ring — dashed */}
       <div
         className="absolute rounded-full border border-dashed"
         style={{
-          width: 380,
-          height: 380,
+          width: 400,
+          height: 400,
           borderColor: 'hsl(var(--primary) / 0.35)',
         }}
       />
