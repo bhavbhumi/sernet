@@ -233,17 +233,33 @@ const NewsletterForm = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
+  const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('');
   const { t } = useTranslation();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email && firstName) {
+    if (!email || !firstName) return;
+    setSubmitting(true);
+    setError('');
+    try {
+      const { error: dbError } = await supabase
+        .from('newsletter_subscribers' as any)
+        .upsert(
+          { first_name: firstName, last_name: lastName || null, email, status: 'active', subscribed_at: new Date().toISOString() } as any,
+          { onConflict: 'email' }
+        );
+      if (dbError) throw dbError;
       setSubmitted(true);
       setFirstName('');
       setLastName('');
       setEmail('');
       setTimeout(() => setSubmitted(false), 3000);
+    } catch (err: any) {
+      setError(err.message || 'Something went wrong');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -272,9 +288,10 @@ const NewsletterForm = () => {
         required
         className="flex-[2] h-12 text-base"
       />
-      <Button type="submit" className="w-full sm:w-auto">
-        {submitted ? t('testimonials.subscribed') : t('insights.subscribe')}
+      <Button type="submit" disabled={submitting} className="w-full sm:w-auto">
+        {submitting ? '...' : submitted ? t('testimonials.subscribed') : t('insights.subscribe')}
       </Button>
+      {error && <p className="text-xs text-destructive w-full text-center">{error}</p>}
     </form>
   );
 };

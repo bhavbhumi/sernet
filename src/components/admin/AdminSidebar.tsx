@@ -5,7 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import {
   LayoutDashboard, FileText, BarChart3, BookOpen, Bell, Newspaper, AlertCircle,
   Vote, ClipboardList, Star, Briefcase, Users, Mic2, Settings, LogOut,
-  ChevronDown, ChevronRight, Menu, X, Rss, Shield, Globe, Map, Palette, Type, ScanSearch, Images, Download, Sparkles, Calculator, UserCheck, CalendarDays
+  ChevronDown, ChevronRight, Menu, X, Rss, Shield, Globe, Map, Palette, Type, ScanSearch, Images, Download, Sparkles, Calculator, UserCheck, CalendarDays, Mail
 } from 'lucide-react';
 import sernetLogo from '@/assets/sernet-logo.png';
 import { cn } from '@/lib/utils';
@@ -39,6 +39,7 @@ const navItems: NavItem[] = [
       { label: 'Polls', icon: Vote, href: '/admin/engagement/polls' },
       { label: 'Surveys', icon: ClipboardList, href: '/admin/engagement/surveys' },
       { label: 'Reviews', icon: Star, href: '/admin/engagement/reviews' },
+      { label: 'Newsletter', icon: Mail, href: '/admin/engagement/newsletter' },
     ]
   },
   {
