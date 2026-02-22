@@ -57,7 +57,7 @@ export const EcosystemSection = () => {
             transition={{ duration: 0.5, delay: 0.3 }}
           >
             <Link
-              to="/media"
+              to="/about?tab=Press"
               className="inline-flex items-center gap-2 text-primary font-medium hover:underline underline-offset-4 transition-all"
             >
               {t('ecosystem.featuredIn')}
