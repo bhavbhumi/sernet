@@ -163,7 +163,7 @@ const FooterNewsletterForm = () => {
       <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row items-center gap-3">
         <Input type="text" placeholder={t('insights.firstName')} value={firstName} onChange={(e) => setFirstName(e.target.value)} required className="h-9 text-sm" />
         <Input type="text" placeholder={t('insights.lastName')} value={lastName} onChange={(e) => setLastName(e.target.value)} className="h-9 text-sm" />
-        <Input type="email" placeholder={t('insights.emailPlaceholder')} value={email} onChange={(e) => setEmail(e.target.value)} required className="h-9 text-sm flex-[2]" />
+        <Input type="email" placeholder={t('insights.emailPlaceholder')} value={email} onChange={(e) => setEmail(e.target.value)} required className="h-9 text-sm min-w-[200px] flex-[3]" />
         <Button type="submit" size="sm" disabled={submitting} className="w-full sm:w-auto gap-1.5">
           <Send className="w-3.5 h-3.5" />
           {submitting ? '...' : submitted ? '✓ Subscribed' : t('insights.subscribe')}
@@ -273,17 +273,18 @@ export const Footer = () => {
         </div>
 
         {/* Contact + Social — full-width row */}
-        <div className="mt-6 pt-4 border-t border-border flex items-center gap-4 flex-wrap text-[13px]">
-          <a href="tel:+919206767670" className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-primary transition-colors">
-            <Phone className="w-3.5 h-3.5" />
-            <span>+91 920 6767 670</span>
-          </a>
-          <span className="text-muted-foreground/30">|</span>
-          <a href="mailto:contact@sernetindia.com" className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-primary transition-colors">
-            <Mail className="w-3.5 h-3.5" />
-            <span>contact@sernetindia.com</span>
-          </a>
-          <span className="text-muted-foreground/30">|</span>
+        <div className="mt-6 flex items-center justify-between gap-4 flex-wrap text-[13px]">
+          <div className="flex items-center gap-4 flex-wrap">
+            <a href="tel:+919206767670" className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-primary transition-colors">
+              <Phone className="w-3.5 h-3.5" />
+              <span>+91 920 6767 670</span>
+            </a>
+            <span className="text-muted-foreground/30">|</span>
+            <a href="mailto:contact@sernetindia.com" className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-primary transition-colors">
+              <Mail className="w-3.5 h-3.5" />
+              <span>contact@sernetindia.com</span>
+            </a>
+          </div>
           <div className="inline-flex items-center gap-2.5">
             {socialLinks.map((social) => (
               <a key={social.name} href={social.href} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" title={social.name}>
