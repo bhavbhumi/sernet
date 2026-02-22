@@ -34,8 +34,39 @@ export const PageHero = ({
   const label = breadcrumbLabel || routeLabels[pathname] || pathname.replace('/', '').replace(/-/g, ' ');
 
   return (
-    <section className="py-8 md:py-10 bg-section-alt">
-      <div className="container-zerodha">
+    <section className="relative py-8 md:py-10 bg-section-alt overflow-hidden">
+      {/* Geometric pattern overlay */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        {/* Large diamond — top right */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8, rotate: 45 }}
+          animate={{ opacity: 1, scale: 1, rotate: 45 }}
+          transition={{ duration: 1.2, ease: 'easeOut' }}
+          className="absolute -top-12 -right-12 w-48 h-48 md:w-64 md:h-64 border border-primary/[0.07] rounded-lg"
+        />
+        {/* Small circle — mid right */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="absolute top-1/2 right-[15%] w-5 h-5 rounded-full bg-primary/[0.06]"
+        />
+        {/* Dotted grid cluster — bottom right */}
+        <div className="absolute bottom-4 right-[8%] grid grid-cols-4 gap-2 opacity-[0.05]">
+          {Array.from({ length: 16 }).map((_, i) => (
+            <div key={i} className="w-1.5 h-1.5 rounded-full bg-foreground" />
+          ))}
+        </div>
+        {/* Angled line — left side */}
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 1, delay: 0.2 }}
+          className="absolute top-8 -left-4 w-32 h-px bg-gradient-to-r from-transparent via-primary/10 to-transparent origin-left"
+        />
+      </div>
+
+      <div className="container-zerodha relative z-10">
         <motion.nav
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
