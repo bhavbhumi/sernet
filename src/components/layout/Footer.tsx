@@ -204,38 +204,32 @@ export const Footer = () => {
               </a>
             </div>
 
-            {/* Contact Info */}
-            <div className="space-y-2 text-[13px] mb-4">
-              <a 
-                href="tel:+919206767670" 
-                className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
-              >
-                <Phone className="w-4 h-4" />
+            {/* Contact + Social in one row */}
+            <div className="flex items-center gap-3 flex-wrap text-[13px]">
+              <a href="tel:+919206767670" className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-primary transition-colors">
+                <Phone className="w-3.5 h-3.5" />
                 <span>+91 920 6767 670</span>
               </a>
-              <a 
-                href="mailto:contact@sernetindia.com" 
-                className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
-              >
-                <Mail className="w-4 h-4" />
+              <span className="text-muted-foreground/30">|</span>
+              <a href="mailto:contact@sernetindia.com" className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-primary transition-colors">
+                <Mail className="w-3.5 h-3.5" />
                 <span>contact@sernetindia.com</span>
               </a>
-            </div>
-
-            {/* Social Icons */}
-            <div className="grid grid-cols-6 gap-3">
-              {socialLinks.map((social) => (
-                <a 
-                  key={social.name}
-                  href={social.href} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                  title={social.name}
-                >
-                  {social.icon}
-                </a>
-              ))}
+              <span className="text-muted-foreground/30">|</span>
+              <div className="inline-flex items-center gap-2.5">
+                {socialLinks.map((social) => (
+                  <a
+                    key={social.name}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground hover:text-primary transition-colors"
+                    title={social.name}
+                  >
+                    {social.icon}
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
 
