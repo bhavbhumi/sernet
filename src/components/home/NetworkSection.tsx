@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Users, Handshake, Building2, Briefcase, Globe, Crown, Building } from 'lucide-react';
 import clientRetail from '@/assets/client-retail.png';
 import clientHnw from '@/assets/client-hnw.png';
@@ -10,24 +11,28 @@ const clientTypes = [
   {
     title: 'Retail Individuals',
     desc: 'Salaried, professionals & business owners',
+    detail: 'Personalised investment plans, SIPs, insurance & trading solutions designed for everyday investors building long-term wealth.',
     image: clientRetail,
     icon: Briefcase,
   },
   {
     title: 'HNW Individuals',
     desc: 'CXOs, entrepreneurs & ultra-HNW families',
+    detail: 'Bespoke portfolio management, tax-efficient strategies & exclusive access to alternative investments for high-net-worth clients.',
     image: clientHnw,
     icon: Crown,
   },
   {
     title: 'NRI & Foreign Nationals',
     desc: 'Indians abroad & foreign investors',
+    detail: 'Seamless cross-border investments, NRI-specific mutual funds, repatriation support & FEMA-compliant financial planning.',
     image: clientNri,
     icon: Globe,
   },
   {
     title: 'Non-Individuals',
     desc: 'Family offices, MSMEs & startups',
+    detail: 'Treasury management, corporate fixed deposits, employee benefit schemes & structured products for institutional needs.',
     image: clientInstitutions,
     icon: Building,
   },
@@ -57,6 +62,8 @@ const sideCards = [
 ];
 
 export const NetworkSection = () => {
+  const [activeClient, setActiveClient] = useState(0);
+
   return (
     <section className="section-padding bg-section-alt">
       <div className="container-zerodha">
@@ -99,6 +106,7 @@ export const NetworkSection = () => {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {clientTypes.map((client, i) => {
                 const Icon = client.icon;
+                const isActive = activeClient === i;
                 return (
                   <motion.div
                     key={client.title}
@@ -106,7 +114,9 @@ export const NetworkSection = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.4, delay: i * 0.08 }}
-                    className="group relative rounded-lg border border-border/60 bg-background overflow-hidden hover:border-primary/30 hover:shadow-md transition-all duration-300"
+                    className="group relative rounded-lg border border-border/60 bg-background overflow-hidden hover:border-primary/30 hover:shadow-md transition-all duration-300 cursor-pointer"
+                    onMouseEnter={() => setActiveClient(i)}
+                    onMouseLeave={() => setActiveClient(0)}
                   >
                     {/* Illustration */}
                     <div className="relative aspect-square bg-muted/30 overflow-hidden">
@@ -129,6 +139,20 @@ export const NetworkSection = () => {
                 );
               })}
             </div>
+
+            {/* Active client detail */}
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={activeClient}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.25 }}
+                className="text-sm text-muted-foreground mt-4 leading-relaxed min-h-[2.5rem]"
+              >
+                {clientTypes[activeClient].detail}
+              </motion.p>
+            </AnimatePresence>
           </motion.div>
 
           {/* Partners & Principals — stacked in 1 column */}
