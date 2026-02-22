@@ -1,30 +1,10 @@
 import { Link } from 'react-router-dom';
-import { motion, useMotionValue, useTransform, animate, useInView } from 'framer-motion';
-import { useRef, useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import { useState } from 'react';
 import { ArrowRight, Users, Handshake, Building2 } from 'lucide-react';
-import networkClients from '@/assets/network-clients.webp';
-import networkPartners from '@/assets/network-partners.webp';
-import networkPrincipals from '@/assets/network-principals.webp';
-
-const AnimatedCounter = ({ value, suffix }: { value: number; suffix: string }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-50px' });
-  const motionValue = useMotionValue(0);
-  const rounded = useTransform(motionValue, (v) => Math.round(v).toString());
-
-  useEffect(() => {
-    if (isInView) {
-      animate(motionValue, value, { duration: 2, ease: 'easeOut' });
-    }
-  }, [isInView, motionValue, value]);
-
-  return (
-    <span ref={ref} className="tabular-nums">
-      <motion.span>{rounded}</motion.span>
-      {suffix}
-    </span>
-  );
-};
+import networkClients from '@/assets/network-clients-real.jpg';
+import networkPartners from '@/assets/network-partners-real.jpg';
+import networkPrincipals from '@/assets/network-principals-real.jpg';
 
 const networkCards = [
   {
@@ -59,12 +39,6 @@ const networkCards = [
   },
 ];
 
-const headlineStats = [
-  { value: 54, suffix: '+', label: 'Cities' },
-  { value: 18, suffix: '+', label: 'Countries' },
-  { value: 35, suffix: '+', label: 'Years' },
-];
-
 export const NetworkSection = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
@@ -79,23 +53,12 @@ export const NetworkSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-10"
         >
-          <p className="text-sm font-medium text-primary tracking-widest uppercase mb-3">
-            Our Network
-          </p>
-          <h2 className="heading-lg text-foreground mb-4">
+          <h2 className="heading-lg text-foreground mb-3">
             Whom we serve
           </h2>
-          {/* Inline animated stats */}
-          <div className="flex items-center justify-center gap-6 md:gap-10 mt-6">
-            {headlineStats.map((s, i) => (
-              <div key={s.label} className="text-center">
-                <div className="text-2xl md:text-3xl font-light text-foreground">
-                  <AnimatedCounter value={s.value} suffix={s.suffix} />
-                </div>
-                <div className="text-xs text-muted-foreground mt-0.5">{s.label}</div>
-              </div>
-            ))}
-          </div>
+          <p className="text-body max-w-2xl mx-auto text-muted-foreground">
+            Built on 35+ years of trust across 54 cities and 18 countries — a growing ecosystem of clients, partners, and principals.
+          </p>
         </motion.div>
 
         {/* Cards */}
