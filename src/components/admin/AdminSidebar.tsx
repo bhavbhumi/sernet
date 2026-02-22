@@ -39,7 +39,8 @@ const navItems: NavItem[] = [
       { label: 'Polls', icon: Vote, href: '/admin/engagement/polls' },
       { label: 'Surveys', icon: ClipboardList, href: '/admin/engagement/surveys' },
       { label: 'Reviews', icon: Star, href: '/admin/engagement/reviews' },
-      { label: 'Newsletter', icon: Mail, href: '/admin/engagement/newsletter' },
+      { label: 'Subscribers', icon: Mail, href: '/admin/engagement/newsletter' },
+      { label: 'Composer', icon: Mail, href: '/admin/engagement/newsletter-composer' },
     ]
   },
   {
