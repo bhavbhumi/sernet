@@ -14,6 +14,7 @@ const clientTypes = [
     detail: 'Personalised investment plans, SIPs, insurance & trading solutions designed for everyday investors building long-term wealth.',
     image: clientRetail,
     icon: Briefcase,
+    bgTint: 'bg-warning/10',
   },
   {
     title: 'HNW Individuals',
@@ -21,6 +22,7 @@ const clientTypes = [
     detail: 'Bespoke portfolio management, tax-efficient strategies & exclusive access to alternative investments for high-net-worth clients.',
     image: clientHnw,
     icon: Crown,
+    bgTint: 'bg-primary/10',
   },
   {
     title: 'NRI & Foreign Nationals',
@@ -28,6 +30,7 @@ const clientTypes = [
     detail: 'Seamless cross-border investments, NRI-specific mutual funds, repatriation support & FEMA-compliant financial planning.',
     image: clientNri,
     icon: Globe,
+    bgTint: 'bg-destructive/10',
   },
   {
     title: 'Non-Individuals',
@@ -35,6 +38,7 @@ const clientTypes = [
     detail: 'Treasury management, corporate fixed deposits, employee benefit schemes & structured products for institutional needs.',
     image: clientInstitutions,
     icon: Building,
+    bgTint: 'bg-success/10',
   },
 ];
 
@@ -119,7 +123,7 @@ export const NetworkSection = () => {
                     onMouseLeave={() => setActiveClient(0)}
                   >
                     {/* Illustration */}
-                    <div className="relative aspect-square bg-muted/30 overflow-hidden">
+                    <div className={`relative aspect-square ${client.bgTint} overflow-hidden`}>
                       <img
                         src={client.image}
                         alt={client.title}
