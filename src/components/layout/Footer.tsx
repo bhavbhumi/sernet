@@ -110,15 +110,27 @@ const FooterDisclosure = () => {
   );
 };
 
+const PREFERENCE_OPTIONS = [
+  { key: 'resources', label: 'Resources' },
+  { key: 'articles', label: 'Articles' },
+  { key: 'promotions', label: 'Promotions' },
+];
+
 const FooterNewsletterForm = () => {
   const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
+  const [preferences, setPreferences] = useState<string[]>(['resources', 'articles', 'promotions']);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
   const { t } = useTranslation();
 
   const isValidEmail = (e: string) => /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/.test(e);
+
+  const togglePref = (key: string) => {
+    setPreferences((prev) => prev.includes(key) ? prev.filter((p) => p !== key) : [...prev, key]);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -130,12 +142,13 @@ const FooterNewsletterForm = () => {
       const { error: dbError } = await supabase
         .from('newsletter_subscribers' as any)
         .upsert(
-          { first_name: firstName, email, status: 'active', subscribed_at: new Date().toISOString() } as any,
+          { first_name: firstName, last_name: lastName || null, email, preferences, status: 'active', subscribed_at: new Date().toISOString() } as any,
           { onConflict: 'email' }
         );
       if (dbError) throw dbError;
       setSubmitted(true);
       setFirstName('');
+      setLastName('');
       setEmail('');
       setTimeout(() => setSubmitted(false), 3000);
     } catch (err: any) {
@@ -146,15 +159,26 @@ const FooterNewsletterForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row items-center gap-3 flex-1 w-full">
-      <Input type="text" placeholder={t('insights.firstName')} value={firstName} onChange={(e) => setFirstName(e.target.value)} required className="h-9 text-sm" />
-      <Input type="email" placeholder={t('insights.emailPlaceholder')} value={email} onChange={(e) => setEmail(e.target.value)} required className="h-9 text-sm flex-[2]" />
-      <Button type="submit" size="sm" disabled={submitting} className="w-full sm:w-auto gap-1.5">
-        <Send className="w-3.5 h-3.5" />
-        {submitting ? '...' : submitted ? '✓' : t('insights.subscribe')}
-      </Button>
+    <div className="flex-1 w-full space-y-3">
+      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row items-center gap-3">
+        <Input type="text" placeholder={t('insights.firstName')} value={firstName} onChange={(e) => setFirstName(e.target.value)} required className="h-9 text-sm" />
+        <Input type="text" placeholder={t('insights.lastName')} value={lastName} onChange={(e) => setLastName(e.target.value)} className="h-9 text-sm" />
+        <Input type="email" placeholder={t('insights.emailPlaceholder')} value={email} onChange={(e) => setEmail(e.target.value)} required className="h-9 text-sm flex-[2]" />
+        <Button type="submit" size="sm" disabled={submitting} className="w-full sm:w-auto gap-1.5">
+          <Send className="w-3.5 h-3.5" />
+          {submitting ? '...' : submitted ? '✓ Subscribed' : t('insights.subscribe')}
+        </Button>
+      </form>
+      <div className="flex items-center gap-5">
+        {PREFERENCE_OPTIONS.map((opt) => (
+          <label key={opt.key} className="flex items-center gap-1.5 text-xs text-muted-foreground cursor-pointer">
+            <Checkbox checked={preferences.includes(opt.key)} onCheckedChange={() => togglePref(opt.key)} className="h-3.5 w-3.5" />
+            {opt.label}
+          </label>
+        ))}
+      </div>
       {error && <p className="text-xs text-destructive">{error}</p>}
-    </form>
+    </div>
   );
 };
 
@@ -203,34 +227,6 @@ export const Footer = () => {
                 />
               </a>
             </div>
-
-            {/* Contact + Social in one row */}
-            <div className="flex items-center gap-3 flex-wrap text-[13px]">
-              <a href="tel:+919206767670" className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-primary transition-colors">
-                <Phone className="w-3.5 h-3.5" />
-                <span>+91 920 6767 670</span>
-              </a>
-              <span className="text-muted-foreground/30">|</span>
-              <a href="mailto:contact@sernetindia.com" className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-primary transition-colors">
-                <Mail className="w-3.5 h-3.5" />
-                <span>contact@sernetindia.com</span>
-              </a>
-              <span className="text-muted-foreground/30">|</span>
-              <div className="inline-flex items-center gap-2.5">
-                {socialLinks.map((social) => (
-                  <a
-                    key={social.name}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-primary transition-colors"
-                    title={social.name}
-                  >
-                    {social.icon}
-                  </a>
-                ))}
-              </div>
-            </div>
           </div>
 
           {/* Company Column */}
@@ -239,10 +235,7 @@ export const Footer = () => {
             <ul className="space-y-2.5">
               {footerLinks.company.map((link) => (
                 <li key={link.href}>
-                  <Link
-                    to={link.href}
-                    className="text-[14px] text-muted-foreground hover:text-primary active:text-primary visited:text-muted-foreground transition-colors"
-                  >
+                  <Link to={link.href} className="text-[14px] text-muted-foreground hover:text-primary active:text-primary visited:text-muted-foreground transition-colors">
                     {t(link.nameKey)}
                   </Link>
                 </li>
@@ -256,10 +249,7 @@ export const Footer = () => {
             <ul className="space-y-2.5">
               {footerLinks.explore.map((link) => (
                 <li key={link.href}>
-                  <Link
-                    to={link.href}
-                    className="text-[14px] text-muted-foreground hover:text-primary active:text-primary visited:text-muted-foreground transition-colors"
-                  >
+                  <Link to={link.href} className="text-[14px] text-muted-foreground hover:text-primary active:text-primary visited:text-muted-foreground transition-colors">
                     {link.label || t(link.nameKey)}
                   </Link>
                 </li>
@@ -273,15 +263,33 @@ export const Footer = () => {
             <ul className="space-y-2.5">
               {footerLinks.support.map((link) => (
                 <li key={link.href}>
-                  <Link
-                    to={link.href}
-                    className="text-[14px] text-muted-foreground hover:text-primary active:text-primary visited:text-muted-foreground transition-colors"
-                  >
+                  <Link to={link.href} className="text-[14px] text-muted-foreground hover:text-primary active:text-primary visited:text-muted-foreground transition-colors">
                     {t(link.nameKey)}
                   </Link>
                 </li>
               ))}
             </ul>
+          </div>
+        </div>
+
+        {/* Contact + Social — full-width row */}
+        <div className="mt-6 pt-4 border-t border-border flex items-center gap-4 flex-wrap text-[13px]">
+          <a href="tel:+919206767670" className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-primary transition-colors">
+            <Phone className="w-3.5 h-3.5" />
+            <span>+91 920 6767 670</span>
+          </a>
+          <span className="text-muted-foreground/30">|</span>
+          <a href="mailto:contact@sernetindia.com" className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-primary transition-colors">
+            <Mail className="w-3.5 h-3.5" />
+            <span>contact@sernetindia.com</span>
+          </a>
+          <span className="text-muted-foreground/30">|</span>
+          <div className="inline-flex items-center gap-2.5">
+            {socialLinks.map((social) => (
+              <a key={social.name} href={social.href} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" title={social.name}>
+                {social.icon}
+              </a>
+            ))}
           </div>
         </div>
 
