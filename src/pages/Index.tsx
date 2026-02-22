@@ -3,7 +3,7 @@ import { SEOHead } from '@/components/shared/SEOHead';
 import { HeroSection } from '@/components/home/HeroSection';
 import { TrustSection } from '@/components/home/TrustSection';
 import { EcosystemSection } from '@/components/home/EcosystemSection';
-import { PricingSection } from '@/components/home/PricingSection';
+import { NetworkSection } from '@/components/home/NetworkSection';
 import { TestimonialSection } from '@/components/home/TestimonialSection';
 import { OpenAccountSection } from '@/components/home/OpenAccountSection';
 import { InsightsSection } from '@/components/home/InsightsSection';
@@ -30,7 +30,7 @@ const Index = () => {
       <EcosystemSection />
       <TrustSection />
       <TestimonialSection />
-      <PricingSection />
+      <NetworkSection />
       <OpenAccountSection />
       <InsightsSection />
     </Layout>
