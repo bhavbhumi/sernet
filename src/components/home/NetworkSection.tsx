@@ -129,6 +129,8 @@ export const NetworkSection = () => {
                         alt={client.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
+                      {/* Tint overlay */}
+                      <div className={`absolute inset-0 ${client.bgTint} pointer-events-none`} />
                       {/* Icon badge */}
                       <div className="absolute top-2 right-2 w-7 h-7 rounded-md bg-card/90 backdrop-blur-sm flex items-center justify-center shadow-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         <Icon className="w-3.5 h-3.5 text-primary" />
