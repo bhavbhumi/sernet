@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Phone, Mail, ChevronDown } from 'lucide-react';
+import { MapPin, Phone, Mail, ChevronDown, Send } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { supabase } from '@/integrations/supabase/client';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 
 import sernetLogo from '@/assets/sernet-logo.png';
 
@@ -103,6 +107,54 @@ const FooterDisclosure = () => {
         <ChevronDown className={`w-3 h-3 transition-transform ${expanded ? 'rotate-180' : ''}`} />
       </button>
     </div>
+  );
+};
+
+const FooterNewsletterForm = () => {
+  const [firstName, setFirstName] = useState('');
+  const [email, setEmail] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('');
+  const { t } = useTranslation();
+
+  const isValidEmail = (e: string) => /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/.test(e);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !firstName) return;
+    if (!isValidEmail(email)) { setError('Please enter a valid email'); return; }
+    setSubmitting(true);
+    setError('');
+    try {
+      const { error: dbError } = await supabase
+        .from('newsletter_subscribers' as any)
+        .upsert(
+          { first_name: firstName, email, status: 'active', subscribed_at: new Date().toISOString() } as any,
+          { onConflict: 'email' }
+        );
+      if (dbError) throw dbError;
+      setSubmitted(true);
+      setFirstName('');
+      setEmail('');
+      setTimeout(() => setSubmitted(false), 3000);
+    } catch (err: any) {
+      setError(err.message || 'Something went wrong');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row items-center gap-3 flex-1 w-full">
+      <Input type="text" placeholder={t('insights.firstName')} value={firstName} onChange={(e) => setFirstName(e.target.value)} required className="h-9 text-sm" />
+      <Input type="email" placeholder={t('insights.emailPlaceholder')} value={email} onChange={(e) => setEmail(e.target.value)} required className="h-9 text-sm flex-[2]" />
+      <Button type="submit" size="sm" disabled={submitting} className="w-full sm:w-auto gap-1.5">
+        <Send className="w-3.5 h-3.5" />
+        {submitting ? '...' : submitted ? '✓' : t('insights.subscribe')}
+      </Button>
+      {error && <p className="text-xs text-destructive">{error}</p>}
+    </form>
   );
 };
 
@@ -236,6 +288,17 @@ export const Footer = () => {
                 </li>
               ))}
             </ul>
+          </div>
+        </div>
+
+        {/* Newsletter Signup Strip */}
+        <div className="mt-8 pt-6 border-t border-border">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
+            <div className="flex items-center gap-2 shrink-0">
+              <Mail className="w-5 h-5 text-primary" />
+              <h3 className="text-[15px] font-medium text-foreground">{t('insights.newsletter')}</h3>
+            </div>
+            <FooterNewsletterForm />
           </div>
         </div>
 

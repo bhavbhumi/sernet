@@ -1,13 +1,9 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, Clock, Calendar, Heart, MessageCircle, Share2, Mail, BookOpen, FileText, Megaphone, Newspaper, FolderOpen, Send, BarChart3 } from 'lucide-react';
-import { useState } from 'react';
+import { ArrowRight, Clock, Calendar, BarChart3, FileText, Newspaper } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Skeleton } from '@/components/ui/skeleton';
 import { format } from 'date-fns';
 
@@ -182,122 +178,8 @@ export const InsightsSection = () => {
           </Link>
         </div>
 
-        {/* Newsletter Signup */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="relative mt-10 rounded-2xl bg-muted/50 border border-primary/30 p-5 md:p-6 text-center overflow-hidden shadow-[0_0_25px_-5px_hsl(var(--primary)/0.3),0_0_10px_-5px_hsl(var(--sernet-yellow)/0.2)]"
-        >
-          {/* Background watermark elements */}
-          {/* Background visual elements - Resources */}
-          <FolderOpen className="absolute top-5 left-8 w-12 h-12 text-primary/[0.07] rotate-[-12deg] pointer-events-none" />
-          <BookOpen className="absolute top-3 left-24 w-8 h-8 text-primary/[0.05] rotate-[8deg] pointer-events-none" />
-          
-          {/* Background visual elements - Articles */}
-          <Newspaper className="absolute top-4 right-10 w-14 h-14 text-sernet-yellow/[0.08] rotate-[10deg] pointer-events-none" />
-          <FileText className="absolute top-1/2 -translate-y-1/2 right-8 w-10 h-10 text-primary/[0.06] rotate-[-6deg] pointer-events-none" />
-          
-          {/* Background visual elements - Promotion */}
-          <Megaphone className="absolute bottom-4 left-10 w-12 h-12 text-sernet-yellow/[0.07] rotate-[15deg] pointer-events-none" />
-          <Send className="absolute bottom-5 right-16 w-9 h-9 text-primary/[0.06] rotate-[-20deg] pointer-events-none" />
-          <Mail className="absolute top-1/2 left-6 w-8 h-8 text-sernet-yellow/[0.05] -translate-y-1/2 rotate-[5deg] pointer-events-none" />
-
-          <div className="relative z-10">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <Mail className="w-5 h-5 text-primary" />
-              <h3 className="text-lg font-semibold text-foreground">{t('insights.newsletter')}</h3>
-            </div>
-            <div className="flex items-center justify-center gap-6 mb-4">
-              {[
-                { key: 'insights.resources', label: t('insights.resources') },
-                { key: 'insights.articles', label: t('insights.articles') },
-                { key: 'insights.promotion', label: t('insights.promotion') },
-              ].map((item) => (
-                <label key={item.key} className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer">
-                  <Checkbox defaultChecked />
-                  {item.label}
-                </label>
-              ))}
-            </div>
-            <NewsletterForm />
-          </div>
-        </motion.div>
       </div>
     </section>
   );
 };
 
-const NewsletterForm = () => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState('');
-  const { t } = useTranslation();
-
-  const isValidEmail = (e: string) => /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/.test(e);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email || !firstName) return;
-    if (!isValidEmail(email)) {
-      setError('Please enter a valid email address');
-      return;
-    }
-    setSubmitting(true);
-    setError('');
-    try {
-      const { error: dbError } = await supabase
-        .from('newsletter_subscribers' as any)
-        .upsert(
-          { first_name: firstName, last_name: lastName || null, email, status: 'active', subscribed_at: new Date().toISOString() } as any,
-          { onConflict: 'email' }
-        );
-      if (dbError) throw dbError;
-      setSubmitted(true);
-      setFirstName('');
-      setLastName('');
-      setEmail('');
-      setTimeout(() => setSubmitted(false), 3000);
-    } catch (err: any) {
-      setError(err.message || 'Something went wrong');
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row items-center gap-3 max-w-2xl mx-auto">
-      <Input
-        type="text"
-        placeholder={t('insights.firstName')}
-        value={firstName}
-        onChange={(e) => setFirstName(e.target.value)}
-        required
-        className="flex-1 h-10"
-      />
-      <Input
-        type="text"
-        placeholder={t('insights.lastName')}
-        value={lastName}
-        onChange={(e) => setLastName(e.target.value)}
-        className="flex-1 h-10"
-      />
-      <Input
-        type="email"
-        placeholder={t('insights.emailPlaceholder')}
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-        className="flex-[2] h-12 text-base"
-      />
-      <Button type="submit" disabled={submitting} className="w-full sm:w-auto">
-        {submitting ? '...' : submitted ? t('testimonials.subscribed') : t('insights.subscribe')}
-      </Button>
-      {error && <p className="text-xs text-destructive w-full text-center">{error}</p>}
-    </form>
-  );
-};
