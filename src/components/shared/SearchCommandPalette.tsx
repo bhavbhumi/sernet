@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, X, FileText, BarChart2, Bell, Newspaper, AlertCircle, Loader2 } from 'lucide-react';
+import { Search, X, FileText, BarChart2, Bell, Newspaper, AlertCircle, Loader2, Mic, BookOpen } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSearch, SearchResult } from '@/hooks/useSearch';
 
@@ -10,6 +10,8 @@ const TYPE_ICON: Record<string, React.ReactNode> = {
   circular: <AlertCircle className="h-3.5 w-3.5" />,
   news: <Newspaper className="h-3.5 w-3.5" />,
   bulletin: <Bell className="h-3.5 w-3.5" />,
+  press: <Mic className="h-3.5 w-3.5" />,
+  report: <BookOpen className="h-3.5 w-3.5" />,
 };
 
 const TYPE_COLOR: Record<string, string> = {
@@ -18,9 +20,11 @@ const TYPE_COLOR: Record<string, string> = {
   circular: 'text-orange-500 bg-orange-500/10',
   news: 'text-purple-500 bg-purple-500/10',
   bulletin: 'text-red-500 bg-red-500/10',
+  press: 'text-pink-500 bg-pink-500/10',
+  report: 'text-amber-500 bg-amber-500/10',
 };
 
-const TYPE_ORDER = ['article', 'analysis', 'news', 'circular', 'bulletin'];
+const TYPE_ORDER = ['article', 'analysis', 'news', 'circular', 'bulletin', 'press', 'report'];
 
 interface SearchCommandPaletteProps {
   open: boolean;
@@ -39,8 +43,8 @@ export const SearchCommandPalette = ({ open, onClose }: SearchCommandPaletteProp
 
   const handleSelect = useCallback((item: SearchResult) => {
     const route = TYPE_ROUTE[item.content_type](item.id, item.url);
-    if (item.content_type === 'circular' || item.content_type === 'news') {
-      if (item.url) {
+    if (['circular', 'news', 'press', 'report'].includes(item.content_type)) {
+      if (item.url && item.url.startsWith('http')) {
         window.open(item.url, '_blank', 'noopener,noreferrer');
       } else {
         navigate(route);
@@ -118,7 +122,7 @@ export const SearchCommandPalette = ({ open, onClose }: SearchCommandPaletteProp
                   value={query}
                   onChange={e => setQuery(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder="Search articles, analysis, circulars, news…"
+                  placeholder="Search articles, analysis, press, reports, news…"
                   className="flex-1 bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground outline-none"
                 />
                 {query && (
