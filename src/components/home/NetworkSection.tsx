@@ -118,12 +118,12 @@ export const NetworkSection = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.4, delay: i * 0.08 }}
-                    className="group relative rounded-lg border border-border/60 bg-background overflow-hidden hover:border-primary/30 hover:shadow-md transition-all duration-300 cursor-pointer"
+                    className={`group relative rounded-lg border border-border/60 ${client.bgTint} overflow-hidden hover:border-primary/30 hover:shadow-md transition-all duration-300 cursor-pointer`}
                     onMouseEnter={() => setActiveClient(i)}
                     onMouseLeave={() => setActiveClient(0)}
                   >
                     {/* Illustration */}
-                    <div className={`relative aspect-square ${client.bgTint} overflow-hidden`}>
+                    <div className="relative aspect-square overflow-hidden">
                       <img
                         src={client.image}
                         alt={client.title}
