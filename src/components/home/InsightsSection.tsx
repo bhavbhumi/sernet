@@ -20,6 +20,7 @@ interface InsightCard {
   date: string | null;
   readTime?: string | null;
   url?: string | null;
+  imageUrl?: string | null;
 }
 
 const TYPE_BADGE: Record<string, { label: string; route: (id: string) => string }> = {
@@ -35,7 +36,7 @@ function useLatestInsights() {
       const [articlesRes, analysisRes, reportsRes] = await Promise.all([
         supabase
           .from('articles')
-          .select('id, category, title, excerpt, item_date, published_at, read_time')
+          .select('id, category, title, excerpt, item_date, published_at, read_time, thumbnail_url, media_url')
           .eq('status', 'published')
           .order('item_date', { ascending: false, nullsFirst: false })
           .limit(1),
@@ -57,7 +58,7 @@ function useLatestInsights() {
 
       if (articlesRes.data?.[0]) {
         const a = articlesRes.data[0];
-        cards.push({ id: a.id, type: 'article', category: a.category, title: a.title, excerpt: a.excerpt, date: a.item_date || a.published_at, readTime: a.read_time });
+        cards.push({ id: a.id, type: 'article', category: a.category, title: a.title, excerpt: a.excerpt, date: a.item_date || a.published_at, readTime: a.read_time, imageUrl: a.thumbnail_url || a.media_url });
       }
       if (analysisRes.data?.[0]) {
         const a = analysisRes.data[0];
@@ -122,6 +123,18 @@ export const InsightsSection = () => {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className="group bg-background rounded-2xl overflow-hidden border border-border/50 hover:border-primary/20 hover:shadow-lg transition-all duration-300"
                 >
+                  {card.imageUrl && (
+                    <Link to={meta.route(card.id)}>
+                      <div className="aspect-[16/9] overflow-hidden">
+                        <img
+                          src={card.imageUrl}
+                          alt={card.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          loading="lazy"
+                        />
+                      </div>
+                    </Link>
+                  )}
                   <div className="p-5">
                     <div className="flex items-center gap-2 mb-3">
                       <TypeIcon className="w-4 h-4 text-primary" />
