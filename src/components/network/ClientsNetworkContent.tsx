@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Users, Building2, Globe, ArrowRight, Gift, UserCheck, Check } from 'lucide-react';
-import networkClientsImg from '@/assets/network-clients.webp';
+import networkClientsImg from '@/assets/network-clients-real.jpg';
 import { AutoScrollShowcase, type ShowcaseItem } from './AutoScrollShowcase';
 import { ReferralFormDialog } from '@/components/shared/ReferralFormDialog';
 

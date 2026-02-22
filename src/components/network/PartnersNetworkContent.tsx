@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, Handshake, Check, User, Briefcase, Megaphone, ArrowRightLeft, Clock, Layers } from 'lucide-react';
-import networkPartnersImg from '@/assets/network-partners.webp';
+import networkPartnersImg from '@/assets/network-partners-real.jpg';
 import { AutoScrollShowcase, type ShowcaseItem } from './AutoScrollShowcase';
 import { ReferralFormDialog } from '@/components/shared/ReferralFormDialog';
 
