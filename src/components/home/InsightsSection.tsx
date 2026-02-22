@@ -238,9 +238,15 @@ const NewsletterForm = () => {
   const [error, setError] = useState('');
   const { t } = useTranslation();
 
+  const isValidEmail = (e: string) => /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/.test(e);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !firstName) return;
+    if (!isValidEmail(email)) {
+      setError('Please enter a valid email address');
+      return;
+    }
     setSubmitting(true);
     setError('');
     try {
