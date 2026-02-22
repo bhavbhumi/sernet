@@ -4,7 +4,7 @@ import { useDebounce } from './useDebounce';
 
 export interface SearchResult {
   id: string;
-  content_type: 'article' | 'analysis' | 'circular' | 'news' | 'bulletin';
+  content_type: 'article' | 'analysis' | 'circular' | 'news' | 'bulletin' | 'press' | 'report';
   title: string;
   excerpt: string | null;
   category: string | null;
@@ -19,6 +19,8 @@ const TYPE_LABEL: Record<string, string> = {
   circular: 'Circular',
   news: 'News',
   bulletin: 'Bulletin',
+  press: 'Press',
+  report: 'Report',
 };
 
 const TYPE_ROUTE: Record<string, (id: string, url?: string | null) => string> = {
@@ -27,6 +29,8 @@ const TYPE_ROUTE: Record<string, (id: string, url?: string | null) => string> = 
   circular: (_id, url) => url || '/updates',
   news: (_id, url) => url || '/updates',
   bulletin: () => '/insights',
+  press: (_id, url) => url || '/about?tab=Press',
+  report: (_id, url) => url || '/insights?tab=Reports',
 };
 
 export function useSearch(query: string) {
