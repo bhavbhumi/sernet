@@ -1,44 +1,82 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, Clock, Calendar, Heart, MessageCircle, Share2, Mail, BookOpen, FileText, Megaphone, Newspaper, FolderOpen, Send } from 'lucide-react';
+import { ArrowRight, Clock, Calendar, Heart, MessageCircle, Share2, Mail, BookOpen, FileText, Megaphone, Newspaper, FolderOpen, Send, BarChart3 } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Skeleton } from '@/components/ui/skeleton';
+import { format } from 'date-fns';
 
-const articles = [
-  {
-    id: 1,
-    category: 'Market Analysis',
-    title: 'Understanding the Impact of RBI Policy on Equity Markets',
-    excerpt: 'A deep dive into how monetary policy decisions shape market trends and what investors should watch for in the coming quarters.',
-    date: 'Feb 10, 2026',
-    readTime: '5 min read',
-    image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&h=400&fit=crop',
-  },
-  {
-    id: 2,
-    category: 'Personal Finance',
-    title: 'SIP vs Lumpsum: Making the Right Choice in a Volatile Market',
-    excerpt: 'Comparing investment strategies to help you make informed decisions based on your financial goals and risk appetite.',
-    date: 'Feb 8, 2026',
-    readTime: '4 min read',
-    image: 'https://images.unsplash.com/photo-1579532537598-459ecdaf39cc?w=600&h=400&fit=crop',
-  },
-  {
-    id: 3,
-    category: 'Insurance',
-    title: 'Term Insurance in Your 20s: Why Starting Early Matters',
-    excerpt: 'The compounding advantage of early insurance planning and how it fits into a holistic financial strategy.',
-    date: 'Feb 5, 2026',
-    readTime: '3 min read',
-    image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&h=400&fit=crop',
-  },
-];
+interface InsightCard {
+  id: string;
+  type: 'article' | 'analysis' | 'report';
+  category: string;
+  title: string;
+  excerpt: string | null;
+  date: string | null;
+  readTime?: string | null;
+  url?: string | null;
+}
+
+const TYPE_BADGE: Record<string, { label: string; route: (id: string) => string }> = {
+  article: { label: 'Article', route: (id) => `/insights/articles/${id}` },
+  analysis: { label: 'Analysis', route: (id) => `/insights/analysis/${id}` },
+  report: { label: 'Report', route: (id) => `/insights?tab=Reports` },
+};
+
+function useLatestInsights() {
+  return useQuery({
+    queryKey: ['home-insights'],
+    queryFn: async (): Promise<InsightCard[]> => {
+      const [articlesRes, analysisRes, reportsRes] = await Promise.all([
+        supabase
+          .from('articles')
+          .select('id, category, title, excerpt, item_date, published_at, read_time')
+          .eq('status', 'published')
+          .order('item_date', { ascending: false, nullsFirst: false })
+          .limit(1),
+        supabase
+          .from('analyses')
+          .select('id, category, title, excerpt, item_date, published_at')
+          .eq('status', 'published')
+          .order('item_date', { ascending: false, nullsFirst: false })
+          .limit(1),
+        supabase
+          .from('reports')
+          .select('id, report_type, title, description, published_at, file_url')
+          .eq('status', 'published')
+          .order('published_at', { ascending: false, nullsFirst: false })
+          .limit(1),
+      ]);
+
+      const cards: InsightCard[] = [];
+
+      if (articlesRes.data?.[0]) {
+        const a = articlesRes.data[0];
+        cards.push({ id: a.id, type: 'article', category: a.category, title: a.title, excerpt: a.excerpt, date: a.item_date || a.published_at, readTime: a.read_time });
+      }
+      if (analysisRes.data?.[0]) {
+        const a = analysisRes.data[0];
+        cards.push({ id: a.id, type: 'analysis', category: a.category, title: a.title, excerpt: a.excerpt, date: a.item_date || a.published_at });
+      }
+      if (reportsRes.data?.[0]) {
+        const r = reportsRes.data[0];
+        cards.push({ id: r.id, type: 'report', category: r.report_type, title: r.title, excerpt: r.description, date: r.published_at });
+      }
+
+      return cards;
+    },
+    staleTime: 5 * 60 * 1000,
+  });
+}
 
 export const InsightsSection = () => {
   const { t } = useTranslation();
+  const { data: cards = [], isLoading } = useLatestInsights();
 
   return (
     <section className="section-padding bg-muted/30">
@@ -51,7 +89,6 @@ export const InsightsSection = () => {
           className="flex items-end justify-between mb-8"
         >
           <div>
-            <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">{t('insights.label')}</p>
             <h2 className="heading-lg text-foreground">{t('insights.heading')}</h2>
           </div>
           <Link
@@ -63,58 +100,64 @@ export const InsightsSection = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {articles.map((article, index) => (
-            <motion.article
-              key={article.id}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group bg-background rounded-2xl overflow-hidden border border-border/50 hover:border-primary/20 hover:shadow-lg transition-all duration-300"
-            >
-              <div className="relative overflow-hidden aspect-[3/2]">
-                <img
-                  src={article.image}
-                  alt={article.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  loading="lazy"
-                />
-                <span className="absolute top-3 left-3 text-xs font-semibold bg-primary text-primary-foreground px-3 py-1 rounded-full">
-                  {article.category}
-                </span>
+          {isLoading ? (
+            Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="bg-background rounded-2xl overflow-hidden border border-border/50 p-5 space-y-3">
+                <Skeleton className="h-5 w-20" />
+                <Skeleton className="h-5 w-full" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-2/3" />
               </div>
-
-              <div className="p-5">
-                <h3 className="text-base font-semibold text-foreground leading-snug mb-2 group-hover:text-primary transition-colors line-clamp-2">
-                  {article.title}
-                </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-2">
-                  {article.excerpt}
-                </p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                    <span className="inline-flex items-center gap-1">
-                      <Calendar className="w-3.5 h-3.5" /> {article.date}
-                    </span>
-                    <span className="inline-flex items-center gap-1">
-                      <Clock className="w-3.5 h-3.5" /> {article.readTime}
-                    </span>
+            ))
+          ) : (
+            cards.map((card, index) => {
+              const meta = TYPE_BADGE[card.type];
+              const TypeIcon = card.type === 'analysis' ? BarChart3 : card.type === 'report' ? FileText : Newspaper;
+              return (
+                <motion.article
+                  key={card.id}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="group bg-background rounded-2xl overflow-hidden border border-border/50 hover:border-primary/20 hover:shadow-lg transition-all duration-300"
+                >
+                  <div className="p-5">
+                    <div className="flex items-center gap-2 mb-3">
+                      <TypeIcon className="w-4 h-4 text-primary" />
+                      <span className="text-xs font-semibold text-primary uppercase tracking-wider">{meta.label}</span>
+                      <span className="text-xs text-muted-foreground">·</span>
+                      <span className="text-xs text-muted-foreground">{card.category}</span>
+                    </div>
+                    <Link to={meta.route(card.id)}>
+                      <h3 className="text-base font-semibold text-foreground leading-snug mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                        {card.title}
+                      </h3>
+                    </Link>
+                    {card.excerpt && (
+                      <p className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-2">
+                        {card.excerpt}
+                      </p>
+                    )}
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                        {card.date && (
+                          <span className="inline-flex items-center gap-1">
+                            <Calendar className="w-3.5 h-3.5" /> {format(new Date(card.date), 'MMM d, yyyy')}
+                          </span>
+                        )}
+                        {card.readTime && (
+                          <span className="inline-flex items-center gap-1">
+                            <Clock className="w-3.5 h-3.5" /> {card.readTime}
+                          </span>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <button className="p-1.5 rounded-full text-muted-foreground hover:text-red-500 hover:bg-red-500/10 transition-colors" aria-label="Like">
-                      <Heart className="w-4 h-4" />
-                    </button>
-                    <button className="p-1.5 rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors" aria-label="Comment">
-                      <MessageCircle className="w-4 h-4" />
-                    </button>
-                    <button className="p-1.5 rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors" aria-label="Share">
-                      <Share2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </motion.article>
-          ))}
+                </motion.article>
+              );
+            })
+          )}
         </div>
 
         <div className="sm:hidden mt-8 text-center">
