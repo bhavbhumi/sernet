@@ -76,6 +76,7 @@ import AdminPolls from "./pages/admin/engagement/AdminPolls";
 import AdminSurveys from "./pages/admin/engagement/AdminSurveys";
 import AdminReviews from "./pages/admin/engagement/AdminReviews";
 import AdminNewsletter from "./pages/admin/engagement/AdminNewsletter";
+import AdminNewsletterComposer from "./pages/admin/engagement/AdminNewsletterComposer";
 import AdminJobOpenings from "./pages/admin/careers/AdminJobOpenings";
 import AdminApplications from "./pages/admin/careers/AdminApplications";
 import AdminTeamMembers from "./pages/admin/careers/AdminTeamMembers";
@@ -183,6 +184,7 @@ const App = () => (
           <Route path="/admin/engagement/surveys" element={<AdminSurveys />} />
           <Route path="/admin/engagement/reviews" element={<AdminReviews />} />
           <Route path="/admin/engagement/newsletter" element={<AdminNewsletter />} />
+          <Route path="/admin/engagement/newsletter-composer" element={<AdminNewsletterComposer />} />
           <Route path="/admin/careers/openings" element={<AdminJobOpenings />} />
           <Route path="/admin/careers/applications" element={<AdminApplications />} />
           <Route path="/admin/careers/team" element={<AdminTeamMembers />} />
