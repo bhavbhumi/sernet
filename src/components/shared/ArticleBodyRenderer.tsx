@@ -57,7 +57,6 @@ function parseTable(lines: string[]): { headers: string[]; rows: string[][] } | 
     if (lines.length > 1 && /^[\s|:-]+$/.test(lines[1])) {
       dataStart = 2;
     }
-    if (lines.length <= dataStart) return null;
     const rows = lines.slice(dataStart).map(parsePipeRow);
     return { headers, rows };
   }
