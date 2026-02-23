@@ -21,7 +21,6 @@ import SIPCalculator from "./pages/calculators/SIPCalculator";
 import LumpsumCalculator from "./pages/calculators/LumpsumCalculator";
 
 // Other pages
-import MarketOverview from "./pages/MarketOverview";
 import Insights from "./pages/Insights";
 import DownloadsPage from "./pages/DownloadsPage";
 import Calculators from "./pages/Calculators";
@@ -30,14 +29,9 @@ import Services from "./pages/Services";
 import Network from "./pages/Network";
 import Media from "./pages/Media";
 import CSR from "./pages/CSR";
-import Tech from "./pages/Tech";
-import Videos from "./pages/Videos";
 import Complaints from "./pages/Complaints";
-import ComplaintStatus from "./pages/ComplaintStatus";
-import FundTransfer from "./pages/FundTransfer";
 import Philosophy from "./pages/Philosophy";
 import OpenAccount from "./pages/OpenAccount";
-import TradingQnA from "./pages/TradingQnA";
 
 // New pages
 import MarketHolidays from "./pages/MarketHolidays";
@@ -104,7 +98,6 @@ import Sitemap from "./pages/Sitemap";
 
 const queryClient = new QueryClient();
 
-// rebranded: ZConnect → Insights (cache bust)
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -126,12 +119,9 @@ const App = () => (
           <Route path="/calculators/sip" element={<SIPCalculator />} />
           <Route path="/calculators/lumpsum" element={<LumpsumCalculator />} />
           
-          {/* Updates & Resources */}
-          <Route path="/market-overview" element={<MarketOverview />} />
+          {/* Resources */}
           <Route path="/insights" element={<Insights />} />
           <Route path="/downloads" element={<DownloadsPage />} />
-          <Route path="/videos" element={<Videos />} />
-          <Route path="/tradingqna" element={<TradingQnA />} />
           <Route path="/market-holidays" element={<MarketHolidays />} />
           <Route path="/economic-calendar" element={<EconomicCalendar />} />
           <Route path="/calculators" element={<Calculators />} />
@@ -142,14 +132,11 @@ const App = () => (
           <Route path="/network" element={<Network />} />
           <Route path="/media" element={<Media />} />
           <Route path="/csr" element={<CSR />} />
-          <Route path="/tech" element={<Tech />} />
           <Route path="/about/philosophy" element={<Philosophy />} />
           <Route path="/open-account" element={<OpenAccount />} />
           
           {/* Support pages */}
           <Route path="/complaints" element={<Complaints />} />
-          <Route path="/complaints/status" element={<ComplaintStatus />} />
-          <Route path="/fund-transfer" element={<FundTransfer />} />
           
           {/* Legal pages */}
           <Route path="/legal" element={<Legal />} />

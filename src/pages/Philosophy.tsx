@@ -21,7 +21,7 @@ const Philosophy = () => {
     },
     {
       title: 'Education over selling',
-      description: 'We believe informed investors make better decisions. That\'s why we invest heavily in free educational content through Varsity and TradingQ&A.',
+      description: 'We believe informed investors make better decisions. That\'s why we invest heavily in free educational content through Findemy and Insights.',
     },
     {
       title: 'Simplicity over complexity',
