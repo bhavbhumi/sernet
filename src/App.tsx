@@ -97,6 +97,7 @@ import AdminEconomicEvents from "./pages/admin/calendars/AdminEconomicEvents";
 import AdminImportEconomicEvents from "./pages/admin/calendars/AdminImportEconomicEvents";
 import AdminCorporateEvents from "./pages/admin/calendars/AdminCorporateEvents";
 import AdminLegal from "./pages/admin/legal/AdminLegal";
+import AdminInvestorCharter from "./pages/admin/legal/AdminInvestorCharter";
 import Sitemap from "./pages/Sitemap";
 
 const queryClient = new QueryClient();
@@ -208,6 +209,7 @@ const App = () => (
           <Route path="/admin/calendars/import-economic" element={<AdminImportEconomicEvents />} />
           <Route path="/admin/calendars/corporate" element={<AdminCorporateEvents />} />
           <Route path="/admin/legal" element={<AdminLegal />} />
+          <Route path="/admin/investor-charter" element={<AdminInvestorCharter />} />
 
           {/* Sitemap */}
           <Route path="/sitemap" element={<Sitemap />} />
