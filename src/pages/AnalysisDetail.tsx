@@ -144,7 +144,7 @@ export default function AnalysisDetail() {
   }
 
   const isImageUrl = (url: string | null) => url && /\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i.test(url);
-  const sidebarImageUrl = isImageUrl(analysis.thumbnail_url) ? analysis.thumbnail_url : isImageUrl(analysis.media_url) ? analysis.media_url : null;
+  const sidebarImageUrl = analysis.thumbnail_url || (isImageUrl(analysis.media_url) ? analysis.media_url : null);
   const Icon = iconMap[analysis.icon_name ?? 'TrendingUp'] ?? TrendingUp;
   const dateStr = (analysis.item_date || analysis.published_at)
     ? new Date(analysis.item_date || analysis.published_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })
@@ -208,7 +208,7 @@ export default function AnalysisDetail() {
               {sidebarImageUrl && (
                 <div className="w-64 mb-4">
                   <div className="rounded-xl overflow-hidden border border-border mb-3">
-                    <img src={sidebarImageUrl} alt={analysis.title} className="w-full object-cover" />
+                    <img src={sidebarImageUrl} alt={analysis.title} className="w-full object-cover" onError={(e) => { (e.target as HTMLElement).parentElement!.style.display = 'none'; }} />
                   </div>
                 </div>
               )}
@@ -270,14 +270,14 @@ export default function AnalysisDetail() {
             {/* Media image — inline when no TOC sidebar */}
             {toc.length < 2 && sidebarImageUrl && (
               <div className="mb-8 rounded-xl overflow-hidden border border-border">
-                <img src={sidebarImageUrl} alt={analysis.title} className="w-full object-cover max-h-80" />
+                <img src={sidebarImageUrl} alt={analysis.title} className="w-full object-cover max-h-80" onError={(e) => { (e.target as HTMLElement).parentElement!.style.display = 'none'; }} />
               </div>
             )}
 
             {/* Media image — mobile when TOC exists (sidebar hidden on mobile) */}
             {toc.length >= 2 && sidebarImageUrl && (
               <div className="lg:hidden mb-8 rounded-xl overflow-hidden border border-border">
-                <img src={sidebarImageUrl} alt={analysis.title} className="w-full object-cover max-h-64" />
+                <img src={sidebarImageUrl} alt={analysis.title} className="w-full object-cover max-h-64" onError={(e) => { (e.target as HTMLElement).parentElement!.style.display = 'none'; }} />
               </div>
             )}
 
