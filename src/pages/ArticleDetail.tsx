@@ -196,6 +196,8 @@ export default function ArticleDetail() {
     </button>
   );
 
+  const isImageUrl = (url: string | null) => url && /\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i.test(url);
+  const sidebarImageUrl = isImageUrl(article.thumbnail_url) ? article.thumbnail_url : isImageUrl(article.media_url) ? article.media_url : null;
   const hasMedia = article.media_url && (article.format === 'Text' || ['Audio', 'Video', 'Image'].includes(article.format));
 
   return (
@@ -232,9 +234,9 @@ export default function ArticleDetail() {
                       <video controls className="w-full h-full" src={article.media_url} />
                     </div>
                   )}
-                  {article.media_url && (article.format === 'Image' || article.format === 'Text') && /\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i.test(article.media_url) && (
+                  {sidebarImageUrl && (
                     <div className="rounded-xl overflow-hidden border border-border mb-3">
-                      <img src={article.media_url} alt={article.title} className="w-full object-cover" />
+                      <img src={sidebarImageUrl} alt={article.title} className="w-full object-cover" />
                     </div>
                   )}
                 </div>
@@ -275,9 +277,9 @@ export default function ArticleDetail() {
             {/* Media (mobile / when no TOC sidebar) */}
             {toc.length < 2 && (
               <>
-                {article.media_url && (article.format === 'Text' || article.format === 'Image') && /\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i.test(article.media_url) && (
+                {sidebarImageUrl && (
                   <div className="mb-8 rounded-xl overflow-hidden border border-border">
-                    <img src={article.media_url} alt={article.title} className="w-full object-cover max-h-80" />
+                    <img src={sidebarImageUrl} alt={article.title} className="w-full object-cover max-h-80" />
                   </div>
                 )}
                 {article.media_url && article.format === 'Audio' && (
@@ -296,9 +298,9 @@ export default function ArticleDetail() {
             {/* Mobile: media shown inline when TOC exists */}
             {toc.length >= 2 && (
               <div className="lg:hidden mb-8">
-                {article.media_url && (article.format === 'Text' || article.format === 'Image') && /\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i.test(article.media_url) && (
+                {sidebarImageUrl && (
                   <div className="rounded-xl overflow-hidden border border-border mb-4">
-                    <img src={article.media_url} alt={article.title} className="w-full object-cover max-h-64" />
+                    <img src={sidebarImageUrl} alt={article.title} className="w-full object-cover max-h-64" />
                   </div>
                 )}
                 {article.media_url && article.format === 'Audio' && (
