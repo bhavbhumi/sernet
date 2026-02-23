@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SERNET Group — SSO & Client Onboarding Architecture Plan</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      color: #1a1a2e;
+      line-height: 1.7;
+      padding: 48px;
+      max-width: 900px;
+      margin: 0 auto;
+      background: #fff;
+    }
+
+    @media print {
+      body { padding: 24px; font-size: 11pt; }
+      .page-break { page-break-before: always; }
+      .no-print { display: none; }
+    }
+
+    .header {
+      border-bottom: 3px solid #0f4c81;
+      padding-bottom: 24px;
+      margin-bottom: 32px;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #0f4c81;
+      margin-bottom: 4px;
+    }
+
+    .header .subtitle {
+      font-size: 16px;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    .header .meta {
+      margin-top: 12px;
+      font-size: 13px;
+      color: #94a3b8;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #0f4c81;
+      margin: 32px 0 16px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1e293b;
+      margin: 20px 0 10px;
+    }
+
+    p, li { font-size: 14px; color: #334155; }
+    
+    ul, ol { padding-left: 24px; margin-bottom: 12px; }
+    li { margin-bottom: 6px; }
+
+    .card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 16px 0;
+    }
+
+    .card.highlight {
+      border-left: 4px solid #0f4c81;
+    }
+
+    .card h4 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #0f4c81;
+      margin-bottom: 8px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 13px;
+    }
+
+    th {
+      background: #0f4c81;
+      color: white;
+      padding: 10px 14px;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    tr:nth-child(even) td { background: #f8fafc; }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .badge.blue { background: #dbeafe; color: #1e40af; }
+    .badge.green { background: #dcfce7; color: #166534; }
+    .badge.amber { background: #fef3c7; color: #92400e; }
+    .badge.red { background: #fee2e2; color: #991b1b; }
+
+    .flow-diagram {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 24px;
+      margin: 16px 0;
+      text-align: center;
+      font-family: monospace;
+      font-size: 13px;
+      line-height: 2;
+      white-space: pre;
+      overflow-x: auto;
+    }
+
+    .checklist li {
+      list-style: none;
+      padding-left: 4px;
+    }
+
+    .checklist li::before {
+      content: "☐ ";
+      font-size: 14px;
+    }
+
+    .print-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0f4c81;
+      color: white;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(15,76,129,0.3);
+    }
+
+    .print-btn:hover { background: #0d3f6b; }
+
+    footer {
+      margin-top: 48px;
+      padding-top: 16px;
+      border-top: 1px solid #e2e8f0;
+      font-size: 12px;
+      color: #94a3b8;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">📄 Save as PDF</button>
+
+<div class="header">
+  <h1>SSO & Client Onboarding Architecture Plan</h1>
+  <p class="subtitle">SERNET Group — Unified Identity & Business Integration</p>
+  <p class="meta">Document Version: 1.0 &nbsp;|&nbsp; Prepared: February 2026 &nbsp;|&nbsp; Classification: Internal</p>
+</div>
+
+<!-- ───────────────── SECTION 1 ───────────────── -->
+<h2>1. Executive Summary</h2>
+<p>This document outlines the architecture for a unified Single Sign-On (SSO) system across the SERNET Group ecosystem. The design establishes <strong>Azure AD B2C</strong> as the central Identity Hub and <strong>Zoho CRM</strong> as the Business Hub, enabling seamless client onboarding, cross-platform authentication, and centralised CRM management across all brand applications.</p>
+
+<div class="card highlight">
+  <h4>Core Principle</h4>
+  <p><strong>One identity, many experiences.</strong> A client onboards once via TickFunds and gains authenticated access to all SERNET platforms — investment management, education, insurance, and marketing resources.</p>
+</div>
+
+<!-- ───────────────── SECTION 2 ───────────────── -->
+<h2>2. Ecosystem Overview</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Application</th>
+      <th>Platform</th>
+      <th>Role</th>
+      <th>Auth Method</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>TickFunds</strong></td>
+      <td>Azure (.NET / React)</td>
+      <td>Primary onboarding &amp; Investment management</td>
+      <td>Azure AD B2C (native)</td>
+    </tr>
+    <tr>
+      <td><strong>Findemy</strong></td>
+      <td>WordPress LMS</td>
+      <td>Financial education &amp; courses</td>
+      <td>OIDC Plugin → Azure AD B2C</td>
+    </tr>
+    <tr>
+      <td><strong>Tushil</strong></td>
+      <td>TBD (web app)</td>
+      <td>Insurance advisory &amp; policy management</td>
+      <td>OIDC/MSAL → Azure AD B2C</td>
+    </tr>
+    <tr>
+      <td><strong>SERNET Website</strong></td>
+      <td>Lovable (React/Vite)</td>
+      <td>Marketing, insights, gated content</td>
+      <td>OIDC → Azure AD B2C</td>
+    </tr>
+    <tr>
+      <td><strong>Zoho CRM</strong></td>
+      <td>Zoho One</td>
+      <td>Client lifecycle &amp; business operations</td>
+      <td>Webhook/API sync (not auth)</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ───────────────── SECTION 3 ───────────────── -->
+<h2>3. Architecture Design</h2>
+
+<h3>3.1 Identity Hub — Azure AD B2C</h3>
+<p>Azure AD B2C serves as the <strong>single source of truth</strong> for all user identities across the ecosystem. It was chosen because:</p>
+<ul>
+  <li>TickFunds (the primary onboarding app) is already Azure-based</li>
+  <li>Native OIDC/OAuth 2.0 support for all app types</li>
+  <li>Built-in MFA, conditional access, and custom user flows</li>
+  <li>Custom claims/attributes for role &amp; tier management</li>
+  <li>Enterprise-grade compliance (SOC 2, ISO 27001)</li>
+</ul>
+
+<h3>3.2 Business Hub — Zoho CRM</h3>
+<p>Zoho CRM manages the <strong>business lifecycle</strong> of clients — not their authentication. It receives data downstream from TickFunds and tracks:</p>
+<ul>
+  <li>Lead → Client conversion pipeline</li>
+  <li>Product subscriptions &amp; AUM tracking</li>
+  <li>Communication history &amp; engagement scoring</li>
+  <li>Cross-sell/up-sell opportunities across brands</li>
+</ul>
+
+<h3>3.3 Data Flow Architecture</h3>
+<div class="flow-diagram">
+┌─────────────────────────────────────────────────────────┐
+│                   AZURE AD B2C                          │
+│              (Central Identity Hub)                     │
+│                                                         │
+│  Custom Attributes:                                     │
+│  • client_type (Retail/HNW/NRI/Institutional)          │
+│  • membership_tier (Free/Silver/Gold/Platinum)          │
+│  • onboarded_at, kyc_status, referral_code             │
+│  • app_access[] (tickfunds/findemy/tushil/sernet)      │
+└────┬──────────┬──────────┬──────────┬───────────────────┘
+     │ OIDC     │ OIDC     │ OIDC     │ OIDC
+     ▼          ▼          ▼          ▼
+┌─────────┐ ┌────────┐ ┌───────┐ ┌────────┐
+│TickFunds│ │Findemy │ │Tushil │ │ SERNET │
+│(Primary)│ │ (LMS)  │ │(Ins.) │ │ (Mktg) │
+└────┬────┘ └────────┘ └───────┘ └────────┘
+     │
+     │ Webhook (on onboard)
+     ▼
+┌──────────────────────┐
+│     ZOHO CRM         │
+│  (Business Hub)      │
+│                      │
+│  Contact record:     │
+│  • Name, Email, Phone│
+│  • Client Type       │
+│  • Products Active   │
+│  • AUM, SIP Amount   │
+│  • Referral Source    │
+└──────────────────────┘
+</div>
+
+<!-- ───────────────── SECTION 4 ───────────────── -->
+<div class="page-break"></div>
+<h2>4. Implementation Phases</h2>
+
+<h3>Phase 1 — Azure AD B2C Tenant Setup <span class="badge blue">Foundation</span></h3>
+<p><strong>Duration:</strong> 1–2 weeks &nbsp;|&nbsp; <strong>Priority:</strong> Critical</p>
+<div class="card">
+  <h4>Deliverables</h4>
+  <ul class="checklist">
+    <li>Create Azure AD B2C tenant (e.g., sernetgroup.onmicrosoft.com)</li>
+    <li>Configure custom attributes: client_type, membership_tier, kyc_status, onboarded_at, referral_code, app_access</li>
+    <li>Create user flows: Sign-up/Sign-in, Password Reset, Profile Edit</li>
+    <li>Register applications (one per brand app — TickFunds, Findemy, Tushil, SERNET)</li>
+    <li>Configure redirect URIs for each application</li>
+    <li>Set up MFA policy (SMS/Authenticator)</li>
+    <li>Configure token claims to include custom attributes</li>
+    <li>Test OIDC token issuance with Postman/curl</li>
+  </ul>
+</div>
+
+<h3>Phase 2 — TickFunds Native Integration <span class="badge green">Primary App</span></h3>
+<p><strong>Duration:</strong> 2–3 weeks &nbsp;|&nbsp; <strong>Priority:</strong> Critical</p>
+<div class="card">
+  <h4>Deliverables</h4>
+  <ul class="checklist">
+    <li>Integrate MSAL.js / MSAL-React into TickFunds</li>
+    <li>Implement sign-up flow that captures: name, email, phone, PAN, client_type</li>
+    <li>On successful onboard → write custom attributes to B2C profile</li>
+    <li>Configure silent token refresh for seamless sessions</li>
+    <li>Implement role-based access within TickFunds using B2C claims</li>
+    <li>Add KYC status tracking (pending → verified → active)</li>
+    <li>Test full onboarding flow end-to-end</li>
+  </ul>
+</div>
+
+<h3>Phase 3 — TickFunds → Zoho CRM Sync <span class="badge amber">Integration</span></h3>
+<p><strong>Duration:</strong> 1–2 weeks &nbsp;|&nbsp; <strong>Priority:</strong> High</p>
+<div class="card">
+  <h4>Deliverables</h4>
+  <ul class="checklist">
+    <li>Create Zoho CRM OAuth app &amp; generate refresh token</li>
+    <li>Build backend webhook/edge function: triggered on TickFunds onboarding</li>
+    <li>Map fields: B2C profile → Zoho Contact (name, email, phone, client_type, onboarded_at)</li>
+    <li>Implement upsert logic (create if new, update if existing — match on email)</li>
+    <li>Add Zoho custom fields: azure_b2c_oid, membership_tier, products_active[]</li>
+    <li>Set up Zoho automation: auto-assign to relationship manager based on client_type</li>
+    <li>Implement error handling &amp; retry logic for failed syncs</li>
+    <li>Build sync status dashboard (optional: in SERNET admin panel)</li>
+  </ul>
+</div>
+
+<h3>Phase 4 — SERNET Website SSO <span class="badge blue">Marketing Site</span></h3>
+<p><strong>Duration:</strong> 1–2 weeks &nbsp;|&nbsp; <strong>Priority:</strong> Medium</p>
+<div class="card">
+  <h4>Deliverables</h4>
+  <ul class="checklist">
+    <li>Install OIDC library (e.g., oidc-client-ts or @azure/msal-browser)</li>
+    <li>Configure B2C app registration redirect URI for SERNET</li>
+    <li>Add "Sign In" button to header (redirect to B2C login page)</li>
+    <li>On token received → create/update local profile in Lovable Cloud DB</li>
+    <li>Implement gated content: premium articles, reports, tools for authenticated users</li>
+    <li>Show personalised dashboard: tier, benefits, cross-app links</li>
+    <li>Handle token refresh &amp; logout (clear B2C session + local)</li>
+    <li>Preserve existing admin auth (internal) — separate from client SSO</li>
+  </ul>
+</div>
+
+<div class="page-break"></div>
+
+<h3>Phase 5 — Findemy (WordPress) SSO <span class="badge green">LMS</span></h3>
+<p><strong>Duration:</strong> 1–2 weeks &nbsp;|&nbsp; <strong>Priority:</strong> Medium</p>
+<div class="card">
+  <h4>Deliverables</h4>
+  <ul class="checklist">
+    <li>Install WordPress OIDC plugin (e.g., "OpenID Connect Generic" or "miniOrange")</li>
+    <li>Configure plugin with B2C tenant endpoints (authorize, token, userinfo, JWKS)</li>
+    <li>Map B2C claims to WordPress user fields (display name, email, role)</li>
+    <li>Configure auto-provisioning: create WP user on first B2C login</li>
+    <li>Map membership_tier → WP role (subscriber, student, premium_student)</li>
+    <li>Grant course access based on tier/client_type claims</li>
+    <li>Test SSO flow: SERNET → "Learn on Findemy" → auto-login → course access</li>
+    <li>Disable native WP registration (force B2C sign-up)</li>
+  </ul>
+</div>
+
+<h3>Phase 6 — Tushil (Insurance) SSO <span class="badge amber">Insurance App</span></h3>
+<p><strong>Duration:</strong> 2–3 weeks &nbsp;|&nbsp; <strong>Priority:</strong> Medium</p>
+<div class="card">
+  <h4>Deliverables</h4>
+  <ul class="checklist">
+    <li>Integrate MSAL or OIDC client into Tushil app</li>
+    <li>Configure B2C app registration for Tushil</li>
+    <li>Pre-populate insurance forms with B2C profile data (name, DOB, contact)</li>
+    <li>Sync insurance product data back to Zoho CRM contact record</li>
+    <li>Implement cross-sell triggers: if client has investment but no insurance → prompt</li>
+    <li>Test SSO flow: TickFunds → "Get Insurance" → auto-login on Tushil</li>
+  </ul>
+</div>
+
+<h3>Phase 7 — Unified Client Dashboard <span class="badge red">Advanced</span></h3>
+<p><strong>Duration:</strong> 3–4 weeks &nbsp;|&nbsp; <strong>Priority:</strong> Low (future)</p>
+<div class="card">
+  <h4>Deliverables</h4>
+  <ul class="checklist">
+    <li>Build unified dashboard on SERNET (or standalone micro-app)</li>
+    <li>Show cross-platform status: investments, courses enrolled, insurance policies</li>
+    <li>Aggregate data from TickFunds API, Findemy API, Tushil API</li>
+    <li>Membership tier management: upgrade/downgrade with Razorpay/Stripe</li>
+    <li>Referral programme tracking &amp; rewards</li>
+    <li>Notification centre (cross-app alerts)</li>
+    <li>Profile management synced back to B2C</li>
+  </ul>
+</div>
+
+<!-- ───────────────── SECTION 5 ───────────────── -->
+<div class="page-break"></div>
+<h2>5. Custom Claims &amp; Token Schema</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Claim Name</th>
+      <th>Type</th>
+      <th>Source</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>client_type</td><td>String</td><td>TickFunds onboard</td><td>Retail / HNW / NRI / Institutional</td></tr>
+    <tr><td>membership_tier</td><td>String</td><td>TickFunds / Payment</td><td>Free / Silver / Gold / Platinum</td></tr>
+    <tr><td>kyc_status</td><td>String</td><td>TickFunds</td><td>pending / verified / active / suspended</td></tr>
+    <tr><td>onboarded_at</td><td>DateTime</td><td>TickFunds</td><td>Timestamp of first onboarding</td></tr>
+    <tr><td>referral_code</td><td>String</td><td>TickFunds</td><td>Unique referral code for the client</td></tr>
+    <tr><td>app_access</td><td>String[]</td><td>Admin / Auto</td><td>List of apps the user can access</td></tr>
+    <tr><td>rm_id</td><td>String</td><td>Zoho sync</td><td>Assigned relationship manager ID</td></tr>
+  </tbody>
+</table>
+
+<!-- ───────────────── SECTION 6 ───────────────── -->
+<h2>6. Security Considerations</h2>
+<ul>
+  <li><strong>Token validation:</strong> Every app must validate JWT signature against B2C JWKS endpoint</li>
+  <li><strong>Scope separation:</strong> Each app gets its own B2C app registration with specific scopes</li>
+  <li><strong>Refresh tokens:</strong> Use rotating refresh tokens; max lifetime 24 hours</li>
+  <li><strong>MFA:</strong> Enforced for HNW and Institutional clients; optional for Retail</li>
+  <li><strong>CORS:</strong> Strict origin allowlisting per app domain</li>
+  <li><strong>Webhook security:</strong> TickFunds → Zoho webhook signed with HMAC-SHA256</li>
+  <li><strong>Data residency:</strong> B2C tenant in India region (Central India) for compliance</li>
+  <li><strong>Audit logging:</strong> All auth events logged in Azure Monitor + forwarded to Zoho</li>
+</ul>
+
+<!-- ───────────────── SECTION 7 ───────────────── -->
+<h2>7. Key Dependencies &amp; Prerequisites</h2>
+<table>
+  <thead>
+    <tr><th>Dependency</th><th>Owner</th><th>Status</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Azure AD B2C tenant provisioning</td><td>DevOps / Azure Admin</td><td>☐ Not started</td></tr>
+    <tr><td>TickFunds MSAL integration</td><td>TickFunds Dev Team</td><td>☐ Not started</td></tr>
+    <tr><td>Zoho CRM API access (OAuth app)</td><td>Zoho Admin</td><td>☐ Not started</td></tr>
+    <tr><td>Zoho custom fields creation</td><td>Zoho Admin</td><td>☐ Not started</td></tr>
+    <tr><td>WordPress OIDC plugin license</td><td>Findemy Admin</td><td>☐ Not started</td></tr>
+    <tr><td>Domain DNS for B2C custom domain</td><td>DevOps</td><td>☐ Not started</td></tr>
+    <tr><td>SSL certificates for all app domains</td><td>DevOps</td><td>☐ Not started</td></tr>
+  </tbody>
+</table>
+
+<!-- ───────────────── SECTION 8 ───────────────── -->
+<h2>8. Timeline Summary</h2>
+<table>
+  <thead>
+    <tr><th>Phase</th><th>Duration</th><th>Cumulative</th><th>Priority</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1. Azure AD B2C Setup</td><td>1–2 weeks</td><td>Week 2</td><td><span class="badge red">Critical</span></td></tr>
+    <tr><td>2. TickFunds Integration</td><td>2–3 weeks</td><td>Week 5</td><td><span class="badge red">Critical</span></td></tr>
+    <tr><td>3. Zoho CRM Sync</td><td>1–2 weeks</td><td>Week 7</td><td><span class="badge amber">High</span></td></tr>
+    <tr><td>4. SERNET SSO</td><td>1–2 weeks</td><td>Week 9</td><td><span class="badge blue">Medium</span></td></tr>
+    <tr><td>5. Findemy SSO</td><td>1–2 weeks</td><td>Week 11</td><td><span class="badge blue">Medium</span></td></tr>
+    <tr><td>6. Tushil SSO</td><td>2–3 weeks</td><td>Week 14</td><td><span class="badge blue">Medium</span></td></tr>
+    <tr><td>7. Unified Dashboard</td><td>3–4 weeks</td><td>Week 18</td><td><span class="badge green">Future</span></td></tr>
+  </tbody>
+</table>
+
+<p style="margin-top: 16px;"><strong>Estimated total:</strong> 14–18 weeks for full implementation (Phases 1–7)</p>
+
+<footer>
+  <p>SERNET Group — Confidential &nbsp;|&nbsp; SSO Architecture Plan v1.0 &nbsp;|&nbsp; February 2026</p>
+</footer>
+
+</body>
+</html>
