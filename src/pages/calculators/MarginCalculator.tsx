@@ -130,7 +130,7 @@ const MarginCalculator = () => {
               <div className="mt-6 p-4 bg-primary/10 rounded-lg">
                 <p className="text-sm text-muted-foreground">
                   <strong>Note:</strong> Margin requirements may vary based on stock volatility 
-                  and exchange regulations. Always check the actual margin required in Kite 
+                  and exchange regulations. Always check the actual margin required in Choice FinX 
                   before placing orders.
                 </p>
               </div>

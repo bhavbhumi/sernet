@@ -36,19 +36,19 @@ const supportLinks = [
     icon: Search,
     title: 'Support portal',
     description: 'Search our knowledge base with over 2000+ support articles',
-    link: '#',
+    link: '/support',
   },
   {
     icon: MessageCircle,
     title: 'Track tickets',
     description: 'Track existing tickets or raise a new support ticket',
-    link: '#',
+    link: '/contact?tab=Ask+Us',
   },
   {
     icon: FileText,
-    title: 'Z-Connect',
-    description: 'Read our official blog for updates and tutorials',
-    link: '#',
+    title: 'Insights',
+    description: 'Read our articles, analysis, and market updates',
+    link: '/insights',
   },
 ];
 
