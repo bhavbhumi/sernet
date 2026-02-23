@@ -202,6 +202,14 @@ export default function AnalysisDetail() {
           {/* LEFT: TOC sidebar */}
           {toc.length >= 2 && (
             <div className="shrink-0 hidden lg:block sticky top-24 self-start">
+              {/* Media at top of sidebar */}
+              {analysis.media_url && /\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i.test(analysis.media_url) && (
+                <div className="w-64 mb-4">
+                  <div className="rounded-xl overflow-hidden border border-border mb-3">
+                    <img src={analysis.media_url} alt={analysis.title} className="w-full object-cover" />
+                  </div>
+                </div>
+              )}
               <TableOfContents toc={toc} activeSlug={activeSlug} />
             </div>
           )}
@@ -257,10 +265,17 @@ export default function AnalysisDetail() {
               </div>
             )}
 
-            {/* Media image */}
-            {analysis.media_url && /\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i.test(analysis.media_url) && (
+            {/* Media image — inline when no TOC sidebar */}
+            {toc.length < 2 && analysis.media_url && /\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i.test(analysis.media_url) && (
               <div className="mb-8 rounded-xl overflow-hidden border border-border">
                 <img src={analysis.media_url} alt={analysis.title} className="w-full object-cover max-h-80" />
+              </div>
+            )}
+
+            {/* Media image — mobile when TOC exists (sidebar hidden on mobile) */}
+            {toc.length >= 2 && analysis.media_url && /\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i.test(analysis.media_url) && (
+              <div className="lg:hidden mb-8 rounded-xl overflow-hidden border border-border">
+                <img src={analysis.media_url} alt={analysis.title} className="w-full object-cover max-h-64" />
               </div>
             )}
 
