@@ -556,7 +556,7 @@ export const ReviewsContent = () => {
             <a href="https://g.page/r/sernet/review" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-border text-sm font-medium text-foreground hover:border-primary hover:text-primary transition-colors">
               Review on Google <ArrowRight className="w-3.5 h-3.5" />
             </a>
-            <a href="https://www.facebook.com/sernetindia" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-border text-sm font-medium text-foreground hover:border-primary hover:text-primary transition-colors">
+            <a href="https://www.facebook.com/sernetfspl/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-border text-sm font-medium text-foreground hover:border-primary hover:text-primary transition-colors">
               Review on Facebook <ArrowRight className="w-3.5 h-3.5" />
             </a>
           </div>

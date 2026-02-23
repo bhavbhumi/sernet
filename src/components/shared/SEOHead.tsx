@@ -24,10 +24,10 @@ export const SEOHead = ({ title, description, path = '/', type = 'website', json
     foundingDate: '1989',
     areaServed: 'India',
     sameAs: [
-      'https://twitter.com/sernetindia',
-      'https://instagram.com/sernetindia',
-      'https://linkedin.com/company/sernetindia',
-      'https://youtube.com/@sernetindia',
+      'https://www.instagram.com/sernetfspl',
+      'https://www.youtube.com/@sernetfspl',
+      'https://www.linkedin.com/company/sernetfspl/',
+      'https://www.facebook.com/sernetfspl/',
     ],
   };
 
