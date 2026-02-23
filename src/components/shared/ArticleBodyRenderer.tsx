@@ -42,17 +42,35 @@ function renderInline(text: string): React.ReactNode[] {
   });
 }
 
-// Parse a markdown pipe-table block into header + rows
+// Parse a markdown pipe-table OR tab-separated table block
 function parseTable(lines: string[]): { headers: string[]; rows: string[][] } | null {
   if (lines.length < 2) return null;
-  const parsePipeRow = (line: string) =>
-    line.replace(/^\|/, '').replace(/\|$/, '').split('|').map(c => c.trim());
 
-  const headers = parsePipeRow(lines[0]);
-  // line[1] should be the separator like |---|---|
-  if (!/^[\s|:-]+$/.test(lines[1])) return null;
-  const rows = lines.slice(2).map(parsePipeRow);
-  return { headers, rows };
+  // Try pipe-delimited first
+  if (lines[0].includes('|')) {
+    const parsePipeRow = (line: string) =>
+      line.replace(/^\|/, '').replace(/\|$/, '').split('|').map(c => c.trim());
+    const headers = parsePipeRow(lines[0]);
+    if (headers.length < 2) return null;
+    // Check for separator row (|---|---|) — allow it to be missing for pasted tables
+    let dataStart = 1;
+    if (lines.length > 1 && /^[\s|:-]+$/.test(lines[1])) {
+      dataStart = 2;
+    }
+    if (lines.length <= dataStart) return null;
+    const rows = lines.slice(dataStart).map(parsePipeRow);
+    return { headers, rows };
+  }
+
+  // Try tab-separated (common when pasting from Excel/web)
+  if (lines[0].includes('\t')) {
+    const headers = lines[0].split('\t').map(c => c.trim());
+    if (headers.length < 2) return null;
+    const rows = lines.slice(1).map(l => l.split('\t').map(c => c.trim()));
+    return { headers, rows };
+  }
+
+  return null;
 }
 
 // Render a single line as a React node
@@ -173,19 +191,29 @@ export function ArticleBodyRenderer({ body }: Props) {
   let i = 0;
 
   while (i < lines.length) {
-    // Detect table block: line starts with |
-    if (lines[i].trim().startsWith('|')) {
+    // Detect table block: line contains pipes or tabs (potential table)
+    const lineT = lines[i].trim();
+    const isPipeRow = lineT.startsWith('|') || (lineT.includes('|') && lineT.split('|').length >= 3);
+    const isTabRow = lineT.includes('\t') && lineT.split('\t').length >= 2;
+
+    if (isPipeRow || isTabRow) {
       const tableStart = i;
       const tableLines: string[] = [];
-      while (i < lines.length && lines[i].trim().startsWith('|')) {
-        tableLines.push(lines[i]);
-        i++;
+      while (i < lines.length) {
+        const lt = lines[i].trim();
+        const matchesPipe = isPipeRow && (lt.startsWith('|') || (lt.includes('|') && lt.split('|').length >= 3) || /^[\s|:-]+$/.test(lt));
+        const matchesTab = isTabRow && lt.includes('\t');
+        if (matchesPipe || matchesTab) {
+          tableLines.push(lines[i]);
+          i++;
+        } else {
+          break;
+        }
       }
       const table = renderTable(tableLines, tableStart);
       if (table) {
         elements.push(table);
       } else {
-        // Not a valid table, render as normal lines
         tableLines.forEach((line, idx) => elements.push(renderLine(line, tableStart + idx)));
       }
     } else {
