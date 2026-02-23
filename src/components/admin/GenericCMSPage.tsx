@@ -16,6 +16,7 @@ import { Plus, Pencil, Trash2, Search, Eye, EyeOff, Star, ChevronLeft, ChevronRi
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { FieldInfoTooltip } from '@/components/admin/FieldInfoTooltip';
+import { logAudit } from '@/lib/auditLog';
 
 export interface FieldDef {
   key: string;
@@ -133,18 +134,30 @@ export function GenericCMSPage({
       : await db(tableName).insert([payload]);
 
     if (error) toast({ title: 'Error', description: error.message, variant: 'destructive' });
-    else { toast({ title: editItem ? 'Updated successfully' : 'Created successfully' }); setDialogOpen(false); fetchItems(); }
+    else {
+      logAudit({
+        action: editItem ? 'update' : 'create',
+        entity_type: tableName,
+        entity_id: editItem ? String(editItem.id) : undefined,
+        details: { title: form.title || form.question || form.name || '' },
+      });
+      toast({ title: editItem ? 'Updated successfully' : 'Created successfully' }); setDialogOpen(false); fetchItems();
+    }
     setSaving(false);
   };
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this item?')) return;
+    const item = items.find(i => String(i.id) === id);
     await db(tableName).delete().eq('id', id);
+    logAudit({ action: 'delete', entity_type: tableName, entity_id: id, details: { title: item?.title || '' } });
     fetchItems();
   };
 
   const toggleFeatured = async (item: Record<string, unknown>) => {
-    await db(tableName).update({ is_featured: !item.is_featured }).eq('id', item.id as string);
+    const newVal = !item.is_featured;
+    await db(tableName).update({ is_featured: newVal }).eq('id', item.id as string);
+    logAudit({ action: newVal ? 'feature' : 'unfeature', entity_type: tableName, entity_id: String(item.id) });
     fetchItems();
   };
 
@@ -155,6 +168,7 @@ export function GenericCMSPage({
       status: newStatus,
       ...(newStatus === 'published' && !existingDate ? { published_at: new Date().toISOString() } : {}),
     }).eq('id', item.id as string);
+    logAudit({ action: newStatus === 'published' ? 'publish' : 'unpublish', entity_type: tableName, entity_id: String(item.id), details: { title: item.title || '' } });
     fetchItems();
   };
 

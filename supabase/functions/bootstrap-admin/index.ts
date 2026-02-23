@@ -57,6 +57,19 @@ Deno.serve(async (req) => {
 
     if (roleError) throw roleError;
 
+    // Audit log
+    await supabaseAdmin.from('audit_logs').insert({
+      action: 'signup',
+      entity_type: 'user_roles',
+      entity_id: authData.user.id,
+      user_id: authData.user.id,
+      user_email: email,
+      source: 'edge_function',
+      ip_address: req.headers.get('x-forwarded-for') || req.headers.get('cf-connecting-ip') || 'unknown',
+      user_agent: req.headers.get('user-agent') || '',
+      details: { role: 'super_admin', name: name || 'Super Admin' },
+    });
+
     return new Response(
       JSON.stringify({ success: true, message: 'Super admin created successfully.' }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },

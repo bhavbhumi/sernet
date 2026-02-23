@@ -196,6 +196,48 @@ Deno.serve(async (req) => {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 
+    // Extract caller info for audit
+    const authHeader = req.headers.get('authorization') ?? '';
+    const callerIp = req.headers.get('x-forwarded-for') || req.headers.get('cf-connecting-ip') || 'unknown';
+    const callerUA = req.headers.get('user-agent') || '';
+
+    // Decode JWT to get user info (best-effort)
+    let callerUserId: string | null = null;
+    let callerEmail: string | null = null;
+    try {
+      const token = authHeader.replace('Bearer ', '');
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      callerUserId = payload.sub || null;
+      callerEmail = payload.email || null;
+    } catch {}
+
+    // Helper to write audit log
+    const writeAuditLog = async (logAction: string, details: Record<string, unknown>) => {
+      try {
+        await fetch(`${supabaseUrl}/rest/v1/audit_logs`, {
+          method: 'POST',
+          headers: {
+            'apikey': supabaseKey,
+            'Authorization': `Bearer ${supabaseKey}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal',
+          },
+          body: JSON.stringify({
+            action: logAction,
+            entity_type: 'articles',
+            source: 'edge_function',
+            user_id: callerUserId,
+            user_email: callerEmail,
+            ip_address: callerIp,
+            user_agent: callerUA,
+            details,
+          }),
+        });
+      } catch (e) {
+        console.error('Audit log write failed:', e);
+      }
+    };
+
     // Action: scrape blog listing to get all article URLs
     if (action === 'list') {
       const res = await fetch(BLOG_LISTING, {
@@ -299,6 +341,7 @@ Deno.serve(async (req) => {
           status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         });
       }
+      await writeAuditLog('import', { article_url, action: 'inserted', title: titleFromSlug });
       return new Response(JSON.stringify({ success: true, action: 'inserted' }), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
