@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { supabase } from '@/integrations/supabase/client';
@@ -8,10 +8,12 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Pencil, Trash2, Search, Eye, EyeOff, Heart, Share2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plus, Pencil, Trash2, Search, Eye, EyeOff, Heart, Share2, ChevronLeft, ChevronRight, Upload, X, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { useQuery } from '@tanstack/react-query';
+
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
 interface Analysis {
   id: string;
@@ -25,6 +27,8 @@ interface Analysis {
   published_at: string | null;
   created_at: string;
   item_date: string | null;
+  thumbnail_url: string | null;
+  media_url: string | null;
 }
 
 const emptyForm = {
@@ -36,6 +40,8 @@ const emptyForm = {
   icon_name: 'TrendingUp',
   status: 'draft',
   item_date: '',
+  thumbnail_url: '',
+  media_url: '',
 };
 
 const CATEGORIES = ['Weekly Update', 'Technical', 'Fundamental', 'Macro', 'Sectoral', 'Quantitative', 'Derivatives'];
@@ -84,6 +90,30 @@ export default function AdminAnalysis() {
   const [editItem, setEditItem] = useState<Analysis | null>(null);
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
+  const [uploadingMedia, setUploadingMedia] = useState(false);
+  const [uploadingThumb, setUploadingThumb] = useState(false);
+  const mediaInputRef = useRef<HTMLInputElement>(null);
+  const thumbInputRef = useRef<HTMLInputElement>(null);
+
+  const uploadFile = async (file: File, field: 'media_url' | 'thumbnail_url') => {
+    if (file.size > MAX_FILE_SIZE) {
+      toast({ title: 'File too large', description: 'Max file size is 5MB.', variant: 'destructive' });
+      return;
+    }
+    const setter = field === 'media_url' ? setUploadingMedia : setUploadingThumb;
+    setter(true);
+    const ext = file.name.split('.').pop();
+    const path = `analyses/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+    const { error } = await supabase.storage.from('cms-media').upload(path, file, { upsert: false });
+    if (error) {
+      toast({ title: 'Upload failed', description: error.message, variant: 'destructive' });
+    } else {
+      const { data } = supabase.storage.from('cms-media').getPublicUrl(path);
+      setForm(f => ({ ...f, [field]: data.publicUrl }));
+      toast({ title: 'File uploaded' });
+    }
+    setter(false);
+  };
 
   const { data: likeCounts = {} } = useQuery({
     queryKey: ['admin-analysis-likes'],
@@ -117,7 +147,7 @@ export default function AdminAnalysis() {
   const openNew = () => { setEditItem(null); setForm(emptyForm); setDialogOpen(true); };
   const openEdit = (item: Analysis) => {
     setEditItem(item);
-    setForm({ title: item.title, excerpt: item.excerpt ?? '', body: item.body ?? '', author: item.author, category: item.category, icon_name: item.icon_name ?? 'TrendingUp', status: item.status, item_date: item.item_date ?? '' });
+    setForm({ title: item.title, excerpt: item.excerpt ?? '', body: item.body ?? '', author: item.author, category: item.category, icon_name: item.icon_name ?? 'TrendingUp', status: item.status, item_date: item.item_date ?? '', thumbnail_url: item.thumbnail_url ?? '', media_url: item.media_url ?? '' });
     setDialogOpen(true);
   };
 
@@ -127,7 +157,7 @@ export default function AdminAnalysis() {
       return;
     }
     setSaving(true);
-    const payload = { title: form.title, excerpt: form.excerpt, body: form.body, author: form.author, category: form.category, icon_name: form.icon_name, status: form.status as 'draft' | 'published' | 'archived', item_date: form.item_date || null, published_at: form.status === 'published' ? new Date().toISOString() : null };
+    const payload = { title: form.title, excerpt: form.excerpt, body: form.body, author: form.author, category: form.category, icon_name: form.icon_name, status: form.status as 'draft' | 'published' | 'archived', item_date: form.item_date || null, published_at: form.status === 'published' ? new Date().toISOString() : null, thumbnail_url: form.thumbnail_url || null, media_url: form.media_url || null };
     const { error } = editItem
       ? await supabase.from('analyses').update(payload).eq('id', editItem.id)
       : await supabase.from('analyses').insert([payload]);
@@ -322,8 +352,33 @@ export default function AdminAnalysis() {
               <Textarea placeholder="Short summary (2–3 sentences)..." rows={2} value={form.excerpt} onChange={e => setForm(f => ({ ...f, excerpt: e.target.value }))} />
             </div>
             <div className="col-span-2 space-y-1.5">
-              <Label>Body Content <span className="text-muted-foreground text-xs">(use # ## ### for headings, **bold**, &gt; blockquotes, - lists)</span></Label>
+              <Label>Body Content <span className="text-muted-foreground text-xs">(use # ## ### for headings, **bold**, &gt; blockquotes, - lists, | tables |)</span></Label>
               <Textarea placeholder="Full analysis body..." rows={10} value={form.body} onChange={e => setForm(f => ({ ...f, body: e.target.value }))} className="font-mono text-xs" />
+            </div>
+            <div className="col-span-2 space-y-1.5">
+              <Label>Media File <span className="text-muted-foreground text-xs">(audio/video/image — max 5MB)</span></Label>
+              <div className="flex gap-2">
+                <Input placeholder="Paste URL or upload a file →" value={form.media_url} onChange={e => setForm(f => ({ ...f, media_url: e.target.value }))} className="flex-1" />
+                <input ref={mediaInputRef} type="file" accept="audio/*,video/*,image/*" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) uploadFile(f, 'media_url'); }} />
+                <Button type="button" variant="outline" size="sm" disabled={uploadingMedia} onClick={() => mediaInputRef.current?.click()}>
+                  {uploadingMedia ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+                  <span className="ml-1.5">{uploadingMedia ? 'Uploading…' : 'Upload'}</span>
+                </Button>
+                {form.media_url && (<Button type="button" variant="ghost" size="icon" onClick={() => setForm(f => ({ ...f, media_url: '' }))}><X className="h-4 w-4" /></Button>)}
+              </div>
+            </div>
+            <div className="col-span-2 space-y-1.5">
+              <Label>Thumbnail <span className="text-muted-foreground text-xs">(image — max 5MB)</span></Label>
+              <div className="flex gap-2">
+                <Input placeholder="Paste image URL or upload →" value={form.thumbnail_url} onChange={e => setForm(f => ({ ...f, thumbnail_url: e.target.value }))} className="flex-1" />
+                <input ref={thumbInputRef} type="file" accept="image/*" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) uploadFile(f, 'thumbnail_url'); }} />
+                <Button type="button" variant="outline" size="sm" disabled={uploadingThumb} onClick={() => thumbInputRef.current?.click()}>
+                  {uploadingThumb ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+                  <span className="ml-1.5">{uploadingThumb ? 'Uploading…' : 'Upload'}</span>
+                </Button>
+                {form.thumbnail_url && (<Button type="button" variant="ghost" size="icon" onClick={() => setForm(f => ({ ...f, thumbnail_url: '' }))}><X className="h-4 w-4" /></Button>)}
+              </div>
+              {form.thumbnail_url && (<img src={form.thumbnail_url} alt="Thumbnail preview" className="mt-2 h-24 rounded-lg object-cover border border-border" />)}
             </div>
             <div className="space-y-1.5">
               <Label>Status</Label>

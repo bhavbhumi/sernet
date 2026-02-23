@@ -351,7 +351,7 @@ export default function AdminArticles() {
               <Textarea placeholder="Short summary..." rows={2} value={form.excerpt} onChange={e => setForm(f => ({ ...f, excerpt: e.target.value }))} />
             </div>
             <div className="col-span-2 space-y-1.5">
-              <Label>Body Content (HTML supported)</Label>
+              <Label>Body Content <span className="text-muted-foreground text-xs">(use # ## ### for headings, **bold**, &gt; blockquotes, - lists, | tables |)</span></Label>
               <Textarea placeholder="Full article body..." rows={8} value={form.body} onChange={e => setForm(f => ({ ...f, body: e.target.value }))} className="font-mono text-xs" />
             </div>
             <div className="col-span-2 space-y-1.5">
