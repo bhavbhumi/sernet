@@ -20,6 +20,14 @@ type PressItem = {
   status: string;
 };
 
+function getFaviconUrl(link: string | null): string | null {
+  if (!link) return null;
+  try {
+    const domain = new URL(link).hostname;
+    return `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
+  } catch { return null; }
+}
+
 const mediums = ['All', 'Web', 'Print', 'Radio', 'TV'] as const;
 
 function formatDate(dateStr: string | null): string {
@@ -164,7 +172,14 @@ export const PressContent = () => {
                       transition={{ duration: 0.35 }}
                       className="w-full p-6 rounded-xl border border-border bg-card hover:border-primary/30 transition-colors group block"
                     >
-                      <img src={pressThumb} alt="" className="w-full h-48 rounded-lg object-cover mb-4 border border-border" />
+                      <div className="w-full h-48 rounded-lg mb-4 border border-border bg-muted/30 flex items-center justify-center overflow-hidden">
+                        <img
+                          src={getFaviconUrl(currentFeatured.link) ?? pressThumb}
+                          alt={currentFeatured.source}
+                          className="h-20 w-20 object-contain"
+                          onError={(e) => { (e.target as HTMLImageElement).src = pressThumb; }}
+                        />
+                      </div>
                       <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
                         <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[0.6875rem] font-medium">Featured</span>
                         <span>{formatDate(currentFeatured.published_at)}</span>
@@ -248,7 +263,14 @@ export const PressContent = () => {
               ) : (
                 filteredReleases.map((item, index) => (
                   <motion.a key={item.id} href={item.link ?? '#'} target="_blank" rel="noopener noreferrer" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: index * 0.04 }} className="flex items-center gap-4 py-5 group hover:bg-muted/30 -mx-4 px-4 rounded transition-colors">
-                    <img src={pressThumb} alt="" className="w-12 h-12 rounded-md object-cover flex-shrink-0 border border-border" />
+                    <div className="w-12 h-12 rounded-md flex-shrink-0 border border-border bg-muted/30 flex items-center justify-center overflow-hidden">
+                      <img
+                        src={getFaviconUrl(item.link) ?? pressThumb}
+                        alt={item.source}
+                        className="h-8 w-8 object-contain"
+                        onError={(e) => { (e.target as HTMLImageElement).src = pressThumb; }}
+                      />
+                    </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 text-[0.875rem] text-muted-foreground mb-1">
                         <span>{formatDate(item.published_at)}</span><span>—</span><span>{item.source}</span>

@@ -22,9 +22,11 @@ export default function AdminPress() {
         { key: 'title', label: 'Headline' },
         { key: 'source', label: 'Source', width: 'w-36' },
         { key: 'medium', label: 'Medium', width: 'w-24' },
+        { key: 'published_at', label: 'Article Date', width: 'w-28', format: 'date' as const },
         { key: 'is_featured', label: 'Featured', width: 'w-24' },
         { key: 'status', label: 'Status', width: 'w-24' },
       ]}
+      orderBy={{ column: 'published_at', ascending: false }}
     />
   );
 }

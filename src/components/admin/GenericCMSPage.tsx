@@ -35,11 +35,12 @@ interface GenericCMSPageProps {
   tableName: string;
   fields: FieldDef[];
   emptyForm: Record<string, string | number | boolean | string[]>;
-  tableColumns: { key: string; label: string; width?: string }[];
+  tableColumns: { key: string; label: string; width?: string; format?: 'date' }[];
   hasStatus?: boolean;
   hasFeatured?: boolean;
   categoryField?: string; // e.g. 'category', 'report_type' — enables category filter dropdown
   headerActions?: React.ReactNode; // optional extra buttons in the header bar
+  orderBy?: { column: string; ascending: boolean }; // custom sort order
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -92,8 +93,15 @@ function AdminPagination({ page, totalPages, total, onPage }: { page: number; to
   );
 }
 
+function formatCellDate(val: unknown): string {
+  if (!val) return '—';
+  const d = new Date(String(val));
+  if (isNaN(d.getTime())) return '—';
+  return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
 export function GenericCMSPage({
-  title, subtitle, tableName, fields, emptyForm: defaultForm, tableColumns, hasStatus = true, hasFeatured = false, categoryField, headerActions
+  title, subtitle, tableName, fields, emptyForm: defaultForm, tableColumns, hasStatus = true, hasFeatured = false, categoryField, headerActions, orderBy
 }: GenericCMSPageProps) {
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
@@ -110,7 +118,9 @@ export function GenericCMSPage({
 
   const fetchItems = async () => {
     setLoading(true);
-    const { data } = await db(tableName).select('*').order('created_at', { ascending: false });
+    const sortCol = orderBy?.column ?? 'created_at';
+    const sortAsc = orderBy?.ascending ?? false;
+    const { data } = await db(tableName).select('*').order(sortCol, { ascending: sortAsc });
     setItems(data ?? []);
     setLoading(false);
   };
@@ -316,6 +326,8 @@ export function GenericCMSPage({
                         <Badge variant={item[col.key] === 'published' ? 'default' : 'secondary'}>
                           {String(item[col.key] ?? '')}
                         </Badge>
+                      ) : col.format === 'date' ? (
+                        <span className="text-xs whitespace-nowrap">{formatCellDate(item[col.key])}</span>
                       ) : Array.isArray(item[col.key]) ? (
                         <span className="line-clamp-1">{(item[col.key] as string[]).join(', ')}</span>
                       ) : typeof item[col.key] === 'boolean' ? (
