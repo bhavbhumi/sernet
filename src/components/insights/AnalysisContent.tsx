@@ -38,13 +38,27 @@ function AnalysisCard({ item, index }: { item: any; index: number }) {
     });
   };
 
+  const imageUrl = item.thumbnail_url || (item.media_url && /\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i.test(item.media_url) ? item.media_url : null);
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, delay: Math.min(0.06 * index, 0.4) }}
-      className="bg-muted/30 rounded-lg p-6 hover:shadow-lg transition-shadow border border-border/50 flex flex-col"
+      className="bg-muted/30 rounded-lg overflow-hidden hover:shadow-lg transition-shadow border border-border/50 flex flex-col"
     >
+      {imageUrl && (
+        <Link to={`/insights/analysis/${item.id}`} className="block">
+          <img
+            src={imageUrl}
+            alt={item.title}
+            className="w-full h-44 object-cover"
+            loading="lazy"
+            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+          />
+        </Link>
+      )}
+      <div className="p-6 flex flex-col flex-1">
       <div className="flex items-center gap-3 mb-4">
         <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
           <Icon className="w-5 h-5 text-primary" />
@@ -102,6 +116,7 @@ function AnalysisCard({ item, index }: { item: any; index: number }) {
             {shareCount > 0 && <span>{shareCount}</span>}
           </button>
         </div>
+      </div>
       </div>
     </motion.article>
   );

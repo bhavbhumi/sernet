@@ -113,13 +113,27 @@ function ArticleCard({ article, index }: { article: any; index: number }) {
     ? new Date(article.published_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
     : '';
 
+  const imageUrl = article.thumbnail_url || (article.media_url && /\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i.test(article.media_url) ? article.media_url : null);
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, delay: Math.min(0.06 * index, 0.4) }}
-      className="bg-muted/30 rounded-lg p-6 hover:shadow-lg transition-shadow border border-border/50 flex flex-col"
+      className="bg-muted/30 rounded-lg overflow-hidden hover:shadow-lg transition-shadow border border-border/50 flex flex-col"
     >
+      {imageUrl && (
+        <Link to={`/insights/articles/${article.id}`} className="block">
+          <img
+            src={imageUrl}
+            alt={article.title}
+            className="w-full h-44 object-cover"
+            loading="lazy"
+            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+          />
+        </Link>
+      )}
+      <div className="p-6 flex flex-col flex-1">
       <div className="flex items-center gap-3 mb-4">
         <div className={`w-10 h-10 rounded-full flex items-center justify-center ${fmtColor}`}>
           <FormatIcon className="w-5 h-5" />
@@ -180,6 +194,7 @@ function ArticleCard({ article, index }: { article: any; index: number }) {
             {shareCount > 0 && <span>{shareCount}</span>}
           </button>
         </div>
+      </div>
       </div>
     </motion.article>
   );
