@@ -13,6 +13,7 @@ import { Plus, Pencil, Trash2, Search, Eye, EyeOff, Upload, X, Loader2, Heart, S
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { useQuery } from '@tanstack/react-query';
+import { createTablePasteHandler } from '@/lib/tableUtils';
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const PAGE_SIZE = 25;
@@ -351,8 +352,8 @@ export default function AdminArticles() {
               <Textarea placeholder="Short summary..." rows={2} value={form.excerpt} onChange={e => setForm(f => ({ ...f, excerpt: e.target.value }))} />
             </div>
             <div className="col-span-2 space-y-1.5">
-              <Label>Body Content <span className="text-muted-foreground text-xs">(use # ## ### for headings, **bold**, &gt; blockquotes, - lists, | tables |)</span></Label>
-              <Textarea placeholder="Full article body..." rows={8} value={form.body} onChange={e => setForm(f => ({ ...f, body: e.target.value }))} className="font-mono text-xs" />
+              <Label>Body Content <span className="text-muted-foreground text-xs">(use # ## ### for headings, **bold**, &gt; blockquotes, - lists, | tables | — paste tables from web/Excel and they auto-convert)</span></Label>
+              <Textarea placeholder="Full article body..." rows={8} value={form.body} onChange={e => setForm(f => ({ ...f, body: e.target.value }))} onPaste={createTablePasteHandler(setForm)} className="font-mono text-xs" />
             </div>
             <div className="col-span-2 space-y-1.5">
               <Label>Media File <span className="text-muted-foreground text-xs">(audio/video/image — max 5MB)</span></Label>
