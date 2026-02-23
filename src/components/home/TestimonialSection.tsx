@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import { Star, ArrowRight, Play, MapPin, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -66,73 +68,26 @@ const countryFlags: Record<string, string> = {
   AE: "🇦🇪",
 };
 
-const testimonials = [
-  {
-    name: "Rajesh Kumar",
-    occupation: "Business Owner",
-    city: "Mumbai",
-    country: "IN",
-    rating: 4.8,
-    source: "google",
-    hasVideo: true,
-    text: "SERNET has been instrumental in growing my portfolio. Their personalized approach and deep market knowledge have helped me achieve my financial goals.",
-  },
-  {
-    name: "Priya Sharma",
-    occupation: "IT Professional",
-    city: "Delhi",
-    country: "IN",
-    rating: 5.0,
-    source: "facebook",
-    hasVideo: false,
-    text: "The team at SERNET is incredibly professional. They've been managing my family's investments for over 10 years with excellent returns.",
-  },
-  {
-    name: "Anand Mehta",
-    occupation: "Chartered Accountant",
-    city: "Bangalore",
-    country: "IN",
-    rating: 4.9,
-    source: "google",
-    hasVideo: true,
-    text: "Exceptional service and transparent communication. I highly recommend SERNET for anyone looking for reliable investment advisory.",
-  },
-  {
-    name: "Sunita Patel",
-    occupation: "Homemaker & Investor",
-    city: "Ahmedabad",
-    country: "IN",
-    rating: 5.0,
-    source: "instagram",
-    hasVideo: false,
-    text: "From insurance planning to equity investments, SERNET has provided comprehensive solutions for all my financial needs.",
-  },
-  {
-    name: "Vikram Singh",
-    occupation: "Retired Army Officer",
-    city: "Jaipur",
-    country: "IN",
-    rating: 4.7,
-    source: "mouthshut",
-    hasVideo: false,
-    text: "Switched from a big-name broker and couldn't be happier. Personal attention and zero hidden charges make SERNET stand out.",
-  },
-  {
-    name: "Meera Nair",
-    occupation: "Doctor",
-    city: "Kochi",
-    country: "IN",
-    rating: 4.9,
-    source: "google",
-    hasVideo: true,
-    text: "Their research reports are top-notch. I've made informed decisions that consistently outperform the market benchmarks.",
-  },
+// Fallback static testimonials in case DB is empty
+const fallbackTestimonials: Testimonial[] = [
+  { name: "Rajesh Kumar", occupation: "Business Owner", city: "Mumbai", country: "IN", rating: 4.8, source: "google", hasVideo: true, text: "SERNET has been instrumental in growing my portfolio. Their personalized approach and deep market knowledge have helped me achieve my financial goals." },
+  { name: "Priya Sharma", occupation: "IT Professional", city: "Delhi", country: "IN", rating: 5.0, source: "facebook", hasVideo: false, text: "The team at SERNET is incredibly professional. They've been managing my family's investments for over 10 years with excellent returns." },
+  { name: "Anand Mehta", occupation: "Chartered Accountant", city: "Bangalore", country: "IN", rating: 4.9, source: "google", hasVideo: true, text: "Exceptional service and transparent communication. I highly recommend SERNET for anyone looking for reliable investment advisory." },
+  { name: "Sunita Patel", occupation: "Homemaker & Investor", city: "Ahmedabad", country: "IN", rating: 5.0, source: "instagram", hasVideo: false, text: "From insurance planning to equity investments, SERNET has provided comprehensive solutions for all my financial needs." },
+  { name: "Vikram Singh", occupation: "Retired Army Officer", city: "Jaipur", country: "IN", rating: 4.7, source: "mouthshut", hasVideo: false, text: "Switched from a big-name broker and couldn't be happier. Personal attention and zero hidden charges make SERNET stand out." },
+  { name: "Meera Nair", occupation: "Doctor", city: "Kochi", country: "IN", rating: 4.9, source: "google", hasVideo: true, text: "Their research reports are top-notch. I've made informed decisions that consistently outperform the market benchmarks." },
 ];
 
-type Testimonial = typeof testimonials[0];
-
-// Duplicate for seamless loop
-const doubledTestimonials = [...testimonials, ...testimonials];
+type Testimonial = {
+  name: string;
+  occupation: string;
+  city: string;
+  country: string;
+  rating: number;
+  source: string;
+  hasVideo: boolean;
+  text: string;
+};
 
 const TestimonialCard = ({ name, occupation, city, country, rating, source, hasVideo, text }: Testimonial) => (
   <div className="flex-shrink-0 w-[340px] md:w-[400px] p-6 rounded-xl border border-border bg-card relative group hover:border-primary/30 transition-colors duration-300">
@@ -245,6 +200,36 @@ export const TestimonialSection = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
   const { t } = useTranslation();
+
+  const { data: dbReviews } = useQuery({
+    queryKey: ['homepage-reviews'],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('reviews')
+        .select('name, occupation, city, country, rating, source, has_video, review, video_url')
+        .eq('status', 'approved')
+        .order('is_featured', { ascending: false })
+        .order('published_at', { ascending: false })
+        .limit(12);
+      return data ?? [];
+    },
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const testimonials: Testimonial[] = (dbReviews && dbReviews.length > 0)
+    ? dbReviews.map(r => ({
+        name: r.name,
+        occupation: r.occupation ?? '',
+        city: r.city ?? '',
+        country: r.country ?? 'IN',
+        rating: r.rating,
+        source: (r.source ?? 'google').toLowerCase(),
+        hasVideo: r.has_video ?? false,
+        text: r.review,
+      }))
+    : fallbackTestimonials;
+
+  const doubledTestimonials = [...testimonials, ...testimonials];
 
   useEffect(() => {
     const el = scrollRef.current;
