@@ -11,8 +11,8 @@ const OpenAccount = () => {
     'Flat ₹20 for intraday and F&O',
     'Free direct mutual funds',
     'No account maintenance charges',
-    'Free Kite trading platform',
-    'Access to Console and Coin',
+    'Free Choice FinX trading platform',
+    'Access to Tick Funds and Tushil',
   ];
 
   const steps = [
