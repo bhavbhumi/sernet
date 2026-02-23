@@ -208,13 +208,13 @@ export const Footer = () => {
             {/* Google Map Embed */}
             <div className="mb-4">
               <a 
-                href="https://www.google.com/maps/search/?api=1&query=SERNET+Financial+Services+Pvt+Ltd+Malad+West+Mumbai" 
+                href="https://www.google.com/maps/search/?api=1&query=SERNET+Financial+Services+Pvt+Ltd+B201+Hemu+Classic+SV+Road+Malad+West+Mumbai+400064" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="block overflow-hidden rounded-md border border-border hover:border-primary transition-colors"
               >
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3769.2!2d72.8453!3d19.1789!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b6f8a3a3a3a3%3A0x0!2sSERNET+Financial+Services+Pvt+Ltd!5e0!3m2!1sen!2sin"
+                  src="https://maps.google.com/maps?q=SERNET+Financial+Services+Pvt+Ltd,+B201+Hemu+Classic,+SV+Road,+Malad+West,+Mumbai+400064&t=&z=16&ie=UTF8&iwloc=&output=embed"
                   width="100%"
                   height="120"
                   style={{ border: 0 }}
