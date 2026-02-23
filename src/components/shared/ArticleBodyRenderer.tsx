@@ -25,22 +25,27 @@ function isArtifactLine(line: string): boolean {
   return false;
 }
 
-// Extract headings from raw body text (supports # H1, ## H2, ### H3)
+// Normalize body: promote ###/####/##### → ##, collapse blank lines
+export function normalizeBody(body: string): string {
+  let text = body
+    // ##### heading → ## heading
+    .replace(/^#{3,5}\s+/gm, '## ')
+    // Collapse 3+ consecutive blank lines into 1
+    .replace(/\n{3,}/g, '\n\n');
+  return text.trim();
+}
+
+// Extract headings from raw body text (supports # H1, ## H2)
 export function extractToc(body: string): TocEntry[] {
-  const lines = body.split('\n');
+  const normalized = normalizeBody(body);
+  const lines = normalized.split('\n');
   const entries: TocEntry[] = [];
   for (const line of lines) {
     const trimmed = line.trim();
-    // Skip artifact lines
     if (isArtifactLine(trimmed)) continue;
-    const m3 = trimmed.match(/^###\s+(.+)/);
     const m2 = trimmed.match(/^##\s+(.+)/);
     const m1 = trimmed.match(/^#\s+(.+)/);
-    // h4/h5 → treat as level 3 for TOC
-    const m45 = trimmed.match(/^#{4,5}\s+(.+)/);
-    if (m45) entries.push({ level: 3, text: m45[1].trim(), slug: slugify(m45[1].trim()) });
-    else if (m3) entries.push({ level: 3, text: m3[1].trim(), slug: slugify(m3[1].trim()) });
-    else if (m2) entries.push({ level: 2, text: m2[1].trim(), slug: slugify(m2[1].trim()) });
+    if (m2) entries.push({ level: 2, text: m2[1].trim(), slug: slugify(m2[1].trim()) });
     else if (m1) entries.push({ level: 1, text: m1[1].trim(), slug: slugify(m1[1].trim()) });
   }
   return entries;
@@ -104,29 +109,7 @@ function renderLine(line: string, index: number): React.ReactNode {
   // Skip artifact lines
   if (isArtifactLine(trimmed)) return null;
 
-  // H4/H5 — render as H3 visually
-  const m45 = trimmed.match(/^#{4,5}\s+(.+)/);
-  if (m45) {
-    const text = m45[1].trim();
-    // Skip generic TOC headings
-    if (/^table\s+of\s+content/i.test(text)) return null;
-    return (
-      <h3 key={index} id={slugify(text)} className="text-base font-semibold text-foreground mt-6 mb-2 scroll-mt-24">
-        {text}
-      </h3>
-    );
-  }
-  // H3
-  const m3 = trimmed.match(/^###\s+(.+)/);
-  if (m3) {
-    const text = m3[1].trim();
-    return (
-      <h3 key={index} id={slugify(text)} className="text-base font-semibold text-foreground mt-6 mb-2 scroll-mt-24">
-        {text}
-      </h3>
-    );
-  }
-  // H2
+  // H2 (### and #### are already normalized to ## by normalizeBody)
   const m2 = trimmed.match(/^##\s+(.+)/);
   if (m2) {
     const text = m2[1].trim();
@@ -227,7 +210,8 @@ interface Props {
 }
 
 export function ArticleBodyRenderer({ body }: Props) {
-  const lines = body.split('\n');
+  const normalized = normalizeBody(body);
+  const lines = normalized.split('\n');
   const elements: React.ReactNode[] = [];
   let i = 0;
 
