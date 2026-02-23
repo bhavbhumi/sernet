@@ -25,13 +25,26 @@ function isArtifactLine(line: string): boolean {
   return false;
 }
 
-// Normalize body: promote ###/####/##### → ##, collapse blank lines
+// Normalize body: promote ###/####/##### → ##, strip TOC block, collapse blank lines
 export function normalizeBody(body: string): string {
   let text = body
     // ##### heading → ## heading
-    .replace(/^#{3,5}\s+/gm, '## ')
-    // Collapse 3+ consecutive blank lines into 1
-    .replace(/\n{3,}/g, '\n\n');
+    .replace(/^#{3,5}\s+/gm, '## ');
+
+  // Remove "Table of Contents" / "Table of Content" section:
+  // Matches the TOC heading + subsequent lines that look like TOC entries
+  // (lines starting with bullets, numbers, links, or plain short titles until next heading or blank gap)
+  text = text.replace(
+    /^##\s+(?:Table\s+of\s+Contents?|TOC|Contents)\s*\n((?:[ \t]*(?:[-*\d.]|\[)[^\n]*\n?)*)/gim,
+    ''
+  );
+
+  // Also remove standalone "Table of Contents" lines (not as heading)
+  text = text.replace(/^(?:Table\s+of\s+Contents?|TOC|Contents)\s*$/gim, '');
+
+  // Collapse 3+ consecutive blank lines into 1
+  text = text.replace(/\n{3,}/g, '\n\n');
+
   return text.trim();
 }
 
