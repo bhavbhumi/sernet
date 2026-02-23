@@ -25,6 +25,87 @@ function isArtifactLine(line: string): boolean {
   return false;
 }
 
+// Detect and reconstruct flattened HTML tables (plain text with repeating column groups)
+function reconstructFlattenedTables(text: string): string {
+  const lines = text.split('\n');
+  const result: string[] = [];
+  let i = 0;
+
+  while (i < lines.length) {
+    // Look for a bold header group: consecutive bold lines (**Header1** \n **Header2** ...)
+    const headerStart = i;
+    const headers: string[] = [];
+    let j = i;
+
+    // Collect consecutive bold-only lines as potential headers
+    while (j < lines.length) {
+      const t = lines[j].trim();
+      const boldMatch = t.match(/^\*\*(.+)\*\*$/);
+      if (boldMatch) {
+        headers.push(boldMatch[1].trim());
+        j++;
+      } else if (t === '' && headers.length > 0) {
+        // allow one blank line after headers
+        break;
+      } else {
+        break;
+      }
+    }
+
+    // Need at least 2 headers to form a table
+    if (headers.length >= 2) {
+      // Skip blank line after headers
+      if (j < lines.length && lines[j].trim() === '') j++;
+
+      // Try to collect data rows: groups of N non-empty lines separated by blank lines
+      const colCount = headers.length;
+      const dataRows: string[][] = [];
+      let k = j;
+
+      while (k < lines.length) {
+        // Collect next group of non-empty lines
+        const group: string[] = [];
+        while (k < lines.length && lines[k].trim() !== '') {
+          group.push(lines[k].trim());
+          k++;
+        }
+
+        if (group.length === colCount) {
+          dataRows.push(group);
+          // Skip blank lines between groups
+          while (k < lines.length && lines[k].trim() === '') k++;
+        } else if (group.length === 0) {
+          break;
+        } else {
+          // Group doesn't match column count — not a table, stop
+          // Put back the lines
+          k -= group.length;
+          break;
+        }
+      }
+
+      // Need at least 2 data rows for this to be a real table
+      if (dataRows.length >= 2) {
+        // Build pipe table
+        result.push('| ' + headers.join(' | ') + ' |');
+        result.push('| ' + headers.map(() => '---').join(' | ') + ' |');
+        for (const row of dataRows) {
+          result.push('| ' + row.join(' | ') + ' |');
+        }
+        result.push('');
+        i = k;
+        continue;
+      }
+    }
+
+    // Not a table — output line as-is
+    result.push(lines[i]);
+    i++;
+  }
+
+  return result.join('\n');
+}
+
 // Normalize body: promote ###/####/##### → ##, strip TOC block, remove duplicate plain titles, collapse blank lines
 export function normalizeBody(body: string): string {
   let text = body
@@ -37,6 +118,9 @@ export function normalizeBody(body: string): string {
     ''
   );
   text = text.replace(/^(?:Table\s+of\s+Contents?|TOC|Contents)\s*$/gim, '');
+
+  // Reconstruct flattened tables before other processing
+  text = reconstructFlattenedTables(text);
 
   // Collect all ## heading texts
   const lines = text.split('\n');
