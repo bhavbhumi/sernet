@@ -45,6 +45,7 @@ import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import Disclosure from "./pages/Disclosure";
 import Policies from "./pages/Policies";
+import Legal from "./pages/Legal";
 
 // Sernet pages
 import Reviews from "./pages/Reviews";
@@ -95,6 +96,7 @@ import AdminMarketHolidays from "./pages/admin/calendars/AdminMarketHolidays";
 import AdminEconomicEvents from "./pages/admin/calendars/AdminEconomicEvents";
 import AdminImportEconomicEvents from "./pages/admin/calendars/AdminImportEconomicEvents";
 import AdminCorporateEvents from "./pages/admin/calendars/AdminCorporateEvents";
+import AdminLegal from "./pages/admin/legal/AdminLegal";
 import Sitemap from "./pages/Sitemap";
 
 const queryClient = new QueryClient();
@@ -145,6 +147,7 @@ const App = () => (
           <Route path="/fund-transfer" element={<FundTransfer />} />
           
           {/* Legal pages */}
+          <Route path="/legal" element={<Legal />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/disclosure" element={<Disclosure />} />
@@ -204,6 +207,7 @@ const App = () => (
           <Route path="/admin/calendars/economic" element={<AdminEconomicEvents />} />
           <Route path="/admin/calendars/import-economic" element={<AdminImportEconomicEvents />} />
           <Route path="/admin/calendars/corporate" element={<AdminCorporateEvents />} />
+          <Route path="/admin/legal" element={<AdminLegal />} />
 
           {/* Sitemap */}
           <Route path="/sitemap" element={<Sitemap />} />

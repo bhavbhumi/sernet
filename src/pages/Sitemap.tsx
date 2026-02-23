@@ -81,10 +81,11 @@ const sitemapSections = [
   {
     title: 'Legal & Compliance',
     links: [
-      { label: 'Terms & Conditions', href: '/terms' },
-      { label: 'Privacy Policy', href: '/privacy' },
-      { label: 'Policies', href: '/policies' },
-      { label: 'Disclosures', href: '/disclosure' },
+      { label: 'Legal', href: '/legal' },
+      { label: 'Terms & Conditions', href: '/legal?tab=terms' },
+      { label: 'Privacy Policy', href: '/legal?tab=privacy' },
+      { label: 'Policies', href: '/legal?tab=policies' },
+      { label: 'Disclosures', href: '/legal?tab=disclosures' },
       { label: 'Investor Charter', href: '/investor-charter' },
     ],
   },

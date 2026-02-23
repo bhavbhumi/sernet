@@ -67,10 +67,10 @@ const socialLinks = [
 ];
 
 const legalLinks: { nameKey?: string; label?: string; href: string }[] = [
-  { nameKey: 'footer.terms', href: '/terms' },
-  { nameKey: 'footer.privacy', href: '/privacy' },
-  { nameKey: 'footer.policies', href: '/policies' },
-  { nameKey: 'footer.disclosures', href: '/disclosure' },
+  { nameKey: 'footer.terms', href: '/legal?tab=terms' },
+  { nameKey: 'footer.privacy', href: '/legal?tab=privacy' },
+  { nameKey: 'footer.policies', href: '/legal?tab=policies' },
+  { nameKey: 'footer.disclosures', href: '/legal?tab=disclosures' },
   { label: 'Sitemap', href: '/sitemap' },
 ];
 
