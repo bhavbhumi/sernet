@@ -1,4 +1,4 @@
-import React, { useId } from 'react';
+import React from 'react';
 
 // Slugify a heading text to use as anchor id
 export function slugify(text: string): string {
@@ -28,6 +28,31 @@ export function extractToc(body: string): TocEntry[] {
     else if (m1) entries.push({ level: 1, text: m1[1].trim(), slug: slugify(m1[1].trim()) });
   }
   return entries;
+}
+
+// Render inline formatting: **bold**, *italic*, `code`
+function renderInline(text: string): React.ReactNode[] {
+  const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`)/g);
+  return parts.map((part, i) => {
+    const bold = part.match(/^\*\*(.+)\*\*$/);
+    if (bold) return <strong key={i} className="font-semibold text-foreground">{bold[1]}</strong>;
+    const code = part.match(/^`(.+)`$/);
+    if (code) return <code key={i} className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono">{code[1]}</code>;
+    return part;
+  });
+}
+
+// Parse a markdown pipe-table block into header + rows
+function parseTable(lines: string[]): { headers: string[]; rows: string[][] } | null {
+  if (lines.length < 2) return null;
+  const parsePipeRow = (line: string) =>
+    line.replace(/^\|/, '').replace(/\|$/, '').split('|').map(c => c.trim());
+
+  const headers = parsePipeRow(lines[0]);
+  // line[1] should be the separator like |---|---|
+  if (!/^[\s|:-]+$/.test(lines[1])) return null;
+  const rows = lines.slice(2).map(parsePipeRow);
+  return { headers, rows };
 }
 
 // Render a single line as a React node
@@ -67,7 +92,7 @@ function renderLine(line: string, index: number): React.ReactNode {
   if (mq) {
     return (
       <blockquote key={index} className="border-l-4 border-primary/50 pl-4 italic text-muted-foreground my-4">
-        {mq[1]}
+        {renderInline(mq[1])}
       </blockquote>
     );
   }
@@ -80,7 +105,7 @@ function renderLine(line: string, index: number): React.ReactNode {
   if (mb) {
     return (
       <li key={index} className="ml-5 list-disc text-foreground/90 leading-relaxed my-0.5">
-        {mb[1]}
+        {renderInline(mb[1])}
       </li>
     );
   }
@@ -89,24 +114,52 @@ function renderLine(line: string, index: number): React.ReactNode {
   if (mn) {
     return (
       <li key={index} className="ml-5 list-decimal text-foreground/90 leading-relaxed my-0.5">
-        {mn[1]}
+        {renderInline(mn[1])}
       </li>
     );
   }
-  // Bold text inline (**text**)
   // Empty line = paragraph break
   if (line.trim() === '') {
     return <br key={index} />;
   }
-  // Regular paragraph with inline bold support
-  const parts = line.split(/(\*\*[^*]+\*\*)/g);
+  // Regular paragraph with inline formatting
   return (
     <p key={index} className="text-foreground/90 leading-relaxed my-2">
-      {parts.map((part, i) => {
-        const bold = part.match(/^\*\*(.+)\*\*$/);
-        return bold ? <strong key={i} className="font-semibold text-foreground">{bold[1]}</strong> : part;
-      })}
+      {renderInline(line)}
     </p>
+  );
+}
+
+// Render a table block
+function renderTable(tableLines: string[], startIndex: number): React.ReactNode {
+  const parsed = parseTable(tableLines);
+  if (!parsed) return null;
+  const { headers, rows } = parsed;
+  return (
+    <div key={`table-${startIndex}`} className="my-6 overflow-x-auto rounded-lg border border-border">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="bg-muted/40 border-b border-border">
+            {headers.map((h, i) => (
+              <th key={i} className="px-4 py-2.5 text-left font-semibold text-foreground whitespace-nowrap">
+                {renderInline(h)}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-border">
+          {rows.map((row, ri) => (
+            <tr key={ri} className="hover:bg-muted/20 transition-colors">
+              {row.map((cell, ci) => (
+                <td key={ci} className="px-4 py-2 text-foreground/90">
+                  {renderInline(cell)}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
@@ -116,9 +169,30 @@ interface Props {
 
 export function ArticleBodyRenderer({ body }: Props) {
   const lines = body.split('\n');
-  return (
-    <div className="space-y-0">
-      {lines.map((line, i) => renderLine(line, i))}
-    </div>
-  );
+  const elements: React.ReactNode[] = [];
+  let i = 0;
+
+  while (i < lines.length) {
+    // Detect table block: line starts with |
+    if (lines[i].trim().startsWith('|')) {
+      const tableStart = i;
+      const tableLines: string[] = [];
+      while (i < lines.length && lines[i].trim().startsWith('|')) {
+        tableLines.push(lines[i]);
+        i++;
+      }
+      const table = renderTable(tableLines, tableStart);
+      if (table) {
+        elements.push(table);
+      } else {
+        // Not a valid table, render as normal lines
+        tableLines.forEach((line, idx) => elements.push(renderLine(line, tableStart + idx)));
+      }
+    } else {
+      elements.push(renderLine(lines[i], i));
+      i++;
+    }
+  }
+
+  return <div className="space-y-0">{elements}</div>;
 }
