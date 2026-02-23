@@ -15,15 +15,31 @@ export interface TocEntry {
   slug: string;
 }
 
+// Detect artifact/junk lines from HTML-to-markdown conversion
+function isArtifactLine(line: string): boolean {
+  const t = line.trim();
+  if (!t) return false;
+  if (/^[-–—.·•]{1,3}$/.test(t)) return true;
+  if (/^<!--.*-->$/.test(t)) return true;
+  if (t === '-->' || t === '<!--' || t === '->') return true;
+  return false;
+}
+
 // Extract headings from raw body text (supports # H1, ## H2, ### H3)
 export function extractToc(body: string): TocEntry[] {
   const lines = body.split('\n');
   const entries: TocEntry[] = [];
   for (const line of lines) {
-    const m3 = line.match(/^###\s+(.+)/);
-    const m2 = line.match(/^##\s+(.+)/);
-    const m1 = line.match(/^#\s+(.+)/);
-    if (m3) entries.push({ level: 3, text: m3[1].trim(), slug: slugify(m3[1].trim()) });
+    const trimmed = line.trim();
+    // Skip artifact lines
+    if (isArtifactLine(trimmed)) continue;
+    const m3 = trimmed.match(/^###\s+(.+)/);
+    const m2 = trimmed.match(/^##\s+(.+)/);
+    const m1 = trimmed.match(/^#\s+(.+)/);
+    // h4/h5 → treat as level 3 for TOC
+    const m45 = trimmed.match(/^#{4,5}\s+(.+)/);
+    if (m45) entries.push({ level: 3, text: m45[1].trim(), slug: slugify(m45[1].trim()) });
+    else if (m3) entries.push({ level: 3, text: m3[1].trim(), slug: slugify(m3[1].trim()) });
     else if (m2) entries.push({ level: 2, text: m2[1].trim(), slug: slugify(m2[1].trim()) });
     else if (m1) entries.push({ level: 1, text: m1[1].trim(), slug: slugify(m1[1].trim()) });
   }
@@ -83,8 +99,25 @@ function parseTable(lines: string[]): { headers: string[]; rows: string[][] } | 
 
 // Render a single line as a React node
 function renderLine(line: string, index: number): React.ReactNode {
+  const trimmed = line.trim();
+
+  // Skip artifact lines
+  if (isArtifactLine(trimmed)) return null;
+
+  // H4/H5 — render as H3 visually
+  const m45 = trimmed.match(/^#{4,5}\s+(.+)/);
+  if (m45) {
+    const text = m45[1].trim();
+    // Skip generic TOC headings
+    if (/^table\s+of\s+content/i.test(text)) return null;
+    return (
+      <h3 key={index} id={slugify(text)} className="text-base font-semibold text-foreground mt-6 mb-2 scroll-mt-24">
+        {text}
+      </h3>
+    );
+  }
   // H3
-  const m3 = line.match(/^###\s+(.+)/);
+  const m3 = trimmed.match(/^###\s+(.+)/);
   if (m3) {
     const text = m3[1].trim();
     return (
@@ -94,7 +127,7 @@ function renderLine(line: string, index: number): React.ReactNode {
     );
   }
   // H2
-  const m2 = line.match(/^##\s+(.+)/);
+  const m2 = trimmed.match(/^##\s+(.+)/);
   if (m2) {
     const text = m2[1].trim();
     return (
@@ -104,7 +137,7 @@ function renderLine(line: string, index: number): React.ReactNode {
     );
   }
   // H1
-  const m1 = line.match(/^#\s+(.+)/);
+  const m1 = trimmed.match(/^#\s+(.+)/);
   if (m1) {
     const text = m1[1].trim();
     return (
@@ -114,7 +147,7 @@ function renderLine(line: string, index: number): React.ReactNode {
     );
   }
   // Blockquote
-  const mq = line.match(/^>\s+(.+)/);
+  const mq = trimmed.match(/^>\s+(.+)/);
   if (mq) {
     return (
       <blockquote key={index} className="border-l-4 border-primary/50 pl-4 italic text-muted-foreground my-4">
@@ -123,11 +156,11 @@ function renderLine(line: string, index: number): React.ReactNode {
     );
   }
   // Horizontal rule
-  if (/^---+$/.test(line.trim())) {
+  if (/^---+$/.test(trimmed)) {
     return <hr key={index} className="border-border my-6" />;
   }
   // Bullet list items
-  const mb = line.match(/^[-*]\s+(.+)/);
+  const mb = trimmed.match(/^[-*]\s+(.+)/);
   if (mb) {
     return (
       <li key={index} className="ml-5 list-disc text-foreground/90 leading-relaxed my-0.5">
@@ -136,7 +169,7 @@ function renderLine(line: string, index: number): React.ReactNode {
     );
   }
   // Numbered list items
-  const mn = line.match(/^\d+\.\s+(.+)/);
+  const mn = trimmed.match(/^\d+\.\s+(.+)/);
   if (mn) {
     return (
       <li key={index} className="ml-5 list-decimal text-foreground/90 leading-relaxed my-0.5">
@@ -145,13 +178,13 @@ function renderLine(line: string, index: number): React.ReactNode {
     );
   }
   // Empty line = paragraph break
-  if (line.trim() === '') {
+  if (trimmed === '') {
     return <br key={index} />;
   }
   // Regular paragraph with inline formatting
   return (
     <p key={index} className="text-foreground/90 leading-relaxed my-2">
-      {renderInline(line)}
+      {renderInline(trimmed)}
     </p>
   );
 }

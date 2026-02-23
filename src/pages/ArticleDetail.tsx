@@ -197,7 +197,8 @@ export default function ArticleDetail() {
   );
 
   const isImageUrl = (url: string | null) => url && /\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i.test(url);
-  const sidebarImageUrl = isImageUrl(article.thumbnail_url) ? article.thumbnail_url : isImageUrl(article.media_url) ? article.media_url : null;
+  // thumbnail_url is always an image (set by importer from og:image or derived from media upload)
+  const sidebarImageUrl = article.thumbnail_url || (isImageUrl(article.media_url) ? article.media_url : null);
   const hasMedia = article.media_url && (article.format === 'Text' || ['Audio', 'Video', 'Image'].includes(article.format));
 
   return (
@@ -236,7 +237,7 @@ export default function ArticleDetail() {
                   )}
                   {sidebarImageUrl && (
                     <div className="rounded-xl overflow-hidden border border-border mb-3">
-                      <img src={sidebarImageUrl} alt={article.title} className="w-full object-cover" />
+                      <img src={sidebarImageUrl} alt={article.title} className="w-full object-cover" onError={(e) => { (e.target as HTMLElement).parentElement!.style.display = 'none'; }} />
                     </div>
                   )}
                 </div>
@@ -279,7 +280,7 @@ export default function ArticleDetail() {
               <>
                 {sidebarImageUrl && (
                   <div className="mb-8 rounded-xl overflow-hidden border border-border">
-                    <img src={sidebarImageUrl} alt={article.title} className="w-full object-cover max-h-80" />
+                    <img src={sidebarImageUrl} alt={article.title} className="w-full object-cover max-h-80" onError={(e) => { (e.target as HTMLElement).parentElement!.style.display = 'none'; }} />
                   </div>
                 )}
                 {article.media_url && article.format === 'Audio' && (
@@ -300,7 +301,7 @@ export default function ArticleDetail() {
               <div className="lg:hidden mb-8">
                 {sidebarImageUrl && (
                   <div className="rounded-xl overflow-hidden border border-border mb-4">
-                    <img src={sidebarImageUrl} alt={article.title} className="w-full object-cover max-h-64" />
+                    <img src={sidebarImageUrl} alt={article.title} className="w-full object-cover max-h-64" onError={(e) => { (e.target as HTMLElement).parentElement!.style.display = 'none'; }} />
                   </div>
                 )}
                 {article.media_url && article.format === 'Audio' && (
