@@ -201,9 +201,8 @@ export const Footer = () => {
             </Link>
             
             {/* Registration Info */}
-            <div className="text-[13px] text-muted-foreground mb-4 space-y-1">
+            <div className="text-[13px] text-muted-foreground mb-4">
               <p>CIN: U67190MH2004PTC144955</p>
-              <p>AMFI MFD: ARN 35275</p>
             </div>
 
             {/* Google Map Embed */}
