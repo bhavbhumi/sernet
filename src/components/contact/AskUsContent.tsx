@@ -36,7 +36,7 @@ const departments = [
 
 const escalationMatrix = [
   { level: 'Level 1', designation: 'Customer Support Executive', contact: 'support@sernetindia.com', phone: '+91-22-35000567', timeline: 'Within 24 hours' },
-  { level: 'Level 2', designation: 'Branch Manager / Team Lead', contact: 'escalation@sernetindia.com', phone: '+91-22-35000568', timeline: 'Within 3 working days' },
+  { level: 'Level 2', designation: 'Team Lead', contact: 'escalation@sernetindia.com', phone: '+91-22-35000568', timeline: 'Within 3 working days' },
   { level: 'Level 3', designation: 'Compliance Officer', contact: 'compliance@sernetindia.com', phone: '+91-22-35000569', timeline: 'Within 7 working days' },
   { level: 'Level 4', designation: 'Managing Director', contact: 'md@sernetindia.com', phone: '+91-22-35000570', timeline: 'Within 15 working days' },
 ];
