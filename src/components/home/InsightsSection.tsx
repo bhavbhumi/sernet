@@ -38,7 +38,7 @@ function useLatestInsights() {
           .limit(1),
         supabase
           .from('analyses')
-          .select('id, category, title, excerpt, item_date, published_at')
+          .select('id, category, title, excerpt, item_date, published_at, thumbnail_url, media_url')
           .eq('status', 'published')
           .order('item_date', { ascending: false, nullsFirst: false })
           .limit(1),
@@ -58,7 +58,7 @@ function useLatestInsights() {
       }
       if (analysisRes.data?.[0]) {
         const a = analysisRes.data[0];
-        cards.push({ id: a.id, type: 'analysis', category: a.category, title: a.title, excerpt: a.excerpt, date: a.item_date || a.published_at });
+        cards.push({ id: a.id, type: 'analysis', category: a.category, title: a.title, excerpt: a.excerpt, date: a.item_date || a.published_at, imageUrl: a.thumbnail_url || a.media_url });
       }
       if (reportsRes.data?.[0]) {
         const r = reportsRes.data[0];
