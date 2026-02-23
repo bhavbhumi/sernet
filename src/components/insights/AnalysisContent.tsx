@@ -49,13 +49,15 @@ function AnalysisCard({ item, index }: { item: any; index: number }) {
     >
       {imageUrl && (
         <Link to={`/insights/analysis/${item.id}`} className="block">
-          <img
-            src={imageUrl}
-            alt={item.title}
-            className="w-full h-44 object-cover"
-            loading="lazy"
-            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-          />
+          <div className="aspect-[16/9] overflow-hidden">
+            <img
+              src={imageUrl}
+              alt={item.title}
+              className="w-full h-full object-cover"
+              loading="lazy"
+              onError={(e) => { (e.target as HTMLImageElement).parentElement!.style.display = 'none'; }}
+            />
+          </div>
         </Link>
       )}
       <div className="p-6 flex flex-col flex-1">
