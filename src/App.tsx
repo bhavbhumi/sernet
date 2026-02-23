@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import ArticleDetail from "./pages/ArticleDetail";
 import AnalysisDetail from "./pages/AnalysisDetail";
+import { ScrollToTop } from "./components/shared/ScrollToTop";
+import { ScrollDownFAB } from "./components/shared/ScrollDownFAB";
 import About from "./pages/About";
 import Pricing from "./pages/Pricing";
 import Support from "./pages/Support";
@@ -109,6 +111,8 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ScrollToTop />
+        <ScrollDownFAB />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/about" element={<About />} />
