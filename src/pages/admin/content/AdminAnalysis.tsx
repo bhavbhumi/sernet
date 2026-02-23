@@ -353,7 +353,7 @@ export default function AdminAnalysis() {
               <Textarea placeholder="Short summary (2–3 sentences)..." rows={2} value={form.excerpt} onChange={e => setForm(f => ({ ...f, excerpt: e.target.value }))} />
             </div>
             <div className="col-span-2 space-y-1.5">
-              <Label>Body Content <span className="text-muted-foreground text-xs">(use # ## ### for headings, **bold**, &gt; blockquotes, - lists, | tables | — paste tables from web/Excel and they auto-convert)</span></Label>
+              <Label>Body Content <span className="text-muted-foreground text-xs">(use # ## ### for headings, **bold**, &gt; blockquotes, - bullet lists, 1. numbered lists, [text](url) for links, bare URLs auto-link, | tables | — paste tables from web/Excel and they auto-convert)</span></Label>
               <Textarea placeholder="Full analysis body..." rows={10} value={form.body} onChange={e => setForm(f => ({ ...f, body: e.target.value }))} onPaste={createTablePasteHandler(setForm)} className="font-mono text-xs" />
             </div>
             <div className="col-span-2 space-y-1.5">
