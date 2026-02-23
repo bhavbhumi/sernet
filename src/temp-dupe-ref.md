@@ -1,0 +1,49 @@
+-- This is a reference file for the duplicate article IDs to delete
+-- Articles created on 2026-02-23 that are duplicates of existing analyses items
+
+-- IDs to delete from articles table (created 2026-02-23, slug-style titles matching analyses):
+-- 5e0a461d - Adanis Cement Mega Merger Explained
+-- f5384a90 - Amazons Price War Threatens Blinkit Zepto Instamart
+-- 4145ba5a - Arpu Vs Network Effect Is Indias Telecom Strategy Flawed
+-- 92561d9a - Brent Crude Rally Explained Iran Trump Geopolitics
+-- b6e930be - India Cpi Fpi Flows Gold Surge Weekly Market Wrap
+-- c27d5c40 - India Cpi New Series 2026 Food Weight Cut Impact
+-- 771ad439 - India Fy26 Gdp Fae Real Growth Vs Nominal Reality
+-- 5066868c - India Markets 2026 Fpi Flows Rbi Fed Ipos Key Levels
+-- 66771e79 - India Markets Weekly Rupee Slide Fpis Inflation Ipos
+-- 80b2b2f3 - India Trade Deficit December 2025 Services Cushion Goods Gap
+-- 2870ac82 - India Trade Deficit Fy26 Strong Services Mask Tariff Risks
+-- 5396c638 - India Weekly Macro Market Capsule Dec 29 Jan 02
+-- 95e3b1a7 - India Weekly Market Capsule Budget 2026 Trade Deal Fpis
+-- b3d13a3c - India Weekly Market Economy Update Gdp Fpi Flows Sips
+-- 451c49ca - India Weekly Market Economy Update Inflation Ipos Bonds
+-- 4b2b4f77 - India Weekly Market Economy Wrap Key Events Impacts
+-- ee6e4aff - India Weekly Market Update Gdp Shift Rupee Fall Rbi Action
+-- 7c015789 - India Weekly Markets Rbi Boost Adani Cement Metals Rally
+-- 1f54e921 - India Weekly Update Fed Fiscal Deficit Crude Oil Eu Trade Deal
+-- a2f6e595 - Indias 8 2 Gdp The Hidden Growth Risk
+-- 4133fc8f - Indias Fiscal Deficit Hits 52 6 Fy26 Target At Risk
+-- 9e205568 - Indias Iip Growth Falls To 0 4 In Oct 25 On Us Export Hit
+-- d424d527 - Indias Markets This Week The 5 Signals Investors Cant Ignore
+-- 5310eb4a - Indo Us Trade Deal 500bn Import Math Risks For India
+-- 53b5d4fa - Japans Rate Hike Could Shake Global Markets Heres Why
+-- c560ffef - Markets This Week Budget 2026 Rbi Policy Rupee Watch
+-- ac97efbf - Markets This Week Rbi Cut Rupee Slide Ipo Rush
+-- 96ea685e - Nifty Sensex Weekly Outlook Rbi Rupee Us Data In Focus
+-- f44f1c6f - Nifty Week Ahead Rbi Policy Gdp Boost Key Triggers
+-- c497a025 - Rbi Liquidity Boost Metals Rally India Weekly Dec 22 26
+-- b93f4d65 - Rbi Mpc Minutes The Inflation Rupee Risks
+-- 15d51965 - Rupee At 90 6 Why A Weak Inr Is A Bigger Risk Than It Looks
+-- 3e49bd81 - This Weeks Market Triggers Rbi Fed Rupee Alert
+-- 4be2a688 - Trumps Greenland Gambit Dollar Hegemony Not Territory
+-- 99ca520a - Union Budget 2026 27 Market Stt Shock Sector Winners
+-- c1ce5266 - Weekly Market Triggers Nifty Rupee Rbi Us Inflation
+-- b3e0da67 - Why Fmcg Giants Are Buying D2c Brands In India
+-- ce6ccbf3 - Why Fmcg Stocks Are Falling Reasons Behind The Slowdown
+-- 83f10997 - Why India Banned 10 Minute Delivery Ads In Quick Commerce
+-- f46fc2d9 - Why Indigos Crisis Happened And Why Dgca Stepped Back
+-- 50ab9223 - Indian Stock Market Outlook Key Triggers For The Week
+-- b61849ca - Indian Stock Market Outlook Trade Deal Cpi Results Ipos
+-- 76dd3b55 - Indian Stock Market Weekly Outlook Global Risks Results
+-- 3d094354 - Indian Stock Market Weekly Outlook Results Data Key Triggers
+-- 4b2b4f77 - India Weekly Market Economy Wrap Key Events Impacts
