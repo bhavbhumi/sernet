@@ -257,6 +257,13 @@ export default function AnalysisDetail() {
               </div>
             )}
 
+            {/* Media image */}
+            {analysis.media_url && /\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i.test(analysis.media_url) && (
+              <div className="mb-8 rounded-xl overflow-hidden border border-border">
+                <img src={analysis.media_url} alt={analysis.title} className="w-full object-cover max-h-80" />
+              </div>
+            )}
+
             {/* Excerpt */}
             {analysis.excerpt && (
               <p className="text-lg text-muted-foreground mb-6 leading-relaxed border-l-4 border-primary/40 pl-4 italic">
