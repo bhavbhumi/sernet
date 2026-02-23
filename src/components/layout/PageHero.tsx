@@ -22,10 +22,11 @@ const routeLabels: Record<string, string> = {
   '/calculators': 'Calculators',
   '/calendars': 'Calendars',
   '/downloads': 'Downloads',
+  '/legal': 'Legal',
 };
 
 /* ---------- route-specific geometric patterns ---------- */
-type PatternKey = 'default' | 'services' | 'insights' | 'about' | 'network' | 'pricing' | 'opinions' | 'updates' | 'calculators' | 'calendars' | 'downloads' | 'contact' | 'reviews';
+type PatternKey = 'default' | 'services' | 'insights' | 'about' | 'network' | 'pricing' | 'opinions' | 'updates' | 'calculators' | 'calendars' | 'downloads' | 'contact' | 'reviews' | 'legal';
 
 const resolvePattern = (pathname: string): PatternKey => {
   const base = '/' + pathname.split('/').filter(Boolean)[0];
@@ -42,6 +43,7 @@ const resolvePattern = (pathname: string): PatternKey => {
     '/downloads': 'downloads',
     '/contact': 'contact',
     '/reviews': 'reviews',
+    '/legal': 'legal',
   };
   return map[base] || 'default';
 };
@@ -226,6 +228,24 @@ const GeometricPattern = ({ pattern }: { pattern: PatternKey }) => {
           <div className="absolute bottom-3 left-[4%] flex gap-1.5 opacity-[0.2]">
             {Array.from({ length: 5 }).map((_, i) => <div key={i} className="w-2 h-2 rounded-full bg-foreground" />)}
           </div>
+        </>
+      );
+
+
+
+    case 'legal':
+      return (
+        <>
+          <svg className="absolute top-2 right-[8%] w-44 h-36 opacity-[0.2]" viewBox="0 0 100 80">
+            <line x1="50" y1="10" x2="50" y2="60" className="stroke-primary" strokeWidth="1.5" />
+            <line x1="20" y1="25" x2="80" y2="25" className="stroke-primary" strokeWidth="1.5" />
+            <circle cx="50" cy="10" r="4" className="fill-primary" />
+            <path d="M15 25 L20 45 L25 25" className="stroke-primary fill-none" strokeWidth="1.2" />
+            <path d="M75 25 L80 45 L85 25" className="stroke-primary fill-none" strokeWidth="1.2" />
+            <rect x="42" y="58" width="16" height="4" rx="1" className="fill-primary" />
+          </svg>
+          <motion.div initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 0.8, delay: 0.3 }}
+            className="absolute bottom-6 left-[4%] w-24 h-0.5 bg-gradient-to-r from-primary/30 to-transparent origin-left" />
         </>
       );
 

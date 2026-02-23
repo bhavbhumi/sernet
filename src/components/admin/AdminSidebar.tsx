@@ -6,7 +6,7 @@ import { logAudit } from '@/lib/auditLog';
 import {
   LayoutDashboard, FileText, BarChart3, BookOpen, Bell, Newspaper, AlertCircle,
   Vote, ClipboardList, Star, Briefcase, Users, Mic2, Settings, LogOut,
-  ChevronDown, ChevronRight, Menu, X, Rss, Shield, Globe, Map, Palette, Type, ScanSearch, Images, Download, Sparkles, Calculator, UserCheck, CalendarDays, Mail, ScrollText
+  ChevronDown, ChevronRight, Menu, X, Rss, Shield, Globe, Map, Palette, Type, ScanSearch, Images, Download, Sparkles, Calculator, UserCheck, CalendarDays, Mail, ScrollText, Scale
 } from 'lucide-react';
 import sernetLogo from '@/assets/sernet-logo.png';
 import { cn } from '@/lib/utils';
@@ -60,6 +60,7 @@ const navItems: NavItem[] = [
     ]
   },
   { label: 'Press & Media', icon: Mic2, href: '/admin/press' },
+  { label: 'Legal Pages', icon: Scale, href: '/admin/legal' },
   { label: 'Leads', icon: UserCheck, href: '/admin/leads' },
   {
     label: 'Site', icon: Globe, children: [
