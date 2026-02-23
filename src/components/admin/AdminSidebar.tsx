@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { logAudit } from '@/lib/auditLog';
 import {
-  LayoutDashboard, FileText, BarChart3, BookOpen, Bell, Newspaper, AlertCircle,
+  LayoutDashboard, FileText, BarChart3, BookOpen, Bell, Newspaper, AlertCircle, BookOpenCheck,
   Vote, ClipboardList, Star, Briefcase, Users, Mic2, Settings, LogOut,
   ChevronDown, ChevronRight, Menu, X, Rss, Shield, Globe, Map, Palette, Type, ScanSearch, Images, Download, Sparkles, Calculator, UserCheck, CalendarDays, Mail, ScrollText, Scale
 } from 'lucide-react';
@@ -61,6 +61,7 @@ const navItems: NavItem[] = [
   },
   { label: 'Press & Media', icon: Mic2, href: '/admin/press' },
   { label: 'Legal Pages', icon: Scale, href: '/admin/legal' },
+  { label: 'Investor Charter', icon: BookOpenCheck, href: '/admin/investor-charter' },
   { label: 'Leads', icon: UserCheck, href: '/admin/leads' },
   {
     label: 'Site', icon: Globe, children: [
