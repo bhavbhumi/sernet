@@ -203,7 +203,6 @@ function ArticleCard({ article, index }: { article: any; index: number }) {
 }
 
 export const ArticlesContent = () => {
-  const [activeFormat, setActiveFormat] = useState<ArticleFormat>('All');
   const [activeCategory, setActiveCategory] = useState<CategoryFilter>('All');
   const [page, setPage] = useState(1);
 
@@ -221,18 +220,12 @@ export const ArticlesContent = () => {
   });
 
   const filteredArticles = articles.filter((a) => {
-    const matchFormat = activeFormat === 'All' || a.format === activeFormat;
     const matchCategory = activeCategory === 'All' || a.category === activeCategory;
-    return matchFormat && matchCategory;
+    return matchCategory;
   });
 
   const totalPages = Math.ceil(filteredArticles.length / PAGE_SIZE);
   const paginated = filteredArticles.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-
-  const handleFormat = (fmt: ArticleFormat) => {
-    setActiveFormat(fmt);
-    setPage(1);
-  };
 
   const handleCategory = (cat: CategoryFilter) => {
     setActiveCategory(cat);
@@ -260,33 +253,6 @@ export const ArticlesContent = () => {
           <p className="text-muted-foreground">Explore insights in text, image, audio, and video formats — learn the way that suits you best.</p>
         </motion.div>
 
-        {/* Format Filter */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.1 }}
-          className="flex items-center gap-2 mb-3 overflow-x-auto pb-1"
-          style={{ scrollbarWidth: 'none' }}
-        >
-          <Filter className="w-4 h-4 text-muted-foreground shrink-0" />
-          {formats.map((fmt) => {
-            const Icon = fmt !== 'All' ? formatIcons[fmt] : null;
-            return (
-              <button
-                key={fmt}
-                onClick={() => handleFormat(fmt)}
-                className={`px-4 py-2 text-sm rounded-full whitespace-nowrap transition-colors flex items-center gap-1.5 ${
-                  activeFormat === fmt
-                    ? 'bg-primary text-primary-foreground font-medium'
-                    : 'bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground'
-                }`}
-              >
-                {Icon && <Icon className="h-3.5 w-3.5" />}
-                {fmt}
-              </button>
-            );
-          })}
-        </motion.div>
 
         {/* Category Filter */}
         <motion.div
@@ -338,7 +304,7 @@ export const ArticlesContent = () => {
         {!isLoading && paginated.length > 0 && (
           <AnimatePresence mode="wait">
             <motion.div
-              key={`${activeFormat}-${activeCategory}-${page}`}
+              key={`${activeCategory}-${page}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
