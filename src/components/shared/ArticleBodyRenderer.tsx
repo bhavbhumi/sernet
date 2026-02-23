@@ -171,9 +171,12 @@ export function extractToc(body: string): TocEntry[] {
 
 // Render inline formatting: **bold**, *italic*, `code`, [links](url), <a href="url">, bare URLs
 function renderInline(text: string): React.ReactNode[] {
-  // Split on bold, code, markdown links, HTML <a> tags, and bare URLs
-  const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`|\[[^\]]+\]\([^)]+\)|<a\s[^>]*>.*?<\/a>|https?:\/\/[^\s<>\])"']+)/g);
+  // Split on bold, code, markdown images, markdown links, HTML <a> tags, and bare URLs
+  const parts = text.split(/(!\[[^\]]*\]\([^)]+\)|\*\*[^*]+\*\*|`[^`]+`|\[[^\]]+\]\([^)]+\)|<a\s[^>]*>.*?<\/a>|https?:\/\/[^\s<>\])"']+)/g);
   return parts.map((part, i) => {
+    // Markdown image: ![alt](url)
+    const imgMatch = part.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
+    if (imgMatch) return <img key={i} src={imgMatch[2]} alt={imgMatch[1] || 'image'} className="rounded-lg max-w-full h-auto my-4 border border-border" loading="lazy" />;
     const bold = part.match(/^\*\*(.+)\*\*$/);
     if (bold) return <strong key={i} className="font-semibold text-foreground">{bold[1]}</strong>;
     const code = part.match(/^`(.+)`$/);
@@ -226,6 +229,19 @@ function renderLine(line: string, index: number): React.ReactNode {
 
   // Skip artifact lines
   if (isArtifactLine(trimmed)) return null;
+
+  // Standalone markdown image on its own line: ![alt](url)
+  const imgLine = trimmed.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
+  if (imgLine) {
+    return (
+      <figure key={index} className="my-6">
+        <img src={imgLine[2]} alt={imgLine[1] || 'image'} className="rounded-lg max-w-full h-auto border border-border" loading="lazy" />
+        {imgLine[1] && imgLine[1] !== 'image' && (
+          <figcaption className="text-xs text-muted-foreground mt-2 text-center">{imgLine[1]}</figcaption>
+        )}
+      </figure>
+    );
+  }
 
   // H2 (### and #### are already normalized to ## by normalizeBody)
   const m2 = trimmed.match(/^##\s+(.+)/);
