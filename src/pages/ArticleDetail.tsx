@@ -26,6 +26,14 @@ const formatColors: Record<string, string> = {
 
 // Sticky Table-of-Contents component
 function TableOfContents({ toc, activeSlug }: { toc: TocEntry[]; activeSlug: string }) {
+  const activeRef = useRef<HTMLAnchorElement | null>(null);
+
+  useEffect(() => {
+    if (activeRef.current) {
+      activeRef.current.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+  }, [activeSlug]);
+
   if (toc.length < 2) return null;
 
   return (
@@ -34,27 +42,31 @@ function TableOfContents({ toc, activeSlug }: { toc: TocEntry[]; activeSlug: str
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.4, delay: 0.3 }}
     >
-      <div className="sticky top-24 bg-muted/40 border border-border/60 rounded-xl p-4 w-56">
+      <div className="sticky top-24 bg-muted/40 border border-border/60 rounded-xl p-4 w-64 max-h-[calc(100vh-8rem)] overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
         <div className="flex items-center gap-2 mb-3 text-sm font-semibold text-foreground">
           <List className="h-4 w-4 text-primary" />
           Topic Index
         </div>
-        <nav className="space-y-1">
-          {toc.map((entry) => (
-            <a
-              key={entry.slug}
-              href={`#${entry.slug}`}
-              className={`block text-xs leading-snug py-1 transition-colors rounded px-2 ${
-                entry.level === 1 ? 'font-semibold' : entry.level === 2 ? 'pl-3' : 'pl-5 text-muted-foreground'
-              } ${
-                activeSlug === entry.slug
-                  ? 'text-primary bg-primary/8 font-medium'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-              }`}
-            >
-              {entry.text}
-            </a>
-          ))}
+        <nav className="space-y-0.5">
+          {toc.map((entry) => {
+            const isActive = activeSlug === entry.slug;
+            return (
+              <a
+                key={entry.slug}
+                ref={isActive ? activeRef : undefined}
+                href={`#${entry.slug}`}
+                className={`block text-xs leading-snug py-1.5 transition-colors rounded px-2 ${
+                  entry.level === 1 ? 'font-semibold' : entry.level === 2 ? 'pl-3' : 'pl-5 text-muted-foreground'
+                } ${
+                  isActive
+                    ? 'text-primary bg-primary/10 font-medium border-l-2 border-primary'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                }`}
+              >
+                {entry.text}
+              </a>
+            );
+          })}
         </nav>
       </div>
     </motion.aside>
@@ -194,7 +206,7 @@ export default function ArticleDetail() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="container-zerodha py-10 max-w-5xl mx-auto"
+        className="container-zerodha py-10 max-w-6xl mx-auto"
       >
         {/* Back link */}
         <Link
@@ -211,7 +223,7 @@ export default function ArticleDetail() {
             <div className="shrink-0 hidden lg:block sticky top-24 self-start">
               {/* Media / thumbnail at top of sidebar column */}
               {hasMedia && (
-                <div className="w-56 mb-4">
+                <div className="w-64 mb-4">
                   {article.thumbnail_url && (
                     <div className="rounded-xl overflow-hidden border border-border mb-3">
                       <img src={article.thumbnail_url} alt={article.title} className="w-full object-cover" />
