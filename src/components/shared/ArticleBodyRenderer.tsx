@@ -30,10 +30,10 @@ export function extractToc(body: string): TocEntry[] {
   return entries;
 }
 
-// Render inline formatting: **bold**, *italic*, `code`, [links](url), <a href="url">
+// Render inline formatting: **bold**, *italic*, `code`, [links](url), <a href="url">, bare URLs
 function renderInline(text: string): React.ReactNode[] {
-  // Split on bold, code, markdown links, and HTML <a> tags
-  const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`|\[[^\]]+\]\([^)]+\)|<a\s[^>]*>.*?<\/a>)/g);
+  // Split on bold, code, markdown links, HTML <a> tags, and bare URLs
+  const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`|\[[^\]]+\]\([^)]+\)|<a\s[^>]*>.*?<\/a>|https?:\/\/[^\s<>\])"']+)/g);
   return parts.map((part, i) => {
     const bold = part.match(/^\*\*(.+)\*\*$/);
     if (bold) return <strong key={i} className="font-semibold text-foreground">{bold[1]}</strong>;
@@ -45,6 +45,8 @@ function renderInline(text: string): React.ReactNode[] {
     // HTML <a> tag
     const htmlLink = part.match(/^<a\s+href=["']([^"']+)["'][^>]*>(.*?)<\/a>$/i);
     if (htmlLink) return <a key={i} href={htmlLink[1]} target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80 transition-colors">{htmlLink[2]}</a>;
+    // Bare URL
+    if (/^https?:\/\//.test(part)) return <a key={i} href={part} target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80 transition-colors break-all">{part}</a>;
     return part;
   });
 }
