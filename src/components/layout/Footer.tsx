@@ -207,12 +207,7 @@ export const Footer = () => {
 
             {/* Google Map Embed */}
             <div className="mb-4">
-              <a 
-                href="https://www.google.com/maps/search/?api=1&query=SERNET+Financial+Services+Pvt+Ltd+B201+Hemu+Classic+SV+Road+Malad+West+Mumbai+400064" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="block overflow-hidden rounded-md border border-border hover:border-primary transition-colors"
-              >
+              <div className="relative overflow-hidden rounded-md border border-border hover:border-primary transition-colors">
                 <iframe
                   src="https://maps.google.com/maps?q=SERNET+Financial+Services+Pvt+Ltd,+B201+Hemu+Classic,+SV+Road,+Malad+West,+Mumbai+400064&t=&z=16&ie=UTF8&iwloc=&output=embed"
                   width="100%"
@@ -224,7 +219,14 @@ export const Footer = () => {
                   title="SERNET Office Location"
                   className="pointer-events-none"
                 />
-              </a>
+                <a
+                  href="https://www.google.com/maps/search/?api=1&query=SERNET+Financial+Services+Pvt+Ltd+B201+Hemu+Classic+SV+Road+Malad+West+Mumbai+400064"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="absolute inset-0 z-10"
+                  aria-label="Open SERNET office location in Google Maps"
+                />
+              </div>
             </div>
           </div>
 
