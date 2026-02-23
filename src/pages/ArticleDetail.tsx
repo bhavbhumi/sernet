@@ -248,6 +248,44 @@ export default function ArticleDetail() {
 
           {/* MAIN: Article content */}
           <article className="flex-1 min-w-0">
+            {/* Mobile: image + TOC at top before everything else */}
+            {toc.length >= 2 && (
+              <div className="lg:hidden mb-6">
+                {sidebarImageUrl && (
+                  <div className="rounded-xl overflow-hidden border border-border mb-4">
+                    <img src={sidebarImageUrl} alt={article.title} className="w-full object-cover max-h-64" onError={(e) => { (e.target as HTMLElement).parentElement!.style.display = 'none'; }} />
+                  </div>
+                )}
+                {article.media_url && article.format === 'Audio' && (
+                  <div className="p-4 bg-muted/40 rounded-xl border border-border mb-4">
+                    <audio controls className="w-full" src={article.media_url} />
+                  </div>
+                )}
+                {article.media_url && article.format === 'Video' && (
+                  <div className="rounded-xl overflow-hidden border border-border aspect-video mb-4">
+                    <video controls className="w-full h-full" src={article.media_url} />
+                  </div>
+                )}
+                <div className="bg-muted/40 border border-border/60 rounded-xl p-4">
+                  <div className="flex items-center gap-2 mb-3 text-sm font-semibold text-foreground">
+                    <List className="h-4 w-4 text-primary" />
+                    Topic Index
+                  </div>
+                  <div className="flex gap-2 overflow-x-auto pb-2" style={{ scrollbarWidth: 'thin' }}>
+                    {toc.filter(e => e.level <= 2).map((entry) => (
+                      <a
+                        key={entry.slug}
+                        href={`#${entry.slug}`}
+                        className="text-xs px-3 py-1.5 rounded-full bg-background border border-border text-muted-foreground hover:text-primary hover:border-primary transition-colors whitespace-nowrap shrink-0"
+                      >
+                        {entry.text}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Badges */}
             <div className="flex items-center gap-2 mb-4 flex-wrap">
               <span className="px-3 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full">
@@ -275,7 +313,7 @@ export default function ArticleDetail() {
               </div>
             </div>
 
-            {/* Media (mobile / when no TOC sidebar) */}
+            {/* Media (when no TOC sidebar) */}
             {toc.length < 2 && (
               <>
                 {sidebarImageUrl && (
@@ -294,47 +332,6 @@ export default function ArticleDetail() {
                   </div>
                 )}
               </>
-            )}
-
-            {/* Mobile: media shown inline when TOC exists */}
-            {toc.length >= 2 && (
-              <div className="lg:hidden mb-8">
-                {sidebarImageUrl && (
-                  <div className="rounded-xl overflow-hidden border border-border mb-4">
-                    <img src={sidebarImageUrl} alt={article.title} className="w-full object-cover max-h-64" onError={(e) => { (e.target as HTMLElement).parentElement!.style.display = 'none'; }} />
-                  </div>
-                )}
-                {article.media_url && article.format === 'Audio' && (
-                  <div className="p-4 bg-muted/40 rounded-xl border border-border mb-4">
-                    <audio controls className="w-full" src={article.media_url} />
-                  </div>
-                )}
-                {article.media_url && article.format === 'Video' && (
-                  <div className="rounded-xl overflow-hidden border border-border aspect-video mb-4">
-                    <video controls className="w-full h-full" src={article.media_url} />
-                  </div>
-                )}
-                {/* Mobile TOC — horizontally scrollable */}
-                {toc.length >= 2 && (
-                  <div className="bg-muted/40 border border-border/60 rounded-xl p-4 mb-6">
-                    <div className="flex items-center gap-2 mb-3 text-sm font-semibold text-foreground">
-                      <List className="h-4 w-4 text-primary" />
-                      Topic Index
-                    </div>
-                    <div className="flex gap-2 overflow-x-auto pb-2" style={{ scrollbarWidth: 'thin' }}>
-                      {toc.filter(e => e.level <= 2).map((entry) => (
-                        <a
-                          key={entry.slug}
-                          href={`#${entry.slug}`}
-                          className="text-xs px-3 py-1.5 rounded-full bg-background border border-border text-muted-foreground hover:text-primary hover:border-primary transition-colors whitespace-nowrap shrink-0"
-                        >
-                          {entry.text}
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
             )}
 
             {/* Excerpt */}
