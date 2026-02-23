@@ -93,17 +93,14 @@ export default function AdminAnalysis() {
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
   const [uploadingMedia, setUploadingMedia] = useState(false);
-  const [uploadingThumb, setUploadingThumb] = useState(false);
   const mediaInputRef = useRef<HTMLInputElement>(null);
-  const thumbInputRef = useRef<HTMLInputElement>(null);
 
-  const uploadFile = async (file: File, field: 'media_url' | 'thumbnail_url') => {
+  const uploadFile = async (file: File) => {
     if (file.size > MAX_FILE_SIZE) {
       toast({ title: 'File too large', description: 'Max file size is 5MB.', variant: 'destructive' });
       return;
     }
-    const setter = field === 'media_url' ? setUploadingMedia : setUploadingThumb;
-    setter(true);
+    setUploadingMedia(true);
     const ext = file.name.split('.').pop();
     const path = `analyses/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
     const { error } = await supabase.storage.from('cms-media').upload(path, file, { upsert: false });
@@ -111,10 +108,10 @@ export default function AdminAnalysis() {
       toast({ title: 'Upload failed', description: error.message, variant: 'destructive' });
     } else {
       const { data } = supabase.storage.from('cms-media').getPublicUrl(path);
-      setForm(f => ({ ...f, [field]: data.publicUrl }));
+      setForm(f => ({ ...f, media_url: data.publicUrl }));
       toast({ title: 'File uploaded' });
     }
-    setter(false);
+    setUploadingMedia(false);
   };
 
   const { data: likeCounts = {} } = useQuery({
@@ -159,7 +156,7 @@ export default function AdminAnalysis() {
       return;
     }
     setSaving(true);
-    const payload = { title: form.title, excerpt: form.excerpt, body: form.body, author: form.author, category: form.category, icon_name: form.icon_name, status: form.status as 'draft' | 'published' | 'archived', item_date: form.item_date || null, published_at: form.status === 'published' ? new Date().toISOString() : null, thumbnail_url: form.thumbnail_url || null, media_url: form.media_url || null };
+    const payload = { title: form.title, excerpt: form.excerpt, body: form.body, author: form.author, category: form.category, icon_name: form.icon_name, status: form.status as 'draft' | 'published' | 'archived', item_date: form.item_date || null, published_at: form.status === 'published' ? new Date().toISOString() : null, thumbnail_url: form.media_url || null, media_url: form.media_url || null };
     const { error } = editItem
       ? await supabase.from('analyses').update(payload).eq('id', editItem.id)
       : await supabase.from('analyses').insert([payload]);
@@ -381,33 +378,20 @@ export default function AdminAnalysis() {
             <div className="col-span-2 space-y-1.5">
               <div className="flex items-center gap-1.5">
                 <Label>Media File</Label>
-                <FieldInfoTooltip tip="Upload or paste a URL for the main media (audio, video, or image). Max 5MB." />
+                <FieldInfoTooltip tip="Upload or paste a URL for the main media (audio, video, or image). Max 5MB. Also used as the card thumbnail on listings and homepage." />
               </div>
               <div className="flex gap-2">
                 <Input placeholder="Paste URL or upload a file →" value={form.media_url} onChange={e => setForm(f => ({ ...f, media_url: e.target.value }))} className="flex-1" />
-                <input ref={mediaInputRef} type="file" accept="audio/*,video/*,image/*" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) uploadFile(f, 'media_url'); }} />
+                <input ref={mediaInputRef} type="file" accept="audio/*,video/*,image/*" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) uploadFile(f); }} />
                 <Button type="button" variant="outline" size="sm" disabled={uploadingMedia} onClick={() => mediaInputRef.current?.click()}>
                   {uploadingMedia ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
                   <span className="ml-1.5">{uploadingMedia ? 'Uploading…' : 'Upload'}</span>
                 </Button>
                 {form.media_url && (<Button type="button" variant="ghost" size="icon" onClick={() => setForm(f => ({ ...f, media_url: '' }))}><X className="h-4 w-4" /></Button>)}
               </div>
-            </div>
-            <div className="col-span-2 space-y-1.5">
-              <div className="flex items-center gap-1.5">
-                <Label>Thumbnail</Label>
-                <FieldInfoTooltip tip="Card thumbnail image (max 5MB). Shown on the Insights listing and homepage cards." />
-              </div>
-              <div className="flex gap-2">
-                <Input placeholder="Paste image URL or upload →" value={form.thumbnail_url} onChange={e => setForm(f => ({ ...f, thumbnail_url: e.target.value }))} className="flex-1" />
-                <input ref={thumbInputRef} type="file" accept="image/*" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) uploadFile(f, 'thumbnail_url'); }} />
-                <Button type="button" variant="outline" size="sm" disabled={uploadingThumb} onClick={() => thumbInputRef.current?.click()}>
-                  {uploadingThumb ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
-                  <span className="ml-1.5">{uploadingThumb ? 'Uploading…' : 'Upload'}</span>
-                </Button>
-                {form.thumbnail_url && (<Button type="button" variant="ghost" size="icon" onClick={() => setForm(f => ({ ...f, thumbnail_url: '' }))}><X className="h-4 w-4" /></Button>)}
-              </div>
-              {form.thumbnail_url && (<img src={form.thumbnail_url} alt="Thumbnail preview" className="mt-2 h-24 rounded-lg object-cover border border-border" />)}
+              {form.media_url && /\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i.test(form.media_url) && (
+                <img src={form.media_url} alt="Media preview" className="mt-2 h-24 rounded-lg object-cover border border-border" />
+              )}
             </div>
             <div className="space-y-1.5">
               <div className="flex items-center gap-1.5">
