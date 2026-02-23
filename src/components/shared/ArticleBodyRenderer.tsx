@@ -30,14 +30,21 @@ export function extractToc(body: string): TocEntry[] {
   return entries;
 }
 
-// Render inline formatting: **bold**, *italic*, `code`
+// Render inline formatting: **bold**, *italic*, `code`, [links](url), <a href="url">
 function renderInline(text: string): React.ReactNode[] {
-  const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`)/g);
+  // Split on bold, code, markdown links, and HTML <a> tags
+  const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`|\[[^\]]+\]\([^)]+\)|<a\s[^>]*>.*?<\/a>)/g);
   return parts.map((part, i) => {
     const bold = part.match(/^\*\*(.+)\*\*$/);
     if (bold) return <strong key={i} className="font-semibold text-foreground">{bold[1]}</strong>;
     const code = part.match(/^`(.+)`$/);
     if (code) return <code key={i} className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono">{code[1]}</code>;
+    // Markdown link: [text](url)
+    const mdLink = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+    if (mdLink) return <a key={i} href={mdLink[2]} target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80 transition-colors">{mdLink[1]}</a>;
+    // HTML <a> tag
+    const htmlLink = part.match(/^<a\s+href=["']([^"']+)["'][^>]*>(.*?)<\/a>$/i);
+    if (htmlLink) return <a key={i} href={htmlLink[1]} target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80 transition-colors">{htmlLink[2]}</a>;
     return part;
   });
 }
@@ -221,5 +228,33 @@ export function ArticleBodyRenderer({ body }: Props) {
     }
   }
 
-  return <div className="space-y-0">{elements}</div>;
+  // Post-process: wrap consecutive <li> items in <ul> or <ol>
+  const wrapped: React.ReactNode[] = [];
+  let listBuffer: React.ReactElement[] = [];
+  let listType: 'ul' | 'ol' | null = null;
+
+  const flushList = () => {
+    if (listBuffer.length > 0 && listType) {
+      const Tag = listType;
+      wrapped.push(<Tag key={`list-${listBuffer[0].key}`} className={listType === 'ol' ? 'list-decimal pl-5 my-3 space-y-0.5' : 'list-disc pl-5 my-3 space-y-0.5'}>{listBuffer}</Tag>);
+      listBuffer = [];
+      listType = null;
+    }
+  };
+
+  for (const el of elements) {
+    if (React.isValidElement(el) && el.type === 'li') {
+      const cls = (el.props as { className?: string }).className || '';
+      const currentType = cls.includes('list-decimal') ? 'ol' : 'ul';
+      if (listType && listType !== currentType) flushList();
+      listType = currentType;
+      listBuffer.push(el);
+    } else {
+      flushList();
+      wrapped.push(el);
+    }
+  }
+  flushList();
+
+  return <div className="space-y-0">{wrapped}</div>;
 }
