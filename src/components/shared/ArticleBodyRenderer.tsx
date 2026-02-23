@@ -25,22 +25,43 @@ function isArtifactLine(line: string): boolean {
   return false;
 }
 
-// Normalize body: promote ###/####/##### → ##, strip TOC block, collapse blank lines
+// Normalize body: promote ###/####/##### → ##, strip TOC block, remove duplicate plain titles, collapse blank lines
 export function normalizeBody(body: string): string {
   let text = body
     // ##### heading → ## heading
     .replace(/^#{3,5}\s+/gm, '## ');
 
-  // Remove "Table of Contents" / "Table of Content" section:
-  // Matches the TOC heading + subsequent lines that look like TOC entries
-  // (lines starting with bullets, numbers, links, or plain short titles until next heading or blank gap)
+  // Remove "Table of Contents" / "Table of Content" section
   text = text.replace(
     /^##\s+(?:Table\s+of\s+Contents?|TOC|Contents)\s*\n((?:[ \t]*(?:[-*\d.]|\[)[^\n]*\n?)*)/gim,
     ''
   );
-
-  // Also remove standalone "Table of Contents" lines (not as heading)
   text = text.replace(/^(?:Table\s+of\s+Contents?|TOC|Contents)\s*$/gim, '');
+
+  // Collect all ## heading texts
+  const lines = text.split('\n');
+  const headingTexts = new Set<string>();
+  for (const line of lines) {
+    const m = line.trim().match(/^##\s+(.+)/);
+    if (m) headingTexts.add(m[1].trim().toLowerCase());
+  }
+
+  // Remove plain lines that exactly duplicate a ## heading title
+  const filtered = lines.filter(line => {
+    const t = line.trim();
+    if (!t) return true; // keep blank lines
+    if (t.startsWith('#')) return true; // keep actual headings
+    if (t.startsWith('-') || t.startsWith('*') || /^\d+\./.test(t)) return true; // keep lists
+    if (t.startsWith('>') || t.startsWith('|') || t.includes('\t')) return true; // keep quotes/tables
+    // If this plain line matches a heading title exactly, remove it
+    if (headingTexts.has(t.toLowerCase())) return false;
+    // Also check bold wrapped: **Title**
+    const boldMatch = t.match(/^\*\*(.+)\*\*$/);
+    if (boldMatch && headingTexts.has(boldMatch[1].trim().toLowerCase())) return false;
+    return true;
+  });
+
+  text = filtered.join('\n');
 
   // Collapse 3+ consecutive blank lines into 1
   text = text.replace(/\n{3,}/g, '\n\n');
