@@ -13,6 +13,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { useToast } from '@/hooks/use-toast';
 import { useQuery } from '@tanstack/react-query';
 import { createTablePasteHandler } from '@/lib/tableUtils';
+import { FieldInfoTooltip } from '@/components/admin/FieldInfoTooltip';
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
@@ -323,41 +324,65 @@ export default function AdminAnalysis() {
           </DialogHeader>
           <div className="grid grid-cols-2 gap-4 mt-2">
             <div className="col-span-2 space-y-1.5">
-              <Label>Title *</Label>
+              <div className="flex items-center gap-1.5">
+                <Label>Title <span className="text-destructive">*</span></Label>
+                <FieldInfoTooltip tip="The main headline for this analysis piece. Keep it descriptive for SEO and reader clarity." />
+              </div>
               <Input placeholder="Analysis title" value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Category *</Label>
+              <div className="flex items-center gap-1.5">
+                <Label>Category <span className="text-destructive">*</span></Label>
+                <FieldInfoTooltip tip="Analysis category (e.g. Macro, Market Wrap, Sector, Derivatives). Used for filtering on the Insights page." />
+              </div>
               <Select value={form.category} onValueChange={v => setForm(f => ({ ...f, category: v }))}>
                 <SelectTrigger><SelectValue placeholder="Select category" /></SelectTrigger>
                 <SelectContent>{CATEGORIES.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div className="space-y-1.5">
-              <Label>Icon</Label>
+              <div className="flex items-center gap-1.5">
+                <Label>Icon</Label>
+                <FieldInfoTooltip tip="Lucide icon name displayed on the analysis card (e.g. TrendingUp, BarChart3)." />
+              </div>
               <Select value={form.icon_name} onValueChange={v => setForm(f => ({ ...f, icon_name: v }))}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>{ICONS.map(ic => <SelectItem key={ic} value={ic}>{ic}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div className="space-y-1.5">
-              <Label>Author</Label>
+              <div className="flex items-center gap-1.5">
+                <Label>Author</Label>
+                <FieldInfoTooltip tip="Author name displayed on the analysis. Defaults to 'Research Desk' if left blank." />
+              </div>
               <Input placeholder="Research Desk" value={form.author} onChange={e => setForm(f => ({ ...f, author: e.target.value }))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Article Date <span className="text-muted-foreground text-xs">(shown on card)</span></Label>
+              <div className="flex items-center gap-1.5">
+                <Label>Article Date</Label>
+                <FieldInfoTooltip tip="The original publication date shown on the card. If left blank, the publish timestamp is used." />
+              </div>
               <Input type="date" value={form.item_date} onChange={e => setForm(f => ({ ...f, item_date: e.target.value }))} />
             </div>
             <div className="col-span-2 space-y-1.5">
-              <Label>Excerpt</Label>
+              <div className="flex items-center gap-1.5">
+                <Label>Excerpt</Label>
+                <FieldInfoTooltip tip="A short 2–3 sentence summary shown on the analysis card and used for SEO meta description." />
+              </div>
               <Textarea placeholder="Short summary (2–3 sentences)..." rows={2} value={form.excerpt} onChange={e => setForm(f => ({ ...f, excerpt: e.target.value }))} />
             </div>
             <div className="col-span-2 space-y-1.5">
-              <Label>Body Content <span className="text-muted-foreground text-xs">(use # ## ### for headings, **bold**, &gt; blockquotes, - bullet lists, 1. numbered lists, [text](url) for links, bare URLs auto-link, | tables | — paste tables from web/Excel and they auto-convert)</span></Label>
+              <div className="flex items-center gap-1.5">
+                <Label>Body Content</Label>
+                <FieldInfoTooltip tip="Use # ## ### for headings, **bold**, > blockquotes, - bullet lists, 1. numbered lists, [text](url) for links, bare URLs auto-link, | tables |. Paste tables from web/Excel and they auto-convert to markdown." />
+              </div>
               <Textarea placeholder="Full analysis body..." rows={10} value={form.body} onChange={e => setForm(f => ({ ...f, body: e.target.value }))} onPaste={createTablePasteHandler(setForm)} className="font-mono text-xs" />
             </div>
             <div className="col-span-2 space-y-1.5">
-              <Label>Media File <span className="text-muted-foreground text-xs">(audio/video/image — max 5MB)</span></Label>
+              <div className="flex items-center gap-1.5">
+                <Label>Media File</Label>
+                <FieldInfoTooltip tip="Upload or paste a URL for the main media (audio, video, or image). Max 5MB." />
+              </div>
               <div className="flex gap-2">
                 <Input placeholder="Paste URL or upload a file →" value={form.media_url} onChange={e => setForm(f => ({ ...f, media_url: e.target.value }))} className="flex-1" />
                 <input ref={mediaInputRef} type="file" accept="audio/*,video/*,image/*" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) uploadFile(f, 'media_url'); }} />
@@ -369,7 +394,10 @@ export default function AdminAnalysis() {
               </div>
             </div>
             <div className="col-span-2 space-y-1.5">
-              <Label>Thumbnail <span className="text-muted-foreground text-xs">(image — max 5MB)</span></Label>
+              <div className="flex items-center gap-1.5">
+                <Label>Thumbnail</Label>
+                <FieldInfoTooltip tip="Card thumbnail image (max 5MB). Shown on the Insights listing and homepage cards." />
+              </div>
               <div className="flex gap-2">
                 <Input placeholder="Paste image URL or upload →" value={form.thumbnail_url} onChange={e => setForm(f => ({ ...f, thumbnail_url: e.target.value }))} className="flex-1" />
                 <input ref={thumbInputRef} type="file" accept="image/*" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) uploadFile(f, 'thumbnail_url'); }} />
@@ -382,7 +410,10 @@ export default function AdminAnalysis() {
               {form.thumbnail_url && (<img src={form.thumbnail_url} alt="Thumbnail preview" className="mt-2 h-24 rounded-lg object-cover border border-border" />)}
             </div>
             <div className="space-y-1.5">
-              <Label>Status</Label>
+              <div className="flex items-center gap-1.5">
+                <Label>Status</Label>
+                <FieldInfoTooltip tip="Draft keeps the analysis hidden. Published makes it live. Archived removes it from public view." />
+              </div>
               <Select value={form.status} onValueChange={v => setForm(f => ({ ...f, status: v }))}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
