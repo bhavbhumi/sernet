@@ -1,5 +1,5 @@
 import { Info } from 'lucide-react';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 interface FieldInfoTooltipProps {
   tip: string;
@@ -7,15 +7,15 @@ interface FieldInfoTooltipProps {
 
 export function FieldInfoTooltip({ tip }: FieldInfoTooltipProps) {
   return (
-    <TooltipProvider delayDuration={150}>
-      <Tooltip>
-        <TooltipTrigger asChild>
+    <Popover>
+      <PopoverTrigger asChild>
+        <button type="button" className="inline-flex items-center justify-center focus:outline-none">
           <Info className="h-3.5 w-3.5 text-muted-foreground hover:text-foreground cursor-help transition-colors" />
-        </TooltipTrigger>
-        <TooltipContent side="top" className="max-w-[260px] text-xs leading-relaxed">
-          {tip}
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+        </button>
+      </PopoverTrigger>
+      <PopoverContent side="top" align="start" className="max-w-[260px] text-xs leading-relaxed p-2.5">
+        {tip}
+      </PopoverContent>
+    </Popover>
   );
 }
