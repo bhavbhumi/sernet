@@ -1,4 +1,5 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Star, ArrowRight, Play, MapPin, ChevronLeft, ChevronRight, Heart, Share2, X, CheckCircle2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -252,8 +253,12 @@ function SubmitReviewDialog({ open, onClose }: { open: boolean; onClose: () => v
 
 export const ReviewsContent = () => {
   const { toast } = useToast();
+  const [searchParams] = useSearchParams();
+  const typeFromUrl = searchParams.get('type');
   const [activeYear, setActiveYear] = useState<number | null>(null);
-  const [activeType, setActiveType] = useState<string>('All');
+  const [activeType, setActiveType] = useState<string>(
+    typeFromUrl && ['Client', 'Partner', 'Employee', 'Principal'].includes(typeFromUrl) ? typeFromUrl : 'All'
+  );
   const [featuredIndex, setFeaturedIndex] = useState(0);
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
   const yearScrollRef = useRef<HTMLDivElement>(null);
@@ -332,10 +337,10 @@ export const ReviewsContent = () => {
             className="flex flex-col justify-center"
           >
             <h2 className="text-[2rem] md:text-[2.5rem] font-light text-foreground leading-tight mb-4">
-              Client <span className="text-primary font-normal">Reviews</span>
+              <span className="text-primary font-normal">Reviews</span>
             </h2>
             <p className="text-body leading-relaxed mb-2">
-              Reviews could be from Client, Partner, Employee, or Principal — real voices sharing their experience with SERNET across every relationship.
+              Real voices from Clients, Partners, Employees, and Principals — sharing their experience with SERNET across every relationship.
             </p>
             <div className="flex items-center gap-3 mb-6">
               <div className="text-[2.5rem] font-light text-foreground leading-none">{avgRating}</div>

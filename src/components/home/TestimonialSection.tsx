@@ -293,20 +293,22 @@ export const TestimonialSection = () => {
           className="flex flex-col items-center gap-5"
         >
           <div className="flex flex-col sm:flex-row items-center gap-3 text-sm text-muted-foreground">
-            <span>{t('testimonials.shareExperience')}</span>
+            <span>Browse reviews from</span>
             <div className="flex items-center gap-2">
-              <a href="https://g.page/r/sernet/review" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border text-xs font-medium text-foreground hover:border-primary hover:text-primary transition-colors">
-                Google
-              </a>
-              <a href="https://www.linkedin.com/company/sernet" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border text-xs font-medium text-foreground hover:border-primary hover:text-primary transition-colors">
-                LinkedIn
-              </a>
-              <a href="https://www.facebook.com/sernetindia" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border text-xs font-medium text-foreground hover:border-primary hover:text-primary transition-colors">
-                Facebook
-              </a>
-              <a href="https://www.instagram.com/sernetindia" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border text-xs font-medium text-foreground hover:border-primary hover:text-primary transition-colors">
-                Instagram
-              </a>
+              {[
+                { label: 'All', type: '' },
+                { label: 'Clients', type: 'Client' },
+                { label: 'Partners', type: 'Partner' },
+                { label: 'Principals', type: 'Principal' },
+              ].map(({ label, type }) => (
+                <Link
+                  key={label}
+                  to={type ? `/reviews?type=${type}` : '/reviews'}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border text-xs font-medium text-foreground hover:border-primary hover:text-primary transition-colors"
+                >
+                  {label}
+                </Link>
+              ))}
             </div>
           </div>
 
