@@ -39,8 +39,6 @@ const sitemapSections = [
     links: [
       { label: 'Insights Hub', href: '/insights' },
       { label: 'Updates (News & Circulars)', href: '/updates' },
-      { label: 'Videos', href: '/videos' },
-      { label: 'Trading Q&A', href: '/tradingqna' },
     ],
   },
   {
@@ -51,7 +49,6 @@ const sitemapSections = [
       { label: 'Lumpsum Calculator', href: '/calculators/lumpsum' },
       { label: 'Brokerage Calculator', href: '/calculators/brokerage' },
       { label: 'Margin Calculator', href: '/calculators/margin' },
-      { label: 'Market Overview', href: '/market-overview' },
       { label: 'Calendars', href: '/calendars' },
       { label: 'Market Holidays', href: '/market-holidays' },
       { label: 'Economic Calendar', href: '/economic-calendar' },
@@ -72,9 +69,7 @@ const sitemapSections = [
       { label: 'Help Desk', href: '/support' },
       { label: 'Quick Links', href: '/quick-links' },
       { label: 'Schedule a Call', href: '/schedule-call' },
-      { label: 'Fund Transfer', href: '/fund-transfer' },
       { label: 'Lodge a Complaint', href: '/complaints' },
-      { label: 'Check Complaint Status', href: '/complaints/status' },
       { label: 'Credit Claim', href: '/credit-claim' },
     ],
   },
@@ -93,7 +88,6 @@ const sitemapSections = [
     title: 'Company',
     links: [
       { label: 'Philosophy', href: '/about/philosophy' },
-      { label: 'Technology', href: '/tech' },
       { label: 'CSR', href: '/csr' },
       { label: 'Media', href: '/media' },
     ],

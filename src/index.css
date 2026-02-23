@@ -2,8 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Zerodha-style design with Sernet India color scheme */
-/* Zerodha uses system fonts - no Google Fonts needed */
+/* SERNET design system — system fonts, flat UI */
 
 @layer base {
   :root {
@@ -50,7 +49,7 @@
     /* Sernet Yellow */
     --sernet-yellow: 45 100% 51%;
 
-    /* Zerodha-specific */
+    /* Layout tokens */
     --hero-bg: 220 14% 96%;
     --section-alt: 210 20% 98%;
 
@@ -121,7 +120,9 @@
 }
 
 @layer components {
-  .container-zerodha {
+  /* Main container — max-w-6xl centered with responsive padding */
+  .container-zerodha,
+  .container-main {
     @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 
@@ -175,7 +176,7 @@
     color: hsl(var(--muted-foreground));
   }
 
-  /* Zerodha style buttons */
+  /* Style buttons */
   .btn-primary {
     @apply inline-flex items-center justify-center px-6 py-3 text-sm font-medium 
            bg-primary text-primary-foreground rounded-md

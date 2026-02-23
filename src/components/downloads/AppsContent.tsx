@@ -6,24 +6,24 @@ const downloadCategories = [
   {
     category: 'Trading Platforms',
     items: [
-      { name: 'Kite for Windows', size: '45 MB', icon: Monitor },
-      { name: 'Kite for Mac', size: '52 MB', icon: Monitor },
-      { name: 'Kite Android App', size: '25 MB', icon: Smartphone },
-      { name: 'Kite iOS App', size: '28 MB', icon: Smartphone },
+      { name: 'Choice FinX for Windows', size: '45 MB', icon: Monitor },
+      { name: 'Choice FinX for Mac', size: '52 MB', icon: Monitor },
+      { name: 'Choice FinX Android App', size: '25 MB', icon: Smartphone },
+      { name: 'Choice FinX iOS App', size: '28 MB', icon: Smartphone },
     ],
   },
   {
-    category: 'Coin - Mutual Funds',
+    category: 'Tick Funds - Mutual Funds',
     items: [
-      { name: 'Coin Android App', size: '18 MB', icon: Smartphone },
-      { name: 'Coin iOS App', size: '20 MB', icon: Smartphone },
+      { name: 'Tick Funds Android App', size: '18 MB', icon: Smartphone },
+      { name: 'Tick Funds iOS App', size: '20 MB', icon: Smartphone },
     ],
   },
   {
-    category: 'Varsity - Education',
+    category: 'Findemy - Education',
     items: [
-      { name: 'Varsity Android App', size: '15 MB', icon: Smartphone },
-      { name: 'Varsity iOS App', size: '17 MB', icon: Smartphone },
+      { name: 'Findemy Android App', size: '15 MB', icon: Smartphone },
+      { name: 'Findemy iOS App', size: '17 MB', icon: Smartphone },
     ],
   },
 ];
@@ -31,7 +31,7 @@ const downloadCategories = [
 const AppsContent = () => {
   return (
     <div className="section-padding">
-      <div className="container-zerodha">
+      <div className="container-main">
         <div className="space-y-12">
           {downloadCategories.map((category, catIndex) => (
             <motion.div
