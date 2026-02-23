@@ -13,6 +13,10 @@ export default function AdminImportArticles() {
   const [current, setCurrent] = useState(0);
   const [summary, setSummary] = useState({ inserted: 0, updated: 0, skipped: 0, errors: 0 });
   const [log, setLog] = useState<string[]>([]);
+  const [rescrapePhase, setRescrapePhase] = useState<'idle' | 'listing' | 'scraping' | 'done'>('idle');
+  const [rescrapeCurrent, setRescrapeCurrent] = useState(0);
+  const [rescrapeTotal, setRescrapeTotal] = useState(0);
+  const [rescrapeSummary, setRescrapeSummary] = useState({ updated: 0, errors: 0, noChanges: 0 });
 
   const addLog = (msg: string) => setLog(prev => [msg, ...prev].slice(0, 300));
 
@@ -89,8 +93,74 @@ export default function AdminImportArticles() {
     setPhase('done');
   };
 
+  const runRescrape = async () => {
+    setRescrapePhase('listing');
+    setRescrapeCurrent(0);
+    setRescrapeSummary({ updated: 0, errors: 0, noChanges: 0 });
+
+    addLog('🔄 Fetching existing articles for re-scrape...');
+
+    let allUrls: string[] = [];
+    try {
+      const { data, error } = await supabase.functions.invoke('wp-import', {
+        body: { action: 'list_existing' },
+      });
+      if (error || !data?.success) {
+        addLog(`❌ Failed to fetch existing list: ${error?.message || data?.error}`);
+        setRescrapePhase('idle');
+        return;
+      }
+      allUrls = data.urls || [];
+      setRescrapeTotal(allUrls.length);
+      addLog(`✅ Found ${allUrls.length} existing articles. Re-scraping with improved parser...`);
+    } catch (err) {
+      addLog(`💥 Fatal: ${String(err)}`);
+      setRescrapePhase('idle');
+      return;
+    }
+
+    setRescrapePhase('scraping');
+    let updated = 0, errors = 0, noChanges = 0;
+    const BATCH = 3;
+
+    for (let i = 0; i < allUrls.length; i += BATCH) {
+      const batch = allUrls.slice(i, i + BATCH);
+      setRescrapeCurrent(i + batch.length);
+
+      await Promise.all(batch.map(async (url) => {
+        try {
+          const { data, error } = await supabase.functions.invoke('wp-import', {
+            body: { action: 'rescrape_one', article_url: url },
+          });
+          if (error || !data?.success) {
+            errors++;
+            addLog(`❌ ${url.split('/').slice(-2, -1)[0]}: ${error?.message || data?.error}`);
+          } else if (data.action === 'rescrape_updated') {
+            updated++;
+            addLog(`✅ RESCRAPE: ${url.split('/').slice(-2, -1)[0]}`);
+          } else {
+            noChanges++;
+          }
+        } catch (err) {
+          errors++;
+          addLog(`💥 ${url}: ${String(err)}`);
+        }
+      }));
+
+      setRescrapeSummary({ updated, errors, noChanges });
+      if (i + BATCH < allUrls.length) {
+        await new Promise(r => setTimeout(r, 500));
+      }
+    }
+
+    addLog(`🎉 Re-scrape done! ${updated} updated, ${noChanges} unchanged, ${errors} errors`);
+    setRescrapePhase('done');
+  };
+
   const progress = urls.length > 0 ? Math.round((current / urls.length) * 100) : 0;
+  const rescrapeProgress = rescrapeTotal > 0 ? Math.round((rescrapeCurrent / rescrapeTotal) * 100) : 0;
   const isRunning = phase === 'listing' || phase === 'scraping';
+  const isRescraping = rescrapePhase === 'listing' || rescrapePhase === 'scraping';
 
   return (
     <AdminLayout title="Import Articles" subtitle="Sync all articles from sernetindia.com blog">
@@ -136,19 +206,43 @@ export default function AdminImportArticles() {
           </Card>
         )}
 
-        <div className="flex gap-3 mb-6">
-          <Button onClick={runImport} disabled={isRunning} size="lg" className="gap-2">
+        <div className="flex flex-wrap gap-3 mb-6">
+          <Button onClick={runImport} disabled={isRunning || isRescraping} size="lg" className="gap-2">
             {phase === 'listing' ? <><Loader2 className="h-4 w-4 animate-spin" /> Fetching list...</>
               : phase === 'scraping' ? <><Loader2 className="h-4 w-4 animate-spin" /> Scraping {current}/{urls.length}...</>
               : phase === 'done' ? <><RefreshCw className="h-4 w-4" /> Re-run Import</>
               : <><Download className="h-4 w-4" /> Start Full Import</>}
           </Button>
+          <Button onClick={runRescrape} disabled={isRunning || isRescraping} size="lg" variant="secondary" className="gap-2">
+            {rescrapePhase === 'listing' ? <><Loader2 className="h-4 w-4 animate-spin" /> Listing...</>
+              : rescrapePhase === 'scraping' ? <><Loader2 className="h-4 w-4 animate-spin" /> Re-scraping {rescrapeCurrent}/{rescrapeTotal}...</>
+              : <><RefreshCw className="h-4 w-4" /> Re-scrape All (Tables &amp; Images)</>}
+          </Button>
           {phase === 'done' && (
-            <Badge variant="outline" className="px-4 flex items-center gap-1 border-green-300 text-green-700">
+            <Badge variant="outline" className="px-4 flex items-center gap-1 border-primary/30 text-primary">
               <CheckCircle2 className="h-3.5 w-3.5" /> Import Complete
             </Badge>
           )}
+          {rescrapePhase === 'done' && (
+            <Badge variant="outline" className="px-4 flex items-center gap-1 border-primary/30 text-primary">
+              <CheckCircle2 className="h-3.5 w-3.5" /> Re-scrape Complete — {rescrapeSummary.updated} updated
+            </Badge>
+          )}
         </div>
+
+        {isRescraping && (
+          <Card className="mb-6">
+            <CardContent className="pt-4">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm text-muted-foreground">
+                  {rescrapePhase === 'listing' ? 'Fetching existing articles...' : `Re-scraping ${rescrapeCurrent} of ${rescrapeTotal}`}
+                </span>
+                <Badge variant="secondary">{rescrapePhase === 'listing' ? '...' : `${rescrapeProgress}%`}</Badge>
+              </div>
+              <Progress value={rescrapePhase === 'listing' ? undefined : rescrapeProgress} className="h-2" />
+            </CardContent>
+          </Card>
+        )}
 
         {log.length > 0 && (
           <Card>
