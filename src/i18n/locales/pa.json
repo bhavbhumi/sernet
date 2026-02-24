@@ -1,4 +1,7 @@
 {
+  "breadcrumb": {
+    "home": "ਹੋਮ"
+  },
   "nav": {
     "about": "ਸਾਡੇ ਬਾਰੇ",
     "services": "ਸੇਵਾਵਾਂ",
@@ -14,7 +17,13 @@
     "calendars": "ਕੈਲੰਡਰ",
     "downloads": "ਡਾਊਨਲੋਡ",
     "news": "ਖ਼ਬਰਾਂ",
-    "circulars": "ਸਰਕੁਲਰ"
+    "circulars": "ਸਰਕੁਲਰ",
+    "opinions": "ਰਾਏ",
+    "polls": "ਪੋਲ",
+    "surveys": "ਸਰਵੇਖਣ",
+    "pricing": "ਕੀਮਤ",
+    "media": "ਮੀਡੀਆ",
+    "sitemap": "ਸਾਈਟਮੈਪ"
   },
   "footer": {
     "company": "ਕੰਪਨੀ",
@@ -33,7 +42,10 @@
     "privacy": "ਗੋਪਨੀਯਤਾ",
     "policies": "ਨੀਤੀਆਂ",
     "disclosures": "ਖੁਲਾਸੇ",
-    "madeWith": "SERNET Financial Services Pvt Ltd ਦੁਆਰਾ ਭਾਰਤ ਵਿੱਚ ♥ ਨਾਲ ਬਣਾਇਆ"
+    "madeWith": "SERNET Financial Services Pvt Ltd ਦੁਆਰਾ ਭਾਰਤ ਵਿੱਚ ♥ ਨਾਲ ਬਣਾਇਆ",
+    "philosophy": "ਦਰਸ਼ਨ",
+    "csr": "CSR",
+    "legal": "ਕਾਨੂੰਨੀ"
   },
   "common": {
     "learnMore": "ਹੋਰ ਜਾਣੋ",
@@ -44,13 +56,121 @@
     "bookConsultation": "ਸਲਾਹ ਬੁੱਕ ਕਰੋ",
     "getItOn": "GET IT ON",
     "appStore": "App Store",
-    "googlePlay": "Google Play"
+    "googlePlay": "Google Play",
+    "readMore": "ਹੋਰ ਪੜ੍ਹੋ",
+    "viewAll": "ਸਭ ਦੇਖੋ",
+    "loading": "ਲੋਡ ਹੋ ਰਿਹਾ ਹੈ…",
+    "noResults": "ਕੋਈ ਨਤੀਜੇ ਨਹੀਂ ਮਿਲੇ।",
+    "search": "ਖੋਜੋ",
+    "submit": "ਜਮ੍ਹਾਂ ਕਰੋ",
+    "cancel": "ਰੱਦ ਕਰੋ",
+    "save": "ਸੇਵ ਕਰੋ",
+    "delete": "ਮਿਟਾਓ",
+    "edit": "ਸੋਧੋ",
+    "back": "ਪਿੱਛੇ",
+    "next": "ਅਗਲਾ",
+    "previous": "ਪਿਛਲਾ",
+    "showMore": "ਹੋਰ ਦਿਖਾਓ",
+    "showLess": "ਘੱਟ ਦਿਖਾਓ",
+    "free": "ਮੁਫ਼ਤ",
+    "close": "ਬੰਦ ਕਰੋ"
   },
   "hero": {
-    "title": "ਨੈਕਸਟਜੈਨ ਵਿੱਤੀ",
-    "highlight": "ਸੇਵਾ ਨੈੱਟਵਰਕ",
-    "description": "ਸਭ ਵਿੱਚ ਨਿਵੇਸ਼ ਕਰੋ — ਸਟਾਕ, IPO, ਮਿਊਚੁਅਲ ਫੰਡ, ਬੀਮਾ, ਡਿਜੀਟਲ ਗੋਲਡ ਅਤੇ ਹੋਰ",
-    "cta": "ਖਾਤਾ ਖੋਲੋ"
+    "title": "ਆਪਣਾ ਰਾਹ ਖੋਲੋ",
+    "highlight": "ਖੁਸ਼ਹਾਲੀ",
+    "description": "ਆਪਣੀ ਦੌਲਤ ਵਧਾਓ, ਸੁਰੱਖਿਅਤ ਕਰੋ, ਸਾਂਭੋ ਅਤੇ ਪ੍ਰਬੰਧਿਤ ਕਰੋ। ਸਰਲ ਅਤੇ ਸੌਖੇ ਆਨਲਾਈਨ ਪਲੇਟਫਾਰਮਾਂ ਰਾਹੀਂ ਜਾਗਰੂਕਤਾ ਨਾਲ ਟ੍ਰੇਡ, ਨਿਵੇਸ਼ ਅਤੇ ਬੀਮਾ ਕਰੋ।",
+    "cta": "ਖਾਤਾ ਖੋਲੋ",
+    "amfiRegistered": "AMFI ਰਜਿਸਟਰਡ",
+    "regulated": "ਨਿਯੰਤ੍ਰਿਤ ਅਤੇ ਅਨੁਪਾਲਨ",
+    "years": "35+ ਸਾਲ",
+    "ofPractice": "ਤਜਰਬਾ",
+    "clientRetention": "94.5% ਗਾਹਕ",
+    "retentionRate": "ਟਿਕਾਊ ਦਰ"
+  },
+  "stats": {
+    "yearsOfPractice": "ਤਜਰਬੇ ਦੇ ਸਾਲ",
+    "clientRetention": "ਗਾਹਕ ਟਿਕਾਊ ਦਰ",
+    "products": "ਉਤਪਾਦ ਅਤੇ ਹੱਲ",
+    "citiesDomestic": "ਸ਼ਹਿਰ ਘਰੇਲੂ ਪਹੁੰਚ",
+    "countriesIntl": "ਦੇਸ਼ ਅੰਤਰਰਾਸ਼ਟਰੀ ਪਹੁੰਚ"
+  },
+  "ecosystem": {
+    "featuredIn": "ਵਿੱਚ ਪ੍ਰਕਾਸ਼ਿਤ"
+  },
+  "trust": {
+    "heading": "ਪ੍ਰਾਪਤ ਕਰੋ ਅਤੇ ਖੁਸ਼ਹਾਲ ਹੋਵੋ",
+    "subheading": "ਤੁਹਾਡੀ ਵਿੱਤੀ ਤਰੱਕੀ, ਸਾਡੀ ਪ੍ਰਾਥਮਿਕਤਾ।",
+    "feature1Title": "ਭਰੋਸਾ ਅਤੇ ਆਤਮਵਿਸ਼ਵਾਸ",
+    "feature1Desc": "ਹਜ਼ਾਰਾਂ ਲੋਕ ਸਾਡੇ ਸੌਖੇ, ਸੁਵਿਧਾਜਨਕ ਅਤੇ ਕੁਸ਼ਲ ਨਿਵੇਸ਼, ਬੀਮਾ ਅਤੇ ਟ੍ਰੇਡਿੰਗ ਪਲੇਟਫਾਰਮਾਂ 'ਤੇ ਭਰੋਸਾ ਕਰਦੇ ਹਨ — ਕਿਉਂਕਿ ਤੁਹਾਡੀ ਤਰੱਕੀ ਸਾਡੀ ਸਫ਼ਲਤਾ ਦਾ ਮਾਪਦੰਡ ਹੈ।",
+    "feature2Title": "ਗੜਬੜ ਨਹੀਂ, ਸਪੱਸ਼ਟਤਾ",
+    "feature2Desc": "ਕੋਈ ਚਮਕਦਾਰ ਚਾਲਾਂ ਨਹੀਂ, ਕੋਈ ਵੇਚਣ ਦੇ ਜਾਲ ਨਹੀਂ। ਸਿਰਫ਼ ਪਾਰਦਰਸ਼ੀ, ਉੱਚ-ਗੁਣਵੱਤਾ ਵਾਲੀਆਂ ਵਿੱਤੀ ਸੇਵਾਵਾਂ ਤੁਹਾਡੀ ਸਫ਼ਲਤਾ ਲਈ ਬਣਾਈਆਂ ਗਈਆਂ ਹਨ।",
+    "feature3Title": "ਲੈਣ-ਦੇਣ ਤੋਂ ਪਰੇ, ਬਦਲਾਅ ਵੱਲ",
+    "feature3Desc": "ਸਿਰਫ਼ ਇੱਕ ਪਲੇਟਫਾਰਮ ਨਹੀਂ, ਸਗੋਂ ਇੱਕ ਵਿੱਤੀ ਈਕੋਸਿਸਟਮ। ਇਕੁਇਟੀ ਅਤੇ ਬੁਲੀਅਨ ਤੋਂ ਲੈ ਕੇ ਫਿਕਸਡ ਇਨਕਮ ਤੱਕ, ਅਸੀਂ ਤੁਹਾਨੂੰ ਸੌਖੇ ਢੰਗ ਨਾਲ ਦੌਲਤ ਬਣਾਉਣ ਵਿੱਚ ਮਦਦ ਕਰਦੇ ਹਾਂ।",
+    "exploreProducts": "ਸਾਡੇ ਉਤਪਾਦ ਦੇਖੋ →"
+  },
+  "pricing": {
+    "heading": "ਸਭ ਤੋਂ ਵਧੀਆ ਕੀਮਤ",
+    "description": "ਅਸੀਂ ਫੁੱਲ ਸਰਵਿਸ ਬ੍ਰੋਕਿੰਗ*, ਨਿਵੇਸ਼ ਅਤੇ ਬੀਮਾ ਉਤਪਾਦਾਂ ਲਈ ਨਿਯਮਿਤ ਵੰਡ ਪ੍ਰਦਾਨ ਕਰਦੇ ਹਾਂ। ਹਮੇਸ਼ਾ ਇਮਾਨਦਾਰ ਅਤੇ ਪਾਰਦਰਸ਼ੀ।",
+    "trading": "ਟ੍ਰੇਡਿੰਗ",
+    "investment": "ਨਿਵੇਸ਼",
+    "insurance": "ਬੀਮਾ",
+    "accountOpening": "ਖਾਤਾ ਖੋਲਣ ਦੀ ਫੀਸ",
+    "amc": "ਪਹਿਲੇ ਸਾਲ ਲਈ AMC",
+    "autoSquareOff": "ਆਟੋ ਸਕੁਐਰ ਆਫ ਚਾਰਜ",
+    "callAndTrade": "ਕਾਲ ਅਤੇ ਟ੍ਰੇਡ",
+    "multipleProfiles": "ਮਲਟੀਪਲ ਪ੍ਰੋਫਾਈਲ ਅਤੇ ਫੈਮਿਲੀ ਲੌਗਇਨ",
+    "portfolioCheckup": "ਪੋਰਟਫੋਲੀਓ ਹੈਲਥ ਚੈਕਅਪ",
+    "premiumReports": "ਪ੍ਰੀਮੀਅਮ ਰਿਪੋਰਟਾਂ",
+    "assistedExecution": "ਸਹਾਇਤਾ ਪ੍ਰਾਪਤ ਅਮਲ",
+    "familyLogin": "ਫੈਮਿਲੀ ਲੌਗਇਨ",
+    "policyReview": "ਪਾਲਿਸੀ ਪੋਰਟਫੋਲੀਓ ਸਮੀਖਿਆ",
+    "seePricing": "ਕੀਮਤ ਦੇਖੋ →",
+    "detailedCharges": "ਵਿਸਤ੍ਰਿਤ ਚਾਰਜ",
+    "whatYouGet": "ਤੁਹਾਨੂੰ ਕੀ ਮਿਲਦਾ ਹੈ",
+    "openAccountCta": "ਖਾਤਾ ਖੋਲੋ",
+    "signUpFree": "ਮੁਫ਼ਤ ਵਿੱਚ ਸਾਈਨਅੱਪ ਕਰੋ"
+  },
+  "testimonials": {
+    "heading": "ਹਜ਼ਾਰਾਂ ਦਾ ਭਰੋਸਾ",
+    "subheading": "ਗਾਹਕ ਸਮੀਖਿਆਵਾਂ ਜੋ ਸਾਨੂੰ ਹੋਰ ਕਰਨ ਲਈ ਪ੍ਰੇਰਿਤ ਕਰਦੀਆਂ ਹਨ",
+    "shareExperience": "ਆਪਣਾ ਤਜਰਬਾ ਸਾਂਝਾ ਕਰੋ",
+    "submitReview": "ਆਪਣੀ ਸਮੀਖਿਆ ਦਿਓ",
+    "seeAllReviews": "ਸਾਰੀਆਂ ਸਮੀਖਿਆਵਾਂ ਦੇਖੋ",
+    "dialogTitle": "ਆਪਣਾ ਤਜਰਬਾ ਸਾਂਝਾ ਕਰੋ",
+    "name": "ਨਾਮ",
+    "namePlaceholder": "ਤੁਹਾਡਾ ਨਾਮ",
+    "email": "ਈਮੇਲ",
+    "emailPlaceholder": "you@example.com",
+    "rating": "ਰੇਟਿੰਗ",
+    "yourReview": "ਤੁਹਾਡੀ ਸਮੀਖਿਆ",
+    "reviewPlaceholder": "ਸਾਨੂੰ ਆਪਣੇ ਤਜਰਬੇ ਬਾਰੇ ਦੱਸੋ...",
+    "submit": "ਸਮੀਖਿਆ ਜਮ੍ਹਾਂ ਕਰੋ",
+    "subscribed": "ਸਬਸਕ੍ਰਾਈਬ ਹੋ ਗਿਆ!"
+  },
+  "insights": {
+    "label": "ਸੂਝ",
+    "heading": "SERNET ਤੋਂ ਤਾਜ਼ਾ",
+    "viewAll": "ਸਾਰੀ ਸੂਝ ਦੇਖੋ",
+    "minRead": "ਮਿੰਟ ਪੜ੍ਹੋ",
+    "newsletter": "ਸਾਡੇ ਨਿਊਜ਼ਲੈਟਰ ਲਈ ਸਬਸਕ੍ਰਾਈਬ ਕਰੋ",
+    "resources": "ਸਰੋਤ",
+    "articles": "ਲੇਖ",
+    "analysis": "ਵਿਸ਼ਲੇਸ਼ਣ",
+    "reports": "ਰਿਪੋਰਟਾਂ",
+    "bulletin": "ਬੁਲੇਟਿਨ",
+    "promotion": "ਪ੍ਰਚਾਰ",
+    "firstName": "ਪਹਿਲਾ ਨਾਮ",
+    "lastName": "ਆਖਰੀ ਨਾਮ",
+    "emailPlaceholder": "ਵੈਧ ਈਮੇਲ ਪਤਾ",
+    "subscribe": "ਸਬਸਕ੍ਰਾਈਬ ਕਰੋ",
+    "pageTitle": "ਮਾਹਿਰ ਸੂਝ ਨਾਲ",
+    "pageHighlight": "ਅੱਗੇ ਰਹੋ",
+    "pageDescription": "ਲੇਖ, ਬਾਜ਼ਾਰ ਵਿਸ਼ਲੇਸ਼ਣ, ਖੋਜ ਰਿਪੋਰਟਾਂ, ਅਤੇ ਮਹੱਤਵਪੂਰਨ ਬੁਲੇਟਿਨ — ਸਭ ਇੱਕ ਥਾਂ 'ਤੇ।"
+  },
+  "openAccount": {
+    "heading": "SERNET ਖਾਤਾ ਖੋਲੋ",
+    "description": "ਨਿਵੇਸ਼, ਬੀਮਾ ਅਤੇ ਟ੍ਰੇਡ ਲਈ ਆਧੁਨਿਕ ਅਤੇ ਸਰਲ ਸਾਧਨ",
+    "cta": "ਮੁਫ਼ਤ ਵਿੱਚ ਸਾਈਨਅੱਪ ਕਰੋ"
   },
   "about": {
     "title": "ਨੈਕਸਟਜੈਨ ਵਿੱਤੀ",
@@ -96,5 +216,148 @@
       "askUs": "ਸਾਨੂੰ ਪੁੱਛੋ",
       "visitUs": "ਸਾਨੂੰ ਮਿਲੋ"
     }
+  },
+  "calculators": {
+    "title": "ਵਿੱਤੀ ਯੋਜਨਾ",
+    "highlight": "ਸਰਲ",
+    "description": "ਟ੍ਰੇਡਿੰਗ ਲਾਗਤ, ਮਾਰਜਿਨ, SIP ਰਿਟਰਨ, ਟੀਚਾ ਯੋਜਨਾ, ਅਤੇ ਬੀਮਾ ਲੋੜਾਂ — ਸਭ ਇੱਕ ਥਾਂ 'ਤੇ ਕੈਲਕੁਲੇਟ ਕਰੋ।",
+    "tabs": {
+      "trading": "ਟ੍ਰੇਡਿੰਗ",
+      "investment": "ਨਿਵੇਸ਼",
+      "insurance": "ਬੀਮਾ"
+    },
+    "subTabs": {
+      "brokerage": "ਬ੍ਰੋਕਰੇਜ",
+      "margin": "ਮਾਰਜਿਨ",
+      "sip": "SIP",
+      "lumpsum": "ਇਕਮੁਸ਼ਤ",
+      "goalPlanner": "ਟੀਚਾ ਯੋਜਨਾਕਾਰ",
+      "needEstimator": "ਲੋੜ ਅੰਦਾਜ਼ਕ"
+    }
+  },
+  "calendars": {
+    "title": "ਮਹੱਤਵਪੂਰਨ ਤਾਰੀਖਾਂ ਅਤੇ",
+    "highlight": "ਇਵੈਂਟ",
+    "description": "ਬਾਜ਼ਾਰ ਛੁੱਟੀਆਂ, ਆਰਥਿਕ ਇਵੈਂਟ, ਅਤੇ ਡੇਟਾ ਰਿਲੀਜ਼ — ਬਾਜ਼ਾਰ ਨੂੰ ਪ੍ਰਭਾਵਿਤ ਕਰਨ ਵਾਲੀਆਂ ਚੀਜ਼ਾਂ ਵਿੱਚ ਅੱਗੇ ਰਹੋ।",
+    "tabs": {
+      "holidayEvents": "ਛੁੱਟੀ ਇਵੈਂਟ",
+      "economicEvents": "ਆਰਥਿਕ ਇਵੈਂਟ",
+      "corporateEvents": "ਕਾਰਪੋਰੇਟ ਇਵੈਂਟ"
+    }
+  },
+  "updates": {
+    "title": "ਤਾਜ਼ਾ ਅੱਪਡੇਟ ਨਾਲ",
+    "highlight": "ਜੁੜੇ ਰਹੋ",
+    "description": "ਬਾਜ਼ਾਰ ਖ਼ਬਰਾਂ, ਨਿਯਾਮਕ ਸਰਕੁਲਰ, ਐਕਸਚੇਂਜ ਨੋਟਿਸ, ਅਤੇ ਨੀਤੀ ਬਦਲਾਅ — ਸਭ ਇੱਕ ਥਾਂ 'ਤੇ।",
+    "tabs": {
+      "news": "ਖ਼ਬਰਾਂ",
+      "circulars": "ਸਰਕੁਲਰ"
+    }
+  },
+  "opinions": {
+    "title": "ਤੁਹਾਡੀ ਆਵਾਜ਼ ਸਾਡੇ",
+    "highlight": "ਭਵਿੱਖ ਨੂੰ ਆਕਾਰ ਦਿੰਦੀ ਹੈ",
+    "description": "ਸਰਵੇਖਣਾਂ ਅਤੇ ਪੋਲ ਰਾਹੀਂ ਆਪਣੀ ਰਾਏ ਸਾਂਝੀ ਕਰੋ — ਸਾਡੀ ਉਤਪਾਦਾਂ, ਸੇਵਾਵਾਂ ਅਤੇ ਤੁਹਾਡੇ ਤਜਰਬੇ ਨੂੰ ਬਿਹਤਰ ਬਣਾਉਣ ਵਿੱਚ ਮਦਦ ਕਰੋ।",
+    "tabs": {
+      "surveys": "ਸਰਵੇਖਣ",
+      "polls": "ਪੋਲ"
+    }
+  },
+  "downloads": {
+    "title": "ਸਾਡੇ ਐਪਸ ਅਤੇ",
+    "highlight": "ਸਰੋਤ ਪ੍ਰਾਪਤ ਕਰੋ",
+    "description": "ਟ੍ਰੇਡਿੰਗ ਪਲੇਟਫਾਰਮ, ਮੋਬਾਈਲ ਐਪਸ, ਅਤੇ ਮਹੱਤਵਪੂਰਨ ਦਸਤਾਵੇਜ਼ ਡਾਊਨਲੋਡ ਕਰੋ — ਸਭ ਕੁਝ ਇੱਕ ਥਾਂ 'ਤੇ।",
+    "tabs": {
+      "apps": "ਐਪਸ",
+      "documents": "ਦਸਤਾਵੇਜ਼"
+    }
+  },
+  "support": {
+    "title": "ਸਹਾਇਤਾ",
+    "description": "ਸਾਡੇ ਗਿਆਨ ਭੰਡਾਰ ਵਿੱਚ ਖੋਜੋ ਜਾਂ ਸਾਡੀ ਸਹਾਇਤਾ ਟੀਮ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।",
+    "searchPlaceholder": "ਸਹਾਇਤਾ ਲੇਖ ਖੋਜੋ...",
+    "supportPortal": "ਸਹਾਇਤਾ ਪੋਰਟਲ",
+    "trackTickets": "ਟਿਕਟ ਟ੍ਰੈਕ ਕਰੋ",
+    "faq": "ਅਕਸਰ ਪੁੱਛੇ ਜਾਣ ਵਾਲੇ ਸਵਾਲ",
+    "contactUs": "ਸੰਪਰਕ ਕਰੋ",
+    "readyToStart": "ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਤਿਆਰ?",
+    "phone": "ਫ਼ੋਨ",
+    "email": "ਈਮੇਲ"
+  },
+  "scheduleCall": {
+    "title": "ਸਲਾਹ ਸ਼ੈਡਿਊਲ ਕਰੋ",
+    "description": "ਸਾਡੇ ਮਾਹਿਰਾਂ ਨਾਲ ਕਾਲ ਬੁੱਕ ਕਰੋ ਜਾਂ WhatsApp 'ਤੇ ਤੁਰੰਤ ਗੱਲ ਕਰੋ।",
+    "yourDetails": "ਤੁਹਾਡੇ ਵੇਰਵੇ",
+    "fullName": "ਪੂਰਾ ਨਾਮ",
+    "pickDateTime": "ਤਾਰੀਖ ਅਤੇ ਸਮਾਂ ਚੁਣੋ",
+    "preferredDate": "ਪਸੰਦੀਦਾ ਤਾਰੀਖ",
+    "preferredTimeSlot": "ਪਸੰਦੀਦਾ ਸਮਾਂ",
+    "additionalMessage": "ਵਾਧੂ ਸੁਨੇਹਾ (ਵਿਕਲਪਿਕ)",
+    "confirmAppointment": "ਮੁਲਾਕਾਤ ਪੱਕੀ ਕਰੋ",
+    "callScheduled": "ਕਾਲ ਸ਼ੈਡਿਊਲ ਹੋ ਗਈ!",
+    "chatOnWhatsApp": "WhatsApp 'ਤੇ ਗੱਲ ਕਰੋ",
+    "callUsDirectly": "ਸਾਨੂੰ ਸਿੱਧਾ ਕਾਲ ਕਰੋ",
+    "whatToExpect": "ਕੀ ਉਮੀਦ ਕਰੀਏ"
+  },
+  "signup": {
+    "title": "ਮੁਫ਼ਤ SERNET",
+    "highlight": "ਖਾਤਾ ਖੋਲੋ",
+    "signUpNow": "ਹੁਣੇ ਸਾਈਨਅੱਪ ਕਰੋ",
+    "emailAddress": "ਈਮੇਲ ਪਤਾ",
+    "mobileNumber": "ਮੋਬਾਈਲ ਨੰਬਰ",
+    "continue": "ਜਾਰੀ ਰੱਖੋ",
+    "alreadyHaveAccount": "ਪਹਿਲਾਂ ਤੋਂ ਖਾਤਾ ਹੈ?",
+    "login": "ਲੌਗਇਨ"
+  },
+  "philosophy": {
+    "title": "ਸਾਡਾ ਦਰਸ਼ਨ",
+    "description": "SERNET ਵਿੱਚ ਅਸੀਂ ਜੋ ਵੀ ਕਰਦੇ ਹਾਂ ਉਸ ਦੀ ਅਗਵਾਈ ਕਰਨ ਵਾਲੇ ਸਿਧਾਂਤ",
+    "whyDifferent": "ਅਸੀਂ ਚੀਜ਼ਾਂ ਵੱਖਰੇ ਢੰਗ ਨਾਲ ਕਿਉਂ ਕਰਦੇ ਹਾਂ"
+  },
+  "csr": {
+    "title": "SERNET ਕੇਅਰਜ਼",
+    "description": "ਜ਼ਿੰਮੇਵਾਰ ਕਾਰਪੋਰੇਟ ਨਾਗਰਿਕਤਾ ਰਾਹੀਂ ਸਕਾਰਾਤਮਕ ਸਮਾਜਿਕ ਅਤੇ ਵਾਤਾਵਰਣ ਪ੍ਰਭਾਵ ਪੈਦਾ ਕਰਨ ਦੀ ਸਾਡੀ ਵਚਨਬੱਧਤਾ।",
+    "foundation": "SERNET ਫਾਊਂਡੇਸ਼ਨ"
+  },
+  "quickLinks": {
+    "title": "ਤੇਜ਼ ਲਿੰਕ",
+    "description": "ਮਹੱਤਵਪੂਰਨ ਸਰੋਤ, ਨਿਯਾਮਕ ਸੰਸਥਾਵਾਂ, ਅਤੇ ਤੁਹਾਡੀ ਨਿਵੇਸ਼ ਯਾਤਰਾ ਲਈ ਲਾਭਦਾਇਕ ਸਾਧਨ ਪ੍ਰਾਪਤ ਕਰੋ।"
+  },
+  "complaints": {
+    "title": "ਸ਼ਿਕਾਇਤ ਨਿਵਾਰਨ",
+    "description": "ਅਸੀਂ ਤੁਹਾਡੀਆਂ ਚਿੰਤਾਵਾਂ ਨੂੰ ਗੰਭੀਰਤਾ ਨਾਲ ਲੈਂਦੇ ਹਾਂ। ਆਪਣੀ ਸ਼ਿਕਾਇਤ ਦਰਜ਼ ਕਰਨ ਅਤੇ ਟ੍ਰੈਕ ਕਰਨ ਲਈ ਹੇਠਾਂ ਦਿੱਤੀ ਪ੍ਰਕਿਰਿਆ ਦੀ ਪਾਲਣਾ ਕਰੋ।"
+  },
+  "creditClaim": {
+    "title": "ਕ੍ਰੈਡਿਟ ਅਤੇ ਕਲੇਮ ਅਧਿਕਾਰ",
+    "description": "ਕ੍ਰੈਡਿਟ, ਕਲੇਮ, ਅਤੇ ਨਿਵੇਸ਼ਕ ਸੁਰੱਖਿਆ ਬਾਰੇ ਤੁਹਾਡੇ ਅਧਿਕਾਰਾਂ ਦੀ ਜਾਣਕਾਰੀ।"
+  },
+  "investorCharter": {
+    "title": "ਨਿਵੇਸ਼ਕ ਚਾਰਟਰ",
+    "description": "SEBI ਦੁਆਰਾ ਨਿਰਧਾਰਿਤ ਨਿਵੇਸ਼ਕਾਂ ਦੇ ਅਧਿਕਾਰ ਅਤੇ ਜ਼ਿੰਮੇਵਾਰੀਆਂ।"
+  },
+  "products": {
+    "choicefinx": {
+      "title": "Choice FinX",
+      "description": "ਇਕੁਇਟੀ, F&O, ਕਮੋਡਿਟੀ ਅਤੇ ਮੁਦਰਾਵਾਂ ਲਈ ਅਡਵਾਂਸਡ ਟ੍ਰੇਡਿੰਗ ਪਲੇਟਫਾਰਮ।"
+    },
+    "tickfunds": {
+      "title": "Tick Funds",
+      "description": "5000+ ਮਿਊਚੁਅਲ ਫੰਡਾਂ ਵਿੱਚ ਜ਼ੀਰੋ ਕਮਿਸ਼ਨ ਨਾਲ ਨਿਵੇਸ਼ ਕਰੋ।"
+    },
+    "tushil": {
+      "title": "Tushil",
+      "description": "ਜ਼ੀਰੋ ਕਮਿਸ਼ਨ ਨਾਲ ਬੀਮੇ ਦੀ ਤੁਲਨਾ ਕਰੋ ਅਤੇ ਖਰੀਦੋ।"
+    },
+    "findemy": {
+      "title": "Findemy",
+      "description": "ਮੁਫ਼ਤ ਵਿੱਤੀ ਸਿੱਖਿਆ ਪਲੇਟਫਾਰਮ — ਨਿਵੇਸ਼, ਟ੍ਰੇਡਿੰਗ ਅਤੇ ਨਿੱਜੀ ਵਿੱਤ ਸਿੱਖੋ।"
+    }
+  },
+  "notFound": {
+    "title": "ਪੰਨਾ ਨਹੀਂ ਮਿਲਿਆ",
+    "description": "ਤੁਸੀਂ ਜੋ ਪੰਨਾ ਲੱਭ ਰਹੇ ਹੋ ਉਹ ਮੌਜੂਦ ਨਹੀਂ ਹੈ ਜਾਂ ਬਦਲ ਦਿੱਤਾ ਗਿਆ ਹੈ। ਆਓ ਤੁਹਾਨੂੰ ਸਹੀ ਰਾਹ 'ਤੇ ਲੈ ਕੇ ਚੱਲੀਏ।",
+    "goHome": "ਹੋਮ ਜਾਓ",
+    "exploreServices": "ਸੇਵਾਵਾਂ ਦੇਖੋ",
+    "popularPages": "ਪ੍ਰਸਿੱਧ ਪੰਨੇ"
   }
 }
