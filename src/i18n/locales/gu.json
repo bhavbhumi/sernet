@@ -1,4 +1,7 @@
 {
+  "breadcrumb": {
+    "home": "હોમ"
+  },
   "nav": {
     "about": "અમારા વિશે",
     "services": "સેવાઓ",
@@ -14,7 +17,13 @@
     "calendars": "કેલેન્ડર",
     "downloads": "ડાઉનલોડ્સ",
     "news": "સમાચાર",
-    "circulars": "પરિપત્રો"
+    "circulars": "પરિપત્રો",
+    "opinions": "અભિપ્રાયો",
+    "polls": "મતદાન",
+    "surveys": "સર્વેક્ષણ",
+    "pricing": "ભાવ",
+    "media": "મીડિયા",
+    "sitemap": "સાઇટમેપ"
   },
   "footer": {
     "company": "કંપની",
@@ -33,7 +42,10 @@
     "privacy": "ગોપનીયતા",
     "policies": "નીતિઓ",
     "disclosures": "ખુલાસાઓ",
-    "madeWith": "SERNET Financial Services Pvt Ltd દ્વારા ભારતમાં ♥ થી બનાવેલ"
+    "madeWith": "SERNET Financial Services Pvt Ltd દ્વારા ભારતમાં ♥ થી બનાવેલ",
+    "philosophy": "તત્વજ્ઞાન",
+    "csr": "CSR",
+    "legal": "કાનૂની"
   },
   "common": {
     "learnMore": "વધુ જાણો",
@@ -44,13 +56,121 @@
     "bookConsultation": "પરામર્શ બુક કરો",
     "getItOn": "GET IT ON",
     "appStore": "App Store",
-    "googlePlay": "Google Play"
+    "googlePlay": "Google Play",
+    "readMore": "વધુ વાંચો",
+    "viewAll": "બધું જુઓ",
+    "loading": "લોડ થઈ રહ્યું છે…",
+    "noResults": "કોઈ પરિણામ મળ્યું નથી.",
+    "search": "શોધો",
+    "submit": "સબમિટ કરો",
+    "cancel": "રદ કરો",
+    "save": "સાચવો",
+    "delete": "કાઢી નાખો",
+    "edit": "સંપાદિત કરો",
+    "back": "પાછા",
+    "next": "આગળ",
+    "previous": "પાછલું",
+    "showMore": "વધુ બતાવો",
+    "showLess": "ઓછું બતાવો",
+    "free": "મફત",
+    "close": "બંધ કરો"
   },
   "hero": {
-    "title": "નેક્સ્ટજેન ફાઇનાન્શિયલ",
-    "highlight": "સર્વિસ નેટવર્ક",
-    "description": "બધામાં રોકાણ કરો — સ્ટૉક્સ, IPO, મ્યુચ્યુઅલ ફંડ, વીમો, ડિજિટલ ગોલ્ડ અને વધુ",
-    "cta": "ખાતું ખોલો"
+    "title": "તમારો માર્ગ ખોલો",
+    "highlight": "સમૃદ્ધિ",
+    "description": "તમારી સંપત્તિ વધારો, જાળવો, સુરક્ષિત કરો અને વ્યવસ્થાપિત કરો. સરળ અને સહજ ઓનલાઇન પ્લેટફોર્મ દ્વારા જાગૃતિ સાથે ટ્રેડ, રોકાણ અને વીમો કરો.",
+    "cta": "ખાતું ખોલો",
+    "amfiRegistered": "AMFI નોંધાયેલ",
+    "regulated": "નિયમનકારી અને અનુપાલન",
+    "years": "35+ વર્ષ",
+    "ofPractice": "અનુભવ",
+    "clientRetention": "94.5% ગ્રાહક",
+    "retentionRate": "જાળવણી દર"
+  },
+  "stats": {
+    "yearsOfPractice": "અનુભવના વર્ષો",
+    "clientRetention": "ગ્રાહક જાળવણી દર",
+    "products": "ઉત્પાદનો અને ઉપાયો",
+    "citiesDomestic": "શહેરો ઘરેલું પહોંચ",
+    "countriesIntl": "દેશો આંતરરાષ્ટ્રીય પહોંચ"
+  },
+  "ecosystem": {
+    "featuredIn": "માં પ્રકાશિત"
+  },
+  "trust": {
+    "heading": "પ્રાપ્ત કરો અને સમૃદ્ધ થાઓ",
+    "subheading": "તમારી નાણાકીય પ્રગતિ, અમારી પ્રાથમિકતા.",
+    "feature1Title": "વિશ્વાસ અને આત્મવિશ્વાસ",
+    "feature1Desc": "હજારો લોકો અમારા સરળ, અનુકૂળ અને કાર્યક્ષમ રોકાણ, વીમા અને ટ્રેડિંગ પ્લેટફોર્મ પર ભરોસો કરે છે — કારણ કે તમારી વૃદ્ધિ અમારી સફળતાનું માપદંડ છે.",
+    "feature2Title": "અરાજકતા નહીં, સ્પષ્ટતા",
+    "feature2Desc": "કોઈ ચમકદાર યુક્તિઓ નહીં, કોઈ વેચાણ જાળ નહીં. ફક્ત તમારી સફળતા માટે બનાવેલી પારદર્શક, ઉચ્ચ-ગુણવત્તાની નાણાકીય સેવાઓ.",
+    "feature3Title": "વ્યવહારોથી આગળ, પરિવર્તન તરફ",
+    "feature3Desc": "માત્ર એક પ્લેટફોર્મ નહીં, પરંતુ એક નાણાકીય ઇકોસિસ્ટમ. ઇક્વિટી અને બુલિયનથી ફિક્સ્ડ ઇન્કમ સુધી, અમે તમને સહજતાથી સંપત્તિ બનાવવામાં મદદ કરીએ છીએ.",
+    "exploreProducts": "અમારા ઉત્પાદનો જુઓ →"
+  },
+  "pricing": {
+    "heading": "શ્રેષ્ઠ ભાવ",
+    "description": "અમે ફુલ સર્વિસ બ્રોકિંગ*, રોકાણ અને વીમા ઉત્પાદનો માટે નિયમિત વિતરણ પ્રદાન કરીએ છીએ. હંમેશા પ્રામાણિક અને પારદર્શક.",
+    "trading": "ટ્રેડિંગ",
+    "investment": "રોકાણ",
+    "insurance": "વીમો",
+    "accountOpening": "ખાતું ખોલવાનો ચાર્જ",
+    "amc": "પ્રથમ વર્ષ માટે AMC",
+    "autoSquareOff": "ઓટો સ્ક્વેર ઓફ ચાર્જ",
+    "callAndTrade": "કૉલ અને ટ્રેડ",
+    "multipleProfiles": "મલ્ટિપલ પ્રોફાઇલ અને ફેમિલી લૉગિન",
+    "portfolioCheckup": "પોર્ટફોલિયો હેલ્થ ચેકઅપ",
+    "premiumReports": "પ્રીમિયમ રિપોર્ટ",
+    "assistedExecution": "સહાયિત અમલીકરણ",
+    "familyLogin": "ફેમિલી લૉગિન",
+    "policyReview": "પૉલિસી પોર્ટફોલિયો સમીક્ષા",
+    "seePricing": "ભાવ જુઓ →",
+    "detailedCharges": "વિગતવાર ચાર્જ",
+    "whatYouGet": "તમને શું મળે છે",
+    "openAccountCta": "ખાતું ખોલો",
+    "signUpFree": "મફતમાં સાઇનઅપ કરો"
+  },
+  "testimonials": {
+    "heading": "હજારોનો ભરોસો",
+    "subheading": "ગ્રાહક સમીક્ષાઓ જે અમને વધુ કરવા પ્રેરિત કરે છે",
+    "shareExperience": "તમારો અનુભવ શેર કરો",
+    "submitReview": "તમારી સમીક્ષા આપો",
+    "seeAllReviews": "બધી સમીક્ષાઓ જુઓ",
+    "dialogTitle": "તમારો અનુભવ શેર કરો",
+    "name": "નામ",
+    "namePlaceholder": "તમારું નામ",
+    "email": "ઈમેલ",
+    "emailPlaceholder": "you@example.com",
+    "rating": "રેટિંગ",
+    "yourReview": "તમારી સમીક્ષા",
+    "reviewPlaceholder": "અમને તમારા અનુભવ વિશે જણાવો...",
+    "submit": "સમીક્ષા સબમિટ કરો",
+    "subscribed": "સબ્સ્ક્રાઇબ થયું!"
+  },
+  "insights": {
+    "label": "આંતરદૃષ્ટિ",
+    "heading": "SERNET તરફથી નવીનતમ",
+    "viewAll": "બધી આંતરદૃષ્ટિ જુઓ",
+    "minRead": "મિનિટ વાંચન",
+    "newsletter": "અમારા ન્યૂઝલેટર માટે સબ્સ્ક્રાઇબ કરો",
+    "resources": "સંસાધનો",
+    "articles": "લેખો",
+    "analysis": "વિશ્લેષણ",
+    "reports": "અહેવાલો",
+    "bulletin": "બુલેટિન",
+    "promotion": "પ્રચાર",
+    "firstName": "પ્રથમ નામ",
+    "lastName": "અટક",
+    "emailPlaceholder": "માન્ય ઈમેલ સરનામું",
+    "subscribe": "સબ્સ્ક્રાઇબ કરો",
+    "pageTitle": "નિષ્ણાત આંતરદૃષ્ટિ સાથે",
+    "pageHighlight": "આગળ રહો",
+    "pageDescription": "લેખો, બજાર વિશ્લેષણ, સંશોધન અહેવાલો, અને મહત્વપૂર્ણ બુલેટિન — બધું એક જ જગ્યાએ."
+  },
+  "openAccount": {
+    "heading": "SERNET ખાતું ખોલો",
+    "description": "રોકાણ, વીમા અને ટ્રેડ માટે આધુનિક અને સરળ સાધનો",
+    "cta": "મફતમાં સાઇનઅપ કરો"
   },
   "about": {
     "title": "નેક્સ્ટજેન ફાઇનાન્શિયલ",
@@ -96,5 +216,148 @@
       "askUs": "અમને પૂછો",
       "visitUs": "અમને મળો"
     }
+  },
+  "calculators": {
+    "title": "નાણાકીય આયોજન",
+    "highlight": "સરળ",
+    "description": "ટ્રેડિંગ ખર્ચ, માર્જિન, SIP વળતર, ધ્યેય આયોજન, અને વીમા જરૂરિયાતો — બધું એક જગ્યાએ ગણો.",
+    "tabs": {
+      "trading": "ટ્રેડિંગ",
+      "investment": "રોકાણ",
+      "insurance": "વીમો"
+    },
+    "subTabs": {
+      "brokerage": "બ્રોકરેજ",
+      "margin": "માર્જિન",
+      "sip": "SIP",
+      "lumpsum": "એકસાથે",
+      "goalPlanner": "ધ્યેય આયોજક",
+      "needEstimator": "જરૂરિયાત અંદાજક"
+    }
+  },
+  "calendars": {
+    "title": "મહત્વપૂર્ણ તારીખો અને",
+    "highlight": "ઇવેન્ટ્સ",
+    "description": "બજારની રજાઓ, આર્થિક ઇવેન્ટ્સ, અને ડેટા રિલીઝ — બજારને અસર કરતી બાબતોમાં આગળ રહો.",
+    "tabs": {
+      "holidayEvents": "રજા ઇવેન્ટ્સ",
+      "economicEvents": "આર્થિક ઇવેન્ટ્સ",
+      "corporateEvents": "કોર્પોરેટ ઇવેન્ટ્સ"
+    }
+  },
+  "updates": {
+    "title": "નવીનતમ અપડેટ્સ સાથે",
+    "highlight": "જોડાયેલા રહો",
+    "description": "બજાર સમાચાર, નિયમનકારી પરિપત્રો, એક્સચેન્જ સૂચનાઓ, અને નીતિ ફેરફારો — બધું એક જગ્યાએ.",
+    "tabs": {
+      "news": "સમાચાર",
+      "circulars": "પરિપત્રો"
+    }
+  },
+  "opinions": {
+    "title": "તમારો અવાજ અમારા",
+    "highlight": "ભવિષ્યને આકાર આપે છે",
+    "description": "સર્વેક્ષણ અને મતદાન દ્વારા તમારો પ્રતિસાદ શેર કરો — અમને ઉત્પાદનો, સેવાઓ અને તમારા અનુભવને સુધારવામાં મદદ કરો.",
+    "tabs": {
+      "surveys": "સર્વેક્ષણ",
+      "polls": "મતદાન"
+    }
+  },
+  "downloads": {
+    "title": "અમારી એપ્સ અને",
+    "highlight": "સંસાધનો મેળવો",
+    "description": "ટ્રેડિંગ પ્લેટફોર્મ, મોબાઇલ એપ્સ, અને મહત્વપૂર્ણ દસ્તાવેજો ડાઉનલોડ કરો — બધું એક જગ્યાએ.",
+    "tabs": {
+      "apps": "એપ્સ",
+      "documents": "દસ્તાવેજો"
+    }
+  },
+  "support": {
+    "title": "સહાય",
+    "description": "અમારા જ્ઞાન ભંડારમાં શોધો અથવા અમારી સહાય ટીમનો સંપર્ક કરો.",
+    "searchPlaceholder": "સહાય લેખો શોધો...",
+    "supportPortal": "સહાય પોર્ટલ",
+    "trackTickets": "ટિકિટ ટ્રેક કરો",
+    "faq": "વારંવાર પૂછાતા પ્રશ્નો",
+    "contactUs": "સંપર્ક કરો",
+    "readyToStart": "શરૂ કરવા તૈયાર?",
+    "phone": "ફોન",
+    "email": "ઈમેલ"
+  },
+  "scheduleCall": {
+    "title": "પરામર્શ શેડ્યૂલ કરો",
+    "description": "અમારા નિષ્ણાતો સાથે કૉલ બુક કરો અથવા WhatsApp પર તરત ચેટ કરો.",
+    "yourDetails": "તમારી વિગતો",
+    "fullName": "પૂરું નામ",
+    "pickDateTime": "તારીખ અને સમય પસંદ કરો",
+    "preferredDate": "પસંદગીની તારીખ",
+    "preferredTimeSlot": "પસંદગીનો સમય",
+    "additionalMessage": "વધારાનો સંદેશ (વૈકલ્પિક)",
+    "confirmAppointment": "એપોઇન્ટમેન્ટ કન્ફર્મ કરો",
+    "callScheduled": "કૉલ શેડ્યૂલ થઈ ગયો!",
+    "chatOnWhatsApp": "WhatsApp પર ચેટ કરો",
+    "callUsDirectly": "અમને સીધો કૉલ કરો",
+    "whatToExpect": "શું અપેક્ષા રાખવી"
+  },
+  "signup": {
+    "title": "મફત SERNET",
+    "highlight": "ખાતું ખોલો",
+    "signUpNow": "હમણાં સાઇનઅપ કરો",
+    "emailAddress": "ઈમેલ સરનામું",
+    "mobileNumber": "મોબાઇલ નંબર",
+    "continue": "ચાલુ રાખો",
+    "alreadyHaveAccount": "પહેલેથી ખાતું છે?",
+    "login": "લૉગિન"
+  },
+  "philosophy": {
+    "title": "અમારું તત્વજ્ઞાન",
+    "description": "SERNET માં અમે જે કંઈ કરીએ છીએ તેનું માર્ગદર્શન કરતા સિદ્ધાંતો",
+    "whyDifferent": "અમે વસ્તુઓ અલગ રીતે કેમ કરીએ છીએ"
+  },
+  "csr": {
+    "title": "SERNET કેર્સ",
+    "description": "જવાબદાર કોર્પોરેટ નાગરિકત્વ દ્વારા સકારાત્મક સામાજિક અને પર્યાવરણીય અસર ઊભી કરવાની અમારી પ્રતિબદ્ધતા.",
+    "foundation": "SERNET ફાઉન્ડેશન"
+  },
+  "quickLinks": {
+    "title": "ઝડપી લિંક્સ",
+    "description": "મહત્વપૂર્ણ સંસાધનો, નિયમનકારી સંસ્થાઓ, અને તમારી રોકાણ યાત્રા માટે ઉપયોગી સાધનો મેળવો."
+  },
+  "complaints": {
+    "title": "ફરિયાદ નિવારણ",
+    "description": "અમે તમારી ચિંતાઓને ગંભીરતાથી લઈએ છીએ. તમારી ફરિયાદ નોંધાવવા અને ટ્રેક કરવા માટે નીચેની પ્રક્રિયા અનુસરો."
+  },
+  "creditClaim": {
+    "title": "ક્રેડિટ અને ક્લેમ અધિકારો",
+    "description": "ક્રેડિટ, ક્લેમ, અને રોકાણકાર સુરક્ષા વિશે તમારા અધિકારોની માહિતી."
+  },
+  "investorCharter": {
+    "title": "રોકાણકાર ચાર્ટર",
+    "description": "SEBI દ્વારા નિર્ધારિત રોકાણકારોના અધિકારો અને જવાબદારીઓ."
+  },
+  "products": {
+    "choicefinx": {
+      "title": "Choice FinX",
+      "description": "ઇક્વિટી, F&O, કોમોડિટી અને ચલણ માટે અદ્યતન ટ્રેડિંગ પ્લેટફોર્મ."
+    },
+    "tickfunds": {
+      "title": "Tick Funds",
+      "description": "5000+ મ્યુચ્યુઅલ ફંડ્સમાં શૂન્ય કમિશન સાથે રોકાણ કરો."
+    },
+    "tushil": {
+      "title": "Tushil",
+      "description": "શૂન્ય કમિશન સાથે વીમાની તુલના કરો અને ખરીદો."
+    },
+    "findemy": {
+      "title": "Findemy",
+      "description": "મફત નાણાકીય શિક્ષણ પ્લેટફોર્મ — રોકાણ, ટ્રેડિંગ અને વ્યક્તિગત ફાઇનાન્સ શીખો."
+    }
+  },
+  "notFound": {
+    "title": "પૃષ્ઠ મળ્યું નથી",
+    "description": "તમે શોધી રહ્યાં છો તે પૃષ્ઠ અસ્તિત્વમાં નથી અથવા ખસેડવામાં આવ્યું છે. ચાલો તમને સાચા માર્ગ પર લાવીએ.",
+    "goHome": "હોમ પર જાઓ",
+    "exploreServices": "સેવાઓ જુઓ",
+    "popularPages": "લોકપ્રિય પૃષ્ઠો"
   }
 }
