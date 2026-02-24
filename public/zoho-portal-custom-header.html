@@ -1,0 +1,121 @@
+<!--
+  SERNET × Zoho Desk Portal — Custom Header HTML
+  Paste into: Zoho Desk → Setup → Rebranding → Help Center → Custom HTML → Header
+  
+  This replaces the default Zoho header with SERNET-branded navigation
+  that matches sernet.lovable.app exactly.
+-->
+
+<style>
+  /* Hide default Zoho header content */
+  .deskportal-nav-container > *:not(.sernet-header) {
+    display: none !important;
+  }
+  
+  .sernet-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1152px;
+    margin: 0 auto;
+    padding: 0 16px;
+    height: 56px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  
+  .sernet-header__brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none !important;
+    color: #f8fafc !important;
+  }
+  
+  .sernet-header__logo {
+    height: 28px;
+    width: auto;
+  }
+  
+  .sernet-header__name {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #f8fafc !important;
+  }
+  
+  .sernet-header__nav {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .sernet-header__nav a {
+    color: #94a3b8 !important;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none !important;
+    transition: color 0.2s ease;
+    white-space: nowrap;
+  }
+  
+  .sernet-header__nav a:hover {
+    color: #3b82f6 !important;
+  }
+  
+  .sernet-header__nav a.active {
+    color: #f8fafc !important;
+  }
+  
+  .sernet-header__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: transparent;
+    border: 1px solid #1e293b;
+    color: #94a3b8 !important;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 6px;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+  }
+  
+  .sernet-header__back:hover {
+    border-color: #3b82f6;
+    color: #3b82f6 !important;
+  }
+  
+  @media (max-width: 768px) {
+    .sernet-header__nav {
+      gap: 16px;
+    }
+    .sernet-header__nav a {
+      font-size: 12px;
+    }
+  }
+</style>
+
+<div class="sernet-header">
+  <a href="https://sernet.lovable.app" class="sernet-header__brand" target="_blank">
+    <!-- Replace src with your actual logo URL if you have one hosted -->
+    <span class="sernet-header__name">SERNET</span>
+  </a>
+  
+  <nav>
+    <ul class="sernet-header__nav">
+      <li><a href="/portal/en/kb" class="active">Knowledge Base</a></li>
+      <li><a href="/portal/en/community">Community</a></li>
+      <li><a href="/portal/en/myarea">My Tickets</a></li>
+      <li>
+        <a href="https://sernet.lovable.app/support" class="sernet-header__back" target="_blank">
+          ← Back to SERNET
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>

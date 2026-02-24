@@ -1,0 +1,628 @@
+/*
+ * SERNET × Zoho Desk Portal — Custom CSS
+ * Paste into: Zoho Desk → Setup → Rebranding → Help Center → Custom CSS
+ *
+ * Design tokens mapped from SERNET dark theme:
+ *   --background:  hsl(222 47% 4%)   → #0a0e1a
+ *   --card:        hsl(222 47% 8%)   → #111729
+ *   --primary:     hsl(217 91% 60%)  → #3b82f6
+ *   --foreground:  hsl(210 40% 98%)  → #f8fafc
+ *   --muted-fg:    hsl(215 20% 65%) → #94a3b8
+ *   --border:      hsl(217 33% 17%) → #1e293b
+ *   --section-alt: hsl(222 47% 6%)  → #0d1220
+ *   --radius:      0.5rem (8px)
+ *   Font stack:    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif
+ */
+
+/* ═══════════════════════════════════════════
+   0. GLOBAL RESETS & BODY
+   ═══════════════════════════════════════════ */
+body,
+html {
+  background-color: #0a0e1a !important;
+  color: #f8fafc !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+
+* {
+  border-color: #1e293b !important;
+}
+
+a {
+  color: #3b82f6 !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease !important;
+}
+
+a:hover {
+  color: #60a5fa !important;
+}
+
+/* ═══════════════════════════════════════════
+   1. TOP NAVIGATION / HEADER
+   ═══════════════════════════════════════════ */
+#headerContainer,
+.zd-header,
+.desk-portal-header,
+header,
+[class*="header"] {
+  background-color: #0a0e1a !important;
+  border-bottom: 1px solid #1e293b !important;
+  box-shadow: none !important;
+}
+
+#headerContainer a,
+.zd-header a,
+header a,
+.desk-portal-header a {
+  color: #f8fafc !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+}
+
+#headerContainer a:hover,
+header a:hover {
+  color: #3b82f6 !important;
+}
+
+/* Logo / brand text */
+.brand-name,
+.deskportal-brandname,
+[class*="brand"] {
+  color: #f8fafc !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+}
+
+/* Sign In / Sign Up buttons */
+.signin-link,
+.signup-link,
+[class*="sign"] {
+  color: #f8fafc !important;
+}
+
+.signup-link,
+a[href*="signup"] {
+  background-color: #3b82f6 !important;
+  color: #ffffff !important;
+  padding: 6px 16px !important;
+  border-radius: 6px !important;
+  font-weight: 500 !important;
+}
+
+/* Active nav link */
+.active-tab,
+.active-link,
+[class*="active"] {
+  color: #3b82f6 !important;
+  border-bottom-color: #3b82f6 !important;
+}
+
+/* ═══════════════════════════════════════════
+   2. HERO / BANNER SECTION
+   ═══════════════════════════════════════════ */
+.banner,
+.home-banner,
+.desk-portal-banner,
+[class*="banner"],
+[class*="hero"],
+#mainContainer > div:first-child,
+.zd-home-banner {
+  background: linear-gradient(180deg, #111729 0%, #0a0e1a 100%) !important;
+  background-image: none !important;
+  padding: 60px 20px !important;
+  text-align: center !important;
+  min-height: auto !important;
+}
+
+/* Hero heading */
+.banner h1,
+.banner h2,
+.home-banner h1,
+[class*="banner"] h1,
+[class*="banner"] h2,
+[class*="hero"] h1 {
+  color: #f8fafc !important;
+  font-size: 2.25rem !important;
+  font-weight: 400 !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.01em !important;
+  margin-bottom: 12px !important;
+}
+
+/* Hero subtitle */
+.banner p,
+.home-banner p,
+[class*="banner"] p {
+  color: #94a3b8 !important;
+  font-size: 1rem !important;
+  line-height: 1.6 !important;
+  max-width: 600px !important;
+  margin: 0 auto 24px auto !important;
+}
+
+/* ═══════════════════════════════════════════
+   3. SEARCH BAR
+   ═══════════════════════════════════════════ */
+.search-container,
+.zd-search,
+[class*="search-box"],
+[class*="search-container"],
+.desk-portal-search {
+  max-width: 640px !important;
+  margin: 0 auto !important;
+}
+
+.search-container input,
+[class*="search"] input,
+input[type="search"],
+input[type="text"][placeholder*="Search"],
+input[placeholder*="Search"],
+input[placeholder*="search"] {
+  background-color: #111729 !important;
+  border: 1px solid #1e293b !important;
+  border-radius: 8px !important;
+  color: #f8fafc !important;
+  font-size: 14px !important;
+  padding: 14px 20px 14px 48px !important;
+  width: 100% !important;
+  outline: none !important;
+  transition: border-color 0.2s ease !important;
+}
+
+input[type="search"]:focus,
+input[type="text"]:focus,
+[class*="search"] input:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
+}
+
+input::placeholder {
+  color: #64748b !important;
+}
+
+/* Search button */
+.search-container button,
+[class*="search"] button,
+button[class*="search-btn"] {
+  background-color: #3b82f6 !important;
+  border: none !important;
+  border-radius: 0 8px 8px 0 !important;
+  color: #ffffff !important;
+}
+
+.search-container button:hover,
+[class*="search"] button:hover {
+  background-color: #2563eb !important;
+}
+
+/* Search dropdown */
+select,
+.search-container select {
+  background-color: #111729 !important;
+  border: 1px solid #1e293b !important;
+  color: #f8fafc !important;
+  border-radius: 8px !important;
+}
+
+/* ═══════════════════════════════════════════
+   4. FEATURE CARDS (Knowledge Base, Community, Tickets)
+   ═══════════════════════════════════════════ */
+.feature-block,
+.home-feature,
+.zd-feature-block,
+[class*="feature"],
+.desk-portal-features .desk-portal-feature,
+.modules-container > div,
+#mainContainer ul > li,
+.home-tabs .home-tab {
+  background-color: #111729 !important;
+  border: 1px solid #1e293b !important;
+  border-radius: 8px !important;
+  padding: 24px !important;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease !important;
+  text-align: left !important;
+}
+
+.feature-block:hover,
+[class*="feature"]:hover,
+.home-tabs .home-tab:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
+  border-color: #3b82f6 !important;
+}
+
+/* Feature card headings */
+.feature-block h3,
+.feature-block h4,
+[class*="feature"] h3,
+[class*="feature"] h4,
+.home-tab h3 {
+  color: #f8fafc !important;
+  font-size: 1.125rem !important;
+  font-weight: 500 !important;
+  margin-bottom: 8px !important;
+}
+
+/* Feature card descriptions */
+.feature-block p,
+[class*="feature"] p,
+.home-tab p {
+  color: #94a3b8 !important;
+  font-size: 0.8125rem !important;
+  line-height: 1.6 !important;
+}
+
+/* Feature icons — replace orange with blue */
+.feature-block svg,
+.feature-block img,
+[class*="feature"] svg,
+[class*="feature"] img,
+.home-tab svg,
+.home-tab img {
+  filter: hue-rotate(200deg) saturate(1.5) brightness(1.2) !important;
+}
+
+/* ═══════════════════════════════════════════
+   5. RECENT TOPICS / COMMUNITY SECTION
+   ═══════════════════════════════════════════ */
+.recent-topics,
+[class*="recent"],
+[class*="topic-list"] {
+  background-color: #0d1220 !important;
+  padding: 32px !important;
+  border-radius: 8px !important;
+}
+
+.recent-topics h5,
+.recent-topics h4,
+.recent-topics h3,
+[class*="recent"] h3,
+[class*="recent"] h4,
+[class*="recent"] h5 {
+  color: #f8fafc !important;
+  font-weight: 500 !important;
+}
+
+.recent-topics a,
+.recent-topics li,
+[class*="topic"] a {
+  color: #94a3b8 !important;
+  padding: 8px 0 !important;
+  border-bottom: 1px solid #1e293b !important;
+  font-size: 13px !important;
+}
+
+.recent-topics a:hover,
+[class*="topic"] a:hover {
+  color: #3b82f6 !important;
+}
+
+/* ═══════════════════════════════════════════
+   6. KNOWLEDGE BASE PAGES
+   ═══════════════════════════════════════════ */
+.kb-category,
+.kb-section,
+[class*="kb-"],
+.category-block,
+.article-list {
+  background-color: #111729 !important;
+  border: 1px solid #1e293b !important;
+  border-radius: 8px !important;
+  padding: 20px !important;
+}
+
+.kb-category h3,
+.kb-section h3,
+[class*="kb-"] h3 {
+  color: #f8fafc !important;
+}
+
+.article-list li,
+.kb-section li {
+  border-bottom: 1px solid #1e293b !important;
+  padding: 10px 0 !important;
+}
+
+.article-list li a,
+.kb-section li a {
+  color: #94a3b8 !important;
+}
+
+.article-list li a:hover {
+  color: #3b82f6 !important;
+}
+
+/* Article content page */
+.article-content,
+.article-body,
+[class*="article-content"] {
+  background-color: #111729 !important;
+  border: 1px solid #1e293b !important;
+  border-radius: 8px !important;
+  padding: 32px !important;
+  color: #f8fafc !important;
+}
+
+/* ═══════════════════════════════════════════
+   7. TICKET FORMS & MY AREA
+   ═══════════════════════════════════════════ */
+.ticket-form,
+form,
+.submit-ticket,
+[class*="ticket-form"] {
+  background-color: #111729 !important;
+  border: 1px solid #1e293b !important;
+  border-radius: 8px !important;
+  padding: 24px !important;
+}
+
+label {
+  color: #f8fafc !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+textarea,
+select {
+  background-color: #0a0e1a !important;
+  border: 1px solid #1e293b !important;
+  border-radius: 8px !important;
+  color: #f8fafc !important;
+  padding: 10px 14px !important;
+  font-size: 14px !important;
+  transition: border-color 0.2s ease !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #3b82f6 !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
+}
+
+/* Submit / action buttons */
+button[type="submit"],
+input[type="submit"],
+.zd-btn-primary,
+[class*="btn-primary"],
+.submit-btn {
+  background-color: #3b82f6 !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 10px 24px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: background-color 0.2s ease !important;
+}
+
+button[type="submit"]:hover,
+input[type="submit"]:hover,
+.zd-btn-primary:hover {
+  background-color: #2563eb !important;
+}
+
+/* Secondary buttons */
+.zd-btn-secondary,
+[class*="btn-secondary"],
+button.cancel {
+  background-color: transparent !important;
+  border: 1px solid #3b82f6 !important;
+  color: #3b82f6 !important;
+  border-radius: 8px !important;
+  padding: 10px 24px !important;
+}
+
+/* Ticket list / table */
+table,
+.ticket-list,
+[class*="ticket-list"] {
+  background-color: #111729 !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+table th {
+  background-color: #0d1220 !important;
+  color: #94a3b8 !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+
+table td {
+  color: #f8fafc !important;
+  border-bottom: 1px solid #1e293b !important;
+  font-size: 13px !important;
+}
+
+table tr:hover td {
+  background-color: rgba(59, 130, 246, 0.05) !important;
+}
+
+/* ═══════════════════════════════════════════
+   8. STATUS BADGES / PILLS
+   ═══════════════════════════════════════════ */
+.status-badge,
+.ticket-status,
+[class*="status"],
+[class*="badge"] {
+  border-radius: 9999px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  padding: 2px 10px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+
+/* ═══════════════════════════════════════════
+   9. COMMUNITY / FORUM
+   ═══════════════════════════════════════════ */
+.community-topic,
+.forum-topic,
+[class*="community"] li,
+[class*="forum"] li {
+  background-color: #111729 !important;
+  border: 1px solid #1e293b !important;
+  border-radius: 8px !important;
+  padding: 16px !important;
+  margin-bottom: 8px !important;
+}
+
+/* ═══════════════════════════════════════════
+   10. FOOTER
+   ═══════════════════════════════════════════ */
+#footerContainer,
+footer,
+.zd-footer,
+[class*="footer"] {
+  background-color: #0a0e1a !important;
+  border-top: 1px solid #1e293b !important;
+  color: #94a3b8 !important;
+  font-size: 12px !important;
+}
+
+footer a,
+[class*="footer"] a {
+  color: #94a3b8 !important;
+}
+
+footer a:hover,
+[class*="footer"] a:hover {
+  color: #3b82f6 !important;
+}
+
+/* ═══════════════════════════════════════════
+   11. BREADCRUMBS & PAGINATION
+   ═══════════════════════════════════════════ */
+.breadcrumb,
+[class*="breadcrumb"] {
+  color: #64748b !important;
+  font-size: 12px !important;
+}
+
+.breadcrumb a {
+  color: #94a3b8 !important;
+}
+
+.breadcrumb a:hover {
+  color: #3b82f6 !important;
+}
+
+.pagination a,
+[class*="pagination"] a {
+  color: #94a3b8 !important;
+  border: 1px solid #1e293b !important;
+  border-radius: 6px !important;
+  padding: 6px 12px !important;
+}
+
+.pagination .active,
+[class*="pagination"] .active {
+  background-color: #3b82f6 !important;
+  color: #ffffff !important;
+  border-color: #3b82f6 !important;
+}
+
+/* ═══════════════════════════════════════════
+   12. SCROLLBAR
+   ═══════════════════════════════════════════ */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0e1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* ═══════════════════════════════════════════
+   13. MISC OVERRIDES
+   ═══════════════════════════════════════════ */
+
+/* Remove any orange/default accent colors */
+[style*="color: rgb(241, 107, 33)"],
+[style*="color:#f16b21"],
+[style*="background-color: rgb(241, 107, 33)"],
+[style*="background:#f16b21"] {
+  color: #3b82f6 !important;
+  background-color: #3b82f6 !important;
+}
+
+/* Smooth transitions everywhere */
+* {
+  transition-property: color, background-color, border-color, box-shadow;
+  transition-duration: 0.2s;
+  transition-timing-function: ease;
+}
+
+/* Main content container */
+#mainContainer,
+.main-container,
+[class*="main-content"] {
+  background-color: #0a0e1a !important;
+  max-width: 1152px !important; /* matches max-w-6xl */
+  margin: 0 auto !important;
+  padding: 0 16px !important;
+}
+
+/* Dropdown menus */
+.dropdown-menu,
+[class*="dropdown"],
+ul[role="menu"] {
+  background-color: #111729 !important;
+  border: 1px solid #1e293b !important;
+  border-radius: 8px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+}
+
+.dropdown-menu a,
+[class*="dropdown"] a,
+ul[role="menu"] a {
+  color: #f8fafc !important;
+}
+
+.dropdown-menu a:hover,
+[class*="dropdown"] a:hover {
+  background-color: rgba(59, 130, 246, 0.1) !important;
+}
+
+/* Modal / Dialog */
+.modal,
+.dialog,
+[class*="modal"],
+[role="dialog"] {
+  background-color: #111729 !important;
+  border: 1px solid #1e293b !important;
+  border-radius: 8px !important;
+  color: #f8fafc !important;
+}
+
+/* Toast / Notification */
+.notification,
+[class*="toast"],
+[class*="notification"] {
+  background-color: #111729 !important;
+  border: 1px solid #1e293b !important;
+  border-radius: 8px !important;
+  color: #f8fafc !important;
+}
