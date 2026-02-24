@@ -21,7 +21,7 @@ const footerLinks = {
     { nameKey: 'common.knowMore', label: 'Tick Funds', href: '/tickfunds' },
     { nameKey: 'common.knowMore', label: 'Tushil', href: '/tushil' },
     { nameKey: 'common.knowMore', label: 'Choice FinX', href: '/choicefinx' },
-    { nameKey: 'common.knowMore', label: 'Findemy', href: '/findemy' },
+    { nameKey: 'common.knowMore', label: 'Awareness', href: '/awareness' },
     { nameKey: 'nav.insights', href: '/insights' },
   ],
   support: [

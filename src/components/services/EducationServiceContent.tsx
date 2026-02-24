@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, BookOpen, GraduationCap, Award, Check, Download, UserCheck, Play, Lightbulb, Users, Video, FileText, Globe, Clock } from 'lucide-react';
 
 
-import findemyShowcase from '@/assets/findemy-showcase.png';
+import sernetShowcase from '@/assets/sernet-product-showcase.png';
 
 const stats = [
   { icon: BookOpen, value: '50+', label: 'Courses' },
@@ -19,7 +19,7 @@ const products = [
 
 export const EducationServiceContent = () => (
   <>
-    {/* Hero — Findemy */}
+    {/* Hero — Education */}
     <section className="section-padding bg-background">
       <div className="container-zerodha">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-stretch">
@@ -30,7 +30,7 @@ export const EducationServiceContent = () => (
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="heading-lg text-foreground mb-3">Findemy</h2>
+            <h2 className="heading-lg text-foreground mb-3">SERNET Education</h2>
             <p className="text-body text-muted-foreground mb-8">
               Your gateway to financial education — from free awareness content to expert-led training programs that turn beginners into confident market participants.
             </p>
@@ -49,15 +49,12 @@ export const EducationServiceContent = () => (
               ))}
             </ul>
             <div className="flex flex-wrap items-center gap-3 mb-10">
-              <a href="#" className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors">
-                <Globe className="w-5 h-5" />
-                <div className="flex flex-col leading-tight">
-                  <span className="text-[10px] opacity-80">Visit</span>
-                  <span className="text-sm font-semibold">Findemy.com</span>
-                </div>
-              </a>
-              <Link to="/findemy" className="link-primary inline-flex items-center gap-1 text-sm font-medium">
-                Explore Content <ArrowRight className="w-4 h-4" />
+              <Link to="/awareness" className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors">
+                <Lightbulb className="w-5 h-5" />
+                Explore Awareness Content
+              </Link>
+              <Link to="/insights" className="link-primary inline-flex items-center gap-1 text-sm font-medium">
+                Browse Insights <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
             {/* Trust strip stats */}
@@ -84,7 +81,7 @@ export const EducationServiceContent = () => (
             transition={{ duration: 0.6, delay: 0.15 }}
             className="flex flex-col items-center justify-center h-full"
           >
-            <img src={findemyShowcase} alt="Findemy education platform showcase" className="rounded-xl w-full max-w-[520px] max-h-[400px] object-contain dark:bg-white dark:p-3" />
+            <img src={sernetShowcase} alt="SERNET education platform showcase" className="rounded-xl w-full max-w-[520px] max-h-[400px] object-contain dark:bg-white dark:p-3" />
           </motion.div>
         </div>
       </div>
@@ -120,7 +117,7 @@ export const EducationServiceContent = () => (
       </div>
     </section>
 
-    {/* What Makes Findemy Different */}
+    {/* What Makes SERNET Education Different */}
     <section className="section-padding">
       <div className="container-zerodha">
         <motion.div
@@ -132,7 +129,7 @@ export const EducationServiceContent = () => (
         >
           <div className="flex-1 text-center lg:text-left">
             <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wide uppercase mb-4">
-              Why Findemy
+              Why SERNET Education
             </span>
             <h2 className="heading-lg text-foreground mb-3">Learning paths, irrespective of programs</h2>
             <p className="text-body text-muted-foreground mb-6 max-w-xl">
@@ -201,7 +198,7 @@ export const EducationServiceContent = () => (
         </motion.p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
-            { icon: Globe, step: '01', title: 'Visit & Sign Up', description: 'Head to Findemy.com and create your free account to unlock your learning dashboard.' },
+            { icon: Globe, step: '01', title: 'Visit & Sign Up', description: 'Create your free account on our platform to unlock your learning dashboard.' },
             { icon: BookOpen, step: '02', title: 'Choose Your Program', description: 'Pick from free Awareness modules, affordable Coaching sessions, or structured Training courses.' },
             { icon: UserCheck, step: '03', title: 'Decide Your Path', description: 'Select a learning path tailored to your goals — whether beginner, intermediate, or advanced.' },
             { icon: Play, step: '04', title: 'Start Learning', description: 'Access video lessons, join live sessions, complete assignments, and earn certificates as you progress.' },
@@ -230,13 +227,13 @@ export const EducationServiceContent = () => (
           transition={{ duration: 0.5, delay: 0.3 }}
           className="text-center mt-12"
         >
-          <a
-            href="#"
+          <Link
+            to="/awareness"
             className="inline-flex items-center gap-2 px-8 py-3 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
           >
-            Explore Findemy
+            Explore Awareness
             <ArrowRight className="w-4 h-4" />
-          </a>
+          </Link>
         </motion.div>
       </div>
     </section>
@@ -245,7 +242,7 @@ export const EducationServiceContent = () => (
     <section className="py-6 bg-muted/30">
       <div className="container-zerodha">
         <p className="text-xs text-muted-foreground text-center max-w-4xl mx-auto leading-relaxed">
-          <strong>Advisory Note:</strong> Financial education content provided through Findemy is for informational and learning purposes only and does not constitute investment advice, stock recommendations, or financial planning guidance. Learners are advised to consult qualified financial professionals before making any investment decisions. SERNET facilitates education services through Findemy and is not responsible for individual trading or investment outcomes based on course content.
+          <strong>Advisory Note:</strong> Financial education content is for informational and learning purposes only and does not constitute investment advice, stock recommendations, or financial planning guidance. Learners are advised to consult qualified financial professionals before making any investment decisions. SERNET is not responsible for individual trading or investment outcomes based on course content.
         </p>
       </div>
     </section>

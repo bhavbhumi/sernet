@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, Clock, Calendar, BarChart3, FileText, Newspaper } from 'lucide-react';
+import { ArrowRight, Clock, Calendar, BarChart3, FileText, Newspaper, Lightbulb } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -9,7 +9,7 @@ import { format } from 'date-fns';
 
 interface InsightCard {
   id: string;
-  type: 'article' | 'analysis' | 'report';
+  type: 'article' | 'analysis' | 'report' | 'awareness';
   category: string;
   title: string;
   excerpt: string | null;
@@ -23,17 +23,21 @@ const TYPE_BADGE: Record<string, { label: string; route: (id: string) => string 
   article: { label: 'Article', route: (id) => `/insights/articles/${id}` },
   analysis: { label: 'Analysis', route: (id) => `/insights/analysis/${id}` },
   report: { label: 'Report', route: (id) => `/insights?tab=Reports` },
+  awareness: { label: 'Awareness', route: (id) => `/insights/articles/${id}` },
 };
 
 function useLatestInsights() {
   return useQuery({
     queryKey: ['home-insights'],
     queryFn: async (): Promise<InsightCard[]> => {
-      const [articlesRes, analysisRes, reportsRes] = await Promise.all([
+      const awarenessCategories = ['Financial Literacy', 'Investor Protection', 'Scam Alerts', 'Market Basics', 'Personal Finance'];
+
+      const [articlesRes, analysisRes, reportsRes, awarenessRes] = await Promise.all([
         supabase
           .from('articles')
           .select('id, category, title, excerpt, item_date, published_at, read_time, thumbnail_url, media_url')
           .eq('status', 'published')
+          .not('category', 'in', `(${awarenessCategories.join(',')})`)
           .order('item_date', { ascending: false, nullsFirst: false })
           .limit(1),
         supabase
@@ -47,6 +51,13 @@ function useLatestInsights() {
           .select('id, report_type, title, description, published_at, file_url')
           .eq('status', 'published')
           .order('published_at', { ascending: false, nullsFirst: false })
+          .limit(1),
+        supabase
+          .from('articles')
+          .select('id, category, title, excerpt, item_date, published_at, read_time, thumbnail_url, media_url')
+          .eq('status', 'published')
+          .in('category', awarenessCategories)
+          .order('item_date', { ascending: false, nullsFirst: false })
           .limit(1),
       ]);
 
@@ -63,6 +74,10 @@ function useLatestInsights() {
       if (reportsRes.data?.[0]) {
         const r = reportsRes.data[0];
         cards.push({ id: r.id, type: 'report', category: r.report_type, title: r.title, excerpt: r.description, date: r.published_at });
+      }
+      if (awarenessRes.data?.[0]) {
+        const a = awarenessRes.data[0];
+        cards.push({ id: a.id, type: 'awareness', category: a.category, title: a.title, excerpt: a.excerpt, date: a.item_date || a.published_at, readTime: a.read_time, imageUrl: a.thumbnail_url || a.media_url });
       }
 
       return cards;
@@ -109,7 +124,7 @@ export const InsightsSection = () => {
           ) : (
             cards.map((card, index) => {
               const meta = TYPE_BADGE[card.type];
-              const TypeIcon = card.type === 'analysis' ? BarChart3 : card.type === 'report' ? FileText : Newspaper;
+              const TypeIcon = card.type === 'awareness' ? Lightbulb : card.type === 'analysis' ? BarChart3 : card.type === 'report' ? FileText : Newspaper;
               return (
                 <motion.article
                   key={card.id}
