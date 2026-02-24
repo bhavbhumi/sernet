@@ -124,7 +124,7 @@ const AskUsContent = () => {
               </div>
             </div>
             <a
-              href="https://support.sernetindia.com"
+              href="https://support.sernetindia.com/portal/en/home"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-md text-sm font-medium hover:bg-primary/90 transition-colors shrink-0"
