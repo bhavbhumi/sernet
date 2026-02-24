@@ -1,29 +1,30 @@
 import { Button } from '@/components/ui/button';
 import { Download, Monitor, Smartphone } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { APP_LINKS } from '@/lib/appLinks';
 
 const downloadCategories = [
   {
     category: 'Trading Platforms',
     items: [
-      { name: 'Choice FinX for Windows', size: '45 MB', icon: Monitor },
-      { name: 'Choice FinX for Mac', size: '52 MB', icon: Monitor },
-      { name: 'Choice FinX Android App', size: '25 MB', icon: Smartphone },
-      { name: 'Choice FinX iOS App', size: '28 MB', icon: Smartphone },
+      { name: 'Choice FinX for Windows', size: '45 MB', icon: Monitor, link: null },
+      { name: 'Choice FinX for Mac', size: '52 MB', icon: Monitor, link: null },
+      { name: 'Choice FinX Android App', size: '25 MB', icon: Smartphone, link: APP_LINKS.PLAY_STORE },
+      { name: 'Choice FinX iOS App', size: '28 MB', icon: Smartphone, link: APP_LINKS.APP_STORE },
     ],
   },
   {
     category: 'Tick Funds - Mutual Funds',
     items: [
-      { name: 'Tick Funds Android App', size: '18 MB', icon: Smartphone },
-      { name: 'Tick Funds iOS App', size: '20 MB', icon: Smartphone },
+      { name: 'Tick Funds Android App', size: '18 MB', icon: Smartphone, link: null },
+      { name: 'Tick Funds iOS App', size: '20 MB', icon: Smartphone, link: null },
     ],
   },
   {
     category: 'Findemy - Education',
     items: [
-      { name: 'Findemy Android App', size: '15 MB', icon: Smartphone },
-      { name: 'Findemy iOS App', size: '17 MB', icon: Smartphone },
+      { name: 'Findemy Android App', size: '15 MB', icon: Smartphone, link: null },
+      { name: 'Findemy iOS App', size: '17 MB', icon: Smartphone, link: null },
     ],
   },
 ];
@@ -53,7 +54,13 @@ const AppsContent = () => {
                         <p className="text-xs text-muted-foreground">{item.size}</p>
                       </div>
                     </div>
-                    <Button size="sm" variant="ghost"><Download className="h-4 w-4" /></Button>
+                    {item.link ? (
+                      <a href={item.link} target="_blank" rel="noopener noreferrer">
+                        <Button size="sm" variant="ghost"><Download className="h-4 w-4" /></Button>
+                      </a>
+                    ) : (
+                      <Button size="sm" variant="ghost"><Download className="h-4 w-4" /></Button>
+                    )}
                   </div>
                 ))}
               </div>

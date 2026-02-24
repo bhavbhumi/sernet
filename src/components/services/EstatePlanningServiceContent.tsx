@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Check, FileText, Users, Shield, Scale, ScrollText, Landmark, BarChart3, Download, UserCheck, Play } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { APP_LINKS } from '@/lib/appLinks';
 
 const stats = [
   { icon: ScrollText, value: '5,000+', label: 'Wills Drafted' },
@@ -45,7 +46,7 @@ export const EstatePlanningServiceContent = () => (
             </ul>
             <div className="flex flex-wrap items-center gap-3 mb-10">
               <a
-                href="https://ekyc.choiceindia.com/open-free-demat-account"
+                href={APP_LINKS.OPEN_ACCOUNT}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
@@ -163,7 +164,7 @@ export const EstatePlanningServiceContent = () => (
               ))}
             </ul>
             <a
-              href="https://ekyc.choiceindia.com/open-free-demat-account"
+              href={APP_LINKS.OPEN_ACCOUNT}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-8 py-3 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
@@ -270,7 +271,7 @@ export const EstatePlanningServiceContent = () => (
           className="text-center mt-12"
         >
           <a
-            href="https://ekyc.choiceindia.com/open-free-demat-account"
+            href={APP_LINKS.OPEN_ACCOUNT}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-8 py-3 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
