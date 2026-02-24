@@ -1,9 +1,23 @@
 import { motion } from 'framer-motion';
-import { User, Mail, Phone, MessageSquare, Headphones, BarChart3, Receipt, Newspaper, Tag, Clock, CalendarDays, SunMedium, ChevronRight, ArrowUpRight, Loader2 } from 'lucide-react';
+import { User, Mail, Phone, MessageSquare, Headphones, BarChart3, Receipt, Newspaper, Tag, Clock, CalendarDays, SunMedium, ChevronRight, ArrowUpRight, Loader2, ExternalLink, HelpCircle, AlertTriangle, Lightbulb } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+
+const reasons = [
+  { value: 'enquiry', label: 'General Enquiry', icon: HelpCircle, description: 'Questions about services, eligibility, documents, pricing, etc.' },
+  { value: 'grievance', label: 'Grievance / Complaint', icon: AlertTriangle, description: 'Formal complaint for escalation per SEBI guidelines.' },
+  { value: 'feedback', label: 'Feedback & Suggestion', icon: Lightbulb, description: 'Share your experience, ideas, or feature requests.' },
+] as const;
+
+type ReasonValue = typeof reasons[number]['value'];
+
+const reasonToLeadType: Record<ReasonValue, string> = {
+  enquiry: 'enquiry',
+  grievance: 'grievance',
+  feedback: 'feedback',
+};
 
 const departments = [
   {
@@ -44,12 +58,14 @@ const escalationMatrix = [
 ];
 
 const AskUsContent = () => {
+  const [reason, setReason] = useState<ReasonValue | ''>('');
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', topic: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!reason) return;
     setIsSubmitting(true);
 
     try {
@@ -57,9 +73,10 @@ const AskUsContent = () => {
         name: formData.name,
         email: formData.email,
         phone: formData.phone || 'Not provided',
-        lead_type: 'inquiry',
+        lead_type: reasonToLeadType[reason],
         source: 'ask-us',
         context: {
+          reason: reasons.find(r => r.value === reason)?.label,
           topic: formData.topic,
           message: formData.message,
         },
@@ -72,7 +89,11 @@ const AskUsContent = () => {
       }
 
       setSubmitted(true);
-      toast.success('Your inquiry has been submitted successfully!');
+      toast.success(
+        reason === 'grievance'
+          ? 'Your grievance has been registered. We will respond as per the escalation timeline.'
+          : 'Your message has been submitted successfully!'
+      );
     } catch (err) {
       console.error('Unexpected error:', err);
       toast.error('Something went wrong. Please try again.');
@@ -81,8 +102,39 @@ const AskUsContent = () => {
     }
   };
 
+  const handleReset = () => {
+    setSubmitted(false);
+    setReason('');
+    setFormData({ name: '', email: '', phone: '', topic: '', message: '' });
+  };
+
   return (
     <>
+      {/* Support Portal Banner */}
+      <section className="bg-primary/5 border-b border-primary/10">
+        <div className="container-zerodha max-w-5xl py-4">
+          <div className="flex items-center justify-between gap-4 flex-wrap">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                <Headphones className="w-4.5 h-4.5 text-primary" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-foreground">Existing Client?</p>
+                <p className="text-xs text-muted-foreground">For account, trading & service issues, use our dedicated Support Portal.</p>
+              </div>
+            </div>
+            <a
+              href="https://support.sernetindia.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-md text-sm font-medium hover:bg-primary/90 transition-colors shrink-0"
+            >
+              Go to Support Portal <ExternalLink className="w-4 h-4" />
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* Ask Form + Contact Info */}
       <section className="section-padding bg-background">
         <div className="container-zerodha max-w-5xl">
@@ -91,45 +143,81 @@ const AskUsContent = () => {
               <h2 className="text-[1.75rem] md:text-[2rem] font-normal text-foreground mb-2">
                 Have something to <span className="text-primary font-medium underline underline-offset-4">Ask?</span>
               </h2>
-              <p className="text-muted-foreground mb-8">Fill the form! We will be happy to get back to you.</p>
+              <p className="text-muted-foreground mb-6">For enquiries, complaints, or feedback — we're here to help.</p>
 
               {submitted ? (
                 <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-card border border-border rounded-lg p-8 text-center flex-1 flex flex-col items-center justify-center">
-                  <div className="w-16 h-16 rounded-full bg-green-100 mx-auto mb-4 flex items-center justify-center">
-                    <MessageSquare className="w-8 h-8 text-green-600" />
+                  <div className="w-16 h-16 rounded-full bg-primary/10 mx-auto mb-4 flex items-center justify-center">
+                    <MessageSquare className="w-8 h-8 text-primary" />
                   </div>
-                  <h3 className="text-lg font-medium text-foreground mb-2">Message Sent!</h3>
-                  <p className="text-muted-foreground mb-6">We'll get back to you within 24 hours.</p>
-                  <button onClick={() => { setSubmitted(false); setFormData({ name: '', email: '', phone: '', topic: '', message: '' }); }} className="bg-primary text-primary-foreground px-6 py-2.5 rounded-md text-sm hover:bg-primary/90 transition-colors">
+                  <h3 className="text-lg font-medium text-foreground mb-2">
+                    {reason === 'grievance' ? 'Grievance Registered' : 'Message Sent!'}
+                  </h3>
+                  <p className="text-muted-foreground mb-6">
+                    {reason === 'grievance'
+                      ? 'Your complaint has been registered. Our team will respond as per the escalation timeline below.'
+                      : "We'll get back to you within 24 hours."}
+                  </p>
+                  <button onClick={handleReset} className="bg-primary text-primary-foreground px-6 py-2.5 rounded-md text-sm hover:bg-primary/90 transition-colors">
                     Send Another
                   </button>
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4 flex-1 flex flex-col">
+                  {/* Reason Selection */}
                   <div>
-                    <div className="relative">
-                      <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                      <input type="text" required maxLength={100} value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full pl-10 pr-4 py-3 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary" placeholder="Enter your name" />
+                    <label className="block text-sm text-muted-foreground mb-2">What would you like to do? *</label>
+                    <div className="grid grid-cols-1 gap-2">
+                      {reasons.map((r) => (
+                        <button
+                          key={r.value}
+                          type="button"
+                          onClick={() => setReason(r.value)}
+                          className={`flex items-start gap-3 p-3 rounded-md border text-left transition-all ${
+                            reason === r.value
+                              ? 'border-primary bg-primary/5 ring-1 ring-primary/20'
+                              : 'border-border hover:border-primary/30 hover:bg-muted/30'
+                          }`}
+                        >
+                          <r.icon className={`w-4.5 h-4.5 mt-0.5 shrink-0 ${reason === r.value ? 'text-primary' : 'text-muted-foreground'}`} />
+                          <div>
+                            <p className={`text-sm font-medium ${reason === r.value ? 'text-primary' : 'text-foreground'}`}>{r.label}</p>
+                            <p className="text-xs text-muted-foreground">{r.description}</p>
+                          </div>
+                        </button>
+                      ))}
                     </div>
                   </div>
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                      <input type="email" required maxLength={255} value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full pl-10 pr-4 py-3 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary" placeholder="Valid email ID" />
-                    </div>
-                    <div className="relative">
-                      <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                      <input type="tel" maxLength={15} value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} className="w-full pl-10 pr-4 py-3 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary" placeholder="Mobile Number (Optional)" />
-                    </div>
-                  </div>
-                  <div className="relative">
-                    <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <input type="text" required maxLength={150} value={formData.topic} onChange={(e) => setFormData({ ...formData, topic: e.target.value })} className="w-full pl-10 pr-4 py-3 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary" placeholder="Topic of your inquiry" />
-                  </div>
-                  <textarea required maxLength={1000} rows={4} value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="w-full px-4 py-3 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary resize-none flex-1 min-h-[100px]" placeholder="Message us" />
-                  <button type="submit" disabled={isSubmitting || !formData.name || !formData.email || !formData.topic || !formData.message} className="bg-primary text-primary-foreground px-8 py-3 rounded-md text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
-                    {isSubmitting ? <><Loader2 className="w-4 h-4 animate-spin" /> Sending...</> : 'Submit'}
-                  </button>
+
+                  {/* Form fields - show after reason selected */}
+                  {reason && (
+                    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="space-y-4 flex-1 flex flex-col">
+                      <div>
+                        <div className="relative">
+                          <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                          <input type="text" required maxLength={100} value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full pl-10 pr-4 py-3 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary" placeholder="Enter your name" />
+                        </div>
+                      </div>
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        <div className="relative">
+                          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                          <input type="email" required maxLength={255} value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full pl-10 pr-4 py-3 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary" placeholder="Valid email ID" />
+                        </div>
+                        <div className="relative">
+                          <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                          <input type="tel" maxLength={15} value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} className="w-full pl-10 pr-4 py-3 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary" placeholder={reason === 'grievance' ? 'Mobile Number *' : 'Mobile Number (Optional)'} required={reason === 'grievance'} />
+                        </div>
+                      </div>
+                      <div className="relative">
+                        <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                        <input type="text" required maxLength={150} value={formData.topic} onChange={(e) => setFormData({ ...formData, topic: e.target.value })} className="w-full pl-10 pr-4 py-3 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary" placeholder={reason === 'grievance' ? 'Subject of your complaint' : reason === 'feedback' ? 'What is your feedback about?' : 'Topic of your enquiry'} />
+                      </div>
+                      <textarea required maxLength={1000} rows={4} value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="w-full px-4 py-3 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary resize-none flex-1 min-h-[100px]" placeholder={reason === 'grievance' ? 'Describe your grievance in detail...' : reason === 'feedback' ? 'Share your thoughts...' : 'Your question or message...'} />
+                      <button type="submit" disabled={isSubmitting || !formData.name || !formData.email || !formData.topic || !formData.message} className="bg-primary text-primary-foreground px-8 py-3 rounded-md text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+                        {isSubmitting ? <><Loader2 className="w-4 h-4 animate-spin" /> Sending...</> : reason === 'grievance' ? 'Register Complaint' : 'Submit'}
+                      </button>
+                    </motion.div>
+                  )}
                 </form>
               )}
             </motion.div>
