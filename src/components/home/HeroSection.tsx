@@ -10,7 +10,7 @@ export const HeroSection = () => {
 
   return (
     <section className="section-padding bg-background">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           {/* Image - shows first on mobile */}
           <motion.div

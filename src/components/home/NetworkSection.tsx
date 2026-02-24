@@ -70,7 +70,7 @@ export const NetworkSection = () => {
 
   return (
     <section className="section-padding bg-section-alt">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

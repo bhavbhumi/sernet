@@ -101,7 +101,7 @@ export default function Sitemap() {
         title="Sitemap"
         description="A complete directory of all pages on the SERNET website."
       />
-      <main className="container-zerodha section-padding">
+      <main className="container-sernet section-padding">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {sitemapSections.map(section => (
             <div key={section.title}>

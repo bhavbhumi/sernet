@@ -79,7 +79,7 @@ export const OpenAccountSection = () => {
       <Confetti className="bg-success/30 top-20 left-[40%]" delay={0.7} />
       <Confetti className="bg-destructive/25 bottom-16 right-[35%]" delay={1.0} />
 
-      <div className="container-zerodha relative z-10">
+      <div className="container-sernet relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

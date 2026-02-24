@@ -60,7 +60,7 @@ const Legal = () => {
 
       {/* Tabs */}
       <div className="sticky top-16 z-20 bg-background/95 backdrop-blur-sm border-b border-border">
-        <div className="container-zerodha">
+        <div className="container-sernet">
           <nav className="flex gap-0 overflow-x-auto" role="tablist">
             {tabs.map((tab) => {
               const Icon = tab.icon;
@@ -86,7 +86,7 @@ const Legal = () => {
       </div>
 
       {/* Content */}
-      <div className="container-zerodha section-padding">
+      <div className="container-sernet section-padding">
         <div className="max-w-4xl mx-auto">
           <AnimatePresence mode="wait">
             <motion.div

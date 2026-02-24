@@ -12,7 +12,7 @@ const Disclosure = () => {
 
   return (
     <Layout>
-      <div className="container-zerodha section-padding">
+      <div className="container-sernet section-padding">
         <div className="max-w-4xl mx-auto">
           <h1 className="heading-xl text-foreground mb-4">Disclosure</h1>
           <p className="text-body mb-12">

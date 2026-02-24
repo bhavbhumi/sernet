@@ -187,7 +187,7 @@ export const Footer = () => {
 
   return (
     <footer className="bg-muted/30 border-t border-border">
-      <div className="container-zerodha py-8 md:py-10">
+      <div className="container-sernet py-8 md:py-10">
         {/* Main Footer Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Brand & Contact Column */}
@@ -324,7 +324,7 @@ export const Footer = () => {
 
       {/* Bottom Bar */}
       <div className="bg-muted/50 border-t border-border">
-        <div className="container-zerodha py-4">
+        <div className="container-sernet py-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-[13px]">
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 text-muted-foreground">
               <span>© {t('footer.madeWith')}, 2025</span>

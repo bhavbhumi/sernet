@@ -121,8 +121,8 @@
 
 @layer components {
   /* Main container — max-w-6xl centered with responsive padding */
-  .container-zerodha,
-  .container-main {
+  .container-sernet,
+  .container-zerodha /* backward-compat alias — being migrated to container-sernet */ {
     @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 

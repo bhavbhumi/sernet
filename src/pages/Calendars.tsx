@@ -28,7 +28,7 @@ const Calendars = () => {
       />
 
       <div className="border-b border-border bg-background sticky top-0 z-20">
-        <div className="container-zerodha">
+        <div className="container-sernet">
           <div className="flex gap-8 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
             {calendarTabs.map((tab) => (
               <button

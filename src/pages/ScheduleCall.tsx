@@ -43,7 +43,7 @@ const ScheduleCall = () => {
     return (
       <Layout>
         <section className="section-padding bg-background">
-          <div className="container-zerodha max-w-xl text-center">
+          <div className="container-sernet max-w-xl text-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -77,7 +77,7 @@ const ScheduleCall = () => {
   return (
     <Layout>
       <section className="section-padding bg-background">
-        <div className="container-zerodha max-w-5xl">
+        <div className="container-sernet max-w-5xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

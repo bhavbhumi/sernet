@@ -87,7 +87,7 @@ export const Header = () => {
 
   return (
     <header className="sticky top-0 z-50 bg-background border-b border-border">
-      <nav className="container-zerodha flex items-center justify-between h-16">
+      <nav className="container-sernet flex items-center justify-between h-16">
         {/* Logo */}
         <Link to="/" className="flex items-center">
           <img 

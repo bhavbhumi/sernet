@@ -24,7 +24,7 @@ export const InvestmentServiceContent = () => (
   <>
     {/* Hero — Tick Funds */}
     <section className="section-padding bg-background">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-stretch">
           {/* Left */}
           <motion.div
@@ -100,7 +100,7 @@ export const InvestmentServiceContent = () => (
 
     {/* Products We Offer */}
     <section className="section-padding bg-section-alt">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">
           Products we offer
         </motion.h2>
@@ -130,7 +130,7 @@ export const InvestmentServiceContent = () => (
 
     {/* Investment Portfolio Health Check CTA */}
     <section className="section-padding">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -197,7 +197,7 @@ export const InvestmentServiceContent = () => (
 
     {/* FAQs */}
     <section className="section-padding bg-section-alt">
-      <div className="container-zerodha max-w-3xl">
+      <div className="container-sernet max-w-3xl">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">
           Frequently Asked Questions
         </motion.h2>
@@ -223,7 +223,7 @@ export const InvestmentServiceContent = () => (
 
     {/* Ready to Get Started */}
     <section className="section-padding bg-background">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">
           Ready to get started?
         </motion.h2>
@@ -276,7 +276,7 @@ export const InvestmentServiceContent = () => (
 
     {/* Disclaimer */}
     <section className="py-6 bg-muted/30">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <p className="text-xs text-muted-foreground text-center max-w-4xl mx-auto leading-relaxed">
           <strong>Disclaimer:</strong> Mutual fund investments are subject to market risks. Read all scheme-related documents carefully before investing. Past performance is not indicative of future returns. SERNET is an AMFI-registered Mutual Fund Distributor (ARN-274029) and earns commissions from AMCs for regular plan distribution. SERNET does not provide SEBI-registered investment advisory services. The information provided herein is for general informational purposes only.
         </p>

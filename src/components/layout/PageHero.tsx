@@ -284,7 +284,7 @@ export const PageHero = ({
         <GeometricPattern pattern={pattern} />
       </div>
 
-      <div className="container-zerodha relative z-10">
+      <div className="container-sernet relative z-10">
         <motion.nav
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
