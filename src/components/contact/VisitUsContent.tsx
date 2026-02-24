@@ -17,7 +17,7 @@ const VisitUsContent = () => {
     <>
       {/* Context Banner */}
       <section className="bg-primary/5 border-b border-primary/10">
-        <div className="container-zerodha max-w-5xl py-4">
+        <div className="container-zerodha py-4">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
               <MapPin className="w-4.5 h-4.5 text-primary" />
@@ -31,7 +31,7 @@ const VisitUsContent = () => {
       </section>
 
       <section className="section-padding bg-background">
-        <div className="container-zerodha max-w-5xl">
+        <div className="container-zerodha">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
             {/* Left — Office Details */}
             <motion.div
