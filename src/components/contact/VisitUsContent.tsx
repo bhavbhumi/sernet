@@ -15,6 +15,21 @@ const office = {
 const VisitUsContent = () => {
   return (
     <>
+      {/* Context Banner */}
+      <section className="bg-primary/5 border-b border-primary/10">
+        <div className="container-zerodha max-w-5xl py-4">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+              <MapPin className="w-4.5 h-4.5 text-primary" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-foreground">Walk-in Welcome</p>
+              <p className="text-xs text-muted-foreground">No appointment needed — visit us during business hours. We'd love to meet you in person.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="section-padding bg-background">
         <div className="container-zerodha max-w-5xl">
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="text-center mb-12">
