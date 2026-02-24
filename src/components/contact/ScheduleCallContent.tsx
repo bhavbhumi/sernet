@@ -88,7 +88,23 @@ const ScheduleCallContent = () => {
   }
 
   return (
-    <section className="section-padding bg-background">
+    <>
+      {/* Context Banner */}
+      <section className="bg-primary/5 border-b border-primary/10">
+        <div className="container-zerodha max-w-5xl py-4">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+              <Calendar className="w-4.5 h-4.5 text-primary" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-foreground">Book a Free Consultation</p>
+              <p className="text-xs text-muted-foreground">Pick a convenient date & time — our advisor will call you. No obligation, completely free.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section-padding bg-background">
       <div className="container-zerodha max-w-5xl">
         <div className="grid md:grid-cols-3 gap-8">
           {/* Left - Form */}
@@ -196,6 +212,7 @@ const ScheduleCallContent = () => {
         </div>
       </div>
     </section>
+    </>
   );
 };
 
