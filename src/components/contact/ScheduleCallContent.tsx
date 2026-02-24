@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
-import { Calendar, Clock, Phone, MessageCircle, User, Mail, FileText } from 'lucide-react';
+import { Calendar, Clock, Phone, MessageCircle, User, Mail, FileText, Loader2 } from 'lucide-react';
 import { useState } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 const timeSlots = [
   '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM',
@@ -20,14 +22,45 @@ const ScheduleCallContent = () => {
   const [selectedTopic, setSelectedTopic] = useState('');
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const today = new Date();
   const minDate = today.toISOString().split('T')[0];
   const maxDate = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setIsSubmitting(true);
+
+    try {
+      const { error } = await supabase.from('leads').insert({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        lead_type: 'appointment',
+        source: 'schedule-call',
+        context: {
+          date: selectedDate,
+          time: selectedTime,
+          topic: selectedTopic || null,
+          message: formData.message || null,
+        },
+      });
+
+      if (error) {
+        console.error('Submission error:', error);
+        toast.error('Failed to schedule appointment. Please try again.');
+        return;
+      }
+
+      setSubmitted(true);
+      toast.success('Appointment scheduled successfully!');
+    } catch (err) {
+      console.error('Unexpected error:', err);
+      toast.error('Something went wrong. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const whatsappLink = `https://wa.me/919206767670?text=${encodeURIComponent('Hi, I would like to schedule a consultation with Sernet.')}`;
@@ -124,8 +157,8 @@ const ScheduleCallContent = () => {
                 <textarea maxLength={500} rows={3} value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="w-full px-4 py-2.5 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary resize-none" placeholder="Tell us briefly what you'd like to discuss..." />
               </div>
 
-              <button type="submit" disabled={!selectedDate || !selectedTime || !formData.name || !formData.email || !formData.phone} className="w-full bg-primary text-primary-foreground py-3.5 rounded-md text-base font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                Confirm Appointment
+              <button type="submit" disabled={isSubmitting || !selectedDate || !selectedTime || !formData.name || !formData.email || !formData.phone} className="w-full bg-primary text-primary-foreground py-3.5 rounded-md text-base font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                {isSubmitting ? <><Loader2 className="w-5 h-5 animate-spin" /> Scheduling...</> : 'Confirm Appointment'}
               </button>
             </form>
           </motion.div>
