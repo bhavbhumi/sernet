@@ -6,7 +6,7 @@ import { logAudit } from '@/lib/auditLog';
 import {
   LayoutDashboard, FileText, BarChart3, BookOpen, Bell, Newspaper, AlertCircle, BookOpenCheck,
   Vote, ClipboardList, Star, Briefcase, Users, Mic2, Settings, LogOut,
-  ChevronDown, ChevronRight, Menu, X, Rss, Shield, Globe, Map, Palette, Type, ScanSearch, Images, Download, Sparkles, Calculator, UserCheck, CalendarDays, Mail, ScrollText, Scale
+  ChevronDown, ChevronRight, Menu, X, Rss, Shield, Globe, Map, Palette, Type, ScanSearch, Images, Download, Sparkles, Calculator, UserCheck, CalendarDays, Mail, ScrollText, Scale, Lightbulb
 } from 'lucide-react';
 import sernetLogo from '@/assets/sernet-logo.png';
 import { cn } from '@/lib/utils';
@@ -24,6 +24,7 @@ const navItems: NavItem[] = [
     label: 'Content', icon: BookOpen, children: [
       { label: 'Articles', icon: FileText, href: '/admin/content/articles' },
       { label: 'Analysis', icon: BarChart3, href: '/admin/content/analysis' },
+      { label: 'Awareness', icon: Lightbulb, href: '/admin/content/awareness' },
       { label: 'Reports', icon: BookOpen, href: '/admin/content/reports' },
       { label: 'Bulletin', icon: Bell, href: '/admin/content/bulletin' },
       { label: 'Import Articles', icon: Download, href: '/admin/content/import' },
