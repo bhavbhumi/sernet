@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Check, FileText, UserCheck, Download, Play, CreditCard, TrendingUp, ShieldCheck, BarChart3, AlertTriangle, Building2, User } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { APP_LINKS } from '@/lib/appLinks';
 
 const stats = [
   { icon: ShieldCheck, value: '10,000+', label: 'Cases Resolved' },
@@ -45,7 +46,7 @@ export const CreditCounsellingServiceContent = () => (
             </ul>
             <div className="flex flex-wrap items-center gap-3 mb-10">
               <a
-                href="https://ekyc.choiceindia.com/open-free-demat-account"
+                href={APP_LINKS.OPEN_ACCOUNT}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
@@ -179,7 +180,7 @@ export const CreditCounsellingServiceContent = () => (
               ))}
             </ul>
             <a
-              href="https://ekyc.choiceindia.com/open-free-demat-account"
+              href={APP_LINKS.OPEN_ACCOUNT}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-8 py-3 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
@@ -286,7 +287,7 @@ export const CreditCounsellingServiceContent = () => (
           className="text-center mt-12"
         >
           <a
-            href="https://ekyc.choiceindia.com/open-free-demat-account"
+            href={APP_LINKS.OPEN_ACCOUNT}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-8 py-3 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
