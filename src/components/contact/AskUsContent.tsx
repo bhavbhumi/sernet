@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion';
-import { User, Mail, Phone, MessageSquare, Headphones, BarChart3, Receipt, Newspaper, Tag, Clock, CalendarDays, SunMedium, ChevronRight, ArrowUpRight } from 'lucide-react';
+import { User, Mail, Phone, MessageSquare, Headphones, BarChart3, Receipt, Newspaper, Tag, Clock, CalendarDays, SunMedium, ChevronRight, ArrowUpRight, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 const departments = [
   {
@@ -44,10 +46,39 @@ const escalationMatrix = [
 const AskUsContent = () => {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', topic: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setIsSubmitting(true);
+
+    try {
+      const { error } = await supabase.from('leads').insert({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone || 'Not provided',
+        lead_type: 'inquiry',
+        source: 'ask-us',
+        context: {
+          topic: formData.topic,
+          message: formData.message,
+        },
+      });
+
+      if (error) {
+        console.error('Submission error:', error);
+        toast.error('Failed to send your message. Please try again.');
+        return;
+      }
+
+      setSubmitted(true);
+      toast.success('Your inquiry has been submitted successfully!');
+    } catch (err) {
+      console.error('Unexpected error:', err);
+      toast.error('Something went wrong. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -96,8 +127,8 @@ const AskUsContent = () => {
                     <input type="text" required maxLength={150} value={formData.topic} onChange={(e) => setFormData({ ...formData, topic: e.target.value })} className="w-full pl-10 pr-4 py-3 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary" placeholder="Topic of your inquiry" />
                   </div>
                   <textarea required maxLength={1000} rows={4} value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="w-full px-4 py-3 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary resize-none flex-1 min-h-[100px]" placeholder="Message us" />
-                  <button type="submit" disabled={!formData.name || !formData.email || !formData.topic || !formData.message} className="bg-primary text-primary-foreground px-8 py-3 rounded-md text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                    Submit
+                  <button type="submit" disabled={isSubmitting || !formData.name || !formData.email || !formData.topic || !formData.message} className="bg-primary text-primary-foreground px-8 py-3 rounded-md text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+                    {isSubmitting ? <><Loader2 className="w-4 h-4 animate-spin" /> Sending...</> : 'Submit'}
                   </button>
                 </form>
               )}
