@@ -340,7 +340,19 @@ export default function AdminArticles() {
                 <Label>Category <span className="text-destructive">*</span></Label>
                 <FieldInfoTooltip tip="Topic category (e.g. IPO Basket, Fundamentals, Markets). Used for filtering on the Insights page." />
               </div>
-              <Input placeholder="e.g. Fundamentals, Markets" value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))} />
+              <Select value={form.category} onValueChange={v => setForm(f => ({ ...f, category: v }))}>
+                <SelectTrigger><SelectValue placeholder="Select category" /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="__divider_articles" disabled className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">— Articles —</SelectItem>
+                  {['IPO Basket', 'Investment', 'Trading', 'Fundamentals', 'Markets', 'Economy', 'Personal Finance Insights'].map(c => (
+                    <SelectItem key={c} value={c}>{c}</SelectItem>
+                  ))}
+                  <SelectItem value="__divider_awareness" disabled className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">— Awareness —</SelectItem>
+                  {['Financial Literacy', 'Investor Protection', 'Scam Alerts', 'Market Basics', 'Personal Finance'].map(c => (
+                    <SelectItem key={c} value={c}>{c}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             <div className="space-y-1.5">
               <div className="flex items-center gap-1.5">
