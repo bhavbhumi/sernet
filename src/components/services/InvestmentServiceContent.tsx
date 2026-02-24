@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Check, Download, UserCheck, Wallet, Play, PieChart, Briefcase, Landmark, Gem, Building2, BarChart3, TrendingUp, Users, Layers } from 'lucide-react';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+
 import choicefinxShowcase from '@/assets/choicefinx-showcase.png';
 import { TICKFUNDS_LINKS } from '@/lib/appLinks';
 
@@ -192,32 +192,6 @@ export const InvestmentServiceContent = () => (
             </div>
           </div>
         </motion.div>
-      </div>
-    </section>
-
-    {/* FAQs */}
-    <section className="section-padding bg-section-alt">
-      <div className="container-sernet max-w-3xl">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">
-          Frequently Asked Questions
-        </motion.h2>
-        <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-center mb-12">
-          Everything you need to know about investing with Tick Funds
-        </motion.p>
-        <Accordion type="single" collapsible className="w-full">
-          {[
-            { q: 'What is the minimum amount to start investing in mutual funds?', a: 'You can start investing in mutual funds with as little as ₹500 through a SIP (Systematic Investment Plan). Lump-sum investments typically start from ₹1,000 depending on the fund house.' },
-            { q: 'Are you a SEBI-registered Investment Advisor?', a: 'No, we are an AMFI-registered Mutual Fund Distributor (MFD) engaged in regular distribution. We earn commissions from the AMCs and respective entities who are our principals or partners. We do not charge any advisory fees to our investors.' },
-            { q: 'What is the difference between regular and direct mutual fund plans?', a: 'Regular plans include a distributor commission built into the expense ratio, which compensates us for the personalised guidance, portfolio reviews, and ongoing support we provide. Direct plans have a slightly lower expense ratio but come without any advisory or hand-holding support.' },
-            { q: 'What is the difference between PMS and AIF?', a: 'PMS (Portfolio Management Services) involves direct stock investments managed by a portfolio manager with a minimum investment of ₹50 lakhs. AIF (Alternative Investment Funds) pool money from investors for specialized strategies like venture capital, private equity, or hedge funds with a minimum of ₹1 crore.' },
-            { q: 'Is digital gold safe to invest in?', a: 'Yes, digital gold purchased through our platform is 24K, 999.9 purity gold stored in MMTC-PAMP insured vaults. You can buy any amount starting from ₹1, and it can be converted to physical gold or redeemed for cash anytime.' },
-          ].map((faq, index) => (
-            <AccordionItem key={index} value={`faq-${index}`}>
-              <AccordionTrigger className="text-left">{faq.q}</AccordionTrigger>
-              <AccordionContent className="text-muted-foreground">{faq.a}</AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
       </div>
     </section>
 

@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Check, Download, UserCheck, FileText, Play, Shield, Heart, Car, Plane, Home, Users, BarChart3, BadgeCheck, Handshake } from 'lucide-react';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+
 import choicefinxShowcase from '@/assets/choicefinx-showcase.png';
 
 
@@ -192,32 +192,6 @@ export const InsuranceServiceContent = () => (
             </div>
           </div>
         </motion.div>
-      </div>
-    </section>
-
-    {/* FAQs */}
-    <section className="section-padding bg-section-alt">
-      <div className="container-zerodha max-w-3xl">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">
-          Frequently Asked Questions
-        </motion.h2>
-        <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-center mb-12">
-          Everything you need to know about insurance with Tushil
-        </motion.p>
-        <Accordion type="single" collapsible className="w-full">
-          {[
-            { q: 'How does Tushil earn its revenue?', a: 'We earn commissions from the insurance companies (our principals and partners) whose products we distribute. You never pay anything extra — the premium you pay is the same whether you buy directly or through us, but with us you get personalised guidance and dedicated claims support.' },
-            { q: 'What makes your claims support different?', a: 'Claims support is the real differentiator in insurance. Our dedicated claims team assists you end-to-end — from filing the claim and documentation to follow-ups with the insurer and settlement. We act as your advocate during the most critical moment of your insurance journey.' },
-            { q: 'How do I choose the right health insurance plan?', a: 'Our team evaluates your needs based on age, family size, medical history, and budget. We compare plans across 30+ insurers on parameters like coverage, claim settlement ratio, network hospitals, and exclusions to recommend the best fit for you.' },
-            { q: 'Can you help with corporate or group insurance?', a: 'Yes, we offer comprehensive employee benefits solutions including group health insurance, group term life, and key-man insurance. We work with businesses of all sizes to design cost-effective plans that help attract and retain talent.' },
-            { q: 'Is there a cost for the Insurance Portfolio Review?', a: 'No, the Insurance Portfolio Review Service is completely free with no obligation. Our experts will review your existing policies, identify coverage gaps, and suggest improvements — all at zero cost to you.' },
-          ].map((faq, index) => (
-            <AccordionItem key={index} value={`faq-${index}`}>
-              <AccordionTrigger className="text-left">{faq.q}</AccordionTrigger>
-              <AccordionContent className="text-muted-foreground">{faq.a}</AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
       </div>
     </section>
 
