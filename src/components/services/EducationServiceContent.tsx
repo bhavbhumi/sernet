@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BookOpen, GraduationCap, Award, Check, Download, UserCheck, Play, Lightbulb, Users, Video, FileText, Globe, Clock } from 'lucide-react';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+
 
 import findemyShowcase from '@/assets/findemy-showcase.png';
 
@@ -187,32 +187,6 @@ export const EducationServiceContent = () => (
             </div>
           </div>
         </motion.div>
-      </div>
-    </section>
-
-    {/* FAQs */}
-    <section className="section-padding bg-section-alt">
-      <div className="container-zerodha max-w-3xl">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">
-          Frequently Asked Questions
-        </motion.h2>
-        <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-center mb-12">
-          Everything you need to know about learning with Findemy
-        </motion.p>
-        <Accordion type="single" collapsible className="w-full">
-          {[
-            { q: 'Is the awareness content really free?', a: 'Yes, 100%. Our awareness modules covering financial basics, market fundamentals, and personal finance are completely free with no hidden charges. We believe financial literacy is a right, not a privilege.' },
-            { q: 'What makes the coaching programs different from free content?', a: 'Coaching sessions are led by active market practitioners in small groups or one-on-one settings. You get personalized feedback, live Q&A, real-time market walkthroughs, and actionable strategies tailored to your goals — all at affordable pricing.' },
-            { q: 'Do I get a certificate after completing a training course?', a: 'Yes, all our structured training programs come with completion certificates. These are industry-recognized and can be shared on LinkedIn or added to your professional profile.' },
-            { q: 'What topics do the training courses cover?', a: 'Our training courses span technical analysis, fundamental analysis, options strategies, portfolio management, risk management, and more. Each course includes video lessons, assignments, live sessions, and hands-on projects.' },
-            { q: 'Can I learn at my own pace?', a: 'Absolutely. All recorded content is available on-demand so you can learn at your own schedule. Live coaching and training sessions are scheduled but recordings are shared for those who miss them.' },
-          ].map((faq, index) => (
-            <AccordionItem key={index} value={`faq-${index}`}>
-              <AccordionTrigger className="text-left">{faq.q}</AccordionTrigger>
-              <AccordionContent className="text-muted-foreground">{faq.a}</AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
       </div>
     </section>
 
