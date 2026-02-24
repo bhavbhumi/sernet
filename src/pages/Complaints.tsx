@@ -1,4 +1,5 @@
 import { Layout } from '@/components/layout/Layout';
+import { SEOHead } from '@/components/shared/SEOHead';
 import { motion } from 'framer-motion';
 import { AlertCircle, FileText, Phone, Mail, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -29,6 +30,11 @@ const steps = [
 const Complaints = () => {
   return (
     <Layout>
+      <SEOHead
+        title="Lodge a Complaint"
+        description="SERNET's grievance redressal mechanism — raise and track complaints as per SEBI guidelines."
+        path="/complaints"
+      />
       <section className="section-padding">
         <div className="container-zerodha max-w-4xl">
           <motion.div

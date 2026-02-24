@@ -1,4 +1,5 @@
 import { Layout } from '@/components/layout/Layout';
+import { SEOHead } from '@/components/shared/SEOHead';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
@@ -44,6 +45,11 @@ const testimonials = [
 
 const ChoiceFinX = () => (
   <Layout>
+    <SEOHead
+      title="Choice FinX Trading Platform"
+      description="Advanced trading platform by SERNET — trade equities, F&O, commodities and currencies with powerful tools."
+      path="/choicefinx"
+    />
     {/* Hero */}
     <section className="section-padding bg-background">
       <div className="container-zerodha">

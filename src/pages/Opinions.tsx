@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { PageHero } from '@/components/layout/PageHero';
+import { SEOHead } from '@/components/shared/SEOHead';
 import { MessageSquare } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SurveysContent } from '@/components/opinions/SurveysContent';
@@ -19,6 +20,11 @@ const Opinions = () => {
 
   return (
     <Layout>
+      <SEOHead
+        title="Opinions"
+        description="Share your feedback through surveys and polls — help SERNET improve products and services."
+        path="/opinions"
+      />
       <PageHero
         title="Your voice shapes our"
         highlight="future"

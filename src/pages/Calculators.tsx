@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { PageHero } from '@/components/layout/PageHero';
+import { SEOHead } from '@/components/shared/SEOHead';
 import { motion, AnimatePresence } from 'framer-motion';
 import BrokerageCalcContent from '@/components/calculators/BrokerageCalcContent';
 import MarginCalcContent from '@/components/calculators/MarginCalcContent';
@@ -51,6 +52,11 @@ const Calculators = () => {
 
   return (
     <Layout>
+      <SEOHead
+        title="Financial Calculators"
+        description="Free calculators for brokerage, margin, SIP, lumpsum, goal planning and insurance needs from SERNET."
+        path="/calculators"
+      />
       <PageHero
         title="Financial planning made"
         highlight="Simple"

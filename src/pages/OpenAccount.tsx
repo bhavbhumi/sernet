@@ -1,4 +1,5 @@
 import { Layout } from '@/components/layout/Layout';
+import { SEOHead } from '@/components/shared/SEOHead';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -35,6 +36,11 @@ const OpenAccount = () => {
 
   return (
     <Layout>
+      <SEOHead
+        title="Open Free Demat Account"
+        description="Open a free demat and trading account with SERNET — zero brokerage on equity delivery, free mutual funds."
+        path="/open-account"
+      />
       <section className="section-padding bg-background">
         <div className="container-zerodha">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">

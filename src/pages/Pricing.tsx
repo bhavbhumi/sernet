@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { PageHero } from '@/components/layout/PageHero';
+import { SEOHead } from '@/components/shared/SEOHead';
 import { Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -185,6 +186,11 @@ const Pricing = () => {
 
   return (
     <Layout>
+      <SEOHead
+        title="Pricing"
+        description="Simple and transparent pricing — free equity delivery, flat ₹20 intraday and F&O trades at SERNET."
+        path="/pricing"
+      />
       <PageHero
         title="Simple, transparent"
         highlight="pricing"

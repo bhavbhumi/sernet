@@ -1,4 +1,5 @@
 import { Layout } from '@/components/layout/Layout';
+import { SEOHead } from '@/components/shared/SEOHead';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
@@ -47,6 +48,11 @@ const testimonials = [
 
 const Findemy = () => (
   <Layout>
+    <SEOHead
+      title="Findemy — Financial Education"
+      description="Free financial education platform by SERNET — learn investing, trading, insurance and personal finance."
+      path="/findemy"
+    />
     {/* Hero */}
     <section className="section-padding bg-background">
       <div className="container-zerodha">

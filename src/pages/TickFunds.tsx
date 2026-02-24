@@ -1,4 +1,5 @@
 import { Layout } from '@/components/layout/Layout';
+import { SEOHead } from '@/components/shared/SEOHead';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
@@ -42,6 +43,11 @@ const testimonials = [
 
 const TickFunds = () => (
   <Layout>
+    <SEOHead
+      title="Tick Funds — Mutual Fund Platform"
+      description="Invest in 5000+ mutual funds with zero commission through SERNET's Tick Funds platform."
+      path="/tickfunds"
+    />
     {/* Hero */}
     <section className="section-padding bg-background">
       <div className="container-zerodha">

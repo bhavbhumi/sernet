@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { PageHero } from '@/components/layout/PageHero';
+import { SEOHead } from '@/components/shared/SEOHead';
 import { Bell } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NewsContent } from '@/components/updates/NewsContent';
@@ -19,6 +20,11 @@ const UpdatesPage = () => {
 
   return (
     <Layout>
+      <SEOHead
+        title="Updates"
+        description="Latest market news, regulatory circulars and exchange notices curated by SERNET Financial Services."
+        path="/updates"
+      />
       <PageHero
         title="Stay informed with latest"
         highlight="Updates"

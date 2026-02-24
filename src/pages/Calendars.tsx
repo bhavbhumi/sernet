@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { PageHero } from '@/components/layout/PageHero';
+import { SEOHead } from '@/components/shared/SEOHead';
 import { motion, AnimatePresence } from 'framer-motion';
 import MarketHolidaysContent from '@/components/calendars/MarketHolidaysContent';
 import EconomicCalendarContent from '@/components/calendars/EconomicCalendarContent';
@@ -20,6 +21,11 @@ const Calendars = () => {
 
   return (
     <Layout>
+      <SEOHead
+        title="Market Calendars"
+        description="Market holidays, economic events and corporate action calendars for Indian stock markets."
+        path="/calendars"
+      />
       <PageHero
         title="Important dates and"
         highlight="Events"

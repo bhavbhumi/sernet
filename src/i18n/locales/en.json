@@ -17,7 +17,13 @@
     "calendars": "Calendars",
     "downloads": "Downloads",
     "news": "News",
-    "circulars": "Circulars"
+    "circulars": "Circulars",
+    "opinions": "Opinions",
+    "polls": "Polls",
+    "surveys": "Surveys",
+    "pricing": "Pricing",
+    "media": "Media",
+    "sitemap": "Sitemap"
   },
   "footer": {
     "company": "Company",
@@ -36,7 +42,10 @@
     "privacy": "Privacy",
     "policies": "Policies",
     "disclosures": "Disclosures",
-    "madeWith": "Made with ♥ in India by SERNET Financial Services Pvt Ltd"
+    "madeWith": "Made with ♥ in India by SERNET Financial Services Pvt Ltd",
+    "philosophy": "Philosophy",
+    "csr": "CSR",
+    "legal": "Legal"
   },
   "common": {
     "learnMore": "Learn More",
@@ -47,7 +56,24 @@
     "bookConsultation": "Book a Consultation",
     "getItOn": "GET IT ON",
     "appStore": "App Store",
-    "googlePlay": "Google Play"
+    "googlePlay": "Google Play",
+    "readMore": "Read More",
+    "viewAll": "View All",
+    "loading": "Loading…",
+    "noResults": "No results found.",
+    "search": "Search",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "showMore": "Show More",
+    "showLess": "Show Less",
+    "free": "FREE",
+    "close": "Close"
   },
   "hero": {
     "title": "Unlock your path to",
@@ -98,7 +124,11 @@
     "assistedExecution": "Assisted Execution",
     "familyLogin": "Family Login",
     "policyReview": "Policy Portfolio Review",
-    "seePricing": "See pricing →"
+    "seePricing": "See pricing →",
+    "detailedCharges": "Detailed charges",
+    "whatYouGet": "What you get",
+    "openAccountCta": "Open an account",
+    "signUpFree": "Sign up for free"
   },
   "testimonials": {
     "heading": "Trusted by Thousands",
@@ -125,11 +155,17 @@
     "newsletter": "Subscribe to our Newsletter",
     "resources": "Resources",
     "articles": "Articles",
+    "analysis": "Analysis",
+    "reports": "Reports",
+    "bulletin": "Bulletin",
     "promotion": "Promotion",
     "firstName": "First Name",
     "lastName": "Last Name",
     "emailPlaceholder": "Valid eMail address",
-    "subscribe": "Subscribe"
+    "subscribe": "Subscribe",
+    "pageTitle": "Stay ahead with expert",
+    "pageHighlight": "Insights",
+    "pageDescription": "Articles, market analysis, research reports, and important bulletins — all in one place."
   },
   "openAccount": {
     "heading": "Open a SERNET Account",
@@ -180,5 +216,148 @@
       "askUs": "Ask Us",
       "visitUs": "Visit Us"
     }
+  },
+  "calculators": {
+    "title": "Financial planning made",
+    "highlight": "Simple",
+    "description": "Trading costs, margins, SIP returns, goal planning, and insurance needs — calculate it all in one place.",
+    "tabs": {
+      "trading": "Trading",
+      "investment": "Investment",
+      "insurance": "Insurance"
+    },
+    "subTabs": {
+      "brokerage": "Brokerage",
+      "margin": "Margin",
+      "sip": "SIP",
+      "lumpsum": "Lumpsum",
+      "goalPlanner": "Goal Planner",
+      "needEstimator": "Need Estimator"
+    }
+  },
+  "calendars": {
+    "title": "Important dates and",
+    "highlight": "Events",
+    "description": "Market holidays, economic events, and data releases — stay ahead of what moves the markets.",
+    "tabs": {
+      "holidayEvents": "Holiday Events",
+      "economicEvents": "Economic Events",
+      "corporateEvents": "Corporate Events"
+    }
+  },
+  "updates": {
+    "title": "Stay informed with latest",
+    "highlight": "Updates",
+    "description": "Market news, regulatory circulars, exchange notices, and policy changes — all in one place.",
+    "tabs": {
+      "news": "News",
+      "circulars": "Circulars"
+    }
+  },
+  "opinions": {
+    "title": "Your voice shapes our",
+    "highlight": "future",
+    "description": "Share your feedback through surveys and polls — help us improve products, services, and your overall experience.",
+    "tabs": {
+      "surveys": "Surveys",
+      "polls": "Polls"
+    }
+  },
+  "downloads": {
+    "title": "Get our apps and",
+    "highlight": "Resources",
+    "description": "Download trading platforms, mobile apps, and important documents — everything you need in one place.",
+    "tabs": {
+      "apps": "Apps",
+      "documents": "Documents"
+    }
+  },
+  "support": {
+    "title": "Support",
+    "description": "Search our knowledge base or get in touch with our support team.",
+    "searchPlaceholder": "Search support articles...",
+    "supportPortal": "Support portal",
+    "trackTickets": "Track tickets",
+    "faq": "Frequently asked questions",
+    "contactUs": "Contact us",
+    "readyToStart": "Ready to get started?",
+    "phone": "Phone",
+    "email": "Email"
+  },
+  "scheduleCall": {
+    "title": "Schedule a Consultation",
+    "description": "Book a call with our experts or chat with us instantly on WhatsApp.",
+    "yourDetails": "Your Details",
+    "fullName": "Full Name",
+    "pickDateTime": "Pick a Date & Time",
+    "preferredDate": "Preferred Date",
+    "preferredTimeSlot": "Preferred Time Slot",
+    "additionalMessage": "Additional Message (optional)",
+    "confirmAppointment": "Confirm Appointment",
+    "callScheduled": "Call Scheduled!",
+    "chatOnWhatsApp": "Chat on WhatsApp",
+    "callUsDirectly": "Call Us Directly",
+    "whatToExpect": "What to Expect"
+  },
+  "signup": {
+    "title": "Open a free",
+    "highlight": "SERNET account",
+    "signUpNow": "Sign up now",
+    "emailAddress": "Email address",
+    "mobileNumber": "Mobile number",
+    "continue": "Continue",
+    "alreadyHaveAccount": "Already have an account?",
+    "login": "Login"
+  },
+  "philosophy": {
+    "title": "Our Philosophy",
+    "description": "The principles that guide everything we do at SERNET",
+    "whyDifferent": "Why we do things differently"
+  },
+  "csr": {
+    "title": "SERNET Cares",
+    "description": "Our commitment to creating positive social and environmental impact through responsible corporate citizenship.",
+    "foundation": "SERNET Foundation"
+  },
+  "quickLinks": {
+    "title": "Quick Links",
+    "description": "Access important resources, regulatory bodies, and useful tools for your investment journey."
+  },
+  "complaints": {
+    "title": "Complaint Redressal",
+    "description": "We take your concerns seriously. Follow the process below to lodge and track your complaint."
+  },
+  "creditClaim": {
+    "title": "Credit and Claim Rights",
+    "description": "Information about your rights regarding credits, claims, and investor protection."
+  },
+  "investorCharter": {
+    "title": "Investor Charter",
+    "description": "Rights and responsibilities of investors as prescribed by SEBI."
+  },
+  "products": {
+    "choicefinx": {
+      "title": "Choice FinX",
+      "description": "Advanced trading platform for equities, F&O, commodities and currencies."
+    },
+    "tickfunds": {
+      "title": "Tick Funds",
+      "description": "Invest in 5000+ mutual funds with zero commission."
+    },
+    "tushil": {
+      "title": "Tushil",
+      "description": "Compare and buy insurance with zero commission."
+    },
+    "findemy": {
+      "title": "Findemy",
+      "description": "Free financial education platform — learn investing, trading and personal finance."
+    }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or has been moved. Let's get you back on track.",
+    "goHome": "Go Home",
+    "exploreServices": "Explore Services",
+    "popularPages": "Popular pages"
   }
 }
