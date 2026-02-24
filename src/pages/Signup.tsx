@@ -26,7 +26,7 @@ const Signup = () => {
   return (
     <Layout>
       <section className="section-padding bg-hero min-h-[calc(100vh-4rem)]">
-        <div className="container-zerodha">
+        <div className="container-sernet">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left - Info */}
             <motion.div

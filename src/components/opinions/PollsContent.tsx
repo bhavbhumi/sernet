@@ -213,7 +213,7 @@ export const PollsContent = () => {
 
   return (
     <section className="section-padding">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="mb-10">
           <div className="flex items-center gap-3 mb-2">
             <Vote className="w-6 h-6 text-primary" />

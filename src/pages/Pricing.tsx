@@ -13,7 +13,7 @@ const TradingContent = () => (
   <>
     {/* Highlights */}
     <section className="section-padding bg-background">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
           {[
             { price: '₹0', title: 'Free equity delivery', desc: 'All equity delivery investments are absolutely free — ₹0 brokerage.' },
@@ -32,7 +32,7 @@ const TradingContent = () => (
 
     {/* Detailed Charges */}
     <section className="section-padding bg-section-alt">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-12 text-center">Detailed charges</motion.h2>
         <div className="max-w-4xl mx-auto space-y-12">
           {[
@@ -65,7 +65,7 @@ const TradingContent = () => (
 const InvestmentContent = () => (
   <>
     <section className="section-padding bg-background">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
           {[
             { price: '₹0', title: 'Direct mutual funds', desc: 'Invest in direct mutual funds online, completely free.' },
@@ -83,7 +83,7 @@ const InvestmentContent = () => (
     </section>
 
     <section className="section-padding bg-section-alt">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-12 text-center">Investment charges</motion.h2>
         <div className="max-w-4xl mx-auto space-y-12">
           {[
@@ -116,7 +116,7 @@ const InvestmentContent = () => (
 const InsuranceContent = () => (
   <>
     <section className="section-padding bg-background">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
           {[
             { price: '₹0', title: 'No commission', desc: 'Zero commission on all insurance products.' },
@@ -134,7 +134,7 @@ const InsuranceContent = () => (
     </section>
 
     <section className="section-padding bg-section-alt">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-12 text-center">Insurance products</motion.h2>
         <div className="max-w-4xl mx-auto space-y-12">
           {[
@@ -194,7 +194,7 @@ const Pricing = () => {
 
       {/* Tab Navigation */}
       <div className="border-b border-border bg-background sticky top-0 z-20">
-        <div className="container-zerodha">
+        <div className="container-sernet">
           <div className="flex gap-8 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
             {pricingTabs.map((tab) => (
               <button
@@ -234,7 +234,7 @@ const Pricing = () => {
 
       {/* Features */}
       <section className="section-padding bg-background">
-        <div className="container-zerodha">
+        <div className="container-sernet">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-2xl mx-auto text-center">
             <h2 className="heading-lg text-foreground mb-8">What you get</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
@@ -251,7 +251,7 @@ const Pricing = () => {
 
       {/* CTA */}
       <section className="section-padding bg-section-alt">
-        <div className="container-zerodha">
+        <div className="container-sernet">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center max-w-2xl mx-auto">
             <h2 className="heading-lg text-foreground mb-4">Open an account</h2>
             <p className="text-body mb-8">Modern platforms and apps, ₹0 investments, and flat ₹20 intraday and F&O trades.</p>

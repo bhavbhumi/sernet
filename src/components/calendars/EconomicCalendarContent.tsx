@@ -75,7 +75,7 @@ const EconomicCalendarContent = () => {
 
   return (
     <div className="section-padding">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         {/* Filters */}
         <div className="max-w-5xl mx-auto mb-8">
           <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">

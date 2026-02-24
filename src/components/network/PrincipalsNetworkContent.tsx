@@ -162,7 +162,7 @@ export const PrincipalsNetworkContent = () => (
   <>
     {/* Section 1 — Hero Split */}
     <section className="section-padding bg-background">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-stretch">
           {/* Left */}
           <motion.div
@@ -241,7 +241,7 @@ export const PrincipalsNetworkContent = () => (
 
     {/* Compliance note */}
     <section className="section-padding bg-section-alt">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-3xl mx-auto text-center">
           <Shield className="w-10 h-10 text-primary mx-auto mb-4" />
           <h3 className="heading-md text-foreground mb-3">Fully Licensed & Compliant</h3>

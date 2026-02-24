@@ -60,7 +60,7 @@ const Calculators = () => {
 
       {/* ── Service tabs (primary) ── */}
       <div className="border-b border-border bg-background sticky top-0 z-20">
-        <div className="container-zerodha">
+        <div className="container-sernet">
           <div className="flex gap-0 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
             {serviceTabs.map((service) => (
               <button
@@ -87,7 +87,7 @@ const Calculators = () => {
 
       {/* ── Sub-tabs + description ── */}
       <div className="border-b border-border/60 bg-muted/20">
-        <div className="container-zerodha py-3 flex flex-col sm:flex-row sm:items-center gap-3">
+        <div className="container-sernet py-3 flex flex-col sm:flex-row sm:items-center gap-3">
           <div className="flex gap-2 flex-wrap">
             {subTabs[activeService].map((sub) => (
               <button

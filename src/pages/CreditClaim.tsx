@@ -4,7 +4,7 @@ import { FileText, Shield, Scale } from 'lucide-react';
 const CreditClaim = () => {
   return (
     <Layout>
-      <div className="container-zerodha section-padding">
+      <div className="container-sernet section-padding">
         <h1 className="heading-lg text-foreground mb-4">Credit and Claim Rights</h1>
         <p className="text-body mb-8 max-w-2xl">
           Information about your rights regarding credits, claims, and investor protection.

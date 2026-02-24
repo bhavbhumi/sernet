@@ -118,7 +118,7 @@ export default function AnalysisDetail() {
   if (isLoading) {
     return (
       <Layout>
-        <div className="container-zerodha py-16 max-w-5xl mx-auto space-y-4">
+        <div className="container-sernet py-16 max-w-5xl mx-auto space-y-4">
           <div className="h-6 w-32 bg-muted animate-pulse rounded" />
           <div className="h-10 w-3/4 bg-muted animate-pulse rounded" />
           <div className="h-4 w-1/2 bg-muted animate-pulse rounded" />
@@ -133,7 +133,7 @@ export default function AnalysisDetail() {
   if (!analysis) {
     return (
       <Layout>
-        <div className="container-zerodha py-24 text-center">
+        <div className="container-sernet py-24 text-center">
           <h1 className="text-2xl font-semibold mb-4">Analysis not found</h1>
           <Link to="/insights" className="text-primary hover:underline flex items-center gap-1 justify-center">
             <ArrowLeft className="h-4 w-4" /> Back to Insights
@@ -189,7 +189,7 @@ export default function AnalysisDetail() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="container-zerodha py-10 max-w-6xl mx-auto"
+        className="container-sernet py-10 max-w-6xl mx-auto"
       >
         {/* Back link */}
         <Link

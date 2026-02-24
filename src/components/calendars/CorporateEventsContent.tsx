@@ -90,7 +90,7 @@ const CorporateEventsContent = () => {
 
   return (
     <div className="section-padding">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         {/* Event Type Legend / Filters */}
         <div className="max-w-5xl mx-auto flex flex-wrap gap-2 justify-center mb-8">
           {allTypes.map((type) => {

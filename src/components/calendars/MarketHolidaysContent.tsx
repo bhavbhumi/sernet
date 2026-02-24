@@ -107,7 +107,7 @@ const MarketHolidaysContent = () => {
 
   return (
     <div className="section-padding">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         {/* Info Cards */}
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
           <div className="bg-muted/30 p-6 rounded-lg border border-border">

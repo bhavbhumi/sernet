@@ -19,7 +19,7 @@ export const EcosystemSection = () => {
 
   return (
     <section className="section-padding bg-section-alt">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         {/* Press logos */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

@@ -38,7 +38,7 @@ export const StatsSection = () => {
 
   return (
     <section className="section-padding bg-section-alt">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 lg:gap-10">
           {stats.map((stat, index) => {
             const IconComponent = stat.icon;

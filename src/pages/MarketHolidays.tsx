@@ -25,7 +25,7 @@ const MarketHolidays = () => {
 
   return (
     <Layout>
-      <div className="container-zerodha section-padding">
+      <div className="container-sernet section-padding">
         {/* Hero Section */}
         <div className="max-w-4xl mx-auto text-center mb-12">
           <h1 className="heading-xl text-foreground mb-4">
