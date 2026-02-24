@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { MapPin, Clock, Phone, Mail, Navigation } from 'lucide-react';
+import { MapPin, Clock, Phone, Mail, Navigation, Building2 } from 'lucide-react';
 
 const SERNET_MAP_EMBED = 'https://maps.google.com/maps?q=SERNET+Financial+Services+Pvt+Ltd,+B201+Hemu+Classic,+SV+Road,+Malad+West,+Mumbai+400064&t=&z=16&ie=UTF8&iwloc=&output=embed';
 const SERNET_MAP_DIRECTIONS = 'https://www.google.com/maps/search/?api=1&query=SERNET+Financial+Services+Pvt+Ltd+B201+Hemu+Classic+SV+Road+Malad+West+Mumbai+400064';
@@ -41,7 +41,7 @@ const VisitUsContent = () => {
               className="bg-card border border-border rounded-lg p-6 flex flex-col h-full"
             >
               <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                <MapPin className="w-5 h-5 text-primary" />
+                <Building2 className="w-5 h-5 text-primary" />
               </div>
               <h3 className="text-lg font-medium text-foreground mb-1">{office.name}</h3>
               <p className="text-sm text-muted-foreground mb-5">{office.address}</p>
