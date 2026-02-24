@@ -209,6 +209,60 @@ export type Database = {
         }
         Relationships: []
       }
+      awareness: {
+        Row: {
+          author: string
+          body: string | null
+          category: string
+          created_at: string
+          created_by: string | null
+          excerpt: string | null
+          id: string
+          item_date: string | null
+          media_url: string | null
+          published_at: string | null
+          read_time: string | null
+          status: Database["public"]["Enums"]["content_status"]
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          author?: string
+          body?: string | null
+          category: string
+          created_at?: string
+          created_by?: string | null
+          excerpt?: string | null
+          id?: string
+          item_date?: string | null
+          media_url?: string | null
+          published_at?: string | null
+          read_time?: string | null
+          status?: Database["public"]["Enums"]["content_status"]
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          author?: string
+          body?: string | null
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          excerpt?: string | null
+          id?: string
+          item_date?: string | null
+          media_url?: string | null
+          published_at?: string | null
+          read_time?: string | null
+          status?: Database["public"]["Enums"]["content_status"]
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       bulletins: {
         Row: {
           created_at: string

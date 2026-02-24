@@ -64,6 +64,7 @@ import AdminSetup from "./pages/admin/AdminSetup";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminArticles from "./pages/admin/content/AdminArticles";
+import AdminAwareness from "./pages/admin/content/AdminAwareness";
 import AdminAnalysis from "./pages/admin/content/AdminAnalysis";
 import AdminReports from "./pages/admin/content/AdminReports";
 import AdminBulletin from "./pages/admin/content/AdminBulletin";
@@ -171,6 +172,7 @@ const App = () => (
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/content/articles" element={<AdminArticles />} />
+          <Route path="/admin/content/awareness" element={<AdminAwareness />} />
           <Route path="/admin/content/analysis" element={<AdminAnalysis />} />
           <Route path="/admin/content/reports" element={<AdminReports />} />
           <Route path="/admin/content/bulletin" element={<AdminBulletin />} />

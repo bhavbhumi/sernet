@@ -178,20 +178,19 @@ export const AwarenessContent = () => {
   const [page, setPage] = useState(1);
 
   const { data: articles = [], isLoading } = useQuery({
-    queryKey: ['awareness-articles'],
+    queryKey: ['awareness-content'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('articles')
+        .from('awareness')
         .select('*')
         .eq('status', 'published')
-        .in('category', [...AWARENESS_CATEGORIES])
         .order('item_date', { ascending: false, nullsFirst: false });
       if (error) throw error;
-      return data;
+      return data as any[];
     },
   });
 
-  const filteredArticles = articles.filter((a) => {
+  const filteredArticles = articles.filter((a: any) => {
     return activeCategory === 'All' || a.category === activeCategory;
   });
 
