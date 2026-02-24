@@ -13,14 +13,14 @@ import { EducationServiceContent } from '@/components/services/EducationServiceC
 import { EstatePlanningServiceContent } from '@/components/services/EstatePlanningServiceContent';
 import { CreditCounsellingServiceContent } from '@/components/services/CreditCounsellingServiceContent';
 
-const servicesTabs = ['Trading', 'Investment', 'Insurance', 'Education', 'Estate Planning', 'Credit Counselling'] as const;
+const servicesTabs = ['Trading', 'Investment', 'Insurance', 'Estate Planning', 'Credit Counselling'] as const;
 type ServicesTab = (typeof servicesTabs)[number];
 
 const tabI18nKeys: Record<ServicesTab, string> = {
   Trading: 'services.tabs.trading',
   Investment: 'services.tabs.investment',
   Insurance: 'services.tabs.insurance',
-  Education: 'services.tabs.education',
+  
   'Estate Planning': 'services.tabs.estatePlanning',
   'Credit Counselling': 'services.tabs.creditCounselling',
 };
@@ -29,7 +29,7 @@ const tabContent: Record<ServicesTab, React.ReactNode> = {
   Trading: <TradingServiceContent />,
   Investment: <InvestmentServiceContent />,
   Insurance: <InsuranceServiceContent />,
-  Education: <EducationServiceContent />,
+  
   'Estate Planning': <EstatePlanningServiceContent />,
   'Credit Counselling': <CreditCounsellingServiceContent />,
 };
