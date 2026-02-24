@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BookOpen, GraduationCap, Award, Check, Download, UserCheck, Play, Lightbulb, Users, Video, FileText, Globe, Clock } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { APP_LINKS } from '@/lib/appLinks';
+
 import findemyShowcase from '@/assets/findemy-showcase.png';
 
 const stats = [
@@ -152,7 +152,7 @@ export const EducationServiceContent = () => (
               ))}
             </ul>
             <a
-              href={APP_LINKS.OPEN_ACCOUNT}
+              href="#"
               className="inline-flex items-center gap-2 px-8 py-3 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
             >
               Browse All Courses
@@ -257,7 +257,7 @@ export const EducationServiceContent = () => (
           className="text-center mt-12"
         >
           <a
-            href={APP_LINKS.OPEN_ACCOUNT}
+            href="#"
             className="inline-flex items-center gap-2 px-8 py-3 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
           >
             Explore Findemy
