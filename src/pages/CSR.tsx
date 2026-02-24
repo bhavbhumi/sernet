@@ -1,4 +1,5 @@
 import { Layout } from '@/components/layout/Layout';
+import { SEOHead } from '@/components/shared/SEOHead';
 import { motion } from 'framer-motion';
 import { Heart, Users, Leaf, GraduationCap } from 'lucide-react';
 
@@ -32,6 +33,11 @@ const initiatives = [
 const CSR = () => {
   return (
     <Layout>
+      <SEOHead
+        title="CSR — SERNET Cares"
+        description="SERNET's commitment to social responsibility — financial literacy, climate action and community support."
+        path="/csr"
+      />
       <section className="section-padding">
         <div className="container-sernet">
           <motion.div

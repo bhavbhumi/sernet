@@ -1,4 +1,5 @@
 import { Layout } from '@/components/layout/Layout';
+import { SEOHead } from '@/components/shared/SEOHead';
 import { PageHero } from '@/components/layout/PageHero';
 import { Shield, FileText, Users, Scale } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
@@ -87,6 +88,11 @@ const InvestorCharter = () => {
 
   return (
     <Layout>
+      <SEOHead
+        title="Investor Charter"
+        description="Investor rights and responsibilities as prescribed by SEBI — SERNET Financial Services."
+        path="/investor-charter"
+      />
       <PageHero
         title="Investor Charter"
         description="Rights and responsibilities of investors as prescribed by SEBI"

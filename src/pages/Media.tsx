@@ -1,5 +1,6 @@
 import { useState, useMemo, useRef } from 'react';
 import { Layout } from '@/components/layout/Layout';
+import { SEOHead } from '@/components/shared/SEOHead';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, X, Download, ChevronLeft, ChevronRight, FileText, Palette, Type, Image } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -216,6 +217,11 @@ const Media = () => {
 
   return (
     <Layout>
+      <SEOHead
+        title="Press & Media"
+        description="Latest press releases, news coverage and media kit for SERNET Financial Services."
+        path="/media"
+      />
       <section className="section-padding">
         <div className="container-zerodha">
           {/* Header */}

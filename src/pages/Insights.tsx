@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { PageHero } from '@/components/layout/PageHero';
+import { SEOHead } from '@/components/shared/SEOHead';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArticlesContent } from '@/components/insights/ArticlesContent';
 import { AnalysisContent } from '@/components/insights/AnalysisContent';
@@ -22,6 +23,11 @@ const Insights = () => {
 
   return (
     <Layout>
+      <SEOHead
+        title="Insights"
+        description="Expert articles, market analysis, research reports and bulletins from SERNET Financial Services."
+        path="/insights"
+      />
       <PageHero
         title="Stay ahead with expert"
         highlight="Insights"

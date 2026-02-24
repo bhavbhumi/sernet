@@ -1,4 +1,5 @@
 import { Layout } from '@/components/layout/Layout';
+import { SEOHead } from '@/components/shared/SEOHead';
 import { motion } from 'framer-motion';
 
 const Philosophy = () => {
@@ -39,6 +40,11 @@ const Philosophy = () => {
 
   return (
     <Layout>
+      <SEOHead
+        title="Our Philosophy"
+        description="The principles that guide SERNET — customer-first, transparency, simplicity and long-term thinking."
+        path="/about/philosophy"
+      />
       <section className="section-padding bg-background">
         <div className="container-zerodha">
           <motion.div

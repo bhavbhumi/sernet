@@ -2,6 +2,7 @@
 import { Link } from 'react-router-dom';
 import { Layout } from '@/components/layout/Layout';
 import { PageHero } from '@/components/layout/PageHero';
+import { SEOHead } from '@/components/shared/SEOHead';
 import { ExternalLink } from 'lucide-react';
 
 const sitemapSections = [
@@ -97,6 +98,11 @@ const sitemapSections = [
 export default function Sitemap() {
   return (
     <Layout>
+      <SEOHead
+        title="Sitemap"
+        description="Complete directory of all pages on the SERNET Financial Services website."
+        path="/sitemap"
+      />
       <PageHero
         title="Sitemap"
         description="A complete directory of all pages on the SERNET website."

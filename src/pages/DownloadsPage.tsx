@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { PageHero } from '@/components/layout/PageHero';
+import { SEOHead } from '@/components/shared/SEOHead';
 import { motion, AnimatePresence } from 'framer-motion';
 import AppsContent from '@/components/downloads/AppsContent';
 import DocumentsContent from '@/components/downloads/DocumentsContent';
@@ -18,6 +19,11 @@ const DownloadsPage = () => {
 
   return (
     <Layout>
+      <SEOHead
+        title="Downloads"
+        description="Download SERNET trading platforms, mobile apps and important documents."
+        path="/downloads"
+      />
       <PageHero
         title="Get our apps and"
         highlight="Resources"

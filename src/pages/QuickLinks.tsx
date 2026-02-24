@@ -1,4 +1,5 @@
 import { Layout } from '@/components/layout/Layout';
+import { SEOHead } from '@/components/shared/SEOHead';
 import { Link } from 'react-router-dom';
 import { ExternalLink } from 'lucide-react';
 
@@ -51,6 +52,11 @@ const quickLinksData = [
 const QuickLinks = () => {
   return (
     <Layout>
+      <SEOHead
+        title="Quick Links"
+        description="Important links to exchanges, regulatory bodies, depositories and investor resources."
+        path="/quick-links"
+      />
       <div className="container-sernet section-padding">
         <h1 className="heading-lg text-foreground mb-4">Quick Links</h1>
         <p className="text-body mb-8 max-w-2xl">

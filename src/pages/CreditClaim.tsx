@@ -1,9 +1,15 @@
 import { Layout } from '@/components/layout/Layout';
+import { SEOHead } from '@/components/shared/SEOHead';
 import { FileText, Shield, Scale } from 'lucide-react';
 
 const CreditClaim = () => {
   return (
     <Layout>
+      <SEOHead
+        title="Credit and Claim Rights"
+        description="Information about your rights regarding credits, claims and investor protection at SERNET."
+        path="/credit-claim"
+      />
       <div className="container-sernet section-padding">
         <h1 className="heading-lg text-foreground mb-4">Credit and Claim Rights</h1>
         <p className="text-body mb-8 max-w-2xl">

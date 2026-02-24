@@ -1,4 +1,5 @@
 import { Layout } from '@/components/layout/Layout';
+import { SEOHead } from '@/components/shared/SEOHead';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Search, MessageCircle, FileText, Phone, Mail, ExternalLink } from 'lucide-react';
@@ -57,6 +58,11 @@ const Support = () => {
 
   return (
     <Layout>
+      <SEOHead
+        title="Support"
+        description="Get help from SERNET — search our knowledge base, track tickets, FAQs and contact support."
+        path="/support"
+      />
       {/* Hero */}
       <section className="section-padding bg-hero">
         <div className="container-zerodha">

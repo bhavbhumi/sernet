@@ -1,4 +1,5 @@
 import { Layout } from '@/components/layout/Layout';
+import { SEOHead } from '@/components/shared/SEOHead';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Check } from 'lucide-react';
@@ -25,6 +26,11 @@ const Signup = () => {
 
   return (
     <Layout>
+      <SEOHead
+        title="Sign Up"
+        description="Create your free SERNET account — invest in stocks, mutual funds, insurance and more with zero brokerage."
+        path="/signup"
+      />
       <section className="section-padding bg-hero min-h-[calc(100vh-4rem)]">
         <div className="container-sernet">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">

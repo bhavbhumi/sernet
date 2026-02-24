@@ -1,4 +1,5 @@
 import { Layout } from '@/components/layout/Layout';
+import { SEOHead } from '@/components/shared/SEOHead';
 import { motion } from 'framer-motion';
 import { Calendar, Clock, Phone, MessageCircle, User, Mail, FileText } from 'lucide-react';
 import { useState } from 'react';
@@ -76,6 +77,11 @@ const ScheduleCall = () => {
 
   return (
     <Layout>
+      <SEOHead
+        title="Schedule a Call"
+        description="Book a free 30-minute consultation with SERNET financial advisors — investment, trading, insurance."
+        path="/schedule-call"
+      />
       <section className="section-padding bg-background">
         <div className="container-sernet max-w-5xl">
           <motion.div

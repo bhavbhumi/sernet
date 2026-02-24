@@ -1,4 +1,5 @@
 import { Layout } from '@/components/layout/Layout';
+import { SEOHead } from '@/components/shared/SEOHead';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
@@ -42,6 +43,11 @@ const testimonials = [
 
 const Tushil = () => (
   <Layout>
+    <SEOHead
+      title="Tushil Insurance Platform"
+      description="Compare and buy life, health, motor and travel insurance with zero commission through Tushil by SERNET."
+      path="/tushil"
+    />
     {/* Hero */}
     <section className="section-padding bg-background">
       <div className="container-zerodha">
