@@ -112,7 +112,7 @@ const AskUsContent = () => {
     <>
       {/* Support Portal Banner */}
       <section className="bg-primary/5 border-b border-primary/10">
-        <div className="container-zerodha max-w-5xl py-4">
+        <div className="container-zerodha py-4">
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
@@ -137,7 +137,7 @@ const AskUsContent = () => {
 
       {/* Ask Form + Contact Info */}
       <section className="section-padding bg-background">
-        <div className="container-zerodha max-w-5xl">
+        <div className="container-zerodha">
           <div className="grid md:grid-cols-2 gap-12 items-stretch">
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} className="flex flex-col">
               <h2 className="text-[1.75rem] md:text-[2rem] font-normal text-foreground mb-2">
@@ -273,7 +273,7 @@ const AskUsContent = () => {
 
       {/* Department Cards */}
       <section className="section-padding bg-section-alt">
-        <div className="container-zerodha max-w-5xl">
+        <div className="container-zerodha">
           <h3 className="text-xl md:text-2xl font-normal text-foreground mb-8">
             Reach the right <span className="text-primary font-medium">department</span>
           </h3>
@@ -302,7 +302,7 @@ const AskUsContent = () => {
 
       {/* Escalation Matrix */}
       <section className="section-padding bg-background">
-        <div className="container-zerodha max-w-5xl">
+        <div className="container-zerodha">
           <h3 className="text-xl md:text-2xl font-normal text-foreground mb-2">
             Escalation <span className="text-primary font-medium">Matrix</span>
           </h3>

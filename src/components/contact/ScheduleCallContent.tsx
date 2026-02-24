@@ -91,7 +91,7 @@ const ScheduleCallContent = () => {
     <>
       {/* Context Banner */}
       <section className="bg-primary/5 border-b border-primary/10">
-        <div className="container-zerodha max-w-5xl py-4">
+        <div className="container-zerodha py-4">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
               <Calendar className="w-4.5 h-4.5 text-primary" />
@@ -105,7 +105,7 @@ const ScheduleCallContent = () => {
       </section>
 
       <section className="section-padding bg-background">
-      <div className="container-zerodha max-w-5xl">
+      <div className="container-zerodha">
         <div className="grid md:grid-cols-3 gap-8">
           {/* Left - Form */}
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.1 }} className="md:col-span-2">
