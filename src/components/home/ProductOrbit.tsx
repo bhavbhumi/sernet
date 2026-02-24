@@ -3,7 +3,7 @@ import sernetIcon from '@/assets/sernet-icon.png';
 import tickFundsLogo from '@/assets/tickfunds-icon.png';
 import tushilLogo from '@/assets/tushil-icon.png';
 import choiceFinxLogo from '@/assets/choicefinx-icon.png';
-import findemyLogo from '@/assets/findemy-logo.png';
+
 
 interface OrbitLogoProps {
   src: string;
@@ -166,21 +166,12 @@ export const ProductOrbit = () => {
         size={52}
       />
 
-      {/* Outer orbit: ChoiceFinX & Findemy — reverse direction for variety */}
+      {/* Outer orbit: ChoiceFinX — reverse direction for variety */}
       <OrbitItem
         src={choiceFinxLogo}
         alt="ChoiceFinX"
         radius={190}
         angle={60}
-        duration={26}
-        size={56}
-        reverse
-      />
-      <OrbitItem
-        src={findemyLogo}
-        alt="Findemy"
-        radius={190}
-        angle={240}
         duration={26}
         size={56}
         reverse

@@ -158,6 +158,7 @@
     "analysis": "Analysis",
     "reports": "Reports",
     "bulletin": "Bulletin",
+    "awareness": "Awareness",
     "promotion": "Promotion",
     "firstName": "First Name",
     "lastName": "Last Name",
@@ -348,9 +349,9 @@
       "title": "Tushil",
       "description": "Compare and buy insurance with zero commission."
     },
-    "findemy": {
-      "title": "Findemy",
-      "description": "Free financial education platform — learn investing, trading and personal finance."
+    "awareness": {
+      "title": "Awareness",
+      "description": "Free financial awareness content — investor protection, scam alerts, market basics and personal finance."
     }
   },
   "notFound": {

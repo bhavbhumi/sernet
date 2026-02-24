@@ -23,7 +23,7 @@ const menuSections = [
     links: [
       { name: 'Tick Funds', href: '/tickfunds', external: false },
       { name: 'Tushil', href: '/tushil', external: false },
-      { name: 'Findemy', href: '/findemy', external: false },
+      
       { name: 'Choice FinX', href: '/choicefinx', external: false },
     ],
   },

@@ -32,7 +32,7 @@ const sitemapSections = [
       { label: 'Tick Funds', href: '/tickfunds' },
       { label: 'Tushil', href: '/tushil' },
       { label: 'Choice FinX', href: '/choicefinx' },
-      { label: 'Findemy', href: '/findemy' },
+      { label: 'Awareness', href: '/awareness' },
     ],
   },
   {

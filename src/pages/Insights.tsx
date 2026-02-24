@@ -7,8 +7,9 @@ import { ArticlesContent } from '@/components/insights/ArticlesContent';
 import { AnalysisContent } from '@/components/insights/AnalysisContent';
 import { ReportsContent } from '@/components/insights/ReportsContent';
 import { BulletinContent } from '@/components/insights/BulletinContent';
+import { AwarenessContent } from '@/components/insights/AwarenessContent';
 
-const insightsTabs = ['Articles', 'Analysis', 'Reports', 'Bulletin'] as const;
+const insightsTabs = ['Articles', 'Analysis', 'Reports', 'Bulletin', 'Awareness'] as const;
 type InsightsTab = (typeof insightsTabs)[number];
 
 const tabContent: Record<InsightsTab, React.ReactNode> = {
@@ -16,6 +17,7 @@ const tabContent: Record<InsightsTab, React.ReactNode> = {
   Analysis: <AnalysisContent />,
   Reports: <ReportsContent />,
   Bulletin: <BulletinContent />,
+  Awareness: <AwarenessContent />,
 };
 
 const Insights = () => {

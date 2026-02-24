@@ -57,7 +57,7 @@ import Contact from "./pages/Contact";
 import ChoiceFinX from "./pages/ChoiceFinX";
 import TickFunds from "./pages/TickFunds";
 import TushilPage from "./pages/Tushil";
-import Findemy from "./pages/Findemy";
+import Awareness from "./pages/Awareness";
 
 // Admin pages
 import AdminSetup from "./pages/admin/AdminSetup";
@@ -160,7 +160,7 @@ const App = () => (
           <Route path="/choicefinx" element={<ChoiceFinX />} />
           <Route path="/tickfunds" element={<TickFunds />} />
           <Route path="/tushil" element={<TushilPage />} />
-          <Route path="/findemy" element={<Findemy />} />
+          <Route path="/awareness" element={<Awareness />} />
 
           {/* Article & Analysis detail */}
           <Route path="/insights/articles/:id" element={<ArticleDetail />} />

@@ -13,7 +13,7 @@ const initiatives = [
   {
     icon: GraduationCap,
     title: 'Financial Literacy',
-    description: 'Findemy provides free, open-source financial education to millions of learners across India.',
+    description: 'SERNET provides free, open-source financial awareness content to millions of learners across India.',
     impact: '10M+ learners',
   },
   {
