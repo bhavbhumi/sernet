@@ -68,10 +68,10 @@ export default function AdminImportArticles() {
             addLog(`❌ ${url.split('/').slice(-2, -1)[0]}: ${error?.message || data?.error}`);
           } else if (data.action === 'inserted') {
             inserted++;
-            addLog(`✅ NEW: ${url.split('/').slice(-2, -1)[0]}`);
+            addLog(`✅ NEW: ${data.title || url.split('/').slice(-2, -1)[0]}`);
           } else if (data.action === 'updated') {
             updated++;
-            addLog(`🔄 UPDATED: ${url.split('/').slice(-2, -1)[0]}`);
+            addLog(`🔄 UPDATED: ${data.title || url.split('/').slice(-2, -1)[0]}`);
           } else {
             skipped++;
           }
@@ -137,7 +137,7 @@ export default function AdminImportArticles() {
             addLog(`❌ ${url.split('/').slice(-2, -1)[0]}: ${error?.message || data?.error}`);
           } else if (data.action === 'rescrape_updated') {
             updated++;
-            addLog(`✅ RESCRAPE: ${url.split('/').slice(-2, -1)[0]}`);
+            addLog(`✅ RESCRAPE: ${data.title || url.split('/').slice(-2, -1)[0]}`);
           } else {
             noChanges++;
           }
@@ -276,9 +276,10 @@ export default function AdminImportArticles() {
             <ul className="text-xs text-muted-foreground space-y-1">
               <li>• <strong>Phase 1:</strong> Scrapes <code className="bg-muted px-1 rounded">blog-dynamic/</code> listing to collect all article URLs</li>
               <li>• <strong>Phase 2:</strong> Scrapes each article page individually in batches of 5</li>
-              <li>• Extracts: title, thumbnail (og:image), date, excerpt (meta description), and full body text</li>
-              <li>• Existing articles are updated if their body content is missing</li>
-              <li>• New articles (2019 onwards) are created with correct dates and categories</li>
+              <li>• Extracts: title (from H2), featured image, SEO meta title/desc, excerpt, date, read_time, WP category, and full body</li>
+              <li>• Tables in HTML are converted to Markdown pipe-tables; H3→H2 normalization is pre-applied</li>
+              <li>• Dedup uses <code className="bg-muted px-1 rounded">source_url</code> — existing articles get updated, new ones inserted</li>
+              <li>• <strong>Re-scrape All</strong> re-fetches all imported articles with the improved parser</li>
             </ul>
           </CardContent>
         </Card>
