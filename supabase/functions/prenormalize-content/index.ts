@@ -111,11 +111,18 @@ function convertHtmlTables(text: string): string {
 
 // Reconstruct flattened tables
 function reconstructFlattenedTables(text: string): string {
+  // First: remove broken pipe-table headers that precede flattened data
+  text = text.replace(
+    /(\| [^|\n]+ \|[^\n]*\n){2,4}\n?\*\*\([^)]+\)\*\*\n/g,
+    ''
+  );
+
   const lines = text.split('\n');
   const result: string[] = [];
   let i = 0;
 
   while (i < lines.length) {
+    // === Pattern 1: Bold header group ===
     const headers: string[] = [];
     let j = i;
 
@@ -164,6 +171,67 @@ function reconstructFlattenedTables(text: string): string {
         result.push('');
         i = k;
         continue;
+      }
+    }
+
+    // === Pattern 2: Alternating label/value groups ===
+    if (i < lines.length) {
+      const t = lines[i].trim();
+      if (t && !t.startsWith('#') && !t.startsWith('|') && !t.startsWith('-') && !t.startsWith('*') && !/^\d+\./.test(t)) {
+        const nextLine = i + 1 < lines.length ? lines[i + 1].trim() : '';
+        const isValueLine = /^[\*]*-?[\d,]+[\*]*$/.test(nextLine.replace(/\*\*/g, ''));
+        
+        if (isValueLine) {
+          let k = i;
+          let groupSize = -1;
+          const groups: string[][] = [];
+          
+          while (k < lines.length) {
+            const group: string[] = [];
+            while (k < lines.length && lines[k].trim() !== '') {
+              group.push(lines[k].trim());
+              k++;
+            }
+            
+            if (group.length === 0) break;
+            if (group.length % 2 !== 0) { k -= group.length; break; }
+            
+            let valid = true;
+            for (let g = 0; g < group.length; g += 2) {
+              const value = group[g + 1].replace(/\*\*/g, '');
+              if (/^-?[\d,]+$/.test(value) || value === '0') {
+                // valid
+              } else {
+                valid = false;
+                break;
+              }
+            }
+            
+            if (!valid) { k -= group.length; break; }
+            if (groupSize === -1) groupSize = group.length;
+            if (group.length !== groupSize) { k -= group.length; break; }
+            
+            groups.push(group);
+            while (k < lines.length && lines[k].trim() === '') k++;
+          }
+          
+          if (groups.length >= 3 && groupSize >= 2) {
+            const pairsPerGroup = groupSize / 2;
+            const tableHeaders: string[] = [];
+            for (let p = 0; p < pairsPerGroup; p++) {
+              tableHeaders.push('Sector', 'Flow');
+            }
+            
+            result.push('| ' + tableHeaders.join(' | ') + ' |');
+            result.push('| ' + tableHeaders.map(() => '---').join(' | ') + ' |');
+            for (const group of groups) {
+              result.push('| ' + group.join(' | ') + ' |');
+            }
+            result.push('');
+            i = k;
+            continue;
+          }
+        }
       }
     }
 
