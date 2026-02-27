@@ -188,6 +188,16 @@ export function normalizeBody(body: string): string {
   // First: strip any raw WordPress HTML structures
   let text = stripWordPressHtml(body);
 
+  // Collapse excessive inline whitespace
+  text = text.split('\n').map(line => {
+    const trimmed = line.trim();
+    if (!trimmed) return '';
+    return trimmed.replace(/\s{2,}/g, ' ');
+  }).join('\n');
+
+  // Merge orphaned list markers: "-" on its own line followed by text
+  text = text.replace(/^(-|\*)\s*\n+([^\n-*#|>])/gm, '$1 $2');
+
   // Promote ### / #### / ##### headings → ##
   text = text.replace(/^#{3,5}\s+/gm, '## ');
 
@@ -197,6 +207,13 @@ export function normalizeBody(body: string): string {
     ''
   );
   text = text.replace(/^(?:Table\s+of\s+Contents?|TOC|Contents)\s*$/gim, '');
+
+  // Remove standalone TOC-like blocks at the very start (3+ short list items, possibly with blank lines)
+  text = text.replace(/^\s*((?:[ \t]*-\s+[^\n]+\n(?:\s*\n)*){3,})/m, (match, tocBlock) => {
+    const items = tocBlock.trim().split('\n').filter((l: string) => l.trim().startsWith('-'));
+    const allShort = items.every((item: string) => item.trim().length < 100);
+    return allShort && items.length >= 3 ? '' : match;
+  });
 
   // Reconstruct flattened tables before other processing
   text = reconstructFlattenedTables(text);
