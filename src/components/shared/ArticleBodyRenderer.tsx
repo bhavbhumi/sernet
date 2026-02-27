@@ -106,11 +106,90 @@ function reconstructFlattenedTables(text: string): string {
   return result.join('\n');
 }
 
-// Normalize body: promote ###/####/##### → ##, strip TOC block, remove duplicate plain titles, collapse blank lines
+// Strip raw WordPress HTML structures and extract clean content
+function stripWordPressHtml(text: string): string {
+  // If body doesn't contain HTML markers, return as-is
+  if (!text.includes('<!--') && !text.includes('<')) return text;
+
+  // Remove everything before "<!-- Tab Content -->" marker (sidebar nav section)
+  const tabContentIdx = text.indexOf('<!-- Tab Content -->');
+  if (tabContentIdx !== -1) {
+    text = text.substring(tabContentIdx + '<!-- Tab Content -->'.length);
+  }
+
+  // Remove HTML comments
+  text = text.replace(/<!--[\s\S]*?-->/g, '');
+
+  // Remove HTML tags but preserve content (except script/style)
+  text = text.replace(/<script[\s\S]*?<\/script>/gi, '');
+  text = text.replace(/<style[\s\S]*?<\/style>/gi, '');
+
+  // Convert <br> to newlines
+  text = text.replace(/<br\s*\/?>/gi, '\n');
+
+  // Convert <p> tags to double newlines
+  text = text.replace(/<\/p>/gi, '\n\n');
+  text = text.replace(/<p[^>]*>/gi, '');
+
+  // Convert <li> to markdown list items
+  text = text.replace(/<li[^>]*>/gi, '- ');
+  text = text.replace(/<\/li>/gi, '\n');
+
+  // Convert header tags to markdown
+  text = text.replace(/<h1[^>]*>([\s\S]*?)<\/h1>/gi, '# $1\n');
+  text = text.replace(/<h2[^>]*>([\s\S]*?)<\/h2>/gi, '## $1\n');
+  text = text.replace(/<h3[^>]*>([\s\S]*?)<\/h3>/gi, '## $1\n');
+  text = text.replace(/<h4[^>]*>([\s\S]*?)<\/h4>/gi, '## $1\n');
+  text = text.replace(/<h5[^>]*>([\s\S]*?)<\/h5>/gi, '## $1\n');
+
+  // Convert <strong>/<b> to markdown bold
+  text = text.replace(/<(?:strong|b)[^>]*>([\s\S]*?)<\/(?:strong|b)>/gi, '**$1**');
+
+  // Convert <em>/<i> to markdown italic
+  text = text.replace(/<(?:em|i)[^>]*>([\s\S]*?)<\/(?:em|i)>/gi, '*$1*');
+
+  // Convert <a href="...">text</a> to markdown links
+  text = text.replace(/<a\s+[^>]*href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi, '[$2]($1)');
+
+  // Convert <img> to markdown images
+  text = text.replace(/<img\s+[^>]*src=["']([^"']+)["'][^>]*alt=["']([^"']*)["'][^>]*\/?>/gi, '![$2]($1)');
+  text = text.replace(/<img\s+[^>]*src=["']([^"']+)["'][^>]*\/?>/gi, '![image]($1)');
+
+  // Strip all remaining HTML tags
+  text = text.replace(/<[^>]+>/g, '');
+
+  // Decode common HTML entities
+  text = text.replace(/&amp;/g, '&');
+  text = text.replace(/&lt;/g, '<');
+  text = text.replace(/&gt;/g, '>');
+  text = text.replace(/&quot;/g, '"');
+  text = text.replace(/&#39;/g, "'");
+  text = text.replace(/&nbsp;/g, ' ');
+  text = text.replace(/&#8211;/g, '–');
+  text = text.replace(/&#8212;/g, '—');
+  text = text.replace(/&#8216;/g, "\u2018");
+  text = text.replace(/&#8217;/g, "\u2019");
+  text = text.replace(/&#8220;/g, "\u201C");
+  text = text.replace(/&#8221;/g, "\u201D");
+  text = text.replace(/&rsquo;/g, "\u2019");
+  text = text.replace(/&lsquo;/g, "\u2018");
+  text = text.replace(/&rdquo;/g, "\u201D");
+  text = text.replace(/&ldquo;/g, "\u201C");
+  text = text.replace(/&mdash;/g, '—');
+  text = text.replace(/&ndash;/g, '–');
+  text = text.replace(/&hellip;/g, '…');
+  text = text.replace(/&#?\w+;/g, ''); // catch remaining entities
+
+  return text;
+}
+
+// Normalize body: strip WP HTML, promote ###/####/##### → ##, strip TOC block, remove duplicate plain titles, collapse blank lines
 export function normalizeBody(body: string): string {
-  let text = body
-    // ##### heading → ## heading
-    .replace(/^#{3,5}\s+/gm, '## ');
+  // First: strip any raw WordPress HTML structures
+  let text = stripWordPressHtml(body);
+
+  // Promote ### / #### / ##### headings → ##
+  text = text.replace(/^#{3,5}\s+/gm, '## ');
 
   // Remove "Table of Contents" / "Table of Content" section
   text = text.replace(
@@ -148,6 +227,12 @@ export function normalizeBody(body: string): string {
   text = filtered.join('\n');
 
   // Collapse 3+ consecutive blank lines into 1
+  text = text.replace(/\n{3,}/g, '\n\n');
+
+  // Remove lines that are only whitespace
+  text = text.replace(/^[ \t]+$/gm, '');
+
+  // Final collapse after cleanup
   text = text.replace(/\n{3,}/g, '\n\n');
 
   return text.trim();
