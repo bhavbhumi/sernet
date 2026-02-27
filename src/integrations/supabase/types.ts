@@ -27,6 +27,7 @@ export type Database = {
           item_date: string | null
           media_url: string | null
           published_at: string | null
+          read_time: string | null
           source_url: string | null
           status: Database["public"]["Enums"]["content_status"]
           thumbnail_url: string | null
@@ -45,6 +46,7 @@ export type Database = {
           item_date?: string | null
           media_url?: string | null
           published_at?: string | null
+          read_time?: string | null
           source_url?: string | null
           status?: Database["public"]["Enums"]["content_status"]
           thumbnail_url?: string | null
@@ -63,6 +65,7 @@ export type Database = {
           item_date?: string | null
           media_url?: string | null
           published_at?: string | null
+          read_time?: string | null
           source_url?: string | null
           status?: Database["public"]["Enums"]["content_status"]
           thumbnail_url?: string | null
