@@ -118,9 +118,11 @@ export function GenericCMSPage({
 
   const fetchItems = async () => {
     setLoading(true);
-    const sortCol = orderBy?.column ?? 'created_at';
+    const sortCol = orderBy?.column ?? 'published_at';
     const sortAsc = orderBy?.ascending ?? false;
-    const { data } = await db(tableName).select('*').order(sortCol, { ascending: sortAsc });
+    const { data } = await db(tableName).select('*')
+      .order(sortCol, { ascending: sortAsc, nullsFirst: false })
+      .order('created_at', { ascending: false });
     setItems(data ?? []);
     setLoading(false);
   };
