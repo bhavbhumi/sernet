@@ -122,8 +122,11 @@ export type Database = {
           id: string
           item_date: string | null
           media_url: string | null
+          meta_description: string | null
+          meta_title: string | null
           published_at: string | null
           read_time: string | null
+          source_url: string | null
           status: Database["public"]["Enums"]["content_status"]
           thumbnail_url: string | null
           title: string
@@ -140,8 +143,11 @@ export type Database = {
           id?: string
           item_date?: string | null
           media_url?: string | null
+          meta_description?: string | null
+          meta_title?: string | null
           published_at?: string | null
           read_time?: string | null
+          source_url?: string | null
           status?: Database["public"]["Enums"]["content_status"]
           thumbnail_url?: string | null
           title: string
@@ -158,8 +164,11 @@ export type Database = {
           id?: string
           item_date?: string | null
           media_url?: string | null
+          meta_description?: string | null
+          meta_title?: string | null
           published_at?: string | null
           read_time?: string | null
+          source_url?: string | null
           status?: Database["public"]["Enums"]["content_status"]
           thumbnail_url?: string | null
           title?: string

@@ -197,9 +197,9 @@ export default function ArticleDetail() {
   );
 
   const isImageUrl = (url: string | null) => url && /\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i.test(url);
-  // thumbnail_url is always an image (set by importer from og:image or derived from media upload)
+  // thumbnail_url or media_url (now stores actual image, not blog URL)
   const sidebarImageUrl = article.thumbnail_url || (isImageUrl(article.media_url) ? article.media_url : null);
-  const hasMedia = article.media_url && (article.format === 'Text' || ['Audio', 'Video', 'Image'].includes(article.format));
+  const hasMedia = (sidebarImageUrl || (article.media_url && ['Audio', 'Video'].includes(article.format)));
 
   return (
     <Layout>
