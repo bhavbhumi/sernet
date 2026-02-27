@@ -564,6 +564,163 @@ Deno.serve(async (req) => {
       });
     }
 
+    // ── ACTION: import_analysis_as_article ──
+    // Takes an analysis WP URL and imports it into the articles table with a migration marker
+    if (action === 'import_analysis_as_article' && article_url) {
+      const analysisId = body.analysis_id;
+      const originalTitle = body.original_title || '';
+
+      // Check if already imported with this source_url
+      const checkRes = await fetch(
+        `${supabaseUrl}/rest/v1/articles?source_url=eq.${encodeURIComponent(article_url)}&select=id,title`,
+        { headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}` } }
+      );
+      const existing = await checkRes.json();
+
+      if (existing.length > 0) {
+        // Already exists — re-scrape and update it
+        const scraped = await scrapeArticlePage(article_url);
+        if (scraped.title || scraped.body || scraped.mediaUrl) {
+          const updateData: Record<string, string | null> = {};
+          if (scraped.title) updateData.title = scraped.title;
+          if (scraped.body) updateData.body = scraped.body;
+          if (scraped.mediaUrl) updateData.media_url = scraped.mediaUrl;
+          if (scraped.thumbnailUrl) updateData.thumbnail_url = scraped.thumbnailUrl;
+          if (scraped.excerpt) updateData.excerpt = scraped.excerpt;
+          if (scraped.readTime) updateData.read_time = scraped.readTime;
+          if (scraped.dateStr) updateData.item_date = scraped.dateStr;
+          if (scraped.dateStr) updateData.published_at = new Date(scraped.dateStr).toISOString();
+          if (scraped.metaTitle) updateData.meta_title = scraped.metaTitle;
+          if (scraped.metaDescription) updateData.meta_description = scraped.metaDescription;
+
+          await fetch(`${supabaseUrl}/rest/v1/articles?id=eq.${existing[0].id}`, {
+            method: 'PATCH',
+            headers: {
+              'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}`,
+              'Content-Type': 'application/json', 'Prefer': 'return=minimal',
+            },
+            body: JSON.stringify(updateData),
+          });
+          return new Response(JSON.stringify({ success: true, action: 'updated', id: existing[0].id, title: scraped.title || existing[0].title }), {
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          });
+        }
+        return new Response(JSON.stringify({ success: true, action: 'skipped', id: existing[0].id }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+
+      // Scrape the WP page
+      const scraped = await scrapeArticlePage(article_url);
+      const finalTitle = scraped.title || originalTitle || article_url.replace(/\/$/, '').split('/').pop()!.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase());
+      const category = scraped.wpCategory ? mapCategory(scraped.wpCategory) : mapCategory(finalTitle);
+
+      const insertRes = await fetch(`${supabaseUrl}/rest/v1/articles`, {
+        method: 'POST',
+        headers: {
+          'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}`,
+          'Content-Type': 'application/json', 'Prefer': 'return=representation',
+        },
+        body: JSON.stringify({
+          title: finalTitle,
+          excerpt: scraped.excerpt,
+          body: scraped.body,
+          category: `__analysis_import::${category}`,
+          author: 'Research Desk',
+          status: 'published',
+          format: 'Text',
+          thumbnail_url: scraped.thumbnailUrl,
+          media_url: scraped.mediaUrl,
+          source_url: article_url,
+          meta_title: scraped.metaTitle,
+          meta_description: scraped.metaDescription,
+          item_date: scraped.dateStr,
+          read_time: scraped.readTime || '2 min read',
+          published_at: scraped.dateStr ? new Date(scraped.dateStr).toISOString() : new Date().toISOString(),
+        }),
+      });
+
+      if (!insertRes.ok) {
+        const err = await insertRes.text();
+        return new Response(JSON.stringify({ success: false, error: err }), {
+          status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+
+      const hasData = !!(scraped.title || scraped.body || scraped.mediaUrl);
+      return new Response(JSON.stringify({ success: true, action: hasData ? 'inserted' : 'inserted_empty', title: finalTitle, hasData }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // ── ACTION: move_analyses_from_articles ──
+    // Moves all articles with '__analysis_import::' prefix category into the analyses table
+    if (action === 'move_analyses_from_articles') {
+      // Get all tagged articles
+      const listRes = await fetch(
+        `${supabaseUrl}/rest/v1/articles?category=like.__analysis_import::*&select=id,title,body,excerpt,category,author,status,thumbnail_url,media_url,source_url,meta_title,meta_description,item_date,read_time,published_at,created_at&limit=1000`,
+        { headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}` } }
+      );
+      const tagged = await listRes.json();
+
+      if (!tagged || tagged.length === 0) {
+        return new Response(JSON.stringify({ success: true, moved: 0, message: 'No tagged articles to move' }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+
+      let moved = 0, errors = 0;
+      for (const art of tagged) {
+        const realCategory = art.category.replace('__analysis_import::', '');
+        try {
+          // Insert into analyses
+          const insertRes = await fetch(`${supabaseUrl}/rest/v1/analyses`, {
+            method: 'POST',
+            headers: {
+              'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}`,
+              'Content-Type': 'application/json', 'Prefer': 'return=minimal',
+            },
+            body: JSON.stringify({
+              title: art.title,
+              body: art.body,
+              excerpt: art.excerpt,
+              category: realCategory,
+              author: art.author || 'Research Desk',
+              status: art.status,
+              thumbnail_url: art.thumbnail_url,
+              media_url: art.media_url,
+              source_url: art.source_url,
+              item_date: art.item_date,
+              published_at: art.published_at,
+              icon_name: 'TrendingUp',
+            }),
+          });
+
+          if (insertRes.ok) {
+            // Delete from articles
+            await fetch(`${supabaseUrl}/rest/v1/articles?id=eq.${art.id}`, {
+              method: 'DELETE',
+              headers: {
+                'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}`,
+                'Prefer': 'return=minimal',
+              },
+            });
+            moved++;
+          } else {
+            errors++;
+            console.error(`Failed to insert analysis: ${await insertRes.text()}`);
+          }
+        } catch (e) {
+          errors++;
+          console.error(`Move error for ${art.id}:`, e);
+        }
+      }
+
+      return new Response(JSON.stringify({ success: true, moved, errors, total: tagged.length }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
     // ── ACTION: rescrape_analysis ──
     if (action === 'rescrape_analysis' && article_url) {
       const analysisId = body.analysis_id;

@@ -6,7 +6,7 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
-import { Download, CheckCircle2, XCircle, Loader2, RefreshCw, List, BarChart3 } from 'lucide-react';
+import { Download, CheckCircle2, XCircle, Loader2, RefreshCw, List, BarChart3, ArrowRightLeft, Trash2 } from 'lucide-react';
 
 export default function AdminImportArticles() {
   const [phase, setPhase] = useState<'idle' | 'listing' | 'scraping' | 'done'>('idle');
@@ -25,10 +25,17 @@ export default function AdminImportArticles() {
   const [analysisTotal, setAnalysisTotal] = useState(0);
   const [analysisSummary, setAnalysisSummary] = useState({ updated: 0, errors: 0, noData: 0 });
 
+  // Migration state
+  const [migrationPhase, setMigrationPhase] = useState<'idle' | 'importing' | 'imported' | 'deleting' | 'moving' | 'done'>('idle');
+  const [migrationCurrent, setMigrationCurrent] = useState(0);
+  const [migrationTotal, setMigrationTotal] = useState(0);
+  const [migrationSummary, setMigrationSummary] = useState({ imported: 0, withData: 0, empty: 0, errors: 0, moved: 0, deleted: 0 });
+
   const addLog = (msg: string) => setLog(prev => [msg, ...prev].slice(0, 500));
 
-  const anyRunning = phase === 'listing' || phase === 'scraping' || rescrapePhase === 'listing' || rescrapePhase === 'scraping' || analysisPhase === 'matching' || analysisPhase === 'scraping';
+  const anyRunning = phase === 'listing' || phase === 'scraping' || rescrapePhase === 'listing' || rescrapePhase === 'scraping' || analysisPhase === 'matching' || analysisPhase === 'scraping' || migrationPhase === 'importing' || migrationPhase === 'deleting' || migrationPhase === 'moving';
 
+  // ── ARTICLES: Full Import ──
   const runImport = async () => {
     setPhase('listing');
     setUrls([]);
@@ -98,6 +105,7 @@ export default function AdminImportArticles() {
     setPhase('done');
   };
 
+  // ── ARTICLES: Re-scrape ──
   const runRescrape = async () => {
     setRescrapePhase('listing');
     setRescrapeCurrent(0);
@@ -162,6 +170,7 @@ export default function AdminImportArticles() {
     setRescrapePhase('done');
   };
 
+  // ── ANALYSES: Direct fix ──
   const runAnalysisRescrape = async () => {
     setAnalysisPhase('matching');
     setAnalysisCurrent(0);
@@ -227,18 +236,227 @@ export default function AdminImportArticles() {
     setAnalysisPhase('done');
   };
 
+  // ── MIGRATION: Step 1 - Import all analysis slugs into articles ──
+  const runMigrationImport = async () => {
+    setMigrationPhase('importing');
+    setMigrationCurrent(0);
+    setMigrationSummary({ imported: 0, withData: 0, empty: 0, errors: 0, moved: 0, deleted: 0 });
+
+    addLog('🚀 MIGRATION Step 1: Getting all analysis titles to build WP URLs...');
+
+    let items: { id: string; title: string; url: string }[] = [];
+    try {
+      const { data, error } = await supabase.functions.invoke('wp-import', {
+        body: { action: 'match_analyses' },
+      });
+      if (error || !data?.success) {
+        addLog(`❌ Failed: ${error?.message || data?.error}`);
+        setMigrationPhase('idle');
+        return;
+      }
+      items = data.items || [];
+
+      // Also get analyses that already have source_url
+      const { data: existingData } = await supabase
+        .from('analyses')
+        .select('id, title, source_url')
+        .not('source_url', 'is', null);
+
+      if (existingData) {
+        for (const a of existingData) {
+          if (a.source_url && !items.find(i => i.id === a.id)) {
+            items.push({ id: a.id, title: a.title, url: a.source_url });
+          }
+        }
+      }
+
+      setMigrationTotal(items.length);
+      addLog(`✅ Found ${items.length} total analyses. Importing to articles table...`);
+    } catch (err) {
+      addLog(`💥 Fatal: ${String(err)}`);
+      setMigrationPhase('idle');
+      return;
+    }
+
+    let imported = 0, withData = 0, empty = 0, errors = 0;
+    const BATCH = 3;
+
+    for (let i = 0; i < items.length; i += BATCH) {
+      const batch = items.slice(i, i + BATCH);
+      setMigrationCurrent(i + batch.length);
+
+      await Promise.all(batch.map(async (item) => {
+        try {
+          const { data, error } = await supabase.functions.invoke('wp-import', {
+            body: { action: 'import_analysis_as_article', article_url: item.url, analysis_id: item.id, original_title: item.title },
+          });
+          if (error || !data?.success) {
+            errors++;
+            addLog(`❌ ${item.title}: ${error?.message || data?.error}`);
+          } else {
+            imported++;
+            if (data.hasData !== false) {
+              withData++;
+              addLog(`✅ ${data.action === 'updated' ? 'UPDATED' : 'IMPORTED'}: ${data.title || item.title}`);
+            } else {
+              empty++;
+              addLog(`⚠️ EMPTY: ${item.title} (no WP data found)`);
+            }
+          }
+        } catch (err) {
+          errors++;
+          addLog(`💥 ${item.title}: ${String(err)}`);
+        }
+      }));
+
+      setMigrationSummary(prev => ({ ...prev, imported, withData, empty, errors }));
+      if (i + BATCH < items.length) {
+        await new Promise(r => setTimeout(r, 400));
+      }
+    }
+
+    addLog(`🎉 Step 1 Complete! ${imported} imported to articles (${withData} with data, ${empty} empty, ${errors} errors)`);
+    addLog(`👉 Now verify the imported articles look correct, then click "Step 2: Delete Old Analyses & Move"`);
+    setMigrationPhase('imported');
+  };
+
+  // ── MIGRATION: Step 2 - Delete old analyses, move tagged articles to analyses ──
+  const runMigrationMove = async () => {
+    if (!confirm('This will:\n1. DELETE all 302 existing analyses\n2. Move the imported articles (tagged __analysis_import) into analyses\n\nAre you sure?')) return;
+
+    setMigrationPhase('deleting');
+    addLog('🗑️ MIGRATION Step 2a: Deleting old analyses...');
+
+    try {
+      // Delete all existing analyses
+      const { error: delError } = await supabase
+        .from('analyses')
+        .delete()
+        .gte('created_at', '2000-01-01');
+
+      if (delError) {
+        addLog(`❌ Delete failed: ${delError.message}`);
+        setMigrationPhase('imported');
+        return;
+      }
+
+      // Count how many remain
+      const { count } = await supabase.from('analyses').select('*', { count: 'exact', head: true });
+      addLog(`✅ Deleted old analyses. Remaining: ${count || 0}`);
+
+      setMigrationPhase('moving');
+      addLog('📦 MIGRATION Step 2b: Moving tagged articles to analyses...');
+
+      const { data, error } = await supabase.functions.invoke('wp-import', {
+        body: { action: 'move_analyses_from_articles' },
+      });
+
+      if (error || !data?.success) {
+        addLog(`❌ Move failed: ${error?.message || data?.error}`);
+        setMigrationPhase('imported');
+        return;
+      }
+
+      setMigrationSummary(prev => ({ ...prev, moved: data.moved, deleted: 302 }));
+      addLog(`🎉 MIGRATION COMPLETE! Moved ${data.moved} articles → analyses (${data.errors || 0} errors)`);
+      setMigrationPhase('done');
+    } catch (err) {
+      addLog(`💥 Fatal: ${String(err)}`);
+      setMigrationPhase('imported');
+    }
+  };
+
   const progress = urls.length > 0 ? Math.round((current / urls.length) * 100) : 0;
   const rescrapeProgress = rescrapeTotal > 0 ? Math.round((rescrapeCurrent / rescrapeTotal) * 100) : 0;
   const analysisProgress = analysisTotal > 0 ? Math.round((analysisCurrent / analysisTotal) * 100) : 0;
+  const migrationProgress = migrationTotal > 0 ? Math.round((migrationCurrent / migrationTotal) * 100) : 0;
 
   return (
     <AdminLayout title="Import Content" subtitle="Sync articles & analyses from sernetindia.com blog">
       <div className="p-6 max-w-4xl mx-auto">
-        <Tabs defaultValue="articles" className="space-y-6">
+        <Tabs defaultValue="migration" className="space-y-6">
           <TabsList>
+            <TabsTrigger value="migration" className="gap-1.5"><ArrowRightLeft className="h-3.5 w-3.5" /> Migration</TabsTrigger>
             <TabsTrigger value="articles" className="gap-1.5"><Download className="h-3.5 w-3.5" /> Articles</TabsTrigger>
             <TabsTrigger value="analyses" className="gap-1.5"><BarChart3 className="h-3.5 w-3.5" /> Analyses</TabsTrigger>
           </TabsList>
+
+          {/* ── MIGRATION TAB ── */}
+          <TabsContent value="migration">
+            <div className="mb-4">
+              <p className="text-muted-foreground text-sm">
+                Two-step migration: Import all 302 analysis WP posts into articles (for verification), then move them to analyses.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+              {[
+                { label: 'Imported', value: migrationSummary.imported, icon: Download, color: 'text-blue-600' },
+                { label: 'With Data', value: migrationSummary.withData, icon: CheckCircle2, color: 'text-green-600' },
+                { label: 'Empty/No WP', value: migrationSummary.empty, icon: List, color: 'text-amber-600' },
+                { label: 'Errors', value: migrationSummary.errors, icon: XCircle, color: 'text-destructive' },
+              ].map(({ label, value, icon: Icon, color }) => (
+                <Card key={label}>
+                  <CardContent className="pt-4">
+                    <div className="flex items-center gap-2">
+                      <Icon className={`h-5 w-5 ${color}`} />
+                      <div>
+                        <p className={`text-2xl font-bold ${color}`}>{value}</p>
+                        <p className="text-xs text-muted-foreground">{label}</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {(migrationPhase === 'importing' || migrationPhase === 'deleting' || migrationPhase === 'moving') && (
+              <Card className="mb-6">
+                <CardContent className="pt-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm text-muted-foreground">
+                      {migrationPhase === 'importing' ? `Importing ${migrationCurrent} of ${migrationTotal} analysis posts into articles...` 
+                        : migrationPhase === 'deleting' ? 'Deleting old analyses...'
+                        : 'Moving tagged articles → analyses...'}
+                    </span>
+                    <Badge variant="secondary">{migrationPhase === 'importing' ? `${migrationProgress}%` : '...'}</Badge>
+                  </div>
+                  <Progress value={migrationPhase === 'importing' ? migrationProgress : undefined} className="h-2" />
+                </CardContent>
+              </Card>
+            )}
+
+            <div className="flex flex-wrap gap-3 mb-6">
+              <Button onClick={runMigrationImport} disabled={anyRunning} size="lg" className="gap-2">
+                {migrationPhase === 'importing' ? <><Loader2 className="h-4 w-4 animate-spin" /> Importing {migrationCurrent}/{migrationTotal}...</>
+                  : migrationPhase === 'imported' || migrationPhase === 'done' ? <><RefreshCw className="h-4 w-4" /> Re-run Step 1</>
+                  : <><Download className="h-4 w-4" /> Step 1: Import Analyses → Articles</>}
+              </Button>
+
+              {migrationPhase === 'imported' && (
+                <Button onClick={runMigrationMove} disabled={anyRunning} size="lg" variant="destructive" className="gap-2">
+                  <Trash2 className="h-4 w-4" /> Step 2: Delete Old Analyses & Move
+                </Button>
+              )}
+
+              {migrationPhase === 'done' && (
+                <Badge variant="outline" className="px-4 flex items-center gap-1 border-green-500/30 text-green-600">
+                  <CheckCircle2 className="h-3.5 w-3.5" /> Migration Complete — {migrationSummary.moved} moved
+                </Badge>
+              )}
+            </div>
+
+            <Card>
+              <CardContent className="pt-4">
+                <h3 className="font-medium text-sm mb-2">How this migration works</h3>
+                <ul className="text-xs text-muted-foreground space-y-1">
+                  <li><strong>Step 1:</strong> Takes all 302 analysis titles, builds WP blog URLs, scrapes each one using the proven articles scraper, and inserts into articles table with a <code className="bg-muted px-1 rounded">__analysis_import::</code> category tag</li>
+                  <li><strong>Verify:</strong> Check the imported articles in the Articles admin to confirm titles, images, and body look correct</li>
+                  <li><strong>Step 2:</strong> Deletes all old analyses records, then moves the tagged articles into the analyses table with proper categories</li>
+                </ul>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
           {/* ── ARTICLES TAB ── */}
           <TabsContent value="articles">
@@ -389,25 +607,15 @@ export default function AdminImportArticles() {
         {log.length > 0 && (
           <Card className="mt-6">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Import Log</CardTitle>
+              <CardTitle className="text-sm font-medium flex items-center gap-2">
+                Activity Log
+                <Badge variant="secondary" className="text-xs">{log.length}</Badge>
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="bg-muted/40 rounded-lg p-3 h-80 overflow-y-auto font-mono text-xs space-y-0.5">
+              <div className="bg-muted rounded-md p-3 max-h-80 overflow-y-auto font-mono text-xs space-y-0.5">
                 {log.map((line, i) => (
-                  <div
-                    key={i}
-                    className={
-                      line.startsWith('❌') || line.startsWith('💥') ? 'text-destructive'
-                      : line.startsWith('✅') ? 'text-green-700 dark:text-green-400'
-                      : line.startsWith('🔄') ? 'text-primary'
-                      : line.startsWith('🎉') ? 'text-primary font-semibold'
-                      : line.startsWith('⚠️') ? 'text-amber-600 dark:text-amber-400'
-                      : line.startsWith('📊') ? 'text-primary'
-                      : 'text-muted-foreground'
-                    }
-                  >
-                    {line}
-                  </div>
+                  <div key={i} className="whitespace-pre-wrap">{line}</div>
                 ))}
               </div>
             </CardContent>
