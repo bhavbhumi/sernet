@@ -27,17 +27,22 @@ function isArtifactLine(line: string): boolean {
 
 // Detect and reconstruct flattened HTML tables (plain text with repeating column groups)
 function reconstructFlattenedTables(text: string): string {
+  // First: remove broken pipe-table headers that precede flattened data
+  // Pattern: a small pipe table (2-4 rows) followed by a bold standalone line, then flattened data
+  text = text.replace(
+    /(\| [^|\n]+ \|[^\n]*\n){2,4}\n?\*\*\([^)]+\)\*\*\n/g,
+    ''
+  );
+
   const lines = text.split('\n');
   const result: string[] = [];
   let i = 0;
 
   while (i < lines.length) {
-    // Look for a bold header group: consecutive bold lines (**Header1** \n **Header2** ...)
-    const headerStart = i;
+    // === Pattern 1: Bold header group ===
     const headers: string[] = [];
     let j = i;
 
-    // Collect consecutive bold-only lines as potential headers
     while (j < lines.length) {
       const t = lines[j].trim();
       const boldMatch = t.match(/^\*\*(.+)\*\*$/);
@@ -45,48 +50,36 @@ function reconstructFlattenedTables(text: string): string {
         headers.push(boldMatch[1].trim());
         j++;
       } else if (t === '' && headers.length > 0) {
-        // allow one blank line after headers
         break;
       } else {
         break;
       }
     }
 
-    // Need at least 2 headers to form a table
     if (headers.length >= 2) {
-      // Skip blank line after headers
       if (j < lines.length && lines[j].trim() === '') j++;
-
-      // Try to collect data rows: groups of N non-empty lines separated by blank lines
       const colCount = headers.length;
       const dataRows: string[][] = [];
       let k = j;
 
       while (k < lines.length) {
-        // Collect next group of non-empty lines
         const group: string[] = [];
         while (k < lines.length && lines[k].trim() !== '') {
           group.push(lines[k].trim());
           k++;
         }
-
         if (group.length === colCount) {
           dataRows.push(group);
-          // Skip blank lines between groups
           while (k < lines.length && lines[k].trim() === '') k++;
         } else if (group.length === 0) {
           break;
         } else {
-          // Group doesn't match column count — not a table, stop
-          // Put back the lines
           k -= group.length;
           break;
         }
       }
 
-      // Need at least 2 data rows for this to be a real table
       if (dataRows.length >= 2) {
-        // Build pipe table
         result.push('| ' + headers.join(' | ') + ' |');
         result.push('| ' + headers.map(() => '---').join(' | ') + ' |');
         for (const row of dataRows) {
@@ -98,7 +91,76 @@ function reconstructFlattenedTables(text: string): string {
       }
     }
 
-    // Not a table — output line as-is
+    // === Pattern 2: Alternating label/value groups (no bold headers) ===
+    // Detect groups of even-numbered lines where odd lines are text, even lines are numbers
+    // E.g.: "Sector Name\n123\nSector2\n-456\n\nSector3\n789\n..."
+    if (i < lines.length) {
+      const t = lines[i].trim();
+      // Start detection: non-empty text line followed by a number line
+      if (t && !t.startsWith('#') && !t.startsWith('|') && !t.startsWith('-') && !t.startsWith('*') && !/^\d+\./.test(t)) {
+        const nextLine = i + 1 < lines.length ? lines[i + 1].trim() : '';
+        const isValueLine = /^[\*]*-?[\d,]+[\*]*$/.test(nextLine.replace(/\*\*/g, ''));
+        
+        if (isValueLine) {
+          // Try to collect all groups
+          const allLabels: string[] = [];
+          const allValues: string[] = [];
+          let k = i;
+          let groupSize = -1;
+          const groups: string[][] = [];
+          
+          while (k < lines.length) {
+            const group: string[] = [];
+            while (k < lines.length && lines[k].trim() !== '') {
+              group.push(lines[k].trim());
+              k++;
+            }
+            
+            if (group.length === 0) break;
+            if (group.length % 2 !== 0) { k -= group.length; break; }
+            
+            // Verify alternating label/value pattern
+            let valid = true;
+            for (let g = 0; g < group.length; g += 2) {
+              const label = group[g].replace(/\*\*/g, '');
+              const value = group[g + 1].replace(/\*\*/g, '');
+              if (/^-?[\d,]+$/.test(value) || value === '0') {
+                // valid
+              } else {
+                valid = false;
+                break;
+              }
+            }
+            
+            if (!valid) { k -= group.length; break; }
+            if (groupSize === -1) groupSize = group.length;
+            if (group.length !== groupSize) { k -= group.length; break; }
+            
+            groups.push(group);
+            while (k < lines.length && lines[k].trim() === '') k++;
+          }
+          
+          if (groups.length >= 3 && groupSize >= 2) {
+            // Build table: each group has N/2 column pairs
+            const pairsPerGroup = groupSize / 2;
+            const tableHeaders: string[] = [];
+            for (let p = 0; p < pairsPerGroup; p++) {
+              tableHeaders.push('Sector', 'Flow');
+            }
+            
+            result.push('| ' + tableHeaders.join(' | ') + ' |');
+            result.push('| ' + tableHeaders.map(() => '---').join(' | ') + ' |');
+            for (const group of groups) {
+              result.push('| ' + group.join(' | ') + ' |');
+            }
+            result.push('');
+            i = k;
+            continue;
+          }
+        }
+      }
+    }
+
     result.push(lines[i]);
     i++;
   }
