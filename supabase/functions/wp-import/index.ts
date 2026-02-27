@@ -501,7 +501,22 @@ Deno.serve(async (req) => {
 
     // ── ACTION: list_existing ──
     if (action === 'list_existing') {
-      // Get articles with source_url OR legacy media_url
+      const targetTable = body.target_table || 'articles';
+      
+      if (targetTable === 'analyses') {
+        // For analyses: get those with source_url
+        const listRes = await fetch(
+          `${supabaseUrl}/rest/v1/analyses?source_url=not.is.null&select=id,source_url&order=created_at.desc&limit=1000`,
+          { headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}` } }
+        );
+        const analyses = await listRes.json();
+        const urls = analyses.map((a: { source_url: string }) => a.source_url).filter(Boolean);
+        return new Response(JSON.stringify({ success: true, total: urls.length, urls }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+
+      // Default: articles
       const listRes1 = await fetch(
         `${supabaseUrl}/rest/v1/articles?source_url=not.is.null&select=id,source_url&order=item_date.desc.nullslast&limit=1000`,
         { headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}` } }
@@ -520,6 +535,193 @@ Deno.serve(async (req) => {
       ].filter(Boolean);
 
       return new Response(JSON.stringify({ success: true, total: urls.length, urls }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // ── ACTION: match_analyses ──
+    // Fetches all analyses without source_url, converts their slug-like titles to WP URLs,
+    // then scrapes and updates each one
+    if (action === 'match_analyses') {
+      const listRes = await fetch(
+        `${supabaseUrl}/rest/v1/analyses?source_url=is.null&select=id,title&order=created_at.asc&limit=1000`,
+        { headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}` } }
+      );
+      const analyses = await listRes.json();
+      
+      // Convert title to slug URL
+      const items = analyses.map((a: { id: string; title: string }) => {
+        const slug = a.title.toLowerCase()
+          .replace(/['']/g, '')
+          .replace(/&/g, 'and')
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-|-$/g, '');
+        return { id: a.id, title: a.title, url: `${BLOG_BASE}/blog/${slug}/` };
+      });
+
+      return new Response(JSON.stringify({ success: true, total: items.length, items }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // ── ACTION: rescrape_analysis ──
+    if (action === 'rescrape_analysis' && article_url) {
+      const analysisId = body.analysis_id;
+      if (!analysisId) {
+        return new Response(JSON.stringify({ success: false, error: 'analysis_id required' }), {
+          status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+
+      const scraped = await scrapeArticlePage(article_url);
+
+      const updateData: Record<string, string | null> = {};
+      if (scraped.title) updateData.title = scraped.title;
+      if (scraped.body) updateData.body = scraped.body;
+      if (scraped.mediaUrl) updateData.media_url = scraped.mediaUrl;
+      if (scraped.thumbnailUrl) updateData.thumbnail_url = scraped.thumbnailUrl;
+      if (scraped.excerpt) updateData.excerpt = scraped.excerpt;
+      if (scraped.dateStr) updateData.item_date = scraped.dateStr;
+      if (scraped.metaTitle) updateData.meta_title = scraped.metaTitle;
+      if (scraped.metaDescription) updateData.meta_description = scraped.metaDescription;
+      if (scraped.dateStr) updateData.published_at = new Date(scraped.dateStr).toISOString();
+      updateData.source_url = article_url;
+
+      if (Object.keys(updateData).length > 1) { // more than just source_url
+        await fetch(`${supabaseUrl}/rest/v1/analyses?id=eq.${analysisId}`, {
+          method: 'PATCH',
+          headers: {
+            'apikey': supabaseKey,
+            'Authorization': `Bearer ${supabaseKey}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal',
+          },
+          body: JSON.stringify(updateData),
+        });
+        await writeAuditLog('rescrape_analysis', { article_url, action: 'updated', id: analysisId });
+        return new Response(JSON.stringify({ success: true, action: 'rescrape_updated', id: analysisId, title: scraped.title }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+
+      // Even if no scraped data, set the source_url so we know it was attempted
+      await fetch(`${supabaseUrl}/rest/v1/analyses?id=eq.${analysisId}`, {
+        method: 'PATCH',
+        headers: {
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal',
+        },
+        body: JSON.stringify({ source_url: article_url }),
+      });
+
+      return new Response(JSON.stringify({ success: true, action: 'no_data', id: analysisId }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // ── ACTION: rescrape_one (for analyses with existing source_url) ──
+    if (action === 'rescrape_one' && article_url) {
+      const targetTable = body.target_table || 'articles';
+
+      if (targetTable === 'analyses') {
+        const scraped = await scrapeArticlePage(article_url);
+        const checkRes = await fetch(
+          `${supabaseUrl}/rest/v1/analyses?source_url=eq.${encodeURIComponent(article_url)}&select=id,category,author`,
+          { headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}` } }
+        );
+        const existing = await checkRes.json();
+        if (existing.length === 0) {
+          return new Response(JSON.stringify({ success: false, error: 'Analysis not found' }), {
+            status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          });
+        }
+        const updateData: Record<string, string | null> = {};
+        if (scraped.title) updateData.title = scraped.title;
+        if (scraped.body) updateData.body = scraped.body;
+        if (scraped.mediaUrl) updateData.media_url = scraped.mediaUrl;
+        if (scraped.thumbnailUrl) updateData.thumbnail_url = scraped.thumbnailUrl;
+        if (scraped.excerpt) updateData.excerpt = scraped.excerpt;
+        if (scraped.dateStr) updateData.item_date = scraped.dateStr;
+        if (scraped.metaTitle) updateData.meta_title = scraped.metaTitle;
+        if (scraped.metaDescription) updateData.meta_description = scraped.metaDescription;
+        if (scraped.dateStr) updateData.published_at = new Date(scraped.dateStr).toISOString();
+        updateData.source_url = article_url;
+
+        if (Object.keys(updateData).length > 0) {
+          await fetch(`${supabaseUrl}/rest/v1/analyses?id=eq.${existing[0].id}`, {
+            method: 'PATCH',
+            headers: {
+              'apikey': supabaseKey,
+              'Authorization': `Bearer ${supabaseKey}`,
+              'Content-Type': 'application/json',
+              'Prefer': 'return=minimal',
+            },
+            body: JSON.stringify(updateData),
+          });
+          return new Response(JSON.stringify({ success: true, action: 'rescrape_updated', id: existing[0].id, title: scraped.title }), {
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          });
+        }
+        return new Response(JSON.stringify({ success: true, action: 'no_changes' }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+
+      // Default: articles rescrape_one (existing logic)
+      const scraped = await scrapeArticlePage(article_url);
+      let checkRes = await fetch(
+        `${supabaseUrl}/rest/v1/articles?source_url=eq.${encodeURIComponent(article_url)}&select=id,category,author`,
+        { headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}` } }
+      );
+      let existing = await checkRes.json();
+
+      if (existing.length === 0) {
+        checkRes = await fetch(
+          `${supabaseUrl}/rest/v1/articles?media_url=eq.${encodeURIComponent(article_url)}&select=id,category,author`,
+          { headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}` } }
+        );
+        existing = await checkRes.json();
+      }
+
+      if (existing.length === 0) {
+        return new Response(JSON.stringify({ success: false, error: 'Article not found' }), {
+          status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+
+      const updateData: Record<string, string | null> = {};
+      if (scraped.title) updateData.title = scraped.title;
+      if (scraped.body) updateData.body = scraped.body;
+      if (scraped.mediaUrl) updateData.media_url = scraped.mediaUrl;
+      if (scraped.thumbnailUrl) updateData.thumbnail_url = scraped.thumbnailUrl;
+      if (scraped.excerpt) updateData.excerpt = scraped.excerpt;
+      if (scraped.dateStr) updateData.item_date = scraped.dateStr;
+      if (scraped.readTime) updateData.read_time = scraped.readTime;
+      if (scraped.metaTitle) updateData.meta_title = scraped.metaTitle;
+      if (scraped.metaDescription) updateData.meta_description = scraped.metaDescription;
+      if (scraped.dateStr) updateData.published_at = new Date(scraped.dateStr).toISOString();
+      updateData.source_url = article_url;
+
+      if (Object.keys(updateData).length > 0) {
+        await fetch(`${supabaseUrl}/rest/v1/articles?id=eq.${existing[0].id}`, {
+          method: 'PATCH',
+          headers: {
+            'apikey': supabaseKey,
+            'Authorization': `Bearer ${supabaseKey}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal',
+          },
+          body: JSON.stringify(updateData),
+        });
+        await writeAuditLog('rescrape', { article_url, action: 'rescrape_updated', id: existing[0].id });
+        return new Response(JSON.stringify({ success: true, action: 'rescrape_updated', id: existing[0].id, title: scraped.title }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+
+      return new Response(JSON.stringify({ success: true, action: 'no_changes' }), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
