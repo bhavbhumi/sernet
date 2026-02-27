@@ -84,12 +84,15 @@ function AnalysisCard({ item, index }: { item: any; index: number }) {
           <User className="h-3 w-3" />
           <span>{item.author}</span>
         </div>
-        {dateStr && (
-          <span className="flex items-center gap-1">
-            <Calendar className="h-3 w-3" />
-            {dateStr}
-          </span>
-        )}
+        <div className="flex items-center gap-3">
+          {item.read_time && <span>{item.read_time}</span>}
+          {dateStr && (
+            <span className="flex items-center gap-1">
+              <Calendar className="h-3 w-3" />
+              {dateStr}
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Footer: Read more + engagement */}

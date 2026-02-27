@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Layout } from '@/components/layout/Layout';
-import { ArrowLeft, Calendar, User, TrendingUp, BarChart3, PieChart, List, Heart, Share2 } from 'lucide-react';
+import { ArrowLeft, Calendar, User, Clock, TrendingUp, BarChart3, PieChart, List, Heart, Share2 } from 'lucide-react';
 import { AISummarizer } from '@/components/shared/AISummarizer';
 import { motion } from 'framer-motion';
 import { ArticleBodyRenderer, extractToc, TocEntry } from '@/components/shared/ArticleBodyRenderer';
@@ -265,6 +265,7 @@ export default function AnalysisDetail() {
               <div className="flex items-center gap-5 text-sm text-muted-foreground flex-wrap">
                 <span className="flex items-center gap-1.5"><User className="h-4 w-4" />{analysis.author}</span>
                 {dateStr && <span className="flex items-center gap-1.5"><Calendar className="h-4 w-4" />{dateStr}</span>}
+                {analysis.read_time && <span className="flex items-center gap-1.5"><Clock className="h-4 w-4" />{analysis.read_time}</span>}
               </div>
               <div className="flex items-center gap-3">
                 <LikeButton />
