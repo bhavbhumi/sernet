@@ -237,7 +237,7 @@ export default function ArticleDetail() {
                   )}
                   {sidebarImageUrl && (
                     <div className="rounded-xl overflow-hidden border border-border mb-3">
-                      <img src={sidebarImageUrl} alt={article.title} className="w-full object-cover" onError={(e) => { (e.target as HTMLElement).parentElement!.style.display = 'none'; }} />
+                      <img src={sidebarImageUrl} alt={article.title} className="w-full object-cover" onError={(e) => { const wrapper = (e.target as HTMLElement).closest('.w-64'); if (wrapper) (wrapper as HTMLElement).style.display = 'none'; }} />
                     </div>
                   )}
                 </div>
@@ -253,7 +253,7 @@ export default function ArticleDetail() {
               <div className="lg:hidden mb-6">
                 {sidebarImageUrl && (
                   <div className="rounded-xl overflow-hidden border border-border mb-4">
-                    <img src={sidebarImageUrl} alt={article.title} className="w-full object-cover max-h-64" onError={(e) => { (e.target as HTMLElement).parentElement!.style.display = 'none'; }} />
+                    <img src={sidebarImageUrl} alt={article.title} className="w-full object-cover max-h-64" onError={(e) => { const wrapper = (e.target as HTMLElement).closest('.rounded-xl'); if (wrapper) (wrapper as HTMLElement).style.display = 'none'; }} />
                   </div>
                 )}
                 {article.media_url && article.format === 'Audio' && (
@@ -318,7 +318,7 @@ export default function ArticleDetail() {
               <>
                 {sidebarImageUrl && (
                   <div className="mb-8 rounded-xl overflow-hidden border border-border">
-                    <img src={sidebarImageUrl} alt={article.title} className="w-full object-cover max-h-80" onError={(e) => { (e.target as HTMLElement).parentElement!.style.display = 'none'; }} />
+                    <img src={sidebarImageUrl} alt={article.title} className="w-full object-cover max-h-80" onError={(e) => { const wrapper = (e.target as HTMLElement).closest('.rounded-xl'); if (wrapper) (wrapper as HTMLElement).style.display = 'none'; }} />
                   </div>
                 )}
                 {article.media_url && article.format === 'Audio' && (

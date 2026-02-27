@@ -208,7 +208,7 @@ export default function AnalysisDetail() {
               {sidebarImageUrl && (
                 <div className="w-64 mb-4">
                   <div className="rounded-xl overflow-hidden border border-border mb-3">
-                    <img src={sidebarImageUrl} alt={analysis.title} className="w-full object-cover" onError={(e) => { (e.target as HTMLElement).parentElement!.style.display = 'none'; }} />
+                    <img src={sidebarImageUrl} alt={analysis.title} className="w-full object-cover" onError={(e) => { const wrapper = (e.target as HTMLElement).closest('.w-64'); if (wrapper) (wrapper as HTMLElement).style.display = 'none'; }} />
                   </div>
                 </div>
               )}
@@ -223,7 +223,7 @@ export default function AnalysisDetail() {
               <div className="lg:hidden mb-6">
                 {sidebarImageUrl && (
                   <div className="rounded-xl overflow-hidden border border-border mb-4">
-                    <img src={sidebarImageUrl} alt={analysis.title} className="w-full object-cover max-h-64" onError={(e) => { (e.target as HTMLElement).parentElement!.style.display = 'none'; }} />
+                    <img src={sidebarImageUrl} alt={analysis.title} className="w-full object-cover max-h-64" onError={(e) => { const wrapper = (e.target as HTMLElement).closest('.rounded-xl'); if (wrapper) (wrapper as HTMLElement).style.display = 'none'; }} />
                   </div>
                 )}
                 <div className="bg-muted/40 border border-border/60 rounded-xl p-4">
@@ -275,7 +275,7 @@ export default function AnalysisDetail() {
             {/* Media image — inline when no TOC sidebar */}
             {toc.length < 2 && sidebarImageUrl && (
               <div className="mb-8 rounded-xl overflow-hidden border border-border">
-                <img src={sidebarImageUrl} alt={analysis.title} className="w-full object-cover max-h-80" onError={(e) => { (e.target as HTMLElement).parentElement!.style.display = 'none'; }} />
+                <img src={sidebarImageUrl} alt={analysis.title} className="w-full object-cover max-h-80" onError={(e) => { const wrapper = (e.target as HTMLElement).closest('.rounded-xl'); if (wrapper) (wrapper as HTMLElement).style.display = 'none'; }} />
               </div>
             )}
 
