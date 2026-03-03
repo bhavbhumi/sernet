@@ -147,6 +147,12 @@ const departmentGroups: DepartmentGroup[] = [
     color: 'text-cyan-500',
     items: [
       { label: 'Tickets', icon: Ticket, href: R.support.tickets },
+      {
+        label: 'Classification', icon: Shield, children: [
+          { label: 'Issue Types', icon: ClipboardList, href: R.support.issueTypes },
+          { label: 'Escalation & Rules', icon: Zap, href: R.support.escalation },
+        ]
+      },
       { label: 'Knowledge Base', icon: BookMarked, href: R.support.knowledgeBase },
       { label: 'Canned Responses', icon: MessageSquareText, href: R.support.cannedResponses },
     ]
