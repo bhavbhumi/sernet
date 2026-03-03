@@ -110,6 +110,12 @@ import AdminLeaveManagement from "./pages/admin/hr/AdminLeaveManagement";
 import AdminAttendance from "./pages/admin/hr/AdminAttendance";
 import AdminInvoices from "./pages/admin/accounts/AdminInvoices";
 import AdminPayroll from "./pages/admin/accounts/AdminPayroll";
+import AdminFirmProfile from "./pages/admin/accounts/AdminFirmProfile";
+import AdminTaxRates from "./pages/admin/accounts/AdminTaxRates";
+import AdminBankAccounts from "./pages/admin/accounts/AdminBankAccounts";
+import AdminPaymentTerms from "./pages/admin/accounts/AdminPaymentTerms";
+import AdminServiceCatalog from "./pages/admin/accounts/AdminServiceCatalog";
+import AdminSalaryComponents from "./pages/admin/accounts/AdminSalaryComponents";
 import Sitemap from "./pages/Sitemap";
 
 const queryClient = new QueryClient();
@@ -227,6 +233,12 @@ const App = () => (
           <Route path="/admin/hr/attendance" element={<AdminAttendance />} />
 
           {/* Admin — Accounts */}
+          <Route path="/admin/accounts/firm-profile" element={<AdminFirmProfile />} />
+          <Route path="/admin/accounts/tax-rates" element={<AdminTaxRates />} />
+          <Route path="/admin/accounts/bank-accounts" element={<AdminBankAccounts />} />
+          <Route path="/admin/accounts/payment-terms" element={<AdminPaymentTerms />} />
+          <Route path="/admin/accounts/service-catalog" element={<AdminServiceCatalog />} />
+          <Route path="/admin/accounts/salary-components" element={<AdminSalaryComponents />} />
           <Route path="/admin/accounts/invoices" element={<AdminInvoices />} />
           <Route path="/admin/accounts/payroll" element={<AdminPayroll />} />
 

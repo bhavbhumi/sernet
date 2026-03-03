@@ -124,6 +124,16 @@ const departmentGroups: DepartmentGroup[] = [
     icon: Wallet,
     color: 'text-amber-500',
     items: [
+      {
+        label: 'Masters', icon: Building2, children: [
+          { label: 'Firm Profile', icon: Building2, href: R.accounts.firmProfile },
+          { label: 'Tax Rates', icon: Receipt, href: R.accounts.taxRates },
+          { label: 'Bank Accounts', icon: Wallet, href: R.accounts.bankAccounts },
+          { label: 'Payment Terms', icon: Clock, href: R.accounts.paymentTerms },
+          { label: 'Service Catalog', icon: ClipboardList, href: R.accounts.serviceCatalog },
+          { label: 'Salary Components', icon: Users, href: R.accounts.salaryComponents },
+        ]
+      },
       { label: 'Invoices', icon: Receipt, href: R.accounts.invoices },
       { label: 'Payroll Register', icon: Wallet, href: R.accounts.payroll },
     ]

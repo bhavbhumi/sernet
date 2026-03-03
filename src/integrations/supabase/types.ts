@@ -319,6 +319,48 @@ export type Database = {
         }
         Relationships: []
       }
+      bank_accounts: {
+        Row: {
+          account_name: string
+          account_number: string
+          account_type: string
+          bank_name: string
+          branch: string | null
+          created_at: string
+          id: string
+          ifsc_code: string
+          is_active: boolean
+          is_primary: boolean
+          updated_at: string
+        }
+        Insert: {
+          account_name: string
+          account_number: string
+          account_type?: string
+          bank_name: string
+          branch?: string | null
+          created_at?: string
+          id?: string
+          ifsc_code?: string
+          is_active?: boolean
+          is_primary?: boolean
+          updated_at?: string
+        }
+        Update: {
+          account_name?: string
+          account_number?: string
+          account_type?: string
+          bank_name?: string
+          branch?: string | null
+          created_at?: string
+          id?: string
+          ifsc_code?: string
+          is_active?: boolean
+          is_primary?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
       bulletins: {
         Row: {
           created_at: string
@@ -1039,6 +1081,66 @@ export type Database = {
           },
         ]
       }
+      firm_profile: {
+        Row: {
+          bank_details: Json | null
+          cin: string | null
+          city: string | null
+          created_at: string
+          email: string | null
+          gstin: string | null
+          id: string
+          legal_name: string
+          logo_url: string | null
+          pan: string | null
+          phone: string | null
+          pincode: string | null
+          registered_address: string | null
+          state: string | null
+          trade_name: string | null
+          updated_at: string
+          website: string | null
+        }
+        Insert: {
+          bank_details?: Json | null
+          cin?: string | null
+          city?: string | null
+          created_at?: string
+          email?: string | null
+          gstin?: string | null
+          id?: string
+          legal_name?: string
+          logo_url?: string | null
+          pan?: string | null
+          phone?: string | null
+          pincode?: string | null
+          registered_address?: string | null
+          state?: string | null
+          trade_name?: string | null
+          updated_at?: string
+          website?: string | null
+        }
+        Update: {
+          bank_details?: Json | null
+          cin?: string | null
+          city?: string | null
+          created_at?: string
+          email?: string | null
+          gstin?: string | null
+          id?: string
+          legal_name?: string
+          logo_url?: string | null
+          pan?: string | null
+          phone?: string | null
+          pincode?: string | null
+          registered_address?: string | null
+          state?: string | null
+          trade_name?: string | null
+          updated_at?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
       invoice_items: {
         Row: {
           amount: number
@@ -1637,6 +1739,36 @@ export type Database = {
         }
         Relationships: []
       }
+      payment_terms: {
+        Row: {
+          created_at: string
+          days: number
+          description: string | null
+          id: string
+          is_active: boolean
+          is_default: boolean
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          days?: number
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          is_default?: boolean
+          name: string
+        }
+        Update: {
+          created_at?: string
+          days?: number
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          is_default?: boolean
+          name?: string
+        }
+        Relationships: []
+      }
       payroll_records: {
         Row: {
           allowances: number
@@ -2036,6 +2168,92 @@ export type Database = {
         }
         Relationships: []
       }
+      salary_components: {
+        Row: {
+          calculation_type: string
+          code: string
+          component_type: string
+          created_at: string
+          default_value: number
+          id: string
+          is_active: boolean
+          is_taxable: boolean
+          name: string
+          sort_order: number
+        }
+        Insert: {
+          calculation_type?: string
+          code: string
+          component_type?: string
+          created_at?: string
+          default_value?: number
+          id?: string
+          is_active?: boolean
+          is_taxable?: boolean
+          name: string
+          sort_order?: number
+        }
+        Update: {
+          calculation_type?: string
+          code?: string
+          component_type?: string
+          created_at?: string
+          default_value?: number
+          id?: string
+          is_active?: boolean
+          is_taxable?: boolean
+          name?: string
+          sort_order?: number
+        }
+        Relationships: []
+      }
+      service_catalog: {
+        Row: {
+          created_at: string
+          default_rate: number
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          sac_code: string | null
+          tax_rate_id: string | null
+          unit: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          default_rate?: number
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          sac_code?: string | null
+          tax_rate_id?: string | null
+          unit?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          default_rate?: number
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          sac_code?: string | null
+          tax_rate_id?: string | null
+          unit?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_catalog_tax_rate_id_fkey"
+            columns: ["tax_rate_id"]
+            isOneToOne: false
+            referencedRelation: "tax_rates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       site_pages: {
         Row: {
           created_at: string
@@ -2317,6 +2535,42 @@ export type Database = {
           id?: string
           status?: string
           title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      tax_rates: {
+        Row: {
+          created_at: string
+          description: string | null
+          hsn_sac_code: string | null
+          id: string
+          is_active: boolean
+          name: string
+          rate: number
+          tax_type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          hsn_sac_code?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          rate?: number
+          tax_type?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          hsn_sac_code?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          rate?: number
+          tax_type?: string
           updated_at?: string
         }
         Relationships: []

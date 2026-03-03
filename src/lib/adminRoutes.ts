@@ -72,6 +72,12 @@ export const ADMIN_ROUTES = {
   // ── Accounts ──────────────────────────────────
   accounts: {
     root: '/admin/accounts',
+    firmProfile: '/admin/accounts/firm-profile',
+    taxRates: '/admin/accounts/tax-rates',
+    bankAccounts: '/admin/accounts/bank-accounts',
+    paymentTerms: '/admin/accounts/payment-terms',
+    serviceCatalog: '/admin/accounts/service-catalog',
+    salaryComponents: '/admin/accounts/salary-components',
     invoices: '/admin/accounts/invoices',
     payroll: '/admin/accounts/payroll',
   },
