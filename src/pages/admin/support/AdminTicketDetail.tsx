@@ -8,10 +8,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
-import { ArrowLeft, Send, Lock, User, Clock } from 'lucide-react';
+import { ArrowLeft, Send, Lock, User, Clock, Shield, AlertTriangle, FileText, Layers } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { logAudit } from '@/lib/auditLog';
 import { Switch } from '@/components/ui/switch';
+import { PRODUCTS, PRIORITY_CONFIG, RISK_TAGS, REGULATORS } from '@/lib/supportClassification';
 
 const db = (t: string) => supabase.from(t as any) as any;
 
@@ -26,6 +27,22 @@ const priorityColors: Record<string, string> = {
   urgent: 'bg-destructive/15 text-destructive',
 };
 
+function TatCountdown({ deadline }: { deadline: string | null }) {
+  const [now, setNow] = useState(Date.now());
+  useEffect(() => { const i = setInterval(() => setNow(Date.now()), 60_000); return () => clearInterval(i); }, []);
+  if (!deadline) return <span className="text-xs text-muted-foreground">No TAT set</span>;
+  const ms = new Date(deadline).getTime() - now;
+  const breached = ms <= 0;
+  const hrs = Math.abs(Math.floor(ms / 3_600_000));
+  const mins = Math.abs(Math.floor((ms % 3_600_000) / 60_000));
+  return (
+    <div className={`flex items-center gap-1.5 text-sm font-medium ${breached ? 'text-destructive' : ms < 7_200_000 ? 'text-orange-600 dark:text-orange-400' : 'text-green-600 dark:text-green-400'}`}>
+      <Clock className="h-3.5 w-3.5" />
+      {breached ? `Breached ${hrs}h ${mins}m ago` : `${hrs}h ${mins}m remaining`}
+    </div>
+  );
+}
+
 export default function AdminTicketDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -33,25 +50,28 @@ export default function AdminTicketDetail() {
   const [ticket, setTicket] = useState<any>(null);
   const [replies, setReplies] = useState<any[]>([]);
   const [cannedResponses, setCannedResponses] = useState<any[]>([]);
+  const [escalationLog, setEscalationLog] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [replyText, setReplyText] = useState('');
   const [isInternal, setIsInternal] = useState(false);
   const [sending, setSending] = useState(false);
 
-  const fetch = async () => {
+  const fetchAll = async () => {
     setLoading(true);
-    const [{ data: t }, { data: r }, { data: cr }] = await Promise.all([
-      db('support_tickets').select('*, crm_contacts(full_name, email, phone)').eq('id', id).single(),
+    const [{ data: t }, { data: r }, { data: cr }, { data: esc }] = await Promise.all([
+      db('support_tickets').select('*, crm_contacts(full_name, email, phone), support_issue_categories(name, slug), support_issue_types(title, issue_code, priority, tat_hours, risk_tag, regulator, required_documents)').eq('id', id).single(),
       db('ticket_replies').select('*').eq('ticket_id', id).order('created_at', { ascending: true }),
       db('canned_responses').select('id, title, shortcode, body').eq('is_active', true).order('title'),
+      db('ticket_escalation_log').select('*').eq('ticket_id', id).order('created_at', { ascending: true }),
     ]);
     setTicket(t);
     setReplies(r ?? []);
     setCannedResponses(cr ?? []);
+    setEscalationLog(esc ?? []);
     setLoading(false);
   };
 
-  useEffect(() => { if (id) fetch(); }, [id]);
+  useEffect(() => { if (id) fetchAll(); }, [id]);
 
   const updateTicket = async (updates: any) => {
     const { error } = await db('support_tickets').update(updates).eq('id', id);
@@ -59,7 +79,7 @@ export default function AdminTicketDetail() {
     else {
       logAudit({ action: 'update', entity_type: 'support_tickets', entity_id: id, details: updates });
       toast({ title: 'Ticket updated' });
-      fetch();
+      fetchAll();
     }
   };
 
@@ -78,27 +98,31 @@ export default function AdminTicketDetail() {
     const { error } = await db('ticket_replies').insert([payload]);
     if (error) toast({ title: 'Error', description: error.message, variant: 'destructive' });
     else {
-      // Update first_response_at if first admin reply
       if (!ticket.first_response_at && !isInternal) {
         await db('support_tickets').update({ first_response_at: new Date().toISOString() }).eq('id', id);
       }
       logAudit({ action: 'reply', entity_type: 'support_tickets', entity_id: id, details: { is_internal: isInternal } });
       setReplyText('');
       setIsInternal(false);
-      fetch();
+      fetchAll();
     }
     setSending(false);
   };
 
   const insertCanned = (body: string) => {
     setReplyText(prev => prev + (prev ? '\n\n' : '') + body);
-    // Increment usage count
     const cr = cannedResponses.find(c => c.body === body);
     if (cr) db('canned_responses').update({ usage_count: (cr.usage_count || 0) + 1 }).eq('id', cr.id);
   };
 
   if (loading) return <AdminLayout title="Loading..." subtitle=""><div className="animate-pulse h-32 bg-muted rounded-xl" /></AdminLayout>;
   if (!ticket) return <AdminLayout title="Not Found" subtitle=""><p>Ticket not found.</p></AdminLayout>;
+
+  const product = PRODUCTS.find(p => p.key === ticket.product);
+  const issueType = ticket.support_issue_types;
+  const issueCat = ticket.support_issue_categories;
+  const riskCfg = ticket.risk_tag ? RISK_TAGS[ticket.risk_tag as keyof typeof RISK_TAGS] : null;
+  const regCfg = ticket.regulator ? REGULATORS[ticket.regulator as keyof typeof REGULATORS] : null;
 
   return (
     <AdminLayout
@@ -158,8 +182,57 @@ export default function AdminTicketDetail() {
           </div>
         </div>
 
-        {/* Sidebar — details */}
+        {/* Sidebar — details + classification */}
         <div className="space-y-4">
+          {/* Classification card */}
+          {(product || issueType) && (
+            <div className="bg-card border border-border rounded-xl p-4 space-y-3">
+              <h3 className="text-sm font-semibold text-foreground flex items-center gap-1.5"><Layers className="h-4 w-4" /> Classification</h3>
+              {product && (
+                <div>
+                  <Label className="text-xs text-muted-foreground">Product</Label>
+                  <p className={`text-sm font-medium ${product.color}`}>{product.label}</p>
+                </div>
+              )}
+              {issueCat && (
+                <div>
+                  <Label className="text-xs text-muted-foreground">Category</Label>
+                  <p className="text-sm text-foreground">{issueCat.name}</p>
+                </div>
+              )}
+              {issueType && (
+                <div>
+                  <Label className="text-xs text-muted-foreground">Issue Type</Label>
+                  <p className="text-sm text-foreground">{issueType.title}</p>
+                  <p className="font-mono text-[10px] text-muted-foreground mt-0.5">{issueType.issue_code}</p>
+                </div>
+              )}
+              <div className="flex items-center gap-1.5 flex-wrap">
+                {riskCfg && <Badge variant="outline" className={`text-[10px] ${riskCfg.color}`}>{riskCfg.label} Risk</Badge>}
+                {regCfg && <Badge variant="outline" className={`text-[10px] ${regCfg.color}`}><Shield className="h-2.5 w-2.5 mr-0.5" />{regCfg.label}</Badge>}
+              </div>
+              {(ticket.documents_required ?? []).length > 0 && (
+                <div className="flex items-start gap-1.5 text-xs text-muted-foreground">
+                  <FileText className="h-3 w-3 shrink-0 mt-0.5" />
+                  <span>Docs: {ticket.documents_required.join(', ')}</span>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* TAT card */}
+          <div className="bg-card border border-border rounded-xl p-4 space-y-3">
+            <h3 className="text-sm font-semibold text-foreground flex items-center gap-1.5"><Clock className="h-4 w-4" /> SLA / TAT</h3>
+            <TatCountdown deadline={ticket.tat_deadline} />
+            {ticket.tat_hours && (
+              <p className="text-xs text-muted-foreground">TAT: {ticket.tat_hours} hours</p>
+            )}
+            {ticket.auto_assigned && (
+              <Badge variant="secondary" className="text-[10px]">Auto-assigned to {ticket.department}</Badge>
+            )}
+          </div>
+
+          {/* Ticket details */}
           <div className="bg-card border border-border rounded-xl p-4 space-y-4">
             <h3 className="text-sm font-semibold text-foreground">Ticket Details</h3>
             <div className="space-y-3">
@@ -202,6 +275,22 @@ export default function AdminTicketDetail() {
               )}
             </div>
           </div>
+
+          {/* Escalation trail */}
+          {escalationLog.length > 0 && (
+            <div className="bg-card border border-border rounded-xl p-4 space-y-3">
+              <h3 className="text-sm font-semibold text-foreground flex items-center gap-1.5"><AlertTriangle className="h-4 w-4" /> Escalation Trail</h3>
+              <div className="space-y-2">
+                {escalationLog.map((e: any) => (
+                  <div key={e.id} className="text-xs border-l-2 border-orange-400 pl-3 py-1">
+                    <p className="font-medium text-foreground">L{e.from_level} → L{e.to_level}</p>
+                    {e.reason && <p className="text-muted-foreground">{e.reason}</p>}
+                    <p className="text-muted-foreground">{new Date(e.created_at).toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Contact info */}
           <div className="bg-card border border-border rounded-xl p-4 space-y-3">
