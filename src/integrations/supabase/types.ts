@@ -2416,6 +2416,104 @@ export type Database = {
         }
         Relationships: []
       }
+      workflow_logs: {
+        Row: {
+          actions_executed: Json
+          created_at: string
+          entity_id: string
+          entity_type: string
+          error_message: string | null
+          execution_time_ms: number | null
+          id: string
+          rule_id: string
+          status: string
+          trigger_event: string
+        }
+        Insert: {
+          actions_executed?: Json
+          created_at?: string
+          entity_id: string
+          entity_type: string
+          error_message?: string | null
+          execution_time_ms?: number | null
+          id?: string
+          rule_id: string
+          status?: string
+          trigger_event: string
+        }
+        Update: {
+          actions_executed?: Json
+          created_at?: string
+          entity_id?: string
+          entity_type?: string
+          error_message?: string | null
+          execution_time_ms?: number | null
+          id?: string
+          rule_id?: string
+          status?: string
+          trigger_event?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflow_logs_rule_id_fkey"
+            columns: ["rule_id"]
+            isOneToOne: false
+            referencedRelation: "workflow_rules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workflow_rules: {
+        Row: {
+          actions: Json
+          conditions: Json
+          created_at: string
+          created_by: string | null
+          description: string | null
+          entity_type: string
+          id: string
+          is_active: boolean
+          name: string
+          priority: number
+          trigger_event: string
+          trigger_field: string | null
+          trigger_value: string | null
+          updated_at: string
+        }
+        Insert: {
+          actions?: Json
+          conditions?: Json
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          entity_type?: string
+          id?: string
+          is_active?: boolean
+          name: string
+          priority?: number
+          trigger_event?: string
+          trigger_field?: string | null
+          trigger_value?: string | null
+          updated_at?: string
+        }
+        Update: {
+          actions?: Json
+          conditions?: Json
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          entity_type?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          priority?: number
+          trigger_event?: string
+          trigger_field?: string | null
+          trigger_value?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
