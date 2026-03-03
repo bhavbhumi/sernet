@@ -2865,7 +2865,7 @@ export type Database = {
           tags?: string[] | null
           tat_deadline?: string | null
           tat_hours?: number | null
-          ticket_number: string
+          ticket_number?: string
           updated_at?: string
         }
         Update: {
