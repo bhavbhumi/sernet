@@ -7,7 +7,7 @@ import { ADMIN_ROUTES } from '@/lib/adminRoutes';
 import {
   FileText, Newspaper, AlertCircle, Vote, Star, Briefcase, BarChart3,
   BookOpen, Bell, Users, ClipboardList, UserCheck, Megaphone, TrendingUp,
-  Building2, Gavel, Calculator
+  Building2, Gavel, Calculator, Ticket, Headphones, AlertTriangle
 } from 'lucide-react';
 
 const R = ADMIN_ROUTES;
@@ -35,10 +35,11 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     const fetchStats = async () => {
+      const db = (t: string) => supabase.from(t as any) as any;
       const [
         articles, analyses, reports, bulletins, news, circulars,
         polls, surveys, reviews, jobs, applications, press,
-        leads, calcLeads
+        leads, calcLeads, tickets, openTickets, breachedTickets
       ] = await Promise.all([
         supabase.from('articles').select('id', { count: 'exact', head: true }),
         supabase.from('analyses').select('id', { count: 'exact', head: true }),
@@ -54,6 +55,9 @@ export default function AdminDashboard() {
         supabase.from('press_items').select('id', { count: 'exact', head: true }),
         supabase.from('leads').select('id', { count: 'exact', head: true }),
         supabase.from('calculator_leads').select('id', { count: 'exact', head: true }),
+        db('support_tickets').select('id', { count: 'exact', head: true }),
+        db('support_tickets').select('id', { count: 'exact', head: true }).eq('status', 'open'),
+        db('support_tickets').select('id', { count: 'exact', head: true }).in('status', ['open', 'in_progress']).lt('tat_deadline', new Date().toISOString()),
       ]);
 
       setStats({
@@ -71,6 +75,9 @@ export default function AdminDashboard() {
         press: press.count ?? 0,
         leads: leads.count ?? 0,
         calcLeads: calcLeads.count ?? 0,
+        tickets: tickets.count ?? 0,
+        openTickets: openTickets.count ?? 0,
+        breachedTickets: breachedTickets.count ?? 0,
       });
       setLoading(false);
     };
@@ -104,6 +111,17 @@ export default function AdminDashboard() {
       cards: [
         { label: 'Leads', count: stats.leads, href: R.sales.leads, icon: UserCheck, color: 'text-emerald-600 bg-emerald-500/10' },
         { label: 'Calculator Leads', count: stats.calcLeads, href: R.sales.calculatorLeads, icon: Calculator, color: 'text-teal-600 bg-teal-500/10' },
+      ],
+    },
+    {
+      department: 'Support',
+      icon: Headphones,
+      color: 'text-cyan-600',
+      bgColor: 'bg-cyan-500/10',
+      cards: [
+        { label: 'Total Tickets', count: stats.tickets, href: R.support.tickets, icon: Ticket, color: 'text-cyan-600 bg-cyan-500/10' },
+        { label: 'Open', count: stats.openTickets, href: R.support.tickets, icon: Ticket, color: 'text-green-600 bg-green-500/10' },
+        { label: 'TAT Breached', count: stats.breachedTickets, href: R.support.tickets, icon: AlertTriangle, color: 'text-red-600 bg-red-500/10', subtitle: 'Needs attention' },
       ],
     },
     {
