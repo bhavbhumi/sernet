@@ -85,6 +85,10 @@ import AdminAIUsage from "./pages/admin/settings/AdminAIUsage";
 import AdminAuditLog from "./pages/admin/settings/AdminAuditLog";
 import AdminCalculatorLeads from "./pages/admin/settings/AdminCalculatorLeads";
 import AdminLeads from "./pages/admin/AdminLeads";
+import AdminCRMPipeline from "./pages/admin/sales/AdminCRMPipeline";
+import AdminCRMDeals from "./pages/admin/sales/AdminCRMDeals";
+import AdminCRMContacts from "./pages/admin/sales/AdminCRMContacts";
+import AdminCRMActivities from "./pages/admin/sales/AdminCRMActivities";
 import AdminSitePages from "./pages/admin/site/AdminSitePages";
 import AdminSiteSettings from "./pages/admin/site/AdminSiteSettings";
 import AdminMediaLibrary from "./pages/admin/site/AdminMediaLibrary";
@@ -196,6 +200,10 @@ const App = () => (
           <Route path="/admin/marketing/site/media" element={<AdminMediaLibrary />} />
 
           {/* Admin — Sales */}
+          <Route path="/admin/sales/crm/pipeline" element={<AdminCRMPipeline />} />
+          <Route path="/admin/sales/crm/deals" element={<AdminCRMDeals />} />
+          <Route path="/admin/sales/crm/contacts" element={<AdminCRMContacts />} />
+          <Route path="/admin/sales/crm/activities" element={<AdminCRMActivities />} />
           <Route path="/admin/sales/leads" element={<AdminLeads />} />
           <Route path="/admin/sales/calculator-leads" element={<AdminCalculatorLeads />} />
 
