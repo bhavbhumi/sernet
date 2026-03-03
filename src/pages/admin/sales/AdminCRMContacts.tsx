@@ -6,10 +6,11 @@ export default function AdminCRMContacts() {
     <AdminGuard>
       <GenericCMSPage
         title="CRM Contacts"
-        subtitle="Manage contacts and accounts"
+        subtitle="Manage clients, partners & principals"
         tableName="crm_contacts"
         tableColumns={[
           { key: 'full_name', label: 'Name' },
+          { key: 'relationship_type', label: 'Relationship' },
           { key: 'contact_type', label: 'Type' },
           { key: 'phone', label: 'Phone' },
           { key: 'email', label: 'Email' },
@@ -19,6 +20,7 @@ export default function AdminCRMContacts() {
         ]}
         fields={[
           { key: 'full_name', label: 'Full Name', type: 'text', required: true },
+          { key: 'relationship_type', label: 'Relationship', type: 'select', options: ['client', 'partner', 'principal'] },
           { key: 'contact_type', label: 'Type', type: 'select', options: ['individual', 'company'] },
           { key: 'company_name', label: 'Company Name', type: 'text' },
           { key: 'phone', label: 'Phone', type: 'text' },
@@ -31,7 +33,7 @@ export default function AdminCRMContacts() {
           { key: 'notes', label: 'Notes', type: 'textarea' },
         ]}
         emptyForm={{
-          full_name: '', contact_type: 'individual', company_name: '', phone: '', alternate_phone: '',
+          full_name: '', relationship_type: 'client', contact_type: 'individual', company_name: '', phone: '', alternate_phone: '',
           email: '', pan: '', city: '', state: '', source: 'direct', notes: '',
         }}
         hasStatus={false}
