@@ -10,6 +10,8 @@ const emptyForm = {
   employment_type: 'full_time',
   status: 'active',
   photo_url: '',
+  date_of_joining: '',
+  date_of_leaving: '',
 };
 
 const AdminEmployees = () => (
@@ -26,6 +28,8 @@ const AdminEmployees = () => (
       { key: 'designation', label: 'Designation', type: 'text', required: true },
       { key: 'employment_type', label: 'Employment Type', type: 'select', options: ['full_time', 'part_time', 'contract', 'intern'] },
       { key: 'status', label: 'Status', type: 'select', options: ['active', 'inactive', 'on_leave', 'terminated'] },
+      { key: 'date_of_joining', label: 'Date of Joining', type: 'text' },
+      { key: 'date_of_leaving', label: 'Date of Leaving', type: 'text' },
       { key: 'photo_url', label: 'Photo URL', type: 'url' },
     ]}
     emptyForm={emptyForm}
