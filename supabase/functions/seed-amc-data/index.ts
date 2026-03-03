@@ -51,7 +51,7 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    const { rows, clear_existing } = await req.json();
+    const { rows, clear_existing, append_mode } = await req.json();
 
     if (!rows || !Array.isArray(rows) || rows.length === 0) {
       return new Response(JSON.stringify({ error: "No rows provided" }), {
@@ -146,8 +146,10 @@ Deno.serve(async (req) => {
         results.contacts_created++;
       }
 
-      // Delete existing branches for this contact (to handle re-import)
-      await supabase.from("contact_branches").delete().eq("contact_id", contactId);
+      // Delete existing branches for this contact (to handle re-import) unless in append mode
+      if (!append_mode) {
+        await supabase.from("contact_branches").delete().eq("contact_id", contactId);
+      }
 
       // Determine which is HO - first Mumbai entry or first entry
       let hoSet = false;
