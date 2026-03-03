@@ -41,6 +41,7 @@ interface GenericCMSPageProps {
   categoryField?: string; // e.g. 'category', 'report_type' — enables category filter dropdown
   headerActions?: React.ReactNode; // optional extra buttons in the header bar
   orderBy?: { column: string; ascending: boolean }; // custom sort order
+  onRowAction?: (item: Record<string, unknown>) => React.ReactNode; // custom action button per row
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -101,7 +102,7 @@ function formatCellDate(val: unknown): string {
 }
 
 export function GenericCMSPage({
-  title, subtitle, tableName, fields, emptyForm: defaultForm, tableColumns, hasStatus = true, hasFeatured = false, categoryField, headerActions, orderBy
+  title, subtitle, tableName, fields, emptyForm: defaultForm, tableColumns, hasStatus = true, hasFeatured = false, categoryField, headerActions, orderBy, onRowAction
 }: GenericCMSPageProps) {
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
@@ -304,7 +305,8 @@ export function GenericCMSPage({
                       {colIdx === 0 ? (
                         <div>
                           <p className="font-medium text-foreground line-clamp-1">{String(item[col.key] ?? '')}</p>
-                          <div className="flex items-center gap-0.5 mt-1.5">
+                          <div className="flex items-center gap-0.5 mt-1.5 flex-wrap">
+                            {onRowAction && onRowAction(item)}
                             {hasStatus && (
                               <Button variant="ghost" size="sm" className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground gap-1" onClick={() => toggleStatus(item)} title={item.status === 'published' ? 'Unpublish' : 'Publish'}>
                                 {item.status === 'published' ? <><EyeOff className="h-3 w-3" /> Unpublish</> : <><Eye className="h-3 w-3" /> Publish</>}

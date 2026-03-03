@@ -53,7 +53,7 @@ export const ADMIN_ROUTES = {
     deals: '/admin/sales/crm/deals',
     contacts: '/admin/sales/crm/contacts',
     activities: '/admin/sales/crm/activities',
-    principalBranches: '/admin/sales/crm/principal-branches',
+    
     leads: '/admin/sales/leads',
     calculatorLeads: '/admin/sales/calculator-leads',
   },

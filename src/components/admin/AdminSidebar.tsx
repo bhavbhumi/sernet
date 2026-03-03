@@ -93,7 +93,7 @@ const departmentGroups: DepartmentGroup[] = [
           { label: 'All Deals', icon: Briefcase, href: R.sales.deals },
           { label: 'Contacts', icon: Users, href: R.sales.contacts },
           { label: 'Activities', icon: ClipboardList, href: R.sales.activities },
-          { label: 'Principal Network', icon: Building2, href: R.sales.principalBranches },
+          
         ]
       },
       { label: 'Website Leads', icon: UserCheck, href: R.sales.leads },

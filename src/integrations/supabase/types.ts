@@ -694,11 +694,14 @@ export type Database = {
           address_line1: string | null
           address_line2: string | null
           address_line3: string | null
+          address_type: string | null
           branch_city: string
           contact_id: string
           created_at: string
           id: string
           is_head_office: boolean | null
+          office_type: string | null
+          ownership: string | null
           phone: string | null
           pincode: string | null
         }
@@ -706,11 +709,14 @@ export type Database = {
           address_line1?: string | null
           address_line2?: string | null
           address_line3?: string | null
+          address_type?: string | null
           branch_city: string
           contact_id: string
           created_at?: string
           id?: string
           is_head_office?: boolean | null
+          office_type?: string | null
+          ownership?: string | null
           phone?: string | null
           pincode?: string | null
         }
@@ -718,17 +724,70 @@ export type Database = {
           address_line1?: string | null
           address_line2?: string | null
           address_line3?: string | null
+          address_type?: string | null
           branch_city?: string
           contact_id?: string
           created_at?: string
           id?: string
           is_head_office?: boolean | null
+          office_type?: string | null
+          ownership?: string | null
           phone?: string | null
           pincode?: string | null
         }
         Relationships: [
           {
             foreignKeyName: "contact_branches_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      contact_kmp: {
+        Row: {
+          contact_id: string
+          created_at: string | null
+          department: string | null
+          designation: string
+          email: string | null
+          escalation_level: number | null
+          full_name: string
+          id: string
+          is_escalation: boolean | null
+          phone: string | null
+          sort_order: number | null
+        }
+        Insert: {
+          contact_id: string
+          created_at?: string | null
+          department?: string | null
+          designation?: string
+          email?: string | null
+          escalation_level?: number | null
+          full_name: string
+          id?: string
+          is_escalation?: boolean | null
+          phone?: string | null
+          sort_order?: number | null
+        }
+        Update: {
+          contact_id?: string
+          created_at?: string | null
+          department?: string | null
+          designation?: string
+          email?: string | null
+          escalation_level?: number | null
+          full_name?: string
+          id?: string
+          is_escalation?: boolean | null
+          phone?: string | null
+          sort_order?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contact_kmp_contact_id_fkey"
             columns: ["contact_id"]
             isOneToOne: false
             referencedRelation: "crm_contacts"
