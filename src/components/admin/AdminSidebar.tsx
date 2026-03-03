@@ -8,7 +8,8 @@ import {
   Vote, ClipboardList, Star, Briefcase, Users, Mic2, Settings, LogOut,
   ChevronDown, ChevronRight, Menu, X, Rss, Shield, Globe, Palette, ScanSearch, Images, Download,
   Sparkles, Calculator, UserCheck, CalendarDays, Mail, ScrollText, Scale, Lightbulb,
-  TrendingUp, Building2, Gavel, Megaphone, Headphones, Ticket, BookMarked, MessageSquareText
+  TrendingUp, Building2, Gavel, Megaphone, Headphones, Ticket, BookMarked, MessageSquareText,
+  Contact, CalendarClock, Clock, Receipt, Wallet
 } from 'lucide-react';
 import sernetLogo from '@/assets/sernet-logo.png';
 import { cn } from '@/lib/utils';
@@ -109,6 +110,18 @@ const departmentGroups: DepartmentGroup[] = [
         ]
       },
       { label: 'Team Members', icon: Users, href: R.hr.team },
+      { label: 'Employee Directory', icon: Contact, href: R.hr.employees },
+      { label: 'Leave Management', icon: CalendarClock, href: R.hr.leave },
+      { label: 'Attendance', icon: Clock, href: R.hr.attendance },
+    ]
+  },
+  {
+    department: 'Accounts',
+    icon: Wallet,
+    color: 'text-amber-500',
+    items: [
+      { label: 'Invoices', icon: Receipt, href: R.accounts.invoices },
+      { label: 'Payroll Register', icon: Wallet, href: R.accounts.payroll },
     ]
   },
   {

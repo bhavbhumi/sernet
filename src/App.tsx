@@ -103,6 +103,11 @@ import AdminTickets from "./pages/admin/support/AdminTickets";
 import AdminTicketDetail from "./pages/admin/support/AdminTicketDetail";
 import AdminKnowledgeBase from "./pages/admin/support/AdminKnowledgeBase";
 import AdminCannedResponses from "./pages/admin/support/AdminCannedResponses";
+import AdminEmployees from "./pages/admin/hr/AdminEmployees";
+import AdminLeaveManagement from "./pages/admin/hr/AdminLeaveManagement";
+import AdminAttendance from "./pages/admin/hr/AdminAttendance";
+import AdminInvoices from "./pages/admin/accounts/AdminInvoices";
+import AdminPayroll from "./pages/admin/accounts/AdminPayroll";
 import Sitemap from "./pages/Sitemap";
 
 const queryClient = new QueryClient();
@@ -215,6 +220,13 @@ const App = () => (
           <Route path="/admin/hr/careers/openings" element={<AdminJobOpenings />} />
           <Route path="/admin/hr/careers/applications" element={<AdminApplications />} />
           <Route path="/admin/hr/team" element={<AdminTeamMembers />} />
+          <Route path="/admin/hr/employees" element={<AdminEmployees />} />
+          <Route path="/admin/hr/leave" element={<AdminLeaveManagement />} />
+          <Route path="/admin/hr/attendance" element={<AdminAttendance />} />
+
+          {/* Admin — Accounts */}
+          <Route path="/admin/accounts/invoices" element={<AdminInvoices />} />
+          <Route path="/admin/accounts/payroll" element={<AdminPayroll />} />
 
           {/* Admin — Legal & Compliance */}
           <Route path="/admin/legal/pages" element={<AdminLegal />} />
