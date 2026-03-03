@@ -10,40 +10,31 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
-import { Plus, User, Phone, IndianRupee, ArrowRight, ShieldAlert, AlertTriangle, ChevronDown } from 'lucide-react';
+import { Plus, User, Phone, IndianRupee, ArrowRight, ShieldAlert, AlertTriangle, ChevronDown, Settings2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Link } from 'react-router-dom';
+import { ADMIN_ROUTES } from '@/lib/adminRoutes';
 
-const STAGES = [
-  { key: 'enquiry', label: 'Enquiry', color: 'bg-blue-500', subStatuses: ['contacted', 'not_reachable', 'not_interested', 'dnd'] },
-  { key: 'qualified', label: 'Qualified', color: 'bg-amber-500', subStatuses: ['cold', 'warm', 'hot'] },
-  { key: 'account', label: 'Account', color: 'bg-purple-500', subStatuses: ['documentation', 'kyc', 'profile', 'mandate'] },
-  { key: 'status', label: 'Status', color: 'bg-emerald-500', subStatuses: ['active', 'dormant'] },
-] as const;
-
-const SUB_STATUS_LABELS: Record<string, string> = {
-  contacted: 'Contacted', not_reachable: 'Not Reachable', not_interested: 'Not Interested', dnd: 'DND',
-  cold: 'Cold', warm: 'Warm', hot: 'Hot',
-  documentation: 'Documentation', kyc: 'KYC', profile: 'Profile', mandate: 'Mandate',
-  active: 'Active', dormant: 'Dormant',
+// ---- Types ----
+type PipelineSubStatus = {
+  id: string;
+  sub_status_key: string;
+  sub_status_label: string;
+  color_class: string;
+  sort_order: number;
+  is_active: boolean;
 };
 
-const SUB_STATUS_COLORS: Record<string, string> = {
-  contacted: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-  not_reachable: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-  not_interested: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-  dnd: 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200',
-  cold: 'bg-sky-100 text-sky-800 dark:bg-sky-900 dark:text-sky-200',
-  warm: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
-  hot: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-  documentation: 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200',
-  kyc: 'bg-violet-100 text-violet-800 dark:bg-violet-900 dark:text-violet-200',
-  profile: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
-  mandate: 'bg-fuchsia-100 text-fuchsia-800 dark:bg-fuchsia-900 dark:text-fuchsia-200',
-  active: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200',
-  dormant: 'bg-stone-100 text-stone-800 dark:bg-stone-900 dark:text-stone-200',
+type PipelineStage = {
+  id: string;
+  stage_key: string;
+  stage_label: string;
+  stage_color: string;
+  sort_order: number;
+  is_active: boolean;
+  pipeline_sub_statuses: PipelineSubStatus[];
 };
 
 type Deal = {
@@ -60,6 +51,42 @@ type Deal = {
   crm_contacts?: { full_name: string; phone: string | null } | null;
 };
 
+// ---- Hook: load pipeline config ----
+function usePipelineConfig() {
+  return useQuery({
+    queryKey: ['pipeline-config'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('pipeline_stages')
+        .select('*, pipeline_sub_statuses(*)')
+        .eq('pipeline_key', 'default')
+        .eq('is_active', true)
+        .order('sort_order', { ascending: true });
+      if (error) throw error;
+      return (data as PipelineStage[]).map(s => ({
+        ...s,
+        pipeline_sub_statuses: (s.pipeline_sub_statuses || [])
+          .filter((ss: PipelineSubStatus) => ss.is_active)
+          .sort((a: PipelineSubStatus, b: PipelineSubStatus) => a.sort_order - b.sort_order),
+      }));
+    },
+    staleTime: 60_000,
+  });
+}
+
+// Build lookup maps from config
+function buildLookups(stages: PipelineStage[]) {
+  const subStatusLabels: Record<string, string> = {};
+  const subStatusColors: Record<string, string> = {};
+  for (const stage of stages) {
+    for (const ss of stage.pipeline_sub_statuses) {
+      subStatusLabels[ss.sub_status_key] = ss.sub_status_label;
+      subStatusColors[ss.sub_status_key] = ss.color_class;
+    }
+  }
+  return { subStatusLabels, subStatusColors };
+}
+
 // ---- Validation helper ----
 async function validateTransition(dealId: string, toStage: string, toSubStatus: string) {
   const { data, error } = await supabase.rpc('validate_deal_transition', {
@@ -72,7 +99,6 @@ async function validateTransition(dealId: string, toStage: string, toSubStatus: 
 }
 
 async function executeTransition(deal: Deal, toStage: string, toSubStatus: string) {
-  // Validate first
   const validation = await validateTransition(deal.id, toStage, toSubStatus);
   if (!validation.allowed) {
     return { success: false, errors: validation.errors, requires_approval: false };
@@ -81,14 +107,12 @@ async function executeTransition(deal: Deal, toStage: string, toSubStatus: strin
     return { success: false, errors: ['This transition requires approval (not yet implemented)'], requires_approval: true };
   }
 
-  // Execute the move
   const { error } = await supabase.from('crm_deals').update({
     stage: toStage as any,
     sub_status: toSubStatus as any,
   }).eq('id', deal.id);
   if (error) throw error;
 
-  // Record history
   await supabase.from('crm_stage_history').insert({
     deal_id: deal.id,
     from_stage: deal.stage as any,
@@ -101,15 +125,17 @@ async function executeTransition(deal: Deal, toStage: string, toSubStatus: strin
 }
 
 // ---- New Deal Dialog ----
-function NewDealDialog({ onCreated }: { onCreated: () => void }) {
+function NewDealDialog({ stages, onCreated }: { stages: PipelineStage[]; onCreated: () => void }) {
   const [open, setOpen] = useState(false);
+  const firstStage = stages[0];
   const [form, setForm] = useState({
-    title: '', stage: 'enquiry' as string, sub_status: 'contacted' as string,
+    title: '', stage: firstStage?.stage_key || '',
+    sub_status: firstStage?.pipeline_sub_statuses[0]?.sub_status_key || '',
     deal_value: '', product_interest: '', contact_name: '', contact_phone: '', contact_email: '',
   });
   const [saving, setSaving] = useState(false);
 
-  const currentStage = STAGES.find(s => s.key === form.stage);
+  const currentStage = stages.find(s => s.stage_key === form.stage);
 
   const handleSave = async () => {
     if (!form.title.trim()) { toast.error('Title is required'); return; }
@@ -135,7 +161,11 @@ function NewDealDialog({ onCreated }: { onCreated: () => void }) {
       if (error) throw error;
       toast.success('Deal created');
       setOpen(false);
-      setForm({ title: '', stage: 'enquiry', sub_status: 'contacted', deal_value: '', product_interest: '', contact_name: '', contact_phone: '', contact_email: '' });
+      setForm({
+        title: '', stage: firstStage?.stage_key || '',
+        sub_status: firstStage?.pipeline_sub_statuses[0]?.sub_status_key || '',
+        deal_value: '', product_interest: '', contact_name: '', contact_phone: '', contact_email: '',
+      });
       onCreated();
     } catch (e: any) {
       toast.error(e.message);
@@ -160,18 +190,18 @@ function NewDealDialog({ onCreated }: { onCreated: () => void }) {
             <div>
               <Label>Stage</Label>
               <Select value={form.stage} onValueChange={v => {
-                const stg = STAGES.find(s => s.key === v)!;
-                setForm(f => ({ ...f, stage: v, sub_status: stg.subStatuses[0] }));
+                const stg = stages.find(s => s.stage_key === v)!;
+                setForm(f => ({ ...f, stage: v, sub_status: stg.pipeline_sub_statuses[0]?.sub_status_key || '' }));
               }}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>{STAGES.map(s => <SelectItem key={s.key} value={s.key}>{s.label}</SelectItem>)}</SelectContent>
+                <SelectContent>{stages.map(s => <SelectItem key={s.stage_key} value={s.stage_key}>{s.stage_label}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div>
               <Label>Sub-Status</Label>
               <Select value={form.sub_status} onValueChange={v => setForm(f => ({ ...f, sub_status: v }))}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>{currentStage?.subStatuses.map(ss => <SelectItem key={ss} value={ss}>{SUB_STATUS_LABELS[ss]}</SelectItem>)}</SelectContent>
+                <SelectContent>{currentStage?.pipeline_sub_statuses.map(ss => <SelectItem key={ss.sub_status_key} value={ss.sub_status_key}>{ss.sub_status_label}</SelectItem>)}</SelectContent>
               </Select>
             </div>
           </div>
@@ -206,10 +236,16 @@ function NewDealDialog({ onCreated }: { onCreated: () => void }) {
 }
 
 // ---- Deal Card with Blueprint Enforcement ----
-function DealCard({ deal, onMove }: { deal: Deal; onMove: () => void }) {
-  const stageIdx = STAGES.findIndex(s => s.key === deal.stage);
-  const currentStage = STAGES[stageIdx];
-  const nextStage = stageIdx < STAGES.length - 1 ? STAGES[stageIdx + 1] : null;
+function DealCard({ deal, stages, subStatusLabels, subStatusColors, onMove }: {
+  deal: Deal;
+  stages: PipelineStage[];
+  subStatusLabels: Record<string, string>;
+  subStatusColors: Record<string, string>;
+  onMove: () => void;
+}) {
+  const stageIdx = stages.findIndex(s => s.stage_key === deal.stage);
+  const currentStage = stages[stageIdx];
+  const nextStage = stageIdx < stages.length - 1 ? stages[stageIdx + 1] : null;
   const [moving, setMoving] = useState(false);
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
@@ -220,7 +256,7 @@ function DealCard({ deal, onMove }: { deal: Deal; onMove: () => void }) {
     try {
       const result = await executeTransition(deal, toStage, toSubStatus);
       if (result.success) {
-        toast.success(`Moved to ${SUB_STATUS_LABELS[toSubStatus] || toSubStatus}`);
+        toast.success(`Moved to ${subStatusLabels[toSubStatus] || toSubStatus}`);
         onMove();
       } else {
         setValidationErrors(result.errors);
@@ -233,31 +269,32 @@ function DealCard({ deal, onMove }: { deal: Deal; onMove: () => void }) {
     }
   };
 
+  if (!currentStage) return null;
+
   return (
     <Card className="p-3 space-y-2 hover:shadow-md transition-shadow">
       <div className="flex items-start justify-between gap-2">
         <h4 className="text-sm font-medium leading-tight line-clamp-2">{deal.title}</h4>
-        {/* Sub-status changer within current stage */}
         <Popover>
           <PopoverTrigger asChild>
-            <button className={cn('inline-flex items-center gap-0.5 text-[10px] px-1.5 py-0.5 rounded-full shrink-0 cursor-pointer hover:opacity-80', SUB_STATUS_COLORS[deal.sub_status])}>
-              {SUB_STATUS_LABELS[deal.sub_status] || deal.sub_status}
+            <button className={cn('inline-flex items-center gap-0.5 text-[10px] px-1.5 py-0.5 rounded-full shrink-0 cursor-pointer hover:opacity-80', subStatusColors[deal.sub_status] || 'bg-muted text-muted-foreground')}>
+              {subStatusLabels[deal.sub_status] || deal.sub_status}
               <ChevronDown className="h-2.5 w-2.5" />
             </button>
           </PopoverTrigger>
           <PopoverContent className="w-40 p-1" align="end">
             <p className="text-[10px] font-medium text-muted-foreground px-2 py-1">Change sub-status</p>
-            {currentStage.subStatuses.map(ss => (
+            {currentStage.pipeline_sub_statuses.map(ss => (
               <button
-                key={ss}
-                disabled={ss === deal.sub_status || moving}
-                onClick={() => handleMove(deal.stage, ss)}
+                key={ss.sub_status_key}
+                disabled={ss.sub_status_key === deal.sub_status || moving}
+                onClick={() => handleMove(deal.stage, ss.sub_status_key)}
                 className={cn(
                   'w-full text-left text-xs px-2 py-1.5 rounded hover:bg-accent disabled:opacity-40',
-                  ss === deal.sub_status && 'font-semibold'
+                  ss.sub_status_key === deal.sub_status && 'font-semibold'
                 )}
               >
-                {SUB_STATUS_LABELS[ss]}
+                {ss.sub_status_label}
               </button>
             ))}
           </PopoverContent>
@@ -271,7 +308,6 @@ function DealCard({ deal, onMove }: { deal: Deal; onMove: () => void }) {
         </div>
       )}
 
-      {/* Validation errors */}
       {validationErrors.length > 0 && (
         <div className="bg-destructive/10 border border-destructive/20 rounded p-2 space-y-1">
           <div className="flex items-center gap-1 text-destructive text-[10px] font-medium">
@@ -295,9 +331,9 @@ function DealCard({ deal, onMove }: { deal: Deal; onMove: () => void }) {
             variant="ghost" size="sm"
             className="h-6 px-1.5 text-[10px]"
             disabled={moving}
-            onClick={e => { e.stopPropagation(); handleMove(nextStage.key, nextStage.subStatuses[0]); }}
+            onClick={e => { e.stopPropagation(); handleMove(nextStage.stage_key, nextStage.pipeline_sub_statuses[0]?.sub_status_key || ''); }}
           >
-            <ArrowRight className="h-3 w-3 mr-0.5" /> {nextStage.label}
+            <ArrowRight className="h-3 w-3 mr-0.5" /> {nextStage.stage_label}
           </Button>
         )}
       </div>
@@ -308,8 +344,10 @@ function DealCard({ deal, onMove }: { deal: Deal; onMove: () => void }) {
 // ---- Main Pipeline ----
 export default function AdminCRMPipeline() {
   const queryClient = useQueryClient();
+  const { data: stages = [], isLoading: stagesLoading } = usePipelineConfig();
+  const { subStatusLabels, subStatusColors } = buildLookups(stages);
 
-  const { data: deals = [], isLoading } = useQuery({
+  const { data: deals = [], isLoading: dealsLoading } = useQuery({
     queryKey: ['crm-deals'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -323,30 +361,39 @@ export default function AdminCRMPipeline() {
 
   const refresh = () => queryClient.invalidateQueries({ queryKey: ['crm-deals'] });
 
-  const stageCounts = STAGES.map(s => ({
+  const isLoading = stagesLoading || dealsLoading;
+
+  const stageLabel = stages.map(s => s.stage_label).join(' → ');
+
+  const stageCounts = stages.map(s => ({
     ...s,
-    deals: deals.filter(d => d.stage === s.key),
-    totalValue: deals.filter(d => d.stage === s.key).reduce((sum, d) => sum + Number(d.deal_value || 0), 0),
+    deals: deals.filter(d => d.stage === s.stage_key),
+    totalValue: deals.filter(d => d.stage === s.stage_key).reduce((sum, d) => sum + Number(d.deal_value || 0), 0),
   }));
 
   return (
     <AdminGuard>
-      <AdminLayout title="CRM Pipeline" subtitle="Blueprint-enforced pipeline — Enquiry → Qualified → Account → Status">
+      <AdminLayout title="CRM Pipeline" subtitle={`Blueprint-enforced pipeline — ${stageLabel}`}>
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3 text-sm text-muted-foreground">
             <span>{deals.length} deals</span>
             <span>₹{deals.reduce((s, d) => s + Number(d.deal_value || 0), 0).toLocaleString('en-IN')} total value</span>
           </div>
-          <NewDealDialog onCreated={refresh} />
+          <div className="flex items-center gap-2">
+            <Link to={ADMIN_ROUTES.sales.pipelineConfig}>
+              <Button variant="outline" size="sm"><Settings2 className="h-4 w-4 mr-1" /> Configure</Button>
+            </Link>
+            <NewDealDialog stages={stages} onCreated={refresh} />
+          </div>
         </div>
 
         {/* Kanban Board */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 min-h-[60vh]">
+        <div className={cn('grid gap-4 min-h-[60vh]', `grid-cols-1 md:grid-cols-2 xl:grid-cols-${Math.min(stages.length, 6)}`)}>
           {stageCounts.map(stage => (
-            <div key={stage.key} className="flex flex-col">
+            <div key={stage.stage_key} className="flex flex-col">
               <div className="flex items-center gap-2 mb-3 px-1">
-                <div className={cn('w-2.5 h-2.5 rounded-full', stage.color)} />
-                <h3 className="text-sm font-semibold">{stage.label}</h3>
+                <div className={cn('w-2.5 h-2.5 rounded-full', stage.stage_color)} />
+                <h3 className="text-sm font-semibold">{stage.stage_label}</h3>
                 <Badge variant="secondary" className="text-xs">{stage.deals.length}</Badge>
                 {stage.totalValue > 0 && (
                   <span className="text-xs text-muted-foreground ml-auto">₹{stage.totalValue.toLocaleString('en-IN')}</span>
@@ -357,7 +404,14 @@ export default function AdminCRMPipeline() {
                   <p className="text-xs text-muted-foreground text-center py-8">No deals</p>
                 )}
                 {stage.deals.map(deal => (
-                  <DealCard key={deal.id} deal={deal} onMove={refresh} />
+                  <DealCard
+                    key={deal.id}
+                    deal={deal}
+                    stages={stages}
+                    subStatusLabels={subStatusLabels}
+                    subStatusColors={subStatusColors}
+                    onMove={refresh}
+                  />
                 ))}
               </div>
             </div>

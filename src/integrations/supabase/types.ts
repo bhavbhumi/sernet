@@ -1684,6 +1684,83 @@ export type Database = {
           },
         ]
       }
+      pipeline_stages: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          pipeline_key: string
+          sort_order: number
+          stage_color: string
+          stage_key: string
+          stage_label: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          pipeline_key?: string
+          sort_order?: number
+          stage_color?: string
+          stage_key: string
+          stage_label: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          pipeline_key?: string
+          sort_order?: number
+          stage_color?: string
+          stage_key?: string
+          stage_label?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      pipeline_sub_statuses: {
+        Row: {
+          color_class: string
+          created_at: string
+          id: string
+          is_active: boolean
+          sort_order: number
+          stage_id: string
+          sub_status_key: string
+          sub_status_label: string
+        }
+        Insert: {
+          color_class?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          sort_order?: number
+          stage_id: string
+          sub_status_key: string
+          sub_status_label: string
+        }
+        Update: {
+          color_class?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          sort_order?: number
+          stage_id?: string
+          sub_status_key?: string
+          sub_status_label?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pipeline_sub_statuses_stage_id_fkey"
+            columns: ["stage_id"]
+            isOneToOne: false
+            referencedRelation: "pipeline_stages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       poll_likes: {
         Row: {
           created_at: string
