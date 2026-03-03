@@ -98,6 +98,8 @@ export const ADMIN_ROUTES = {
     root: '/admin/support',
     tickets: '/admin/support/tickets',
     ticketDetail: '/admin/support/tickets/:id',
+    issueTypes: '/admin/support/issue-types',
+    escalation: '/admin/support/escalation',
     knowledgeBase: '/admin/support/knowledge-base',
     cannedResponses: '/admin/support/canned-responses',
   },

@@ -106,6 +106,8 @@ import AdminTickets from "./pages/admin/support/AdminTickets";
 import AdminTicketDetail from "./pages/admin/support/AdminTicketDetail";
 import AdminKnowledgeBase from "./pages/admin/support/AdminKnowledgeBase";
 import AdminCannedResponses from "./pages/admin/support/AdminCannedResponses";
+import AdminIssueTypes from "./pages/admin/support/AdminIssueTypes";
+import AdminEscalationMatrix from "./pages/admin/support/AdminEscalationMatrix";
 import AdminEmployees from "./pages/admin/hr/AdminEmployees";
 import AdminLeaveManagement from "./pages/admin/hr/AdminLeaveManagement";
 import AdminAttendance from "./pages/admin/hr/AdminAttendance";
@@ -121,6 +123,7 @@ import AdminPartnerPayouts from "./pages/admin/accounts/AdminPartnerPayouts";
 import AdminCommissionClaims from "./pages/admin/accounts/AdminCommissionClaims";
 import AdminAgreements from "./pages/admin/legal/AdminAgreements";
 import Sitemap from "./pages/Sitemap";
+import RaiseTicket from "./pages/RaiseTicket";
 
 const queryClient = new QueryClient();
 
@@ -163,6 +166,7 @@ const App = () => (
           
           {/* Support pages */}
           <Route path="/complaints" element={<Complaints />} />
+          <Route path="/raise-ticket" element={<RaiseTicket />} />
           
           {/* Legal pages */}
           <Route path="/legal" element={<Legal />} />
@@ -257,6 +261,8 @@ const App = () => (
           {/* Admin — Support */}
           <Route path="/admin/support/tickets" element={<AdminTickets />} />
           <Route path="/admin/support/tickets/:id" element={<AdminTicketDetail />} />
+          <Route path="/admin/support/issue-types" element={<AdminIssueTypes />} />
+          <Route path="/admin/support/escalation" element={<AdminEscalationMatrix />} />
           <Route path="/admin/support/knowledge-base" element={<AdminKnowledgeBase />} />
           <Route path="/admin/support/canned-responses" element={<AdminCannedResponses />} />
 
