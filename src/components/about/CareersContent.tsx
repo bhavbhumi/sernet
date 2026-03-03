@@ -37,8 +37,8 @@ interface JobOpening {
 
 interface TeamMember {
   id: string;
-  name: string;
-  position: string;
+  full_name: string;
+  designation: string;
   department: string | null;
   photo_url: string | null;
 }
@@ -307,9 +307,9 @@ export const CareersContent = () => {
   });
 
   const { data: teamMembers = [] } = useQuery<TeamMember[]>({
-    queryKey: ['team_members_public'],
+    queryKey: ['public_employees'],
     queryFn: async () => {
-      const { data } = await db('team_members').select('*').eq('is_active', true).order('sort_order', { ascending: true });
+      const { data } = await db('employees').select('id, full_name, designation, department, photo_url').eq('is_public', true).eq('status', 'active').order('sort_order', { ascending: true });
       return data ?? [];
     },
   });
@@ -466,13 +466,13 @@ export const CareersContent = () => {
                 <motion.div key={member.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: index * 0.08 }} className="text-center group">
                   <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3 border-2 border-transparent group-hover:border-primary/30 transition-colors overflow-hidden">
                     {member.photo_url ? (
-                      <img src={member.photo_url} alt={member.name} className="w-full h-full object-cover" />
+                      <img src={member.photo_url} alt={member.full_name} className="w-full h-full object-cover" />
                     ) : (
-                      <span className="text-lg font-semibold text-primary">{member.name.charAt(0)}</span>
+                      <span className="text-lg font-semibold text-primary">{member.full_name.charAt(0)}</span>
                     )}
                   </div>
-                  <h3 className="text-sm font-medium text-foreground">{member.name}</h3>
-                  <p className="text-xs text-muted-foreground mt-0.5">{member.position}</p>
+                  <h3 className="text-sm font-medium text-foreground">{member.full_name}</h3>
+                  <p className="text-xs text-muted-foreground mt-0.5">{member.designation}</p>
                   {member.department && <p className="text-xs text-muted-foreground/60">{member.department}</p>}
                 </motion.div>
               ))}
