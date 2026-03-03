@@ -143,7 +143,7 @@ const AdminEconomicEvents = () => {
             variant="outline"
             size="sm"
             className="gap-2"
-            onClick={() => navigate('/admin/calendars/import-economic')}
+            onClick={() => navigate('/admin/marketing/calendars/import-economic')}
           >
             <Link className="h-3.5 w-3.5" /> Import CSV
           </Button>

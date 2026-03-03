@@ -6,78 +6,121 @@ import { logAudit } from '@/lib/auditLog';
 import {
   LayoutDashboard, FileText, BarChart3, BookOpen, Bell, Newspaper, AlertCircle, BookOpenCheck,
   Vote, ClipboardList, Star, Briefcase, Users, Mic2, Settings, LogOut,
-  ChevronDown, ChevronRight, Menu, X, Rss, Shield, Globe, Map, Palette, Type, ScanSearch, Images, Download, Sparkles, Calculator, UserCheck, CalendarDays, Mail, ScrollText, Scale, Lightbulb
+  ChevronDown, ChevronRight, Menu, X, Rss, Shield, Globe, Palette, ScanSearch, Images, Download,
+  Sparkles, Calculator, UserCheck, CalendarDays, Mail, ScrollText, Scale, Lightbulb,
+  TrendingUp, Building2, Gavel, Megaphone
 } from 'lucide-react';
 import sernetLogo from '@/assets/sernet-logo.png';
 import { cn } from '@/lib/utils';
+import { ADMIN_ROUTES } from '@/lib/adminRoutes';
+
+const R = ADMIN_ROUTES;
 
 interface NavItem {
   label: string;
   icon: React.ComponentType<{ className?: string }>;
   href?: string;
   children?: NavItem[];
+  badge?: string;
 }
 
-const navItems: NavItem[] = [
-  { label: 'Dashboard', icon: LayoutDashboard, href: '/admin' },
+interface DepartmentGroup {
+  department: string;
+  icon: React.ComponentType<{ className?: string }>;
+  color: string;
+  items: NavItem[];
+}
+
+const departmentGroups: DepartmentGroup[] = [
   {
-    label: 'Content', icon: BookOpen, children: [
-      { label: 'Articles', icon: FileText, href: '/admin/content/articles' },
-      { label: 'Analysis', icon: BarChart3, href: '/admin/content/analysis' },
-      { label: 'Awareness', icon: Lightbulb, href: '/admin/content/awareness' },
-      { label: 'Reports', icon: BookOpen, href: '/admin/content/reports' },
-      { label: 'Bulletin', icon: Bell, href: '/admin/content/bulletin' },
-      { label: 'Import Articles', icon: Download, href: '/admin/content/import' },
+    department: 'Marketing',
+    icon: Megaphone,
+    color: 'text-blue-500',
+    items: [
+      {
+        label: 'Content Studio', icon: BookOpen, children: [
+          { label: 'Articles', icon: FileText, href: R.marketing.content.articles },
+          { label: 'Analysis', icon: BarChart3, href: R.marketing.content.analysis },
+          { label: 'Awareness', icon: Lightbulb, href: R.marketing.content.awareness },
+          { label: 'Reports', icon: BookOpen, href: R.marketing.content.reports },
+          { label: 'Bulletin', icon: Bell, href: R.marketing.content.bulletin },
+          { label: 'Import Articles', icon: Download, href: R.marketing.content.import },
+        ]
+      },
+      {
+        label: 'News & Updates', icon: Rss, children: [
+          { label: 'News', icon: Newspaper, href: R.marketing.updates.news },
+          { label: 'Circulars', icon: AlertCircle, href: R.marketing.updates.circulars },
+        ]
+      },
+      {
+        label: 'Engagement', icon: Vote, children: [
+          { label: 'Polls', icon: Vote, href: R.marketing.engagement.polls },
+          { label: 'Surveys', icon: ClipboardList, href: R.marketing.engagement.surveys },
+          { label: 'Reviews', icon: Star, href: R.marketing.engagement.reviews },
+          { label: 'Subscribers', icon: Mail, href: R.marketing.engagement.newsletter },
+          { label: 'Composer', icon: Mail, href: R.marketing.engagement.composer },
+        ]
+      },
+      { label: 'Press & Media', icon: Mic2, href: R.marketing.press },
+      {
+        label: 'Calendars', icon: CalendarDays, children: [
+          { label: 'Market Holidays', icon: CalendarDays, href: R.marketing.calendars.holidays },
+          { label: 'Economic Events', icon: BarChart3, href: R.marketing.calendars.economic },
+          { label: 'Import Economic', icon: Download, href: R.marketing.calendars.importEconomic },
+          { label: 'Corporate Events', icon: Briefcase, href: R.marketing.calendars.corporate },
+        ]
+      },
+      {
+        label: 'Website', icon: Globe, children: [
+          { label: 'Site Settings', icon: Palette, href: R.marketing.site.settings },
+          { label: 'Page Directory', icon: ScanSearch, href: R.marketing.site.pages },
+          { label: 'Media Library', icon: Images, href: R.marketing.site.media },
+        ]
+      },
     ]
   },
   {
-    label: 'Updates', icon: Rss, children: [
-      { label: 'News', icon: Newspaper, href: '/admin/updates/news' },
-      { label: 'Circulars', icon: AlertCircle, href: '/admin/updates/circulars' },
+    department: 'Sales',
+    icon: TrendingUp,
+    color: 'text-emerald-500',
+    items: [
+      { label: 'Leads', icon: UserCheck, href: R.sales.leads },
+      { label: 'Calculator Leads', icon: Calculator, href: R.sales.calculatorLeads },
     ]
   },
   {
-    label: 'Engagement', icon: Vote, children: [
-      { label: 'Polls', icon: Vote, href: '/admin/engagement/polls' },
-      { label: 'Surveys', icon: ClipboardList, href: '/admin/engagement/surveys' },
-      { label: 'Reviews', icon: Star, href: '/admin/engagement/reviews' },
-      { label: 'Subscribers', icon: Mail, href: '/admin/engagement/newsletter' },
-      { label: 'Composer', icon: Mail, href: '/admin/engagement/newsletter-composer' },
+    department: 'HR',
+    icon: Building2,
+    color: 'text-orange-500',
+    items: [
+      {
+        label: 'Careers', icon: Briefcase, children: [
+          { label: 'Job Openings', icon: Briefcase, href: R.hr.careers.openings },
+          { label: 'Applications', icon: Users, href: R.hr.careers.applications },
+        ]
+      },
+      { label: 'Team Members', icon: Users, href: R.hr.team },
     ]
   },
   {
-    label: 'Careers', icon: Briefcase, children: [
-      { label: 'Job Openings', icon: Briefcase, href: '/admin/careers/openings' },
-      { label: 'Applications', icon: Users, href: '/admin/careers/applications' },
-      { label: 'Team Members', icon: Users, href: '/admin/careers/team' },
+    department: 'Legal & Compliance',
+    icon: Gavel,
+    color: 'text-violet-500',
+    items: [
+      { label: 'Legal Pages', icon: Scale, href: R.legal.pages },
+      { label: 'Investor Charter', icon: BookOpenCheck, href: R.legal.investorCharter },
     ]
   },
   {
-    label: 'Calendars', icon: CalendarDays, children: [
-      { label: 'Market Holidays', icon: CalendarDays, href: '/admin/calendars/holidays' },
-      { label: 'Economic Events', icon: BarChart3, href: '/admin/calendars/economic' },
-      { label: 'Import Economic Events', icon: Download, href: '/admin/calendars/import-economic' },
-      { label: 'Corporate Events', icon: Briefcase, href: '/admin/calendars/corporate' },
-    ]
-  },
-  { label: 'Press & Media', icon: Mic2, href: '/admin/press' },
-  { label: 'Legal Pages', icon: Scale, href: '/admin/legal' },
-  { label: 'Investor Charter', icon: BookOpenCheck, href: '/admin/investor-charter' },
-  { label: 'Leads', icon: UserCheck, href: '/admin/leads' },
-  {
-    label: 'Site', icon: Globe, children: [
-      { label: 'Site Settings', icon: Palette, href: '/admin/site/settings' },
-      { label: 'Page Directory', icon: ScanSearch, href: '/admin/site/pages' },
-      { label: 'Media Library', icon: Images, href: '/admin/site/media' },
-    ]
-  },
-  {
-    label: 'Settings', icon: Settings, children: [
-      { label: 'RSS Feeds', icon: Rss, href: '/admin/settings/rss' },
-      { label: 'CMS Source', icon: Settings, href: '/admin/settings/cms-source' },
-      { label: 'Admin Users', icon: Shield, href: '/admin/settings/users' },
-      { label: 'AI Usage', icon: Sparkles, href: '/admin/settings/ai-usage' },
-      { label: 'Audit Log', icon: ScrollText, href: '/admin/settings/audit-log' },
+    department: 'System',
+    icon: Settings,
+    color: 'text-muted-foreground',
+    items: [
+      { label: 'Admin Users', icon: Shield, href: R.settings.users },
+      { label: 'RSS Feeds', icon: Rss, href: R.settings.rss },
+      { label: 'AI Usage', icon: Sparkles, href: R.settings.aiUsage },
+      { label: 'Audit Log', icon: ScrollText, href: R.settings.auditLog },
     ]
   },
 ];
@@ -86,7 +129,10 @@ function NavItemComponent({ item, collapsed, depth = 0 }: { item: NavItem; colla
   const location = useLocation();
   const isActive = item.href ? location.pathname === item.href : false;
   const hasChildren = item.children && item.children.length > 0;
-  const isChildActive = item.children?.some(c => c.href && location.pathname.startsWith(c.href));
+  const isChildActive = item.children?.some(c =>
+    c.href ? location.pathname === c.href :
+    c.children?.some(gc => gc.href && location.pathname === gc.href)
+  );
   const [open, setOpen] = useState(isChildActive ?? false);
 
   if (hasChildren) {
@@ -95,22 +141,22 @@ function NavItemComponent({ item, collapsed, depth = 0 }: { item: NavItem; colla
         <button
           onClick={() => setOpen(!open)}
           className={cn(
-            'w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors',
+            'w-full flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[13px] transition-colors',
             isChildActive ? 'text-foreground bg-muted' : 'text-muted-foreground hover:text-foreground hover:bg-muted/50',
           )}
         >
-          <item.icon className="h-4 w-4 shrink-0" />
+          <item.icon className="h-3.5 w-3.5 shrink-0" />
           {!collapsed && (
             <>
               <span className="flex-1 text-left">{item.label}</span>
-              {open ? <ChevronDown className="h-3.5 w-3.5" /> : <ChevronRight className="h-3.5 w-3.5" />}
+              {open ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
             </>
           )}
         </button>
         {open && !collapsed && (
-          <div className="ml-3 mt-0.5 space-y-0.5 border-l border-border pl-3">
+          <div className="ml-3 mt-0.5 space-y-0.5 border-l border-border pl-2.5">
             {item.children!.map(child => (
-              <NavItemComponent key={child.href} item={child} collapsed={collapsed} depth={depth + 1} />
+              <NavItemComponent key={child.href || child.label} item={child} collapsed={collapsed} depth={depth + 1} />
             ))}
           </div>
         )}
@@ -122,21 +168,64 @@ function NavItemComponent({ item, collapsed, depth = 0 }: { item: NavItem; colla
     <Link
       to={item.href!}
       className={cn(
-        'flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors',
+        'flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[13px] transition-colors',
         isActive
           ? 'bg-primary text-primary-foreground font-medium'
           : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
       )}
       title={collapsed ? item.label : undefined}
     >
-      <item.icon className="h-4 w-4 shrink-0" />
+      <item.icon className="h-3.5 w-3.5 shrink-0" />
       {!collapsed && <span>{item.label}</span>}
     </Link>
   );
 }
 
+function DepartmentSection({ group, collapsed }: { group: DepartmentGroup; collapsed: boolean }) {
+  const location = useLocation();
+
+  const isAnyActive = (items: NavItem[]): boolean => {
+    return items.some(item => {
+      if (item.href && location.pathname === item.href) return true;
+      if (item.children) return isAnyActive(item.children);
+      return false;
+    });
+  };
+
+  const active = isAnyActive(group.items);
+  const [open, setOpen] = useState(active);
+
+  return (
+    <div className="mb-1">
+      <button
+        onClick={() => setOpen(!open)}
+        className={cn(
+          'w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors',
+          active ? 'text-foreground' : 'text-muted-foreground hover:text-foreground',
+        )}
+      >
+        <group.icon className={cn('h-4 w-4 shrink-0', group.color)} />
+        {!collapsed && (
+          <>
+            <span className="flex-1 text-left">{group.department}</span>
+            {open ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
+          </>
+        )}
+      </button>
+      {open && !collapsed && (
+        <div className="mt-0.5 space-y-0.5 ml-1">
+          {group.items.map((item) => (
+            <NavItemComponent key={item.href || item.label} item={item} collapsed={collapsed} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function AdminSidebar() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -146,12 +235,14 @@ export function AdminSidebar() {
     navigate('/admin/login');
   };
 
+  const isDashboard = location.pathname === '/admin';
+
   const SidebarContent = () => (
     <div className="flex flex-col h-full">
       {/* Header */}
       <div className={cn('flex items-center border-b border-border p-4', collapsed ? 'justify-center' : 'gap-3')}>
         {!collapsed && <img src={sernetLogo} alt="SERNET" className="h-7 object-contain" />}
-        {!collapsed && <span className="text-xs font-medium text-muted-foreground bg-primary/10 text-primary px-2 py-0.5 rounded-full">CMS</span>}
+        {!collapsed && <span className="text-xs font-medium text-muted-foreground bg-primary/10 text-primary px-2 py-0.5 rounded-full">Admin</span>}
         <button
           onClick={() => setCollapsed(!collapsed)}
           className="ml-auto p-1.5 rounded-lg hover:bg-muted transition-colors text-muted-foreground hidden md:block"
@@ -160,10 +251,26 @@ export function AdminSidebar() {
         </button>
       </div>
 
-      {/* Nav */}
-      <nav className="flex-1 overflow-y-auto p-3 space-y-0.5">
-        {navItems.map((item) => (
-          <NavItemComponent key={item.label} item={item} collapsed={collapsed} />
+      {/* Master Dashboard Link */}
+      <div className="px-3 pt-3 pb-1">
+        <Link
+          to="/admin"
+          className={cn(
+            'flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
+            isDashboard
+              ? 'bg-primary text-primary-foreground'
+              : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+          )}
+        >
+          <LayoutDashboard className="h-4 w-4 shrink-0" />
+          {!collapsed && <span>Master Dashboard</span>}
+        </Link>
+      </div>
+
+      {/* Department Groups */}
+      <nav className="flex-1 overflow-y-auto px-3 pt-1 pb-3 space-y-0.5">
+        {departmentGroups.map((group) => (
+          <DepartmentSection key={group.department} group={group} collapsed={collapsed} />
         ))}
       </nav>
 
@@ -196,7 +303,7 @@ export function AdminSidebar() {
           <Menu className="h-5 w-5" />
         </button>
         <img src={sernetLogo} alt="SERNET" className="h-7 object-contain" />
-        <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded-full">CMS</span>
+        <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-0.5 rounded-full">Admin</span>
       </div>
 
       {/* Mobile drawer */}
@@ -208,11 +315,26 @@ export function AdminSidebar() {
               <img src={sernetLogo} alt="SERNET" className="h-7 object-contain" />
               <button onClick={() => setMobileOpen(false)}><X className="h-5 w-5" /></button>
             </div>
-            <nav className="p-3 space-y-0.5 overflow-y-auto h-[calc(100%-57px)]">
-              {navItems.map((item) => (
-                <NavItemComponent key={item.label} item={item} collapsed={false} />
-              ))}
-            </nav>
+            <div className="overflow-y-auto h-[calc(100%-57px)]">
+              <div className="px-3 pt-3 pb-1">
+                <Link
+                  to="/admin"
+                  onClick={() => setMobileOpen(false)}
+                  className={cn(
+                    'flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
+                    isDashboard ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+                  )}
+                >
+                  <LayoutDashboard className="h-4 w-4 shrink-0" />
+                  <span>Master Dashboard</span>
+                </Link>
+              </div>
+              <nav className="px-3 pt-1 pb-3 space-y-0.5">
+                {departmentGroups.map((group) => (
+                  <DepartmentSection key={group.department} group={group} collapsed={false} />
+                ))}
+              </nav>
+            </div>
           </div>
         </div>
       )}
@@ -220,7 +342,7 @@ export function AdminSidebar() {
       {/* Desktop sidebar */}
       <aside className={cn(
         'hidden md:flex flex-col h-screen sticky top-0 bg-background border-r border-border transition-all duration-200',
-        collapsed ? 'w-14' : 'w-56'
+        collapsed ? 'w-14' : 'w-60'
       )}>
         <SidebarContent />
       </aside>
