@@ -6,6 +6,40 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
+// Determine office type from city/address heuristics
+function classifyOfficeType(city: string, address1: string, amcName: string): string {
+  const c = city?.toLowerCase().trim() || "";
+  const a = (address1 || "").toLowerCase();
+  
+  // IFSC / GIFT City
+  if (c.includes("gift") || a.includes("gift sez") || a.includes("gift city")) return "IFSC";
+  
+  // International
+  if (c.includes("singapore") || c.includes("dubai") || c.includes("london") || c.includes("mauritius")) return "INTL";
+  
+  // Head Office: Mumbai is typically HO for most AMCs
+  const hoCity = c.includes("mumbai") || c.includes("lower parel") || c.includes("bkc") || c.includes("nariman");
+  if (hoCity && (a.includes("head") || a.includes("corporate") || a.includes("registered"))) return "HO";
+  
+  // Zonal offices - major metros
+  const zonalCities = ["mumbai", "delhi", "new delhi", "chennai", "kolkata", "bangalore", "bengaluru", "hyderabad"];
+  if (zonalCities.some(z => c.includes(z))) return "ZO";
+  
+  // Regional offices - state capitals and large cities
+  const regionalCities = [
+    "ahmedabad", "pune", "lucknow", "jaipur", "chandigarh", "bhopal", "patna",
+    "guwahati", "bhubaneshwar", "bhubaneswar", "thiruvananthapuram", "trivandrum",
+    "kochi", "ernakulam", "coimbatore", "indore", "nagpur", "surat", "vadodara",
+    "rajkot", "gurgaon", "gurugram", "noida", "ludhiana", "amritsar", "ranchi",
+    "raipur", "visakhapatnam", "vizag", "vijayawada", "madurai", "mangalore",
+    "mysore", "hubli", "nashik", "thane", "panaji", "goa",
+  ];
+  if (regionalCities.some(r => c.includes(r))) return "RO";
+  
+  // Default: Branch Office
+  return "BO";
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -17,8 +51,7 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    const { rows } = await req.json();
-    // rows: Array<{ amc_name, address1, address2, address3, city, pincode, phone }>
+    const { rows, clear_existing } = await req.json();
 
     if (!rows || !Array.isArray(rows) || rows.length === 0) {
       return new Response(JSON.stringify({ error: "No rows provided" }), {
@@ -27,7 +60,25 @@ Deno.serve(async (req) => {
       });
     }
 
-    // 1. Group by AMC name
+    // Optionally clear existing principal data
+    if (clear_existing) {
+      // Get all principal contact IDs
+      const { data: principals } = await supabase
+        .from("crm_contacts")
+        .select("id")
+        .eq("relationship_type", "principal")
+        .eq("source", "import");
+
+      if (principals && principals.length > 0) {
+        const ids = principals.map((p: any) => p.id);
+        // Delete branches first (cascade should handle, but be explicit)
+        await supabase.from("contact_branches").delete().in("contact_id", ids);
+        await supabase.from("contact_kmp").delete().in("contact_id", ids);
+        await supabase.from("crm_contacts").delete().in("id", ids);
+      }
+    }
+
+    // Group by AMC name
     const amcMap = new Map<string, typeof rows>();
     for (const row of rows) {
       const name = row.amc_name?.trim();
@@ -36,13 +87,13 @@ Deno.serve(async (req) => {
       amcMap.get(name)!.push(row);
     }
 
-    const results: { contacts_created: number; branches_created: number; errors: string[] } = {
+    const results = {
       contacts_created: 0,
       branches_created: 0,
-      errors: [],
+      amcs_processed: 0,
+      errors: [] as string[],
     };
 
-    // 2. For each unique AMC, upsert contact and insert branches
     for (const [amcName, branches] of amcMap) {
       // Check if contact already exists
       const { data: existing } = await supabase
@@ -56,9 +107,17 @@ Deno.serve(async (req) => {
 
       if (existing) {
         contactId = existing.id;
+        // Update meta
+        await supabase.from("crm_contacts").update({
+          relationship_meta: {
+            category: "AMC",
+            products: ["Mutual Funds", "SIF"],
+            arn_number: "ARN 35275",
+            total_branches: branches.length,
+          },
+        }).eq("id", contactId);
       } else {
-        // Get primary phone from first branch
-        const primaryPhone = branches[0]?.phone?.replace(/[^0-9+\-\s\/]/g, "").trim() || "";
+        const primaryPhone = branches[0]?.phone?.replace(/[^0-9+\-\s\/()]/g, "").trim() || "";
         
         const { data: newContact, error: contactErr } = await supabase
           .from("crm_contacts")
@@ -87,19 +146,39 @@ Deno.serve(async (req) => {
         results.contacts_created++;
       }
 
-      // 3. Insert branches (batch)
-      const branchRows = branches.map((b: any) => ({
-        contact_id: contactId,
-        branch_city: b.city?.trim() || "Unknown",
-        address_line1: b.address1?.trim() || null,
-        address_line2: b.address2?.trim() || null,
-        address_line3: b.address3?.trim() || null,
-        pincode: b.pincode?.toString().replace(/\s/g, "").trim() || null,
-        phone: b.phone?.trim() || null,
-        is_head_office: false,
-      }));
+      // Delete existing branches for this contact (to handle re-import)
+      await supabase.from("contact_branches").delete().eq("contact_id", contactId);
 
-      // Insert in chunks of 100
+      // Determine which is HO - first Mumbai entry or first entry
+      let hoSet = false;
+      const branchRows = branches.map((b: any) => {
+        const city = b.city?.trim() || "Unknown";
+        const officeType = classifyOfficeType(city, b.address1, amcName);
+        const isHO = !hoSet && officeType === "ZO" && (city.toLowerCase().includes("mumbai"));
+        if (isHO) hoSet = true;
+        
+        return {
+          contact_id: contactId,
+          branch_city: city,
+          address_line1: b.address1?.trim() || null,
+          address_line2: b.address2?.trim() || null,
+          address_line3: b.address3?.trim() || null,
+          pincode: b.pincode?.toString().replace(/\s/g, "").trim() || null,
+          phone: b.phone?.trim() || null,
+          is_head_office: isHO,
+          office_type: isHO ? "HO" : officeType,
+          address_type: "domestic",
+          ownership: "own",
+        };
+      });
+
+      // Mark first entry as HO if none was set
+      if (!hoSet && branchRows.length > 0) {
+        branchRows[0].is_head_office = true;
+        branchRows[0].office_type = "HO";
+      }
+
+      // Insert in chunks
       for (let i = 0; i < branchRows.length; i += 100) {
         const chunk = branchRows.slice(i, i + 100);
         const { error: branchErr, data: inserted } = await supabase
@@ -113,6 +192,8 @@ Deno.serve(async (req) => {
           results.branches_created += inserted?.length || 0;
         }
       }
+
+      results.amcs_processed++;
     }
 
     return new Response(JSON.stringify(results), {
