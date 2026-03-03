@@ -62,7 +62,7 @@ const Support = () => {
   const { data: kbArticles = [] } = useQuery({
     queryKey: ['kb-articles-public', kbSearch],
     queryFn: async () => {
-      let q = db('kb_articles').select('id, title, slug, category, excerpt, body').eq('status', 'published').order('view_count', { ascending: false }).limit(12);
+      let q = db('kb_articles').select('id, title, slug, category, body').eq('status', 'published').order('view_count', { ascending: false }).limit(12);
       if (kbSearch.trim()) q = q.ilike('title', `%${kbSearch}%`);
       const { data } = await q;
       return data ?? [];
