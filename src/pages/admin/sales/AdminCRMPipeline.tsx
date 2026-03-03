@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { AdminGuard } from '@/components/admin/AdminGuard';
 import { supabase } from '@/integrations/supabase/client';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -12,9 +12,9 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
-import { Plus, ChevronRight, User, Phone, IndianRupee, Calendar, ArrowRight } from 'lucide-react';
+import { Plus, User, Phone, IndianRupee, ArrowRight, ShieldAlert, AlertTriangle, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { format } from 'date-fns';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 const STAGES = [
   { key: 'enquiry', label: 'Enquiry', color: 'bg-blue-500', subStatuses: ['contacted', 'not_reachable', 'not_interested', 'dnd'] },
@@ -60,6 +60,47 @@ type Deal = {
   crm_contacts?: { full_name: string; phone: string | null } | null;
 };
 
+// ---- Validation helper ----
+async function validateTransition(dealId: string, toStage: string, toSubStatus: string) {
+  const { data, error } = await supabase.rpc('validate_deal_transition', {
+    _deal_id: dealId,
+    _to_stage: toStage as any,
+    _to_sub_status: toSubStatus as any,
+  });
+  if (error) throw error;
+  return data as { allowed: boolean; errors: string[]; requires_approval: boolean };
+}
+
+async function executeTransition(deal: Deal, toStage: string, toSubStatus: string) {
+  // Validate first
+  const validation = await validateTransition(deal.id, toStage, toSubStatus);
+  if (!validation.allowed) {
+    return { success: false, errors: validation.errors, requires_approval: false };
+  }
+  if (validation.requires_approval) {
+    return { success: false, errors: ['This transition requires approval (not yet implemented)'], requires_approval: true };
+  }
+
+  // Execute the move
+  const { error } = await supabase.from('crm_deals').update({
+    stage: toStage as any,
+    sub_status: toSubStatus as any,
+  }).eq('id', deal.id);
+  if (error) throw error;
+
+  // Record history
+  await supabase.from('crm_stage_history').insert({
+    deal_id: deal.id,
+    from_stage: deal.stage as any,
+    from_sub_status: deal.sub_status as any,
+    to_stage: toStage as any,
+    to_sub_status: toSubStatus as any,
+  });
+
+  return { success: true, errors: [], requires_approval: false };
+}
+
+// ---- New Deal Dialog ----
 function NewDealDialog({ onCreated }: { onCreated: () => void }) {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({
@@ -164,51 +205,98 @@ function NewDealDialog({ onCreated }: { onCreated: () => void }) {
   );
 }
 
+// ---- Deal Card with Blueprint Enforcement ----
 function DealCard({ deal, onMove }: { deal: Deal; onMove: () => void }) {
-  const queryClient = useQueryClient();
   const stageIdx = STAGES.findIndex(s => s.key === deal.stage);
+  const currentStage = STAGES[stageIdx];
   const nextStage = stageIdx < STAGES.length - 1 ? STAGES[stageIdx + 1] : null;
+  const [moving, setMoving] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
-  const moveToNext = async () => {
-    if (!nextStage) return;
-    const newSub = nextStage.subStatuses[0];
-    const { error } = await supabase.from('crm_deals').update({
-      stage: nextStage.key as any, sub_status: newSub as any,
-    }).eq('id', deal.id);
-    if (error) { toast.error(error.message); return; }
-
-    await supabase.from('crm_stage_history').insert({
-      deal_id: deal.id,
-      from_stage: deal.stage as any,
-      from_sub_status: deal.sub_status as any,
-      to_stage: nextStage.key as any,
-      to_sub_status: newSub as any,
-    });
-    toast.success(`Moved to ${nextStage.label}`);
-    onMove();
+  const handleMove = async (toStage: string, toSubStatus: string) => {
+    if (toStage === deal.stage && toSubStatus === deal.sub_status) return;
+    setMoving(true);
+    setValidationErrors([]);
+    try {
+      const result = await executeTransition(deal, toStage, toSubStatus);
+      if (result.success) {
+        toast.success(`Moved to ${SUB_STATUS_LABELS[toSubStatus] || toSubStatus}`);
+        onMove();
+      } else {
+        setValidationErrors(result.errors);
+        toast.error(result.errors[0] || 'Transition blocked');
+      }
+    } catch (e: any) {
+      toast.error(e.message);
+    } finally {
+      setMoving(false);
+    }
   };
 
   return (
-    <Card className="p-3 space-y-2 hover:shadow-md transition-shadow cursor-pointer">
+    <Card className="p-3 space-y-2 hover:shadow-md transition-shadow">
       <div className="flex items-start justify-between gap-2">
         <h4 className="text-sm font-medium leading-tight line-clamp-2">{deal.title}</h4>
-        <Badge variant="outline" className={cn('text-[10px] shrink-0', SUB_STATUS_COLORS[deal.sub_status])}>
-          {SUB_STATUS_LABELS[deal.sub_status] || deal.sub_status}
-        </Badge>
+        {/* Sub-status changer within current stage */}
+        <Popover>
+          <PopoverTrigger asChild>
+            <button className={cn('inline-flex items-center gap-0.5 text-[10px] px-1.5 py-0.5 rounded-full shrink-0 cursor-pointer hover:opacity-80', SUB_STATUS_COLORS[deal.sub_status])}>
+              {SUB_STATUS_LABELS[deal.sub_status] || deal.sub_status}
+              <ChevronDown className="h-2.5 w-2.5" />
+            </button>
+          </PopoverTrigger>
+          <PopoverContent className="w-40 p-1" align="end">
+            <p className="text-[10px] font-medium text-muted-foreground px-2 py-1">Change sub-status</p>
+            {currentStage.subStatuses.map(ss => (
+              <button
+                key={ss}
+                disabled={ss === deal.sub_status || moving}
+                onClick={() => handleMove(deal.stage, ss)}
+                className={cn(
+                  'w-full text-left text-xs px-2 py-1.5 rounded hover:bg-accent disabled:opacity-40',
+                  ss === deal.sub_status && 'font-semibold'
+                )}
+              >
+                {SUB_STATUS_LABELS[ss]}
+              </button>
+            ))}
+          </PopoverContent>
+        </Popover>
       </div>
+
       {deal.crm_contacts && (
         <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
           <User className="h-3 w-3" /> {deal.crm_contacts.full_name}
           {deal.crm_contacts.phone && <><Phone className="h-3 w-3 ml-2" /> {deal.crm_contacts.phone}</>}
         </div>
       )}
+
+      {/* Validation errors */}
+      {validationErrors.length > 0 && (
+        <div className="bg-destructive/10 border border-destructive/20 rounded p-2 space-y-1">
+          <div className="flex items-center gap-1 text-destructive text-[10px] font-medium">
+            <ShieldAlert className="h-3 w-3" /> Blueprint blocked
+          </div>
+          {validationErrors.map((err, i) => (
+            <p key={i} className="text-[10px] text-destructive/80 flex items-start gap-1">
+              <AlertTriangle className="h-3 w-3 shrink-0 mt-0.5" /> {err}
+            </p>
+          ))}
+        </div>
+      )}
+
       <div className="flex items-center justify-between text-xs text-muted-foreground">
         <div className="flex items-center gap-1">
           {deal.deal_value > 0 && <><IndianRupee className="h-3 w-3" /> {Number(deal.deal_value).toLocaleString('en-IN')}</>}
           {deal.product_interest && <Badge variant="secondary" className="text-[10px] ml-1">{deal.product_interest}</Badge>}
         </div>
         {nextStage && (
-          <Button variant="ghost" size="sm" className="h-6 px-1.5 text-[10px]" onClick={e => { e.stopPropagation(); moveToNext(); }}>
+          <Button
+            variant="ghost" size="sm"
+            className="h-6 px-1.5 text-[10px]"
+            disabled={moving}
+            onClick={e => { e.stopPropagation(); handleMove(nextStage.key, nextStage.subStatuses[0]); }}
+          >
             <ArrowRight className="h-3 w-3 mr-0.5" /> {nextStage.label}
           </Button>
         )}
@@ -217,6 +305,7 @@ function DealCard({ deal, onMove }: { deal: Deal; onMove: () => void }) {
   );
 }
 
+// ---- Main Pipeline ----
 export default function AdminCRMPipeline() {
   const queryClient = useQueryClient();
 
@@ -242,7 +331,7 @@ export default function AdminCRMPipeline() {
 
   return (
     <AdminGuard>
-      <AdminLayout title="CRM Pipeline" subtitle="Visual deal pipeline — Enquiry → Qualified → Account → Status">
+      <AdminLayout title="CRM Pipeline" subtitle="Blueprint-enforced pipeline — Enquiry → Qualified → Account → Status">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3 text-sm text-muted-foreground">
             <span>{deals.length} deals</span>
