@@ -1456,18 +1456,21 @@ export type Database = {
       user_roles: {
         Row: {
           created_at: string
+          department: Database["public"]["Enums"]["department"] | null
           id: string
           role: Database["public"]["Enums"]["app_role"]
           user_id: string
         }
         Insert: {
           created_at?: string
+          department?: Database["public"]["Enums"]["department"] | null
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id: string
         }
         Update: {
           created_at?: string
+          department?: Database["public"]["Enums"]["department"] | null
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
@@ -1479,6 +1482,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      has_department_access: {
+        Args: {
+          _dept: Database["public"]["Enums"]["department"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
       is_admin: { Args: { _user_id: string }; Returns: boolean }
       is_super_admin: { Args: { _user_id: string }; Returns: boolean }
       search_content: {
@@ -1502,6 +1512,13 @@ export type Database = {
       article_format: "Text" | "Image" | "Audio" | "Video"
       bulletin_priority: "info" | "important" | "warning" | "success"
       content_status: "draft" | "published" | "archived"
+      department:
+        | "marketing"
+        | "sales"
+        | "hr"
+        | "accounts"
+        | "support"
+        | "legal"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1633,6 +1650,7 @@ export const Constants = {
       article_format: ["Text", "Image", "Audio", "Video"],
       bulletin_priority: ["info", "important", "warning", "success"],
       content_status: ["draft", "published", "archived"],
+      department: ["marketing", "sales", "hr", "accounts", "support", "legal"],
     },
   },
 } as const
