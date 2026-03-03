@@ -1,10 +1,18 @@
 import { AdminLayout } from '@/components/admin/AdminLayout';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Plus } from 'lucide-react';
+import { toast } from 'sonner';
 import { format } from 'date-fns';
+import { useState } from 'react';
 
 const statusColors: Record<string, string> = {
   present: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
@@ -14,19 +22,52 @@ const statusColors: Record<string, string> = {
 };
 
 const AdminAttendance = () => {
+  const qc = useQueryClient();
   const today = format(new Date(), 'yyyy-MM-dd');
+  const [open, setOpen] = useState(false);
+  const [form, setForm] = useState({ employee_id: '', log_date: today, status: 'present', check_in: '', check_out: '', notes: '' });
 
   const { data: logs = [], isLoading } = useQuery({
-    queryKey: ['attendance-logs', today],
+    queryKey: ['attendance-logs'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('attendance_logs')
         .select('*, employees!attendance_logs_employee_id_fkey(full_name, employee_code)')
         .order('log_date', { ascending: false })
-        .limit(100);
+        .limit(200);
       if (error) throw error;
       return data || [];
     },
+  });
+
+  const { data: employees = [] } = useQuery({
+    queryKey: ['employees-list'],
+    queryFn: async () => {
+      const { data, error } = await supabase.from('employees').select('id, full_name').eq('status', 'active').order('full_name');
+      if (error) throw error;
+      return data || [];
+    },
+  });
+
+  const createLog = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase.from('attendance_logs').insert({
+        employee_id: form.employee_id,
+        log_date: form.log_date,
+        status: form.status,
+        check_in: form.check_in ? `${form.log_date}T${form.check_in}:00` : null,
+        check_out: form.check_out ? `${form.log_date}T${form.check_out}:00` : null,
+        notes: form.notes || null,
+      });
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['attendance-logs'] });
+      toast.success('Attendance logged');
+      setOpen(false);
+      setForm({ employee_id: '', log_date: today, status: 'present', check_in: '', check_out: '', notes: '' });
+    },
+    onError: (e: any) => toast.error(e.message),
   });
 
   const todayLogs = logs.filter((l: any) => l.log_date === today);
@@ -49,13 +90,45 @@ const AdminAttendance = () => {
       </div>
 
       <Card>
-        <CardHeader><CardTitle>Attendance Log</CardTitle></CardHeader>
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle>Attendance Log</CardTitle>
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild><Button size="sm"><Plus className="h-4 w-4 mr-1" />Log Attendance</Button></DialogTrigger>
+            <DialogContent>
+              <DialogHeader><DialogTitle>Log Attendance</DialogTitle></DialogHeader>
+              <div className="space-y-4">
+                <div>
+                  <Label>Employee</Label>
+                  <Select value={form.employee_id} onValueChange={v => setForm(p => ({ ...p, employee_id: v }))}>
+                    <SelectTrigger><SelectValue placeholder="Select employee" /></SelectTrigger>
+                    <SelectContent>{employees.map((e: any) => <SelectItem key={e.id} value={e.id}>{e.full_name}</SelectItem>)}</SelectContent>
+                  </Select>
+                </div>
+                <div><Label>Date</Label><Input type="date" value={form.log_date} onChange={e => setForm(p => ({ ...p, log_date: e.target.value }))} /></div>
+                <div>
+                  <Label>Status</Label>
+                  <Select value={form.status} onValueChange={v => setForm(p => ({ ...p, status: v }))}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="present">Present</SelectItem>
+                      <SelectItem value="absent">Absent</SelectItem>
+                      <SelectItem value="half_day">Half Day</SelectItem>
+                      <SelectItem value="on_leave">On Leave</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div><Label>Check In</Label><Input type="time" value={form.check_in} onChange={e => setForm(p => ({ ...p, check_in: e.target.value }))} /></div>
+                  <div><Label>Check Out</Label><Input type="time" value={form.check_out} onChange={e => setForm(p => ({ ...p, check_out: e.target.value }))} /></div>
+                </div>
+                <div><Label>Notes</Label><Input value={form.notes} onChange={e => setForm(p => ({ ...p, notes: e.target.value }))} /></div>
+                <Button className="w-full" disabled={!form.employee_id || !form.log_date} onClick={() => createLog.mutate()}>Log Attendance</Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        </CardHeader>
         <CardContent>
-          {isLoading ? (
-            <p className="text-muted-foreground text-sm">Loading...</p>
-          ) : logs.length === 0 ? (
-            <p className="text-muted-foreground text-sm">No attendance records yet.</p>
-          ) : (
+          {isLoading ? <p className="text-muted-foreground text-sm">Loading...</p> : logs.length === 0 ? <p className="text-muted-foreground text-sm">No attendance records yet.</p> : (
             <Table>
               <TableHeader>
                 <TableRow>
