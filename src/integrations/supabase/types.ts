@@ -2615,9 +2615,192 @@ export type Database = {
         }
         Relationships: []
       }
+      support_automation_rules: {
+        Row: {
+          actions: Json
+          conditions: Json
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          sort_order: number | null
+          trigger_type: string
+          updated_at: string
+        }
+        Insert: {
+          actions?: Json
+          conditions?: Json
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          sort_order?: number | null
+          trigger_type?: string
+          updated_at?: string
+        }
+        Update: {
+          actions?: Json
+          conditions?: Json
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          sort_order?: number | null
+          trigger_type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      support_escalation_matrix: {
+        Row: {
+          assigned_user_id: string | null
+          created_at: string
+          department: string
+          id: string
+          is_active: boolean | null
+          level: number
+          notification_channels: string[] | null
+          product: string | null
+          role_title: string
+          tat_breach_hours: number
+        }
+        Insert: {
+          assigned_user_id?: string | null
+          created_at?: string
+          department?: string
+          id?: string
+          is_active?: boolean | null
+          level?: number
+          notification_channels?: string[] | null
+          product?: string | null
+          role_title: string
+          tat_breach_hours?: number
+        }
+        Update: {
+          assigned_user_id?: string | null
+          created_at?: string
+          department?: string
+          id?: string
+          is_active?: boolean | null
+          level?: number
+          notification_channels?: string[] | null
+          product?: string | null
+          role_title?: string
+          tat_breach_hours?: number
+        }
+        Relationships: []
+      }
+      support_issue_categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          icon_name: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          slug: string
+          sort_order: number | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          icon_name?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          slug: string
+          sort_order?: number | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          icon_name?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          slug?: string
+          sort_order?: number | null
+        }
+        Relationships: []
+      }
+      support_issue_types: {
+        Row: {
+          auto_assign_team: string | null
+          category_id: string
+          created_at: string
+          description: string | null
+          escalation_path: Json | null
+          id: string
+          is_active: boolean | null
+          issue_code: string
+          keyword_triggers: string[] | null
+          priority: string
+          product: string
+          regulator: string | null
+          required_documents: string[] | null
+          risk_tag: string | null
+          sort_order: number | null
+          tat_hours: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          auto_assign_team?: string | null
+          category_id: string
+          created_at?: string
+          description?: string | null
+          escalation_path?: Json | null
+          id?: string
+          is_active?: boolean | null
+          issue_code: string
+          keyword_triggers?: string[] | null
+          priority?: string
+          product?: string
+          regulator?: string | null
+          required_documents?: string[] | null
+          risk_tag?: string | null
+          sort_order?: number | null
+          tat_hours?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          auto_assign_team?: string | null
+          category_id?: string
+          created_at?: string
+          description?: string | null
+          escalation_path?: Json | null
+          id?: string
+          is_active?: boolean | null
+          issue_code?: string
+          keyword_triggers?: string[] | null
+          priority?: string
+          product?: string
+          regulator?: string | null
+          required_documents?: string[] | null
+          risk_tag?: string | null
+          sort_order?: number | null
+          tat_hours?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_issue_types_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "support_issue_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       support_tickets: {
         Row: {
           assigned_to: string | null
+          auto_assigned: boolean | null
           channel: Database["public"]["Enums"]["ticket_channel"]
           closed_at: string | null
           contact_email: string | null
@@ -2628,19 +2811,31 @@ export type Database = {
           created_by: string | null
           department: string | null
           description: string | null
+          documents_required: string[] | null
+          documents_submitted: string[] | null
           due_date: string | null
+          escalation_level: number | null
           first_response_at: string | null
           id: string
+          issue_category_id: string | null
+          issue_code: string | null
+          issue_type_id: string | null
           priority: Database["public"]["Enums"]["ticket_priority"]
+          product: string | null
+          regulator: string | null
           resolved_at: string | null
+          risk_tag: string | null
           status: Database["public"]["Enums"]["ticket_status"]
           subject: string
           tags: string[] | null
+          tat_deadline: string | null
+          tat_hours: number | null
           ticket_number: string
           updated_at: string
         }
         Insert: {
           assigned_to?: string | null
+          auto_assigned?: boolean | null
           channel?: Database["public"]["Enums"]["ticket_channel"]
           closed_at?: string | null
           contact_email?: string | null
@@ -2651,19 +2846,31 @@ export type Database = {
           created_by?: string | null
           department?: string | null
           description?: string | null
+          documents_required?: string[] | null
+          documents_submitted?: string[] | null
           due_date?: string | null
+          escalation_level?: number | null
           first_response_at?: string | null
           id?: string
+          issue_category_id?: string | null
+          issue_code?: string | null
+          issue_type_id?: string | null
           priority?: Database["public"]["Enums"]["ticket_priority"]
+          product?: string | null
+          regulator?: string | null
           resolved_at?: string | null
+          risk_tag?: string | null
           status?: Database["public"]["Enums"]["ticket_status"]
           subject: string
           tags?: string[] | null
+          tat_deadline?: string | null
+          tat_hours?: number | null
           ticket_number: string
           updated_at?: string
         }
         Update: {
           assigned_to?: string | null
+          auto_assigned?: boolean | null
           channel?: Database["public"]["Enums"]["ticket_channel"]
           closed_at?: string | null
           contact_email?: string | null
@@ -2674,14 +2881,25 @@ export type Database = {
           created_by?: string | null
           department?: string | null
           description?: string | null
+          documents_required?: string[] | null
+          documents_submitted?: string[] | null
           due_date?: string | null
+          escalation_level?: number | null
           first_response_at?: string | null
           id?: string
+          issue_category_id?: string | null
+          issue_code?: string | null
+          issue_type_id?: string | null
           priority?: Database["public"]["Enums"]["ticket_priority"]
+          product?: string | null
+          regulator?: string | null
           resolved_at?: string | null
+          risk_tag?: string | null
           status?: Database["public"]["Enums"]["ticket_status"]
           subject?: string
           tags?: string[] | null
+          tat_deadline?: string | null
+          tat_hours?: number | null
           ticket_number?: string
           updated_at?: string
         }
@@ -2691,6 +2909,20 @@ export type Database = {
             columns: ["contact_id"]
             isOneToOne: false
             referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "support_tickets_issue_category_id_fkey"
+            columns: ["issue_category_id"]
+            isOneToOne: false
+            referencedRelation: "support_issue_categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "support_tickets_issue_type_id_fkey"
+            columns: ["issue_type_id"]
+            isOneToOne: false
+            referencedRelation: "support_issue_types"
             referencedColumns: ["id"]
           },
         ]
@@ -2902,6 +3134,47 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      ticket_escalation_log: {
+        Row: {
+          created_at: string
+          escalated_to_name: string | null
+          escalated_to_user_id: string | null
+          from_level: number | null
+          id: string
+          reason: string
+          ticket_id: string
+          to_level: number
+        }
+        Insert: {
+          created_at?: string
+          escalated_to_name?: string | null
+          escalated_to_user_id?: string | null
+          from_level?: number | null
+          id?: string
+          reason?: string
+          ticket_id: string
+          to_level: number
+        }
+        Update: {
+          created_at?: string
+          escalated_to_name?: string | null
+          escalated_to_user_id?: string | null
+          from_level?: number | null
+          id?: string
+          reason?: string
+          ticket_id?: string
+          to_level?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ticket_escalation_log_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "support_tickets"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       ticket_replies: {
         Row: {
