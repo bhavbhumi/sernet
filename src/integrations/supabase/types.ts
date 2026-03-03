@@ -967,6 +967,7 @@ export type Database = {
       }
       employees: {
         Row: {
+          bio: string | null
           created_at: string
           date_of_joining: string | null
           date_of_leaving: string | null
@@ -977,14 +978,17 @@ export type Database = {
           employment_type: string
           full_name: string
           id: string
+          is_public: boolean | null
           phone: string | null
           photo_url: string | null
           reporting_to: string | null
+          sort_order: number | null
           status: string
           updated_at: string
           user_id: string | null
         }
         Insert: {
+          bio?: string | null
           created_at?: string
           date_of_joining?: string | null
           date_of_leaving?: string | null
@@ -995,14 +999,17 @@ export type Database = {
           employment_type?: string
           full_name: string
           id?: string
+          is_public?: boolean | null
           phone?: string | null
           photo_url?: string | null
           reporting_to?: string | null
+          sort_order?: number | null
           status?: string
           updated_at?: string
           user_id?: string | null
         }
         Update: {
+          bio?: string | null
           created_at?: string
           date_of_joining?: string | null
           date_of_leaving?: string | null
@@ -1013,9 +1020,11 @@ export type Database = {
           employment_type?: string
           full_name?: string
           id?: string
+          is_public?: boolean | null
           phone?: string | null
           photo_url?: string | null
           reporting_to?: string | null
+          sort_order?: number | null
           status?: string
           updated_at?: string
           user_id?: string | null
