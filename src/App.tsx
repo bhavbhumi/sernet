@@ -91,6 +91,7 @@ import AdminPipelineConfig from "./pages/admin/sales/AdminPipelineConfig";
 import AdminCRMDeals from "./pages/admin/sales/AdminCRMDeals";
 import AdminCRMContacts from "./pages/admin/sales/AdminCRMContacts";
 import AdminCRMActivities from "./pages/admin/sales/AdminCRMActivities";
+import AdminPrincipalBranches from "./pages/admin/sales/AdminPrincipalBranches";
 import AdminSitePages from "./pages/admin/site/AdminSitePages";
 import AdminSiteSettings from "./pages/admin/site/AdminSiteSettings";
 import AdminMediaLibrary from "./pages/admin/site/AdminMediaLibrary";
@@ -225,6 +226,7 @@ const App = () => (
           <Route path="/admin/sales/crm/deals" element={<AdminCRMDeals />} />
           <Route path="/admin/sales/crm/contacts" element={<AdminCRMContacts />} />
           <Route path="/admin/sales/crm/activities" element={<AdminCRMActivities />} />
+          <Route path="/admin/sales/crm/principal-branches" element={<AdminPrincipalBranches />} />
           <Route path="/admin/sales/leads" element={<AdminLeads />} />
           <Route path="/admin/sales/calculator-leads" element={<AdminCalculatorLeads />} />
 

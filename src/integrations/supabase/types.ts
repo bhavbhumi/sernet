@@ -689,6 +689,53 @@ export type Database = {
           },
         ]
       }
+      contact_branches: {
+        Row: {
+          address_line1: string | null
+          address_line2: string | null
+          address_line3: string | null
+          branch_city: string
+          contact_id: string
+          created_at: string
+          id: string
+          is_head_office: boolean | null
+          phone: string | null
+          pincode: string | null
+        }
+        Insert: {
+          address_line1?: string | null
+          address_line2?: string | null
+          address_line3?: string | null
+          branch_city: string
+          contact_id: string
+          created_at?: string
+          id?: string
+          is_head_office?: boolean | null
+          phone?: string | null
+          pincode?: string | null
+        }
+        Update: {
+          address_line1?: string | null
+          address_line2?: string | null
+          address_line3?: string | null
+          branch_city?: string
+          contact_id?: string
+          created_at?: string
+          id?: string
+          is_head_office?: boolean | null
+          phone?: string | null
+          pincode?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contact_branches_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       content_summaries: {
         Row: {
           content_id: string
@@ -1204,6 +1251,8 @@ export type Database = {
       }
       firm_profile: {
         Row: {
+          amfi_registration: string | null
+          arn_number: string | null
           bank_details: Json | null
           cin: string | null
           city: string | null
@@ -1223,6 +1272,8 @@ export type Database = {
           website: string | null
         }
         Insert: {
+          amfi_registration?: string | null
+          arn_number?: string | null
           bank_details?: Json | null
           cin?: string | null
           city?: string | null
@@ -1242,6 +1293,8 @@ export type Database = {
           website?: string | null
         }
         Update: {
+          amfi_registration?: string | null
+          arn_number?: string | null
           bank_details?: Json | null
           cin?: string | null
           city?: string | null
