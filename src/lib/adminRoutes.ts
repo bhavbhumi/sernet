@@ -64,6 +64,16 @@ export const ADMIN_ROUTES = {
       applications: '/admin/hr/careers/applications',
     },
     team: '/admin/hr/team',
+    employees: '/admin/hr/employees',
+    leave: '/admin/hr/leave',
+    attendance: '/admin/hr/attendance',
+  },
+
+  // ── Accounts ──────────────────────────────────
+  accounts: {
+    root: '/admin/accounts',
+    invoices: '/admin/accounts/invoices',
+    payroll: '/admin/accounts/payroll',
   },
 
   // ── Legal & Compliance ─────────────────────────
@@ -97,6 +107,7 @@ export const DEPARTMENTS = [
   { key: 'marketing', label: 'Marketing', color: 'text-blue-500' },
   { key: 'sales', label: 'Sales', color: 'text-emerald-500' },
   { key: 'hr', label: 'HR', color: 'text-orange-500' },
+  { key: 'accounts', label: 'Accounts', color: 'text-amber-500' },
   { key: 'support', label: 'Support', color: 'text-cyan-500' },
   { key: 'legal', label: 'Legal & Compliance', color: 'text-violet-500' },
   { key: 'settings', label: 'System', color: 'text-muted-foreground' },
