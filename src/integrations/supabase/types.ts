@@ -848,6 +848,69 @@ export type Database = {
           },
         ]
       }
+      crm_stage_requirements: {
+        Row: {
+          created_at: string
+          field_label: string
+          id: string
+          is_active: boolean
+          required_field: string
+          stage: Database["public"]["Enums"]["crm_stage"]
+          sub_status: Database["public"]["Enums"]["crm_sub_status"] | null
+        }
+        Insert: {
+          created_at?: string
+          field_label: string
+          id?: string
+          is_active?: boolean
+          required_field: string
+          stage: Database["public"]["Enums"]["crm_stage"]
+          sub_status?: Database["public"]["Enums"]["crm_sub_status"] | null
+        }
+        Update: {
+          created_at?: string
+          field_label?: string
+          id?: string
+          is_active?: boolean
+          required_field?: string
+          stage?: Database["public"]["Enums"]["crm_stage"]
+          sub_status?: Database["public"]["Enums"]["crm_sub_status"] | null
+        }
+        Relationships: []
+      }
+      crm_transition_rules: {
+        Row: {
+          created_at: string
+          from_stage: Database["public"]["Enums"]["crm_stage"]
+          from_sub_status: Database["public"]["Enums"]["crm_sub_status"] | null
+          id: string
+          is_active: boolean
+          requires_approval: boolean
+          to_stage: Database["public"]["Enums"]["crm_stage"]
+          to_sub_status: Database["public"]["Enums"]["crm_sub_status"]
+        }
+        Insert: {
+          created_at?: string
+          from_stage: Database["public"]["Enums"]["crm_stage"]
+          from_sub_status?: Database["public"]["Enums"]["crm_sub_status"] | null
+          id?: string
+          is_active?: boolean
+          requires_approval?: boolean
+          to_stage: Database["public"]["Enums"]["crm_stage"]
+          to_sub_status: Database["public"]["Enums"]["crm_sub_status"]
+        }
+        Update: {
+          created_at?: string
+          from_stage?: Database["public"]["Enums"]["crm_stage"]
+          from_sub_status?: Database["public"]["Enums"]["crm_sub_status"] | null
+          id?: string
+          is_active?: boolean
+          requires_approval?: boolean
+          to_stage?: Database["public"]["Enums"]["crm_stage"]
+          to_sub_status?: Database["public"]["Enums"]["crm_sub_status"]
+        }
+        Relationships: []
+      }
       economic_events: {
         Row: {
           actual_value: string | null
@@ -2305,6 +2368,14 @@ export type Database = {
       }
       show_limit: { Args: never; Returns: number }
       show_trgm: { Args: { "": string }; Returns: string[] }
+      validate_deal_transition: {
+        Args: {
+          _deal_id: string
+          _to_stage: Database["public"]["Enums"]["crm_stage"]
+          _to_sub_status: Database["public"]["Enums"]["crm_sub_status"]
+        }
+        Returns: Json
+      }
     }
     Enums: {
       app_role: "super_admin" | "admin" | "editor"
