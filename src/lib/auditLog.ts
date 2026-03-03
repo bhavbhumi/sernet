@@ -1,6 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
 
-export type AuditAction = 'create' | 'update' | 'delete' | 'publish' | 'unpublish' | 'feature' | 'unfeature' | 'import' | 'login' | 'logout' | 'signup' | 'settings_change' | 'status_change';
+export type AuditAction = 'create' | 'update' | 'delete' | 'publish' | 'unpublish' | 'feature' | 'unfeature' | 'import' | 'login' | 'logout' | 'signup' | 'settings_change' | 'status_change' | 'reply';
 
 interface AuditLogEntry {
   action: AuditAction;
