@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { logAudit } from '@/lib/auditLog';
@@ -158,7 +158,7 @@ const departmentGroups: DepartmentGroup[] = [
   },
 ];
 
-function NavItemComponent({ item, collapsed, depth = 0 }: { item: NavItem; collapsed: boolean; depth?: number }) {
+const NavItemComponent = React.memo(function NavItemComponent({ item, collapsed, depth = 0 }: { item: NavItem; collapsed: boolean; depth?: number }) {
   const location = useLocation();
   const isActive = item.href ? location.pathname === item.href : false;
   const hasChildren = item.children && item.children.length > 0;
@@ -212,9 +212,9 @@ function NavItemComponent({ item, collapsed, depth = 0 }: { item: NavItem; colla
       {!collapsed && <span>{item.label}</span>}
     </Link>
   );
-}
+});
 
-function DepartmentSection({ group, collapsed }: { group: DepartmentGroup; collapsed: boolean }) {
+const DepartmentSection = React.memo(function DepartmentSection({ group, collapsed }: { group: DepartmentGroup; collapsed: boolean }) {
   const location = useLocation();
 
   const isAnyActive = (items: NavItem[]): boolean => {
@@ -254,7 +254,7 @@ function DepartmentSection({ group, collapsed }: { group: DepartmentGroup; colla
       )}
     </div>
   );
-}
+});
 
 export function AdminSidebar() {
   const navigate = useNavigate();
