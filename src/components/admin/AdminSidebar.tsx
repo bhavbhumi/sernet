@@ -89,6 +89,7 @@ const departmentGroups: DepartmentGroup[] = [
       {
         label: 'CRM', icon: UserCheck, children: [
           { label: 'Pipeline', icon: BarChart3, href: R.sales.pipeline },
+          { label: 'Pipeline Config', icon: Settings, href: R.sales.pipelineConfig },
           { label: 'All Deals', icon: Briefcase, href: R.sales.deals },
           { label: 'Contacts', icon: Users, href: R.sales.contacts },
           { label: 'Activities', icon: ClipboardList, href: R.sales.activities },

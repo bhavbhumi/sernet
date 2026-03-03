@@ -86,6 +86,7 @@ import AdminAuditLog from "./pages/admin/settings/AdminAuditLog";
 import AdminCalculatorLeads from "./pages/admin/settings/AdminCalculatorLeads";
 import AdminLeads from "./pages/admin/AdminLeads";
 import AdminCRMPipeline from "./pages/admin/sales/AdminCRMPipeline";
+import AdminPipelineConfig from "./pages/admin/sales/AdminPipelineConfig";
 import AdminCRMDeals from "./pages/admin/sales/AdminCRMDeals";
 import AdminCRMContacts from "./pages/admin/sales/AdminCRMContacts";
 import AdminCRMActivities from "./pages/admin/sales/AdminCRMActivities";
@@ -210,6 +211,7 @@ const App = () => (
 
           {/* Admin — Sales */}
           <Route path="/admin/sales/crm/pipeline" element={<AdminCRMPipeline />} />
+          <Route path="/admin/sales/crm/pipeline-config" element={<AdminPipelineConfig />} />
           <Route path="/admin/sales/crm/deals" element={<AdminCRMDeals />} />
           <Route path="/admin/sales/crm/contacts" element={<AdminCRMContacts />} />
           <Route path="/admin/sales/crm/activities" element={<AdminCRMActivities />} />
