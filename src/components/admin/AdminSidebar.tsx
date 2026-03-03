@@ -8,7 +8,7 @@ import {
   Vote, ClipboardList, Star, Briefcase, Users, Mic2, Settings, LogOut,
   ChevronDown, ChevronRight, Menu, X, Rss, Shield, Globe, Palette, ScanSearch, Images, Download,
   Sparkles, Calculator, UserCheck, CalendarDays, Mail, ScrollText, Scale, Lightbulb,
-  TrendingUp, Building2, Gavel, Megaphone, Headphones, Ticket, BookMarked, MessageSquareText,
+  TrendingUp, Building2, Gavel, Megaphone, Headphones, Ticket, BookMarked, MessageSquareText, Zap,
   Contact, CalendarClock, Clock, Receipt, Wallet
 } from 'lucide-react';
 import sernetLogo from '@/assets/sernet-logo.png';
@@ -150,6 +150,7 @@ const departmentGroups: DepartmentGroup[] = [
     color: 'text-muted-foreground',
     items: [
       { label: 'Admin Users', icon: Shield, href: R.settings.users },
+      { label: 'Workflows', icon: Zap, href: R.settings.workflows },
       { label: 'RSS Feeds', icon: Rss, href: R.settings.rss },
       { label: 'AI Usage', icon: Sparkles, href: R.settings.aiUsage },
       { label: 'Audit Log', icon: ScrollText, href: R.settings.auditLog },
