@@ -17,6 +17,7 @@ export function AdminGuard({ children }: AdminGuardProps) {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
         navigate('/admin/login');
+        setChecking(false);
         return;
       }
 
@@ -29,6 +30,7 @@ export function AdminGuard({ children }: AdminGuardProps) {
       if (!roleData) {
         await supabase.auth.signOut();
         navigate('/admin/login');
+        setChecking(false);
         return;
       }
 
