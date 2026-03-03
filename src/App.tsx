@@ -77,7 +77,7 @@ import AdminNewsletter from "./pages/admin/engagement/AdminNewsletter";
 import AdminNewsletterComposer from "./pages/admin/engagement/AdminNewsletterComposer";
 import AdminJobOpenings from "./pages/admin/careers/AdminJobOpenings";
 import AdminApplications from "./pages/admin/careers/AdminApplications";
-import AdminTeamMembers from "./pages/admin/careers/AdminTeamMembers";
+
 import AdminPress from "./pages/admin/AdminPress";
 import AdminRSSSettings from "./pages/admin/settings/AdminRSSSettings";
 import AdminUsers from "./pages/admin/settings/AdminUsers";
@@ -222,7 +222,6 @@ const App = () => (
           {/* Admin — HR */}
           <Route path="/admin/hr/careers/openings" element={<AdminJobOpenings />} />
           <Route path="/admin/hr/careers/applications" element={<AdminApplications />} />
-          <Route path="/admin/hr/team" element={<AdminTeamMembers />} />
           <Route path="/admin/hr/employees" element={<AdminEmployees />} />
           <Route path="/admin/hr/leave" element={<AdminLeaveManagement />} />
           <Route path="/admin/hr/attendance" element={<AdminAttendance />} />

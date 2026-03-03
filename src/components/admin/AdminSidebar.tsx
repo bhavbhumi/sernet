@@ -105,15 +105,18 @@ const departmentGroups: DepartmentGroup[] = [
     color: 'text-orange-500',
     items: [
       {
-        label: 'Careers', icon: Briefcase, children: [
+        label: 'Recruitment', icon: Briefcase, children: [
           { label: 'Job Openings', icon: Briefcase, href: R.hr.careers.openings },
           { label: 'Applications', icon: Users, href: R.hr.careers.applications },
         ]
       },
-      { label: 'Team Members', icon: Users, href: R.hr.team },
-      { label: 'Employee Directory', icon: Contact, href: R.hr.employees },
-      { label: 'Leave Management', icon: CalendarClock, href: R.hr.leave },
-      { label: 'Attendance', icon: Clock, href: R.hr.attendance },
+      {
+        label: 'Personnel', icon: Contact, children: [
+          { label: 'Employees', icon: Contact, href: R.hr.employees },
+          { label: 'Attendance', icon: Clock, href: R.hr.attendance },
+          { label: 'Leave Management', icon: CalendarClock, href: R.hr.leave },
+        ]
+      },
     ]
   },
   {

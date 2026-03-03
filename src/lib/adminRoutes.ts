@@ -64,7 +64,6 @@ export const ADMIN_ROUTES = {
       openings: '/admin/hr/careers/openings',
       applications: '/admin/hr/careers/applications',
     },
-    team: '/admin/hr/team',
     employees: '/admin/hr/employees',
     leave: '/admin/hr/leave',
     attendance: '/admin/hr/attendance',
