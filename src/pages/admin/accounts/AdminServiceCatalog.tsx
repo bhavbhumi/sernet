@@ -76,10 +76,10 @@ const AdminServiceCatalog = () => {
                   <div><Label>SAC Code</Label><Input value={form.sac_code} onChange={e => setForm(p => ({ ...p, sac_code: e.target.value }))} placeholder="997159" /></div>
                   <div>
                     <Label>Tax Rate</Label>
-                    <Select value={form.tax_rate_id} onValueChange={v => setForm(p => ({ ...p, tax_rate_id: v }))}>
+                    <Select value={form.tax_rate_id || "none"} onValueChange={v => setForm(p => ({ ...p, tax_rate_id: v === "none" ? "" : v }))}>
                       <SelectTrigger><SelectValue placeholder="Select tax" /></SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">No Tax</SelectItem>
+                        <SelectItem value="none">No Tax</SelectItem>
                         {taxRates.map((t: any) => <SelectItem key={t.id} value={t.id}>{t.name} ({t.rate}%)</SelectItem>)}
                       </SelectContent>
                     </Select>
