@@ -111,6 +111,7 @@ import AdminEscalationMatrix from "./pages/admin/support/AdminEscalationMatrix";
 import AdminEmployees from "./pages/admin/hr/AdminEmployees";
 import AdminLeaveManagement from "./pages/admin/hr/AdminLeaveManagement";
 import AdminAttendance from "./pages/admin/hr/AdminAttendance";
+import AdminTeamMembers from "./pages/admin/careers/AdminTeamMembers";
 import AdminInvoices from "./pages/admin/accounts/AdminInvoices";
 import AdminPayroll from "./pages/admin/accounts/AdminPayroll";
 import AdminFirmProfile from "./pages/admin/accounts/AdminFirmProfile";
@@ -240,6 +241,7 @@ const App = () => (
           <Route path="/admin/hr/employees" element={<AdminEmployees />} />
           <Route path="/admin/hr/leave" element={<AdminLeaveManagement />} />
           <Route path="/admin/hr/attendance" element={<AdminAttendance />} />
+          <Route path="/admin/hr/careers/team" element={<AdminTeamMembers />} />
 
           {/* Admin — Accounts */}
           <Route path="/admin/accounts/firm-profile" element={<AdminFirmProfile />} />
