@@ -14,6 +14,62 @@ export type Database = {
   }
   public: {
     Tables: {
+      agreements: {
+        Row: {
+          agreement_type: string
+          auto_renew: boolean | null
+          contact_id: string | null
+          created_at: string
+          created_by: string | null
+          document_url: string | null
+          end_date: string | null
+          id: string
+          start_date: string | null
+          status: string
+          terms_summary: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          agreement_type?: string
+          auto_renew?: boolean | null
+          contact_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          document_url?: string | null
+          end_date?: string | null
+          id?: string
+          start_date?: string | null
+          status?: string
+          terms_summary?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          agreement_type?: string
+          auto_renew?: boolean | null
+          contact_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          document_url?: string | null
+          end_date?: string | null
+          id?: string
+          start_date?: string | null
+          status?: string
+          terms_summary?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agreements_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       analyses: {
         Row: {
           author: string
@@ -574,6 +630,65 @@ export type Database = {
         }
         Relationships: []
       }
+      commission_claims: {
+        Row: {
+          claim_amount: number
+          claim_period: string
+          commission_rate: number | null
+          created_at: string
+          created_by: string | null
+          gross_aum: number | null
+          id: string
+          notes: string | null
+          principal_contact_id: string
+          product_category: string | null
+          received_date: string | null
+          reference_number: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          claim_amount?: number
+          claim_period: string
+          commission_rate?: number | null
+          created_at?: string
+          created_by?: string | null
+          gross_aum?: number | null
+          id?: string
+          notes?: string | null
+          principal_contact_id: string
+          product_category?: string | null
+          received_date?: string | null
+          reference_number?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          claim_amount?: number
+          claim_period?: string
+          commission_rate?: number | null
+          created_at?: string
+          created_by?: string | null
+          gross_aum?: number | null
+          id?: string
+          notes?: string | null
+          principal_contact_id?: string
+          product_category?: string | null
+          received_date?: string | null
+          reference_number?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "commission_claims_principal_contact_id_fkey"
+            columns: ["principal_contact_id"]
+            isOneToOne: false
+            referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       content_summaries: {
         Row: {
           content_id: string
@@ -736,6 +851,8 @@ export type Database = {
           notes: string | null
           pan: string | null
           phone: string | null
+          relationship_meta: Json | null
+          relationship_type: Database["public"]["Enums"]["contact_relationship"]
           source: string | null
           state: string | null
           tags: string[] | null
@@ -755,6 +872,8 @@ export type Database = {
           notes?: string | null
           pan?: string | null
           phone?: string | null
+          relationship_meta?: Json | null
+          relationship_type?: Database["public"]["Enums"]["contact_relationship"]
           source?: string | null
           state?: string | null
           tags?: string[] | null
@@ -774,6 +893,8 @@ export type Database = {
           notes?: string | null
           pan?: string | null
           phone?: string | null
+          relationship_meta?: Json | null
+          relationship_type?: Database["public"]["Enums"]["contact_relationship"]
           source?: string | null
           state?: string | null
           tags?: string[] | null
@@ -1738,6 +1859,62 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      partner_payouts: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          gross_revenue: number
+          id: string
+          notes: string | null
+          paid_date: string | null
+          partner_contact_id: string
+          payout_amount: number
+          payout_period: string
+          reference_number: string | null
+          share_pct: number
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          gross_revenue?: number
+          id?: string
+          notes?: string | null
+          paid_date?: string | null
+          partner_contact_id: string
+          payout_amount?: number
+          payout_period: string
+          reference_number?: string | null
+          share_pct?: number
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          gross_revenue?: number
+          id?: string
+          notes?: string | null
+          paid_date?: string | null
+          partner_contact_id?: string
+          payout_amount?: number
+          payout_period?: string
+          reference_number?: string | null
+          share_pct?: number
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "partner_payouts_partner_contact_id_fkey"
+            columns: ["partner_contact_id"]
+            isOneToOne: false
+            referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       payment_terms: {
         Row: {
@@ -2819,6 +2996,7 @@ export type Database = {
       app_role: "super_admin" | "admin" | "editor"
       article_format: "Text" | "Image" | "Audio" | "Video"
       bulletin_priority: "info" | "important" | "warning" | "success"
+      contact_relationship: "client" | "partner" | "principal"
       content_status: "draft" | "published" | "archived"
       crm_activity_type:
         | "call"
@@ -2987,6 +3165,7 @@ export const Constants = {
       app_role: ["super_admin", "admin", "editor"],
       article_format: ["Text", "Image", "Audio", "Video"],
       bulletin_priority: ["info", "important", "warning", "success"],
+      contact_relationship: ["client", "partner", "principal"],
       content_status: ["draft", "published", "archived"],
       crm_activity_type: [
         "call",

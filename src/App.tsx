@@ -116,6 +116,9 @@ import AdminBankAccounts from "./pages/admin/accounts/AdminBankAccounts";
 import AdminPaymentTerms from "./pages/admin/accounts/AdminPaymentTerms";
 import AdminServiceCatalog from "./pages/admin/accounts/AdminServiceCatalog";
 import AdminSalaryComponents from "./pages/admin/accounts/AdminSalaryComponents";
+import AdminPartnerPayouts from "./pages/admin/accounts/AdminPartnerPayouts";
+import AdminCommissionClaims from "./pages/admin/accounts/AdminCommissionClaims";
+import AdminAgreements from "./pages/admin/legal/AdminAgreements";
 import Sitemap from "./pages/Sitemap";
 
 const queryClient = new QueryClient();
@@ -241,10 +244,13 @@ const App = () => (
           <Route path="/admin/accounts/salary-components" element={<AdminSalaryComponents />} />
           <Route path="/admin/accounts/invoices" element={<AdminInvoices />} />
           <Route path="/admin/accounts/payroll" element={<AdminPayroll />} />
+          <Route path="/admin/accounts/partner-payouts" element={<AdminPartnerPayouts />} />
+          <Route path="/admin/accounts/commission-claims" element={<AdminCommissionClaims />} />
 
           {/* Admin — Legal & Compliance */}
           <Route path="/admin/legal/pages" element={<AdminLegal />} />
           <Route path="/admin/legal/investor-charter" element={<AdminInvestorCharter />} />
+          <Route path="/admin/legal/agreements" element={<AdminAgreements />} />
 
           {/* Admin — Support */}
           <Route path="/admin/support/tickets" element={<AdminTickets />} />

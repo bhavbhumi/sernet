@@ -136,6 +136,8 @@ const departmentGroups: DepartmentGroup[] = [
       },
       { label: 'Invoices', icon: Receipt, href: R.accounts.invoices },
       { label: 'Payroll Register', icon: Wallet, href: R.accounts.payroll },
+      { label: 'Partner Payouts', icon: Wallet, href: R.accounts.partnerPayouts },
+      { label: 'Commission Claims', icon: Receipt, href: R.accounts.commissionClaims },
     ]
   },
   {
@@ -155,6 +157,7 @@ const departmentGroups: DepartmentGroup[] = [
     items: [
       { label: 'Legal Pages', icon: Scale, href: R.legal.pages },
       { label: 'Investor Charter', icon: BookOpenCheck, href: R.legal.investorCharter },
+      { label: 'Agreements', icon: Scale, href: R.legal.agreements },
     ]
   },
   {

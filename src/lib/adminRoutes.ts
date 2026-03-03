@@ -80,6 +80,8 @@ export const ADMIN_ROUTES = {
     salaryComponents: '/admin/accounts/salary-components',
     invoices: '/admin/accounts/invoices',
     payroll: '/admin/accounts/payroll',
+    partnerPayouts: '/admin/accounts/partner-payouts',
+    commissionClaims: '/admin/accounts/commission-claims',
   },
 
   // ── Legal & Compliance ─────────────────────────
@@ -87,6 +89,7 @@ export const ADMIN_ROUTES = {
     root: '/admin/legal',
     pages: '/admin/legal/pages',
     investorCharter: '/admin/legal/investor-charter',
+    agreements: '/admin/legal/agreements',
   },
 
   // ── Support ───────────────────────────────────
