@@ -73,6 +73,15 @@ export const ADMIN_ROUTES = {
     investorCharter: '/admin/legal/investor-charter',
   },
 
+  // ── Support ───────────────────────────────────
+  support: {
+    root: '/admin/support',
+    tickets: '/admin/support/tickets',
+    ticketDetail: '/admin/support/tickets/:id',
+    knowledgeBase: '/admin/support/knowledge-base',
+    cannedResponses: '/admin/support/canned-responses',
+  },
+
   // ── Settings (Super Admin) ─────────────────────
   settings: {
     root: '/admin/settings',
@@ -88,6 +97,7 @@ export const DEPARTMENTS = [
   { key: 'marketing', label: 'Marketing', color: 'text-blue-500' },
   { key: 'sales', label: 'Sales', color: 'text-emerald-500' },
   { key: 'hr', label: 'HR', color: 'text-orange-500' },
+  { key: 'support', label: 'Support', color: 'text-cyan-500' },
   { key: 'legal', label: 'Legal & Compliance', color: 'text-violet-500' },
   { key: 'settings', label: 'System', color: 'text-muted-foreground' },
 ] as const;

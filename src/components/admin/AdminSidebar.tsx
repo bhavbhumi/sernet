@@ -8,7 +8,7 @@ import {
   Vote, ClipboardList, Star, Briefcase, Users, Mic2, Settings, LogOut,
   ChevronDown, ChevronRight, Menu, X, Rss, Shield, Globe, Palette, ScanSearch, Images, Download,
   Sparkles, Calculator, UserCheck, CalendarDays, Mail, ScrollText, Scale, Lightbulb,
-  TrendingUp, Building2, Gavel, Megaphone
+  TrendingUp, Building2, Gavel, Megaphone, Headphones, Ticket, BookMarked, MessageSquareText
 } from 'lucide-react';
 import sernetLogo from '@/assets/sernet-logo.png';
 import { cn } from '@/lib/utils';
@@ -109,6 +109,16 @@ const departmentGroups: DepartmentGroup[] = [
         ]
       },
       { label: 'Team Members', icon: Users, href: R.hr.team },
+    ]
+  },
+  {
+    department: 'Support',
+    icon: Headphones,
+    color: 'text-cyan-500',
+    items: [
+      { label: 'Tickets', icon: Ticket, href: R.support.tickets },
+      { label: 'Knowledge Base', icon: BookMarked, href: R.support.knowledgeBase },
+      { label: 'Canned Responses', icon: MessageSquareText, href: R.support.cannedResponses },
     ]
   },
   {

@@ -99,6 +99,10 @@ import AdminImportEconomicEvents from "./pages/admin/calendars/AdminImportEconom
 import AdminCorporateEvents from "./pages/admin/calendars/AdminCorporateEvents";
 import AdminLegal from "./pages/admin/legal/AdminLegal";
 import AdminInvestorCharter from "./pages/admin/legal/AdminInvestorCharter";
+import AdminTickets from "./pages/admin/support/AdminTickets";
+import AdminTicketDetail from "./pages/admin/support/AdminTicketDetail";
+import AdminKnowledgeBase from "./pages/admin/support/AdminKnowledgeBase";
+import AdminCannedResponses from "./pages/admin/support/AdminCannedResponses";
 import Sitemap from "./pages/Sitemap";
 
 const queryClient = new QueryClient();
@@ -215,6 +219,12 @@ const App = () => (
           {/* Admin — Legal & Compliance */}
           <Route path="/admin/legal/pages" element={<AdminLegal />} />
           <Route path="/admin/legal/investor-charter" element={<AdminInvestorCharter />} />
+
+          {/* Admin — Support */}
+          <Route path="/admin/support/tickets" element={<AdminTickets />} />
+          <Route path="/admin/support/tickets/:id" element={<AdminTicketDetail />} />
+          <Route path="/admin/support/knowledge-base" element={<AdminKnowledgeBase />} />
+          <Route path="/admin/support/canned-responses" element={<AdminCannedResponses />} />
 
           {/* Admin — System Settings */}
           <Route path="/admin/settings/users" element={<AdminUsers />} />
