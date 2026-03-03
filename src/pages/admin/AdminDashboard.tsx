@@ -3,7 +3,14 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { supabase } from '@/integrations/supabase/client';
-import { FileText, Newspaper, AlertCircle, Vote, Star, Briefcase, BarChart3, BookOpen, Bell, Users, ClipboardList } from 'lucide-react';
+import { ADMIN_ROUTES } from '@/lib/adminRoutes';
+import {
+  FileText, Newspaper, AlertCircle, Vote, Star, Briefcase, BarChart3,
+  BookOpen, Bell, Users, ClipboardList, UserCheck, Megaphone, TrendingUp,
+  Building2, Gavel, Calculator
+} from 'lucide-react';
+
+const R = ADMIN_ROUTES;
 
 interface StatCard {
   label: string;
@@ -14,6 +21,14 @@ interface StatCard {
   subtitle?: string;
 }
 
+interface DepartmentKPIs {
+  department: string;
+  icon: React.ComponentType<{ className?: string }>;
+  color: string;
+  bgColor: string;
+  cards: StatCard[];
+}
+
 export default function AdminDashboard() {
   const [stats, setStats] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
@@ -22,7 +37,8 @@ export default function AdminDashboard() {
     const fetchStats = async () => {
       const [
         articles, analyses, reports, bulletins, news, circulars,
-        polls, surveys, reviews, jobs, applications, press
+        polls, surveys, reviews, jobs, applications, press,
+        leads, calcLeads
       ] = await Promise.all([
         supabase.from('articles').select('id', { count: 'exact', head: true }),
         supabase.from('analyses').select('id', { count: 'exact', head: true }),
@@ -36,6 +52,8 @@ export default function AdminDashboard() {
         supabase.from('job_openings').select('id', { count: 'exact', head: true }),
         supabase.from('job_applications').select('id', { count: 'exact', head: true }).eq('status', 'new'),
         supabase.from('press_items').select('id', { count: 'exact', head: true }),
+        supabase.from('leads').select('id', { count: 'exact', head: true }),
+        supabase.from('calculator_leads').select('id', { count: 'exact', head: true }),
       ]);
 
       setStats({
@@ -51,6 +69,8 @@ export default function AdminDashboard() {
         jobs: jobs.count ?? 0,
         newApplications: applications.count ?? 0,
         press: press.count ?? 0,
+        leads: leads.count ?? 0,
+        calcLeads: calcLeads.count ?? 0,
       });
       setLoading(false);
     };
@@ -58,45 +78,82 @@ export default function AdminDashboard() {
     fetchStats();
   }, []);
 
-  const cards: StatCard[] = [
-    { label: 'Articles', count: stats.articles, href: '/admin/content/articles', icon: FileText, color: 'text-blue-600 bg-blue-500/10' },
-    { label: 'Analysis', count: stats.analyses, href: '/admin/content/analysis', icon: BarChart3, color: 'text-indigo-600 bg-indigo-500/10' },
-    { label: 'Reports', count: stats.reports, href: '/admin/content/reports', icon: BookOpen, color: 'text-emerald-600 bg-emerald-500/10' },
-    { label: 'Bulletin', count: stats.bulletins, href: '/admin/content/bulletin', icon: Bell, color: 'text-amber-600 bg-amber-500/10' },
-    { label: 'News Items', count: stats.news, href: '/admin/updates/news', icon: Newspaper, color: 'text-cyan-600 bg-cyan-500/10' },
-    { label: 'Circulars', count: stats.circulars, href: '/admin/updates/circulars', icon: AlertCircle, color: 'text-red-600 bg-red-500/10' },
-    { label: 'Polls', count: stats.polls, href: '/admin/engagement/polls', icon: Vote, color: 'text-violet-600 bg-violet-500/10' },
-    { label: 'Surveys', count: stats.surveys, href: '/admin/engagement/surveys', icon: ClipboardList, color: 'text-pink-600 bg-pink-500/10' },
-    { label: 'Pending Reviews', count: stats.pendingReviews, href: '/admin/engagement/reviews', icon: Star, color: 'text-yellow-600 bg-yellow-500/10', subtitle: 'Awaiting approval' },
-    { label: 'Job Openings', count: stats.jobs, href: '/admin/careers/openings', icon: Briefcase, color: 'text-teal-600 bg-teal-500/10' },
-    { label: 'New Applications', count: stats.newApplications, href: '/admin/careers/applications', icon: Users, color: 'text-orange-600 bg-orange-500/10', subtitle: 'Unreviewed' },
-    { label: 'Press Items', count: stats.press, href: '/admin/press', icon: FileText, color: 'text-slate-600 bg-slate-500/10' },
+  const departments: DepartmentKPIs[] = [
+    {
+      department: 'Marketing',
+      icon: Megaphone,
+      color: 'text-blue-600',
+      bgColor: 'bg-blue-500/10',
+      cards: [
+        { label: 'Articles', count: stats.articles, href: R.marketing.content.articles, icon: FileText, color: 'text-blue-600 bg-blue-500/10' },
+        { label: 'Analysis', count: stats.analyses, href: R.marketing.content.analysis, icon: BarChart3, color: 'text-indigo-600 bg-indigo-500/10' },
+        { label: 'Reports', count: stats.reports, href: R.marketing.content.reports, icon: BookOpen, color: 'text-emerald-600 bg-emerald-500/10' },
+        { label: 'Bulletin', count: stats.bulletins, href: R.marketing.content.bulletin, icon: Bell, color: 'text-amber-600 bg-amber-500/10' },
+        { label: 'News', count: stats.news, href: R.marketing.updates.news, icon: Newspaper, color: 'text-cyan-600 bg-cyan-500/10' },
+        { label: 'Circulars', count: stats.circulars, href: R.marketing.updates.circulars, icon: AlertCircle, color: 'text-red-600 bg-red-500/10' },
+        { label: 'Polls', count: stats.polls, href: R.marketing.engagement.polls, icon: Vote, color: 'text-violet-600 bg-violet-500/10' },
+        { label: 'Reviews', count: stats.pendingReviews, href: R.marketing.engagement.reviews, icon: Star, color: 'text-yellow-600 bg-yellow-500/10', subtitle: 'Pending' },
+        { label: 'Press', count: stats.press, href: R.marketing.press, icon: FileText, color: 'text-slate-600 bg-slate-500/10' },
+      ],
+    },
+    {
+      department: 'Sales',
+      icon: TrendingUp,
+      color: 'text-emerald-600',
+      bgColor: 'bg-emerald-500/10',
+      cards: [
+        { label: 'Leads', count: stats.leads, href: R.sales.leads, icon: UserCheck, color: 'text-emerald-600 bg-emerald-500/10' },
+        { label: 'Calculator Leads', count: stats.calcLeads, href: R.sales.calculatorLeads, icon: Calculator, color: 'text-teal-600 bg-teal-500/10' },
+      ],
+    },
+    {
+      department: 'HR',
+      icon: Building2,
+      color: 'text-orange-600',
+      bgColor: 'bg-orange-500/10',
+      cards: [
+        { label: 'Job Openings', count: stats.jobs, href: R.hr.careers.openings, icon: Briefcase, color: 'text-teal-600 bg-teal-500/10' },
+        { label: 'New Applications', count: stats.newApplications, href: R.hr.careers.applications, icon: Users, color: 'text-orange-600 bg-orange-500/10', subtitle: 'Unreviewed' },
+      ],
+    },
   ];
 
   return (
     <AdminLayout
-      title="Dashboard"
-      subtitle="Welcome to the SERNET CMS — manage all your content from here"
+      title="Master Dashboard"
+      subtitle="Cross-department KPIs — SERNET Operations Hub"
     >
-      {/* Stats Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
-        {cards.map((card) => (
-          <Link
-            key={card.label}
-            to={card.href}
-            className="bg-card border border-border rounded-xl p-4 hover:border-primary/30 hover:shadow-md transition-all group"
-          >
-            <div className="flex items-center gap-3 mb-3">
-              <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${card.color}`}>
-                <card.icon className="h-4.5 w-4.5" />
+      {/* Department KPI Sections */}
+      <div className="space-y-6 mb-8">
+        {departments.map((dept) => (
+          <div key={dept.department}>
+            <div className="flex items-center gap-2 mb-3">
+              <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${dept.bgColor}`}>
+                <dept.icon className={`h-4 w-4 ${dept.color}`} />
               </div>
-              <span className="text-xs text-muted-foreground">{card.label}</span>
+              <h2 className="text-sm font-semibold text-foreground">{dept.department}</h2>
             </div>
-            <div className="text-2xl font-bold text-foreground">
-              {loading ? <div className="h-7 w-12 bg-muted animate-pulse rounded" /> : card.count}
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+              {dept.cards.map((card) => (
+                <Link
+                  key={card.label}
+                  to={card.href}
+                  className="bg-card border border-border rounded-xl p-3.5 hover:border-primary/30 hover:shadow-md transition-all group"
+                >
+                  <div className="flex items-center gap-2.5 mb-2">
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${card.color}`}>
+                      <card.icon className="h-4 w-4" />
+                    </div>
+                    <span className="text-xs text-muted-foreground">{card.label}</span>
+                  </div>
+                  <div className="text-xl font-bold text-foreground">
+                    {loading ? <div className="h-6 w-10 bg-muted animate-pulse rounded" /> : card.count}
+                  </div>
+                  {card.subtitle && <p className="text-[11px] text-muted-foreground mt-0.5">{card.subtitle}</p>}
+                </Link>
+              ))}
             </div>
-            {card.subtitle && <p className="text-xs text-muted-foreground mt-0.5">{card.subtitle}</p>}
-          </Link>
+          </div>
         ))}
       </div>
 
@@ -105,10 +162,10 @@ export default function AdminDashboard() {
         <h2 className="text-sm font-semibold text-foreground mb-4">Quick Actions</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
-            { label: 'New Article', href: '/admin/content/articles?action=new', icon: FileText },
-            { label: 'Add News', href: '/admin/updates/news?action=new', icon: Newspaper },
-            { label: 'Create Poll', href: '/admin/engagement/polls?action=new', icon: Vote },
-            { label: 'Post Job', href: '/admin/careers/openings?action=new', icon: Briefcase },
+            { label: 'New Article', href: `${R.marketing.content.articles}?action=new`, icon: FileText },
+            { label: 'Add News', href: `${R.marketing.updates.news}?action=new`, icon: Newspaper },
+            { label: 'Create Poll', href: `${R.marketing.engagement.polls}?action=new`, icon: Vote },
+            { label: 'Post Job', href: `${R.hr.careers.openings}?action=new`, icon: Briefcase },
           ].map((action) => (
             <Link
               key={action.label}

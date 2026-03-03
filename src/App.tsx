@@ -167,42 +167,52 @@ const App = () => (
           <Route path="/insights/articles/:id" element={<ArticleDetail />} />
           <Route path="/insights/analysis/:id" element={<AnalysisDetail />} />
 
-          {/* Admin CMS */}
+          {/* Admin — Auth */}
           <Route path="/admin/setup" element={<AdminSetup />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/admin/content/articles" element={<AdminArticles />} />
-          <Route path="/admin/content/awareness" element={<AdminAwareness />} />
-          <Route path="/admin/content/analysis" element={<AdminAnalysis />} />
-          <Route path="/admin/content/reports" element={<AdminReports />} />
-          <Route path="/admin/content/bulletin" element={<AdminBulletin />} />
-          <Route path="/admin/updates/news" element={<AdminNews />} />
-          <Route path="/admin/updates/circulars" element={<AdminCirculars />} />
-          <Route path="/admin/engagement/polls" element={<AdminPolls />} />
-          <Route path="/admin/engagement/surveys" element={<AdminSurveys />} />
-          <Route path="/admin/engagement/reviews" element={<AdminReviews />} />
-          <Route path="/admin/engagement/newsletter" element={<AdminNewsletter />} />
-          <Route path="/admin/engagement/newsletter-composer" element={<AdminNewsletterComposer />} />
-          <Route path="/admin/careers/openings" element={<AdminJobOpenings />} />
-          <Route path="/admin/careers/applications" element={<AdminApplications />} />
-          <Route path="/admin/careers/team" element={<AdminTeamMembers />} />
-          <Route path="/admin/press" element={<AdminPress />} />
-          <Route path="/admin/site/pages" element={<AdminSitePages />} />
-          <Route path="/admin/site/settings" element={<AdminSiteSettings />} />
-          <Route path="/admin/site/media" element={<AdminMediaLibrary />} />
-          <Route path="/admin/settings/rss" element={<AdminRSSSettings />} />
+
+          {/* Admin — Marketing */}
+          <Route path="/admin/marketing/content/articles" element={<AdminArticles />} />
+          <Route path="/admin/marketing/content/awareness" element={<AdminAwareness />} />
+          <Route path="/admin/marketing/content/analysis" element={<AdminAnalysis />} />
+          <Route path="/admin/marketing/content/reports" element={<AdminReports />} />
+          <Route path="/admin/marketing/content/bulletin" element={<AdminBulletin />} />
+          <Route path="/admin/marketing/content/import" element={<AdminImportArticles />} />
+          <Route path="/admin/marketing/updates/news" element={<AdminNews />} />
+          <Route path="/admin/marketing/updates/circulars" element={<AdminCirculars />} />
+          <Route path="/admin/marketing/engagement/polls" element={<AdminPolls />} />
+          <Route path="/admin/marketing/engagement/surveys" element={<AdminSurveys />} />
+          <Route path="/admin/marketing/engagement/reviews" element={<AdminReviews />} />
+          <Route path="/admin/marketing/engagement/newsletter" element={<AdminNewsletter />} />
+          <Route path="/admin/marketing/engagement/composer" element={<AdminNewsletterComposer />} />
+          <Route path="/admin/marketing/press" element={<AdminPress />} />
+          <Route path="/admin/marketing/calendars/holidays" element={<AdminMarketHolidays />} />
+          <Route path="/admin/marketing/calendars/economic" element={<AdminEconomicEvents />} />
+          <Route path="/admin/marketing/calendars/import-economic" element={<AdminImportEconomicEvents />} />
+          <Route path="/admin/marketing/calendars/corporate" element={<AdminCorporateEvents />} />
+          <Route path="/admin/marketing/site/settings" element={<AdminSiteSettings />} />
+          <Route path="/admin/marketing/site/pages" element={<AdminSitePages />} />
+          <Route path="/admin/marketing/site/media" element={<AdminMediaLibrary />} />
+
+          {/* Admin — Sales */}
+          <Route path="/admin/sales/leads" element={<AdminLeads />} />
+          <Route path="/admin/sales/calculator-leads" element={<AdminCalculatorLeads />} />
+
+          {/* Admin — HR */}
+          <Route path="/admin/hr/careers/openings" element={<AdminJobOpenings />} />
+          <Route path="/admin/hr/careers/applications" element={<AdminApplications />} />
+          <Route path="/admin/hr/team" element={<AdminTeamMembers />} />
+
+          {/* Admin — Legal & Compliance */}
+          <Route path="/admin/legal/pages" element={<AdminLegal />} />
+          <Route path="/admin/legal/investor-charter" element={<AdminInvestorCharter />} />
+
+          {/* Admin — System Settings */}
           <Route path="/admin/settings/users" element={<AdminUsers />} />
+          <Route path="/admin/settings/rss" element={<AdminRSSSettings />} />
           <Route path="/admin/settings/ai-usage" element={<AdminAIUsage />} />
           <Route path="/admin/settings/audit-log" element={<AdminAuditLog />} />
-          <Route path="/admin/settings/calculator-leads" element={<AdminCalculatorLeads />} />
-          <Route path="/admin/leads" element={<AdminLeads />} />
-          <Route path="/admin/content/import" element={<AdminImportArticles />} />
-          <Route path="/admin/calendars/holidays" element={<AdminMarketHolidays />} />
-          <Route path="/admin/calendars/economic" element={<AdminEconomicEvents />} />
-          <Route path="/admin/calendars/import-economic" element={<AdminImportEconomicEvents />} />
-          <Route path="/admin/calendars/corporate" element={<AdminCorporateEvents />} />
-          <Route path="/admin/legal" element={<AdminLegal />} />
-          <Route path="/admin/investor-charter" element={<AdminInvestorCharter />} />
 
           {/* Sitemap */}
           <Route path="/sitemap" element={<Sitemap />} />
