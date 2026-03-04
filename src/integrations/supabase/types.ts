@@ -2723,6 +2723,54 @@ export type Database = {
         }
         Relationships: []
       }
+      support_documents: {
+        Row: {
+          category: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          file_name: string
+          file_size_kb: number | null
+          file_type: string
+          file_url: string
+          id: string
+          sort_order: number | null
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          file_name: string
+          file_size_kb?: number | null
+          file_type?: string
+          file_url: string
+          id?: string
+          sort_order?: number | null
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          file_name?: string
+          file_size_kb?: number | null
+          file_type?: string
+          file_url?: string
+          id?: string
+          sort_order?: number | null
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       support_escalation_matrix: {
         Row: {
           assigned_user_id: string | null

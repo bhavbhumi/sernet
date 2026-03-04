@@ -107,6 +107,7 @@ import AdminTickets from "./pages/admin/support/AdminTickets";
 import AdminTicketDetail from "./pages/admin/support/AdminTicketDetail";
 import AdminKnowledgeBase from "./pages/admin/support/AdminKnowledgeBase";
 import AdminCannedResponses from "./pages/admin/support/AdminCannedResponses";
+import AdminSupportDocuments from "./pages/admin/support/AdminSupportDocuments";
 import AdminIssueTypes from "./pages/admin/support/AdminIssueTypes";
 import AdminEscalationMatrix from "./pages/admin/support/AdminEscalationMatrix";
 import AdminEmployees from "./pages/admin/hr/AdminEmployees";
@@ -269,6 +270,7 @@ const App = () => (
           <Route path="/admin/support/escalation" element={<AdminEscalationMatrix />} />
           <Route path="/admin/support/knowledge-base" element={<AdminKnowledgeBase />} />
           <Route path="/admin/support/canned-responses" element={<AdminCannedResponses />} />
+          <Route path="/admin/support/documents" element={<AdminSupportDocuments />} />
 
           {/* Admin — System Settings */}
           <Route path="/admin/settings/users" element={<AdminUsers />} />

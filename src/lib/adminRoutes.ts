@@ -103,6 +103,7 @@ export const ADMIN_ROUTES = {
     escalation: '/admin/support/escalation',
     knowledgeBase: '/admin/support/knowledge-base',
     cannedResponses: '/admin/support/canned-responses',
+    documents: '/admin/support/documents',
   },
 
   // ── Settings (Super Admin) ─────────────────────
