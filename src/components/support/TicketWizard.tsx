@@ -43,7 +43,7 @@ export function TicketWizard({ showHeading = true }: TicketWizardProps) {
         db('support_issue_categories').select('*').eq('is_active', true).order('sort_order'),
         db('support_issue_types').select('*, support_issue_categories(name, slug)').eq('is_active', true).order('sort_order'),
         db('support_automation_rules').select('*').eq('is_active', true).order('sort_order'),
-        db('kb_articles').select('id, title, slug, category, product, issue_code, short_summary, possible_reasons, what_to_check, resolution_steps, documents_required, resolution_timeline, when_to_raise_ticket, suggested_article_group, question_variants, search_keywords').eq('status', 'published').eq('visibility', 'public'),
+        db('kb_articles').select('id, title, slug, category, product, issue_code, short_summary, possible_reasons, what_to_check, resolution_steps, documents_required, resolution_timeline, when_to_raise_ticket, suggested_article_group, question_variants, search_keywords, owner_team, priority, escalation_level, first_response_sla_hours, resolution_sla_hours, escalation_trigger').eq('status', 'published').eq('visibility', 'public'),
       ]);
       setCategories(cats ?? []);
       setIssueTypes(types ?? []);
@@ -81,8 +81,18 @@ export function TicketWizard({ showHeading = true }: TicketWizardProps) {
     setSubmitting(true);
     const fullText = `${form.subject} ${form.description}`;
     const autoMatch = matchAutomationRules(fullText, automationRules);
-    const priority = autoMatch?.priority ?? selectedIssue?.priority ?? 'standard';
-    const tatHours = autoMatch?.tat_hours ?? selectedIssue?.tat_hours ?? 48;
+
+    // KB article routing: find matching KB article by issue_code for SLA/routing data
+    const matchedKb = selectedIssue?.issue_code
+      ? kbArticles.find(a => a.issue_code === selectedIssue.issue_code)
+      : null;
+
+    // Priority chain: automation rule > KB article > issue type > default
+    const priority = autoMatch?.priority ?? matchedKb?.priority ?? selectedIssue?.priority ?? 'standard';
+    // TAT chain: automation rule > KB resolution_sla_hours > issue type > default
+    const tatHours = autoMatch?.tat_hours ?? matchedKb?.resolution_sla_hours ?? selectedIssue?.tat_hours ?? 48;
+    // Team chain: automation rule > KB owner_team > issue type > default
+    const team = autoMatch?.assign_team ?? matchedKb?.owner_team ?? selectedIssue?.auto_assign_team ?? 'support';
 
     const payload: any = {
       subject: form.subject,
@@ -99,9 +109,9 @@ export function TicketWizard({ showHeading = true }: TicketWizardProps) {
       regulator: selectedIssue?.regulator ?? null,
       tat_hours: tatHours,
       tat_deadline: new Date(Date.now() + tatHours * 60 * 60 * 1000).toISOString(),
-      documents_required: selectedIssue?.required_documents ?? [],
-      department: autoMatch?.assign_team ?? selectedIssue?.auto_assign_team ?? 'support',
-      auto_assigned: !!autoMatch,
+      documents_required: matchedKb?.documents_required ?? selectedIssue?.required_documents ?? [],
+      department: team,
+      auto_assigned: !!(autoMatch || matchedKb),
       channel: 'website',
       status: 'open',
     };
