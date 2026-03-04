@@ -8,7 +8,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { MapPin, Phone, Building2, Eye, Users, ChevronDown, ChevronRight } from 'lucide-react';
+import { MapPin, Phone, Building2, Eye, Users, Mail, Calendar, Shield, CreditCard, User } from 'lucide-react';
+import { format, differenceInYears } from 'date-fns';
 
 interface BranchRow {
   id: string;
@@ -53,6 +54,41 @@ const OFFICE_TYPE_LABELS: Record<string, string> = {
   IFSC: 'IFSC',
 };
 
+const TAX_STATUS_LABELS: Record<string, string> = {
+  resident_indian: 'Resident Indian',
+  nri: 'NRI',
+  foreign_national: 'Foreign National',
+  pio_oci: 'PIO / OCI',
+};
+
+const ENTITY_SUB_TYPE_LABELS: Record<string, string> = {
+  huf: 'HUF',
+  company: 'Company',
+  trust: 'Trust',
+  partnership_firm: 'Partnership Firm',
+};
+
+function getAgeCategory(dob: string) {
+  const age = differenceInYears(new Date(), new Date(dob));
+  if (age < 18) return { age, label: 'Minor' };
+  if (age >= 80) return { age, label: 'Super Senior Citizen' };
+  if (age >= 60) return { age, label: 'Senior Citizen' };
+  return { age, label: 'Adult' };
+}
+
+function DetailRow({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value: string | null | undefined }) {
+  if (!value) return null;
+  return (
+    <div className="flex items-start gap-2 text-sm">
+      <Icon className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
+      <div>
+        <span className="text-muted-foreground">{label}: </span>
+        <span className="font-medium text-foreground">{value}</span>
+      </div>
+    </div>
+  );
+}
+
 function ContactDetailDialog({ contactId, contactName, contactType, open, onClose }: {
   contactId: string;
   contactName: string;
@@ -60,6 +96,20 @@ function ContactDetailDialog({ contactId, contactName, contactType, open, onClos
   open: boolean;
   onClose: () => void;
 }) {
+  // Fetch full contact record
+  const { data: contact } = useQuery({
+    queryKey: ['contact-detail', contactId],
+    enabled: open,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('crm_contacts')
+        .select('*')
+        .eq('id', contactId)
+        .single();
+      return data;
+    },
+  });
+
   const { data: branches = [] } = useQuery({
     queryKey: ['contact-branches', contactId],
     enabled: open,
@@ -74,9 +124,11 @@ function ContactDetailDialog({ contactId, contactName, contactType, open, onClos
     },
   });
 
+  const isNonIndividual = contactType === 'non_individual';
+
   const { data: kmpContacts = [] } = useQuery({
     queryKey: ['contact-kmp', contactId],
-    enabled: open && contactType === 'company',
+    enabled: open && isNonIndividual,
     queryFn: async () => {
       const { data } = await supabase
         .from('contact_kmp')
@@ -87,9 +139,7 @@ function ContactDetailDialog({ contactId, contactName, contactType, open, onClos
     },
   });
 
-  const isCompany = contactType === 'company';
-
-  // Group branches by office type for company
+  // Group branches by office type for non_individual
   const branchesByType = branches.reduce<Record<string, BranchRow[]>>((acc, b) => {
     const t = b.office_type || 'BO';
     if (!acc[t]) acc[t] = [];
@@ -99,33 +149,109 @@ function ContactDetailDialog({ contactId, contactName, contactType, open, onClos
 
   const typeOrder = ['HO', 'ZO', 'RO', 'BO', 'INTL', 'IFSC'];
 
+  const ageInfo = contact?.date_of_birth ? getAgeCategory(contact.date_of_birth) : null;
+
   return (
     <Dialog open={open} onOpenChange={() => onClose()}>
       <DialogContent className="sm:max-w-3xl max-h-[85vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            {isCompany ? <Building2 className="h-5 w-5 text-primary" /> : <Users className="h-5 w-5 text-primary" />}
+            {isNonIndividual ? <Building2 className="h-5 w-5 text-primary" /> : <User className="h-5 w-5 text-primary" />}
             {contactName}
+            {contact?.relationship_type && (
+              <Badge variant="outline" className="ml-2 capitalize">{contact.relationship_type}</Badge>
+            )}
+            {isNonIndividual && contact?.entity_sub_type && (
+              <Badge className="ml-1">{ENTITY_SUB_TYPE_LABELS[contact.entity_sub_type] || contact.entity_sub_type}</Badge>
+            )}
           </DialogTitle>
         </DialogHeader>
 
-        <Tabs defaultValue="addresses" className="mt-2">
+        <Tabs defaultValue="profile" className="mt-2">
           <TabsList>
+            <TabsTrigger value="profile">Profile</TabsTrigger>
             <TabsTrigger value="addresses">
               Addresses ({branches.length})
             </TabsTrigger>
-            {isCompany && (
+            {isNonIndividual && (
               <TabsTrigger value="kmp">
                 KMP & Escalation ({kmpContacts.length})
               </TabsTrigger>
             )}
           </TabsList>
 
+          {/* ===== PROFILE TAB ===== */}
+          <TabsContent value="profile" className="mt-4 space-y-4">
+            {contact ? (
+              <>
+                {/* Contact Info */}
+                <Card>
+                  <CardHeader className="pb-2 pt-3 px-4">
+                    <CardTitle className="text-sm">Contact Information</CardTitle>
+                  </CardHeader>
+                  <CardContent className="px-4 pb-3 grid grid-cols-1 md:grid-cols-2 gap-2">
+                    <DetailRow icon={Phone} label="Phone" value={contact.phone} />
+                    <DetailRow icon={Phone} label="Alt. Phone" value={contact.alternate_phone} />
+                    <DetailRow icon={Mail} label="Email" value={contact.email} />
+                    <DetailRow icon={MapPin} label="Location" value={[contact.city, contact.state].filter(Boolean).join(', ') || null} />
+                  </CardContent>
+                </Card>
+
+                {/* KYC / Identity */}
+                <Card>
+                  <CardHeader className="pb-2 pt-3 px-4">
+                    <CardTitle className="text-sm">
+                      {isNonIndividual ? 'Registration & Identity' : 'KYC & Identity'}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="px-4 pb-3 grid grid-cols-1 md:grid-cols-2 gap-2">
+                    <DetailRow icon={CreditCard} label="PAN" value={contact.pan} />
+                    {!isNonIndividual && (
+                      <>
+                        <DetailRow icon={Shield} label="Aadhaar" value={contact.aadhaar} />
+                        <DetailRow icon={Shield} label="CKYC" value={contact.ckyc_number} />
+                        <DetailRow icon={User} label="Gender" value={contact.gender ? contact.gender.charAt(0).toUpperCase() + contact.gender.slice(1) : null} />
+                        <DetailRow icon={Shield} label="Tax Status" value={contact.tax_status ? TAX_STATUS_LABELS[contact.tax_status] || contact.tax_status : null} />
+                        {ageInfo && (
+                          <DetailRow icon={Calendar} label="DOB / Age" value={`${format(new Date(contact.date_of_birth!), 'dd MMM yyyy')} (${ageInfo.age}y — ${ageInfo.label})`} />
+                        )}
+                      </>
+                    )}
+                    {isNonIndividual && (
+                      <>
+                        <DetailRow icon={Shield} label="TAN" value={contact.tan as string} />
+                        <DetailRow icon={Shield} label="CIN / LLPIN" value={contact.cin as string} />
+                        <DetailRow icon={Shield} label="GSTIN" value={contact.gstin as string} />
+                        {contact.date_of_incorporation && (
+                          <DetailRow icon={Calendar} label="Incorporated" value={format(new Date(contact.date_of_incorporation as string), 'dd MMM yyyy')} />
+                        )}
+                      </>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* Notes */}
+                {contact.notes && (
+                  <Card>
+                    <CardHeader className="pb-2 pt-3 px-4">
+                      <CardTitle className="text-sm">Notes</CardTitle>
+                    </CardHeader>
+                    <CardContent className="px-4 pb-3 text-sm text-muted-foreground whitespace-pre-wrap">
+                      {contact.notes}
+                    </CardContent>
+                  </Card>
+                )}
+              </>
+            ) : (
+              <p className="text-sm text-muted-foreground text-center py-8">Loading...</p>
+            )}
+          </TabsContent>
+
+          {/* ===== ADDRESSES TAB ===== */}
           <TabsContent value="addresses" className="mt-4 space-y-4">
             {branches.length === 0 ? (
               <p className="text-sm text-muted-foreground text-center py-8">No addresses found for this contact.</p>
-            ) : isCompany ? (
-              /* Company: grouped by office type */
+            ) : isNonIndividual ? (
               typeOrder.filter(t => branchesByType[t]).map(type => (
                 <div key={type}>
                   <div className="flex items-center gap-2 mb-2">
@@ -156,7 +282,6 @@ function ContactDetailDialog({ contactId, contactName, contactType, open, onClos
                 </div>
               ))
             ) : (
-              /* Individual: show with address_type and ownership */
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                 {branches.map(b => (
                   <div key={b.id} className="border rounded-lg p-3 text-xs space-y-1">
@@ -183,13 +308,13 @@ function ContactDetailDialog({ contactId, contactName, contactType, open, onClos
             )}
           </TabsContent>
 
-          {isCompany && (
+          {/* ===== KMP TAB ===== */}
+          {isNonIndividual && (
             <TabsContent value="kmp" className="mt-4">
               {kmpContacts.length === 0 ? (
                 <p className="text-sm text-muted-foreground text-center py-8">No KMP / escalation contacts added yet.</p>
               ) : (
                 <div className="space-y-3">
-                  {/* Escalation matrix first */}
                   {kmpContacts.filter(k => k.is_escalation).length > 0 && (
                     <Card>
                       <CardHeader className="pb-2 pt-3 px-4">
@@ -213,7 +338,6 @@ function ContactDetailDialog({ contactId, contactName, contactType, open, onClos
                     </Card>
                   )}
 
-                  {/* KMP list */}
                   <Card>
                     <CardHeader className="pb-2 pt-3 px-4">
                       <CardTitle className="text-sm">Key Management Personnel</CardTitle>
@@ -266,25 +390,38 @@ export default function AdminCRMContacts() {
         fields={[
           { key: 'full_name', label: 'Full Name', type: 'text', required: true },
           { key: 'relationship_type', label: 'Relationship', type: 'select', options: ['client', 'partner', 'principal'] },
-          { key: 'contact_type', label: 'Type', type: 'select', options: ['individual', 'company'] },
-          { key: 'company_name', label: 'Company Name', type: 'text' },
-          { key: 'gender', label: 'Gender', type: 'select', options: ['male', 'female', 'other'], tip: 'Applicable for individual contacts' },
+          { key: 'contact_type', label: 'Type', type: 'select', options: ['individual', 'non_individual'] },
+          { key: 'entity_sub_type', label: 'Entity Sub-Type', type: 'select', options: ['huf', 'company', 'trust', 'partnership_firm'], tip: 'Applicable for Non-Individual contacts' },
+          { key: 'company_name', label: 'Entity / Company Name', type: 'text' },
+          // Individual fields
+          { key: 'gender', label: 'Gender', type: 'select', options: ['male', 'female', 'other'], tip: 'Applicable for Individual contacts' },
           { key: 'date_of_birth', label: 'Date of Birth', type: 'date' },
           { key: 'tax_status', label: 'Tax Status', type: 'select', options: ['resident_indian', 'nri', 'foreign_national', 'pio_oci'] },
+          // Common contact
           { key: 'phone', label: 'Phone', type: 'text' },
           { key: 'alternate_phone', label: 'Alternate Phone', type: 'text' },
           { key: 'email', label: 'Email', type: 'text' },
+          // KYC - common
           { key: 'pan', label: 'PAN', type: 'text', placeholder: 'ABCDE1234F' },
-          { key: 'aadhaar', label: 'Aadhaar Number', type: 'text', placeholder: '1234 5678 9012' },
-          { key: 'ckyc_number', label: 'CKYC Number', type: 'text', placeholder: '14-digit CKYC ID' },
+          // Individual KYC
+          { key: 'aadhaar', label: 'Aadhaar Number', type: 'text', placeholder: '1234 5678 9012', tip: 'Individual only' },
+          { key: 'ckyc_number', label: 'CKYC Number', type: 'text', placeholder: '14-digit CKYC ID', tip: 'Individual only' },
+          // Non-individual registration
+          { key: 'tan', label: 'TAN', type: 'text', placeholder: 'MUMX12345F', tip: 'Non-Individual only' },
+          { key: 'cin', label: 'CIN / LLPIN', type: 'text', placeholder: 'U65999MH2015PTC123456', tip: 'Non-Individual only' },
+          { key: 'gstin', label: 'GSTIN', type: 'text', placeholder: '27AABCW1234F1ZP', tip: 'Non-Individual only' },
+          { key: 'date_of_incorporation', label: 'Date of Incorporation', type: 'date', tip: 'Non-Individual only' },
+          // Location
           { key: 'city', label: 'City', type: 'text' },
           { key: 'state', label: 'State', type: 'text' },
           { key: 'source', label: 'Source', type: 'select', options: ['direct', 'referral', 'website', 'walk-in', 'campaign', 'import'] },
           { key: 'notes', label: 'Notes', type: 'textarea' },
         ]}
         emptyForm={{
-          full_name: '', relationship_type: 'client', contact_type: 'individual', company_name: '', gender: '', date_of_birth: '',
-          tax_status: 'resident_indian', phone: '', alternate_phone: '', email: '', pan: '', aadhaar: '', ckyc_number: '',
+          full_name: '', relationship_type: 'client', contact_type: 'individual', entity_sub_type: '',
+          company_name: '', gender: '', date_of_birth: '', tax_status: 'resident_indian',
+          phone: '', alternate_phone: '', email: '', pan: '', aadhaar: '', ckyc_number: '',
+          tan: '', cin: '', gstin: '', date_of_incorporation: '',
           city: '', state: '', source: 'direct', notes: '',
         }}
         hasStatus={false}
