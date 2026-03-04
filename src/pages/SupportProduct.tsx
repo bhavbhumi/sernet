@@ -175,23 +175,6 @@ const SupportProduct = () => {
             {/* Left Sidebar */}
             <aside className="hidden lg:block">
               <div className="sticky top-24 space-y-4">
-                {/* Bulletin Banner */}
-                {bulletins.length > 0 && (
-                  <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-3.5">
-                    <div className="flex items-center gap-2 mb-2">
-                      <AlertTriangle className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
-                      <h3 className="text-[10px] font-semibold text-amber-800 dark:text-amber-300 uppercase tracking-wider">Notices</h3>
-                    </div>
-                    <div className="space-y-1.5">
-                      {bulletins.map((b: any) => (
-                        <p key={b.id as string} className="text-[11px] text-amber-800 dark:text-amber-300 leading-snug font-medium">
-                          {b.title as string}
-                        </p>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
                 {/* Product Header */}
                 <div className={`${meta?.bgClass} rounded-xl p-4 border border-border`}>
                   <div className="flex items-center gap-3">
@@ -255,18 +238,6 @@ const SupportProduct = () => {
                   </Accordion>
                 </div>
 
-                {/* Quick Actions - compact */}
-                <div className="border-t border-border pt-4 space-y-1.5">
-                  <Link to="/raise-ticket" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted/50 transition-colors text-sm text-foreground hover:text-primary">
-                    <Send className="h-3.5 w-3.5 text-primary" /> Raise a Ticket
-                  </Link>
-                  <Link to="/contact?tab=schedule" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted/50 transition-colors text-sm text-foreground hover:text-primary">
-                    <Phone className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" /> Schedule a Call
-                  </Link>
-                  <Link to="/downloads?tab=documents" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted/50 transition-colors text-sm text-foreground hover:text-primary">
-                    <Download className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" /> Download Forms
-                  </Link>
-                </div>
               </div>
             </aside>
 
