@@ -168,6 +168,7 @@ const departmentGroups: DepartmentGroup[] = [
   },
   {
     department: 'Legal & Compliance',
+    departmentKey: 'legal',
     icon: Gavel,
     color: 'text-violet-500',
     items: [
