@@ -155,6 +155,7 @@ const departmentGroups: DepartmentGroup[] = [
         ]
       },
       { label: 'Knowledge Base', icon: BookMarked, href: R.support.knowledgeBase },
+      { label: 'Documents', icon: FileText, href: R.support.documents },
       { label: 'Canned Responses', icon: MessageSquareText, href: R.support.cannedResponses },
     ]
   },
