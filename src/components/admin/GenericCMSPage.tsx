@@ -38,10 +38,12 @@ interface GenericCMSPageProps {
   tableColumns: { key: string; label: string; width?: string; format?: 'date' }[];
   hasStatus?: boolean;
   hasFeatured?: boolean;
-  categoryField?: string; // e.g. 'category', 'report_type' — enables category filter dropdown
-  headerActions?: React.ReactNode; // optional extra buttons in the header bar
-  orderBy?: { column: string; ascending: boolean }; // custom sort order
-  onRowAction?: (item: Record<string, unknown>) => React.ReactNode; // custom action button per row
+  categoryField?: string;
+  extraFilterField?: string;
+  extraFilterLabel?: string;
+  headerActions?: React.ReactNode;
+  orderBy?: { column: string; ascending: boolean };
+  onRowAction?: (item: Record<string, unknown>) => React.ReactNode;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -102,7 +104,7 @@ function formatCellDate(val: unknown): string {
 }
 
 export function GenericCMSPage({
-  title, subtitle, tableName, fields, emptyForm: defaultForm, tableColumns, hasStatus = true, hasFeatured = false, categoryField, headerActions, orderBy, onRowAction
+  title, subtitle, tableName, fields, emptyForm: defaultForm, tableColumns, hasStatus = true, hasFeatured = false, categoryField, extraFilterField, extraFilterLabel = 'All', headerActions, orderBy, onRowAction
 }: GenericCMSPageProps) {
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
@@ -111,6 +113,7 @@ export function GenericCMSPage({
   const [search, setSearch] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [filterCategory, setFilterCategory] = useState('all');
+  const [filterExtra, setFilterExtra] = useState('all');
   const [page, setPage] = useState(1);
   const [dialogOpen, setDialogOpen] = useState(searchParams.get('action') === 'new');
   const [editItem, setEditItem] = useState<Record<string, unknown> | null>(null);
@@ -190,11 +193,16 @@ export function GenericCMSPage({
     const matchSearch = titleVal.toLowerCase().includes(search.toLowerCase());
     const matchStatus = !hasStatus || filterStatus === 'all' || item.status === filterStatus;
     const matchCat = !categoryField || filterCategory === 'all' || String(item[categoryField] ?? '') === filterCategory;
-    return matchSearch && matchStatus && matchCat;
+    const matchExtra = !extraFilterField || filterExtra === 'all' || String(item[extraFilterField] ?? '') === filterExtra;
+    return matchSearch && matchStatus && matchCat && matchExtra;
   });
 
   const categoryOptions = categoryField
     ? ['all', ...Array.from(new Set(items.map(i => String(i[categoryField] ?? '')).filter(Boolean))).sort()]
+    : [];
+
+  const extraFilterOptions = extraFilterField
+    ? ['all', ...Array.from(new Set(items.map(i => String(i[extraFilterField] ?? '')).filter(v => Boolean(v) && v !== 'all'))).sort()]
     : [];
 
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
@@ -209,6 +217,7 @@ export function GenericCMSPage({
   const handleFilterStatus = (v: string) => { setFilterStatus(v); setPage(1); };
   const handleSearch = (v: string) => { setSearch(v); setPage(1); };
   const handleFilterCategory = (v: string) => { setFilterCategory(v); setPage(1); };
+  const handleFilterExtra = (v: string) => { setFilterExtra(v); setPage(1); };
 
   // Status counts for stat chips
   const statusCounts = hasStatus ? {
@@ -247,7 +256,7 @@ export function GenericCMSPage({
         </div>
       )}
 
-      {/* Search + status + category filter */}
+      {/* Search + filters */}
       <div className="flex gap-3 mb-4 flex-wrap items-center">
         <div className="relative flex-1 min-w-[200px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -274,10 +283,16 @@ export function GenericCMSPage({
             </SelectContent>
           </Select>
         )}
-        {/* Top pagination — right-aligned */}
-        <div className="ml-auto">
-          <AdminPagination page={page} totalPages={totalPages} total={filtered.length} onPage={handlePage} />
-        </div>
+        {extraFilterField && extraFilterOptions.length > 1 && (
+          <Select value={filterExtra} onValueChange={handleFilterExtra}>
+            <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              {extraFilterOptions.map(opt => (
+                <SelectItem key={opt} value={opt}>{opt === 'all' ? extraFilterLabel : opt}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
       </div>
 
       <div className="bg-card border border-border rounded-xl overflow-hidden">

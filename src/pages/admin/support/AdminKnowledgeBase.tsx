@@ -75,6 +75,8 @@ export default function AdminKnowledgeBase() {
       hasStatus
       hasFeatured
       categoryField="category"
+      extraFilterField="product"
+      extraFilterLabel="All Products"
     />
   );
 }
