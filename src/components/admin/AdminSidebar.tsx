@@ -128,6 +128,7 @@ const departmentGroups: DepartmentGroup[] = [
   },
   {
     department: 'Accounts',
+    departmentKey: 'accounts',
     icon: Wallet,
     color: 'text-amber-500',
     items: [
