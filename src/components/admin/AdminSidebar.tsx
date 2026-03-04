@@ -179,6 +179,7 @@ const departmentGroups: DepartmentGroup[] = [
   },
   {
     department: 'System',
+    departmentKey: 'system',
     icon: Settings,
     color: 'text-muted-foreground',
     items: [
