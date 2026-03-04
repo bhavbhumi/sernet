@@ -1578,6 +1578,8 @@ export type Database = {
           created_by: string | null
           documents_required: string[] | null
           escalation_level: number | null
+          escalation_trigger: string | null
+          first_response_sla_hours: number | null
           helpful_count: number | null
           id: string
           impact_type: string | null
@@ -1593,6 +1595,7 @@ export type Database = {
           published_at: string | null
           question_variants: string[] | null
           regulatory_tag: string | null
+          resolution_sla_hours: number | null
           resolution_steps: string | null
           resolution_timeline: string | null
           search_keywords: string[] | null
@@ -1617,6 +1620,8 @@ export type Database = {
           created_by?: string | null
           documents_required?: string[] | null
           escalation_level?: number | null
+          escalation_trigger?: string | null
+          first_response_sla_hours?: number | null
           helpful_count?: number | null
           id?: string
           impact_type?: string | null
@@ -1632,6 +1637,7 @@ export type Database = {
           published_at?: string | null
           question_variants?: string[] | null
           regulatory_tag?: string | null
+          resolution_sla_hours?: number | null
           resolution_steps?: string | null
           resolution_timeline?: string | null
           search_keywords?: string[] | null
@@ -1656,6 +1662,8 @@ export type Database = {
           created_by?: string | null
           documents_required?: string[] | null
           escalation_level?: number | null
+          escalation_trigger?: string | null
+          first_response_sla_hours?: number | null
           helpful_count?: number | null
           id?: string
           impact_type?: string | null
@@ -1671,6 +1679,7 @@ export type Database = {
           published_at?: string | null
           question_variants?: string[] | null
           regulatory_tag?: string | null
+          resolution_sla_hours?: number | null
           resolution_steps?: string | null
           resolution_timeline?: string | null
           search_keywords?: string[] | null
