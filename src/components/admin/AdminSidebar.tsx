@@ -360,6 +360,13 @@ export function AdminSidebar() {
 
       {/* Footer */}
       <div className="border-t border-border p-3 space-y-1">
+        {/* Logged-in user info */}
+        {session && !collapsed && (
+          <div className="px-3 py-2 mb-1">
+            <p className="text-xs font-medium text-foreground truncate">{session.name || session.email}</p>
+            <p className="text-[10px] text-muted-foreground capitalize">{session.role.replace('_', ' ')}{session.department ? ` · ${session.department}` : ''}</p>
+          </div>
+        )}
         <Link
           to="/"
           target="_blank"
