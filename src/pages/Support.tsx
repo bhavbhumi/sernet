@@ -1,5 +1,6 @@
 import { Layout } from '@/components/layout/Layout';
 import { SEOHead } from '@/components/shared/SEOHead';
+import { PageHero } from '@/components/layout/PageHero';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
@@ -80,23 +81,26 @@ const Support = () => {
     <Layout>
       <SEOHead title="Support Portal — SERNET Financial Services" description="Search our knowledge base, raise tickets, and get expert help for Choice FinX, Tick Funds, and Tushil products." path="/support" />
 
-      {/* Hero + Search */}
-      <section className="bg-hero section-padding">
-        <div className="container-sernet">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="max-w-3xl mx-auto text-center">
-            <h1 className="heading-xl text-foreground mb-3">Support Portal</h1>
-            <p className="text-body mb-8">Search our knowledge base for instant answers, or raise a ticket for personal support.</p>
-            <div className="relative max-w-xl mx-auto">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-              <input
-                type="text"
-                placeholder="Eg: How do I add a nominee? How do I activate F&O?"
-                value={kbSearch}
-                onChange={e => setKbSearch(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-base"
-              />
-            </div>
-          </motion.div>
+      <PageHero
+        title="Support"
+        highlight="Portal"
+        description="Search our knowledge base for instant answers, or raise a ticket for personal support."
+        breadcrumbLabel="Support"
+      />
+
+      {/* Search Bar */}
+      <section className="bg-background border-b border-border">
+        <div className="container-sernet py-6">
+          <div className="relative max-w-xl mx-auto">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+            <input
+              type="text"
+              placeholder="Eg: How do I add a nominee? How do I activate F&O?"
+              value={kbSearch}
+              onChange={e => setKbSearch(e.target.value)}
+              className="w-full pl-12 pr-4 py-3.5 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-base"
+            />
+          </div>
         </div>
       </section>
 
