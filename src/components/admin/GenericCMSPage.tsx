@@ -218,7 +218,7 @@ export function GenericCMSPage({
     archived: items.filter(i => i.status === 'archived').length,
   } : null;
 
-  const colSpan = tableColumns.length + 1;
+  const colSpan = tableColumns.length;
 
   return (
     <AdminLayout
@@ -288,7 +288,7 @@ export function GenericCMSPage({
                 {tableColumns.map(col => (
                   <th key={col.key} className={`px-4 py-3 text-left font-medium text-muted-foreground ${col.width ?? ''}`}>{col.label}</th>
                 ))}
-                <th className="px-4 py-3 text-right font-medium text-muted-foreground w-28">Actions</th>
+                {/* Actions are rendered inline under the first column */}
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
@@ -305,7 +305,7 @@ export function GenericCMSPage({
                       {colIdx === 0 ? (
                         <div>
                           <p className="font-medium text-foreground line-clamp-1">{String(item[col.key] ?? '')}</p>
-                          <div className="flex items-center gap-0.5 mt-1.5 flex-wrap">
+                          <div className="flex items-center gap-1 mt-1.5 flex-wrap opacity-80 group-hover:opacity-100 transition-opacity">
                             {onRowAction && onRowAction(item)}
                             {hasStatus && (
                               <Button variant="ghost" size="sm" className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground gap-1" onClick={() => toggleStatus(item)} title={item.status === 'published' ? 'Unpublish' : 'Publish'}>
@@ -343,7 +343,7 @@ export function GenericCMSPage({
                       )}
                     </td>
                   ))}
-                  <td className="px-4 py-3 w-6" />
+                  {/* Actions rendered inline under first column */}
                 </tr>
               ))}
             </tbody>
