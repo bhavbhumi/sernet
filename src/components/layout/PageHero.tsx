@@ -23,10 +23,11 @@ const routeLabels: Record<string, string> = {
   '/calendars': 'Calendars',
   '/downloads': 'Downloads',
   '/legal': 'Legal',
+  '/support': 'Support',
 };
 
 /* ---------- route-specific geometric patterns ---------- */
-type PatternKey = 'default' | 'services' | 'insights' | 'about' | 'network' | 'pricing' | 'opinions' | 'updates' | 'calculators' | 'calendars' | 'downloads' | 'contact' | 'reviews' | 'legal';
+type PatternKey = 'default' | 'services' | 'insights' | 'about' | 'network' | 'pricing' | 'opinions' | 'updates' | 'calculators' | 'calendars' | 'downloads' | 'contact' | 'reviews' | 'legal' | 'support';
 
 const resolvePattern = (pathname: string): PatternKey => {
   const base = '/' + pathname.split('/').filter(Boolean)[0];
@@ -44,6 +45,7 @@ const resolvePattern = (pathname: string): PatternKey => {
     '/contact': 'contact',
     '/reviews': 'reviews',
     '/legal': 'legal',
+    '/support': 'support',
   };
   return map[base] || 'default';
 };
@@ -231,7 +233,25 @@ const GeometricPattern = ({ pattern }: { pattern: PatternKey }) => {
         </>
       );
 
-
+    case 'support':
+      return (
+        <>
+          <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8 }}
+            className="absolute top-2 right-[6%] w-40 h-28 border-2 border-primary/20 rounded-xl overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-6 bg-primary/10 border-b border-primary/15" />
+            <div className="absolute top-9 left-3 right-3 space-y-2">
+              <div className="h-1.5 w-3/4 bg-primary/15 rounded-full" />
+              <div className="h-1.5 w-1/2 bg-primary/10 rounded-full" />
+            </div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+            className="absolute bottom-4 right-[18%] w-5 h-5 rounded-full border-2 border-primary/20 flex items-center justify-center">
+            <div className="w-2 h-2 rounded-full bg-primary/25" />
+          </motion.div>
+          <motion.div initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 0.7, delay: 0.2 }}
+            className="absolute bottom-6 left-[4%] w-20 h-0.5 bg-gradient-to-r from-primary/30 to-transparent origin-left" />
+        </>
+      );
 
     case 'legal':
       return (
