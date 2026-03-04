@@ -139,9 +139,16 @@ export function GenericCMSPage({
   const handleSave = async () => {
     setSaving(true);
     const adminEnteredDate = form.published_at ? String(form.published_at).trim() : '';
+    // Convert empty strings to null for date fields to avoid Postgres type errors
+    const cleanedForm = { ...form };
+    fields.forEach(f => {
+      if (f.type === 'date' && cleanedForm[f.key] === '') {
+        cleanedForm[f.key] = null;
+      }
+    });
     const payload = {
-      ...form,
-      ...(hasStatus && form.status === 'published' && !adminEnteredDate
+      ...cleanedForm,
+      ...(hasStatus && cleanedForm.status === 'published' && !adminEnteredDate
         ? { published_at: new Date().toISOString() }
         : {}),
     };
