@@ -205,6 +205,11 @@ const App = () => (
           <Route path="/insights/articles/:id" element={<ArticleDetail />} />
           <Route path="/insights/analysis/:id" element={<AnalysisDetail />} />
 
+          {/* Portal — Client & Partner */}
+          <Route path="/portal/login" element={<PortalLogin />} />
+          <Route path="/portal/signup" element={<PortalSignup />} />
+          <Route path="/portal" element={<PortalDashboard />} />
+
           {/* Admin — Auth */}
           <Route path="/admin/setup" element={<AdminSetup />} />
           <Route path="/admin/login" element={<AdminLogin />} />
