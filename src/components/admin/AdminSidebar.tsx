@@ -414,7 +414,7 @@ export function AdminSidebar() {
                 </Link>
               </div>
               <nav className="px-3 pt-1 pb-3 space-y-0.5">
-                {departmentGroups.map((group) => (
+                {visibleGroups.map((group) => (
                   <DepartmentSection key={group.department} group={group} collapsed={false} />
                 ))}
               </nav>
