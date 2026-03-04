@@ -268,18 +268,24 @@ export default function AdminCRMContacts() {
           { key: 'relationship_type', label: 'Relationship', type: 'select', options: ['client', 'partner', 'principal'] },
           { key: 'contact_type', label: 'Type', type: 'select', options: ['individual', 'company'] },
           { key: 'company_name', label: 'Company Name', type: 'text' },
+          { key: 'gender', label: 'Gender', type: 'select', options: ['male', 'female', 'other'], tip: 'Applicable for individual contacts' },
+          { key: 'date_of_birth', label: 'Date of Birth', type: 'date' },
+          { key: 'tax_status', label: 'Tax Status', type: 'select', options: ['resident_indian', 'nri', 'foreign_national', 'pio_oci'] },
           { key: 'phone', label: 'Phone', type: 'text' },
           { key: 'alternate_phone', label: 'Alternate Phone', type: 'text' },
           { key: 'email', label: 'Email', type: 'text' },
-          { key: 'pan', label: 'PAN', type: 'text' },
+          { key: 'pan', label: 'PAN', type: 'text', placeholder: 'ABCDE1234F' },
+          { key: 'aadhaar', label: 'Aadhaar Number', type: 'text', placeholder: '1234 5678 9012' },
+          { key: 'ckyc_number', label: 'CKYC Number', type: 'text', placeholder: '14-digit CKYC ID' },
           { key: 'city', label: 'City', type: 'text' },
           { key: 'state', label: 'State', type: 'text' },
           { key: 'source', label: 'Source', type: 'select', options: ['direct', 'referral', 'website', 'walk-in', 'campaign', 'import'] },
           { key: 'notes', label: 'Notes', type: 'textarea' },
         ]}
         emptyForm={{
-          full_name: '', relationship_type: 'client', contact_type: 'individual', company_name: '', phone: '', alternate_phone: '',
-          email: '', pan: '', city: '', state: '', source: 'direct', notes: '',
+          full_name: '', relationship_type: 'client', contact_type: 'individual', company_name: '', gender: '', date_of_birth: '',
+          tax_status: 'resident_indian', phone: '', alternate_phone: '', email: '', pan: '', aadhaar: '', ckyc_number: '',
+          city: '', state: '', source: 'direct', notes: '',
         }}
         hasStatus={false}
         categoryField="relationship_type"
