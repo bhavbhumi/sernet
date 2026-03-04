@@ -1,7 +1,6 @@
 import { Layout } from '@/components/layout/Layout';
 import { SEOHead } from '@/components/shared/SEOHead';
 import { PageHero } from '@/components/layout/PageHero';
-import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
   Search, BookOpen, Send, ChevronRight, Clock, FileText, Phone, Mail, ExternalLink,

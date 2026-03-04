@@ -6,7 +6,12 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { PRODUCTS, PRIORITY_CONFIG, RISK_TAGS, matchAutomationRules } from '@/lib/supportClassification';
+import { PRODUCTS as BASE_PRODUCTS, PRIORITY_CONFIG, RISK_TAGS, matchAutomationRules } from '@/lib/supportClassification';
+
+const PRODUCTS = [
+  ...BASE_PRODUCTS,
+  { key: 'all', label: 'General / KYC', description: 'Account & KYC queries', color: 'text-amber-600', bg: 'bg-amber-50 dark:bg-amber-900/20' },
+];
 import { CheckCircle, Clock, Shield, FileText, ChevronRight, AlertTriangle, BookOpen, ThumbsUp, ArrowRight } from 'lucide-react';
 
 const db = (t: string) => supabase.from(t as any) as any;

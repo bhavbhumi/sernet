@@ -3,8 +3,8 @@ import { SEOHead } from '@/components/shared/SEOHead';
 import { motion } from 'framer-motion';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import {
-  Search, BookOpen, Send, ChevronRight, Clock, FileText, Phone, Mail, ExternalLink,
-  AlertTriangle, Download, TrendingUp, Shield, BarChart3, Landmark
+  Search, BookOpen, Send, ChevronRight, Clock, FileText, Phone,
+  Download, TrendingUp, Shield, BarChart3, Landmark
 } from 'lucide-react';
 import { useState, useMemo, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
@@ -65,18 +65,6 @@ const SupportProduct = () => {
     },
   });
 
-  // Fetch bulletins
-  const { data: bulletins = [] } = useQuery({
-    queryKey: ['support-bulletins'],
-    queryFn: async () => {
-      const { data } = await db('bulletins')
-        .select('id, title, description, priority')
-        .eq('status', 'published')
-        .order('created_at', { ascending: false })
-        .limit(3);
-      return data ?? [];
-    },
-  });
 
   // Build category tree
   const categoryTree = useMemo(() => {

@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Plus, Search, Pencil, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { PRODUCTS, PRIORITY_CONFIG, RISK_TAGS } from '@/lib/supportClassification';
@@ -126,7 +126,7 @@ export default function AdminIssueTypes() {
         ].map(({ key, label }) => (
           <button
             key={key}
-            onClick={() => { setFilterProduct(key === 'shared' ? 'all_product' : key); setPage(1); }}
+            onClick={() => { setFilterProduct(key === 'shared' ? 'all' : key); setPage(1); }}
             className={`border rounded-lg p-3 text-left transition-colors ${filterProduct === key ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/30'}`}
           >
             <p className="text-xs text-muted-foreground">{label}</p>
@@ -223,7 +223,10 @@ export default function AdminIssueTypes() {
       {/* Create/Edit Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader><DialogTitle>{editingId ? 'Edit Issue Type' : 'Add Issue Type'}</DialogTitle></DialogHeader>
+          <DialogHeader>
+            <DialogTitle>{editingId ? 'Edit Issue Type' : 'Add Issue Type'}</DialogTitle>
+            <DialogDescription>Configure issue classification, priority, TAT, and automation routing</DialogDescription>
+          </DialogHeader>
           <div className="grid grid-cols-2 gap-4 mt-2">
             <div className="space-y-1.5">
               <Label>Product <span className="text-destructive">*</span></Label>
