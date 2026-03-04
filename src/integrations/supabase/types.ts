@@ -2463,6 +2463,77 @@ export type Database = {
         }
         Relationships: []
       }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          city: string | null
+          created_at: string
+          crm_contact_id: string | null
+          date_of_birth: string | null
+          email: string | null
+          full_name: string
+          gender: string | null
+          id: string
+          kyc_status: string
+          pan: string | null
+          phone: string | null
+          state: string | null
+          status: string
+          tax_status: string | null
+          updated_at: string
+          user_id: string
+          user_type: Database["public"]["Enums"]["portal_user_type"]
+        }
+        Insert: {
+          avatar_url?: string | null
+          city?: string | null
+          created_at?: string
+          crm_contact_id?: string | null
+          date_of_birth?: string | null
+          email?: string | null
+          full_name?: string
+          gender?: string | null
+          id?: string
+          kyc_status?: string
+          pan?: string | null
+          phone?: string | null
+          state?: string | null
+          status?: string
+          tax_status?: string | null
+          updated_at?: string
+          user_id: string
+          user_type?: Database["public"]["Enums"]["portal_user_type"]
+        }
+        Update: {
+          avatar_url?: string | null
+          city?: string | null
+          created_at?: string
+          crm_contact_id?: string | null
+          date_of_birth?: string | null
+          email?: string | null
+          full_name?: string
+          gender?: string | null
+          id?: string
+          kyc_status?: string
+          pan?: string | null
+          phone?: string | null
+          state?: string | null
+          status?: string
+          tax_status?: string | null
+          updated_at?: string
+          user_id?: string
+          user_type?: Database["public"]["Enums"]["portal_user_type"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_crm_contact_id_fkey"
+            columns: ["crm_contact_id"]
+            isOneToOne: false
+            referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reports: {
         Row: {
           created_at: string
@@ -3568,6 +3639,7 @@ export type Database = {
         | "accounts"
         | "support"
         | "legal"
+      portal_user_type: "client" | "partner"
       ticket_channel: "phone" | "walk_in" | "website" | "email" | "portal"
       ticket_priority: "low" | "medium" | "high" | "urgent"
       ticket_status:
@@ -3733,6 +3805,7 @@ export const Constants = {
         "dormant",
       ],
       department: ["marketing", "sales", "hr", "accounts", "support", "legal"],
+      portal_user_type: ["client", "partner"],
       ticket_channel: ["phone", "walk_in", "website", "email", "portal"],
       ticket_priority: ["low", "medium", "high", "urgent"],
       ticket_status: [
