@@ -41,18 +41,36 @@ export function TicketWizard({ showHeading = true }: TicketWizardProps) {
   // Fetch authenticated user and pre-fill contact details
   useEffect(() => {
     const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        const user = session.user;
         setAuthUser(user);
         setForm(f => ({
           ...f,
-          name: f.name || user.user_metadata?.full_name || user.user_metadata?.name || '',
-          email: f.email || user.email || '',
-          phone: f.phone || user.user_metadata?.phone || user.phone || '',
+          name: user.user_metadata?.full_name || user.user_metadata?.name || f.name || '',
+          email: user.email || f.email || '',
+          phone: user.user_metadata?.phone || user.phone || f.phone || '',
         }));
       }
     };
     getUser();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        const user = session.user;
+        setAuthUser(user);
+        setForm(f => ({
+          ...f,
+          name: user.user_metadata?.full_name || user.user_metadata?.name || f.name || '',
+          email: user.email || f.email || '',
+          phone: user.user_metadata?.phone || user.phone || f.phone || '',
+        }));
+      } else {
+        setAuthUser(null);
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   useEffect(() => {
@@ -98,6 +116,11 @@ export function TicketWizard({ showHeading = true }: TicketWizardProps) {
       return;
     }
     setSubmitting(true);
+
+    // Re-check session to ensure fresh auth state
+    const { data: { session } } = await supabase.auth.getSession();
+    const currentUser = session?.user ?? authUser;
+
     const fullText = `${form.subject} ${form.description}`;
     const autoMatch = matchAutomationRules(fullText, automationRules);
 
@@ -133,7 +156,7 @@ export function TicketWizard({ showHeading = true }: TicketWizardProps) {
       auto_assigned: !!(autoMatch || matchedKb),
       channel: 'website',
       status: 'open',
-      ...(authUser ? { created_by: authUser.id } : {}),
+      created_by: currentUser?.id ?? null,
     };
 
     const { data, error } = await db('support_tickets').insert([payload]).select('ticket_number').single();
