@@ -43,13 +43,13 @@ const fields = [
 ];
 
 const tableColumns = [
+  { key: 'title', label: 'Article' },
   { key: 'issue_code', label: 'Code' },
-  { key: 'title', label: 'Title' },
   { key: 'product', label: 'Product' },
   { key: 'category', label: 'Category' },
   { key: 'priority', label: 'Priority' },
+  { key: 'owner_team', label: 'Team' },
   { key: 'visibility', label: 'Visibility' },
-  { key: 'view_count', label: 'Views' },
   { key: 'status', label: 'Status' },
 ];
 
