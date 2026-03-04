@@ -40,23 +40,34 @@ export function TicketWizard({ showHeading = true }: TicketWizardProps) {
 
   // Fetch authenticated user and pre-fill contact details
   useEffect(() => {
+    let mounted = true;
     const getUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) {
-        const user = session.user;
-        setAuthUser(user);
-        setForm(f => ({
-          ...f,
-          name: user.user_metadata?.full_name || user.user_metadata?.name || f.name || '',
-          email: user.email || f.email || '',
-          phone: user.user_metadata?.phone || user.phone || f.phone || '',
-        }));
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        console.log('[TicketWizard] getSession result:', { hasSession: !!session, userId: session?.user?.id, error, metadata: session?.user?.user_metadata });
+        if (session?.user && mounted) {
+          const user = session.user;
+          setAuthUser(user);
+          const name = user.user_metadata?.full_name || user.user_metadata?.name || '';
+          const email = user.email || '';
+          const phone = user.user_metadata?.phone || user.phone || '';
+          console.log('[TicketWizard] Pre-filling form:', { name, email, phone });
+          setForm(f => ({
+            ...f,
+            name: name || f.name,
+            email: email || f.email,
+            phone: phone || f.phone,
+          }));
+        }
+      } catch (err) {
+        console.error('[TicketWizard] getSession error:', err);
       }
     };
     getUser();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session?.user) {
+      console.log('[TicketWizard] onAuthStateChange:', _event, { hasSession: !!session, userId: session?.user?.id });
+      if (session?.user && mounted) {
         const user = session.user;
         setAuthUser(user);
         setForm(f => ({
@@ -65,12 +76,15 @@ export function TicketWizard({ showHeading = true }: TicketWizardProps) {
           email: user.email || f.email || '',
           phone: user.user_metadata?.phone || user.phone || f.phone || '',
         }));
-      } else {
+      } else if (mounted) {
         setAuthUser(null);
       }
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   useEffect(() => {
