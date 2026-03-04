@@ -83,15 +83,11 @@ const SupportProduct = () => {
     }
   }, [articleSlug, kbArticles]);
 
-  // Auto-expand first category with auto-select first article
+  // Auto-expand first category (but don't auto-select article — show overview instead)
   const [openCategories, setOpenCategories] = useState<string[]>([]);
   useEffect(() => {
     if (categoryTree.length > 0 && openCategories.length === 0 && !selectedArticleId) {
-      const firstCat = categoryTree[0];
-      setOpenCategories([firstCat.name]);
-      if (firstCat.articles.length > 0) {
-        setSelectedArticleId(firstCat.articles[0].id);
-      }
+      setOpenCategories([categoryTree[0].name]);
     }
   }, [categoryTree]);
 
@@ -356,11 +352,82 @@ const SupportProduct = () => {
                   </div>
                 </motion.div>
               ) : (
-                <div className="text-center py-20 text-muted-foreground">
-                  <BookOpen className="h-12 w-12 mx-auto mb-4 opacity-30" />
-                  <p className="text-lg font-medium">Select an article</p>
-                  <p className="text-sm mt-1">Choose a category and article from the sidebar to view its content.</p>
-                </div>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.25 }}
+                  className="space-y-6"
+                >
+                  {/* Product Overview Header */}
+                  <div className={`${meta?.bgClass} rounded-xl p-6 border border-border`}>
+                    <div className="flex items-center gap-4 mb-3">
+                      <div className="w-12 h-12 rounded-xl bg-background/60 flex items-center justify-center">
+                        <Icon className={`h-7 w-7 ${meta?.colorClass}`} />
+                      </div>
+                      <div>
+                        <h1 className="text-xl font-bold text-foreground">{meta?.label} Knowledge Base</h1>
+                        <p className="text-sm text-muted-foreground">{meta?.description} — {kbArticles.length} articles across {categoryTree.length} categories</p>
+                      </div>
+                    </div>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Browse self-help articles organised by issue category. Select any article from the sidebar, or click a category below to explore.
+                    </p>
+                  </div>
+
+                  {/* Classification Tree */}
+                  <div className="bg-card border border-border rounded-xl p-5">
+                    <h2 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
+                      <span className="w-1 h-4 bg-primary rounded-full" /> Issue Categories
+                    </h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {categoryTree.map(cat => (
+                        <button
+                          key={cat.name}
+                          onClick={() => {
+                            setOpenCategories([cat.name]);
+                            if (cat.articles.length > 0) {
+                              handleArticleClick(cat.articles[0]);
+                            }
+                          }}
+                          className="text-left p-4 rounded-lg border border-border hover:border-primary/40 hover:bg-muted/30 transition-all group"
+                        >
+                          <div className="flex items-start justify-between gap-2 mb-1.5">
+                            <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{cat.name}</span>
+                            <Badge variant="secondary" className="text-[10px] px-1.5 shrink-0">{cat.articles.length}</Badge>
+                          </div>
+                          <p className="text-[11px] text-muted-foreground leading-snug line-clamp-2">
+                            {cat.articles.slice(0, 3).map((a: any) => a.title).join(' · ')}
+                          </p>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Quick Actions */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <Link to="/raise-ticket" className="flex items-center gap-3 p-4 rounded-lg border border-border hover:border-primary/40 hover:bg-muted/30 transition-all">
+                      <Send className="h-5 w-5 text-primary shrink-0" />
+                      <div>
+                        <p className="text-sm font-medium text-foreground">Raise a Ticket</p>
+                        <p className="text-[11px] text-muted-foreground">Can't find what you need?</p>
+                      </div>
+                    </Link>
+                    <Link to="/contact?tab=schedule" className="flex items-center gap-3 p-4 rounded-lg border border-border hover:border-primary/40 hover:bg-muted/30 transition-all">
+                      <Phone className="h-5 w-5 text-emerald-600 shrink-0" />
+                      <div>
+                        <p className="text-sm font-medium text-foreground">Schedule a Call</p>
+                        <p className="text-[11px] text-muted-foreground">Talk to our support team</p>
+                      </div>
+                    </Link>
+                    <Link to="/downloads?tab=documents" className="flex items-center gap-3 p-4 rounded-lg border border-border hover:border-primary/40 hover:bg-muted/30 transition-all">
+                      <Download className="h-5 w-5 text-amber-600 shrink-0" />
+                      <div>
+                        <p className="text-sm font-medium text-foreground">Download Forms</p>
+                        <p className="text-[11px] text-muted-foreground">Application & KYC forms</p>
+                      </div>
+                    </Link>
+                  </div>
+                </motion.div>
               )}
             </main>
           </div>
