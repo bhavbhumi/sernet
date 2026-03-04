@@ -1,53 +1,75 @@
 
-import { useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 
-interface AdminGuardProps {
-  children: React.ReactNode;
+interface AdminSession {
+  userId: string;
+  email: string;
+  name: string;
+  role: 'super_admin' | 'admin' | 'editor';
+  department: string | null;
 }
 
-export function AdminGuard({ children }: AdminGuardProps) {
+interface AdminContextValue {
+  session: AdminSession | null;
+  loading: boolean;
+}
+
+const AdminContext = createContext<AdminContextValue>({ session: null, loading: true });
+
+export const useAdminSession = () => useContext(AdminContext);
+
+export function AdminGuard({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
-  const [checking, setChecking] = useState(true);
-  const [authorized, setAuthorized] = useState(false);
+  const [session, setSession] = useState<AdminSession | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const check = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
+      const { data: { session: authSession } } = await supabase.auth.getSession();
+      if (!authSession) {
         navigate('/admin/login');
-        setChecking(false);
+        setLoading(false);
         return;
       }
 
-      const { data: roleData } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', session.user.id)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { data: roleData } = await (supabase.from('user_roles') as any)
+        .select('role, department')
+        .eq('user_id', authSession.user.id)
         .maybeSingle();
 
       if (!roleData) {
         await supabase.auth.signOut();
         navigate('/admin/login');
-        setChecking(false);
+        setLoading(false);
         return;
       }
 
-      setAuthorized(true);
-      setChecking(false);
+      setSession({
+        userId: authSession.user.id,
+        email: authSession.user.email || '',
+        name: authSession.user.user_metadata?.name || '',
+        role: roleData.role,
+        department: roleData.department,
+      });
+      setLoading(false);
     };
 
     check();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
-      if (event === 'SIGNED_OUT') navigate('/admin/login');
+      if (event === 'SIGNED_OUT') {
+        setSession(null);
+        navigate('/admin/login');
+      }
     });
 
     return () => subscription.unsubscribe();
   }, [navigate]);
 
-  if (checking) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
@@ -58,6 +80,11 @@ export function AdminGuard({ children }: AdminGuardProps) {
     );
   }
 
-  if (!authorized) return null;
-  return <>{children}</>;
+  if (!session) return null;
+
+  return (
+    <AdminContext.Provider value={{ session, loading }}>
+      {children}
+    </AdminContext.Provider>
+  );
 }

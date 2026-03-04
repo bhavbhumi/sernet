@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { logAudit } from '@/lib/auditLog';
+import { useAdminSession } from '@/components/admin/AdminGuard';
 import {
   LayoutDashboard, FileText, BarChart3, BookOpen, Bell, Newspaper, AlertCircle, BookOpenCheck,
   Vote, ClipboardList, Star, Briefcase, Users, Mic2, Settings, LogOut,
@@ -27,6 +28,7 @@ interface NavItem {
 
 interface DepartmentGroup {
   department: string;
+  departmentKey: string; // maps to department enum
   icon: React.ComponentType<{ className?: string }>;
   color: string;
   items: NavItem[];
@@ -35,6 +37,7 @@ interface DepartmentGroup {
 const departmentGroups: DepartmentGroup[] = [
   {
     department: 'Marketing',
+    departmentKey: 'marketing',
     icon: Megaphone,
     color: 'text-blue-500',
     items: [
@@ -83,6 +86,7 @@ const departmentGroups: DepartmentGroup[] = [
   },
   {
     department: 'Sales',
+    departmentKey: 'sales',
     icon: TrendingUp,
     color: 'text-emerald-500',
     items: [
@@ -102,6 +106,7 @@ const departmentGroups: DepartmentGroup[] = [
   },
   {
     department: 'HR',
+    departmentKey: 'hr',
     icon: Building2,
     color: 'text-orange-500',
     items: [
@@ -123,6 +128,7 @@ const departmentGroups: DepartmentGroup[] = [
   },
   {
     department: 'Accounts',
+    departmentKey: 'accounts',
     icon: Wallet,
     color: 'text-amber-500',
     items: [
@@ -144,6 +150,7 @@ const departmentGroups: DepartmentGroup[] = [
   },
   {
     department: 'Support',
+    departmentKey: 'support',
     icon: Headphones,
     color: 'text-cyan-500',
     items: [
@@ -161,6 +168,7 @@ const departmentGroups: DepartmentGroup[] = [
   },
   {
     department: 'Legal & Compliance',
+    departmentKey: 'legal',
     icon: Gavel,
     color: 'text-violet-500',
     items: [
@@ -171,6 +179,7 @@ const departmentGroups: DepartmentGroup[] = [
   },
   {
     department: 'System',
+    departmentKey: 'system',
     icon: Settings,
     color: 'text-muted-foreground',
     items: [
@@ -284,6 +293,7 @@ const DepartmentSection = React.memo(function DepartmentSection({ group, collaps
 export function AdminSidebar() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { session } = useAdminSession();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -294,6 +304,22 @@ export function AdminSidebar() {
   };
 
   const isDashboard = location.pathname === '/admin';
+
+  // Filter department groups based on user role/department
+  const visibleGroups = departmentGroups.filter(group => {
+    if (!session) return false;
+    // Super admins see everything
+    if (session.role === 'super_admin') return true;
+    // System section only for super_admin
+    if (group.departmentKey === 'system') return false;
+    // Admin with no department = all departments
+    if (session.role === 'admin' && !session.department) return true;
+    // Admin with specific department
+    if (session.role === 'admin' && session.department) return group.departmentKey === session.department;
+    // Editors: only their department
+    if (session.role === 'editor' && session.department) return group.departmentKey === session.department;
+    return false;
+  });
 
   const SidebarContent = () => (
     <div className="flex flex-col h-full">
@@ -327,13 +353,20 @@ export function AdminSidebar() {
 
       {/* Department Groups */}
       <nav className="flex-1 overflow-y-auto px-3 pt-1 pb-3 space-y-0.5">
-        {departmentGroups.map((group) => (
+        {visibleGroups.map((group) => (
           <DepartmentSection key={group.department} group={group} collapsed={collapsed} />
         ))}
       </nav>
 
       {/* Footer */}
       <div className="border-t border-border p-3 space-y-1">
+        {/* Logged-in user info */}
+        {session && !collapsed && (
+          <div className="px-3 py-2 mb-1">
+            <p className="text-xs font-medium text-foreground truncate">{session.name || session.email}</p>
+            <p className="text-[10px] text-muted-foreground capitalize">{session.role.replace('_', ' ')}{session.department ? ` · ${session.department}` : ''}</p>
+          </div>
+        )}
         <Link
           to="/"
           target="_blank"
@@ -388,7 +421,7 @@ export function AdminSidebar() {
                 </Link>
               </div>
               <nav className="px-3 pt-1 pb-3 space-y-0.5">
-                {departmentGroups.map((group) => (
+                {visibleGroups.map((group) => (
                   <DepartmentSection key={group.department} group={group} collapsed={false} />
                 ))}
               </nav>
