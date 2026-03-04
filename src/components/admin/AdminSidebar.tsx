@@ -106,6 +106,7 @@ const departmentGroups: DepartmentGroup[] = [
   },
   {
     department: 'HR',
+    departmentKey: 'hr',
     icon: Building2,
     color: 'text-orange-500',
     items: [
