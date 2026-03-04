@@ -944,15 +944,19 @@ export type Database = {
       }
       crm_contacts: {
         Row: {
+          aadhaar: string | null
           alternate_phone: string | null
           assigned_to: string | null
           city: string | null
+          ckyc_number: string | null
           company_name: string | null
           contact_type: string
           created_at: string
           created_by: string | null
+          date_of_birth: string | null
           email: string | null
           full_name: string
+          gender: string | null
           id: string
           notes: string | null
           pan: string | null
@@ -962,18 +966,23 @@ export type Database = {
           source: string | null
           state: string | null
           tags: string[] | null
+          tax_status: string | null
           updated_at: string
         }
         Insert: {
+          aadhaar?: string | null
           alternate_phone?: string | null
           assigned_to?: string | null
           city?: string | null
+          ckyc_number?: string | null
           company_name?: string | null
           contact_type?: string
           created_at?: string
           created_by?: string | null
+          date_of_birth?: string | null
           email?: string | null
           full_name: string
+          gender?: string | null
           id?: string
           notes?: string | null
           pan?: string | null
@@ -983,18 +992,23 @@ export type Database = {
           source?: string | null
           state?: string | null
           tags?: string[] | null
+          tax_status?: string | null
           updated_at?: string
         }
         Update: {
+          aadhaar?: string | null
           alternate_phone?: string | null
           assigned_to?: string | null
           city?: string | null
+          ckyc_number?: string | null
           company_name?: string | null
           contact_type?: string
           created_at?: string
           created_by?: string | null
+          date_of_birth?: string | null
           email?: string | null
           full_name?: string
+          gender?: string | null
           id?: string
           notes?: string | null
           pan?: string | null
@@ -1004,6 +1018,7 @@ export type Database = {
           source?: string | null
           state?: string | null
           tags?: string[] | null
+          tax_status?: string | null
           updated_at?: string
         }
         Relationships: []
