@@ -51,7 +51,7 @@ Deno.serve(async (req) => {
       if (password) updatePayload.password = password;
       if (user_metadata) updatePayload.user_metadata = user_metadata;
 
-      const { error } = await supabaseAdmin.auth.admin.updateUser(user_id, updatePayload);
+      const { error } = await supabaseAdmin.auth.admin.updateUserById(user_id, updatePayload);
       if (error) throw error;
 
       return new Response(JSON.stringify({ success: true }), {
