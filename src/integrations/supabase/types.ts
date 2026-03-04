@@ -947,6 +947,7 @@ export type Database = {
           aadhaar: string | null
           alternate_phone: string | null
           assigned_to: string | null
+          cin: string | null
           city: string | null
           ckyc_number: string | null
           company_name: string | null
@@ -954,9 +955,12 @@ export type Database = {
           created_at: string
           created_by: string | null
           date_of_birth: string | null
+          date_of_incorporation: string | null
           email: string | null
+          entity_sub_type: string | null
           full_name: string
           gender: string | null
+          gstin: string | null
           id: string
           notes: string | null
           pan: string | null
@@ -966,6 +970,7 @@ export type Database = {
           source: string | null
           state: string | null
           tags: string[] | null
+          tan: string | null
           tax_status: string | null
           updated_at: string
         }
@@ -973,6 +978,7 @@ export type Database = {
           aadhaar?: string | null
           alternate_phone?: string | null
           assigned_to?: string | null
+          cin?: string | null
           city?: string | null
           ckyc_number?: string | null
           company_name?: string | null
@@ -980,9 +986,12 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           date_of_birth?: string | null
+          date_of_incorporation?: string | null
           email?: string | null
+          entity_sub_type?: string | null
           full_name: string
           gender?: string | null
+          gstin?: string | null
           id?: string
           notes?: string | null
           pan?: string | null
@@ -992,6 +1001,7 @@ export type Database = {
           source?: string | null
           state?: string | null
           tags?: string[] | null
+          tan?: string | null
           tax_status?: string | null
           updated_at?: string
         }
@@ -999,6 +1009,7 @@ export type Database = {
           aadhaar?: string | null
           alternate_phone?: string | null
           assigned_to?: string | null
+          cin?: string | null
           city?: string | null
           ckyc_number?: string | null
           company_name?: string | null
@@ -1006,9 +1017,12 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           date_of_birth?: string | null
+          date_of_incorporation?: string | null
           email?: string | null
+          entity_sub_type?: string | null
           full_name?: string
           gender?: string | null
+          gstin?: string | null
           id?: string
           notes?: string | null
           pan?: string | null
@@ -1018,6 +1032,7 @@ export type Database = {
           source?: string | null
           state?: string | null
           tags?: string[] | null
+          tan?: string | null
           tax_status?: string | null
           updated_at?: string
         }
