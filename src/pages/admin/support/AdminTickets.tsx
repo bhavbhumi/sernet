@@ -10,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Plus, Search, ChevronLeft, ChevronRight, Eye, Clock, AlertTriangle } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { logAudit } from '@/lib/auditLog';
 import { PRODUCTS, PRIORITY_CONFIG, RISK_TAGS, matchAutomationRules } from '@/lib/supportClassification';
@@ -279,7 +279,10 @@ export default function AdminTickets() {
       {/* New Ticket Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader><DialogTitle>New Ticket</DialogTitle></DialogHeader>
+          <DialogHeader>
+            <DialogTitle>New Ticket</DialogTitle>
+            <DialogDescription>Create a new support ticket with 3-tier classification</DialogDescription>
+          </DialogHeader>
           <div className="grid grid-cols-2 gap-4 mt-2">
             {/* Classification - Tier 1: Product */}
             <div className="space-y-1.5">
