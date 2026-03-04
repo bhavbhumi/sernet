@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { PRODUCTS as BASE_PRODUCTS, PRIORITY_CONFIG, RISK_TAGS, matchAutomationRules } from '@/lib/supportClassification';
+import type { User } from '@supabase/supabase-js';
 
 const PRODUCTS = [
   ...BASE_PRODUCTS,
@@ -28,6 +29,7 @@ export function TicketWizard({ showHeading = true }: TicketWizardProps) {
   const [automationRules, setAutomationRules] = useState<any[]>([]);
   const [kbArticles, setKbArticles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [authUser, setAuthUser] = useState<User | null>(null);
 
   const [selectedProduct, setSelectedProduct] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
@@ -35,6 +37,23 @@ export function TicketWizard({ showHeading = true }: TicketWizardProps) {
   const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', description: '' });
   const [submitting, setSubmitting] = useState(false);
   const [ticketNumber, setTicketNumber] = useState('');
+
+  // Fetch authenticated user and pre-fill contact details
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        setAuthUser(user);
+        setForm(f => ({
+          ...f,
+          name: f.name || user.user_metadata?.full_name || user.user_metadata?.name || '',
+          email: f.email || user.email || '',
+          phone: f.phone || user.user_metadata?.phone || user.phone || '',
+        }));
+      }
+    };
+    getUser();
+  }, []);
 
   useEffect(() => {
     const load = async () => {
@@ -114,6 +133,7 @@ export function TicketWizard({ showHeading = true }: TicketWizardProps) {
       auto_assigned: !!(autoMatch || matchedKb),
       channel: 'website',
       status: 'open',
+      ...(authUser ? { created_by: authUser.id } : {}),
     };
 
     const { data, error } = await db('support_tickets').insert([payload]).select('ticket_number').single();
@@ -130,7 +150,7 @@ export function TicketWizard({ showHeading = true }: TicketWizardProps) {
     setSelectedProduct('');
     setSelectedCategory(null);
     setSelectedIssue(null);
-    setForm({ name: '', email: '', phone: '', subject: '', description: '' });
+    setForm(f => ({ name: authUser?.user_metadata?.full_name || authUser?.user_metadata?.name || '', email: authUser?.email || '', phone: authUser?.user_metadata?.phone || authUser?.phone || '', subject: '', description: '' }));
     setTicketNumber('');
   };
 
@@ -313,10 +333,15 @@ export function TicketWizard({ showHeading = true }: TicketWizardProps) {
           )}
 
           <div className="space-y-4">
+            {authUser && (
+              <div className="bg-primary/5 border border-primary/20 rounded-lg p-3 mb-2">
+                <p className="text-xs text-muted-foreground">Logged in as <span className="font-medium text-foreground">{form.email}</span></p>
+              </div>
+            )}
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
                 <Label>Full Name <span className="text-destructive">*</span></Label>
-                <Input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Your full name" />
+                <Input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Your full name" readOnly={!!authUser && !!form.name} className={authUser && form.name ? 'bg-muted' : ''} />
               </div>
               <div className="space-y-1.5">
                 <Label>Phone <span className="text-destructive">*</span></Label>
@@ -325,7 +350,7 @@ export function TicketWizard({ showHeading = true }: TicketWizardProps) {
             </div>
             <div className="space-y-1.5">
               <Label>Email</Label>
-              <Input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} placeholder="your@email.com" />
+              <Input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} placeholder="your@email.com" readOnly={!!authUser && !!form.email} className={authUser && form.email ? 'bg-muted' : ''} />
             </div>
             <div className="space-y-1.5">
               <Label>Subject <span className="text-destructive">*</span></Label>

@@ -4,9 +4,9 @@ import { PageHero } from '@/components/layout/PageHero';
 import { Link, useSearchParams } from 'react-router-dom';
 import {
   Search, BookOpen, Send, ChevronRight, Clock, FileText, Phone, Mail, ExternalLink,
-  AlertTriangle, Download, TrendingUp, Shield, BarChart3, Landmark, ArrowRight
+  AlertTriangle, Download, TrendingUp, Shield, BarChart3, Landmark, ArrowRight, Ticket
 } from 'lucide-react';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import { Badge } from '@/components/ui/badge';
@@ -14,10 +14,11 @@ import { useDebounce } from '@/hooks/useDebounce';
 import { TicketWizard } from '@/components/support/TicketWizard';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
+import type { User } from '@supabase/supabase-js';
 
 const db = (t: string) => supabase.from(t as any) as any;
 
-const TABS = ['Knowledge Base', 'Raise a Ticket', 'Downloads'] as const;
+const TABS = ['Knowledge Base', 'Raise a Ticket', 'My Tickets', 'Downloads'] as const;
 type SupportTab = (typeof TABS)[number];
 
 const PRODUCT_META: Record<string, { label: string; description: string; icon: typeof TrendingUp; colorClass: string; bgClass: string; slug: string }> = {
@@ -27,17 +28,35 @@ const PRODUCT_META: Record<string, { label: string; description: string; icon: t
   all: { label: 'General / KYC', description: 'Account & KYC', icon: Landmark, colorClass: 'text-amber-600 dark:text-amber-400', bgClass: 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800', slug: 'general' },
 };
 
-const TAB_PARAM_MAP: Record<string, SupportTab> = { kb: 'Knowledge Base', ticket: 'Raise a Ticket', downloads: 'Downloads' };
-const TAB_KEY_MAP: Record<SupportTab, string> = { 'Knowledge Base': 'kb', 'Raise a Ticket': 'ticket', 'Downloads': 'downloads' };
+const TAB_PARAM_MAP: Record<string, SupportTab> = { kb: 'Knowledge Base', ticket: 'Raise a Ticket', tickets: 'My Tickets', downloads: 'Downloads' };
+const TAB_KEY_MAP: Record<SupportTab, string> = { 'Knowledge Base': 'kb', 'Raise a Ticket': 'ticket', 'My Tickets': 'tickets', 'Downloads': 'downloads' };
 
 const Support = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const tabParam = searchParams.get('tab') || 'kb';
   const activeTab: SupportTab = TAB_PARAM_MAP[tabParam] || 'Knowledge Base';
+  const [authUser, setAuthUser] = useState<User | null>(null);
 
   const setActiveTab = (tab: SupportTab) => {
     setSearchParams({ tab: TAB_KEY_MAP[tab] }, { replace: true });
   };
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => setAuthUser(user));
+  }, []);
+
+  const { data: myTickets = [], isLoading: ticketsLoading } = useQuery({
+    queryKey: ['my-tickets', authUser?.id],
+    queryFn: async () => {
+      if (!authUser) return [];
+      const { data } = await db('support_tickets')
+        .select('id, ticket_number, subject, status, priority, product, created_at, tat_deadline, issue_code')
+        .eq('created_by', authUser.id)
+        .order('created_at', { ascending: false });
+      return data ?? [];
+    },
+    enabled: !!authUser && activeTab === 'My Tickets',
+  });
 
   const [kbSearch, setKbSearch] = useState('');
   const debouncedSearch = useDebounce(kbSearch, 300);
@@ -318,7 +337,68 @@ const Support = () => {
             </section>
           )}
 
-          {/* ─── Downloads Tab ─── */}
+          {/* ─── My Tickets Tab ─── */}
+          {activeTab === 'My Tickets' && (
+            <section className="section-padding bg-background">
+              <div className="container-sernet max-w-4xl mx-auto">
+                {!authUser ? (
+                  <div className="text-center py-16 text-muted-foreground">
+                    <Ticket className="h-12 w-12 mx-auto mb-4 opacity-40" />
+                    <p className="text-lg font-medium">Sign in to view your tickets</p>
+                    <p className="text-sm mt-1">You need to be logged in to see your submitted tickets.</p>
+                    <Link to="/signup">
+                      <Button className="mt-4">Sign In</Button>
+                    </Link>
+                  </div>
+                ) : ticketsLoading ? (
+                  <div className="animate-pulse space-y-4">
+                    {[1, 2, 3].map(i => <div key={i} className="h-20 bg-muted rounded-xl" />)}
+                  </div>
+                ) : myTickets.length === 0 ? (
+                  <div className="text-center py-16 text-muted-foreground">
+                    <Ticket className="h-12 w-12 mx-auto mb-4 opacity-40" />
+                    <p className="text-lg font-medium">No tickets yet</p>
+                    <p className="text-sm mt-1">You haven't submitted any support tickets.</p>
+                    <Button className="mt-4" onClick={() => setActiveTab('Raise a Ticket')}>Raise a Ticket</Button>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    <h2 className="heading-md mb-4">Your Tickets ({myTickets.length})</h2>
+                    {myTickets.map((t: any) => {
+                      const statusColors: Record<string, string> = {
+                        open: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300',
+                        in_progress: 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300',
+                        resolved: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
+                        closed: 'bg-muted text-muted-foreground',
+                        escalated: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300',
+                      };
+                      const isOverdue = t.tat_deadline && new Date(t.tat_deadline) < new Date() && !['resolved', 'closed'].includes(t.status);
+                      return (
+                        <div key={t.id} className="border border-border rounded-xl p-4 hover:border-primary/40 transition-colors">
+                          <div className="flex items-start justify-between gap-3">
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 flex-wrap mb-1">
+                                <span className="font-mono text-xs text-primary font-semibold">{t.ticket_number}</span>
+                                <Badge className={`text-[10px] ${statusColors[t.status] || ''}`}>{t.status?.replace('_', ' ')}</Badge>
+                                {isOverdue && <Badge variant="destructive" className="text-[10px]">Overdue</Badge>}
+                              </div>
+                              <p className="text-sm font-medium text-foreground">{t.subject}</p>
+                              <div className="flex items-center gap-3 mt-1.5 text-xs text-muted-foreground">
+                                {t.product && <span>{PRODUCT_META[t.product]?.label || t.product}</span>}
+                                {t.issue_code && <span className="font-mono">{t.issue_code}</span>}
+                                <span className="flex items-center gap-1"><Clock className="h-3 w-3" />{new Date(t.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            </section>
+          )}
+
           {activeTab === 'Downloads' && (
             <section className="section-padding bg-background">
               <div className="container-sernet">
