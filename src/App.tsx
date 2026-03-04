@@ -128,6 +128,11 @@ import AdminAgreements from "./pages/admin/legal/AdminAgreements";
 import Sitemap from "./pages/Sitemap";
 import RaiseTicket from "./pages/RaiseTicket";
 
+// Portal pages
+import PortalLogin from "./pages/portal/PortalLogin";
+import PortalSignup from "./pages/portal/PortalSignup";
+import PortalDashboard from "./pages/portal/PortalDashboard";
+
 const queryClient = new QueryClient();
 
 const App = () => (
