@@ -3,8 +3,8 @@ import { SEOHead } from '@/components/shared/SEOHead';
 import { motion } from 'framer-motion';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import {
-  Search, BookOpen, Send, ChevronRight, ChevronDown, Clock, FileText, Phone, Mail, ExternalLink,
-  AlertTriangle, Download, TrendingUp, Shield, BarChart3, Landmark, ArrowLeft
+  Search, BookOpen, Send, ChevronRight, Clock, FileText, Phone, Mail, ExternalLink,
+  AlertTriangle, Download, TrendingUp, Shield, BarChart3, Landmark
 } from 'lucide-react';
 import { useState, useMemo, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
@@ -132,13 +132,9 @@ const SupportProduct = () => {
         path={`/support/${productSlug}`}
       />
 
-      {/* Top bar with breadcrumbs */}
+      {/* Breadcrumb bar */}
       <div className="bg-muted/30 border-b border-border">
-        <div className="container-sernet py-3 flex items-center gap-3">
-          <Link to="/support" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors">
-            <ArrowLeft className="h-4 w-4" />
-            <span className="hidden sm:inline">Back</span>
-          </Link>
+        <div className="container-sernet py-3">
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
@@ -150,9 +146,9 @@ const SupportProduct = () => {
               <BreadcrumbItem>
                 {selectedArticle ? (
                   <BreadcrumbLink asChild>
-                    <Link to={`/support/${productSlug}`} onClick={() => { setSelectedArticleId(null); setSearchParams({}, { replace: true }); }}>
+                    <button onClick={() => { setSelectedArticleId(null); setSearchParams({}, { replace: true }); }} className="hover:text-foreground transition-colors">
                       {meta?.label}
-                    </Link>
+                    </button>
                   </BreadcrumbLink>
                 ) : (
                   <BreadcrumbPage>{meta?.label}</BreadcrumbPage>
@@ -162,7 +158,7 @@ const SupportProduct = () => {
                 <>
                   <BreadcrumbSeparator />
                   <BreadcrumbItem>
-                    <BreadcrumbPage className="max-w-[200px] truncate">{selectedArticle.category}</BreadcrumbPage>
+                    <BreadcrumbPage className="max-w-[260px] truncate">{selectedArticle.title}</BreadcrumbPage>
                   </BreadcrumbItem>
                 </>
               )}
@@ -171,15 +167,15 @@ const SupportProduct = () => {
         </div>
       </div>
 
-      {/* Main Layout: Sidebar + Content */}
+      {/* Main 2-column layout */}
       <section className="bg-background min-h-[calc(100vh-200px)]">
         <div className="container-sernet py-6">
-          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr_260px] gap-6 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 items-start">
 
-            {/* Left Sidebar: Category Accordion Tree */}
+            {/* Left Sidebar */}
             <aside className="hidden lg:block">
               <div className="sticky top-24 space-y-4">
-                {/* Bulletin Banner in Sidebar Top */}
+                {/* Bulletin Banner */}
                 {bulletins.length > 0 && (
                   <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-3.5">
                     <div className="flex items-center gap-2 mb-2">
@@ -188,8 +184,8 @@ const SupportProduct = () => {
                     </div>
                     <div className="space-y-1.5">
                       {bulletins.map((b: any) => (
-                        <p key={b.id as string} className="text-[11px] text-amber-800 dark:text-amber-300 leading-snug">
-                          <span className="font-medium">{b.title as string}</span>
+                        <p key={b.id as string} className="text-[11px] text-amber-800 dark:text-amber-300 leading-snug font-medium">
+                          {b.title as string}
                         </p>
                       ))}
                     </div>
@@ -222,7 +218,7 @@ const SupportProduct = () => {
                 </div>
 
                 {/* Category Accordion */}
-                <div className="max-h-[calc(100vh-400px)] overflow-y-auto pr-1 -mr-1">
+                <div className="max-h-[calc(100vh-420px)] overflow-y-auto pr-1 -mr-1">
                   <Accordion
                     type="multiple"
                     value={openCategories}
@@ -258,10 +254,23 @@ const SupportProduct = () => {
                     ))}
                   </Accordion>
                 </div>
+
+                {/* Quick Actions - compact */}
+                <div className="border-t border-border pt-4 space-y-1.5">
+                  <Link to="/raise-ticket" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted/50 transition-colors text-sm text-foreground hover:text-primary">
+                    <Send className="h-3.5 w-3.5 text-primary" /> Raise a Ticket
+                  </Link>
+                  <Link to="/contact?tab=schedule" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted/50 transition-colors text-sm text-foreground hover:text-primary">
+                    <Phone className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" /> Schedule a Call
+                  </Link>
+                  <Link to="/downloads?tab=documents" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted/50 transition-colors text-sm text-foreground hover:text-primary">
+                    <Download className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" /> Download Forms
+                  </Link>
+                </div>
               </div>
             </aside>
 
-            {/* Center: Article Content */}
+            {/* Content Area */}
             <main className="min-w-0">
               {/* Mobile: Category selector */}
               <div className="lg:hidden mb-6">
@@ -306,7 +315,7 @@ const SupportProduct = () => {
                 </Accordion>
               </div>
 
-              {/* Article Detail View */}
+              {/* Article Detail */}
               {selectedArticle ? (
                 <motion.div
                   key={selectedArticle.id}
@@ -395,53 +404,27 @@ const SupportProduct = () => {
                 </div>
               )}
             </main>
+          </div>
+        </div>
+      </section>
 
-            {/* Right Sidebar: Quick Actions */}
-            <aside className="hidden xl:block">
-              <div className="sticky top-24 space-y-5">
-                {/* Quick Actions */}
-                <div className="bg-card border border-border rounded-xl p-5">
-                  <h3 className="text-sm font-semibold text-foreground mb-3">Quick Actions</h3>
-                  <div className="space-y-2">
-                    <Link to="/raise-ticket" className="flex items-center gap-2 p-2.5 rounded-lg hover:bg-muted/50 transition-colors text-sm text-foreground hover:text-primary">
-                      <Send className="h-4 w-4 text-primary" /> Raise a Ticket
-                    </Link>
-                    <Link to="/contact?tab=schedule" className="flex items-center gap-2 p-2.5 rounded-lg hover:bg-muted/50 transition-colors text-sm text-foreground hover:text-primary">
-                      <Phone className="h-4 w-4 text-emerald-600 dark:text-emerald-400" /> Schedule a Call
-                    </Link>
-                    <Link to="/downloads?tab=documents" className="flex items-center gap-2 p-2.5 rounded-lg hover:bg-muted/50 transition-colors text-sm text-foreground hover:text-primary">
-                      <Download className="h-4 w-4 text-amber-600 dark:text-amber-400" /> Download Forms
-                    </Link>
-                  </div>
-                </div>
-
-                {/* Quick Links */}
-                <div className="bg-card border border-border rounded-xl p-5">
-                  <h3 className="text-sm font-semibold text-foreground mb-3">Quick Links</h3>
-                  <div className="space-y-2 text-sm">
-                    <a href="https://choicefinx.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary hover:underline">
-                      <ExternalLink className="h-3 w-3" /> Choice FinX Portal
-                    </a>
-                    <a href="https://tickfunds.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary hover:underline">
-                      <ExternalLink className="h-3 w-3" /> Tick Funds Portal
-                    </a>
-                    <Link to="/complaints" className="flex items-center gap-2 text-primary hover:underline">
-                      <FileText className="h-3 w-3" /> Complaints
-                    </Link>
-                  </div>
-                </div>
-
-                {/* Contact */}
-                <div className="bg-card border border-border rounded-xl p-5">
-                  <h3 className="text-sm font-semibold text-foreground mb-3">Contact</h3>
-                  <div className="space-y-2.5 text-sm text-muted-foreground">
-                    <div className="flex items-center gap-2"><Phone className="h-3.5 w-3.5" /> 080-47181888</div>
-                    <div className="flex items-center gap-2"><Mail className="h-3.5 w-3.5" /> support@sernetindia.com</div>
-                    <div className="flex items-center gap-2"><Clock className="h-3.5 w-3.5" /> Mon–Sat, 9 AM – 6 PM</div>
-                  </div>
-                </div>
-              </div>
-            </aside>
+      {/* Mobile Quick Actions */}
+      <section className="lg:hidden section-padding bg-section-alt">
+        <div className="container-sernet">
+          <h2 className="heading-md mb-6 text-center">Need More Help?</h2>
+          <div className="grid grid-cols-3 gap-3">
+            <Link to="/raise-ticket" className="feature-card text-center">
+              <Send className="h-5 w-5 text-primary mx-auto mb-2" />
+              <p className="text-xs font-medium text-foreground">Raise Ticket</p>
+            </Link>
+            <Link to="/contact?tab=schedule" className="feature-card text-center">
+              <Phone className="h-5 w-5 text-emerald-600 mx-auto mb-2" />
+              <p className="text-xs font-medium text-foreground">Schedule Call</p>
+            </Link>
+            <Link to="/downloads?tab=documents" className="feature-card text-center">
+              <Download className="h-5 w-5 text-amber-600 mx-auto mb-2" />
+              <p className="text-xs font-medium text-foreground">Forms</p>
+            </Link>
           </div>
         </div>
       </section>
