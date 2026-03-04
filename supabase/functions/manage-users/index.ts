@@ -120,6 +120,22 @@ Deno.serve(async (req) => {
       });
     }
 
+    if (action === 'create_portal_user') {
+      const { email, password, name, user_type, phone } = params;
+
+      const { data: authData, error: createError } = await supabaseAdmin.auth.admin.createUser({
+        email,
+        password,
+        email_confirm: true,
+        user_metadata: { name, user_type, phone: phone || '' },
+      });
+      if (createError) throw createError;
+
+      return new Response(JSON.stringify({ success: true, user_id: authData.user.id }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
     if (action === 'delete_user') {
       const { user_id } = params;
       if (user_id === callerId) throw new Error('Cannot delete yourself');
