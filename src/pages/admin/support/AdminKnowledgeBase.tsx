@@ -12,7 +12,7 @@ const fields = [
   { key: 'priority', label: 'Priority', type: 'select' as const, options: ['critical', 'high', 'standard'] },
   { key: 'owner_team', label: 'Owner Team', type: 'select' as const, options: ['support', 'operations', 'compliance', 'technology', 'accounts'] },
   { key: 'escalation_level', label: 'Escalation Level', type: 'number' as const },
-  { key: 'regulatory_tag', label: 'Regulatory Tag', type: 'select' as const, options: ['SEBI', 'IRDAI', 'Exchange', 'AMFI', ''] },
+  { key: 'regulatory_tag', label: 'Regulatory Tag', type: 'select' as const, options: ['none', 'SEBI', 'IRDAI', 'Exchange', 'AMFI'] },
   { key: 'impact_type', label: 'Impact Type', type: 'select' as const, options: ['financial', 'compliance', 'operational', 'reputational'] },
 
   // ── Customer KB Content ──
@@ -63,7 +63,7 @@ export default function AdminKnowledgeBase() {
       emptyForm={{
         issue_code: '', category_code: '', product: 'all', sub_product: '', category: 'General',
         issue_type: '', priority: 'standard', owner_team: 'support', escalation_level: 1,
-        regulatory_tag: '', impact_type: 'operational',
+        regulatory_tag: 'none', impact_type: 'operational',
         title: '', slug: '', question_variants: '', short_summary: '',
         possible_reasons: '', what_to_check: '', resolution_steps: '',
         documents_required: '', resolution_timeline: '', when_to_raise_ticket: '',
