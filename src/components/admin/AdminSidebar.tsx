@@ -28,6 +28,7 @@ interface NavItem {
 
 interface DepartmentGroup {
   department: string;
+  departmentKey: string; // maps to department enum
   icon: React.ComponentType<{ className?: string }>;
   color: string;
   items: NavItem[];
