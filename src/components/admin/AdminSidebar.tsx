@@ -293,6 +293,7 @@ const DepartmentSection = React.memo(function DepartmentSection({ group, collaps
 export function AdminSidebar() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { session } = useAdminSession();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -303,6 +304,22 @@ export function AdminSidebar() {
   };
 
   const isDashboard = location.pathname === '/admin';
+
+  // Filter department groups based on user role/department
+  const visibleGroups = departmentGroups.filter(group => {
+    if (!session) return false;
+    // Super admins see everything
+    if (session.role === 'super_admin') return true;
+    // System section only for super_admin
+    if (group.departmentKey === 'system') return false;
+    // Admin with no department = all departments
+    if (session.role === 'admin' && !session.department) return true;
+    // Admin with specific department
+    if (session.role === 'admin' && session.department) return group.departmentKey === session.department;
+    // Editors: only their department
+    if (session.role === 'editor' && session.department) return group.departmentKey === session.department;
+    return false;
+  });
 
   const SidebarContent = () => (
     <div className="flex flex-col h-full">
