@@ -37,6 +37,7 @@ interface DepartmentGroup {
 const departmentGroups: DepartmentGroup[] = [
   {
     department: 'Marketing',
+    departmentKey: 'marketing',
     icon: Megaphone,
     color: 'text-blue-500',
     items: [
