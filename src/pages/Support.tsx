@@ -144,28 +144,23 @@ const Support = () => {
 
           {/* ─── Knowledge Base Tab ─── */}
           {activeTab === 'Knowledge Base' && (
-            <>
-              {/* Search Bar */}
-              <section className="bg-background border-b border-border">
-                <div className="container-sernet py-6">
-                  <div className="relative max-w-xl mx-auto">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                    <input
-                      type="text"
-                      placeholder="Eg: How do I add a nominee? How do I activate F&O?"
-                      value={kbSearch}
-                      onChange={e => setKbSearch(e.target.value)}
-                      className="w-full pl-12 pr-4 py-3.5 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-base"
-                    />
-                  </div>
-                </div>
-              </section>
-
               <section className="section-padding bg-background">
                 <div className="container-sernet">
                   <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-8 items-start">
                     {/* Main Content */}
                     <div className="min-w-0">
+                      {/* Search Bar */}
+                      <div className="relative mb-8">
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                        <input
+                          type="text"
+                          placeholder="Search articles — e.g. How do I add a nominee?"
+                          value={kbSearch}
+                          onChange={e => setKbSearch(e.target.value)}
+                          className="w-full pl-12 pr-4 py-3.5 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-base"
+                        />
+                      </div>
+
                       {isSearching ? (
                         <div>
                           <p className="text-sm text-muted-foreground mb-4">{kbArticles.length} result{kbArticles.length !== 1 ? 's' : ''} for "{debouncedSearch}"</p>
@@ -201,7 +196,6 @@ const Support = () => {
                         </div>
                       ) : (
                         <>
-                          <h2 className="heading-md mb-6">Browse by Product</h2>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
                             {productKeys.map(pKey => {
                               const meta = PRODUCT_META[pKey];
@@ -313,7 +307,6 @@ const Support = () => {
                   </div>
                 </div>
               </section>
-            </>
           )}
 
           {/* ─── Raise a Ticket Tab ─── */}
