@@ -11,6 +11,7 @@ import { ScrollDownFAB } from "./components/shared/ScrollDownFAB";
 import About from "./pages/About";
 import Pricing from "./pages/Pricing";
 import Support from "./pages/Support";
+import SupportProduct from "./pages/SupportProduct";
 import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
 
@@ -141,6 +142,7 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/support" element={<Support />} />
+          <Route path="/support/:productSlug" element={<SupportProduct />} />
           <Route path="/signup" element={<Signup />} />
           
           {/* Calculator pages */}
