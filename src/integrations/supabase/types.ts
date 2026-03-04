@@ -1573,50 +1573,119 @@ export type Database = {
         Row: {
           body: string | null
           category: string
+          category_code: string | null
           created_at: string
           created_by: string | null
+          documents_required: string[] | null
+          escalation_level: number | null
           helpful_count: number | null
           id: string
+          impact_type: string | null
+          internal_escalation_note: string | null
           is_featured: boolean | null
+          issue_code: string | null
+          issue_short_description: string | null
+          issue_type: string | null
+          owner_team: string | null
+          possible_reasons: string | null
+          priority: string | null
+          product: string | null
           published_at: string | null
+          question_variants: string[] | null
+          regulatory_tag: string | null
+          resolution_steps: string | null
+          resolution_timeline: string | null
+          search_keywords: string[] | null
+          short_summary: string | null
           slug: string
           status: Database["public"]["Enums"]["content_status"]
+          sub_product: string | null
+          suggested_article_group: string | null
           tags: string[] | null
           title: string
           updated_at: string
           view_count: number | null
+          visibility: string | null
+          what_to_check: string | null
+          when_to_raise_ticket: string | null
         }
         Insert: {
           body?: string | null
           category?: string
+          category_code?: string | null
           created_at?: string
           created_by?: string | null
+          documents_required?: string[] | null
+          escalation_level?: number | null
           helpful_count?: number | null
           id?: string
+          impact_type?: string | null
+          internal_escalation_note?: string | null
           is_featured?: boolean | null
+          issue_code?: string | null
+          issue_short_description?: string | null
+          issue_type?: string | null
+          owner_team?: string | null
+          possible_reasons?: string | null
+          priority?: string | null
+          product?: string | null
           published_at?: string | null
+          question_variants?: string[] | null
+          regulatory_tag?: string | null
+          resolution_steps?: string | null
+          resolution_timeline?: string | null
+          search_keywords?: string[] | null
+          short_summary?: string | null
           slug: string
           status?: Database["public"]["Enums"]["content_status"]
+          sub_product?: string | null
+          suggested_article_group?: string | null
           tags?: string[] | null
           title: string
           updated_at?: string
           view_count?: number | null
+          visibility?: string | null
+          what_to_check?: string | null
+          when_to_raise_ticket?: string | null
         }
         Update: {
           body?: string | null
           category?: string
+          category_code?: string | null
           created_at?: string
           created_by?: string | null
+          documents_required?: string[] | null
+          escalation_level?: number | null
           helpful_count?: number | null
           id?: string
+          impact_type?: string | null
+          internal_escalation_note?: string | null
           is_featured?: boolean | null
+          issue_code?: string | null
+          issue_short_description?: string | null
+          issue_type?: string | null
+          owner_team?: string | null
+          possible_reasons?: string | null
+          priority?: string | null
+          product?: string | null
           published_at?: string | null
+          question_variants?: string[] | null
+          regulatory_tag?: string | null
+          resolution_steps?: string | null
+          resolution_timeline?: string | null
+          search_keywords?: string[] | null
+          short_summary?: string | null
           slug?: string
           status?: Database["public"]["Enums"]["content_status"]
+          sub_product?: string | null
+          suggested_article_group?: string | null
           tags?: string[] | null
           title?: string
           updated_at?: string
           view_count?: number | null
+          visibility?: string | null
+          what_to_check?: string | null
+          when_to_raise_ticket?: string | null
         }
         Relationships: []
       }
