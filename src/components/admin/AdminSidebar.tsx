@@ -353,7 +353,7 @@ export function AdminSidebar() {
 
       {/* Department Groups */}
       <nav className="flex-1 overflow-y-auto px-3 pt-1 pb-3 space-y-0.5">
-        {departmentGroups.map((group) => (
+        {visibleGroups.map((group) => (
           <DepartmentSection key={group.department} group={group} collapsed={collapsed} />
         ))}
       </nav>
