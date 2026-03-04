@@ -128,6 +128,11 @@ import AdminAgreements from "./pages/admin/legal/AdminAgreements";
 import Sitemap from "./pages/Sitemap";
 import RaiseTicket from "./pages/RaiseTicket";
 
+// Portal pages
+import PortalLogin from "./pages/portal/PortalLogin";
+import PortalSignup from "./pages/portal/PortalSignup";
+import PortalDashboard from "./pages/portal/PortalDashboard";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -199,6 +204,11 @@ const App = () => (
           {/* Article & Analysis detail */}
           <Route path="/insights/articles/:id" element={<ArticleDetail />} />
           <Route path="/insights/analysis/:id" element={<AnalysisDetail />} />
+
+          {/* Portal — Client & Partner */}
+          <Route path="/portal/login" element={<PortalLogin />} />
+          <Route path="/portal/signup" element={<PortalSignup />} />
+          <Route path="/portal" element={<PortalDashboard />} />
 
           {/* Admin — Auth */}
           <Route path="/admin/setup" element={<AdminSetup />} />
