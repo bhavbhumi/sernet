@@ -31,6 +31,20 @@ export default function AdminLogin() {
     }
 
     if (data.user) {
+      // Check if this is a portal user (client/partner) — redirect them
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('user_type')
+        .eq('user_id', data.user.id)
+        .maybeSingle();
+
+      if (profile) {
+        await supabase.auth.signOut();
+        setError('This is a client/partner account. Please use the Client Portal to sign in.');
+        setLoading(false);
+        return;
+      }
+
       const { data: roleData } = await supabase
         .from('user_roles')
         .select('role')
