@@ -16,24 +16,31 @@ Deno.serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
     );
 
-    // Verify caller is super_admin
+    // Verify caller is super_admin (or service_role for initial setup)
     const authHeader = req.headers.get('authorization');
     if (!authHeader) throw new Error('Unauthorized');
 
     const token = authHeader.replace('Bearer ', '');
-    const { data: { user: caller }, error: authError } = await supabaseAdmin.auth.getUser(token);
-    if (authError || !caller) throw new Error('Unauthorized');
+    const isServiceRole = token === Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+    
+    let callerId: string | null = null;
 
-    const { data: callerRole } = await supabaseAdmin
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', caller.id)
-      .maybeSingle();
+    if (!isServiceRole) {
+      const { data: { user: caller }, error: authError } = await supabaseAdmin.auth.getUser(token);
+      if (authError || !caller) throw new Error('Unauthorized');
+      callerId = caller.id;
 
-    if (!callerRole || callerRole.role !== 'super_admin') {
-      return new Response(JSON.stringify({ error: 'Only super admins can manage users.' }), {
-        status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
+      const { data: callerRole } = await supabaseAdmin
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', caller.id)
+        .maybeSingle();
+
+      if (!callerRole || callerRole.role !== 'super_admin') {
+        return new Response(JSON.stringify({ error: 'Only super admins can manage users.' }), {
+          status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
     }
 
     const { action, ...params } = await req.json();
