@@ -122,7 +122,7 @@ Deno.serve(async (req) => {
 
     if (action === 'delete_user') {
       const { user_id } = params;
-      if (user_id === caller.id) throw new Error('Cannot delete yourself');
+      if (user_id === callerId) throw new Error('Cannot delete yourself');
       
       await supabaseAdmin.from('user_roles').delete().eq('user_id', user_id);
       const { error } = await supabaseAdmin.auth.admin.deleteUser(user_id);
