@@ -110,6 +110,7 @@ export const ADMIN_ROUTES = {
   settings: {
     root: '/admin/settings',
     users: '/admin/settings/users',
+    permissions: '/admin/settings/permissions',
     rss: '/admin/settings/rss',
     aiUsage: '/admin/settings/ai-usage',
     auditLog: '/admin/settings/audit-log',

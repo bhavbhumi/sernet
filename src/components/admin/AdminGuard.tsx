@@ -9,6 +9,8 @@ interface AdminSession {
   name: string;
   role: 'super_admin' | 'admin' | 'editor';
   department: string | null;
+  /** null = full access (super_admin), string[] = specific modules */
+  allowedModules: string[] | null;
 }
 
 interface AdminContextValue {
@@ -47,12 +49,30 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
         return;
       }
 
+      // Fetch module-level permissions for non-super_admin users
+      let allowedModules: string[] | null = null;
+      if (roleData.role !== 'super_admin') {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const { data: permsData } = await (supabase.from('staff_permissions') as any)
+          .select('allowed_modules')
+          .eq('user_id', authSession.user.id)
+          .maybeSingle();
+
+        if (permsData?.allowed_modules?.length) {
+          allowedModules = permsData.allowed_modules;
+        } else {
+          // No custom permissions set — grant all modules for their department by default
+          allowedModules = null;
+        }
+      }
+
       setSession({
         userId: authSession.user.id,
         email: authSession.user.email || '',
         name: authSession.user.user_metadata?.name || '',
         role: roleData.role,
         department: roleData.department,
+        allowedModules,
       });
       setLoading(false);
     };

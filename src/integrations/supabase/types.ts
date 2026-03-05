@@ -2222,6 +2222,36 @@ export type Database = {
           },
         ]
       }
+      permission_presets: {
+        Row: {
+          created_at: string
+          department: string
+          id: string
+          is_default: boolean
+          module_keys: string[]
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          department: string
+          id?: string
+          is_default?: boolean
+          module_keys?: string[]
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          department?: string
+          id?: string
+          is_default?: boolean
+          module_keys?: string[]
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       pipeline_stages: {
         Row: {
           created_at: string
@@ -2793,6 +2823,41 @@ export type Database = {
           value?: Json
         }
         Relationships: []
+      }
+      staff_permissions: {
+        Row: {
+          allowed_modules: string[]
+          created_at: string
+          id: string
+          preset_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          allowed_modules?: string[]
+          created_at?: string
+          id?: string
+          preset_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          allowed_modules?: string[]
+          created_at?: string
+          id?: string
+          preset_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "staff_permissions_preset_id_fkey"
+            columns: ["preset_id"]
+            isOneToOne: false
+            referencedRelation: "permission_presets"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       support_automation_rules: {
         Row: {
