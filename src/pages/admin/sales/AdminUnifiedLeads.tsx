@@ -407,7 +407,7 @@ export default function AdminUnifiedLeads() {
           </Tabs>
         </div>
 
-        {convertLead && <ConvertToDealDialog lead={convertLead} open={!!convertLead} onClose={handleConvertClose} />}
+        {convertLead && <ConvertToContactDialog lead={convertLead} open={!!convertLead} onClose={handleConvertClose} />}
       </AdminLayout>
     </AdminGuard>
   );
