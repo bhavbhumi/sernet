@@ -274,7 +274,7 @@ function DealCard({ deal, stages, subStatusLabels, subStatusColors, onMove, onSe
   if (!currentStage) return null;
 
   return (
-    <Card className="p-3 space-y-2 hover:shadow-md transition-shadow">
+    <Card className="p-3 space-y-2 hover:shadow-md transition-shadow cursor-pointer" onClick={() => onSelect(deal.id)}>
       <div className="flex items-start justify-between gap-2">
         <h4 className="text-sm font-medium leading-tight line-clamp-2">{deal.title}</h4>
         <Popover>
