@@ -106,8 +106,6 @@ export default function AdminEvents() {
           speaker: '', venue: '', meeting_link: '', capacity: '',
         }}
         hasStatus
-        statusField="status"
-        statusOptions={['draft', 'published', 'completed', 'cancelled']}
         categoryField="event_type"
         orderBy={{ column: 'event_date', ascending: false }}
         onRowAction={(item) => (

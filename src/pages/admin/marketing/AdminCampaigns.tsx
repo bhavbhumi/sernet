@@ -36,8 +36,6 @@ export default function AdminCampaigns() {
           start_date: '', end_date: '', budget: '', target_audience: '',
         }}
         hasStatus
-        statusField="status"
-        statusOptions={['draft', 'active', 'paused', 'completed']}
         categoryField="campaign_type"
         orderBy={{ column: 'created_at', ascending: false }}
       />
