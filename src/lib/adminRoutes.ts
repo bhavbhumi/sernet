@@ -48,8 +48,7 @@ export const ADMIN_ROUTES = {
   // ── Sales ──────────────────────────────────────
   sales: {
     root: '/admin/sales',
-    leads: '/admin/sales/leads',
-    pipeline: '/admin/sales/crm/pipeline',
+    leads: '/admin/sales/crm/leads',
     deals: '/admin/sales/crm/deals',
     contacts: '/admin/sales/crm/contacts',
     pipelineConfig: '/admin/sales/crm/pipeline-config',

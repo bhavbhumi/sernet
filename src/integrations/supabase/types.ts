@@ -962,6 +962,7 @@ export type Database = {
           gender: string | null
           gstin: string | null
           id: string
+          lead_id: string | null
           notes: string | null
           pan: string | null
           phone: string | null
@@ -993,6 +994,7 @@ export type Database = {
           gender?: string | null
           gstin?: string | null
           id?: string
+          lead_id?: string | null
           notes?: string | null
           pan?: string | null
           phone?: string | null
@@ -1024,6 +1026,7 @@ export type Database = {
           gender?: string | null
           gstin?: string | null
           id?: string
+          lead_id?: string | null
           notes?: string | null
           pan?: string | null
           phone?: string | null
@@ -1036,7 +1039,15 @@ export type Database = {
           tax_status?: string | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "crm_contacts_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       crm_deals: {
         Row: {

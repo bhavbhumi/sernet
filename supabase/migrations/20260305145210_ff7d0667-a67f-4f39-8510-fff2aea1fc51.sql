@@ -1,0 +1,1 @@
+ALTER TABLE public.crm_contacts ADD COLUMN IF NOT EXISTS lead_id uuid REFERENCES public.leads(id) ON DELETE SET NULL;

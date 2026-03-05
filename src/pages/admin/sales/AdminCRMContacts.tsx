@@ -1,16 +1,80 @@
 import { AdminGuard } from '@/components/admin/AdminGuard';
 import { GenericCMSPage } from '@/components/admin/GenericCMSPage';
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { MapPin, Phone, Building2, Eye, Users, Mail, Calendar, Shield, CreditCard, User } from 'lucide-react';
+import { MapPin, Phone, Building2, Eye, Users, Mail, Calendar, Shield, CreditCard, User, Plus } from 'lucide-react';
 import { format, differenceInYears } from 'date-fns';
 import { cn } from '@/lib/utils';
+import { toast } from 'sonner';
+
+// ---- Add Deal from Contact ----
+function AddDealFromContact({ contactId, contactName, onCreated }: {
+  contactId: string; contactName: string; onCreated: () => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const [title, setTitle] = useState(`Deal - ${contactName}`);
+  const [product, setProduct] = useState('');
+  const [value, setValue] = useState('');
+  const [saving, setSaving] = useState(false);
+
+  const handleSave = async () => {
+    if (!title.trim()) { toast.error('Title is required'); return; }
+    setSaving(true);
+    try {
+      const { error } = await supabase.from('crm_deals').insert({
+        title, contact_id: contactId,
+        product_interest: product || null,
+        deal_value: value ? parseFloat(value) : 0,
+      });
+      if (error) throw error;
+      toast.success('Deal created');
+      setOpen(false);
+      setTitle(`Deal - ${contactName}`);
+      setProduct(''); setValue('');
+      onCreated();
+    } catch (e: any) { toast.error(e.message); } finally { setSaving(false); }
+  };
+
+  return (
+    <>
+      <Button size="sm" variant="outline" className="h-7 text-xs" onClick={() => setOpen(true)}>
+        <Plus className="h-3 w-3 mr-1" /> Add Deal
+      </Button>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="max-w-sm">
+          <DialogHeader><DialogTitle>New Deal for {contactName}</DialogTitle></DialogHeader>
+          <div className="space-y-3">
+            <div><Label>Deal Title</Label><Input value={title} onChange={e => setTitle(e.target.value)} /></div>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label>Product</Label>
+                <Select value={product} onValueChange={setProduct}>
+                  <SelectTrigger><SelectValue placeholder="Select..." /></SelectTrigger>
+                  <SelectContent>
+                    {['Mutual Funds', 'Insurance', 'Trading', 'PMS', 'AIF', 'Bonds', 'FD', 'Other'].map(p => (
+                      <SelectItem key={p} value={p}>{p}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div><Label>Value (₹)</Label><Input type="number" value={value} onChange={e => setValue(e.target.value)} placeholder="0" /></div>
+            </div>
+            <Button onClick={handleSave} disabled={saving} className="w-full">{saving ? 'Creating...' : 'Create Deal'}</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}
 
 interface BranchRow {
   id: string;
@@ -97,6 +161,7 @@ function ContactDetailDialog({ contactId, contactName, contactType, open, onClos
   open: boolean;
   onClose: () => void;
 }) {
+  const queryClient = useQueryClient();
   // Fetch full contact record
   const { data: contact } = useQuery({
     queryKey: ['contact-detail', contactId],
@@ -401,8 +466,15 @@ function ContactDetailDialog({ contactId, contactName, contactType, open, onClos
 
           {/* ===== DEALS TAB ===== */}
           <TabsContent value="deals" className="mt-4">
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-xs text-muted-foreground">{linkedDeals.length} deal(s) linked</p>
+              <AddDealFromContact contactId={contactId} contactName={contactName} onCreated={() => {
+                queryClient.invalidateQueries({ queryKey: ['contact-deals', contactId] });
+                queryClient.invalidateQueries({ queryKey: ['crm-deals'] });
+              }} />
+            </div>
             {linkedDeals.length === 0 ? (
-              <p className="text-sm text-muted-foreground text-center py-8">No deals linked to this contact.</p>
+              <p className="text-sm text-muted-foreground text-center py-6">No deals yet. Create one above to start tracking opportunities.</p>
             ) : (
               <div className="space-y-2">
                 {linkedDeals.map((deal: any) => (

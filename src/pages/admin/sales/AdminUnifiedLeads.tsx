@@ -53,36 +53,39 @@ const productBadge: Record<string, string> = {
   insurance: 'bg-red-500/10 text-red-600', goal: 'bg-cyan-500/10 text-cyan-600',
 };
 
-// ---- Convert to Deal Dialog ----
-function ConvertToDealDialog({ lead, open, onClose }: {
-  lead: { name: string; phone: string; email: string | null; context?: string };
+// ---- Convert to Contact Dialog ----
+function ConvertToContactDialog({ lead, open, onClose }: {
+  lead: { id?: string; name: string; phone: string; email: string | null; context?: string };
   open: boolean;
   onClose: (converted?: boolean) => void;
 }) {
-  const [title, setTitle] = useState(`Deal - ${lead.name}`);
-  const [product, setProduct] = useState('');
-  const [value, setValue] = useState('');
+  const [pan, setPan] = useState('');
+  const [relationship, setRelationship] = useState('client');
+  const [city, setCity] = useState('');
   const [saving, setSaving] = useState(false);
 
   const handleConvert = async () => {
-    if (!title.trim()) { toast.error('Deal title required'); return; }
     setSaving(true);
     try {
-      // Create contact
-      const { data: contact, error: cErr } = await supabase.from('crm_contacts').insert({
-        full_name: lead.name, phone: lead.phone, email: lead.email || null,
+      // Create contact with lead attribution
+      const { error: cErr } = await supabase.from('crm_contacts').insert({
+        full_name: lead.name,
+        phone: lead.phone,
+        email: lead.email || null,
+        pan: pan || null,
+        city: city || null,
+        relationship_type: relationship as any,
         source: 'lead_conversion',
-      }).select('id').single();
+        lead_id: lead.id || null,
+      });
       if (cErr) throw cErr;
 
-      // Create deal
-      const { error: dErr } = await supabase.from('crm_deals').insert({
-        title, contact_id: contact.id, product_interest: product || null,
-        deal_value: value ? parseFloat(value) : 0,
-      });
-      if (dErr) throw dErr;
+      // Mark lead as converted
+      if (lead.id) {
+        await supabase.from('leads').update({ status: 'converted' }).eq('id', lead.id);
+      }
 
-      toast.success('Lead converted to deal');
+      toast.success('Lead converted to contact — you can now add deals from Contacts');
       onClose(true);
     } catch (e: any) {
       toast.error(e.message);
@@ -94,26 +97,48 @@ function ConvertToDealDialog({ lead, open, onClose }: {
   return (
     <Dialog open={open} onOpenChange={() => onClose()}>
       <DialogContent className="max-w-md">
-        <DialogHeader><DialogTitle className="flex items-center gap-2"><ArrowRight className="h-4 w-4 text-primary" /> Convert to Deal</DialogTitle></DialogHeader>
+        <DialogHeader><DialogTitle className="flex items-center gap-2"><ArrowRight className="h-4 w-4 text-primary" /> Convert to Contact</DialogTitle></DialogHeader>
         <div className="space-y-3">
-          <p className="text-sm text-muted-foreground">Creates a CRM contact and deal from this lead.</p>
-          <div><Label>Deal Title</Label><Input value={title} onChange={e => setTitle(e.target.value)} /></div>
+          <p className="text-sm text-muted-foreground">Creates a CRM contact from this lead. You can add deals later from the Contacts page.</p>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <Label>Product Interest</Label>
-              <Select value={product} onValueChange={setProduct}>
-                <SelectTrigger><SelectValue placeholder="Select..." /></SelectTrigger>
+              <Label>Name</Label>
+              <Input value={lead.name} disabled className="bg-muted/50" />
+            </div>
+            <div>
+              <Label>Phone</Label>
+              <Input value={lead.phone} disabled className="bg-muted/50" />
+            </div>
+          </div>
+          {lead.email && (
+            <div>
+              <Label>Email</Label>
+              <Input value={lead.email} disabled className="bg-muted/50" />
+            </div>
+          )}
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <Label>Relationship</Label>
+              <Select value={relationship} onValueChange={setRelationship}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  {['Mutual Funds', 'Insurance', 'Trading', 'PMS', 'AIF', 'Bonds', 'FD', 'Other'].map(p => (
-                    <SelectItem key={p} value={p}>{p}</SelectItem>
-                  ))}
+                  <SelectItem value="client">Client</SelectItem>
+                  <SelectItem value="partner">Partner</SelectItem>
+                  <SelectItem value="principal">Principal</SelectItem>
                 </SelectContent>
               </Select>
             </div>
-            <div><Label>Value (₹)</Label><Input type="number" value={value} onChange={e => setValue(e.target.value)} placeholder="0" /></div>
+            <div>
+              <Label>PAN (optional)</Label>
+              <Input value={pan} onChange={e => setPan(e.target.value.toUpperCase())} placeholder="ABCDE1234F" maxLength={10} />
+            </div>
+          </div>
+          <div>
+            <Label>City (optional)</Label>
+            <Input value={city} onChange={e => setCity(e.target.value)} placeholder="e.g. Mumbai" />
           </div>
           {lead.context && <p className="text-xs text-muted-foreground bg-muted/50 rounded p-2">Context: {lead.context}</p>}
-          <Button onClick={handleConvert} disabled={saving} className="w-full">{saving ? 'Converting...' : 'Convert to Deal'}</Button>
+          <Button onClick={handleConvert} disabled={saving} className="w-full">{saving ? 'Converting...' : 'Convert to Contact'}</Button>
         </div>
       </DialogContent>
     </Dialog>
@@ -127,7 +152,7 @@ export default function AdminUnifiedLeads() {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [updatingId, setUpdatingId] = useState<string | null>(null);
-  const [convertLead, setConvertLead] = useState<{ name: string; phone: string; email: string | null; context?: string } | null>(null);
+  const [convertLead, setConvertLead] = useState<{ id?: string; name: string; phone: string; email: string | null; context?: string } | null>(null);
 
   // Fetch website leads
   const { data: webLeads = [], isLoading: webLoading } = useQuery({
@@ -202,7 +227,7 @@ export default function AdminUnifiedLeads() {
     setConvertLead(null);
     if (converted) {
       queryClient.invalidateQueries({ queryKey: ['leads'] });
-      queryClient.invalidateQueries({ queryKey: ['crm-deals'] });
+      queryClient.invalidateQueries({ queryKey: ['crm-contacts'] });
     }
   };
 
@@ -308,7 +333,7 @@ export default function AdminUnifiedLeads() {
                             <td className="px-4 py-3">
                               {lead.status !== 'converted' && (
                                 <Button variant="ghost" size="sm" className="h-7 text-xs" onClick={() => setConvertLead({
-                                  name: lead.name, phone: lead.phone, email: lead.email,
+                                  id: lead.id, name: lead.name, phone: lead.phone, email: lead.email,
                                   context: getContextSummary(lead) ?? undefined,
                                 })}>
                                   <ArrowRight className="h-3 w-3 mr-1" /> Convert
@@ -382,7 +407,7 @@ export default function AdminUnifiedLeads() {
           </Tabs>
         </div>
 
-        {convertLead && <ConvertToDealDialog lead={convertLead} open={!!convertLead} onClose={handleConvertClose} />}
+        {convertLead && <ConvertToContactDialog lead={convertLead} open={!!convertLead} onClose={handleConvertClose} />}
       </AdminLayout>
     </AdminGuard>
   );

@@ -253,8 +253,9 @@ const App = () => (
             <Route path="/admin/marketing/site/media" element={<AdminMediaLibrary />} />
 
             {/* Admin — Sales */}
+            <Route path="/admin/sales/crm/leads" element={<AdminLeads />} />
             <Route path="/admin/sales/leads" element={<AdminLeads />} />
-            <Route path="/admin/sales/crm/pipeline" element={<AdminCRMPipeline />} />
+            <Route path="/admin/sales/crm/pipeline" element={<AdminCRMDeals />} />
             <Route path="/admin/sales/crm/pipeline-config" element={<AdminPipelineConfig />} />
             <Route path="/admin/sales/crm/deals" element={<AdminCRMDeals />} />
             <Route path="/admin/sales/crm/contacts" element={<AdminCRMContacts />} />
