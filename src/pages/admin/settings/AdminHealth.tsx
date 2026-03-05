@@ -37,25 +37,13 @@ function StatRow({ label, value, sub }: { label: string; value: number | string;
 }
 
 export default function AdminHealth() {
-  const [data, setData] = useState<HealthData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [lastRefresh, setLastRefresh] = useState<string>('');
+  const queryClient = useQueryClient();
+  const { data, isLoading: loading, dataUpdatedAt } = useHealthCheck();
+  const lastRefresh = dataUpdatedAt ? new Date(dataUpdatedAt).toLocaleTimeString() : '';
 
-  const fetchHealth = async () => {
-    setLoading(true);
-    try {
-      const { data: result, error } = await supabase.functions.invoke('health-check');
-      if (error) throw error;
-      setData(result as HealthData);
-      setLastRefresh(new Date().toLocaleTimeString());
-    } catch (err) {
-      console.error('Health check failed:', err);
-    } finally {
-      setLoading(false);
-    }
+  const handleRefresh = () => {
+    queryClient.invalidateQueries({ queryKey: ['system-health'] });
   };
-
-  useEffect(() => { fetchHealth(); }, []);
 
   const scoreColor = !data ? 'text-muted-foreground'
     : data.health_score >= 80 ? 'text-emerald-500'
