@@ -213,26 +213,37 @@ Deno.serve(async (req) => {
     }
 
     if (action === 'list_users') {
+      // Only fetch staff users (those with a user_roles entry)
       const { data: roles } = await supabaseAdmin
         .from('user_roles')
         .select('*');
 
+      if (!roles || roles.length === 0) {
+        return new Response(JSON.stringify({ users: [] }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+
       const { data: { users }, error: listError } = await supabaseAdmin.auth.admin.listUsers();
       if (listError) throw listError;
 
-      const enriched = (users || []).map(u => {
-        const roleEntry = (roles || []).find(r => r.user_id === u.id);
-        return {
-          id: u.id,
-          email: u.email,
-          name: u.user_metadata?.name || '',
-          role: roleEntry?.role || null,
-          department: roleEntry?.department || null,
-          role_id: roleEntry?.id || null,
-          created_at: u.created_at,
-          last_sign_in_at: u.last_sign_in_at,
-        };
-      });
+      // Only include users who have a role (staff), exclude portal-only users
+      const staffUserIds = new Set(roles.map(r => r.user_id));
+      const enriched = (users || [])
+        .filter(u => staffUserIds.has(u.id))
+        .map(u => {
+          const roleEntry = roles.find(r => r.user_id === u.id);
+          return {
+            id: u.id,
+            email: u.email,
+            name: u.user_metadata?.name || '',
+            role: roleEntry?.role || null,
+            department: roleEntry?.department || null,
+            role_id: roleEntry?.id || null,
+            created_at: u.created_at,
+            last_sign_in_at: u.last_sign_in_at,
+          };
+        });
 
       return new Response(JSON.stringify({ users: enriched }), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
