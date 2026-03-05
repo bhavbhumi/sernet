@@ -91,8 +91,11 @@ Deno.serve(async (req) => {
       .eq("user_type", "partner").eq("status", "pending_approval");
 
     // ── 7. Scheduled tasks (cron) ────────────────────────────
-    const { data: cronJobs } = await supabase.rpc("get_cron_jobs").catch(() => ({ data: null }));
-    // Fallback: just report what we know
+    let cronJobs = null;
+    try {
+      const { data } = await supabase.rpc("get_cron_jobs");
+      cronJobs = data;
+    } catch (_) { /* rpc may not exist */ }
     const scheduledTasks = cronJobs || [
       { name: "sync-economic-actuals-nightly", schedule: "30 0 * * *", active: true },
       { name: "rss-auto-sync-hourly", schedule: "0 */4 * * *", active: true },
