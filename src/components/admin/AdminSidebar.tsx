@@ -10,7 +10,7 @@ import {
   ChevronDown, ChevronRight, Menu, X, Rss, Shield, Globe, Palette, ScanSearch, Images, Download,
   Sparkles, Calculator, UserCheck, CalendarDays, Mail, ScrollText, Scale, Lightbulb,
   TrendingUp, Building2, Gavel, Megaphone, Headphones, Ticket, BookMarked, MessageSquareText, Zap,
-  Contact, CalendarClock, Clock, Receipt, Wallet, Lock, KeyRound
+  Contact, CalendarClock, Clock, Receipt, Wallet, Lock, KeyRound, Activity
 } from 'lucide-react';
 import sernetLogo from '@/assets/sernet-logo.png';
 import { cn } from '@/lib/utils';
