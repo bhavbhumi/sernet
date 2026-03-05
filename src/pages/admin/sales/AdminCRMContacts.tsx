@@ -563,24 +563,33 @@ function ContactDetailDialog({ contactId, contactName, contactType, open, onClos
           </TabsContent>
 
           {/* ===== ACTIVITIES TAB ===== */}
-          <TabsContent value="activities" className="mt-4">
+          <TabsContent value="activities" className="mt-4 space-y-3">
+            <LogActivityForm contactId={contactId} onLogged={() => {
+              queryClient.invalidateQueries({ queryKey: ['contact-activities', contactId] });
+            }} />
             {linkedActivities.length === 0 ? (
-              <p className="text-sm text-muted-foreground text-center py-8">No activities logged for this contact.</p>
+              <p className="text-sm text-muted-foreground text-center py-6">No activities logged yet. Use the form above to log your first interaction.</p>
             ) : (
-              <div className="space-y-2">
-                {linkedActivities.map((act: any) => (
-                  <div key={act.id} className={cn('flex items-start gap-2.5 p-2.5 rounded-lg border text-sm', act.is_completed && 'opacity-50')}>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-1.5">
-                        <span className="font-medium text-xs">{act.subject}</span>
-                        <Badge variant="outline" className="text-[9px]">{act.activity_type?.replace('_', ' ')}</Badge>
-                        {act.outcome && <Badge variant="secondary" className="text-[9px]">{act.outcome}</Badge>}
+              <div className="relative pl-4 border-l-2 border-muted space-y-3">
+                {linkedActivities.map((act: any) => {
+                  const typeInfo = ACTIVITY_TYPES.find(t => t.value === act.activity_type);
+                  const Icon = typeInfo?.icon || MessageSquare;
+                  return (
+                    <div key={act.id} className={cn('relative flex items-start gap-2.5 p-2.5 rounded-lg border text-sm', act.is_completed && 'opacity-50')}>
+                      <div className="absolute -left-[calc(1rem+5px)] top-3 h-2 w-2 rounded-full bg-primary" />
+                      <Icon className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="font-medium text-xs">{act.subject}</span>
+                          <Badge variant="outline" className="text-[9px] capitalize">{act.activity_type?.replace('_', ' ')}</Badge>
+                          {act.outcome && <Badge variant="secondary" className="text-[9px]">{act.outcome}</Badge>}
+                        </div>
+                        {act.description && <p className="text-[10px] text-muted-foreground mt-0.5 line-clamp-2">{act.description}</p>}
+                        <p className="text-[10px] text-muted-foreground mt-0.5">{format(new Date(act.created_at), 'dd MMM yyyy HH:mm')}</p>
                       </div>
-                      {act.description && <p className="text-[10px] text-muted-foreground mt-0.5 line-clamp-2">{act.description}</p>}
-                      <p className="text-[10px] text-muted-foreground mt-0.5">{format(new Date(act.created_at), 'dd MMM yyyy HH:mm')}</p>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </TabsContent>
