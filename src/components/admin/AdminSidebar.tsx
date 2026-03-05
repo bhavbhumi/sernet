@@ -506,10 +506,17 @@ export function AdminSidebar() {
 
       {/* Desktop sidebar */}
       <aside className={cn(
-        'hidden md:flex flex-col h-screen sticky top-0 bg-background border-r border-border transition-all duration-200',
+        'hidden md:flex flex-col h-screen sticky top-0 bg-background border-r border-border transition-all duration-200 relative',
         collapsed ? 'w-14' : 'w-60'
       )}>
         <SidebarContent />
+        {/* Collapse toggle — overlapping the sidebar edge */}
+        <button
+          onClick={() => setCollapsed(!collapsed)}
+          className="absolute -right-3 top-[15px] z-40 h-6 w-6 rounded-full border border-border bg-background shadow-sm flex items-center justify-center hover:bg-muted transition-colors text-muted-foreground"
+        >
+          {collapsed ? <PanelLeftOpen className="h-3 w-3" /> : <PanelLeftClose className="h-3 w-3" />}
+        </button>
       </aside>
     </>
   );
