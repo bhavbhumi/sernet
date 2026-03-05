@@ -11,6 +11,7 @@ import {
   Activity, CheckCircle2, RefreshCw
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { useHealthCheck } from '@/hooks/useHealthCheck';
 
 const R = ADMIN_ROUTES;
 
@@ -34,11 +35,7 @@ interface DepartmentKPIs {
 export default function AdminDashboard() {
   const [stats, setStats] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
-  const [healthData, setHealthData] = useState<{
-    health_score: number;
-    status: string;
-    issues: Array<{ severity: string; area: string; message: string }>;
-  } | null>(null);
+  const { data: healthData } = useHealthCheck();
 
   useEffect(() => {
     const fetchStats = async () => {
