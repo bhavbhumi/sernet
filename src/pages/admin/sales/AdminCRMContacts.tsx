@@ -110,6 +110,35 @@ function ContactDetailDialog({ contactId, contactName, contactType, open, onClos
     },
   });
 
+  // Fetch linked deals
+  const { data: linkedDeals = [] } = useQuery({
+    queryKey: ['contact-deals', contactId],
+    enabled: open,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('crm_deals')
+        .select('id, title, stage, sub_status, deal_value, product_interest, created_at')
+        .eq('contact_id', contactId)
+        .order('created_at', { ascending: false });
+      return data || [];
+    },
+  });
+
+  // Fetch linked activities
+  const { data: linkedActivities = [] } = useQuery({
+    queryKey: ['contact-activities', contactId],
+    enabled: open,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('crm_activities')
+        .select('id, activity_type, subject, outcome, description, is_completed, created_at')
+        .eq('contact_id', contactId)
+        .order('created_at', { ascending: false })
+        .limit(30);
+      return data || [];
+    },
+  });
+
   const { data: branches = [] } = useQuery({
     queryKey: ['contact-branches', contactId],
     enabled: open,
