@@ -145,6 +145,7 @@ const AdminSalaryComponents = lazy(() => import("./pages/admin/accounts/AdminSal
 const AdminPartnerPayouts = lazy(() => import("./pages/admin/accounts/AdminPartnerPayouts"));
 const AdminCommissionClaims = lazy(() => import("./pages/admin/accounts/AdminCommissionClaims"));
 const AdminAgreements = lazy(() => import("./pages/admin/legal/AdminAgreements"));
+const AdminHealth = lazy(() => import("./pages/admin/settings/AdminHealth"));
 
 const queryClient = new QueryClient();
 
@@ -303,6 +304,7 @@ const App = () => (
             <Route path="/admin/settings/ai-usage" element={<AdminAIUsage />} />
             <Route path="/admin/settings/audit-log" element={<AdminAuditLog />} />
             <Route path="/admin/settings/workflows" element={<AdminWorkflows />} />
+            <Route path="/admin/settings/health" element={<AdminHealth />} />
 
             {/* Sitemap */}
             <Route path="/sitemap" element={<Sitemap />} />

@@ -10,7 +10,7 @@ import {
   ChevronDown, ChevronRight, Menu, X, Rss, Shield, Globe, Palette, ScanSearch, Images, Download,
   Sparkles, Calculator, UserCheck, CalendarDays, Mail, ScrollText, Scale, Lightbulb,
   TrendingUp, Building2, Gavel, Megaphone, Headphones, Ticket, BookMarked, MessageSquareText, Zap,
-  Contact, CalendarClock, Clock, Receipt, Wallet, Lock, KeyRound
+  Contact, CalendarClock, Clock, Receipt, Wallet, Lock, KeyRound, Activity
 } from 'lucide-react';
 import sernetLogo from '@/assets/sernet-logo.png';
 import { cn } from '@/lib/utils';
@@ -190,6 +190,7 @@ const departmentGroups: DepartmentGroup[] = [
       { label: 'RSS Feeds', icon: Rss, href: R.settings.rss, moduleKey: 'system/rss-feeds' },
       { label: 'AI Usage', icon: Sparkles, href: R.settings.aiUsage, moduleKey: 'system/ai-usage' },
       { label: 'Audit Log', icon: ScrollText, href: R.settings.auditLog, moduleKey: 'system/audit-log' },
+      { label: 'System Health', icon: Activity, href: R.settings.health, moduleKey: 'system/health' },
     ]
   },
 ];

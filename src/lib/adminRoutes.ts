@@ -115,6 +115,7 @@ export const ADMIN_ROUTES = {
     aiUsage: '/admin/settings/ai-usage',
     auditLog: '/admin/settings/audit-log',
     workflows: '/admin/settings/workflows',
+    health: '/admin/settings/health',
   },
 } as const;
 

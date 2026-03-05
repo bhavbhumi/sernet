@@ -7,8 +7,10 @@ import { ADMIN_ROUTES } from '@/lib/adminRoutes';
 import {
   FileText, Newspaper, AlertCircle, Vote, Star, Briefcase, BarChart3,
   BookOpen, Bell, Users, ClipboardList, UserCheck, Megaphone, TrendingUp,
-  Building2, Gavel, Calculator, Ticket, Headphones, AlertTriangle
+  Building2, Gavel, Calculator, Ticket, Headphones, AlertTriangle,
+  Activity, CheckCircle2, RefreshCw
 } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 
 const R = ADMIN_ROUTES;
 
@@ -32,6 +34,11 @@ interface DepartmentKPIs {
 export default function AdminDashboard() {
   const [stats, setStats] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
+  const [healthData, setHealthData] = useState<{
+    health_score: number;
+    status: string;
+    issues: Array<{ severity: string; area: string; message: string }>;
+  } | null>(null);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -82,7 +89,15 @@ export default function AdminDashboard() {
       setLoading(false);
     };
 
+    const fetchHealth = async () => {
+      try {
+        const { data } = await supabase.functions.invoke('health-check');
+        if (data) setHealthData(data);
+      } catch { /* silent */ }
+    };
+
     fetchStats();
+    fetchHealth();
   }, []);
 
   const departments: DepartmentKPIs[] = [
@@ -141,6 +156,40 @@ export default function AdminDashboard() {
       title="Master Dashboard"
       subtitle="Cross-department KPIs — SERNET Operations Hub"
     >
+      {/* System Health Summary */}
+      {healthData && (
+        <Link
+          to="/admin/settings/health"
+          className="mb-6 flex items-center gap-4 bg-card border border-border rounded-xl p-4 hover:border-primary/30 hover:shadow-md transition-all"
+        >
+          <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
+            healthData.status === 'healthy' ? 'bg-emerald-500/10' :
+            healthData.status === 'warning' ? 'bg-yellow-500/10' : 'bg-destructive/10'
+          }`}>
+            {healthData.status === 'healthy'
+              ? <CheckCircle2 className="h-6 w-6 text-emerald-500" />
+              : healthData.status === 'warning'
+              ? <AlertTriangle className="h-6 w-6 text-yellow-500" />
+              : <AlertCircle className="h-6 w-6 text-destructive" />
+            }
+          </div>
+          <div className="flex-1">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-semibold">System Health</span>
+              <Badge variant={healthData.status === 'healthy' ? 'default' : healthData.status === 'warning' ? 'outline' : 'destructive'} className="text-[10px]">
+                {healthData.health_score}/100
+              </Badge>
+            </div>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              {healthData.issues.length === 0
+                ? 'All systems operational'
+                : `${healthData.issues.filter(i => i.severity === 'critical').length} critical · ${healthData.issues.filter(i => i.severity === 'warning').length} warnings · ${healthData.issues.filter(i => i.severity === 'info').length} info`
+              }
+            </p>
+          </div>
+          <Activity className="h-5 w-5 text-muted-foreground" />
+        </Link>
+      )}
       {/* Department KPI Sections */}
       <div className="space-y-6 mb-8">
         {departments.map((dept) => (

@@ -44,7 +44,13 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    const { entity_type, trigger_event, entity_id, record, old_record } = await req.json();
+    const payload = await req.json();
+    const entity_type = payload.entity_type;
+    const trigger_event = payload.trigger_event;
+    const record = payload.record || {};
+    const old_record = payload.old_record || null;
+    // Support both explicit entity_id and extraction from record
+    const entity_id = payload.entity_id || record?.id;
 
     if (!entity_type || !trigger_event || !entity_id) {
       return new Response(JSON.stringify({ error: "Missing required fields" }), {
