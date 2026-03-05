@@ -5,7 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { logAudit } from '@/lib/auditLog';
 import { useAdminSession } from '@/components/admin/AdminGuard';
 import {
-  LayoutDashboard, FileText, BarChart3, BookOpen, Bell, Newspaper, AlertCircle, BookOpenCheck,
+  LayoutDashboard, FileText, BarChart3, BookOpen, Bell, Newspaper, AlertCircle, BookOpenCheck, Target,
   Vote, ClipboardList, Star, Briefcase, Users, Mic2, Settings, LogOut,
   ChevronDown, ChevronRight, Menu, X, Rss, Shield, Globe, Palette, ScanSearch, Images, Download,
   Sparkles, Calculator, UserCheck, CalendarDays, Mail, ScrollText, Scale, Lightbulb,
