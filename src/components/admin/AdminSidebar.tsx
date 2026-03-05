@@ -389,7 +389,7 @@ export function AdminSidebar() {
     return true;
   });
 
-  const SidebarContent = () => (
+  const sidebarContent = (
     <div className="flex flex-col h-full">
       {/* Header — matches right-side page header height */}
       <div className={cn('flex items-center border-b border-border h-[53px] px-4 shrink-0', collapsed ? 'justify-center' : 'gap-3')}>
@@ -512,7 +512,7 @@ export function AdminSidebar() {
         'hidden md:flex flex-col h-screen sticky top-0 bg-background border-r border-border transition-all duration-200 relative',
         collapsed ? 'w-14' : 'w-60'
       )}>
-        <SidebarContent />
+        {sidebarContent}
         {/* Collapse toggle — overlapping the sidebar edge */}
         <button
           onClick={() => setCollapsed(!collapsed)}
