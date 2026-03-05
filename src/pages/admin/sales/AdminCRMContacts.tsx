@@ -11,10 +11,75 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { MapPin, Phone, Building2, Eye, Users, Mail, Calendar, Shield, CreditCard, User, Plus } from 'lucide-react';
+import { Textarea } from '@/components/ui/textarea';
+import { MapPin, Phone, Building2, Eye, Users, Mail, Calendar, Shield, CreditCard, User, Plus, PhoneCall, FileText, Video, CheckSquare, MessageSquare } from 'lucide-react';
 import { format, differenceInYears } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+
+// ---- Log Activity from Contact ----
+const ACTIVITY_TYPES = [
+  { value: 'call', label: 'Call', icon: PhoneCall },
+  { value: 'meeting', label: 'Meeting', icon: Video },
+  { value: 'email', label: 'Email', icon: Mail },
+  { value: 'note', label: 'Note', icon: FileText },
+  { value: 'task', label: 'Task', icon: CheckSquare },
+] as const;
+
+function LogActivityForm({ contactId, onLogged }: { contactId: string; onLogged: () => void }) {
+  const [type, setType] = useState<string>('note');
+  const [subject, setSubject] = useState('');
+  const [description, setDescription] = useState('');
+  const [outcome, setOutcome] = useState('');
+  const [saving, setSaving] = useState(false);
+
+  const handleSave = async () => {
+    if (!subject.trim()) { toast.error('Subject is required'); return; }
+    setSaving(true);
+    try {
+      const { error } = await supabase.from('crm_activities').insert({
+        contact_id: contactId,
+        activity_type: type as any,
+        subject,
+        description: description || null,
+        outcome: outcome || null,
+      });
+      if (error) throw error;
+      toast.success('Activity logged');
+      setSubject(''); setDescription(''); setOutcome('');
+      onLogged();
+    } catch (e: any) { toast.error(e.message); } finally { setSaving(false); }
+  };
+
+  return (
+    <Card className="border-dashed">
+      <CardContent className="p-3 space-y-2">
+        <div className="flex gap-1 flex-wrap">
+          {ACTIVITY_TYPES.map(at => {
+            const Icon = at.icon;
+            return (
+              <Button
+                key={at.value}
+                variant={type === at.value ? 'default' : 'ghost'}
+                size="sm"
+                className="h-7 text-xs gap-1 px-2"
+                onClick={() => setType(at.value)}
+              >
+                <Icon className="h-3 w-3" /> {at.label}
+              </Button>
+            );
+          })}
+        </div>
+        <Input placeholder="Subject *" value={subject} onChange={e => setSubject(e.target.value)} className="h-8 text-sm" />
+        <Textarea placeholder="Description (optional)" value={description} onChange={e => setDescription(e.target.value)} className="text-sm min-h-[60px]" />
+        <div className="flex items-center gap-2">
+          <Input placeholder="Outcome (optional)" value={outcome} onChange={e => setOutcome(e.target.value)} className="h-8 text-sm flex-1" />
+          <Button size="sm" className="h-8" onClick={handleSave} disabled={saving}>{saving ? 'Saving...' : 'Log'}</Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
 
 // ---- Add Deal from Contact ----
 function AddDealFromContact({ contactId, contactName, onCreated }: {
@@ -498,24 +563,33 @@ function ContactDetailDialog({ contactId, contactName, contactType, open, onClos
           </TabsContent>
 
           {/* ===== ACTIVITIES TAB ===== */}
-          <TabsContent value="activities" className="mt-4">
+          <TabsContent value="activities" className="mt-4 space-y-3">
+            <LogActivityForm contactId={contactId} onLogged={() => {
+              queryClient.invalidateQueries({ queryKey: ['contact-activities', contactId] });
+            }} />
             {linkedActivities.length === 0 ? (
-              <p className="text-sm text-muted-foreground text-center py-8">No activities logged for this contact.</p>
+              <p className="text-sm text-muted-foreground text-center py-6">No activities logged yet. Use the form above to log your first interaction.</p>
             ) : (
-              <div className="space-y-2">
-                {linkedActivities.map((act: any) => (
-                  <div key={act.id} className={cn('flex items-start gap-2.5 p-2.5 rounded-lg border text-sm', act.is_completed && 'opacity-50')}>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-1.5">
-                        <span className="font-medium text-xs">{act.subject}</span>
-                        <Badge variant="outline" className="text-[9px]">{act.activity_type?.replace('_', ' ')}</Badge>
-                        {act.outcome && <Badge variant="secondary" className="text-[9px]">{act.outcome}</Badge>}
+              <div className="relative pl-4 border-l-2 border-muted space-y-3">
+                {linkedActivities.map((act: any) => {
+                  const typeInfo = ACTIVITY_TYPES.find(t => t.value === act.activity_type);
+                  const Icon = typeInfo?.icon || MessageSquare;
+                  return (
+                    <div key={act.id} className={cn('relative flex items-start gap-2.5 p-2.5 rounded-lg border text-sm', act.is_completed && 'opacity-50')}>
+                      <div className="absolute -left-[calc(1rem+5px)] top-3 h-2 w-2 rounded-full bg-primary" />
+                      <Icon className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="font-medium text-xs">{act.subject}</span>
+                          <Badge variant="outline" className="text-[9px] capitalize">{act.activity_type?.replace('_', ' ')}</Badge>
+                          {act.outcome && <Badge variant="secondary" className="text-[9px]">{act.outcome}</Badge>}
+                        </div>
+                        {act.description && <p className="text-[10px] text-muted-foreground mt-0.5 line-clamp-2">{act.description}</p>}
+                        <p className="text-[10px] text-muted-foreground mt-0.5">{format(new Date(act.created_at), 'dd MMM yyyy HH:mm')}</p>
                       </div>
-                      {act.description && <p className="text-[10px] text-muted-foreground mt-0.5 line-clamp-2">{act.description}</p>}
-                      <p className="text-[10px] text-muted-foreground mt-0.5">{format(new Date(act.created_at), 'dd MMM yyyy HH:mm')}</p>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </TabsContent>
