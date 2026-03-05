@@ -161,6 +161,7 @@ function ContactDetailDialog({ contactId, contactName, contactType, open, onClos
   open: boolean;
   onClose: () => void;
 }) {
+  const queryClient = useQueryClient();
   // Fetch full contact record
   const { data: contact } = useQuery({
     queryKey: ['contact-detail', contactId],
