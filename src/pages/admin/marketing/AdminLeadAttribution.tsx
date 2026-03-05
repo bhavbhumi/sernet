@@ -1,4 +1,5 @@
 import { AdminGuard } from '@/components/admin/AdminGuard';
+import { AdminLayout } from '@/components/admin/AdminLayout';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -84,12 +85,9 @@ export default function AdminLeadAttribution() {
 
   return (
     <AdminGuard>
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-foreground">Lead Attribution</h1>
-            <p className="text-sm text-muted-foreground">Understand which sources and campaigns drive your leads</p>
-          </div>
+      <AdminLayout title="Lead Attribution" subtitle="Understand which sources and campaigns drive your leads">
+        <div className="space-y-6">
+        <div className="flex items-end justify-end">
           <Select value={range} onValueChange={setRange}>
             <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
             <SelectContent>
@@ -198,7 +196,8 @@ export default function AdminLeadAttribution() {
             </CardContent>
           </Card>
         </div>
-      </div>
+        </div>
+      </AdminLayout>
     </AdminGuard>
   );
 }
