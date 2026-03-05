@@ -345,6 +345,7 @@ function DealCard({ deal, stages, subStatusLabels, subStatusColors, onMove }: {
 // ---- Main Pipeline ----
 export default function AdminCRMPipeline() {
   const queryClient = useQueryClient();
+  const [selectedDealId, setSelectedDealId] = useState<string | null>(null);
   const { data: stages = [], isLoading: stagesLoading } = usePipelineConfig();
   const { subStatusLabels, subStatusColors } = buildLookups(stages);
 
