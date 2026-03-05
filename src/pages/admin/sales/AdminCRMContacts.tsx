@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { MapPin, Phone, Building2, Eye, Users, Mail, Calendar, Shield, CreditCard, User } from 'lucide-react';
 import { format, differenceInYears } from 'date-fns';
+import { cn } from '@/lib/utils';
 
 interface BranchRow {
   id: string;
