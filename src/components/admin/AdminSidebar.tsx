@@ -93,9 +93,9 @@ const departmentGroups: DepartmentGroup[] = [
     icon: TrendingUp,
     color: 'text-emerald-500',
     items: [
-      { label: 'Leads', icon: UserCheck, href: R.sales.leads, moduleKey: 'sales/leads' },
       {
         label: 'CRM', icon: Briefcase, moduleKey: 'sales/crm', children: [
+          { label: 'Leads', icon: UserCheck, href: R.sales.leads },
           { label: 'Pipeline', icon: BarChart3, href: R.sales.pipeline },
           { label: 'All Deals', icon: Briefcase, href: R.sales.deals },
           { label: 'Contacts', icon: Users, href: R.sales.contacts },
