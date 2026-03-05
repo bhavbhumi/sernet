@@ -145,6 +145,7 @@ const AdminSalaryComponents = lazy(() => import("./pages/admin/accounts/AdminSal
 const AdminPartnerPayouts = lazy(() => import("./pages/admin/accounts/AdminPartnerPayouts"));
 const AdminCommissionClaims = lazy(() => import("./pages/admin/accounts/AdminCommissionClaims"));
 const AdminAgreements = lazy(() => import("./pages/admin/legal/AdminAgreements"));
+const AdminHealth = lazy(() => import("./pages/admin/settings/AdminHealth"));
 
 const queryClient = new QueryClient();
 
