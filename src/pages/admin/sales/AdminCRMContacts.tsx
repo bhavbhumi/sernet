@@ -17,6 +17,70 @@ import { format, differenceInYears } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 
+// ---- Log Activity from Contact ----
+const ACTIVITY_TYPES = [
+  { value: 'call', label: 'Call', icon: PhoneCall },
+  { value: 'meeting', label: 'Meeting', icon: Video },
+  { value: 'email', label: 'Email', icon: Mail },
+  { value: 'note', label: 'Note', icon: FileText },
+  { value: 'task', label: 'Task', icon: CheckSquare },
+] as const;
+
+function LogActivityForm({ contactId, onLogged }: { contactId: string; onLogged: () => void }) {
+  const [type, setType] = useState<string>('note');
+  const [subject, setSubject] = useState('');
+  const [description, setDescription] = useState('');
+  const [outcome, setOutcome] = useState('');
+  const [saving, setSaving] = useState(false);
+
+  const handleSave = async () => {
+    if (!subject.trim()) { toast.error('Subject is required'); return; }
+    setSaving(true);
+    try {
+      const { error } = await supabase.from('crm_activities').insert({
+        contact_id: contactId,
+        activity_type: type as any,
+        subject,
+        description: description || null,
+        outcome: outcome || null,
+      });
+      if (error) throw error;
+      toast.success('Activity logged');
+      setSubject(''); setDescription(''); setOutcome('');
+      onLogged();
+    } catch (e: any) { toast.error(e.message); } finally { setSaving(false); }
+  };
+
+  return (
+    <Card className="border-dashed">
+      <CardContent className="p-3 space-y-2">
+        <div className="flex gap-1 flex-wrap">
+          {ACTIVITY_TYPES.map(at => {
+            const Icon = at.icon;
+            return (
+              <Button
+                key={at.value}
+                variant={type === at.value ? 'default' : 'ghost'}
+                size="sm"
+                className="h-7 text-xs gap-1 px-2"
+                onClick={() => setType(at.value)}
+              >
+                <Icon className="h-3 w-3" /> {at.label}
+              </Button>
+            );
+          })}
+        </div>
+        <Input placeholder="Subject *" value={subject} onChange={e => setSubject(e.target.value)} className="h-8 text-sm" />
+        <Textarea placeholder="Description (optional)" value={description} onChange={e => setDescription(e.target.value)} className="text-sm min-h-[60px]" />
+        <div className="flex items-center gap-2">
+          <Input placeholder="Outcome (optional)" value={outcome} onChange={e => setOutcome(e.target.value)} className="h-8 text-sm flex-1" />
+          <Button size="sm" className="h-8" onClick={handleSave} disabled={saving}>{saving ? 'Saving...' : 'Log'}</Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 // ---- Add Deal from Contact ----
 function AddDealFromContact({ contactId, contactName, onCreated }: {
   contactId: string; contactName: string; onCreated: () => void;
