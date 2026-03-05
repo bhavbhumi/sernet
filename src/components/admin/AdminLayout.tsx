@@ -16,7 +16,7 @@ export function AdminLayout({ children, title, subtitle, actions }: AdminLayoutP
         <AdminSidebar />
         <div className="flex-1 flex flex-col min-w-0">
           {/* Page Header */}
-          <header className="sticky top-0 z-30 bg-background/95 backdrop-blur border-b border-border px-6 py-4 md:py-3 mt-14 md:mt-0">
+          <header className="sticky top-0 z-30 bg-background/95 backdrop-blur border-b border-border px-6 h-[53px] flex items-center mt-14 md:mt-0">
             <div className="flex items-center justify-between gap-4">
               <div>
                 <h1 className="text-lg font-semibold text-foreground">{title}</h1>
