@@ -418,28 +418,44 @@ export function AdminSidebar() {
       </nav>
 
       {/* Footer */}
-      <div className="border-t border-border p-3 space-y-1">
-        {session && !collapsed && (
-          <div className="px-3 py-2 mb-1">
-            <p className="text-xs font-medium text-foreground truncate">{session.name || session.email}</p>
-            <p className="text-[10px] text-muted-foreground capitalize">{session.role.replace('_', ' ')}{session.department ? ` · ${session.department}` : ''}</p>
+      <div className="border-t border-border p-3">
+        <TooltipProvider delayDuration={200}>
+          <div className="flex items-center gap-1">
+            {/* User info */}
+            <div className="flex-1 min-w-0 px-2">
+              {session && !collapsed && (
+                <>
+                  <p className="text-xs font-medium text-foreground truncate">{session.name || session.email}</p>
+                  <p className="text-[10px] text-muted-foreground capitalize truncate">{session.role.replace('_', ' ')}{session.department ? ` · ${session.department}` : ''}</p>
+                </>
+              )}
+            </div>
+            {/* Action icons */}
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  to="/"
+                  target="_blank"
+                  className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors shrink-0"
+                >
+                  <ExternalLink className="h-3.5 w-3.5" />
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent side="top"><span>View Site</span></TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  onClick={handleSignOut}
+                  className="p-1.5 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors shrink-0"
+                >
+                  <LogOut className="h-3.5 w-3.5" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="top"><span>Sign Out</span></TooltipContent>
+            </Tooltip>
           </div>
-        )}
-        <Link
-          to="/"
-          target="_blank"
-          className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
-        >
-          <FileText className="h-4 w-4 shrink-0" />
-          {!collapsed && <span>View Site</span>}
-        </Link>
-        <button
-          onClick={handleSignOut}
-          className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
-        >
-          <LogOut className="h-4 w-4 shrink-0" />
-          {!collapsed && <span>Sign Out</span>}
-        </button>
+        </TooltipProvider>
       </div>
     </div>
   );
