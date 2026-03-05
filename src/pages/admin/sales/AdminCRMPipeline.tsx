@@ -16,6 +16,7 @@ import { cn } from '@/lib/utils';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Link } from 'react-router-dom';
 import { ADMIN_ROUTES } from '@/lib/adminRoutes';
+import { DealDetailDrawer } from '@/components/admin/DealDetailDrawer';
 
 // ---- Types ----
 type PipelineSubStatus = {
