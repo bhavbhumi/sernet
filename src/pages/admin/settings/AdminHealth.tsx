@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
-import { supabase } from '@/integrations/supabase/client';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -11,22 +9,8 @@ import {
   Database, Server, Globe, Zap, Users, ShieldCheck,
   Newspaper, Headphones, TrendingUp, Clock
 } from 'lucide-react';
-
-interface HealthData {
-  timestamp: string;
-  health_score: number;
-  status: 'healthy' | 'warning' | 'critical';
-  issues: Array<{ severity: 'critical' | 'warning' | 'info'; area: string; message: string }>;
-  summary: {
-    content: { total: number; drafts: number; published: number; missing_thumbnails: number; expired_bulletins: number };
-    support: { total_tickets: number; open: number; breached: number; kb_articles: number };
-    sales: { total_deals: number; open_deals: number; stale_deals: number; leads: number; calculator_leads: number; contacts: number };
-    workflows: { total_rules: number; active_rules: number; recent_executions: number; recent_errors: number };
-    users: { staff: number; portal: number; pending_partners: number };
-    database: { total_tables: number; table_counts: Record<string, number> };
-    scheduled_tasks: Array<{ name: string; schedule: string; active: boolean }>;
-  };
-}
+import { useHealthCheck, type HealthData } from '@/hooks/useHealthCheck';
+import { useQueryClient } from '@tanstack/react-query';
 
 const severityIcon = {
   critical: <AlertCircle className="h-4 w-4 text-destructive" />,
