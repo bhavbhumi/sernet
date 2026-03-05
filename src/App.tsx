@@ -246,6 +246,9 @@ const App = () => (
             <Route path="/admin/marketing/engagement/reviews" element={<AdminReviews />} />
             <Route path="/admin/marketing/engagement/newsletter" element={<AdminNewsletter />} />
             <Route path="/admin/marketing/engagement/composer" element={<AdminNewsletterComposer />} />
+            <Route path="/admin/marketing/campaigns/tracker" element={<AdminCampaigns />} />
+            <Route path="/admin/marketing/campaigns/attribution" element={<AdminLeadAttribution />} />
+            <Route path="/admin/marketing/campaigns/events" element={<AdminEvents />} />
             <Route path="/admin/marketing/press" element={<AdminPress />} />
             <Route path="/admin/marketing/calendars/holidays" element={<AdminMarketHolidays />} />
             <Route path="/admin/marketing/calendars/economic" element={<AdminEconomicEvents />} />
