@@ -207,6 +207,12 @@ function ContactDetailDialog({ contactId, contactName, contactType, open, onClos
                 KMP & Escalation ({kmpContacts.length})
               </TabsTrigger>
             )}
+            <TabsTrigger value="deals">
+              Deals ({linkedDeals.length})
+            </TabsTrigger>
+            <TabsTrigger value="activities">
+              Activities ({linkedActivities.length})
+            </TabsTrigger>
           </TabsList>
 
           {/* ===== PROFILE TAB ===== */}
