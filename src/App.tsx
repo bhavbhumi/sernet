@@ -253,14 +253,12 @@ const App = () => (
             <Route path="/admin/marketing/site/media" element={<AdminMediaLibrary />} />
 
             {/* Admin — Sales */}
+            <Route path="/admin/sales/leads" element={<AdminLeads />} />
             <Route path="/admin/sales/crm/pipeline" element={<AdminCRMPipeline />} />
             <Route path="/admin/sales/crm/pipeline-config" element={<AdminPipelineConfig />} />
             <Route path="/admin/sales/crm/deals" element={<AdminCRMDeals />} />
             <Route path="/admin/sales/crm/contacts" element={<AdminCRMContacts />} />
-            <Route path="/admin/sales/crm/activities" element={<AdminCRMActivities />} />
-            
-            <Route path="/admin/sales/leads" element={<AdminLeads />} />
-            <Route path="/admin/sales/calculator-leads" element={<AdminCalculatorLeads />} />
+            <Route path="/admin/sales/calculator-leads" element={<AdminLeads />} />
 
             {/* Admin — HR */}
             <Route path="/admin/hr/careers/openings" element={<AdminJobOpenings />} />
