@@ -190,6 +190,7 @@ const departmentGroups: DepartmentGroup[] = [
       { label: 'RSS Feeds', icon: Rss, href: R.settings.rss, moduleKey: 'system/rss-feeds' },
       { label: 'AI Usage', icon: Sparkles, href: R.settings.aiUsage, moduleKey: 'system/ai-usage' },
       { label: 'Audit Log', icon: ScrollText, href: R.settings.auditLog, moduleKey: 'system/audit-log' },
+      { label: 'System Health', icon: Activity, href: R.settings.health, moduleKey: 'system/health' },
     ]
   },
 ];
