@@ -113,8 +113,7 @@ export default function AdminDashboard() {
       color: 'text-emerald-600',
       bgColor: 'bg-emerald-500/10',
       cards: [
-        { label: 'Leads', count: stats.leads, href: R.sales.leads, icon: UserCheck, color: 'text-emerald-600 bg-emerald-500/10' },
-        { label: 'Calculator Leads', count: stats.calcLeads, href: R.sales.calculatorLeads, icon: Calculator, color: 'text-teal-600 bg-teal-500/10' },
+        { label: 'All Leads', count: stats.leads + stats.calcLeads, href: R.sales.leads, icon: UserCheck, color: 'text-emerald-600 bg-emerald-500/10' },
       ],
     },
     {
