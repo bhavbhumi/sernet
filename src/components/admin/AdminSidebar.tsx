@@ -388,16 +388,10 @@ export function AdminSidebar() {
 
   const SidebarContent = () => (
     <div className="flex flex-col h-full">
-      {/* Header */}
-      <div className={cn('flex items-center border-b border-border p-4', collapsed ? 'justify-center' : 'gap-3')}>
+      {/* Header — matches right-side page header height */}
+      <div className={cn('flex items-center border-b border-border h-[53px] px-4 shrink-0', collapsed ? 'justify-center' : 'gap-3')}>
         {!collapsed && <img src={sernetLogo} alt="SERNET" className="h-7 object-contain" />}
         {!collapsed && <span className="text-xs font-medium text-muted-foreground bg-primary/10 text-primary px-2 py-0.5 rounded-full">Admin</span>}
-        <button
-          onClick={() => setCollapsed(!collapsed)}
-          className="ml-auto p-1.5 rounded-lg hover:bg-muted transition-colors text-muted-foreground hidden md:block"
-        >
-          <Menu className="h-4 w-4" />
-        </button>
       </div>
 
       {/* Master Dashboard Link */}
