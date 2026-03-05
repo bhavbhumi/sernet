@@ -86,6 +86,7 @@ import AdminAIUsage from "./pages/admin/settings/AdminAIUsage";
 import AdminAuditLog from "./pages/admin/settings/AdminAuditLog";
 import AdminCalculatorLeads from "./pages/admin/settings/AdminCalculatorLeads";
 import AdminWorkflows from "./pages/admin/settings/AdminWorkflows";
+import AdminPermissions from "./pages/admin/settings/AdminPermissions";
 import AdminLeads from "./pages/admin/AdminLeads";
 import AdminCRMPipeline from "./pages/admin/sales/AdminCRMPipeline";
 import AdminPipelineConfig from "./pages/admin/sales/AdminPipelineConfig";
@@ -284,6 +285,7 @@ const App = () => (
 
           {/* Admin — System Settings */}
           <Route path="/admin/settings/users" element={<AdminUsers />} />
+          <Route path="/admin/settings/permissions" element={<AdminPermissions />} />
           <Route path="/admin/settings/rss" element={<AdminRSSSettings />} />
           <Route path="/admin/settings/ai-usage" element={<AdminAIUsage />} />
           <Route path="/admin/settings/audit-log" element={<AdminAuditLog />} />
