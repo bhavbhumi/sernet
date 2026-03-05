@@ -414,12 +414,14 @@ export default function AdminCRMPipeline() {
                     subStatusLabels={subStatusLabels}
                     subStatusColors={subStatusColors}
                     onMove={refresh}
+                    onSelect={setSelectedDealId}
                   />
                 ))}
               </div>
             </div>
           ))}
         </div>
+        <DealDetailDrawer dealId={selectedDealId} open={!!selectedDealId} onClose={() => setSelectedDealId(null)} />
       </AdminLayout>
     </AdminGuard>
   );
