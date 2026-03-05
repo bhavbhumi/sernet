@@ -304,6 +304,7 @@ const App = () => (
             <Route path="/admin/settings/ai-usage" element={<AdminAIUsage />} />
             <Route path="/admin/settings/audit-log" element={<AdminAuditLog />} />
             <Route path="/admin/settings/workflows" element={<AdminWorkflows />} />
+            <Route path="/admin/settings/health" element={<AdminHealth />} />
 
             {/* Sitemap */}
             <Route path="/sitemap" element={<Sitemap />} />
