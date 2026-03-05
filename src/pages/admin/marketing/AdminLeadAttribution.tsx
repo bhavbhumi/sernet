@@ -196,7 +196,7 @@ export default function AdminLeadAttribution() {
             </CardContent>
           </Card>
         </div>
-      </div>
+      </AdminLayout>
     </AdminGuard>
   );
 }
