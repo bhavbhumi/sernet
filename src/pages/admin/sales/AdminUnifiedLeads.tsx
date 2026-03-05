@@ -227,7 +227,7 @@ export default function AdminUnifiedLeads() {
     setConvertLead(null);
     if (converted) {
       queryClient.invalidateQueries({ queryKey: ['leads'] });
-      queryClient.invalidateQueries({ queryKey: ['crm-deals'] });
+      queryClient.invalidateQueries({ queryKey: ['crm-contacts'] });
     }
   };
 
