@@ -13,6 +13,15 @@ export interface HealthData {
   status: "healthy" | "warning" | "critical";
   issues: HealthIssue[];
   details: Record<string, unknown>;
+  summary: {
+    content: { total: number; drafts: number; published: number; missing_thumbnails: number; expired_bulletins: number };
+    support: { total_tickets: number; open: number; breached: number; kb_articles: number };
+    sales: { total_deals: number; open_deals: number; stale_deals: number; leads: number; calculator_leads: number; contacts: number };
+    workflows: { total_rules: number; active_rules: number; recent_executions: number; recent_errors: number };
+    users: { staff: number; portal: number; pending_partners: number };
+    database: { total_tables: number; table_counts: Record<string, number> };
+    scheduled_tasks: Array<{ name: string; schedule: string; active: boolean }>;
+  };
 }
 
 async function fetchHealth(): Promise<HealthData> {
