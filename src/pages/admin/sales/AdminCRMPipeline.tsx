@@ -16,6 +16,7 @@ import { cn } from '@/lib/utils';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Link } from 'react-router-dom';
 import { ADMIN_ROUTES } from '@/lib/adminRoutes';
+import { DealDetailDrawer } from '@/components/admin/DealDetailDrawer';
 
 // ---- Types ----
 type PipelineSubStatus = {
@@ -236,12 +237,13 @@ function NewDealDialog({ stages, onCreated }: { stages: PipelineStage[]; onCreat
 }
 
 // ---- Deal Card with Blueprint Enforcement ----
-function DealCard({ deal, stages, subStatusLabels, subStatusColors, onMove }: {
+function DealCard({ deal, stages, subStatusLabels, subStatusColors, onMove, onSelect }: {
   deal: Deal;
   stages: PipelineStage[];
   subStatusLabels: Record<string, string>;
   subStatusColors: Record<string, string>;
   onMove: () => void;
+  onSelect: (id: string) => void;
 }) {
   const stageIdx = stages.findIndex(s => s.stage_key === deal.stage);
   const currentStage = stages[stageIdx];
@@ -272,7 +274,7 @@ function DealCard({ deal, stages, subStatusLabels, subStatusColors, onMove }: {
   if (!currentStage) return null;
 
   return (
-    <Card className="p-3 space-y-2 hover:shadow-md transition-shadow">
+    <Card className="p-3 space-y-2 hover:shadow-md transition-shadow cursor-pointer" onClick={() => onSelect(deal.id)}>
       <div className="flex items-start justify-between gap-2">
         <h4 className="text-sm font-medium leading-tight line-clamp-2">{deal.title}</h4>
         <Popover>
@@ -344,6 +346,7 @@ function DealCard({ deal, stages, subStatusLabels, subStatusColors, onMove }: {
 // ---- Main Pipeline ----
 export default function AdminCRMPipeline() {
   const queryClient = useQueryClient();
+  const [selectedDealId, setSelectedDealId] = useState<string | null>(null);
   const { data: stages = [], isLoading: stagesLoading } = usePipelineConfig();
   const { subStatusLabels, subStatusColors } = buildLookups(stages);
 
@@ -411,12 +414,14 @@ export default function AdminCRMPipeline() {
                     subStatusLabels={subStatusLabels}
                     subStatusColors={subStatusColors}
                     onMove={refresh}
+                    onSelect={setSelectedDealId}
                   />
                 ))}
               </div>
             </div>
           ))}
         </div>
+        <DealDetailDrawer dealId={selectedDealId} open={!!selectedDealId} onClose={() => setSelectedDealId(null)} />
       </AdminLayout>
     </AdminGuard>
   );

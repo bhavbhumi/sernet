@@ -107,12 +107,11 @@ const AdminAuditLog = lazy(() => import("./pages/admin/settings/AdminAuditLog"))
 const AdminCalculatorLeads = lazy(() => import("./pages/admin/settings/AdminCalculatorLeads"));
 const AdminWorkflows = lazy(() => import("./pages/admin/settings/AdminWorkflows"));
 const AdminPermissions = lazy(() => import("./pages/admin/settings/AdminPermissions"));
-const AdminLeads = lazy(() => import("./pages/admin/AdminLeads"));
+const AdminLeads = lazy(() => import("./pages/admin/sales/AdminUnifiedLeads"));
 const AdminCRMPipeline = lazy(() => import("./pages/admin/sales/AdminCRMPipeline"));
 const AdminPipelineConfig = lazy(() => import("./pages/admin/sales/AdminPipelineConfig"));
 const AdminCRMDeals = lazy(() => import("./pages/admin/sales/AdminCRMDeals"));
 const AdminCRMContacts = lazy(() => import("./pages/admin/sales/AdminCRMContacts"));
-const AdminCRMActivities = lazy(() => import("./pages/admin/sales/AdminCRMActivities"));
 const AdminSitePages = lazy(() => import("./pages/admin/site/AdminSitePages"));
 const AdminSiteSettings = lazy(() => import("./pages/admin/site/AdminSiteSettings"));
 const AdminMediaLibrary = lazy(() => import("./pages/admin/site/AdminMediaLibrary"));
@@ -254,14 +253,12 @@ const App = () => (
             <Route path="/admin/marketing/site/media" element={<AdminMediaLibrary />} />
 
             {/* Admin — Sales */}
+            <Route path="/admin/sales/leads" element={<AdminLeads />} />
             <Route path="/admin/sales/crm/pipeline" element={<AdminCRMPipeline />} />
             <Route path="/admin/sales/crm/pipeline-config" element={<AdminPipelineConfig />} />
             <Route path="/admin/sales/crm/deals" element={<AdminCRMDeals />} />
             <Route path="/admin/sales/crm/contacts" element={<AdminCRMContacts />} />
-            <Route path="/admin/sales/crm/activities" element={<AdminCRMActivities />} />
-            
-            <Route path="/admin/sales/leads" element={<AdminLeads />} />
-            <Route path="/admin/sales/calculator-leads" element={<AdminCalculatorLeads />} />
+            <Route path="/admin/sales/calculator-leads" element={<AdminLeads />} />
 
             {/* Admin — HR */}
             <Route path="/admin/hr/careers/openings" element={<AdminJobOpenings />} />
