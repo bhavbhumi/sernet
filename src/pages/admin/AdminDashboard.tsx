@@ -7,8 +7,10 @@ import { ADMIN_ROUTES } from '@/lib/adminRoutes';
 import {
   FileText, Newspaper, AlertCircle, Vote, Star, Briefcase, BarChart3,
   BookOpen, Bell, Users, ClipboardList, UserCheck, Megaphone, TrendingUp,
-  Building2, Gavel, Calculator, Ticket, Headphones, AlertTriangle
+  Building2, Gavel, Calculator, Ticket, Headphones, AlertTriangle,
+  Activity, CheckCircle2, RefreshCw
 } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 
 const R = ADMIN_ROUTES;
 
