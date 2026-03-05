@@ -237,12 +237,13 @@ function NewDealDialog({ stages, onCreated }: { stages: PipelineStage[]; onCreat
 }
 
 // ---- Deal Card with Blueprint Enforcement ----
-function DealCard({ deal, stages, subStatusLabels, subStatusColors, onMove }: {
+function DealCard({ deal, stages, subStatusLabels, subStatusColors, onMove, onSelect }: {
   deal: Deal;
   stages: PipelineStage[];
   subStatusLabels: Record<string, string>;
   subStatusColors: Record<string, string>;
   onMove: () => void;
+  onSelect: (id: string) => void;
 }) {
   const stageIdx = stages.findIndex(s => s.stage_key === deal.stage);
   const currentStage = stages[stageIdx];
