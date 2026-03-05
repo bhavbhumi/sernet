@@ -333,7 +333,7 @@ export default function AdminUnifiedLeads() {
                             <td className="px-4 py-3">
                               {lead.status !== 'converted' && (
                                 <Button variant="ghost" size="sm" className="h-7 text-xs" onClick={() => setConvertLead({
-                                  name: lead.name, phone: lead.phone, email: lead.email,
+                                  id: lead.id, name: lead.name, phone: lead.phone, email: lead.email,
                                   context: getContextSummary(lead) ?? undefined,
                                 })}>
                                   <ArrowRight className="h-3 w-3 mr-1" /> Convert
