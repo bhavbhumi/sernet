@@ -89,7 +89,15 @@ export default function AdminDashboard() {
       setLoading(false);
     };
 
+    const fetchHealth = async () => {
+      try {
+        const { data } = await supabase.functions.invoke('health-check');
+        if (data) setHealthData(data);
+      } catch { /* silent */ }
+    };
+
     fetchStats();
+    fetchHealth();
   }, []);
 
   const departments: DepartmentKPIs[] = [
