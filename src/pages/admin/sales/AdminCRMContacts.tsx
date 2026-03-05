@@ -397,6 +397,55 @@ function ContactDetailDialog({ contactId, contactName, contactType, open, onClos
               )}
             </TabsContent>
           )}
+
+          {/* ===== DEALS TAB ===== */}
+          <TabsContent value="deals" className="mt-4">
+            {linkedDeals.length === 0 ? (
+              <p className="text-sm text-muted-foreground text-center py-8">No deals linked to this contact.</p>
+            ) : (
+              <div className="space-y-2">
+                {linkedDeals.map((deal: any) => (
+                  <div key={deal.id} className="flex items-center gap-3 p-3 rounded-lg border text-sm">
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium truncate">{deal.title}</p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <Badge variant="outline" className="text-[10px] capitalize">{deal.stage}</Badge>
+                        <Badge variant="secondary" className="text-[10px] capitalize">{deal.sub_status?.replace('_', ' ')}</Badge>
+                        {deal.product_interest && <span className="text-xs text-muted-foreground">{deal.product_interest}</span>}
+                      </div>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <p className="font-semibold text-sm">₹{Number(deal.deal_value || 0).toLocaleString('en-IN')}</p>
+                      <p className="text-[10px] text-muted-foreground">{format(new Date(deal.created_at), 'dd MMM yyyy')}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </TabsContent>
+
+          {/* ===== ACTIVITIES TAB ===== */}
+          <TabsContent value="activities" className="mt-4">
+            {linkedActivities.length === 0 ? (
+              <p className="text-sm text-muted-foreground text-center py-8">No activities logged for this contact.</p>
+            ) : (
+              <div className="space-y-2">
+                {linkedActivities.map((act: any) => (
+                  <div key={act.id} className={cn('flex items-start gap-2.5 p-2.5 rounded-lg border text-sm', act.is_completed && 'opacity-50')}>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-medium text-xs">{act.subject}</span>
+                        <Badge variant="outline" className="text-[9px]">{act.activity_type?.replace('_', ' ')}</Badge>
+                        {act.outcome && <Badge variant="secondary" className="text-[9px]">{act.outcome}</Badge>}
+                      </div>
+                      {act.description && <p className="text-[10px] text-muted-foreground mt-0.5 line-clamp-2">{act.description}</p>}
+                      <p className="text-[10px] text-muted-foreground mt-0.5">{format(new Date(act.created_at), 'dd MMM yyyy HH:mm')}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </TabsContent>
         </Tabs>
       </DialogContent>
     </Dialog>
