@@ -401,8 +401,15 @@ function ContactDetailDialog({ contactId, contactName, contactType, open, onClos
 
           {/* ===== DEALS TAB ===== */}
           <TabsContent value="deals" className="mt-4">
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-xs text-muted-foreground">{linkedDeals.length} deal(s) linked</p>
+              <AddDealFromContact contactId={contactId} contactName={contactName} onCreated={() => {
+                queryClient.invalidateQueries({ queryKey: ['contact-deals', contactId] });
+                queryClient.invalidateQueries({ queryKey: ['crm-deals'] });
+              }} />
+            </div>
             {linkedDeals.length === 0 ? (
-              <p className="text-sm text-muted-foreground text-center py-8">No deals linked to this contact.</p>
+              <p className="text-sm text-muted-foreground text-center py-6">No deals yet. Create one above to start tracking opportunities.</p>
             ) : (
               <div className="space-y-2">
                 {linkedDeals.map((deal: any) => (
