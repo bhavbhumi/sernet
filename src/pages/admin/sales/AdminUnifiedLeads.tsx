@@ -152,7 +152,7 @@ export default function AdminUnifiedLeads() {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [updatingId, setUpdatingId] = useState<string | null>(null);
-  const [convertLead, setConvertLead] = useState<{ name: string; phone: string; email: string | null; context?: string } | null>(null);
+  const [convertLead, setConvertLead] = useState<{ id?: string; name: string; phone: string; email: string | null; context?: string } | null>(null);
 
   // Fetch website leads
   const { data: webLeads = [], isLoading: webLoading } = useQuery({
