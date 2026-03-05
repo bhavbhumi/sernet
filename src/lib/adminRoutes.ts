@@ -31,6 +31,11 @@ export const ADMIN_ROUTES = {
       newsletter: '/admin/marketing/engagement/newsletter',
       composer: '/admin/marketing/engagement/composer',
     },
+    campaigns: {
+      tracker: '/admin/marketing/campaigns/tracker',
+      attribution: '/admin/marketing/campaigns/attribution',
+      events: '/admin/marketing/campaigns/events',
+    },
     press: '/admin/marketing/press',
     calendars: {
       holidays: '/admin/marketing/calendars/holidays',

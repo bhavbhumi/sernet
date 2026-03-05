@@ -519,6 +519,60 @@ export type Database = {
         }
         Relationships: []
       }
+      campaigns: {
+        Row: {
+          budget: number | null
+          campaign_type: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          end_date: string | null
+          id: string
+          name: string
+          start_date: string | null
+          status: string
+          target_audience: string | null
+          updated_at: string
+          utm_campaign: string | null
+          utm_medium: string | null
+          utm_source: string | null
+        }
+        Insert: {
+          budget?: number | null
+          campaign_type?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          name: string
+          start_date?: string | null
+          status?: string
+          target_audience?: string | null
+          updated_at?: string
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+        }
+        Update: {
+          budget?: number | null
+          campaign_type?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          name?: string
+          start_date?: string | null
+          status?: string
+          target_audience?: string | null
+          updated_at?: string
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+        }
+        Relationships: []
+      }
       canned_responses: {
         Row: {
           body: string
@@ -1345,6 +1399,125 @@ export type Database = {
             columns: ["reporting_to"]
             isOneToOne: false
             referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      event_registrations: {
+        Row: {
+          attended: boolean | null
+          company: string | null
+          created_at: string
+          email: string | null
+          event_id: string
+          id: string
+          lead_id: string | null
+          name: string
+          phone: string
+          status: string
+        }
+        Insert: {
+          attended?: boolean | null
+          company?: string | null
+          created_at?: string
+          email?: string | null
+          event_id: string
+          id?: string
+          lead_id?: string | null
+          name: string
+          phone: string
+          status?: string
+        }
+        Update: {
+          attended?: boolean | null
+          company?: string | null
+          created_at?: string
+          email?: string | null
+          event_id?: string
+          id?: string
+          lead_id?: string | null
+          name?: string
+          phone?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_registrations_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_registrations_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      events: {
+        Row: {
+          campaign_id: string | null
+          capacity: number | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          duration_minutes: number | null
+          event_date: string
+          event_time: string | null
+          event_type: string
+          id: string
+          meeting_link: string | null
+          speaker: string | null
+          status: string
+          title: string
+          updated_at: string
+          venue: string | null
+        }
+        Insert: {
+          campaign_id?: string | null
+          capacity?: number | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          duration_minutes?: number | null
+          event_date: string
+          event_time?: string | null
+          event_type?: string
+          id?: string
+          meeting_link?: string | null
+          speaker?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+          venue?: string | null
+        }
+        Update: {
+          campaign_id?: string | null
+          capacity?: number | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          duration_minutes?: number | null
+          event_date?: string
+          event_time?: string | null
+          event_type?: string
+          id?: string
+          meeting_link?: string | null
+          speaker?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+          venue?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "events_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
             referencedColumns: ["id"]
           },
         ]

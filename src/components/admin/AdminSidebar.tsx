@@ -5,7 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { logAudit } from '@/lib/auditLog';
 import { useAdminSession } from '@/components/admin/AdminGuard';
 import {
-  LayoutDashboard, FileText, BarChart3, BookOpen, Bell, Newspaper, AlertCircle, BookOpenCheck,
+  LayoutDashboard, FileText, BarChart3, BookOpen, Bell, Newspaper, AlertCircle, BookOpenCheck, Target,
   Vote, ClipboardList, Star, Briefcase, Users, Mic2, Settings, LogOut,
   ChevronDown, ChevronRight, Menu, X, Rss, Shield, Globe, Palette, ScanSearch, Images, Download,
   Sparkles, Calculator, UserCheck, CalendarDays, Mail, ScrollText, Scale, Lightbulb,
@@ -67,6 +67,13 @@ const departmentGroups: DepartmentGroup[] = [
           { label: 'Reviews', icon: Star, href: R.marketing.engagement.reviews },
           { label: 'Subscribers', icon: Mail, href: R.marketing.engagement.newsletter },
           { label: 'Composer', icon: Mail, href: R.marketing.engagement.composer },
+        ]
+      },
+      {
+        label: 'Campaigns', icon: Target, moduleKey: 'marketing/campaigns', children: [
+          { label: 'Campaign Tracker', icon: Target, href: R.marketing.campaigns.tracker },
+          { label: 'Lead Attribution', icon: TrendingUp, href: R.marketing.campaigns.attribution },
+          { label: 'Events & Webinars', icon: CalendarDays, href: R.marketing.campaigns.events },
         ]
       },
       { label: 'Press & Media', icon: Mic2, href: R.marketing.press, moduleKey: 'marketing/press-media' },

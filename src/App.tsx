@@ -145,6 +145,9 @@ const AdminPartnerPayouts = lazy(() => import("./pages/admin/accounts/AdminPartn
 const AdminCommissionClaims = lazy(() => import("./pages/admin/accounts/AdminCommissionClaims"));
 const AdminAgreements = lazy(() => import("./pages/admin/legal/AdminAgreements"));
 const AdminHealth = lazy(() => import("./pages/admin/settings/AdminHealth"));
+const AdminCampaigns = lazy(() => import("./pages/admin/marketing/AdminCampaigns"));
+const AdminLeadAttribution = lazy(() => import("./pages/admin/marketing/AdminLeadAttribution"));
+const AdminEvents = lazy(() => import("./pages/admin/marketing/AdminEvents"));
 
 const queryClient = new QueryClient();
 
@@ -243,6 +246,9 @@ const App = () => (
             <Route path="/admin/marketing/engagement/reviews" element={<AdminReviews />} />
             <Route path="/admin/marketing/engagement/newsletter" element={<AdminNewsletter />} />
             <Route path="/admin/marketing/engagement/composer" element={<AdminNewsletterComposer />} />
+            <Route path="/admin/marketing/campaigns/tracker" element={<AdminCampaigns />} />
+            <Route path="/admin/marketing/campaigns/attribution" element={<AdminLeadAttribution />} />
+            <Route path="/admin/marketing/campaigns/events" element={<AdminEvents />} />
             <Route path="/admin/marketing/press" element={<AdminPress />} />
             <Route path="/admin/marketing/calendars/holidays" element={<AdminMarketHolidays />} />
             <Route path="/admin/marketing/calendars/economic" element={<AdminEconomicEvents />} />
