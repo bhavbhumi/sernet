@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
-import { supabase } from '@/integrations/supabase/client';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -11,22 +9,8 @@ import {
   Database, Server, Globe, Zap, Users, ShieldCheck,
   Newspaper, Headphones, TrendingUp, Clock
 } from 'lucide-react';
-
-interface HealthData {
-  timestamp: string;
-  health_score: number;
-  status: 'healthy' | 'warning' | 'critical';
-  issues: Array<{ severity: 'critical' | 'warning' | 'info'; area: string; message: string }>;
-  summary: {
-    content: { total: number; drafts: number; published: number; missing_thumbnails: number; expired_bulletins: number };
-    support: { total_tickets: number; open: number; breached: number; kb_articles: number };
-    sales: { total_deals: number; open_deals: number; stale_deals: number; leads: number; calculator_leads: number; contacts: number };
-    workflows: { total_rules: number; active_rules: number; recent_executions: number; recent_errors: number };
-    users: { staff: number; portal: number; pending_partners: number };
-    database: { total_tables: number; table_counts: Record<string, number> };
-    scheduled_tasks: Array<{ name: string; schedule: string; active: boolean }>;
-  };
-}
+import { useHealthCheck, type HealthData } from '@/hooks/useHealthCheck';
+import { useQueryClient } from '@tanstack/react-query';
 
 const severityIcon = {
   critical: <AlertCircle className="h-4 w-4 text-destructive" />,
@@ -53,25 +37,13 @@ function StatRow({ label, value, sub }: { label: string; value: number | string;
 }
 
 export default function AdminHealth() {
-  const [data, setData] = useState<HealthData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [lastRefresh, setLastRefresh] = useState<string>('');
+  const queryClient = useQueryClient();
+  const { data, isLoading: loading, dataUpdatedAt } = useHealthCheck();
+  const lastRefresh = dataUpdatedAt ? new Date(dataUpdatedAt).toLocaleTimeString() : '';
 
-  const fetchHealth = async () => {
-    setLoading(true);
-    try {
-      const { data: result, error } = await supabase.functions.invoke('health-check');
-      if (error) throw error;
-      setData(result as HealthData);
-      setLastRefresh(new Date().toLocaleTimeString());
-    } catch (err) {
-      console.error('Health check failed:', err);
-    } finally {
-      setLoading(false);
-    }
+  const handleRefresh = () => {
+    queryClient.invalidateQueries({ queryKey: ['system-health'] });
   };
-
-  useEffect(() => { fetchHealth(); }, []);
 
   const scoreColor = !data ? 'text-muted-foreground'
     : data.health_score >= 80 ? 'text-emerald-500'
@@ -101,7 +73,7 @@ export default function AdminHealth() {
             </p>
           </div>
         </div>
-        <Button variant="outline" size="sm" onClick={fetchHealth} disabled={loading}>
+        <Button variant="outline" size="sm" onClick={handleRefresh} disabled={loading}>
           <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
           Refresh
         </Button>
@@ -279,9 +251,9 @@ export default function AdminHealth() {
             <h4 className="text-sm font-semibold mb-3">Table Row Counts ({data?.summary.database.total_tables} tables)</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6">
               {data && Object.entries(data.summary.database.table_counts)
-                .sort(([, a], [, b]) => b - a)
+                .sort(([, a], [, b]) => (b as number) - (a as number))
                 .map(([table, count]) => (
-                  <StatRow key={table} label={table.replace(/_/g, ' ')} value={count} />
+                  <StatRow key={table} label={table.replace(/_/g, ' ')} value={count as number} />
                 ))
               }
             </div>
