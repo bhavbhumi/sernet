@@ -512,7 +512,7 @@ export function AdminSidebar() {
         'hidden md:flex flex-col h-screen sticky top-0 bg-background border-r border-border transition-all duration-200 relative',
         collapsed ? 'w-14' : 'w-60'
       )}>
-        <SidebarContent />
+        {sidebarContent}
         {/* Collapse toggle — overlapping the sidebar edge */}
         <button
           onClick={() => setCollapsed(!collapsed)}
