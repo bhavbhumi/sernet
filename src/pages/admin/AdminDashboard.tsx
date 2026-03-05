@@ -34,6 +34,11 @@ interface DepartmentKPIs {
 export default function AdminDashboard() {
   const [stats, setStats] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
+  const [healthData, setHealthData] = useState<{
+    health_score: number;
+    status: string;
+    issues: Array<{ severity: string; area: string; message: string }>;
+  } | null>(null);
 
   useEffect(() => {
     const fetchStats = async () => {
