@@ -251,9 +251,9 @@ export default function AdminHealth() {
             <h4 className="text-sm font-semibold mb-3">Table Row Counts ({data?.summary.database.total_tables} tables)</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6">
               {data && Object.entries(data.summary.database.table_counts)
-                .sort(([, a], [, b]) => b - a)
+                .sort(([, a], [, b]) => (b as number) - (a as number))
                 .map(([table, count]) => (
-                  <StatRow key={table} label={table.replace(/_/g, ' ')} value={count} />
+                  <StatRow key={table} label={table.replace(/_/g, ' ')} value={count as number} />
                 ))
               }
             </div>
