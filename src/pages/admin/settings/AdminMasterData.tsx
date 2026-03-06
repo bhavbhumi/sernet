@@ -802,28 +802,39 @@ function LegalDeptMasters() {
   );
 }
 
+// ── Marketing: Links to campaigns/events ──
+function MarketingDeptMasters() {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+      <MasterLinkCard label="Campaigns" desc="Campaign types, UTM configurations" icon={BarChart3} href={ADMIN_ROUTES.marketing.campaigns.tracker} />
+      <MasterLinkCard label="Events" desc="Event types and templates" icon={CalendarClock} href={ADMIN_ROUTES.marketing.campaigns.events} />
+      <MasterLinkCard label="Lead Attribution" desc="Source & medium mapping" icon={TrendingUp} href={ADMIN_ROUTES.marketing.campaigns.attribution} />
+    </div>
+  );
+}
+
 const DEPT_MASTERS = [
+  { key: 'marketing', label: 'Marketing', icon: BarChart3, component: MarketingDeptMasters },
   { key: 'sales', label: 'Sales & CRM', icon: TrendingUp, component: SalesDeptMasters },
-  { key: 'finance', label: 'Finance & Accounts', icon: Receipt, component: FinanceDeptMasters },
   { key: 'hr', label: 'HR & People', icon: Users, component: HRDeptMasters },
+  { key: 'finance', label: 'Finance & Accounts', icon: Receipt, component: FinanceDeptMasters },
   { key: 'support', label: 'Support', icon: Headphones, component: SupportDeptMasters },
   { key: 'legal', label: 'Legal & Compliance', icon: ShieldCheck, component: LegalDeptMasters },
 ];
 
 // ═══════════════════════════════════════════════════════════
-// MAIN PAGE
+// TOP-LEVEL TABS
 // ═══════════════════════════════════════════════════════════
 
-const GLOBAL_TABS = [
-  { value: 'firm', label: 'Firm Profile', icon: Landmark },
-  { value: 'products', label: 'Products & Services', icon: Package },
+const TOP_TABS = [
+  { value: 'entity', label: 'Entity', icon: Landmark },
   { value: 'departments', label: 'Departments', icon: Building2 },
-  { value: 'locations', label: 'Locations', icon: MapPin },
+  { value: 'blueprints', label: 'Blueprints', icon: GitBranch },
   { value: 'workflows', label: 'Workflows', icon: Zap },
 ];
 
 export default function AdminMasterData() {
-  const [globalTab, setGlobalTab] = useState('products');
+  const [topTab, setTopTab] = useState('entity');
   const [openDepts, setOpenDepts] = useState<string[]>([]);
 
   return (
@@ -831,51 +842,26 @@ export default function AdminMasterData() {
       title="Master Data"
       subtitle="Central source of truth — all modules consume from here"
     >
-      <div className="space-y-6">
-        {/* ── GLOBAL MASTERS ─────────────────────────── */}
-        <section>
-          <div className="flex items-center gap-2 mb-3">
-            <Globe className="h-4 w-4 text-primary" />
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-foreground">Global Masters</h2>
-            <span className="text-[11px] text-muted-foreground ml-1">— Shared across all departments</span>
-          </div>
+      <Tabs value={topTab} onValueChange={setTopTab} className="space-y-4">
+        <TabsList className="flex flex-wrap h-auto gap-1 bg-muted/50 p-1 w-full justify-start">
+          {TOP_TABS.map(tab => (
+            <TabsTrigger key={tab.value} value={tab.value} className="flex items-center gap-1.5 text-xs sm:text-sm">
+              <tab.icon className="h-3.5 w-3.5" />
+              {tab.label}
+            </TabsTrigger>
+          ))}
+        </TabsList>
 
-          <Tabs value={globalTab} onValueChange={setGlobalTab} className="space-y-4">
-            <TabsList className="flex flex-wrap h-auto gap-1 bg-muted/50 p-1 w-full justify-start">
-              {GLOBAL_TABS.map(tab => (
-                <TabsTrigger key={tab.value} value={tab.value} className="flex items-center gap-1.5 text-xs">
-                  <tab.icon className="h-3.5 w-3.5" />
-                  {tab.label}
-                </TabsTrigger>
-              ))}
-            </TabsList>
+        {/* ── ENTITY TAB: Profile + Departments + Products + Locations stacked ── */}
+        <TabsContent value="entity" className="space-y-4">
+          <FirmProfileCard />
+          <DepartmentsTab />
+          <ProductsTab />
+          <LocationsTab />
+        </TabsContent>
 
-            <TabsContent value="firm"><FirmProfileCard /></TabsContent>
-            <TabsContent value="products"><ProductsTab /></TabsContent>
-            <TabsContent value="departments"><DepartmentsTab /></TabsContent>
-            <TabsContent value="locations"><LocationsTab /></TabsContent>
-            <TabsContent value="workflows">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-sm">Blueprints & Workflows</CardTitle>
-                  <p className="text-xs text-muted-foreground mt-1">Automation rules and triggers that operate across all departments.</p>
-                </CardHeader>
-                <CardContent>
-                  <MasterLinkCard label="Workflow Rules" desc="Automation triggers, conditions, and actions" icon={Zap} href={ADMIN_ROUTES.settings.workflows} />
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
-        </section>
-
-        {/* ── DEPARTMENT MASTERS ──────────────────────── */}
-        <section>
-          <div className="flex items-center gap-2 mb-3">
-            <Building2 className="h-4 w-4 text-primary" />
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-foreground">Department Masters</h2>
-            <span className="text-[11px] text-muted-foreground ml-1">— Scoped config consumed by each department's modules</span>
-          </div>
-
+        {/* ── DEPARTMENTS TAB: Accordion per department ── */}
+        <TabsContent value="departments">
           <Accordion type="multiple" value={openDepts} onValueChange={setOpenDepts} className="space-y-2">
             {DEPT_MASTERS.map(dept => (
               <AccordionItem key={dept.key} value={dept.key} className="border rounded-lg px-4 bg-card">
@@ -891,8 +877,34 @@ export default function AdminMasterData() {
               </AccordionItem>
             ))}
           </Accordion>
-        </section>
-      </div>
+        </TabsContent>
+
+        {/* ── BLUEPRINTS TAB ── */}
+        <TabsContent value="blueprints">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-sm">Blueprints</CardTitle>
+              <p className="text-xs text-muted-foreground mt-1">Process blueprints define the allowed transitions, mandatory fields, and approval gates for each module's lifecycle.</p>
+            </CardHeader>
+            <CardContent>
+              <MasterLinkCard label="Pipeline Blueprints" desc="Stage transitions & field requirements for CRM deals" icon={GitBranch} href={ADMIN_ROUTES.sales.pipelineConfig} />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* ── WORKFLOWS TAB ── */}
+        <TabsContent value="workflows">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-sm">Workflows</CardTitle>
+              <p className="text-xs text-muted-foreground mt-1">Automation rules and triggers that operate across all departments.</p>
+            </CardHeader>
+            <CardContent>
+              <MasterLinkCard label="Workflow Rules" desc="Automation triggers, conditions, and actions" icon={Zap} href={ADMIN_ROUTES.settings.workflows} />
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </AdminLayout>
   );
 }
