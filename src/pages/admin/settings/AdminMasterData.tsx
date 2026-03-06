@@ -903,7 +903,7 @@ const TOP_TABS = [
 export default function AdminMasterData() {
   const [topTab, setTopTab] = useState('entity');
   const [entitySection, setEntitySection] = useState('profile');
-  const [openDepts, setOpenDepts] = useState<string[]>([]);
+  const [deptSection, setDeptSection] = useState('sales');
 
   return (
     <AdminLayout
@@ -956,23 +956,40 @@ export default function AdminMasterData() {
           </Card>
         </TabsContent>
 
-        {/* ── DEPARTMENTS TAB: Accordion per department ── */}
-        <TabsContent value="departments">
-          <Accordion type="multiple" value={openDepts} onValueChange={setOpenDepts} className="space-y-2">
-            {DEPT_MASTERS.map(dept => (
-              <AccordionItem key={dept.key} value={dept.key} className="border rounded-lg px-4 bg-card">
-                <AccordionTrigger className="hover:no-underline py-3">
-                  <div className="flex items-center gap-2">
-                    <dept.icon className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm font-medium">{dept.label}</span>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="pb-4 pt-1">
-                  <dept.component />
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+        <TabsContent value="departments" className="space-y-4">
+          <div className="flex items-center gap-3">
+            <Select value={deptSection} onValueChange={setDeptSection}>
+              <SelectTrigger className="w-[220px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {DEPT_MASTERS.map(d => (
+                  <SelectItem key={d.key} value={d.key}>
+                    <span className="flex items-center gap-2">
+                      <d.icon className="h-3.5 w-3.5" />
+                      {d.label}
+                    </span>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-muted-foreground hidden sm:block">
+              {deptSection === 'sales' && 'Pipeline stages, sub-statuses, transition rules'}
+              {deptSection === 'hr' && 'Designations, leave types consumed by HR modules'}
+              {deptSection === 'finance' && 'Tax rates, payment terms, salary components, bank accounts'}
+              {deptSection === 'support' && 'Issue types, escalation matrix, canned responses'}
+              {deptSection === 'marketing' && 'Campaigns, events, lead attribution configuration'}
+            </p>
+          </div>
+
+          <Card>
+            <CardContent className="pt-6">
+              {DEPT_MASTERS.find(d => d.key === deptSection)?.component && (() => {
+                const Comp = DEPT_MASTERS.find(d => d.key === deptSection)!.component;
+                return <Comp />;
+              })()}
+            </CardContent>
+          </Card>
         </TabsContent>
 
         {/* ── BLUEPRINTS TAB ── */}
