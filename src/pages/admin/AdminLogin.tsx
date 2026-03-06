@@ -25,7 +25,11 @@ export default function AdminLogin() {
     const { data, error: authError } = await supabase.auth.signInWithPassword({ email, password });
 
     if (authError) {
-      setError('Invalid credentials. Please try again.');
+      if (authError.message?.toLowerCase().includes('email not confirmed')) {
+        setError('Your email is not confirmed. Please contact a Super Admin to confirm your account.');
+      } else {
+        setError('Invalid credentials. Please try again.');
+      }
       setLoading(false);
       return;
     }
