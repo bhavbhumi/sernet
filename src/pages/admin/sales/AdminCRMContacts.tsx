@@ -13,7 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
-import { MapPin, Phone, Building2, Eye, Users, Mail, Calendar, Shield, CreditCard, User, Plus, PhoneCall, FileText, Video, CheckSquare, MessageSquare } from 'lucide-react';
+import { MapPin, Phone, Building2, Eye, Users, Mail, Calendar, Shield, CreditCard, User, Plus, PhoneCall, FileText, Video, CheckSquare, MessageSquare, Upload } from 'lucide-react';
 import { format, differenceInYears } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
