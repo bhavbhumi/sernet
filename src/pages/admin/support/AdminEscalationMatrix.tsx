@@ -98,7 +98,7 @@ export function EscalationMatrixContent() {
   };
 
   return (
-    <AdminLayout title="Escalation & Automation" subtitle="Configure escalation matrix and automation rules">
+    <>
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList className="mb-4">
           <TabsTrigger value="matrix">Escalation Matrix</TabsTrigger>
@@ -256,10 +256,14 @@ export function EscalationMatrixContent() {
           </div>
         </DialogContent>
       </Dialog>
-    </AdminLayout>
+    </>
   );
 }
 
 export default function AdminEscalationMatrix() {
-  return <EscalationMatrixContent />;
+  return (
+    <AdminLayout title="Escalation & Automation" subtitle="Configure escalation matrix and automation rules">
+      <EscalationMatrixContent />
+    </AdminLayout>
+  );
 }
