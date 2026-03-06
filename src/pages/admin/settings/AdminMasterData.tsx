@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -13,7 +14,12 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import { Plus, Pencil, Trash2, Package, Building2, Award, MapPin, Receipt, CalendarClock, Wallet, ClipboardList, ExternalLink, ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react';
+import {
+  Plus, Pencil, Trash2, Package, Building2, Award, MapPin, Receipt,
+  CalendarClock, Wallet, ClipboardList, ExternalLink, ArrowUp, ArrowDown, ArrowUpDown,
+  Globe, Landmark, TrendingUp, ShieldCheck, Headphones, Users, Briefcase,
+  GitBranch, FileText, BarChart3, Scale
+} from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -80,6 +86,39 @@ function DeleteConfirm({ open, onOpenChange, onConfirm, label }: { open: boolean
   );
 }
 
+// ── Link Card (for departmental masters that link to existing pages) ──
+function MasterLinkCard({ label, desc, icon: Icon, href }: { label: string; desc: string; icon: any; href: string }) {
+  return (
+    <Link to={href} className="flex items-center gap-3 p-3 rounded-lg border border-border hover:bg-muted/50 transition-colors">
+      <Icon className="h-5 w-5 text-muted-foreground shrink-0" />
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-medium">{label}</p>
+        <p className="text-xs text-muted-foreground">{desc}</p>
+      </div>
+      <ExternalLink className="h-3.5 w-3.5 text-muted-foreground" />
+    </Link>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════
+// GLOBAL MASTERS
+// ═══════════════════════════════════════════════════════════
+
+// ── Firm Profile Link ─────────────────────────────────────
+function FirmProfileCard() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-sm">Organisation Identity</CardTitle>
+        <p className="text-xs text-muted-foreground mt-1">Legal name, PAN, GSTIN, ARN, registered address — the root identity of the firm.</p>
+      </CardHeader>
+      <CardContent>
+        <MasterLinkCard label="Firm Profile" desc="Legal name, registrations, bank details" icon={Landmark} href={ADMIN_ROUTES.accounts.firmProfile} />
+      </CardContent>
+    </Card>
+  );
+}
+
 // ── Products Tab ──────────────────────────────────────────
 const PRODUCT_EMPTY = { name: '', slug: '', description: '', icon_name: '', parent_id: '', is_active: true, sort_order: 0 };
 
@@ -133,7 +172,7 @@ function ProductsTab() {
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
           <CardTitle className="text-sm">Products & Sub-Products</CardTitle>
-          <p className="text-xs text-muted-foreground mt-1">Referenced by: CRM Deals, Pipeline Config, Support KB</p>
+          <p className="text-xs text-muted-foreground mt-1">Consumed by: CRM Deals, Pipeline Config, Support KB</p>
         </div>
         <Dialog open={open} onOpenChange={o => { setOpen(o); if (!o) { setEditing(null); setForm(PRODUCT_EMPTY); } }}>
           <DialogTrigger asChild><Button size="sm"><Plus className="h-4 w-4 mr-1" />Add Product</Button></DialogTrigger>
@@ -257,7 +296,7 @@ function DepartmentsTab() {
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
           <CardTitle className="text-sm">Departments</CardTitle>
-          <p className="text-xs text-muted-foreground mt-1">Referenced by: HR Employees, Job Openings, CRM, Reporting</p>
+          <p className="text-xs text-muted-foreground mt-1">Consumed by: HR, Job Openings, CRM, Reporting</p>
         </div>
         <Dialog open={open} onOpenChange={o => { setOpen(o); if (!o) { setEditing(null); setForm(DEPT_EMPTY); } }}>
           <DialogTrigger asChild><Button size="sm"><Plus className="h-4 w-4 mr-1" />Add Department</Button></DialogTrigger>
@@ -371,7 +410,6 @@ function DesignationsTab() {
   const edit = (r: any) => { setEditing(r.id); setForm({ title: r.title, level: r.level, department_id: r.department_id || '', is_active: r.is_active, sort_order: r.sort_order }); setOpen(true); };
 
   const sortedData = useMemo(() => {
-    // For designation, handle department_name sorting specially
     if (sort.col === 'department_name') {
       return [...designations].sort((a: any, b: any) => {
         const av = a.departments?.name || '';
@@ -388,7 +426,7 @@ function DesignationsTab() {
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
           <CardTitle className="text-sm">Designations</CardTitle>
-          <p className="text-xs text-muted-foreground mt-1">Referenced by: HR Employees, CRM Contact KMPs</p>
+          <p className="text-xs text-muted-foreground mt-1">Consumed by: HR Employees, CRM Contact KMPs</p>
         </div>
         <Dialog open={open} onOpenChange={o => { setOpen(o); if (!o) { setEditing(null); setForm(DESIG_EMPTY); } }}>
           <DialogTrigger asChild><Button size="sm"><Plus className="h-4 w-4 mr-1" />Add Designation</Button></DialogTrigger>
@@ -508,7 +546,7 @@ function LocationsTab() {
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
           <CardTitle className="text-sm">Locations & Branches</CardTitle>
-          <p className="text-xs text-muted-foreground mt-1">Referenced by: HR Job Openings, CRM Contacts, Firm Profile</p>
+          <p className="text-xs text-muted-foreground mt-1">Consumed by: HR Job Openings, CRM Contacts, Firm Profile</p>
         </div>
         <Dialog open={open} onOpenChange={o => { setOpen(o); if (!o) { setEditing(null); setForm(LOC_EMPTY); } }}>
           <DialogTrigger asChild><Button size="sm"><Plus className="h-4 w-4 mr-1" />Add Location</Button></DialogTrigger>
@@ -584,92 +622,152 @@ function LocationsTab() {
   );
 }
 
-// ── Financial Masters (links to existing pages) ───────────
-function FinancialMastersTab() {
-  const links = [
-    { label: 'Leave Types', desc: 'HR Leave Management', icon: CalendarClock, href: ADMIN_ROUTES.hr.leave },
-    { label: 'Tax Rates', desc: 'Invoicing & Accounts', icon: Receipt, href: ADMIN_ROUTES.accounts.taxRates },
-    { label: 'Salary Components', desc: 'Payroll Register', icon: Wallet, href: ADMIN_ROUTES.accounts.salaryComponents },
-    { label: 'Service Catalog', desc: 'Invoice Line Items', icon: ClipboardList, href: ADMIN_ROUTES.accounts.serviceCatalog },
-    { label: 'Payment Terms', desc: 'Invoice Payment Cycles', icon: Receipt, href: ADMIN_ROUTES.accounts.paymentTerms },
-  ];
+// ═══════════════════════════════════════════════════════════
+// DEPARTMENT MASTER SECTIONS (Link Cards)
+// ═══════════════════════════════════════════════════════════
 
+function SalesMasters() {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-sm">Financial Masters</CardTitle>
-        <p className="text-xs text-muted-foreground">These masters are managed in their respective Accounts/HR modules. Quick links below:</p>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {links.map(l => (
-            <Link key={l.href} to={l.href} className="flex items-center gap-3 p-3 rounded-lg border border-border hover:bg-muted/50 transition-colors">
-              <l.icon className="h-5 w-5 text-muted-foreground shrink-0" />
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium">{l.label}</p>
-                <p className="text-xs text-muted-foreground">{l.desc}</p>
-              </div>
-              <ExternalLink className="h-3.5 w-3.5 text-muted-foreground" />
-            </Link>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+      <MasterLinkCard label="Pipeline Config" desc="Stages, transitions & validation rules" icon={GitBranch} href={ADMIN_ROUTES.sales.pipelineConfig} />
+    </div>
   );
 }
 
-// ── Main Page ─────────────────────────────────────────────
-const globalTabs = [
+function FinanceMasters() {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+      <MasterLinkCard label="Tax Rates" desc="GST, TDS rates for invoicing" icon={Receipt} href={ADMIN_ROUTES.accounts.taxRates} />
+      <MasterLinkCard label="Payment Terms" desc="Invoice payment cycles" icon={Receipt} href={ADMIN_ROUTES.accounts.paymentTerms} />
+      <MasterLinkCard label="Service Catalog" desc="Invoice line item templates" icon={ClipboardList} href={ADMIN_ROUTES.accounts.serviceCatalog} />
+      <MasterLinkCard label="Salary Components" desc="Basic, HRA, PF, etc." icon={Wallet} href={ADMIN_ROUTES.accounts.salaryComponents} />
+      <MasterLinkCard label="Bank Accounts" desc="Firm bank accounts" icon={Landmark} href={ADMIN_ROUTES.accounts.bankAccounts} />
+    </div>
+  );
+}
+
+function HRMasters() {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+      <MasterLinkCard label="Leave Types" desc="CL, PL, SL definitions & quotas" icon={CalendarClock} href={ADMIN_ROUTES.hr.leave} />
+    </div>
+  );
+}
+
+function SupportMasters() {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+      <MasterLinkCard label="Issue Types" desc="Ticket classification taxonomy" icon={FileText} href={ADMIN_ROUTES.support.issueTypes} />
+      <MasterLinkCard label="Escalation Matrix" desc="SLA tiers & auto-escalation rules" icon={BarChart3} href={ADMIN_ROUTES.support.escalation} />
+      <MasterLinkCard label="Canned Responses" desc="Template replies for agents" icon={FileText} href={ADMIN_ROUTES.support.cannedResponses} />
+    </div>
+  );
+}
+
+function LegalMasters() {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+      <MasterLinkCard label="Legal Pages" desc="Terms, Privacy, Disclaimer templates" icon={Scale} href={ADMIN_ROUTES.legal.pages} />
+      <MasterLinkCard label="Investor Charter" desc="SEBI mandated disclosures" icon={ShieldCheck} href={ADMIN_ROUTES.legal.investorCharter} />
+    </div>
+  );
+}
+
+function SystemMasters() {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+      <MasterLinkCard label="Workflows" desc="Automation rules & triggers" icon={GitBranch} href={ADMIN_ROUTES.settings.workflows} />
+      <MasterLinkCard label="RSS Feeds" desc="Content syndication sources" icon={FileText} href={ADMIN_ROUTES.settings.rss} />
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════
+// DEPARTMENT ACCORDION CONFIG
+// ═══════════════════════════════════════════════════════════
+
+const DEPT_MASTERS = [
+  { key: 'sales', label: 'Sales & CRM', icon: TrendingUp, component: SalesMasters },
+  { key: 'finance', label: 'Finance & Accounts', icon: Receipt, component: FinanceMasters },
+  { key: 'hr', label: 'HR & People', icon: Users, component: HRMasters },
+  { key: 'support', label: 'Support', icon: Headphones, component: SupportMasters },
+  { key: 'legal', label: 'Legal & Compliance', icon: ShieldCheck, component: LegalMasters },
+  { key: 'system', label: 'System & Automation', icon: Briefcase, component: SystemMasters },
+];
+
+// ═══════════════════════════════════════════════════════════
+// MAIN PAGE — Accordion layout: Global → Department Masters
+// ═══════════════════════════════════════════════════════════
+
+const GLOBAL_TABS = [
+  { value: 'firm', label: 'Firm Profile', icon: Landmark },
   { value: 'products', label: 'Products', icon: Package },
   { value: 'departments', label: 'Departments', icon: Building2 },
   { value: 'designations', label: 'Designations', icon: Award },
   { value: 'locations', label: 'Locations', icon: MapPin },
 ];
 
-const departmentTabs = [
-  { value: 'financial', label: 'Finance & Accounts', icon: Receipt },
-];
-
 export default function AdminMasterData() {
-  const [activeTab, setActiveTab] = useState('products');
+  const [globalTab, setGlobalTab] = useState('products');
+  const [openDepts, setOpenDepts] = useState<string[]>([]);
 
   return (
     <AdminLayout
       title="Master Data"
-      subtitle="Central source of truth — referenced across all modules"
+      subtitle="Central source of truth — all modules consume from here"
     >
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-        <div className="space-y-3">
-          <div>
-            <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1.5 px-1">Global Masters</p>
-            <TabsList className="flex flex-wrap h-auto gap-1 bg-muted/50 p-1 w-full justify-start">
-              {globalTabs.map(tab => (
-                <TabsTrigger key={tab.value} value={tab.value} className="flex items-center gap-1.5 text-xs">
-                  <tab.icon className="h-3.5 w-3.5" />
-                  {tab.label}
-                </TabsTrigger>
-              ))}
-            </TabsList>
+      <div className="space-y-6">
+        {/* ── GLOBAL MASTERS ─────────────────────────── */}
+        <section>
+          <div className="flex items-center gap-2 mb-3">
+            <Globe className="h-4 w-4 text-primary" />
+            <h2 className="text-sm font-semibold uppercase tracking-wider text-foreground">Global Masters</h2>
+            <span className="text-[11px] text-muted-foreground ml-1">— Shared across all departments</span>
           </div>
-          <div>
-            <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1.5 px-1">Department Masters</p>
-            <TabsList className="flex flex-wrap h-auto gap-1 bg-muted/50 p-1 w-full justify-start">
-              {departmentTabs.map(tab => (
-                <TabsTrigger key={tab.value} value={tab.value} className="flex items-center gap-1.5 text-xs">
-                  <tab.icon className="h-3.5 w-3.5" />
-                  {tab.label}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </div>
-        </div>
 
-        <TabsContent value="products"><ProductsTab /></TabsContent>
-        <TabsContent value="departments"><DepartmentsTab /></TabsContent>
-        <TabsContent value="designations"><DesignationsTab /></TabsContent>
-        <TabsContent value="locations"><LocationsTab /></TabsContent>
-        <TabsContent value="financial"><FinancialMastersTab /></TabsContent>
-      </Tabs>
+          <Tabs value={globalTab} onValueChange={setGlobalTab} className="space-y-4">
+            <TabsList className="flex flex-wrap h-auto gap-1 bg-muted/50 p-1 w-full justify-start">
+              {GLOBAL_TABS.map(tab => (
+                <TabsTrigger key={tab.value} value={tab.value} className="flex items-center gap-1.5 text-xs">
+                  <tab.icon className="h-3.5 w-3.5" />
+                  {tab.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+
+            <TabsContent value="firm"><FirmProfileCard /></TabsContent>
+            <TabsContent value="products"><ProductsTab /></TabsContent>
+            <TabsContent value="departments"><DepartmentsTab /></TabsContent>
+            <TabsContent value="designations"><DesignationsTab /></TabsContent>
+            <TabsContent value="locations"><LocationsTab /></TabsContent>
+          </Tabs>
+        </section>
+
+        {/* ── DEPARTMENT MASTERS ──────────────────────── */}
+        <section>
+          <div className="flex items-center gap-2 mb-3">
+            <Building2 className="h-4 w-4 text-primary" />
+            <h2 className="text-sm font-semibold uppercase tracking-wider text-foreground">Department Masters</h2>
+            <span className="text-[11px] text-muted-foreground ml-1">— Scoped config consumed by each department's modules</span>
+          </div>
+
+          <Accordion type="multiple" value={openDepts} onValueChange={setOpenDepts} className="space-y-2">
+            {DEPT_MASTERS.map(dept => (
+              <AccordionItem key={dept.key} value={dept.key} className="border rounded-lg px-4 bg-card">
+                <AccordionTrigger className="hover:no-underline py-3">
+                  <div className="flex items-center gap-2">
+                    <dept.icon className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm font-medium">{dept.label}</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="pb-4 pt-1">
+                  <dept.component />
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </section>
+      </div>
     </AdminLayout>
   );
 }
