@@ -58,8 +58,7 @@ export const ServiceCatalogContent = () => {
   const edit = (r: any) => { setEditing(r.id); setForm({ name: r.name, sac_code: r.sac_code || '', default_rate: r.default_rate, unit: r.unit, tax_rate_id: r.tax_rate_id || '', description: r.description || '', is_active: r.is_active }); setOpen(true); };
 
   return (
-    <AdminLayout title="Service Catalog" subtitle="Predefined line items with default rates & tax codes">
-      <Card>
+    <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Services</CardTitle>
           <Dialog open={open} onOpenChange={o => { setOpen(o); if (!o) { setEditing(null); setForm(EMPTY); } }}>
