@@ -1,5 +1,5 @@
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,6 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -18,7 +19,7 @@ import {
   Plus, Pencil, Trash2, Package, Building2, Award, MapPin, Receipt,
   CalendarClock, Wallet, ClipboardList, ExternalLink, ArrowUp, ArrowDown, ArrowUpDown,
   Globe, Landmark, TrendingUp, ShieldCheck, Headphones, Users, Briefcase,
-  GitBranch, FileText, BarChart3, Scale, Zap
+  GitBranch, FileText, BarChart3, Scale, Zap, Save, ChevronRight
 } from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -33,6 +34,8 @@ import { ServiceCatalogContent } from '@/pages/admin/accounts/AdminServiceCatalo
 import { SalaryComponentsContent } from '@/pages/admin/accounts/AdminSalaryComponents';
 import { BankAccountsContent } from '@/pages/admin/accounts/AdminBankAccounts';
 import { PipelineConfigContent } from '@/pages/admin/sales/AdminPipelineConfig';
+import { IssueTypesContent } from '@/pages/admin/support/AdminIssueTypes';
+import { EscalationMatrixContent } from '@/pages/admin/support/AdminEscalationMatrix';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db = (t: string) => supabase.from(t as any) as any;
@@ -83,7 +86,7 @@ function DeleteConfirm({ open, onOpenChange, onConfirm, label }: { open: boolean
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Delete {label}?</AlertDialogTitle>
-          <AlertDialogDescription>This action cannot be undone. This will permanently remove this {label.toLowerCase()} from the master data.</AlertDialogDescription>
+          <AlertDialogDescription>This action cannot be undone.</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
@@ -94,7 +97,7 @@ function DeleteConfirm({ open, onOpenChange, onConfirm, label }: { open: boolean
   );
 }
 
-// ── Link Card (for masters that link to existing pages) ──
+// ── Link Card ──
 function MasterLinkCard({ label, desc, icon: Icon, href }: { label: string; desc: string; icon: any; href: string }) {
   return (
     <Link to={href} className="flex items-center gap-3 p-3 rounded-lg border border-border hover:bg-muted/50 transition-colors">
@@ -109,28 +112,124 @@ function MasterLinkCard({ label, desc, icon: Icon, href }: { label: string; desc
 }
 
 // ═══════════════════════════════════════════════════════════
-// GLOBAL MASTERS — Inline CRUD
+// ENTITY TAB — Section Selector + Inline CRUD
 // ═══════════════════════════════════════════════════════════
 
-// ── Firm Profile Link ─────────────────────────────────────
-function FirmProfileCard() {
+const ENTITY_SECTIONS = [
+  { value: 'profile', label: 'Firm Profile', icon: Landmark },
+  { value: 'departments', label: 'Departments', icon: Building2 },
+  { value: 'products', label: 'Products & Services', icon: Package },
+  { value: 'locations', label: 'Locations & Branches', icon: MapPin },
+];
+
+// ── Firm Profile (Inline) ─────────────────────────────────
+function FirmProfileSection() {
+  const qc = useQueryClient();
+  const [form, setForm] = useState({
+    legal_name: '', trade_name: '', gstin: '', pan: '', cin: '', arn_number: '', amfi_registration: '',
+    registered_address: '', city: '', state: '', pincode: '',
+    phone: '', email: '', website: '', logo_url: '',
+  });
+  const [profileId, setProfileId] = useState<string | null>(null);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['firm-profile'],
+    queryFn: async () => {
+      const { data, error } = await supabase.from('firm_profile').select('*').limit(1).maybeSingle();
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  useEffect(() => {
+    if (data) {
+      setProfileId(data.id);
+      setForm({
+        legal_name: data.legal_name || '', trade_name: data.trade_name || '',
+        gstin: data.gstin || '', pan: data.pan || '', cin: data.cin || '',
+        arn_number: data.arn_number || '', amfi_registration: data.amfi_registration || '',
+        registered_address: data.registered_address || '',
+        city: data.city || '', state: data.state || '', pincode: data.pincode || '',
+        phone: data.phone || '', email: data.email || '',
+        website: data.website || '', logo_url: data.logo_url || '',
+      });
+    }
+  }, [data]);
+
+  const saveMutation = useMutation({
+    mutationFn: async () => {
+      if (profileId) {
+        const { error } = await supabase.from('firm_profile').update(form).eq('id', profileId);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase.from('firm_profile').insert(form);
+        if (error) throw error;
+      }
+    },
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['firm-profile'] }); toast.success('Firm profile saved'); },
+    onError: (e: any) => toast.error(e.message),
+  });
+
+  const set = (key: string, value: string) => setForm(p => ({ ...p, [key]: value }));
+
+  if (isLoading) return <p className="text-sm text-muted-foreground p-4">Loading profile...</p>;
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-sm">Organisation Identity</CardTitle>
-        <p className="text-xs text-muted-foreground mt-1">Legal name, PAN, GSTIN, ARN, registered address — the root identity of the firm.</p>
-      </CardHeader>
-      <CardContent>
-        <MasterLinkCard label="Firm Profile" desc="Legal name, registrations, bank details" icon={Landmark} href={ADMIN_ROUTES.accounts.firmProfile} />
-      </CardContent>
-    </Card>
+    <div className="space-y-4">
+      <Card>
+        <CardHeader><CardTitle className="text-sm flex items-center gap-2"><Landmark className="h-4 w-4" />Company Identity</CardTitle></CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div><Label>Legal Name *</Label><Input value={form.legal_name} onChange={e => set('legal_name', e.target.value)} placeholder="e.g. SERNET Finserve Pvt Ltd" /></div>
+            <div><Label>Trade Name</Label><Input value={form.trade_name} onChange={e => set('trade_name', e.target.value)} /></div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div><Label>GSTIN</Label><Input value={form.gstin} onChange={e => set('gstin', e.target.value)} placeholder="22AAAAA0000A1Z5" /></div>
+            <div><Label>PAN</Label><Input value={form.pan} onChange={e => set('pan', e.target.value)} placeholder="AAAAA0000A" /></div>
+            <div><Label>CIN</Label><Input value={form.cin} onChange={e => set('cin', e.target.value)} /></div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div><Label>ARN Number</Label><Input value={form.arn_number} onChange={e => set('arn_number', e.target.value)} /></div>
+            <div><Label>AMFI Registration</Label><Input value={form.amfi_registration} onChange={e => set('amfi_registration', e.target.value)} /></div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader><CardTitle className="text-sm">Registered Address</CardTitle></CardHeader>
+        <CardContent className="space-y-4">
+          <div><Label>Address</Label><Textarea value={form.registered_address} onChange={e => set('registered_address', e.target.value)} rows={2} /></div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div><Label>City</Label><Input value={form.city} onChange={e => set('city', e.target.value)} /></div>
+            <div><Label>State</Label><Input value={form.state} onChange={e => set('state', e.target.value)} /></div>
+            <div><Label>Pincode</Label><Input value={form.pincode} onChange={e => set('pincode', e.target.value)} /></div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader><CardTitle className="text-sm">Contact & Web</CardTitle></CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div><Label>Phone</Label><Input value={form.phone} onChange={e => set('phone', e.target.value)} /></div>
+            <div><Label>Email</Label><Input type="email" value={form.email} onChange={e => set('email', e.target.value)} /></div>
+            <div><Label>Website</Label><Input value={form.website} onChange={e => set('website', e.target.value)} /></div>
+          </div>
+          <div><Label>Logo URL</Label><Input value={form.logo_url} onChange={e => set('logo_url', e.target.value)} placeholder="https://..." /></div>
+        </CardContent>
+      </Card>
+
+      <Button onClick={() => saveMutation.mutate()} disabled={saveMutation.isPending}>
+        <Save className="h-4 w-4 mr-2" />{profileId ? 'Update Profile' : 'Create Profile'}
+      </Button>
+    </div>
   );
 }
 
-// ── Products Tab ──────────────────────────────────────────
+// ── Products ──────────────────────────────────────────────
 const PRODUCT_EMPTY = { name: '', slug: '', description: '', icon_name: '', parent_id: '', is_active: true, sort_order: 0 };
 
-function ProductsTab() {
+function ProductsSection() {
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<string | null>(null);
@@ -176,12 +275,9 @@ function ProductsTab() {
   const sorted = useMemo(() => sortFn(products), [products, sort]);
 
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <div>
-          <CardTitle className="text-sm">Products & Sub-Products</CardTitle>
-          <p className="text-xs text-muted-foreground mt-1">Consumed by: CRM Deals, Pipeline Config, Support KB</p>
-        </div>
+    <>
+      <div className="flex items-center justify-between mb-4">
+        <p className="text-xs text-muted-foreground">Consumed by: CRM Deals, Pipeline Config, Support KB</p>
         <Dialog open={open} onOpenChange={o => { setOpen(o); if (!o) { setEditing(null); setForm(PRODUCT_EMPTY); } }}>
           <DialogTrigger asChild><Button size="sm"><Plus className="h-4 w-4 mr-1" />Add Product</Button></DialogTrigger>
           <DialogContent>
@@ -213,49 +309,47 @@ function ProductsTab() {
             </div>
           </DialogContent>
         </Dialog>
-      </CardHeader>
-      <CardContent>
-        {isLoading ? <p className="text-sm text-muted-foreground">Loading...</p> : (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <SortableHead label="Product" col="name" sort={sort} onSort={toggle} />
-                <SortableHead label="Slug" col="slug" sort={sort} onSort={toggle} />
-                <TableHead>Parent</TableHead>
-                <SortableHead label="Sort" col="sort_order" sort={sort} onSort={toggle} />
-                <SortableHead label="Status" col="is_active" sort={sort} onSort={toggle} />
-                <TableHead>Actions</TableHead>
+      </div>
+      {isLoading ? <p className="text-sm text-muted-foreground">Loading...</p> : (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <SortableHead label="Product" col="name" sort={sort} onSort={toggle} />
+              <SortableHead label="Slug" col="slug" sort={sort} onSort={toggle} />
+              <TableHead>Parent</TableHead>
+              <SortableHead label="Sort" col="sort_order" sort={sort} onSort={toggle} />
+              <SortableHead label="Status" col="is_active" sort={sort} onSort={toggle} />
+              <TableHead>Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {sorted.map((r: any) => (
+              <TableRow key={r.id}>
+                <TableCell className="font-medium">{r.parent_id ? <span className="ml-4 text-muted-foreground">↳ </span> : null}{r.name}</TableCell>
+                <TableCell className="font-mono text-xs">{r.slug}</TableCell>
+                <TableCell className="text-sm">{r.parent_id ? parents.find((p: any) => p.id === r.parent_id)?.name || '—' : '—'}</TableCell>
+                <TableCell className="text-sm text-muted-foreground">{r.sort_order}</TableCell>
+                <TableCell><Badge variant={r.is_active ? 'default' : 'secondary'}>{r.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-1">
+                    <Button size="icon" variant="ghost" onClick={() => edit(r)}><Pencil className="h-3.5 w-3.5" /></Button>
+                    <Button size="icon" variant="ghost" className="text-destructive hover:text-destructive" onClick={() => setDeleteTarget({ id: r.id, name: r.name })}><Trash2 className="h-3.5 w-3.5" /></Button>
+                  </div>
+                </TableCell>
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {sorted.map((r: any) => (
-                <TableRow key={r.id}>
-                  <TableCell className="font-medium">{r.parent_id ? <span className="ml-4 text-muted-foreground">↳ </span> : null}{r.name}</TableCell>
-                  <TableCell className="font-mono text-xs">{r.slug}</TableCell>
-                  <TableCell className="text-sm">{r.parent_id ? parents.find((p: any) => p.id === r.parent_id)?.name || '—' : '—'}</TableCell>
-                  <TableCell className="text-sm text-muted-foreground">{r.sort_order}</TableCell>
-                  <TableCell><Badge variant={r.is_active ? 'default' : 'secondary'}>{r.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-1">
-                      <Button size="icon" variant="ghost" onClick={() => edit(r)}><Pencil className="h-3.5 w-3.5" /></Button>
-                      <Button size="icon" variant="ghost" className="text-destructive hover:text-destructive" onClick={() => setDeleteTarget({ id: r.id, name: r.name })}><Trash2 className="h-3.5 w-3.5" /></Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        )}
-      </CardContent>
+            ))}
+          </TableBody>
+        </Table>
+      )}
       <DeleteConfirm open={!!deleteTarget} onOpenChange={v => !v && setDeleteTarget(null)} onConfirm={() => deleteTarget && deleteMut.mutate(deleteTarget.id)} label="Product" />
-    </Card>
+    </>
   );
 }
 
-// ── Departments Tab ───────────────────────────────────────
+// ── Departments ───────────────────────────────────────────
 const DEPT_EMPTY = { name: '', code: '', description: '', is_active: true, sort_order: 0 };
 
-function DepartmentsTab() {
+function DepartmentsSection() {
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<string | null>(null);
@@ -300,12 +394,9 @@ function DepartmentsTab() {
   const sorted = useMemo(() => sortFn(departments), [departments, sort]);
 
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <div>
-          <CardTitle className="text-sm">Departments</CardTitle>
-          <p className="text-xs text-muted-foreground mt-1">Consumed by: HR, Job Openings, CRM, Reporting</p>
-        </div>
+    <>
+      <div className="flex items-center justify-between mb-4">
+        <p className="text-xs text-muted-foreground">Consumed by: HR, Job Openings, CRM, Reporting</p>
         <Dialog open={open} onOpenChange={o => { setOpen(o); if (!o) { setEditing(null); setForm(DEPT_EMPTY); } }}>
           <DialogTrigger asChild><Button size="sm"><Plus className="h-4 w-4 mr-1" />Add Department</Button></DialogTrigger>
           <DialogContent>
@@ -324,49 +415,47 @@ function DepartmentsTab() {
             </div>
           </DialogContent>
         </Dialog>
-      </CardHeader>
-      <CardContent>
-        {isLoading ? <p className="text-sm text-muted-foreground">Loading...</p> : (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <SortableHead label="Department" col="name" sort={sort} onSort={toggle} />
-                <SortableHead label="Code" col="code" sort={sort} onSort={toggle} />
-                <TableHead>Description</TableHead>
-                <SortableHead label="Sort" col="sort_order" sort={sort} onSort={toggle} />
-                <SortableHead label="Status" col="is_active" sort={sort} onSort={toggle} />
-                <TableHead>Actions</TableHead>
+      </div>
+      {isLoading ? <p className="text-sm text-muted-foreground">Loading...</p> : (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <SortableHead label="Department" col="name" sort={sort} onSort={toggle} />
+              <SortableHead label="Code" col="code" sort={sort} onSort={toggle} />
+              <TableHead>Description</TableHead>
+              <SortableHead label="Sort" col="sort_order" sort={sort} onSort={toggle} />
+              <SortableHead label="Status" col="is_active" sort={sort} onSort={toggle} />
+              <TableHead>Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {sorted.map((r: any) => (
+              <TableRow key={r.id}>
+                <TableCell className="font-medium">{r.name}</TableCell>
+                <TableCell className="font-mono text-xs">{r.code}</TableCell>
+                <TableCell className="text-sm text-muted-foreground truncate max-w-[200px]">{r.description || '—'}</TableCell>
+                <TableCell className="text-sm text-muted-foreground">{r.sort_order}</TableCell>
+                <TableCell><Badge variant={r.is_active ? 'default' : 'secondary'}>{r.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-1">
+                    <Button size="icon" variant="ghost" onClick={() => edit(r)}><Pencil className="h-3.5 w-3.5" /></Button>
+                    <Button size="icon" variant="ghost" className="text-destructive hover:text-destructive" onClick={() => setDeleteTarget({ id: r.id, name: r.name })}><Trash2 className="h-3.5 w-3.5" /></Button>
+                  </div>
+                </TableCell>
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {sorted.map((r: any) => (
-                <TableRow key={r.id}>
-                  <TableCell className="font-medium">{r.name}</TableCell>
-                  <TableCell className="font-mono text-xs">{r.code}</TableCell>
-                  <TableCell className="text-sm text-muted-foreground truncate max-w-[200px]">{r.description || '—'}</TableCell>
-                  <TableCell className="text-sm text-muted-foreground">{r.sort_order}</TableCell>
-                  <TableCell><Badge variant={r.is_active ? 'default' : 'secondary'}>{r.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-1">
-                      <Button size="icon" variant="ghost" onClick={() => edit(r)}><Pencil className="h-3.5 w-3.5" /></Button>
-                      <Button size="icon" variant="ghost" className="text-destructive hover:text-destructive" onClick={() => setDeleteTarget({ id: r.id, name: r.name })}><Trash2 className="h-3.5 w-3.5" /></Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        )}
-      </CardContent>
+            ))}
+          </TableBody>
+        </Table>
+      )}
       <DeleteConfirm open={!!deleteTarget} onOpenChange={v => !v && setDeleteTarget(null)} onConfirm={() => deleteTarget && deleteMut.mutate(deleteTarget.id)} label="Department" />
-    </Card>
+    </>
   );
 }
 
-// ── Locations Tab ─────────────────────────────────────────
+// ── Locations ─────────────────────────────────────────────
 const LOC_EMPTY = { name: '', city: '', state: '', pincode: '', address: '', location_type: 'branch', is_active: true, sort_order: 0 };
 
-function LocationsTab() {
+function LocationsSection() {
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<string | null>(null);
@@ -411,12 +500,9 @@ function LocationsTab() {
   const sorted = useMemo(() => sortFn(locations), [locations, sort]);
 
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <div>
-          <CardTitle className="text-sm">Locations & Branches</CardTitle>
-          <p className="text-xs text-muted-foreground mt-1">Consumed by: HR Job Openings, CRM Contacts, Firm Profile</p>
-        </div>
+    <>
+      <div className="flex items-center justify-between mb-4">
+        <p className="text-xs text-muted-foreground">Consumed by: HR Job Openings, CRM Contacts, Firm Profile</p>
         <Dialog open={open} onOpenChange={o => { setOpen(o); if (!o) { setEditing(null); setForm(LOC_EMPTY); } }}>
           <DialogTrigger asChild><Button size="sm"><Plus className="h-4 w-4 mr-1" />Add Location</Button></DialogTrigger>
           <DialogContent>
@@ -450,52 +536,50 @@ function LocationsTab() {
             </div>
           </DialogContent>
         </Dialog>
-      </CardHeader>
-      <CardContent>
-        {isLoading ? <p className="text-sm text-muted-foreground">Loading...</p> : (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <SortableHead label="Location" col="name" sort={sort} onSort={toggle} />
-                <SortableHead label="City" col="city" sort={sort} onSort={toggle} />
-                <SortableHead label="State" col="state" sort={sort} onSort={toggle} />
-                <SortableHead label="Type" col="location_type" sort={sort} onSort={toggle} />
-                <SortableHead label="Sort" col="sort_order" sort={sort} onSort={toggle} />
-                <SortableHead label="Status" col="is_active" sort={sort} onSort={toggle} />
-                <TableHead>Actions</TableHead>
+      </div>
+      {isLoading ? <p className="text-sm text-muted-foreground">Loading...</p> : (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <SortableHead label="Location" col="name" sort={sort} onSort={toggle} />
+              <SortableHead label="City" col="city" sort={sort} onSort={toggle} />
+              <SortableHead label="State" col="state" sort={sort} onSort={toggle} />
+              <SortableHead label="Type" col="location_type" sort={sort} onSort={toggle} />
+              <SortableHead label="Sort" col="sort_order" sort={sort} onSort={toggle} />
+              <SortableHead label="Status" col="is_active" sort={sort} onSort={toggle} />
+              <TableHead>Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {sorted.map((r: any) => (
+              <TableRow key={r.id}>
+                <TableCell className="font-medium">{r.name}</TableCell>
+                <TableCell>{r.city}</TableCell>
+                <TableCell className="text-sm">{r.state || '—'}</TableCell>
+                <TableCell><Badge variant="outline" className="capitalize">{r.location_type.replace('_', ' ')}</Badge></TableCell>
+                <TableCell className="text-sm text-muted-foreground">{r.sort_order}</TableCell>
+                <TableCell><Badge variant={r.is_active ? 'default' : 'secondary'}>{r.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-1">
+                    <Button size="icon" variant="ghost" onClick={() => edit(r)}><Pencil className="h-3.5 w-3.5" /></Button>
+                    <Button size="icon" variant="ghost" className="text-destructive hover:text-destructive" onClick={() => setDeleteTarget({ id: r.id, name: r.name })}><Trash2 className="h-3.5 w-3.5" /></Button>
+                  </div>
+                </TableCell>
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {sorted.map((r: any) => (
-                <TableRow key={r.id}>
-                  <TableCell className="font-medium">{r.name}</TableCell>
-                  <TableCell>{r.city}</TableCell>
-                  <TableCell className="text-sm">{r.state || '—'}</TableCell>
-                  <TableCell><Badge variant="outline" className="capitalize">{r.location_type.replace('_', ' ')}</Badge></TableCell>
-                  <TableCell className="text-sm text-muted-foreground">{r.sort_order}</TableCell>
-                  <TableCell><Badge variant={r.is_active ? 'default' : 'secondary'}>{r.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-1">
-                      <Button size="icon" variant="ghost" onClick={() => edit(r)}><Pencil className="h-3.5 w-3.5" /></Button>
-                      <Button size="icon" variant="ghost" className="text-destructive hover:text-destructive" onClick={() => setDeleteTarget({ id: r.id, name: r.name })}><Trash2 className="h-3.5 w-3.5" /></Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        )}
-      </CardContent>
+            ))}
+          </TableBody>
+        </Table>
+      )}
       <DeleteConfirm open={!!deleteTarget} onOpenChange={v => !v && setDeleteTarget(null)} onConfirm={() => deleteTarget && deleteMut.mutate(deleteTarget.id)} label="Location" />
-    </Card>
+    </>
   );
 }
 
 // ═══════════════════════════════════════════════════════════
-// DEPARTMENT MASTERS — Inline CRUD
+// DEPARTMENT MASTERS — Inline CRUD with Drawers
 // ═══════════════════════════════════════════════════════════
 
-// ── Designations (HR Department Master) ───────────────────
+// ── Designations (HR) ─────────────────────────────────────
 const DESIG_EMPTY = { title: '', level: 0, department_id: '', is_active: true, sort_order: 0 };
 
 function DesignationsContent() {
@@ -562,12 +646,9 @@ function DesignationsContent() {
   }, [designations, sort]);
 
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <div>
-          <CardTitle className="text-sm">Designations</CardTitle>
-          <p className="text-xs text-muted-foreground mt-1">Consumed by: HR Employees, CRM Contact KMPs</p>
-        </div>
+    <>
+      <div className="flex items-center justify-between mb-3">
+        <p className="text-xs text-muted-foreground">Consumed by: HR Employees, CRM Contact KMPs</p>
         <Dialog open={open} onOpenChange={o => { setOpen(o); if (!o) { setEditing(null); setForm(DESIG_EMPTY); } }}>
           <DialogTrigger asChild><Button size="sm"><Plus className="h-4 w-4 mr-1" />Add Designation</Button></DialogTrigger>
           <DialogContent>
@@ -575,11 +656,11 @@ function DesignationsContent() {
             <div className="space-y-4">
               <div><Label>Title *</Label><Input value={form.title} onChange={e => setForm(p => ({ ...p, title: e.target.value }))} placeholder="e.g. Senior Associate" /></div>
               <div className="grid grid-cols-2 gap-4">
-                <div><Label>Level (Seniority)</Label><Input type="number" value={form.level} onChange={e => setForm(p => ({ ...p, level: Number(e.target.value) }))} /></div>
+                <div><Label>Level</Label><Input type="number" value={form.level} onChange={e => setForm(p => ({ ...p, level: Number(e.target.value) }))} /></div>
                 <div>
                   <Label>Department</Label>
                   <Select value={form.department_id || 'none'} onValueChange={v => setForm(p => ({ ...p, department_id: v === 'none' ? '' : v }))}>
-                    <SelectTrigger><SelectValue placeholder="Any department" /></SelectTrigger>
+                    <SelectTrigger><SelectValue placeholder="Any" /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="none">Any Department</SelectItem>
                       {departments.map((d: any) => <SelectItem key={d.id} value={d.id}>{d.name}</SelectItem>)}
@@ -595,46 +676,42 @@ function DesignationsContent() {
             </div>
           </DialogContent>
         </Dialog>
-      </CardHeader>
-      <CardContent>
-        {isLoading ? <p className="text-sm text-muted-foreground">Loading...</p> : (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <SortableHead label="Title" col="title" sort={sort} onSort={toggle} />
-                <SortableHead label="Level" col="level" sort={sort} onSort={toggle} />
-                <SortableHead label="Department" col="department_name" sort={sort} onSort={toggle} />
-                <SortableHead label="Sort" col="sort_order" sort={sort} onSort={toggle} />
-                <SortableHead label="Status" col="is_active" sort={sort} onSort={toggle} />
-                <TableHead>Actions</TableHead>
+      </div>
+      {isLoading ? <p className="text-sm text-muted-foreground">Loading...</p> : (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <SortableHead label="Title" col="title" sort={sort} onSort={toggle} />
+              <SortableHead label="Level" col="level" sort={sort} onSort={toggle} />
+              <SortableHead label="Department" col="department_name" sort={sort} onSort={toggle} />
+              <SortableHead label="Status" col="is_active" sort={sort} onSort={toggle} />
+              <TableHead>Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {sortedData.map((r: any) => (
+              <TableRow key={r.id}>
+                <TableCell className="font-medium">{r.title}</TableCell>
+                <TableCell>{r.level}</TableCell>
+                <TableCell className="text-sm">{r.departments?.name || 'Any'}</TableCell>
+                <TableCell><Badge variant={r.is_active ? 'default' : 'secondary'}>{r.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-1">
+                    <Button size="icon" variant="ghost" onClick={() => edit(r)}><Pencil className="h-3.5 w-3.5" /></Button>
+                    <Button size="icon" variant="ghost" className="text-destructive hover:text-destructive" onClick={() => setDeleteTarget({ id: r.id, name: r.title })}><Trash2 className="h-3.5 w-3.5" /></Button>
+                  </div>
+                </TableCell>
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {sortedData.map((r: any) => (
-                <TableRow key={r.id}>
-                  <TableCell className="font-medium">{r.title}</TableCell>
-                  <TableCell>{r.level}</TableCell>
-                  <TableCell className="text-sm">{r.departments?.name || 'Any'}</TableCell>
-                  <TableCell className="text-sm text-muted-foreground">{r.sort_order}</TableCell>
-                  <TableCell><Badge variant={r.is_active ? 'default' : 'secondary'}>{r.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-1">
-                      <Button size="icon" variant="ghost" onClick={() => edit(r)}><Pencil className="h-3.5 w-3.5" /></Button>
-                      <Button size="icon" variant="ghost" className="text-destructive hover:text-destructive" onClick={() => setDeleteTarget({ id: r.id, name: r.title })}><Trash2 className="h-3.5 w-3.5" /></Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        )}
-      </CardContent>
+            ))}
+          </TableBody>
+        </Table>
+      )}
       <DeleteConfirm open={!!deleteTarget} onOpenChange={v => !v && setDeleteTarget(null)} onConfirm={() => deleteTarget && deleteMut.mutate(deleteTarget.id)} label="Designation" />
-    </Card>
+    </>
   );
 }
 
-// ── Leave Types (HR Department Master) ────────────────────
+// ── Leave Types (HR) ──────────────────────────────────────
 function LeaveTypesContent() {
   const qc = useQueryClient();
   const [typeOpen, setTypeOpen] = useState(false);
@@ -652,10 +729,8 @@ function LeaveTypesContent() {
   const createType = useMutation({
     mutationFn: async () => {
       const { error } = await db('leave_types').insert({
-        name: typeForm.name,
-        code: typeForm.code,
-        default_days: typeForm.default_days,
-        is_paid: typeForm.is_paid,
+        name: typeForm.name, code: typeForm.code,
+        default_days: typeForm.default_days, is_paid: typeForm.is_paid,
       });
       if (error) throw error;
     },
@@ -677,12 +752,9 @@ function LeaveTypesContent() {
   });
 
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <div>
-          <CardTitle className="text-sm">Leave Types</CardTitle>
-          <p className="text-xs text-muted-foreground mt-1">Consumed by: Leave Management, Attendance</p>
-        </div>
+    <>
+      <div className="flex items-center justify-between mb-3">
+        <p className="text-xs text-muted-foreground">Consumed by: Leave Management, Attendance</p>
         <Dialog open={typeOpen} onOpenChange={setTypeOpen}>
           <DialogTrigger asChild><Button size="sm"><Plus className="h-4 w-4 mr-1" />Add Type</Button></DialogTrigger>
           <DialogContent>
@@ -690,7 +762,7 @@ function LeaveTypesContent() {
             <div className="space-y-4">
               <div><Label>Name</Label><Input value={typeForm.name} onChange={e => setTypeForm(p => ({ ...p, name: e.target.value }))} placeholder="e.g. Casual Leave" /></div>
               <div><Label>Code</Label><Input value={typeForm.code} onChange={e => setTypeForm(p => ({ ...p, code: e.target.value }))} placeholder="e.g. CL" /></div>
-              <div><Label>Default Days per Year</Label><Input type="number" value={typeForm.default_days} onChange={e => setTypeForm(p => ({ ...p, default_days: Number(e.target.value) }))} /></div>
+              <div><Label>Default Days</Label><Input type="number" value={typeForm.default_days} onChange={e => setTypeForm(p => ({ ...p, default_days: Number(e.target.value) }))} /></div>
               <div className="flex items-center gap-2">
                 <input type="checkbox" checked={typeForm.is_paid} onChange={e => setTypeForm(p => ({ ...p, is_paid: e.target.checked }))} id="is_paid_master" />
                 <Label htmlFor="is_paid_master">Paid Leave</Label>
@@ -699,40 +771,38 @@ function LeaveTypesContent() {
             </div>
           </DialogContent>
         </Dialog>
-      </CardHeader>
-      <CardContent>
-        {isLoading ? <p className="text-sm text-muted-foreground">Loading...</p> : leaveTypes.length === 0 ? <p className="text-sm text-muted-foreground">No leave types configured.</p> : (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Code</TableHead>
-                <TableHead>Default Days</TableHead>
-                <TableHead>Paid</TableHead>
-                <TableHead>Active</TableHead>
-                <TableHead>Actions</TableHead>
+      </div>
+      {isLoading ? <p className="text-sm text-muted-foreground">Loading...</p> : leaveTypes.length === 0 ? <p className="text-sm text-muted-foreground">No leave types configured.</p> : (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Code</TableHead>
+              <TableHead>Default Days</TableHead>
+              <TableHead>Paid</TableHead>
+              <TableHead>Active</TableHead>
+              <TableHead>Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {leaveTypes.map((t: any) => (
+              <TableRow key={t.id}>
+                <TableCell className="font-medium">{t.name}</TableCell>
+                <TableCell className="font-mono">{t.code}</TableCell>
+                <TableCell>{t.default_days}</TableCell>
+                <TableCell>{t.is_paid ? 'Yes' : 'No'}</TableCell>
+                <TableCell><Badge variant={t.is_active ? 'default' : 'secondary'}>{t.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
+                <TableCell>
+                  <Button size="sm" variant="outline" onClick={() => toggleTypeActive.mutate({ id: t.id, is_active: !t.is_active })}>
+                    {t.is_active ? 'Disable' : 'Enable'}
+                  </Button>
+                </TableCell>
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {leaveTypes.map((t: any) => (
-                <TableRow key={t.id}>
-                  <TableCell className="font-medium">{t.name}</TableCell>
-                  <TableCell className="font-mono">{t.code}</TableCell>
-                  <TableCell>{t.default_days}</TableCell>
-                  <TableCell>{t.is_paid ? 'Yes' : 'No'}</TableCell>
-                  <TableCell><Badge variant={t.is_active ? 'default' : 'secondary'}>{t.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
-                  <TableCell>
-                    <Button size="sm" variant="outline" onClick={() => toggleTypeActive.mutate({ id: t.id, is_active: !t.is_active })}>
-                      {t.is_active ? 'Disable' : 'Enable'}
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        )}
-      </CardContent>
-    </Card>
+            ))}
+          </TableBody>
+        </Table>
+      )}
+    </>
   );
 }
 
@@ -745,7 +815,7 @@ function SalesDeptMasters() {
   return <PipelineConfigContent />;
 }
 
-// ── Finance: Sub-tabs with inline CRUDs ──
+// ── Finance: Sub-tabs ──
 function FinanceDeptMasters() {
   const [tab, setTab] = useState('tax-rates');
   return (
@@ -781,24 +851,22 @@ function HRDeptMasters() {
   );
 }
 
-// ── Support: Links to existing pages ──
+// ── Support: Inline CRUD via Sheets ──
 function SupportDeptMasters() {
+  const [tab, setTab] = useState('issue-types');
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-      <MasterLinkCard label="Issue Types" desc="Ticket classification taxonomy" icon={FileText} href={ADMIN_ROUTES.support.issueTypes} />
-      <MasterLinkCard label="Escalation Matrix" desc="SLA tiers & auto-escalation rules" icon={BarChart3} href={ADMIN_ROUTES.support.escalation} />
-      <MasterLinkCard label="Canned Responses" desc="Template replies for agents" icon={FileText} href={ADMIN_ROUTES.support.cannedResponses} />
-    </div>
-  );
-}
-
-// ── Legal: Links to existing pages ──
-function LegalDeptMasters() {
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-      <MasterLinkCard label="Legal Pages" desc="Terms, Privacy, Disclaimer templates" icon={Scale} href={ADMIN_ROUTES.legal.pages} />
-      <MasterLinkCard label="Investor Charter" desc="SEBI mandated disclosures" icon={ShieldCheck} href={ADMIN_ROUTES.legal.investorCharter} />
-    </div>
+    <Tabs value={tab} onValueChange={setTab}>
+      <TabsList className="flex flex-wrap h-auto gap-1 bg-muted/50 p-1 w-full justify-start mb-4">
+        <TabsTrigger value="issue-types" className="text-xs">Issue Types</TabsTrigger>
+        <TabsTrigger value="escalation" className="text-xs">Escalation & Automation</TabsTrigger>
+        <TabsTrigger value="canned" className="text-xs">Canned Responses</TabsTrigger>
+      </TabsList>
+      <TabsContent value="issue-types"><IssueTypesContent /></TabsContent>
+      <TabsContent value="escalation"><EscalationMatrixContent /></TabsContent>
+      <TabsContent value="canned">
+        <MasterLinkCard label="Canned Responses" desc="Pre-written reply templates — managed via CMS engine" icon={FileText} href={ADMIN_ROUTES.support.cannedResponses} />
+      </TabsContent>
+    </Tabs>
   );
 }
 
@@ -814,12 +882,11 @@ function MarketingDeptMasters() {
 }
 
 const DEPT_MASTERS = [
-  { key: 'marketing', label: 'Marketing', icon: BarChart3, component: MarketingDeptMasters },
   { key: 'sales', label: 'Sales & CRM', icon: TrendingUp, component: SalesDeptMasters },
   { key: 'hr', label: 'HR & People', icon: Users, component: HRDeptMasters },
   { key: 'finance', label: 'Finance & Accounts', icon: Receipt, component: FinanceDeptMasters },
   { key: 'support', label: 'Support', icon: Headphones, component: SupportDeptMasters },
-  { key: 'legal', label: 'Legal & Compliance', icon: ShieldCheck, component: LegalDeptMasters },
+  { key: 'marketing', label: 'Marketing', icon: BarChart3, component: MarketingDeptMasters },
 ];
 
 // ═══════════════════════════════════════════════════════════
@@ -835,6 +902,7 @@ const TOP_TABS = [
 
 export default function AdminMasterData() {
   const [topTab, setTopTab] = useState('entity');
+  const [entitySection, setEntitySection] = useState('profile');
   const [openDepts, setOpenDepts] = useState<string[]>([]);
 
   return (
@@ -852,12 +920,40 @@ export default function AdminMasterData() {
           ))}
         </TabsList>
 
-        {/* ── ENTITY TAB: Profile + Departments + Products + Locations stacked ── */}
+        {/* ── ENTITY TAB: Dropdown section selector ── */}
         <TabsContent value="entity" className="space-y-4">
-          <FirmProfileCard />
-          <DepartmentsTab />
-          <ProductsTab />
-          <LocationsTab />
+          <div className="flex items-center gap-3">
+            <Select value={entitySection} onValueChange={setEntitySection}>
+              <SelectTrigger className="w-[220px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {ENTITY_SECTIONS.map(s => (
+                  <SelectItem key={s.value} value={s.value}>
+                    <span className="flex items-center gap-2">
+                      <s.icon className="h-3.5 w-3.5" />
+                      {s.label}
+                    </span>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-muted-foreground hidden sm:block">
+              {entitySection === 'profile' && 'Legal name, PAN, GSTIN, ARN, registered address — root identity'}
+              {entitySection === 'departments' && 'Organisational departments consumed by HR, CRM, Reporting'}
+              {entitySection === 'products' && 'Product & sub-product hierarchy for CRM, Pipeline, KB'}
+              {entitySection === 'locations' && 'Office locations & branches for HR, CRM, Firm Profile'}
+            </p>
+          </div>
+
+          <Card>
+            <CardContent className="pt-6">
+              {entitySection === 'profile' && <FirmProfileSection />}
+              {entitySection === 'departments' && <DepartmentsSection />}
+              {entitySection === 'products' && <ProductsSection />}
+              {entitySection === 'locations' && <LocationsSection />}
+            </CardContent>
+          </Card>
         </TabsContent>
 
         {/* ── DEPARTMENTS TAB: Accordion per department ── */}
@@ -884,7 +980,7 @@ export default function AdminMasterData() {
           <Card>
             <CardHeader>
               <CardTitle className="text-sm">Blueprints</CardTitle>
-              <p className="text-xs text-muted-foreground mt-1">Process blueprints define the allowed transitions, mandatory fields, and approval gates for each module's lifecycle.</p>
+              <p className="text-xs text-muted-foreground mt-1">Process blueprints define allowed transitions, mandatory fields, and approval gates.</p>
             </CardHeader>
             <CardContent>
               <MasterLinkCard label="Pipeline Blueprints" desc="Stage transitions & field requirements for CRM deals" icon={GitBranch} href={ADMIN_ROUTES.sales.pipelineConfig} />
@@ -897,7 +993,7 @@ export default function AdminMasterData() {
           <Card>
             <CardHeader>
               <CardTitle className="text-sm">Workflows</CardTitle>
-              <p className="text-xs text-muted-foreground mt-1">Automation rules and triggers that operate across all departments.</p>
+              <p className="text-xs text-muted-foreground mt-1">Automation rules and triggers across all departments.</p>
             </CardHeader>
             <CardContent>
               <MasterLinkCard label="Workflow Rules" desc="Automation triggers, conditions, and actions" icon={Zap} href={ADMIN_ROUTES.settings.workflows} />

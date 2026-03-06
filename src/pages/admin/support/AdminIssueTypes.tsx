@@ -16,7 +16,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 const db = (t: string) => supabase.from(t as any) as any;
 const PAGE_SIZE = 25;
 
-export default function AdminIssueTypes() {
+export function IssueTypesContent() {
   const { toast } = useToast();
   const [issueTypes, setIssueTypes] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
@@ -109,12 +109,8 @@ export default function AdminIssueTypes() {
     shared: issueTypes.filter(t => t.product === 'all').length,
   };
 
-  return (
-    <AdminLayout
-      title="Issue Type Taxonomy"
-      subtitle="3-tier issue classification engine — manage issue types per product × category"
-      actions={<Button onClick={openCreate} size="sm"><Plus className="h-4 w-4 mr-1.5" /> Add Issue Type</Button>}
-    >
+  const content = (
+    <>
       {/* Product stat chips */}
       <div className="grid grid-cols-5 gap-3 mb-5">
         {[
@@ -328,6 +324,19 @@ export default function AdminIssueTypes() {
           </div>
         </DialogContent>
       </Dialog>
+    </>
+  );
+
+  return content;
+}
+
+export default function AdminIssueTypes() {
+  return (
+    <AdminLayout
+      title="Issue Type Taxonomy"
+      subtitle="3-tier issue classification engine — manage issue types per product × category"
+    >
+      <IssueTypesContent />
     </AdminLayout>
   );
 }

@@ -13,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const db = (t: string) => supabase.from(t as any) as any;
 
-export default function AdminEscalationMatrix() {
+export function EscalationMatrixContent() {
   const { toast } = useToast();
   const [matrix, setMatrix] = useState<any[]>([]);
   const [rules, setRules] = useState<any[]>([]);
@@ -98,7 +98,7 @@ export default function AdminEscalationMatrix() {
   };
 
   return (
-    <AdminLayout title="Escalation & Automation" subtitle="Configure escalation matrix and automation rules">
+    <>
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList className="mb-4">
           <TabsTrigger value="matrix">Escalation Matrix</TabsTrigger>
@@ -256,6 +256,14 @@ export default function AdminEscalationMatrix() {
           </div>
         </DialogContent>
       </Dialog>
+    </>
+  );
+}
+
+export default function AdminEscalationMatrix() {
+  return (
+    <AdminLayout title="Escalation & Automation" subtitle="Configure escalation matrix and automation rules">
+      <EscalationMatrixContent />
     </AdminLayout>
   );
 }
