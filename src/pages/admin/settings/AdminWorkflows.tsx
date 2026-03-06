@@ -36,7 +36,7 @@ const emptyRule = {
   priority: 0,
 };
 
-const AdminWorkflows = () => {
+export const WorkflowsContent = () => {
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState(emptyRule);
