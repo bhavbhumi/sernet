@@ -303,6 +303,7 @@ const App = () => (
             <Route path="/admin/support/documents" element={<AdminSupportDocuments />} />
 
             {/* Admin — System Settings */}
+            <Route path="/admin/settings/master-data" element={<AdminMasterData />} />
             <Route path="/admin/settings/users" element={<AdminUsers />} />
             <Route path="/admin/settings/permissions" element={<AdminPermissions />} />
             <Route path="/admin/settings/rss" element={<AdminRSSSettings />} />

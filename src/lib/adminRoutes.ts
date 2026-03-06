@@ -110,6 +110,7 @@ export const ADMIN_ROUTES = {
   // ── Settings (Super Admin) ─────────────────────
   settings: {
     root: '/admin/settings',
+    masterData: '/admin/settings/master-data',
     users: '/admin/settings/users',
     permissions: '/admin/settings/permissions',
     rss: '/admin/settings/rss',

@@ -189,6 +189,7 @@ const departmentGroups: DepartmentGroup[] = [
     icon: Settings,
     color: 'text-muted-foreground',
     items: [
+      { label: 'Master Data', icon: Database, href: R.settings.masterData, moduleKey: 'system/master-data' },
       { label: 'Admin Users', icon: Shield, href: R.settings.users, moduleKey: 'system/admin-users' },
       { label: 'Permissions', icon: KeyRound, href: R.settings.permissions, moduleKey: 'system/permissions' },
       { label: 'Workflows', icon: Zap, href: R.settings.workflows, moduleKey: 'system/workflows' },
