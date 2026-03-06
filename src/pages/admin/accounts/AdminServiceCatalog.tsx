@@ -112,8 +112,13 @@ export const ServiceCatalogContent = () => {
           )}
         </CardContent>
       </Card>
-    </AdminLayout>
   );
 };
+
+const AdminServiceCatalog = () => (
+  <AdminLayout title="Service Catalog" subtitle="Predefined line items with default rates & tax codes">
+    <ServiceCatalogContent />
+  </AdminLayout>
+);
 
 export default AdminServiceCatalog;

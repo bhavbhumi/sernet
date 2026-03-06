@@ -87,8 +87,13 @@ export const PaymentTermsContent = () => {
           )}
         </CardContent>
       </Card>
-    </AdminLayout>
   );
 };
+
+const AdminPaymentTerms = () => (
+  <AdminLayout title="Payment Terms" subtitle="Configure invoice payment term presets">
+    <PaymentTermsContent />
+  </AdminLayout>
+);
 
 export default AdminPaymentTerms;

@@ -87,7 +87,6 @@ function StageDialog({ stage, onSaved }: { stage?: PipelineStage; onSaved: () =>
         if (error) throw error;
         toast.success('Stage updated');
       } else {
-        // Get max sort order
         const { data: existing } = await supabase
           .from('pipeline_stages')
           .select('sort_order')
@@ -261,8 +260,8 @@ function SubStatusDialog({ stageId, subStatus, onSaved }: { stageId: string; sub
   );
 }
 
-// ---- Main Page ----
-export default function AdminPipelineConfig() {
+// ---- Exported Content (used by Master Data hub) ----
+export function PipelineConfigContent() {
   const queryClient = useQueryClient();
 
   const { data: stages = [], isLoading } = useQuery({
@@ -310,72 +309,81 @@ export default function AdminPipelineConfig() {
   };
 
   return (
+    <>
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <Settings2 className="h-4 w-4" />
+          <span>{stages.length} stages configured</span>
+        </div>
+        <StageDialog onSaved={refresh} />
+      </div>
+
+      {isLoading ? (
+        <p className="text-sm text-muted-foreground">Loading...</p>
+      ) : (
+        <div className="space-y-4">
+          {stages.map((stage, idx) => (
+            <Card key={stage.id} className={cn('p-4', !stage.is_active && 'opacity-50')}>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="flex flex-col gap-0.5">
+                  <button
+                    onClick={() => moveStage(stage, 'up')}
+                    disabled={idx === 0}
+                    className="text-muted-foreground hover:text-foreground disabled:opacity-20 text-xs"
+                  >▲</button>
+                  <button
+                    onClick={() => moveStage(stage, 'down')}
+                    disabled={idx === stages.length - 1}
+                    className="text-muted-foreground hover:text-foreground disabled:opacity-20 text-xs"
+                  >▼</button>
+                </div>
+                <div className={cn('w-3 h-3 rounded-full shrink-0', stage.stage_color)} />
+                <div className="flex-1">
+                  <h3 className="text-sm font-semibold">{stage.stage_label}</h3>
+                  <p className="text-[10px] text-muted-foreground font-mono">{stage.stage_key}</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Switch checked={stage.is_active} onCheckedChange={() => toggleStageActive(stage)} />
+                  <StageDialog stage={stage} onSaved={refresh} />
+                </div>
+              </div>
+
+              {/* Sub-statuses */}
+              <div className="ml-8 space-y-1.5">
+                <div className="flex items-center gap-2 mb-2">
+                  <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">Sub-Statuses</p>
+                  <SubStatusDialog stageId={stage.id} onSaved={refresh} />
+                </div>
+                {stage.pipeline_sub_statuses.map(ss => (
+                  <div key={ss.id} className={cn('flex items-center gap-2 py-1', !ss.is_active && 'opacity-40')}>
+                    <span className={cn('text-[10px] px-2 py-0.5 rounded-full', ss.color_class)}>
+                      {ss.sub_status_label}
+                    </span>
+                    <span className="text-[10px] text-muted-foreground font-mono">{ss.sub_status_key}</span>
+                    <div className="ml-auto flex items-center gap-1">
+                      <Switch checked={ss.is_active} onCheckedChange={() => toggleSubStatusActive(ss)} className="scale-75" />
+                      <SubStatusDialog stageId={stage.id} subStatus={ss} onSaved={refresh} />
+                    </div>
+                  </div>
+                ))}
+                {stage.pipeline_sub_statuses.length === 0 && (
+                  <p className="text-[10px] text-muted-foreground italic">No sub-statuses defined</p>
+                )}
+              </div>
+            </Card>
+          ))}
+        </div>
+      )}
+    </>
+  );
+}
+
+// ---- Page (standalone route) ----
+export default function AdminPipelineConfig() {
+  return (
     <AdminGuard>
       <AdminLayout title="Pipeline Configuration" subtitle="Customize CRM stages and sub-statuses">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Settings2 className="h-4 w-4" />
-            <span>{stages.length} stages configured</span>
-          </div>
-          <StageDialog onSaved={refresh} />
-        </div>
-
-        {isLoading ? (
-          <p className="text-sm text-muted-foreground">Loading...</p>
-        ) : (
-          <div className="space-y-4">
-            {stages.map((stage, idx) => (
-              <Card key={stage.id} className={cn('p-4', !stage.is_active && 'opacity-50')}>
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="flex flex-col gap-0.5">
-                    <button
-                      onClick={() => moveStage(stage, 'up')}
-                      disabled={idx === 0}
-                      className="text-muted-foreground hover:text-foreground disabled:opacity-20 text-xs"
-                    >▲</button>
-                    <button
-                      onClick={() => moveStage(stage, 'down')}
-                      disabled={idx === stages.length - 1}
-                      className="text-muted-foreground hover:text-foreground disabled:opacity-20 text-xs"
-                    >▼</button>
-                  </div>
-                  <div className={cn('w-3 h-3 rounded-full shrink-0', stage.stage_color)} />
-                  <div className="flex-1">
-                    <h3 className="text-sm font-semibold">{stage.stage_label}</h3>
-                    <p className="text-[10px] text-muted-foreground font-mono">{stage.stage_key}</p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Switch checked={stage.is_active} onCheckedChange={() => toggleStageActive(stage)} />
-                    <StageDialog stage={stage} onSaved={refresh} />
-                  </div>
-                </div>
-
-                {/* Sub-statuses */}
-                <div className="ml-8 space-y-1.5">
-                  <div className="flex items-center gap-2 mb-2">
-                    <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">Sub-Statuses</p>
-                    <SubStatusDialog stageId={stage.id} onSaved={refresh} />
-                  </div>
-                  {stage.pipeline_sub_statuses.map(ss => (
-                    <div key={ss.id} className={cn('flex items-center gap-2 py-1', !ss.is_active && 'opacity-40')}>
-                      <span className={cn('text-[10px] px-2 py-0.5 rounded-full', ss.color_class)}>
-                        {ss.sub_status_label}
-                      </span>
-                      <span className="text-[10px] text-muted-foreground font-mono">{ss.sub_status_key}</span>
-                      <div className="ml-auto flex items-center gap-1">
-                        <Switch checked={ss.is_active} onCheckedChange={() => toggleSubStatusActive(ss)} className="scale-75" />
-                        <SubStatusDialog stageId={stage.id} subStatus={ss} onSaved={refresh} />
-                      </div>
-                    </div>
-                  ))}
-                  {stage.pipeline_sub_statuses.length === 0 && (
-                    <p className="text-[10px] text-muted-foreground italic">No sub-statuses defined</p>
-                  )}
-                </div>
-              </Card>
-            ))}
-          </div>
-        )}
+        <PipelineConfigContent />
       </AdminLayout>
     </AdminGuard>
   );

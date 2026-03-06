@@ -100,8 +100,13 @@ export const TaxRatesContent = () => {
           )}
         </CardContent>
       </Card>
-    </AdminLayout>
   );
 };
+
+const AdminTaxRates = () => (
+  <AdminLayout title="Tax Rates" subtitle="Manage GST slabs and SAC/HSN codes">
+    <TaxRatesContent />
+  </AdminLayout>
+);
 
 export default AdminTaxRates;

@@ -127,8 +127,14 @@ export const SalaryComponentsContent = () => {
           )}
         </CardContent>
       </Card>
-    </AdminLayout>
+    </>
   );
 };
+
+const AdminSalaryComponents = () => (
+  <AdminLayout title="Salary Components" subtitle="Configure earnings & deduction heads for payroll">
+    <SalaryComponentsContent />
+  </AdminLayout>
+);
 
 export default AdminSalaryComponents;

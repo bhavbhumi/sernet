@@ -104,8 +104,13 @@ export const BankAccountsContent = () => {
           )}
         </CardContent>
       </Card>
-    </AdminLayout>
   );
 };
+
+const AdminBankAccounts = () => (
+  <AdminLayout title="Bank Accounts" subtitle="Manage company bank accounts for invoice payment details">
+    <BankAccountsContent />
+  </AdminLayout>
+);
 
 export default AdminBankAccounts;
