@@ -674,11 +674,6 @@ export default function AdminCRMContacts() {
             <Eye className="h-3 w-3" /> View
           </Button>
         )}
-        extraActions={
-          <Button variant="outline" size="sm" onClick={() => setBulkImportOpen(true)}>
-            <Upload className="h-4 w-4 mr-1" /> Import
-          </Button>
-        }
       />
 
       {viewContact && (
