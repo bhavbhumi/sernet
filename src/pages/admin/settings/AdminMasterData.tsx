@@ -1,10 +1,11 @@
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -12,7 +13,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import { Plus, Pencil, Package, Building2, Award, MapPin, Receipt, CalendarClock, Wallet, ClipboardList, ExternalLink } from 'lucide-react';
+import { Plus, Pencil, Trash2, Package, Building2, Award, MapPin, Receipt, CalendarClock, Wallet, ClipboardList, ExternalLink, ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -22,6 +23,63 @@ import { ADMIN_ROUTES } from '@/lib/adminRoutes';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db = (t: string) => supabase.from(t as any) as any;
 
+// ── Sortable Header Helper ───────────────────────────────
+type SortDir = 'asc' | 'desc' | null;
+type SortState = { col: string; dir: SortDir };
+
+function SortableHead({ label, col, sort, onSort }: { label: string; col: string; sort: SortState; onSort: (col: string) => void }) {
+  const active = sort.col === col;
+  return (
+    <TableHead className="cursor-pointer select-none hover:text-foreground transition-colors" onClick={() => onSort(col)}>
+      <span className="inline-flex items-center gap-1">
+        {label}
+        {active && sort.dir === 'asc' ? <ArrowUp className="h-3 w-3" /> : active && sort.dir === 'desc' ? <ArrowDown className="h-3 w-3" /> : <ArrowUpDown className="h-3 w-3 opacity-30" />}
+      </span>
+    </TableHead>
+  );
+}
+
+function useSort(defaultCol: string) {
+  const [sort, setSort] = useState<SortState>({ col: defaultCol, dir: 'asc' });
+  const toggle = (col: string) => {
+    setSort(prev => {
+      if (prev.col !== col) return { col, dir: 'asc' };
+      if (prev.dir === 'asc') return { col, dir: 'desc' };
+      return { col, dir: 'asc' };
+    });
+  };
+  const sortFn = (data: any[]) => {
+    if (!sort.col || !sort.dir) return data;
+    return [...data].sort((a, b) => {
+      const av = a[sort.col] ?? '';
+      const bv = b[sort.col] ?? '';
+      if (typeof av === 'number' && typeof bv === 'number') return sort.dir === 'asc' ? av - bv : bv - av;
+      if (typeof av === 'boolean' && typeof bv === 'boolean') return sort.dir === 'asc' ? (av === bv ? 0 : av ? -1 : 1) : (av === bv ? 0 : av ? 1 : -1);
+      const cmp = String(av).localeCompare(String(bv), undefined, { sensitivity: 'base' });
+      return sort.dir === 'asc' ? cmp : -cmp;
+    });
+  };
+  return { sort, toggle, sortFn };
+}
+
+// ── Delete Confirm Dialog ─────────────────────────────────
+function DeleteConfirm({ open, onOpenChange, onConfirm, label }: { open: boolean; onOpenChange: (v: boolean) => void; onConfirm: () => void; label: string }) {
+  return (
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Delete {label}?</AlertDialogTitle>
+          <AlertDialogDescription>This action cannot be undone. This will permanently remove this {label.toLowerCase()} from the master data.</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={onConfirm} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">Delete</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
+
 // ── Products Tab ──────────────────────────────────────────
 const PRODUCT_EMPTY = { name: '', slug: '', description: '', icon_name: '', parent_id: '', is_active: true, sort_order: 0 };
 
@@ -30,6 +88,8 @@ function ProductsTab() {
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<string | null>(null);
   const [form, setForm] = useState(PRODUCT_EMPTY);
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
+  const { sort, toggle, sortFn } = useSort('sort_order');
 
   const { data: products = [], isLoading } = useQuery({
     queryKey: ['master-products'],
@@ -55,9 +115,18 @@ function ProductsTab() {
     onError: (e: any) => toast.error(e.message),
   });
 
-  const edit = (r: any) => { setEditing(r.id); setForm({ name: r.name, slug: r.slug, description: r.description || '', icon_name: r.icon_name || '', parent_id: r.parent_id || '', is_active: r.is_active, sort_order: r.sort_order }); setOpen(true); };
+  const deleteMut = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await db('products').delete().eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['master-products'] }); toast.success('Product deleted'); setDeleteTarget(null); },
+    onError: (e: any) => toast.error(e.message),
+  });
 
+  const edit = (r: any) => { setEditing(r.id); setForm({ name: r.name, slug: r.slug, description: r.description || '', icon_name: r.icon_name || '', parent_id: r.parent_id || '', is_active: r.is_active, sort_order: r.sort_order }); setOpen(true); };
   const parents = products.filter((p: any) => !p.parent_id);
+  const sorted = useMemo(() => sortFn(products), [products, sort]);
 
   return (
     <Card>
@@ -101,21 +170,37 @@ function ProductsTab() {
       <CardContent>
         {isLoading ? <p className="text-sm text-muted-foreground">Loading...</p> : (
           <Table>
-            <TableHeader><TableRow><TableHead>Product</TableHead><TableHead>Slug</TableHead><TableHead>Parent</TableHead><TableHead>Status</TableHead><TableHead>Actions</TableHead></TableRow></TableHeader>
+            <TableHeader>
+              <TableRow>
+                <SortableHead label="Product" col="name" sort={sort} onSort={toggle} />
+                <SortableHead label="Slug" col="slug" sort={sort} onSort={toggle} />
+                <TableHead>Parent</TableHead>
+                <SortableHead label="Sort" col="sort_order" sort={sort} onSort={toggle} />
+                <SortableHead label="Status" col="is_active" sort={sort} onSort={toggle} />
+                <TableHead>Actions</TableHead>
+              </TableRow>
+            </TableHeader>
             <TableBody>
-              {products.map((r: any) => (
+              {sorted.map((r: any) => (
                 <TableRow key={r.id}>
                   <TableCell className="font-medium">{r.parent_id ? <span className="ml-4 text-muted-foreground">↳ </span> : null}{r.name}</TableCell>
                   <TableCell className="font-mono text-xs">{r.slug}</TableCell>
                   <TableCell className="text-sm">{r.parent_id ? parents.find((p: any) => p.id === r.parent_id)?.name || '—' : '—'}</TableCell>
+                  <TableCell className="text-sm text-muted-foreground">{r.sort_order}</TableCell>
                   <TableCell><Badge variant={r.is_active ? 'default' : 'secondary'}>{r.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
-                  <TableCell><Button size="icon" variant="ghost" onClick={() => edit(r)}><Pencil className="h-3.5 w-3.5" /></Button></TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-1">
+                      <Button size="icon" variant="ghost" onClick={() => edit(r)}><Pencil className="h-3.5 w-3.5" /></Button>
+                      <Button size="icon" variant="ghost" className="text-destructive hover:text-destructive" onClick={() => setDeleteTarget({ id: r.id, name: r.name })}><Trash2 className="h-3.5 w-3.5" /></Button>
+                    </div>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         )}
       </CardContent>
+      <DeleteConfirm open={!!deleteTarget} onOpenChange={v => !v && setDeleteTarget(null)} onConfirm={() => deleteTarget && deleteMut.mutate(deleteTarget.id)} label="Product" />
     </Card>
   );
 }
@@ -128,6 +213,8 @@ function DepartmentsTab() {
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<string | null>(null);
   const [form, setForm] = useState(DEPT_EMPTY);
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
+  const { sort, toggle, sortFn } = useSort('sort_order');
 
   const { data: departments = [], isLoading } = useQuery({
     queryKey: ['master-departments'],
@@ -153,7 +240,17 @@ function DepartmentsTab() {
     onError: (e: any) => toast.error(e.message),
   });
 
+  const deleteMut = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await db('departments').delete().eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['master-departments'] }); toast.success('Department deleted'); setDeleteTarget(null); },
+    onError: (e: any) => toast.error(e.message),
+  });
+
   const edit = (r: any) => { setEditing(r.id); setForm({ name: r.name, code: r.code, description: r.description || '', is_active: r.is_active, sort_order: r.sort_order }); setOpen(true); };
+  const sorted = useMemo(() => sortFn(departments), [departments, sort]);
 
   return (
     <Card>
@@ -184,21 +281,37 @@ function DepartmentsTab() {
       <CardContent>
         {isLoading ? <p className="text-sm text-muted-foreground">Loading...</p> : (
           <Table>
-            <TableHeader><TableRow><TableHead>Department</TableHead><TableHead>Code</TableHead><TableHead>Description</TableHead><TableHead>Status</TableHead><TableHead>Actions</TableHead></TableRow></TableHeader>
+            <TableHeader>
+              <TableRow>
+                <SortableHead label="Department" col="name" sort={sort} onSort={toggle} />
+                <SortableHead label="Code" col="code" sort={sort} onSort={toggle} />
+                <TableHead>Description</TableHead>
+                <SortableHead label="Sort" col="sort_order" sort={sort} onSort={toggle} />
+                <SortableHead label="Status" col="is_active" sort={sort} onSort={toggle} />
+                <TableHead>Actions</TableHead>
+              </TableRow>
+            </TableHeader>
             <TableBody>
-              {departments.map((r: any) => (
+              {sorted.map((r: any) => (
                 <TableRow key={r.id}>
                   <TableCell className="font-medium">{r.name}</TableCell>
                   <TableCell className="font-mono text-xs">{r.code}</TableCell>
                   <TableCell className="text-sm text-muted-foreground truncate max-w-[200px]">{r.description || '—'}</TableCell>
+                  <TableCell className="text-sm text-muted-foreground">{r.sort_order}</TableCell>
                   <TableCell><Badge variant={r.is_active ? 'default' : 'secondary'}>{r.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
-                  <TableCell><Button size="icon" variant="ghost" onClick={() => edit(r)}><Pencil className="h-3.5 w-3.5" /></Button></TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-1">
+                      <Button size="icon" variant="ghost" onClick={() => edit(r)}><Pencil className="h-3.5 w-3.5" /></Button>
+                      <Button size="icon" variant="ghost" className="text-destructive hover:text-destructive" onClick={() => setDeleteTarget({ id: r.id, name: r.name })}><Trash2 className="h-3.5 w-3.5" /></Button>
+                    </div>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         )}
       </CardContent>
+      <DeleteConfirm open={!!deleteTarget} onOpenChange={v => !v && setDeleteTarget(null)} onConfirm={() => deleteTarget && deleteMut.mutate(deleteTarget.id)} label="Department" />
     </Card>
   );
 }
@@ -211,6 +324,8 @@ function DesignationsTab() {
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<string | null>(null);
   const [form, setForm] = useState(DESIG_EMPTY);
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
+  const { sort, toggle, sortFn } = useSort('sort_order');
 
   const { data: designations = [], isLoading } = useQuery({
     queryKey: ['master-designations'],
@@ -244,7 +359,29 @@ function DesignationsTab() {
     onError: (e: any) => toast.error(e.message),
   });
 
+  const deleteMut = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await db('designations').delete().eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['master-designations'] }); toast.success('Designation deleted'); setDeleteTarget(null); },
+    onError: (e: any) => toast.error(e.message),
+  });
+
   const edit = (r: any) => { setEditing(r.id); setForm({ title: r.title, level: r.level, department_id: r.department_id || '', is_active: r.is_active, sort_order: r.sort_order }); setOpen(true); };
+
+  const sortedData = useMemo(() => {
+    // For designation, handle department_name sorting specially
+    if (sort.col === 'department_name') {
+      return [...designations].sort((a: any, b: any) => {
+        const av = a.departments?.name || '';
+        const bv = b.departments?.name || '';
+        const cmp = av.localeCompare(bv, undefined, { sensitivity: 'base' });
+        return sort.dir === 'asc' ? cmp : -cmp;
+      });
+    }
+    return sortFn(designations);
+  }, [designations, sort]);
 
   return (
     <Card>
@@ -284,21 +421,37 @@ function DesignationsTab() {
       <CardContent>
         {isLoading ? <p className="text-sm text-muted-foreground">Loading...</p> : (
           <Table>
-            <TableHeader><TableRow><TableHead>Title</TableHead><TableHead>Level</TableHead><TableHead>Department</TableHead><TableHead>Status</TableHead><TableHead>Actions</TableHead></TableRow></TableHeader>
+            <TableHeader>
+              <TableRow>
+                <SortableHead label="Title" col="title" sort={sort} onSort={toggle} />
+                <SortableHead label="Level" col="level" sort={sort} onSort={toggle} />
+                <SortableHead label="Department" col="department_name" sort={sort} onSort={toggle} />
+                <SortableHead label="Sort" col="sort_order" sort={sort} onSort={toggle} />
+                <SortableHead label="Status" col="is_active" sort={sort} onSort={toggle} />
+                <TableHead>Actions</TableHead>
+              </TableRow>
+            </TableHeader>
             <TableBody>
-              {designations.map((r: any) => (
+              {sortedData.map((r: any) => (
                 <TableRow key={r.id}>
                   <TableCell className="font-medium">{r.title}</TableCell>
                   <TableCell>{r.level}</TableCell>
                   <TableCell className="text-sm">{r.departments?.name || 'Any'}</TableCell>
+                  <TableCell className="text-sm text-muted-foreground">{r.sort_order}</TableCell>
                   <TableCell><Badge variant={r.is_active ? 'default' : 'secondary'}>{r.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
-                  <TableCell><Button size="icon" variant="ghost" onClick={() => edit(r)}><Pencil className="h-3.5 w-3.5" /></Button></TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-1">
+                      <Button size="icon" variant="ghost" onClick={() => edit(r)}><Pencil className="h-3.5 w-3.5" /></Button>
+                      <Button size="icon" variant="ghost" className="text-destructive hover:text-destructive" onClick={() => setDeleteTarget({ id: r.id, name: r.title })}><Trash2 className="h-3.5 w-3.5" /></Button>
+                    </div>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         )}
       </CardContent>
+      <DeleteConfirm open={!!deleteTarget} onOpenChange={v => !v && setDeleteTarget(null)} onConfirm={() => deleteTarget && deleteMut.mutate(deleteTarget.id)} label="Designation" />
     </Card>
   );
 }
@@ -311,6 +464,8 @@ function LocationsTab() {
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<string | null>(null);
   const [form, setForm] = useState(LOC_EMPTY);
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
+  const { sort, toggle, sortFn } = useSort('sort_order');
 
   const { data: locations = [], isLoading } = useQuery({
     queryKey: ['master-locations'],
@@ -336,7 +491,17 @@ function LocationsTab() {
     onError: (e: any) => toast.error(e.message),
   });
 
+  const deleteMut = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await db('locations').delete().eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['master-locations'] }); toast.success('Location deleted'); setDeleteTarget(null); },
+    onError: (e: any) => toast.error(e.message),
+  });
+
   const edit = (r: any) => { setEditing(r.id); setForm({ name: r.name, city: r.city, state: r.state || '', pincode: r.pincode || '', address: r.address || '', location_type: r.location_type, is_active: r.is_active, sort_order: r.sort_order }); setOpen(true); };
+  const sorted = useMemo(() => sortFn(locations), [locations, sort]);
 
   return (
     <Card>
@@ -382,22 +547,39 @@ function LocationsTab() {
       <CardContent>
         {isLoading ? <p className="text-sm text-muted-foreground">Loading...</p> : (
           <Table>
-            <TableHeader><TableRow><TableHead>Location</TableHead><TableHead>City</TableHead><TableHead>State</TableHead><TableHead>Type</TableHead><TableHead>Status</TableHead><TableHead>Actions</TableHead></TableRow></TableHeader>
+            <TableHeader>
+              <TableRow>
+                <SortableHead label="Location" col="name" sort={sort} onSort={toggle} />
+                <SortableHead label="City" col="city" sort={sort} onSort={toggle} />
+                <SortableHead label="State" col="state" sort={sort} onSort={toggle} />
+                <SortableHead label="Type" col="location_type" sort={sort} onSort={toggle} />
+                <SortableHead label="Sort" col="sort_order" sort={sort} onSort={toggle} />
+                <SortableHead label="Status" col="is_active" sort={sort} onSort={toggle} />
+                <TableHead>Actions</TableHead>
+              </TableRow>
+            </TableHeader>
             <TableBody>
-              {locations.map((r: any) => (
+              {sorted.map((r: any) => (
                 <TableRow key={r.id}>
                   <TableCell className="font-medium">{r.name}</TableCell>
                   <TableCell>{r.city}</TableCell>
                   <TableCell className="text-sm">{r.state || '—'}</TableCell>
                   <TableCell><Badge variant="outline" className="capitalize">{r.location_type.replace('_', ' ')}</Badge></TableCell>
+                  <TableCell className="text-sm text-muted-foreground">{r.sort_order}</TableCell>
                   <TableCell><Badge variant={r.is_active ? 'default' : 'secondary'}>{r.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
-                  <TableCell><Button size="icon" variant="ghost" onClick={() => edit(r)}><Pencil className="h-3.5 w-3.5" /></Button></TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-1">
+                      <Button size="icon" variant="ghost" onClick={() => edit(r)}><Pencil className="h-3.5 w-3.5" /></Button>
+                      <Button size="icon" variant="ghost" className="text-destructive hover:text-destructive" onClick={() => setDeleteTarget({ id: r.id, name: r.name })}><Trash2 className="h-3.5 w-3.5" /></Button>
+                    </div>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         )}
       </CardContent>
+      <DeleteConfirm open={!!deleteTarget} onOpenChange={v => !v && setDeleteTarget(null)} onConfirm={() => deleteTarget && deleteMut.mutate(deleteTarget.id)} label="Location" />
     </Card>
   );
 }
