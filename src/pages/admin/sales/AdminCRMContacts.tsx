@@ -1,5 +1,6 @@
 import { AdminGuard } from '@/components/admin/AdminGuard';
 import { GenericCMSPage } from '@/components/admin/GenericCMSPage';
+import { BulkImportDialog } from '@/components/admin/BulkImportDialog';
 import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -12,7 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
-import { MapPin, Phone, Building2, Eye, Users, Mail, Calendar, Shield, CreditCard, User, Plus, PhoneCall, FileText, Video, CheckSquare, MessageSquare } from 'lucide-react';
+import { MapPin, Phone, Building2, Eye, Users, Mail, Calendar, Shield, CreditCard, User, Plus, PhoneCall, FileText, Video, CheckSquare, MessageSquare, Upload } from 'lucide-react';
 import { format, differenceInYears } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
@@ -601,6 +602,7 @@ function ContactDetailDialog({ contactId, contactName, contactType, open, onClos
 
 export default function AdminCRMContacts() {
   const [viewContact, setViewContact] = useState<{ id: string; name: string; type: string } | null>(null);
+  const [bulkImportOpen, setBulkImportOpen] = useState(false);
 
   return (
     <AdminGuard>
@@ -683,6 +685,26 @@ export default function AdminCRMContacts() {
           onClose={() => setViewContact(null)}
         />
       )}
+
+      <BulkImportDialog
+        open={bulkImportOpen}
+        onClose={(imported) => { setBulkImportOpen(false); }}
+        tableName="crm_contacts"
+        title="Contacts"
+        fieldMappings={[
+          { csvHeader: 'full_name', dbColumn: 'full_name', required: true },
+          { csvHeader: 'phone', dbColumn: 'phone' },
+          { csvHeader: 'email', dbColumn: 'email' },
+          { csvHeader: 'pan', dbColumn: 'pan' },
+          { csvHeader: 'city', dbColumn: 'city' },
+          { csvHeader: 'state', dbColumn: 'state' },
+          { csvHeader: 'relationship_type', dbColumn: 'relationship_type' },
+          { csvHeader: 'contact_type', dbColumn: 'contact_type' },
+          { csvHeader: 'company_name', dbColumn: 'company_name' },
+          { csvHeader: 'source', dbColumn: 'source' },
+        ]}
+        defaultValues={{ relationship_type: 'client', contact_type: 'individual', source: 'import' }}
+      />
     </AdminGuard>
   );
 }
