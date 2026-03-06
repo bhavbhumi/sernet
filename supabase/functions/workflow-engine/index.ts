@@ -136,7 +136,7 @@ Deno.serve(async (req) => {
             }
             case "send_notification": {
               // Log notification intent (actual sending would need email/webhook integration)
-              executedActions.push(`notification:${action.config.message || "triggered"}`);
+              executedActions.push(`notification:${cfg.message || "triggered"}`);
               break;
             }
           }
