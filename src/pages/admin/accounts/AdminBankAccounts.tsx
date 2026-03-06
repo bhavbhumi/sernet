@@ -48,8 +48,7 @@ export const BankAccountsContent = () => {
   const edit = (r: any) => { setEditing(r.id); setForm({ account_name: r.account_name, bank_name: r.bank_name, account_number: r.account_number, ifsc_code: r.ifsc_code || '', branch: r.branch || '', account_type: r.account_type, is_primary: r.is_primary, is_active: r.is_active }); setOpen(true); };
 
   return (
-    <AdminLayout title="Bank Accounts" subtitle="Manage company bank accounts for invoice payment details">
-      <Card>
+    <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Bank Accounts</CardTitle>
           <Dialog open={open} onOpenChange={o => { setOpen(o); if (!o) { setEditing(null); setForm(EMPTY); } }}>
