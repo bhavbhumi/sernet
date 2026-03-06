@@ -324,6 +324,20 @@ export function IssueTypesContent() {
           </div>
         </DialogContent>
       </Dialog>
+    </>
+  );
+
+  return (
+    <AdminLayout
+      title="Issue Type Taxonomy"
+      subtitle="3-tier issue classification engine — manage issue types per product × category"
+      actions={<Button onClick={openCreate} size="sm"><Plus className="h-4 w-4 mr-1.5" /> Add Issue Type</Button>}
+    >
+      {content}
     </AdminLayout>
   );
+}
+
+export default function AdminIssueTypes() {
+  return <IssueTypesContent />;
 }
