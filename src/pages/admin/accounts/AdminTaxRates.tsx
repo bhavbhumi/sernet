@@ -16,7 +16,7 @@ import { useState } from 'react';
 
 const EMPTY = { name: '', rate: 0, tax_type: 'GST', hsn_sac_code: '', description: '', is_active: true };
 
-const AdminTaxRates = () => {
+export const TaxRatesContent = () => {
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<string | null>(null);
