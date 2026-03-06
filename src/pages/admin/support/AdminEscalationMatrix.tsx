@@ -259,3 +259,7 @@ export function EscalationMatrixContent() {
     </AdminLayout>
   );
 }
+
+export default function AdminEscalationMatrix() {
+  return <EscalationMatrixContent />;
+}
