@@ -1,6 +1,6 @@
 import { GenericCMSPage } from '@/components/admin/GenericCMSPage';
 
-const DEPARTMENTS = ['Admin', 'HR', 'Finance & Accounts', 'Marketing', 'Sales', 'Ops', 'Support', 'Legal & Compliance'];
+const DEPARTMENTS = ['Administration', 'HR', 'Sales', 'Marketing', 'Support', 'Finance & Accounts', 'Operations', 'Technology', 'Legal & Compliance'];
 
 const emptyForm = {
   full_name: '',
