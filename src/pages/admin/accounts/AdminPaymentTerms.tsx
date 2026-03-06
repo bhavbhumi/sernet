@@ -15,7 +15,7 @@ import { useState } from 'react';
 
 const EMPTY = { name: '', days: 0, description: '', is_default: false, is_active: true };
 
-const AdminPaymentTerms = () => {
+export const PaymentTermsContent = () => {
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<string | null>(null);
