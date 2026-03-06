@@ -342,8 +342,14 @@ export const WorkflowsContent = () => {
           </Card>
         </TabsContent>
       </Tabs>
-    </AdminLayout>
+    </div>
   );
 };
+
+const AdminWorkflows = () => (
+  <AdminLayout title="Workflow Engine" subtitle="Event-driven automations for your business processes">
+    <WorkflowsContent />
+  </AdminLayout>
+);
 
 export default AdminWorkflows;
