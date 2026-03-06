@@ -145,6 +145,7 @@ const AdminPartnerPayouts = lazy(() => import("./pages/admin/accounts/AdminPartn
 const AdminCommissionClaims = lazy(() => import("./pages/admin/accounts/AdminCommissionClaims"));
 const AdminAgreements = lazy(() => import("./pages/admin/legal/AdminAgreements"));
 const AdminHealth = lazy(() => import("./pages/admin/settings/AdminHealth"));
+const AdminMasterData = lazy(() => import("./pages/admin/settings/AdminMasterData"));
 const AdminCampaigns = lazy(() => import("./pages/admin/marketing/AdminCampaigns"));
 const AdminLeadAttribution = lazy(() => import("./pages/admin/marketing/AdminLeadAttribution"));
 const AdminEvents = lazy(() => import("./pages/admin/marketing/AdminEvents"));
