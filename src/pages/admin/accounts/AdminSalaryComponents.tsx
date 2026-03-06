@@ -52,7 +52,7 @@ export const SalaryComponentsContent = () => {
   const deductions = components.filter((c: any) => c.component_type === 'deduction');
 
   return (
-    <AdminLayout title="Salary Components" subtitle="Configure earnings & deduction heads for payroll">
+    <>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <Card><CardHeader className="pb-2"><CardTitle className="text-sm">Earnings</CardTitle></CardHeader><CardContent><p className="text-2xl font-bold text-green-600">{earnings.length}</p></CardContent></Card>
         <Card><CardHeader className="pb-2"><CardTitle className="text-sm">Deductions</CardTitle></CardHeader><CardContent><p className="text-2xl font-bold text-red-600">{deductions.length}</p></CardContent></Card>
