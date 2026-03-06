@@ -601,6 +601,7 @@ function ContactDetailDialog({ contactId, contactName, contactType, open, onClos
 
 export default function AdminCRMContacts() {
   const [viewContact, setViewContact] = useState<{ id: string; name: string; type: string } | null>(null);
+  const [bulkImportOpen, setBulkImportOpen] = useState(false);
 
   return (
     <AdminGuard>
