@@ -806,9 +806,9 @@ function LegalDeptMasters() {
 function MarketingDeptMasters() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-      <MasterLinkCard label="Campaigns" desc="Campaign types, UTM configurations" icon={BarChart3} href={ADMIN_ROUTES.marketing.campaigns} />
-      <MasterLinkCard label="Events" desc="Event types and templates" icon={CalendarClock} href={ADMIN_ROUTES.marketing.events} />
-      <MasterLinkCard label="Lead Attribution" desc="Source & medium mapping" icon={TrendingUp} href={ADMIN_ROUTES.marketing.leadAttribution} />
+      <MasterLinkCard label="Campaigns" desc="Campaign types, UTM configurations" icon={BarChart3} href={ADMIN_ROUTES.marketing.campaigns.tracker} />
+      <MasterLinkCard label="Events" desc="Event types and templates" icon={CalendarClock} href={ADMIN_ROUTES.marketing.campaigns.events} />
+      <MasterLinkCard label="Lead Attribution" desc="Source & medium mapping" icon={TrendingUp} href={ADMIN_ROUTES.marketing.campaigns.attribution} />
     </div>
   );
 }
