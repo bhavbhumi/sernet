@@ -1115,6 +1115,7 @@ export type Database = {
           lead_id: string | null
           lost_reason: string | null
           probability: number | null
+          product_id: string | null
           product_interest: string | null
           stage: Database["public"]["Enums"]["crm_stage"]
           sub_status: Database["public"]["Enums"]["crm_sub_status"]
@@ -1133,6 +1134,7 @@ export type Database = {
           lead_id?: string | null
           lost_reason?: string | null
           probability?: number | null
+          product_id?: string | null
           product_interest?: string | null
           stage?: Database["public"]["Enums"]["crm_stage"]
           sub_status?: Database["public"]["Enums"]["crm_sub_status"]
@@ -1151,6 +1153,7 @@ export type Database = {
           lead_id?: string | null
           lost_reason?: string | null
           probability?: number | null
+          product_id?: string | null
           product_interest?: string | null
           stage?: Database["public"]["Enums"]["crm_stage"]
           sub_status?: Database["public"]["Enums"]["crm_sub_status"]
@@ -1164,6 +1167,13 @@ export type Database = {
             columns: ["contact_id"]
             isOneToOne: false
             referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_deals_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
             referencedColumns: ["id"]
           },
         ]
@@ -2442,6 +2452,7 @@ export type Database = {
           id: string
           is_active: boolean
           pipeline_key: string
+          product_id: string | null
           sort_order: number
           stage_color: string
           stage_key: string
@@ -2453,6 +2464,7 @@ export type Database = {
           id?: string
           is_active?: boolean
           pipeline_key?: string
+          product_id?: string | null
           sort_order?: number
           stage_color?: string
           stage_key: string
@@ -2464,13 +2476,22 @@ export type Database = {
           id?: string
           is_active?: boolean
           pipeline_key?: string
+          product_id?: string | null
           sort_order?: number
           stage_color?: string
           stage_key?: string
           stage_label?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "pipeline_stages_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       pipeline_sub_statuses: {
         Row: {
@@ -2676,6 +2697,53 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      products: {
+        Row: {
+          created_at: string
+          description: string | null
+          icon_name: string | null
+          id: string
+          is_active: boolean
+          name: string
+          parent_id: string | null
+          slug: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          icon_name?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          parent_id?: string | null
+          slug: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          icon_name?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          parent_id?: string | null
+          slug?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "products_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
