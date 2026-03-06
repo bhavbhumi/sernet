@@ -619,12 +619,15 @@ function FinancialMastersTab() {
 }
 
 // ── Main Page ─────────────────────────────────────────────
-const tabs = [
+const globalTabs = [
   { value: 'products', label: 'Products', icon: Package },
   { value: 'departments', label: 'Departments', icon: Building2 },
   { value: 'designations', label: 'Designations', icon: Award },
   { value: 'locations', label: 'Locations', icon: MapPin },
-  { value: 'financial', label: 'Financial Masters', icon: Receipt },
+];
+
+const departmentTabs = [
+  { value: 'financial', label: 'Finance & Accounts', icon: Receipt },
 ];
 
 export default function AdminMasterData() {
@@ -636,14 +639,30 @@ export default function AdminMasterData() {
       subtitle="Central source of truth — referenced across all modules"
     >
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-        <TabsList className="flex flex-wrap h-auto gap-1 bg-muted/50 p-1">
-          {tabs.map(tab => (
-            <TabsTrigger key={tab.value} value={tab.value} className="flex items-center gap-1.5 text-xs">
-              <tab.icon className="h-3.5 w-3.5" />
-              {tab.label}
-            </TabsTrigger>
-          ))}
-        </TabsList>
+        <div className="space-y-3">
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1.5 px-1">Global Masters</p>
+            <TabsList className="flex flex-wrap h-auto gap-1 bg-muted/50 p-1 w-full justify-start">
+              {globalTabs.map(tab => (
+                <TabsTrigger key={tab.value} value={tab.value} className="flex items-center gap-1.5 text-xs">
+                  <tab.icon className="h-3.5 w-3.5" />
+                  {tab.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1.5 px-1">Department Masters</p>
+            <TabsList className="flex flex-wrap h-auto gap-1 bg-muted/50 p-1 w-full justify-start">
+              {departmentTabs.map(tab => (
+                <TabsTrigger key={tab.value} value={tab.value} className="flex items-center gap-1.5 text-xs">
+                  <tab.icon className="h-3.5 w-3.5" />
+                  {tab.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
+        </div>
 
         <TabsContent value="products"><ProductsTab /></TabsContent>
         <TabsContent value="departments"><DepartmentsTab /></TabsContent>
