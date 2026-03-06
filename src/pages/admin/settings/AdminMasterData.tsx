@@ -1007,15 +1007,7 @@ export default function AdminMasterData() {
 
         {/* ── WORKFLOWS TAB ── */}
         <TabsContent value="workflows">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-sm">Workflows</CardTitle>
-              <p className="text-xs text-muted-foreground mt-1">Automation rules and triggers across all departments.</p>
-            </CardHeader>
-            <CardContent>
-              <MasterLinkCard label="Workflow Rules" desc="Automation triggers, conditions, and actions" icon={Zap} href={ADMIN_ROUTES.settings.workflows} />
-            </CardContent>
-          </Card>
+          <WorkflowsContent />
         </TabsContent>
       </Tabs>
     </AdminLayout>
