@@ -119,19 +119,19 @@ Deno.serve(async (req) => {
               }
               if (Object.keys(updates).length > 0) {
                 await supabase.from(entity_type).update(updates).eq("id", entity_id);
-                executedActions.push(`update_field:${action.config.field}=${action.config.value}`);
+                executedActions.push(`update_field:${cfg.field}=${cfg.value}`);
               }
               break;
             }
             case "create_activity": {
               await supabase.from("crm_activities").insert({
-                subject: action.config.subject || "Auto-generated activity",
-                description: action.config.description || `Triggered by workflow: ${rule.name}`,
-                activity_type: action.config.activity_type || "note",
+                subject: cfg.subject || "Auto-generated activity",
+                description: cfg.description || `Triggered by workflow: ${rule.name}`,
+                activity_type: cfg.activity_type || "note",
                 deal_id: entity_type === "crm_deals" ? entity_id : null,
                 contact_id: entity_type === "crm_contacts" ? entity_id : (record?.contact_id || null),
               });
-              executedActions.push(`create_activity:${action.config.subject || "note"}`);
+              executedActions.push(`create_activity:${cfg.subject || "note"}`);
               break;
             }
             case "send_notification": {
