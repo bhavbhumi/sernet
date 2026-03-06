@@ -16,7 +16,7 @@ import { useState } from 'react';
 
 const EMPTY = { name: '', code: '', component_type: 'earning', calculation_type: 'fixed', default_value: 0, is_taxable: true, is_active: true, sort_order: 0 };
 
-const AdminSalaryComponents = () => {
+export const SalaryComponentsContent = () => {
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<string | null>(null);
