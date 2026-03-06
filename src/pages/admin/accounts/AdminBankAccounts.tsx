@@ -16,7 +16,7 @@ import { useState } from 'react';
 
 const EMPTY = { account_name: '', bank_name: '', account_number: '', ifsc_code: '', branch: '', account_type: 'current', is_primary: false, is_active: true };
 
-const AdminBankAccounts = () => {
+export const BankAccountsContent = () => {
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<string | null>(null);
