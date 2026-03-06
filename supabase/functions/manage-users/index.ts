@@ -170,10 +170,11 @@ Deno.serve(async (req) => {
     // ─── Existing actions ───
 
     if (action === 'update_user') {
-      const { user_id, password, user_metadata } = params;
+      const { user_id, password, user_metadata, confirm_email } = params;
       const updatePayload: Record<string, unknown> = {};
       if (password) updatePayload.password = password;
       if (user_metadata) updatePayload.user_metadata = user_metadata;
+      if (confirm_email) updatePayload.email_confirm = true;
 
       const { error } = await supabaseAdmin.auth.admin.updateUserById(user_id, updatePayload);
       if (error) throw error;
