@@ -36,7 +36,7 @@ const emptyRule = {
   priority: 0,
 };
 
-const AdminWorkflows = () => {
+export const WorkflowsContent = () => {
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState(emptyRule);
@@ -127,7 +127,7 @@ const AdminWorkflows = () => {
   };
 
   return (
-    <AdminLayout title="Workflow Engine" subtitle="Event-driven automations for your business processes">
+    <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <Card><CardHeader className="pb-2"><CardTitle className="text-sm">Total Rules</CardTitle></CardHeader><CardContent><p className="text-2xl font-bold">{rules.length}</p></CardContent></Card>
         <Card><CardHeader className="pb-2"><CardTitle className="text-sm">Active</CardTitle></CardHeader><CardContent><p className="text-2xl font-bold">{rules.filter((r: any) => r.is_active).length}</p></CardContent></Card>
@@ -342,8 +342,14 @@ const AdminWorkflows = () => {
           </Card>
         </TabsContent>
       </Tabs>
-    </AdminLayout>
+    </div>
   );
 };
+
+const AdminWorkflows = () => (
+  <AdminLayout title="Workflow Engine" subtitle="Event-driven automations for your business processes">
+    <WorkflowsContent />
+  </AdminLayout>
+);
 
 export default AdminWorkflows;
