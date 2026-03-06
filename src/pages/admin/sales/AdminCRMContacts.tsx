@@ -674,6 +674,11 @@ export default function AdminCRMContacts() {
             <Eye className="h-3 w-3" /> View
           </Button>
         )}
+        extraActions={
+          <Button variant="outline" size="sm" onClick={() => setBulkImportOpen(true)}>
+            <Upload className="h-4 w-4 mr-1" /> Import
+          </Button>
+        }
       />
 
       {viewContact && (
@@ -685,6 +690,26 @@ export default function AdminCRMContacts() {
           onClose={() => setViewContact(null)}
         />
       )}
+
+      <BulkImportDialog
+        open={bulkImportOpen}
+        onClose={(imported) => { setBulkImportOpen(false); }}
+        tableName="crm_contacts"
+        title="Contacts"
+        fieldMappings={[
+          { csvHeader: 'full_name', dbColumn: 'full_name', required: true },
+          { csvHeader: 'phone', dbColumn: 'phone' },
+          { csvHeader: 'email', dbColumn: 'email' },
+          { csvHeader: 'pan', dbColumn: 'pan' },
+          { csvHeader: 'city', dbColumn: 'city' },
+          { csvHeader: 'state', dbColumn: 'state' },
+          { csvHeader: 'relationship_type', dbColumn: 'relationship_type' },
+          { csvHeader: 'contact_type', dbColumn: 'contact_type' },
+          { csvHeader: 'company_name', dbColumn: 'company_name' },
+          { csvHeader: 'source', dbColumn: 'source' },
+        ]}
+        defaultValues={{ relationship_type: 'client', contact_type: 'individual', source: 'import' }}
+      />
     </AdminGuard>
   );
 }
