@@ -40,6 +40,22 @@ interface DepartmentGroup {
 
 const departmentGroups: DepartmentGroup[] = [
   {
+    department: 'System',
+    departmentKey: 'system',
+    icon: Settings,
+    color: 'text-muted-foreground',
+    items: [
+      { label: 'Master Data', icon: Database, href: R.settings.masterData, moduleKey: 'system/master-data' },
+      { label: 'Admin Users', icon: Shield, href: R.settings.users, moduleKey: 'system/admin-users' },
+      { label: 'Permissions', icon: KeyRound, href: R.settings.permissions, moduleKey: 'system/permissions' },
+      { label: 'Workflows', icon: Zap, href: R.settings.workflows, moduleKey: 'system/workflows' },
+      { label: 'RSS Feeds', icon: Rss, href: R.settings.rss, moduleKey: 'system/rss-feeds' },
+      { label: 'AI Usage', icon: Sparkles, href: R.settings.aiUsage, moduleKey: 'system/ai-usage' },
+      { label: 'Audit Log', icon: ScrollText, href: R.settings.auditLog, moduleKey: 'system/audit-log' },
+      { label: 'System Health', icon: Activity, href: R.settings.health, moduleKey: 'system/health' },
+    ]
+  },
+  {
     department: 'Marketing',
     departmentKey: 'marketing',
     icon: Megaphone,
@@ -181,22 +197,6 @@ const departmentGroups: DepartmentGroup[] = [
       { label: 'Legal Pages', icon: Scale, href: R.legal.pages, moduleKey: 'legal/legal-pages' },
       { label: 'Investor Charter', icon: BookOpenCheck, href: R.legal.investorCharter, moduleKey: 'legal/investor-charter' },
       { label: 'Agreements', icon: Scale, href: R.legal.agreements, moduleKey: 'legal/agreements' },
-    ]
-  },
-  {
-    department: 'System',
-    departmentKey: 'system',
-    icon: Settings,
-    color: 'text-muted-foreground',
-    items: [
-      { label: 'Master Data', icon: Database, href: R.settings.masterData, moduleKey: 'system/master-data' },
-      { label: 'Admin Users', icon: Shield, href: R.settings.users, moduleKey: 'system/admin-users' },
-      { label: 'Permissions', icon: KeyRound, href: R.settings.permissions, moduleKey: 'system/permissions' },
-      { label: 'Workflows', icon: Zap, href: R.settings.workflows, moduleKey: 'system/workflows' },
-      { label: 'RSS Feeds', icon: Rss, href: R.settings.rss, moduleKey: 'system/rss-feeds' },
-      { label: 'AI Usage', icon: Sparkles, href: R.settings.aiUsage, moduleKey: 'system/ai-usage' },
-      { label: 'Audit Log', icon: ScrollText, href: R.settings.auditLog, moduleKey: 'system/audit-log' },
-      { label: 'System Health', icon: Activity, href: R.settings.health, moduleKey: 'system/health' },
     ]
   },
 ];
