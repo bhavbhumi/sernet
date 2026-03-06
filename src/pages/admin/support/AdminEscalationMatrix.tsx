@@ -13,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const db = (t: string) => supabase.from(t as any) as any;
 
-export default function AdminEscalationMatrix() {
+export function EscalationMatrixContent() {
   const { toast } = useToast();
   const [matrix, setMatrix] = useState<any[]>([]);
   const [rules, setRules] = useState<any[]>([]);

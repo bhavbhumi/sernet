@@ -16,7 +16,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 const db = (t: string) => supabase.from(t as any) as any;
 const PAGE_SIZE = 25;
 
-export default function AdminIssueTypes() {
+export function IssueTypesContent() {
   const { toast } = useToast();
   const [issueTypes, setIssueTypes] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
