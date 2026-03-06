@@ -109,11 +109,13 @@ Deno.serve(async (req) => {
         const executedActions: string[] = [];
 
         for (const action of actions) {
+          // Support both "config" and "params" keys for backwards compatibility
+          const cfg = action.config || (action as any).params || {};
           switch (action.type) {
             case "update_field": {
               const updates: Record<string, string> = {};
-              if (action.config.field && action.config.value !== undefined) {
-                updates[action.config.field] = action.config.value;
+              if (cfg.field && cfg.value !== undefined) {
+                updates[cfg.field] = cfg.value;
               }
               if (Object.keys(updates).length > 0) {
                 await supabase.from(entity_type).update(updates).eq("id", entity_id);
