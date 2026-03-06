@@ -49,8 +49,7 @@ export const TaxRatesContent = () => {
   const edit = (r: any) => { setEditing(r.id); setForm({ name: r.name, rate: r.rate, tax_type: r.tax_type, hsn_sac_code: r.hsn_sac_code || '', description: r.description || '', is_active: r.is_active }); setOpen(true); };
 
   return (
-    <AdminLayout title="Tax Rates" subtitle="Manage GST slabs and SAC/HSN codes">
-      <Card>
+    <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Tax Rates</CardTitle>
           <Dialog open={open} onOpenChange={o => { setOpen(o); if (!o) { setEditing(null); setForm(EMPTY); } }}>
