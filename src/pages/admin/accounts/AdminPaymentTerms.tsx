@@ -48,8 +48,7 @@ export const PaymentTermsContent = () => {
   const edit = (r: any) => { setEditing(r.id); setForm({ name: r.name, days: r.days, description: r.description || '', is_default: r.is_default, is_active: r.is_active }); setOpen(true); };
 
   return (
-    <AdminLayout title="Payment Terms" subtitle="Configure invoice payment term presets">
-      <Card>
+    <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Payment Terms</CardTitle>
           <Dialog open={open} onOpenChange={o => { setOpen(o); if (!o) { setEditing(null); setForm(EMPTY); } }}>
