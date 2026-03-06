@@ -16,7 +16,7 @@ import { useState } from 'react';
 
 const EMPTY = { name: '', sac_code: '', default_rate: 0, unit: 'per service', tax_rate_id: '', description: '', is_active: true };
 
-const AdminServiceCatalog = () => {
+export const ServiceCatalogContent = () => {
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<string | null>(null);
