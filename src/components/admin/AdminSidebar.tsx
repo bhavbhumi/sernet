@@ -10,7 +10,8 @@ import {
   ChevronDown, ChevronRight, Menu, X, Rss, Shield, Globe, Palette, ScanSearch, Images, Download,
   Sparkles, Calculator, UserCheck, CalendarDays, Mail, ScrollText, Scale, Lightbulb,
   TrendingUp, Building2, Gavel, Megaphone, Headphones, Ticket, BookMarked, MessageSquareText, Zap,
-  Contact, CalendarClock, Clock, Receipt, Wallet, Lock, KeyRound, Activity, ExternalLink, PanelLeftClose, PanelLeftOpen
+  Contact, CalendarClock, Clock, Receipt, Wallet, Lock, KeyRound, Activity, ExternalLink, PanelLeftClose, PanelLeftOpen,
+  Database
 } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import sernetLogo from '@/assets/sernet-logo.png';
@@ -188,6 +189,7 @@ const departmentGroups: DepartmentGroup[] = [
     icon: Settings,
     color: 'text-muted-foreground',
     items: [
+      { label: 'Master Data', icon: Database, href: R.settings.masterData, moduleKey: 'system/master-data' },
       { label: 'Admin Users', icon: Shield, href: R.settings.users, moduleKey: 'system/admin-users' },
       { label: 'Permissions', icon: KeyRound, href: R.settings.permissions, moduleKey: 'system/permissions' },
       { label: 'Workflows', icon: Zap, href: R.settings.workflows, moduleKey: 'system/workflows' },

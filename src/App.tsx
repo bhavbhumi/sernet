@@ -145,6 +145,7 @@ const AdminPartnerPayouts = lazy(() => import("./pages/admin/accounts/AdminPartn
 const AdminCommissionClaims = lazy(() => import("./pages/admin/accounts/AdminCommissionClaims"));
 const AdminAgreements = lazy(() => import("./pages/admin/legal/AdminAgreements"));
 const AdminHealth = lazy(() => import("./pages/admin/settings/AdminHealth"));
+const AdminMasterData = lazy(() => import("./pages/admin/settings/AdminMasterData"));
 const AdminCampaigns = lazy(() => import("./pages/admin/marketing/AdminCampaigns"));
 const AdminLeadAttribution = lazy(() => import("./pages/admin/marketing/AdminLeadAttribution"));
 const AdminEvents = lazy(() => import("./pages/admin/marketing/AdminEvents"));
@@ -302,6 +303,7 @@ const App = () => (
             <Route path="/admin/support/documents" element={<AdminSupportDocuments />} />
 
             {/* Admin — System Settings */}
+            <Route path="/admin/settings/master-data" element={<AdminMasterData />} />
             <Route path="/admin/settings/users" element={<AdminUsers />} />
             <Route path="/admin/settings/permissions" element={<AdminPermissions />} />
             <Route path="/admin/settings/rss" element={<AdminRSSSettings />} />
