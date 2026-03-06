@@ -903,7 +903,7 @@ const TOP_TABS = [
 export default function AdminMasterData() {
   const [topTab, setTopTab] = useState('entity');
   const [entitySection, setEntitySection] = useState('profile');
-  const [openDepts, setOpenDepts] = useState<string[]>([]);
+  const [deptSection, setDeptSection] = useState('sales');
 
   return (
     <AdminLayout
