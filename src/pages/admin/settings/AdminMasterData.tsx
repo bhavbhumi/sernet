@@ -18,13 +18,21 @@ import {
   Plus, Pencil, Trash2, Package, Building2, Award, MapPin, Receipt,
   CalendarClock, Wallet, ClipboardList, ExternalLink, ArrowUp, ArrowDown, ArrowUpDown,
   Globe, Landmark, TrendingUp, ShieldCheck, Headphones, Users, Briefcase,
-  GitBranch, FileText, BarChart3, Scale
+  GitBranch, FileText, BarChart3, Scale, Zap
 } from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
 import { ADMIN_ROUTES } from '@/lib/adminRoutes';
+
+// ── Imported Content Components (inlined from department pages) ──
+import { TaxRatesContent } from '@/pages/admin/accounts/AdminTaxRates';
+import { PaymentTermsContent } from '@/pages/admin/accounts/AdminPaymentTerms';
+import { ServiceCatalogContent } from '@/pages/admin/accounts/AdminServiceCatalog';
+import { SalaryComponentsContent } from '@/pages/admin/accounts/AdminSalaryComponents';
+import { BankAccountsContent } from '@/pages/admin/accounts/AdminBankAccounts';
+import { PipelineConfigContent } from '@/pages/admin/sales/AdminPipelineConfig';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db = (t: string) => supabase.from(t as any) as any;
@@ -86,7 +94,7 @@ function DeleteConfirm({ open, onOpenChange, onConfirm, label }: { open: boolean
   );
 }
 
-// ── Link Card (for departmental masters that link to existing pages) ──
+// ── Link Card (for masters that link to existing pages) ──
 function MasterLinkCard({ label, desc, icon: Icon, href }: { label: string; desc: string; icon: any; href: string }) {
   return (
     <Link to={href} className="flex items-center gap-3 p-3 rounded-lg border border-border hover:bg-muted/50 transition-colors">
@@ -101,7 +109,7 @@ function MasterLinkCard({ label, desc, icon: Icon, href }: { label: string; desc
 }
 
 // ═══════════════════════════════════════════════════════════
-// GLOBAL MASTERS
+// GLOBAL MASTERS — Inline CRUD
 // ═══════════════════════════════════════════════════════════
 
 // ── Firm Profile Link ─────────────────────────────────────
@@ -355,10 +363,142 @@ function DepartmentsTab() {
   );
 }
 
-// ── Designations Tab ──────────────────────────────────────
+// ── Locations Tab ─────────────────────────────────────────
+const LOC_EMPTY = { name: '', city: '', state: '', pincode: '', address: '', location_type: 'branch', is_active: true, sort_order: 0 };
+
+function LocationsTab() {
+  const qc = useQueryClient();
+  const [open, setOpen] = useState(false);
+  const [editing, setEditing] = useState<string | null>(null);
+  const [form, setForm] = useState(LOC_EMPTY);
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
+  const { sort, toggle, sortFn } = useSort('sort_order');
+
+  const { data: locations = [], isLoading } = useQuery({
+    queryKey: ['master-locations'],
+    queryFn: async () => {
+      const { data, error } = await db('locations').select('*').order('sort_order');
+      if (error) throw error;
+      return data || [];
+    },
+  });
+
+  const save = useMutation({
+    mutationFn: async () => {
+      const payload = { ...form, sort_order: Number(form.sort_order) };
+      if (editing) {
+        const { error } = await db('locations').update(payload).eq('id', editing);
+        if (error) throw error;
+      } else {
+        const { error } = await db('locations').insert(payload);
+        if (error) throw error;
+      }
+    },
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['master-locations'] }); toast.success('Location saved'); setOpen(false); setEditing(null); setForm(LOC_EMPTY); },
+    onError: (e: any) => toast.error(e.message),
+  });
+
+  const deleteMut = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await db('locations').delete().eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['master-locations'] }); toast.success('Location deleted'); setDeleteTarget(null); },
+    onError: (e: any) => toast.error(e.message),
+  });
+
+  const edit = (r: any) => { setEditing(r.id); setForm({ name: r.name, city: r.city, state: r.state || '', pincode: r.pincode || '', address: r.address || '', location_type: r.location_type, is_active: r.is_active, sort_order: r.sort_order }); setOpen(true); };
+  const sorted = useMemo(() => sortFn(locations), [locations, sort]);
+
+  return (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <div>
+          <CardTitle className="text-sm">Locations & Branches</CardTitle>
+          <p className="text-xs text-muted-foreground mt-1">Consumed by: HR Job Openings, CRM Contacts, Firm Profile</p>
+        </div>
+        <Dialog open={open} onOpenChange={o => { setOpen(o); if (!o) { setEditing(null); setForm(LOC_EMPTY); } }}>
+          <DialogTrigger asChild><Button size="sm"><Plus className="h-4 w-4 mr-1" />Add Location</Button></DialogTrigger>
+          <DialogContent>
+            <DialogHeader><DialogTitle>{editing ? 'Edit' : 'Add'} Location</DialogTitle></DialogHeader>
+            <div className="space-y-4">
+              <div><Label>Name *</Label><Input value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} placeholder="e.g. Mumbai HO" /></div>
+              <div className="grid grid-cols-2 gap-4">
+                <div><Label>City *</Label><Input value={form.city} onChange={e => setForm(p => ({ ...p, city: e.target.value }))} /></div>
+                <div><Label>State</Label><Input value={form.state} onChange={e => setForm(p => ({ ...p, state: e.target.value }))} /></div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div><Label>Pincode</Label><Input value={form.pincode} onChange={e => setForm(p => ({ ...p, pincode: e.target.value }))} /></div>
+                <div>
+                  <Label>Type</Label>
+                  <Select value={form.location_type} onValueChange={v => setForm(p => ({ ...p, location_type: v }))}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="head_office">Head Office</SelectItem>
+                      <SelectItem value="branch">Branch</SelectItem>
+                      <SelectItem value="virtual">Virtual</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <div><Label>Address</Label><Textarea value={form.address} onChange={e => setForm(p => ({ ...p, address: e.target.value }))} rows={2} /></div>
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2"><Switch checked={form.is_active} onCheckedChange={v => setForm(p => ({ ...p, is_active: v }))} /><Label>Active</Label></div>
+                <div><Label>Sort</Label><Input type="number" value={form.sort_order} onChange={e => setForm(p => ({ ...p, sort_order: Number(e.target.value) }))} className="w-20" /></div>
+              </div>
+              <Button className="w-full" onClick={() => save.mutate()} disabled={!form.name || !form.city || save.isPending}>{editing ? 'Update' : 'Create'}</Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+      </CardHeader>
+      <CardContent>
+        {isLoading ? <p className="text-sm text-muted-foreground">Loading...</p> : (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <SortableHead label="Location" col="name" sort={sort} onSort={toggle} />
+                <SortableHead label="City" col="city" sort={sort} onSort={toggle} />
+                <SortableHead label="State" col="state" sort={sort} onSort={toggle} />
+                <SortableHead label="Type" col="location_type" sort={sort} onSort={toggle} />
+                <SortableHead label="Sort" col="sort_order" sort={sort} onSort={toggle} />
+                <SortableHead label="Status" col="is_active" sort={sort} onSort={toggle} />
+                <TableHead>Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {sorted.map((r: any) => (
+                <TableRow key={r.id}>
+                  <TableCell className="font-medium">{r.name}</TableCell>
+                  <TableCell>{r.city}</TableCell>
+                  <TableCell className="text-sm">{r.state || '—'}</TableCell>
+                  <TableCell><Badge variant="outline" className="capitalize">{r.location_type.replace('_', ' ')}</Badge></TableCell>
+                  <TableCell className="text-sm text-muted-foreground">{r.sort_order}</TableCell>
+                  <TableCell><Badge variant={r.is_active ? 'default' : 'secondary'}>{r.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-1">
+                      <Button size="icon" variant="ghost" onClick={() => edit(r)}><Pencil className="h-3.5 w-3.5" /></Button>
+                      <Button size="icon" variant="ghost" className="text-destructive hover:text-destructive" onClick={() => setDeleteTarget({ id: r.id, name: r.name })}><Trash2 className="h-3.5 w-3.5" /></Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
+      </CardContent>
+      <DeleteConfirm open={!!deleteTarget} onOpenChange={v => !v && setDeleteTarget(null)} onConfirm={() => deleteTarget && deleteMut.mutate(deleteTarget.id)} label="Location" />
+    </Card>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════
+// DEPARTMENT MASTERS — Inline CRUD
+// ═══════════════════════════════════════════════════════════
+
+// ── Designations (HR Department Master) ───────────────────
 const DESIG_EMPTY = { title: '', level: 0, department_id: '', is_active: true, sort_order: 0 };
 
-function DesignationsTab() {
+function DesignationsContent() {
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<string | null>(null);
@@ -494,122 +634,97 @@ function DesignationsTab() {
   );
 }
 
-// ── Locations Tab ─────────────────────────────────────────
-const LOC_EMPTY = { name: '', city: '', state: '', pincode: '', address: '', location_type: 'branch', is_active: true, sort_order: 0 };
-
-function LocationsTab() {
+// ── Leave Types (HR Department Master) ────────────────────
+function LeaveTypesContent() {
   const qc = useQueryClient();
-  const [open, setOpen] = useState(false);
-  const [editing, setEditing] = useState<string | null>(null);
-  const [form, setForm] = useState(LOC_EMPTY);
-  const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
-  const { sort, toggle, sortFn } = useSort('sort_order');
+  const [typeOpen, setTypeOpen] = useState(false);
+  const [typeForm, setTypeForm] = useState({ name: '', code: '', default_days: 0, is_paid: true });
 
-  const { data: locations = [], isLoading } = useQuery({
-    queryKey: ['master-locations'],
+  const { data: leaveTypes = [], isLoading } = useQuery({
+    queryKey: ['leave-types'],
     queryFn: async () => {
-      const { data, error } = await db('locations').select('*').order('sort_order');
+      const { data, error } = await db('leave_types').select('*').order('name');
       if (error) throw error;
       return data || [];
     },
   });
 
-  const save = useMutation({
+  const createType = useMutation({
     mutationFn: async () => {
-      const payload = { ...form, sort_order: Number(form.sort_order) };
-      if (editing) {
-        const { error } = await db('locations').update(payload).eq('id', editing);
-        if (error) throw error;
-      } else {
-        const { error } = await db('locations').insert(payload);
-        if (error) throw error;
-      }
-    },
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ['master-locations'] }); toast.success('Location saved'); setOpen(false); setEditing(null); setForm(LOC_EMPTY); },
-    onError: (e: any) => toast.error(e.message),
-  });
-
-  const deleteMut = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await db('locations').delete().eq('id', id);
+      const { error } = await db('leave_types').insert({
+        name: typeForm.name,
+        code: typeForm.code,
+        default_days: typeForm.default_days,
+        is_paid: typeForm.is_paid,
+      });
       if (error) throw error;
     },
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ['master-locations'] }); toast.success('Location deleted'); setDeleteTarget(null); },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['leave-types'] });
+      toast.success('Leave type created');
+      setTypeOpen(false);
+      setTypeForm({ name: '', code: '', default_days: 0, is_paid: true });
+    },
     onError: (e: any) => toast.error(e.message),
   });
 
-  const edit = (r: any) => { setEditing(r.id); setForm({ name: r.name, city: r.city, state: r.state || '', pincode: r.pincode || '', address: r.address || '', location_type: r.location_type, is_active: r.is_active, sort_order: r.sort_order }); setOpen(true); };
-  const sorted = useMemo(() => sortFn(locations), [locations, sort]);
+  const toggleTypeActive = useMutation({
+    mutationFn: async ({ id, is_active }: { id: string; is_active: boolean }) => {
+      const { error } = await db('leave_types').update({ is_active }).eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['leave-types'] }); toast.success('Leave type updated'); },
+  });
 
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
-          <CardTitle className="text-sm">Locations & Branches</CardTitle>
-          <p className="text-xs text-muted-foreground mt-1">Consumed by: HR Job Openings, CRM Contacts, Firm Profile</p>
+          <CardTitle className="text-sm">Leave Types</CardTitle>
+          <p className="text-xs text-muted-foreground mt-1">Consumed by: Leave Management, Attendance</p>
         </div>
-        <Dialog open={open} onOpenChange={o => { setOpen(o); if (!o) { setEditing(null); setForm(LOC_EMPTY); } }}>
-          <DialogTrigger asChild><Button size="sm"><Plus className="h-4 w-4 mr-1" />Add Location</Button></DialogTrigger>
+        <Dialog open={typeOpen} onOpenChange={setTypeOpen}>
+          <DialogTrigger asChild><Button size="sm"><Plus className="h-4 w-4 mr-1" />Add Type</Button></DialogTrigger>
           <DialogContent>
-            <DialogHeader><DialogTitle>{editing ? 'Edit' : 'Add'} Location</DialogTitle></DialogHeader>
+            <DialogHeader><DialogTitle>Add Leave Type</DialogTitle></DialogHeader>
             <div className="space-y-4">
-              <div><Label>Name *</Label><Input value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} placeholder="e.g. Mumbai HO" /></div>
-              <div className="grid grid-cols-2 gap-4">
-                <div><Label>City *</Label><Input value={form.city} onChange={e => setForm(p => ({ ...p, city: e.target.value }))} /></div>
-                <div><Label>State</Label><Input value={form.state} onChange={e => setForm(p => ({ ...p, state: e.target.value }))} /></div>
+              <div><Label>Name</Label><Input value={typeForm.name} onChange={e => setTypeForm(p => ({ ...p, name: e.target.value }))} placeholder="e.g. Casual Leave" /></div>
+              <div><Label>Code</Label><Input value={typeForm.code} onChange={e => setTypeForm(p => ({ ...p, code: e.target.value }))} placeholder="e.g. CL" /></div>
+              <div><Label>Default Days per Year</Label><Input type="number" value={typeForm.default_days} onChange={e => setTypeForm(p => ({ ...p, default_days: Number(e.target.value) }))} /></div>
+              <div className="flex items-center gap-2">
+                <input type="checkbox" checked={typeForm.is_paid} onChange={e => setTypeForm(p => ({ ...p, is_paid: e.target.checked }))} id="is_paid_master" />
+                <Label htmlFor="is_paid_master">Paid Leave</Label>
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div><Label>Pincode</Label><Input value={form.pincode} onChange={e => setForm(p => ({ ...p, pincode: e.target.value }))} /></div>
-                <div>
-                  <Label>Type</Label>
-                  <Select value={form.location_type} onValueChange={v => setForm(p => ({ ...p, location_type: v }))}>
-                    <SelectTrigger><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="head_office">Head Office</SelectItem>
-                      <SelectItem value="branch">Branch</SelectItem>
-                      <SelectItem value="virtual">Virtual</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              <div><Label>Address</Label><Textarea value={form.address} onChange={e => setForm(p => ({ ...p, address: e.target.value }))} rows={2} /></div>
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2"><Switch checked={form.is_active} onCheckedChange={v => setForm(p => ({ ...p, is_active: v }))} /><Label>Active</Label></div>
-                <div><Label>Sort</Label><Input type="number" value={form.sort_order} onChange={e => setForm(p => ({ ...p, sort_order: Number(e.target.value) }))} className="w-20" /></div>
-              </div>
-              <Button className="w-full" onClick={() => save.mutate()} disabled={!form.name || !form.city || save.isPending}>{editing ? 'Update' : 'Create'}</Button>
+              <Button className="w-full" disabled={!typeForm.name || !typeForm.code} onClick={() => createType.mutate()}>Add Leave Type</Button>
             </div>
           </DialogContent>
         </Dialog>
       </CardHeader>
       <CardContent>
-        {isLoading ? <p className="text-sm text-muted-foreground">Loading...</p> : (
+        {isLoading ? <p className="text-sm text-muted-foreground">Loading...</p> : leaveTypes.length === 0 ? <p className="text-sm text-muted-foreground">No leave types configured.</p> : (
           <Table>
             <TableHeader>
               <TableRow>
-                <SortableHead label="Location" col="name" sort={sort} onSort={toggle} />
-                <SortableHead label="City" col="city" sort={sort} onSort={toggle} />
-                <SortableHead label="State" col="state" sort={sort} onSort={toggle} />
-                <SortableHead label="Type" col="location_type" sort={sort} onSort={toggle} />
-                <SortableHead label="Sort" col="sort_order" sort={sort} onSort={toggle} />
-                <SortableHead label="Status" col="is_active" sort={sort} onSort={toggle} />
+                <TableHead>Name</TableHead>
+                <TableHead>Code</TableHead>
+                <TableHead>Default Days</TableHead>
+                <TableHead>Paid</TableHead>
+                <TableHead>Active</TableHead>
                 <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {sorted.map((r: any) => (
-                <TableRow key={r.id}>
-                  <TableCell className="font-medium">{r.name}</TableCell>
-                  <TableCell>{r.city}</TableCell>
-                  <TableCell className="text-sm">{r.state || '—'}</TableCell>
-                  <TableCell><Badge variant="outline" className="capitalize">{r.location_type.replace('_', ' ')}</Badge></TableCell>
-                  <TableCell className="text-sm text-muted-foreground">{r.sort_order}</TableCell>
-                  <TableCell><Badge variant={r.is_active ? 'default' : 'secondary'}>{r.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
+              {leaveTypes.map((t: any) => (
+                <TableRow key={t.id}>
+                  <TableCell className="font-medium">{t.name}</TableCell>
+                  <TableCell className="font-mono">{t.code}</TableCell>
+                  <TableCell>{t.default_days}</TableCell>
+                  <TableCell>{t.is_paid ? 'Yes' : 'No'}</TableCell>
+                  <TableCell><Badge variant={t.is_active ? 'default' : 'secondary'}>{t.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
                   <TableCell>
-                    <div className="flex items-center gap-1">
-                      <Button size="icon" variant="ghost" onClick={() => edit(r)}><Pencil className="h-3.5 w-3.5" /></Button>
-                      <Button size="icon" variant="ghost" className="text-destructive hover:text-destructive" onClick={() => setDeleteTarget({ id: r.id, name: r.name })}><Trash2 className="h-3.5 w-3.5" /></Button>
-                    </div>
+                    <Button size="sm" variant="outline" onClick={() => toggleTypeActive.mutate({ id: t.id, is_active: !t.is_active })}>
+                      {t.is_active ? 'Disable' : 'Enable'}
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -617,44 +732,57 @@ function LocationsTab() {
           </Table>
         )}
       </CardContent>
-      <DeleteConfirm open={!!deleteTarget} onOpenChange={v => !v && setDeleteTarget(null)} onConfirm={() => deleteTarget && deleteMut.mutate(deleteTarget.id)} label="Location" />
     </Card>
   );
 }
 
 // ═══════════════════════════════════════════════════════════
-// DEPARTMENT MASTER SECTIONS (Link Cards)
+// DEPARTMENT ACCORDION CONFIG
 // ═══════════════════════════════════════════════════════════
 
-function SalesMasters() {
+// ── Sales: Pipeline Config (inline) ──
+function SalesDeptMasters() {
+  return <PipelineConfigContent />;
+}
+
+// ── Finance: Sub-tabs with inline CRUDs ──
+function FinanceDeptMasters() {
+  const [tab, setTab] = useState('tax-rates');
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-      <MasterLinkCard label="Pipeline Config" desc="Stages, transitions & validation rules" icon={GitBranch} href={ADMIN_ROUTES.sales.pipelineConfig} />
-    </div>
+    <Tabs value={tab} onValueChange={setTab}>
+      <TabsList className="flex flex-wrap h-auto gap-1 bg-muted/50 p-1 w-full justify-start mb-4">
+        <TabsTrigger value="tax-rates" className="text-xs">Tax Rates</TabsTrigger>
+        <TabsTrigger value="payment-terms" className="text-xs">Payment Terms</TabsTrigger>
+        <TabsTrigger value="service-catalog" className="text-xs">Service Catalog</TabsTrigger>
+        <TabsTrigger value="salary-components" className="text-xs">Salary Components</TabsTrigger>
+        <TabsTrigger value="bank-accounts" className="text-xs">Bank Accounts</TabsTrigger>
+      </TabsList>
+      <TabsContent value="tax-rates"><TaxRatesContent /></TabsContent>
+      <TabsContent value="payment-terms"><PaymentTermsContent /></TabsContent>
+      <TabsContent value="service-catalog"><ServiceCatalogContent /></TabsContent>
+      <TabsContent value="salary-components"><SalaryComponentsContent /></TabsContent>
+      <TabsContent value="bank-accounts"><BankAccountsContent /></TabsContent>
+    </Tabs>
   );
 }
 
-function FinanceMasters() {
+// ── HR: Designations + Leave Types ──
+function HRDeptMasters() {
+  const [tab, setTab] = useState('designations');
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-      <MasterLinkCard label="Tax Rates" desc="GST, TDS rates for invoicing" icon={Receipt} href={ADMIN_ROUTES.accounts.taxRates} />
-      <MasterLinkCard label="Payment Terms" desc="Invoice payment cycles" icon={Receipt} href={ADMIN_ROUTES.accounts.paymentTerms} />
-      <MasterLinkCard label="Service Catalog" desc="Invoice line item templates" icon={ClipboardList} href={ADMIN_ROUTES.accounts.serviceCatalog} />
-      <MasterLinkCard label="Salary Components" desc="Basic, HRA, PF, etc." icon={Wallet} href={ADMIN_ROUTES.accounts.salaryComponents} />
-      <MasterLinkCard label="Bank Accounts" desc="Firm bank accounts" icon={Landmark} href={ADMIN_ROUTES.accounts.bankAccounts} />
-    </div>
+    <Tabs value={tab} onValueChange={setTab}>
+      <TabsList className="flex flex-wrap h-auto gap-1 bg-muted/50 p-1 w-full justify-start mb-4">
+        <TabsTrigger value="designations" className="text-xs">Designations</TabsTrigger>
+        <TabsTrigger value="leave-types" className="text-xs">Leave Types</TabsTrigger>
+      </TabsList>
+      <TabsContent value="designations"><DesignationsContent /></TabsContent>
+      <TabsContent value="leave-types"><LeaveTypesContent /></TabsContent>
+    </Tabs>
   );
 }
 
-function HRMasters() {
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-      <MasterLinkCard label="Leave Types" desc="CL, PL, SL definitions & quotas" icon={CalendarClock} href={ADMIN_ROUTES.hr.leave} />
-    </div>
-  );
-}
-
-function SupportMasters() {
+// ── Support: Links to existing pages ──
+function SupportDeptMasters() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
       <MasterLinkCard label="Issue Types" desc="Ticket classification taxonomy" icon={FileText} href={ADMIN_ROUTES.support.issueTypes} />
@@ -664,7 +792,8 @@ function SupportMasters() {
   );
 }
 
-function LegalMasters() {
+// ── Legal: Links to existing pages ──
+function LegalDeptMasters() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
       <MasterLinkCard label="Legal Pages" desc="Terms, Privacy, Disclaimer templates" icon={Scale} href={ADMIN_ROUTES.legal.pages} />
@@ -673,38 +802,24 @@ function LegalMasters() {
   );
 }
 
-function SystemMasters() {
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-      <MasterLinkCard label="Workflows" desc="Automation rules & triggers" icon={GitBranch} href={ADMIN_ROUTES.settings.workflows} />
-      <MasterLinkCard label="RSS Feeds" desc="Content syndication sources" icon={FileText} href={ADMIN_ROUTES.settings.rss} />
-    </div>
-  );
-}
-
-// ═══════════════════════════════════════════════════════════
-// DEPARTMENT ACCORDION CONFIG
-// ═══════════════════════════════════════════════════════════
-
 const DEPT_MASTERS = [
-  { key: 'sales', label: 'Sales & CRM', icon: TrendingUp, component: SalesMasters },
-  { key: 'finance', label: 'Finance & Accounts', icon: Receipt, component: FinanceMasters },
-  { key: 'hr', label: 'HR & People', icon: Users, component: HRMasters },
-  { key: 'support', label: 'Support', icon: Headphones, component: SupportMasters },
-  { key: 'legal', label: 'Legal & Compliance', icon: ShieldCheck, component: LegalMasters },
-  { key: 'system', label: 'System & Automation', icon: Briefcase, component: SystemMasters },
+  { key: 'sales', label: 'Sales & CRM', icon: TrendingUp, component: SalesDeptMasters },
+  { key: 'finance', label: 'Finance & Accounts', icon: Receipt, component: FinanceDeptMasters },
+  { key: 'hr', label: 'HR & People', icon: Users, component: HRDeptMasters },
+  { key: 'support', label: 'Support', icon: Headphones, component: SupportDeptMasters },
+  { key: 'legal', label: 'Legal & Compliance', icon: ShieldCheck, component: LegalDeptMasters },
 ];
 
 // ═══════════════════════════════════════════════════════════
-// MAIN PAGE — Accordion layout: Global → Department Masters
+// MAIN PAGE
 // ═══════════════════════════════════════════════════════════
 
 const GLOBAL_TABS = [
   { value: 'firm', label: 'Firm Profile', icon: Landmark },
-  { value: 'products', label: 'Products', icon: Package },
+  { value: 'products', label: 'Products & Services', icon: Package },
   { value: 'departments', label: 'Departments', icon: Building2 },
-  { value: 'designations', label: 'Designations', icon: Award },
   { value: 'locations', label: 'Locations', icon: MapPin },
+  { value: 'workflows', label: 'Workflows', icon: Zap },
 ];
 
 export default function AdminMasterData() {
@@ -738,8 +853,18 @@ export default function AdminMasterData() {
             <TabsContent value="firm"><FirmProfileCard /></TabsContent>
             <TabsContent value="products"><ProductsTab /></TabsContent>
             <TabsContent value="departments"><DepartmentsTab /></TabsContent>
-            <TabsContent value="designations"><DesignationsTab /></TabsContent>
             <TabsContent value="locations"><LocationsTab /></TabsContent>
+            <TabsContent value="workflows">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-sm">Blueprints & Workflows</CardTitle>
+                  <p className="text-xs text-muted-foreground mt-1">Automation rules and triggers that operate across all departments.</p>
+                </CardHeader>
+                <CardContent>
+                  <MasterLinkCard label="Workflow Rules" desc="Automation triggers, conditions, and actions" icon={Zap} href={ADMIN_ROUTES.settings.workflows} />
+                </CardContent>
+              </Card>
+            </TabsContent>
           </Tabs>
         </section>
 

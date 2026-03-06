@@ -15,7 +15,7 @@ import { useState } from 'react';
 
 const EMPTY = { name: '', days: 0, description: '', is_default: false, is_active: true };
 
-const AdminPaymentTerms = () => {
+export const PaymentTermsContent = () => {
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<string | null>(null);
@@ -48,8 +48,7 @@ const AdminPaymentTerms = () => {
   const edit = (r: any) => { setEditing(r.id); setForm({ name: r.name, days: r.days, description: r.description || '', is_default: r.is_default, is_active: r.is_active }); setOpen(true); };
 
   return (
-    <AdminLayout title="Payment Terms" subtitle="Configure invoice payment term presets">
-      <Card>
+    <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Payment Terms</CardTitle>
           <Dialog open={open} onOpenChange={o => { setOpen(o); if (!o) { setEditing(null); setForm(EMPTY); } }}>
@@ -88,8 +87,13 @@ const AdminPaymentTerms = () => {
           )}
         </CardContent>
       </Card>
-    </AdminLayout>
   );
 };
+
+const AdminPaymentTerms = () => (
+  <AdminLayout title="Payment Terms" subtitle="Configure invoice payment term presets">
+    <PaymentTermsContent />
+  </AdminLayout>
+);
 
 export default AdminPaymentTerms;
