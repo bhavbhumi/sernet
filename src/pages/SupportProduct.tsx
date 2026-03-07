@@ -236,6 +236,26 @@ const SupportProduct = () => {
                   </Accordion>
                 </div>
 
+                {/* Suggested Articles */}
+                {selectedArticle && suggestedArticles.length > 0 && (
+                  <div className="bg-card border border-border rounded-xl p-4">
+                    <h3 className="text-xs font-semibold text-foreground mb-3 flex items-center gap-1.5 uppercase tracking-wide">
+                      <BookOpen className="h-3.5 w-3.5 text-primary" /> Related Articles
+                    </h3>
+                    <div className="space-y-1">
+                      {suggestedArticles.map((article: any) => (
+                        <button
+                          key={article.id}
+                          onClick={() => handleArticleClick(article)}
+                          className="w-full text-left px-2.5 py-2 rounded-md text-[12px] leading-snug text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-colors"
+                        >
+                          {article.title}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
               </div>
             </aside>
 
