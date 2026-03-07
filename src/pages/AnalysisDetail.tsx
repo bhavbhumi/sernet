@@ -146,7 +146,7 @@ export default function AnalysisDetail() {
 
   const isImageUrl = (url: string | null) => url && /\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i.test(url);
   const sidebarImageUrl = analysis.thumbnail_url || (isImageUrl(analysis.media_url) ? analysis.media_url : null);
-  const Icon = iconMap[analysis.icon_name ?? 'TrendingUp'] ?? TrendingUp;
+  const Icon = iconMap[(analysis as any).icon_name ?? 'TrendingUp'] ?? TrendingUp;
   const dateStr = (analysis.item_date || analysis.published_at)
     ? new Date(analysis.item_date || analysis.published_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })
     : '';

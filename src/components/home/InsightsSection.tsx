@@ -71,11 +71,11 @@ function useLatestInsights() {
       }
       if (analysisRes.data?.[0]) {
         const a = analysisRes.data[0];
-        cards.push({ id: a.id, type: 'analysis', category: a.category, title: a.title, excerpt: a.excerpt, date: a.item_date || a.published_at, imageUrl: a.thumbnail_url || a.media_url });
+        cards.push({ id: a.id, type: 'analysis', category: a.category, title: a.title, excerpt: a.excerpt, date: a.item_date || a.published_at, readTime: a.read_time, imageUrl: a.thumbnail_url || a.media_url });
       }
       if (reportsRes.data?.[0]) {
         const r = reportsRes.data[0];
-        cards.push({ id: r.id, type: 'report', category: r.report_type, title: r.title, excerpt: r.description, date: r.published_at });
+        cards.push({ id: r.id, type: 'report', category: r.category, title: r.title, excerpt: r.excerpt, date: r.published_at, imageUrl: r.thumbnail_url || r.media_url });
       }
       if (awarenessRes.data?.[0]) {
         const a = awarenessRes.data[0];
