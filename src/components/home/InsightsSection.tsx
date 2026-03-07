@@ -37,6 +37,7 @@ function useLatestInsights() {
           .from('articles')
           .select('id, category, title, excerpt, item_date, published_at, read_time, thumbnail_url, media_url')
           .eq('status', 'published')
+          .eq('content_type', 'article')
           .not('category', 'in', `(${awarenessCategories.join(',')})`)
           .order('item_date', { ascending: false, nullsFirst: false })
           .limit(1),
