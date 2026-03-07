@@ -4,9 +4,11 @@ import { motion } from 'framer-motion';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import {
   Search, BookOpen, Send, ChevronRight, Clock, FileText, Phone,
-  Download, TrendingUp, Shield, BarChart3, Landmark
+  Download, TrendingUp, Shield, BarChart3, Landmark, AlertTriangle,
+  Users, CheckCircle2, Eye, ListChecks
 } from 'lucide-react';
 import { useState, useMemo, useEffect } from 'react';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import { Badge } from '@/components/ui/badge';
@@ -51,7 +53,7 @@ const SupportProduct = () => {
     queryKey: ['kb-product-articles', productKey, debouncedSearch],
     queryFn: async () => {
       let q = db('kb_articles')
-        .select('id, title, slug, category, product, issue_code, short_summary, possible_reasons, what_to_check, resolution_steps, documents_required, resolution_timeline, when_to_raise_ticket, question_variants, body')
+        .select('id, title, slug, category, product, issue_code, short_summary, possible_reasons, what_to_check, resolution_steps, documents_required, resolution_timeline, when_to_raise_ticket, question_variants, body, priority, owner_team')
         .eq('status', 'published')
         .eq('visibility', 'public')
         .eq('product', productKey)
@@ -154,7 +156,7 @@ const SupportProduct = () => {
       {/* Main 2-column layout */}
       <section className="bg-background min-h-[calc(100vh-200px)]">
         <div className="container-sernet py-6">
-          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 items-start">
+          <div className={`grid grid-cols-1 ${selectedArticle ? 'lg:grid-cols-[280px_1fr_300px]' : 'lg:grid-cols-[280px_1fr]'} gap-6 items-start`}>
 
             {/* Left Sidebar */}
             <aside className="hidden lg:block">
@@ -285,6 +287,11 @@ const SupportProduct = () => {
                     {selectedArticle.issue_code && (
                       <span className="font-mono text-[10px] text-muted-foreground">{selectedArticle.issue_code}</span>
                     )}
+                    {selectedArticle.priority && (
+                      <Badge variant={selectedArticle.priority === 'high' || selectedArticle.priority === 'critical' ? 'destructive' : 'outline'} className="text-[10px] px-1.5 capitalize">
+                        {selectedArticle.priority} Priority
+                      </Badge>
+                    )}
                   </div>
 
                   <h1 className="text-xl font-bold text-foreground mb-2 leading-snug">{selectedArticle.title}</h1>
@@ -292,62 +299,25 @@ const SupportProduct = () => {
                     <p className="text-sm text-muted-foreground mb-6">{selectedArticle.short_summary}</p>
                   )}
 
-                  <div className="space-y-5">
-                    {selectedArticle.possible_reasons && (
-                      <div>
-                        <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
-                          <span className="w-1 h-4 bg-amber-500 rounded-full" /> Possible Reasons
-                        </h3>
-                        <div className="text-sm text-muted-foreground prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: selectedArticle.possible_reasons }} />
-                      </div>
-                    )}
-                    {selectedArticle.what_to_check && (
-                      <div>
-                        <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
-                          <span className="w-1 h-4 bg-blue-500 rounded-full" /> What To Check
-                        </h3>
-                        <div className="text-sm text-muted-foreground prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: selectedArticle.what_to_check }} />
-                      </div>
-                    )}
-                    {selectedArticle.resolution_steps && (
-                      <div>
-                        <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
-                          <span className="w-1 h-4 bg-emerald-500 rounded-full" /> Resolution Steps
-                        </h3>
-                        <div className="text-sm text-muted-foreground prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: selectedArticle.resolution_steps }} />
-                      </div>
-                    )}
-                    {(selectedArticle.documents_required ?? []).length > 0 && (
-                      <div>
-                        <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
-                          <FileText className="h-4 w-4 text-primary" /> Documents Required
-                        </h3>
-                        <ul className="text-sm text-muted-foreground list-disc list-inside space-y-1">
-                          {selectedArticle.documents_required.map((d: string, i: number) => <li key={i}>{d}</li>)}
-                        </ul>
-                      </div>
-                    )}
-                    {selectedArticle.resolution_timeline && (
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted/30 rounded-lg px-4 py-2.5">
-                        <Clock className="h-4 w-4 text-primary" />
-                        <span className="font-medium">Resolution Timeline:</span> {selectedArticle.resolution_timeline}
-                      </div>
-                    )}
-                    {selectedArticle.when_to_raise_ticket && (
-                      <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
-                        <h3 className="text-sm font-semibold text-amber-800 dark:text-amber-300 mb-1">When To Raise a Ticket</h3>
-                        <p className="text-sm text-amber-700 dark:text-amber-400">{selectedArticle.when_to_raise_ticket}</p>
-                      </div>
-                    )}
-                    {selectedArticle.body && (
-                      <div>
-                        <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
-                          <span className="w-1 h-4 bg-primary rounded-full" /> Detailed Guide
-                        </h3>
-                        <div className="text-sm text-muted-foreground prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: selectedArticle.body }} />
-                      </div>
-                    )}
-                  </div>
+                  {/* Body / Detailed Guide */}
+                  {selectedArticle.body && (
+                    <div className="mb-6">
+                      <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                        <span className="w-1 h-4 bg-primary rounded-full" /> Detailed Guide
+                      </h3>
+                      <div className="text-sm text-muted-foreground prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: selectedArticle.body }} />
+                    </div>
+                  )}
+
+                  {/* Resolution Steps (inline if present and no body) */}
+                  {selectedArticle.resolution_steps && !selectedArticle.body && (
+                    <div className="mb-6">
+                      <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                        <span className="w-1 h-4 bg-emerald-500 rounded-full" /> Resolution Steps
+                      </h3>
+                      <div className="text-sm text-muted-foreground prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: selectedArticle.resolution_steps }} />
+                    </div>
+                  )}
 
                   {/* CTA */}
                   <div className="mt-8 pt-5 border-t border-border flex flex-wrap items-center gap-4">
@@ -435,6 +405,119 @@ const SupportProduct = () => {
                 </motion.div>
               )}
             </main>
+
+            {/* Right Sidebar — only when article selected */}
+            {selectedArticle && (
+              <aside className="hidden lg:block">
+                <div className="sticky top-24 space-y-4">
+
+                  {/* Widget 1: Resolution Timeline, Documents, Owner */}
+                  <div className="bg-card border border-border rounded-xl overflow-hidden">
+                    <Tabs defaultValue="timeline" className="w-full">
+                      <TabsList className="w-full rounded-none border-b border-border bg-muted/30 h-auto p-0">
+                        <TabsTrigger value="timeline" className="flex-1 text-[11px] py-2 rounded-none data-[state=active]:bg-background data-[state=active]:shadow-none">
+                          <Clock className="h-3 w-3 mr-1" /> Timeline
+                        </TabsTrigger>
+                        <TabsTrigger value="docs" className="flex-1 text-[11px] py-2 rounded-none data-[state=active]:bg-background data-[state=active]:shadow-none">
+                          <FileText className="h-3 w-3 mr-1" /> Docs
+                        </TabsTrigger>
+                        <TabsTrigger value="owner" className="flex-1 text-[11px] py-2 rounded-none data-[state=active]:bg-background data-[state=active]:shadow-none">
+                          <Users className="h-3 w-3 mr-1" /> Owner
+                        </TabsTrigger>
+                      </TabsList>
+                      <TabsContent value="timeline" className="p-4 mt-0">
+                        {selectedArticle.resolution_timeline ? (
+                          <div className="flex items-start gap-2 text-sm">
+                            <Clock className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                            <span className="text-muted-foreground">{selectedArticle.resolution_timeline}</span>
+                          </div>
+                        ) : (
+                          <p className="text-xs text-muted-foreground italic">No timeline specified</p>
+                        )}
+                      </TabsContent>
+                      <TabsContent value="docs" className="p-4 mt-0">
+                        {(selectedArticle.documents_required ?? []).length > 0 ? (
+                          <ul className="text-sm text-muted-foreground space-y-1.5">
+                            {selectedArticle.documents_required.map((d: string, i: number) => (
+                              <li key={i} className="flex items-start gap-2">
+                                <FileText className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" />
+                                <span className="text-[13px]">{d}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p className="text-xs text-muted-foreground italic">No documents required</p>
+                        )}
+                      </TabsContent>
+                      <TabsContent value="owner" className="p-4 mt-0">
+                        {selectedArticle.owner_team ? (
+                          <div className="flex items-start gap-2 text-sm">
+                            <Users className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                            <span className="text-muted-foreground">{selectedArticle.owner_team}</span>
+                          </div>
+                        ) : (
+                          <p className="text-xs text-muted-foreground italic">Not assigned</p>
+                        )}
+                      </TabsContent>
+                    </Tabs>
+                  </div>
+
+                  {/* Widget 2: Possible Reasons, What to Check, Resolution */}
+                  <div className="bg-card border border-border rounded-xl overflow-hidden">
+                    <Tabs defaultValue="reasons" className="w-full">
+                      <TabsList className="w-full rounded-none border-b border-border bg-muted/30 h-auto p-0">
+                        <TabsTrigger value="reasons" className="flex-1 text-[11px] py-2 rounded-none data-[state=active]:bg-background data-[state=active]:shadow-none">
+                          <AlertTriangle className="h-3 w-3 mr-1" /> Reasons
+                        </TabsTrigger>
+                        <TabsTrigger value="check" className="flex-1 text-[11px] py-2 rounded-none data-[state=active]:bg-background data-[state=active]:shadow-none">
+                          <Eye className="h-3 w-3 mr-1" /> Check
+                        </TabsTrigger>
+                        <TabsTrigger value="resolution" className="flex-1 text-[11px] py-2 rounded-none data-[state=active]:bg-background data-[state=active]:shadow-none">
+                          <CheckCircle2 className="h-3 w-3 mr-1" /> Steps
+                        </TabsTrigger>
+                      </TabsList>
+                      <TabsContent value="reasons" className="p-4 mt-0">
+                        {selectedArticle.possible_reasons ? (
+                          <div className="text-sm text-muted-foreground prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: selectedArticle.possible_reasons }} />
+                        ) : (
+                          <p className="text-xs text-muted-foreground italic">No reasons documented</p>
+                        )}
+                      </TabsContent>
+                      <TabsContent value="check" className="p-4 mt-0">
+                        {selectedArticle.what_to_check ? (
+                          <div className="text-sm text-muted-foreground prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: selectedArticle.what_to_check }} />
+                        ) : (
+                          <p className="text-xs text-muted-foreground italic">No checks documented</p>
+                        )}
+                      </TabsContent>
+                      <TabsContent value="resolution" className="p-4 mt-0">
+                        {selectedArticle.resolution_steps ? (
+                          <div className="text-sm text-muted-foreground prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: selectedArticle.resolution_steps }} />
+                        ) : (
+                          <p className="text-xs text-muted-foreground italic">No resolution steps</p>
+                        )}
+                      </TabsContent>
+                    </Tabs>
+                  </div>
+
+                  {/* Widget 3: When to raise a ticket */}
+                  <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4">
+                    <h3 className="text-xs font-semibold text-amber-800 dark:text-amber-300 mb-2 flex items-center gap-1.5">
+                      <AlertTriangle className="h-3.5 w-3.5" /> When To Raise a Ticket
+                    </h3>
+                    {selectedArticle.when_to_raise_ticket ? (
+                      <p className="text-[13px] text-amber-700 dark:text-amber-400 leading-relaxed">{selectedArticle.when_to_raise_ticket}</p>
+                    ) : (
+                      <p className="text-xs text-amber-600/60 dark:text-amber-500/60 italic">Raise a ticket if the issue persists after following the resolution steps.</p>
+                    )}
+                    <Link to="/raise-ticket" className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-amber-800 dark:text-amber-300 hover:underline">
+                      <Send className="h-3 w-3" /> Raise a Ticket →
+                    </Link>
+                  </div>
+
+                </div>
+              </aside>
+            )}
           </div>
         </div>
       </section>
