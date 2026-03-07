@@ -105,6 +105,18 @@ const SupportProduct = () => {
 
   const selectedArticle = kbArticles.find((a: any) => a.id === selectedArticleId) as any;
 
+  // Suggested articles: same group OR same category, excluding current
+  const suggestedArticles = useMemo(() => {
+    if (!selectedArticle) return [];
+    const group = selectedArticle.suggested_article_group;
+    return kbArticles
+      .filter((a: any) => a.id !== selectedArticle.id && (
+        (group && a.suggested_article_group === group) ||
+        a.category === selectedArticle.category
+      ))
+      .slice(0, 5);
+  }, [selectedArticle, kbArticles]);
+
   const handleArticleClick = (article: any) => {
     setSelectedArticleId(article.id);
     setSearchParams({ article: article.slug }, { replace: true });
