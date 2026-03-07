@@ -109,27 +109,27 @@ const editorStyles = `
   .tiptap-editor .ProseMirror a { color: hsl(var(--primary)); text-decoration: underline; }
 `;
 
-export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
-  const TabIndent = Extension.create({
-    name: 'tabIndent',
-    addKeyboardShortcuts() {
-      return {
-        Tab: ({ editor: ed }) => {
-          if (ed.isActive('listItem')) {
-            return ed.chain().focus().sinkListItem('listItem').run();
-          }
-          return false;
-        },
-        'Shift-Tab': ({ editor: ed }) => {
-          if (ed.isActive('listItem')) {
-            return ed.chain().focus().liftListItem('listItem').run();
-          }
-          return false;
-        },
-      };
-    },
-  });
+const TabIndent = Extension.create({
+  name: 'tabIndent',
+  addKeyboardShortcuts() {
+    return {
+      Tab: ({ editor: ed }) => {
+        if (ed.isActive('listItem')) {
+          return ed.chain().focus().sinkListItem('listItem').run();
+        }
+        return false;
+      },
+      'Shift-Tab': ({ editor: ed }) => {
+        if (ed.isActive('listItem')) {
+          return ed.chain().focus().liftListItem('listItem').run();
+        }
+        return false;
+      },
+    };
+  },
+});
 
+export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({

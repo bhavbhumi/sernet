@@ -5,7 +5,7 @@ import { Link, useParams, useSearchParams } from 'react-router-dom';
 import {
   Search, BookOpen, Send, ChevronRight, Clock, FileText, Phone,
   Download, TrendingUp, Shield, BarChart3, Landmark, AlertTriangle,
-  Users, CheckCircle2, Eye, ListChecks
+  Users, Eye, ListChecks
 } from 'lucide-react';
 import { useState, useMemo, useEffect } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
@@ -341,8 +341,8 @@ const SupportProduct = () => {
                     </div>
                   )}
 
-                  {/* Resolution Steps (inline if present and no body) */}
-                  {selectedArticle.resolution_steps && !selectedArticle.body && (
+                   {/* Resolution Steps — always in middle column */}
+                  {selectedArticle.resolution_steps && (
                     <div className="mb-6">
                       <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
                         <span className="w-1 h-4 bg-emerald-500 rounded-full" /> Resolution Steps
@@ -443,15 +443,12 @@ const SupportProduct = () => {
               <aside className="hidden lg:block">
                 <div className="sticky top-24 space-y-4">
 
-                  {/* Widget 1: Resolution Timeline, Documents, Owner */}
+                  {/* Widget 1: Timeline & Owner */}
                   <div className="bg-card border border-border rounded-xl overflow-hidden">
                     <Tabs defaultValue="timeline" className="w-full">
                       <TabsList className="w-full rounded-none border-b border-border bg-muted/30 h-auto p-0">
                         <TabsTrigger value="timeline" className="flex-1 text-[11px] py-2 rounded-none data-[state=active]:bg-background data-[state=active]:shadow-none">
                           <Clock className="h-3 w-3 mr-1" /> Timeline
-                        </TabsTrigger>
-                        <TabsTrigger value="docs" className="flex-1 text-[11px] py-2 rounded-none data-[state=active]:bg-background data-[state=active]:shadow-none">
-                          <FileText className="h-3 w-3 mr-1" /> Docs
                         </TabsTrigger>
                         <TabsTrigger value="owner" className="flex-1 text-[11px] py-2 rounded-none data-[state=active]:bg-background data-[state=active]:shadow-none">
                           <Users className="h-3 w-3 mr-1" /> Owner
@@ -461,24 +458,10 @@ const SupportProduct = () => {
                         {selectedArticle.resolution_timeline ? (
                           <div className="flex items-start gap-2 text-sm">
                             <Clock className="h-4 w-4 text-primary shrink-0 mt-0.5" />
-                            <span className="text-muted-foreground">{selectedArticle.resolution_timeline}</span>
+                            <span className="text-muted-foreground whitespace-pre-line">{selectedArticle.resolution_timeline}</span>
                           </div>
                         ) : (
                           <p className="text-xs text-muted-foreground italic">No timeline specified</p>
-                        )}
-                      </TabsContent>
-                      <TabsContent value="docs" className="p-4 mt-0">
-                        {(selectedArticle.documents_required ?? []).length > 0 ? (
-                          <ul className="text-sm text-muted-foreground space-y-1.5">
-                            {selectedArticle.documents_required.map((d: string, i: number) => (
-                              <li key={i} className="flex items-start gap-2">
-                                <FileText className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" />
-                                <span className="text-[13px]">{d}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        ) : (
-                          <p className="text-xs text-muted-foreground italic">No documents required</p>
                         )}
                       </TabsContent>
                       <TabsContent value="owner" className="p-4 mt-0">
@@ -494,25 +477,32 @@ const SupportProduct = () => {
                     </Tabs>
                   </div>
 
-                  {/* Widget 2: Possible Reasons, What to Check, Resolution */}
+                  {/* Widget 2: Requirements, Checklist, Reasons */}
                   <div className="bg-card border border-border rounded-xl overflow-hidden">
-                    <Tabs defaultValue="reasons" className="w-full">
+                    <Tabs defaultValue="requirements" className="w-full">
                       <TabsList className="w-full rounded-none border-b border-border bg-muted/30 h-auto p-0">
+                        <TabsTrigger value="requirements" className="flex-1 text-[11px] py-2 rounded-none data-[state=active]:bg-background data-[state=active]:shadow-none">
+                          <FileText className="h-3 w-3 mr-1" /> Requirements
+                        </TabsTrigger>
+                        <TabsTrigger value="check" className="flex-1 text-[11px] py-2 rounded-none data-[state=active]:bg-background data-[state=active]:shadow-none">
+                          <Eye className="h-3 w-3 mr-1" /> Checklist
+                        </TabsTrigger>
                         <TabsTrigger value="reasons" className="flex-1 text-[11px] py-2 rounded-none data-[state=active]:bg-background data-[state=active]:shadow-none">
                           <AlertTriangle className="h-3 w-3 mr-1" /> Reasons
                         </TabsTrigger>
-                        <TabsTrigger value="check" className="flex-1 text-[11px] py-2 rounded-none data-[state=active]:bg-background data-[state=active]:shadow-none">
-                          <Eye className="h-3 w-3 mr-1" /> Check
-                        </TabsTrigger>
-                        <TabsTrigger value="resolution" className="flex-1 text-[11px] py-2 rounded-none data-[state=active]:bg-background data-[state=active]:shadow-none">
-                          <CheckCircle2 className="h-3 w-3 mr-1" /> Steps
-                        </TabsTrigger>
                       </TabsList>
-                      <TabsContent value="reasons" className="p-4 mt-0">
-                        {selectedArticle.possible_reasons ? (
-                          <div className="text-sm text-muted-foreground prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: selectedArticle.possible_reasons }} />
+                      <TabsContent value="requirements" className="p-4 mt-0">
+                        {(selectedArticle.documents_required ?? []).length > 0 ? (
+                          <ul className="text-sm text-muted-foreground space-y-1.5">
+                            {selectedArticle.documents_required.map((d: string, i: number) => (
+                              <li key={i} className="flex items-start gap-2">
+                                <FileText className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" />
+                                <span className="text-[13px]">{d}</span>
+                              </li>
+                            ))}
+                          </ul>
                         ) : (
-                          <p className="text-xs text-muted-foreground italic">No reasons documented</p>
+                          <p className="text-xs text-muted-foreground italic">No requirements specified</p>
                         )}
                       </TabsContent>
                       <TabsContent value="check" className="p-4 mt-0">
@@ -522,11 +512,11 @@ const SupportProduct = () => {
                           <p className="text-xs text-muted-foreground italic">No checks documented</p>
                         )}
                       </TabsContent>
-                      <TabsContent value="resolution" className="p-4 mt-0">
-                        {selectedArticle.resolution_steps ? (
-                          <div className="text-sm text-muted-foreground prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: selectedArticle.resolution_steps }} />
+                      <TabsContent value="reasons" className="p-4 mt-0">
+                        {selectedArticle.possible_reasons ? (
+                          <div className="text-sm text-muted-foreground prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: selectedArticle.possible_reasons }} />
                         ) : (
-                          <p className="text-xs text-muted-foreground italic">No resolution steps</p>
+                          <p className="text-xs text-muted-foreground italic">No reasons documented</p>
                         )}
                       </TabsContent>
                     </Tabs>
