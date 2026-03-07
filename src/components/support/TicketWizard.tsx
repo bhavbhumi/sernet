@@ -480,7 +480,7 @@ function SuggestedArticleCard({ article }: { article: any }) {
           )}
           {(article.documents_required ?? []).length > 0 && (
             <div>
-              <p className="text-xs font-semibold text-foreground mb-1 flex items-center gap-1"><FileText className="h-3 w-3" /> Documents Required</p>
+              <p className="text-xs font-semibold text-foreground mb-1 flex items-center gap-1"><FileText className="h-3 w-3" /> Requirements</p>
               <ul className="text-xs text-muted-foreground list-disc list-inside">
                 {article.documents_required.map((d: string, i: number) => <li key={i}>{d}</li>)}
               </ul>
