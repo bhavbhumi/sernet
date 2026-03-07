@@ -134,15 +134,6 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
       attributes: {
         class: 'max-w-none focus:outline-none',
       },
-      handleKeyDown: (view, event) => {
-        // Tab to indent list items, Shift+Tab to outdent
-        if (event.key === 'Tab') {
-          const { editor: ed } = view.state as any;
-          // We need to access the editor instance differently
-          return false; // let TipTap's built-in handler try first
-        }
-        return false;
-      },
     },
   });
 
