@@ -49,16 +49,17 @@ export const ReportsContent = () => {
     queryKey: ['reports'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('reports')
+        .from('articles')
         .select('*')
         .eq('status', 'published')
+        .eq('content_type', 'report')
         .order('published_at', { ascending: false });
       if (error) throw error;
       return data;
     },
   });
 
-  const filtered = activeType === 'All' ? reports : reports.filter(r => r.report_type === activeType);
+  const filtered = activeType === 'All' ? reports : reports.filter(r => r.category === activeType);
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
   const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
@@ -133,7 +134,7 @@ export const ReportsContent = () => {
                   const dateStr = report.published_at
                     ? new Date(report.published_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
                     : '';
-                  const colorClass = typeColors[report.report_type] ?? 'bg-muted text-muted-foreground';
+                  const colorClass = typeColors[report.category] ?? 'bg-muted text-muted-foreground';
                   return (
                     <motion.div
                       key={report.id}
@@ -149,15 +150,15 @@ export const ReportsContent = () => {
                         <div className="flex items-center gap-3 mb-1 flex-wrap">
                           <h3 className="text-lg font-semibold text-foreground truncate">{report.title}</h3>
                           <span className={`px-2.5 py-0.5 text-xs font-medium rounded-full shrink-0 ${colorClass}`}>
-                            {report.report_type}
+                            {report.category}
                           </span>
                         </div>
-                        {report.description && (
-                          <p className="text-sm text-muted-foreground mb-1">{report.description}</p>
+                        {report.excerpt && (
+                          <p className="text-sm text-muted-foreground mb-1">{report.excerpt}</p>
                         )}
                         <div className="flex items-center gap-4 text-xs text-muted-foreground">
                           {dateStr && <span className="flex items-center gap-1"><Calendar className="h-3 w-3" /> {dateStr}</span>}
-                          {report.pages ? <span>{report.pages} pages</span> : null}
+                          {report.read_time ? <span>{report.read_time}</span> : null}
                         </div>
                       </div>
                       {report.file_url ? (

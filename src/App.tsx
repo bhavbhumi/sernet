@@ -92,6 +92,8 @@ const AdminReports = lazy(() => import("./pages/admin/content/AdminReports"));
 const AdminBulletin = lazy(() => import("./pages/admin/content/AdminBulletin"));
 const AdminNews = lazy(() => import("./pages/admin/updates/AdminNews"));
 const AdminCirculars = lazy(() => import("./pages/admin/updates/AdminCirculars"));
+const AdminPosts = lazy(() => import("./pages/admin/content/AdminPosts"));
+const AdminFeeds = lazy(() => import("./pages/admin/content/AdminFeeds"));
 const AdminPolls = lazy(() => import("./pages/admin/engagement/AdminPolls"));
 const AdminSurveys = lazy(() => import("./pages/admin/engagement/AdminSurveys"));
 const AdminReviews = lazy(() => import("./pages/admin/engagement/AdminReviews"));
@@ -234,15 +236,18 @@ const App = () => (
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminDashboard />} />
 
-            {/* Admin — Marketing */}
-            <Route path="/admin/marketing/content/articles" element={<AdminArticles />} />
-            <Route path="/admin/marketing/content/awareness" element={<AdminAwareness />} />
-            <Route path="/admin/marketing/content/analysis" element={<AdminAnalysis />} />
-            <Route path="/admin/marketing/content/reports" element={<AdminReports />} />
+            {/* Admin — Marketing (unified) */}
+            <Route path="/admin/marketing/content/posts" element={<AdminPosts />} />
+            <Route path="/admin/marketing/content/feeds" element={<AdminFeeds />} />
             <Route path="/admin/marketing/content/bulletin" element={<AdminBulletin />} />
             <Route path="/admin/marketing/content/import" element={<AdminImportArticles />} />
-            <Route path="/admin/marketing/updates/news" element={<AdminNews />} />
-            <Route path="/admin/marketing/updates/circulars" element={<AdminCirculars />} />
+            {/* Legacy routes → redirect to unified pages */}
+            <Route path="/admin/marketing/content/articles" element={<AdminPosts />} />
+            <Route path="/admin/marketing/content/awareness" element={<AdminPosts />} />
+            <Route path="/admin/marketing/content/analysis" element={<AdminPosts />} />
+            <Route path="/admin/marketing/content/reports" element={<AdminPosts />} />
+            <Route path="/admin/marketing/updates/news" element={<AdminFeeds />} />
+            <Route path="/admin/marketing/updates/circulars" element={<AdminFeeds />} />
             <Route path="/admin/marketing/engagement/polls" element={<AdminPolls />} />
             <Route path="/admin/marketing/engagement/surveys" element={<AdminSurveys />} />
             <Route path="/admin/marketing/engagement/reviews" element={<AdminReviews />} />
