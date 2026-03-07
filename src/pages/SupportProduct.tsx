@@ -5,7 +5,7 @@ import { Link, useParams, useSearchParams } from 'react-router-dom';
 import {
   Search, BookOpen, Send, ChevronRight, Clock, FileText, Phone,
   Download, TrendingUp, Shield, BarChart3, Landmark, AlertTriangle,
-  Users, CheckCircle2, Eye, ListChecks
+  Users, Eye, ListChecks
 } from 'lucide-react';
 import { useState, useMemo, useEffect } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
