@@ -341,8 +341,8 @@ const SupportProduct = () => {
                     </div>
                   )}
 
-                  {/* Resolution Steps (inline if present and no body) */}
-                  {selectedArticle.resolution_steps && !selectedArticle.body && (
+                   {/* Resolution Steps — always in middle column */}
+                  {selectedArticle.resolution_steps && (
                     <div className="mb-6">
                       <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
                         <span className="w-1 h-4 bg-emerald-500 rounded-full" /> Resolution Steps
