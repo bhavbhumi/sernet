@@ -104,6 +104,7 @@ const AdminRSSSettings = lazy(() => import("./pages/admin/settings/AdminRSSSetti
 const AdminUsers = lazy(() => import("./pages/admin/settings/AdminUsers"));
 const AdminAIUsage = lazy(() => import("./pages/admin/settings/AdminAIUsage"));
 const AdminAuditLog = lazy(() => import("./pages/admin/settings/AdminAuditLog"));
+const AdminMonitor = lazy(() => import("./pages/admin/settings/AdminMonitor"));
 const AdminCalculatorLeads = lazy(() => import("./pages/admin/settings/AdminCalculatorLeads"));
 const AdminWorkflows = lazy(() => import("./pages/admin/settings/AdminWorkflows"));
 // AdminPermissions merged into AdminUsers
