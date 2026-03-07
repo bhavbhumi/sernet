@@ -339,8 +339,13 @@ const SupportProduct = () => {
                         <p className="text-sm text-amber-700 dark:text-amber-400">{selectedArticle.when_to_raise_ticket}</p>
                       </div>
                     )}
-                    {!selectedArticle.resolution_steps && !selectedArticle.possible_reasons && selectedArticle.body && (
-                      <div className="text-sm text-muted-foreground prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: selectedArticle.body }} />
+                    {selectedArticle.body && (
+                      <div>
+                        <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                          <span className="w-1 h-4 bg-primary rounded-full" /> Detailed Guide
+                        </h3>
+                        <div className="text-sm text-muted-foreground prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: selectedArticle.body }} />
+                      </div>
                     )}
                   </div>
 
