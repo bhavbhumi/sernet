@@ -134,6 +134,22 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
       attributes: {
         class: 'max-w-none focus:outline-none',
       },
+      handleKeyDown: (view, event) => {
+        if (event.key === 'Tab') {
+          const ed = editor;
+          if (ed && ed.isActive('listItem')) {
+            event.preventDefault();
+            event.stopPropagation();
+            if (event.shiftKey) {
+              ed.chain().focus().liftListItem('listItem').run();
+            } else {
+              ed.chain().focus().sinkListItem('listItem').run();
+            }
+            return true;
+          }
+        }
+        return false;
+      },
     },
   });
 
