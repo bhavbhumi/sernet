@@ -106,7 +106,7 @@ const AdminAIUsage = lazy(() => import("./pages/admin/settings/AdminAIUsage"));
 const AdminAuditLog = lazy(() => import("./pages/admin/settings/AdminAuditLog"));
 const AdminCalculatorLeads = lazy(() => import("./pages/admin/settings/AdminCalculatorLeads"));
 const AdminWorkflows = lazy(() => import("./pages/admin/settings/AdminWorkflows"));
-const AdminPermissions = lazy(() => import("./pages/admin/settings/AdminPermissions"));
+// AdminPermissions merged into AdminUsers
 const AdminLeads = lazy(() => import("./pages/admin/sales/AdminUnifiedLeads"));
 const AdminCRMPipeline = lazy(() => import("./pages/admin/sales/AdminCRMPipeline"));
 const AdminPipelineConfig = lazy(() => import("./pages/admin/sales/AdminPipelineConfig"));
@@ -305,7 +305,7 @@ const App = () => (
             {/* Admin — System Settings */}
             <Route path="/admin/settings/master-data" element={<AdminMasterData />} />
             <Route path="/admin/settings/users" element={<AdminUsers />} />
-            <Route path="/admin/settings/permissions" element={<AdminPermissions />} />
+            <Route path="/admin/settings/permissions" element={<AdminUsers />} />
             <Route path="/admin/settings/rss" element={<AdminRSSSettings />} />
             <Route path="/admin/settings/ai-usage" element={<AdminAIUsage />} />
             <Route path="/admin/settings/audit-log" element={<AdminAuditLog />} />
