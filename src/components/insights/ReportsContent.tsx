@@ -59,7 +59,7 @@ export const ReportsContent = () => {
     },
   });
 
-  const filtered = activeType === 'All' ? reports : reports.filter(r => r.report_type === activeType);
+  const filtered = activeType === 'All' ? reports : reports.filter(r => r.category === activeType);
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
   const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
