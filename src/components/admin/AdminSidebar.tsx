@@ -47,6 +47,14 @@ const departmentGroups: DepartmentGroup[] = [
     items: [
       { label: 'Master Data', icon: Database, href: R.settings.masterData, moduleKey: 'system/master-data' },
       { label: 'Users & Access', icon: Shield, href: R.settings.users, moduleKey: 'system/admin-users' },
+    ]
+  },
+  {
+    department: 'Monitor',
+    departmentKey: 'monitor',
+    icon: MonitorIcon,
+    color: 'text-rose-500',
+    items: [
       { label: 'AI Usage', icon: Sparkles, href: R.settings.aiUsage, moduleKey: 'system/ai-usage' },
       { label: 'Audit Log', icon: ScrollText, href: R.settings.auditLog, moduleKey: 'system/audit-log' },
       { label: 'System Health', icon: Activity, href: R.settings.health, moduleKey: 'system/health' },
