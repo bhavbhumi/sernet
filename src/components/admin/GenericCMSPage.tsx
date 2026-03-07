@@ -147,6 +147,14 @@ export function GenericCMSPage({
         cleanedForm[f.key] = null;
       }
     });
+    // Convert newline-separated textarea values to arrays for known array columns
+    const arrayColumns = ['documents_required', 'search_keywords', 'tags', 'question_variants', 'holiday_type'];
+    arrayColumns.forEach(col => {
+      if (col in cleanedForm && typeof cleanedForm[col] === 'string') {
+        const val = String(cleanedForm[col]).trim();
+        cleanedForm[col] = val ? val.split(/[\n,]+/).map((s: string) => s.trim()).filter(Boolean) : [];
+      }
+    });
     const payload = {
       ...cleanedForm,
       ...(hasStatus && cleanedForm.status === 'published' && !adminEnteredDate
