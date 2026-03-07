@@ -137,24 +137,26 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
     },
   });
 
-  // Add Tab/Shift+Tab keybindings for list nesting
   useEffect(() => {
     if (!editor) return;
     
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Tab' && editor.isActive('listItem')) {
+      if (e.key === 'Tab') {
         e.preventDefault();
-        if (e.shiftKey) {
-          editor.chain().focus().liftListItem('listItem').run();
-        } else {
-          editor.chain().focus().sinkListItem('listItem').run();
+        e.stopPropagation();
+        if (editor.isActive('listItem')) {
+          if (e.shiftKey) {
+            editor.chain().focus().liftListItem('listItem').run();
+          } else {
+            editor.chain().focus().sinkListItem('listItem').run();
+          }
         }
       }
     };
 
     const editorElement = editor.view.dom;
-    editorElement.addEventListener('keydown', handleKeyDown);
-    return () => editorElement.removeEventListener('keydown', handleKeyDown);
+    editorElement.addEventListener('keydown', handleKeyDown, { capture: true });
+    return () => editorElement.removeEventListener('keydown', handleKeyDown, { capture: true });
   }, [editor]);
 
   useEffect(() => {
