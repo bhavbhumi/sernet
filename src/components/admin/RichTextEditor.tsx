@@ -153,27 +153,6 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
     },
   });
 
-  useEffect(() => {
-    if (!editor) return;
-    
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Tab') {
-        e.preventDefault();
-        e.stopPropagation();
-        if (editor.isActive('listItem')) {
-          if (e.shiftKey) {
-            editor.chain().focus().liftListItem('listItem').run();
-          } else {
-            editor.chain().focus().sinkListItem('listItem').run();
-          }
-        }
-      }
-    };
-
-    const editorElement = editor.view.dom;
-    editorElement.addEventListener('keydown', handleKeyDown, { capture: true });
-    return () => editorElement.removeEventListener('keydown', handleKeyDown, { capture: true });
-  }, [editor]);
 
   useEffect(() => {
     if (editor && value !== editor.getHTML()) {
