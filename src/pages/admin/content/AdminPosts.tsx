@@ -444,7 +444,7 @@ export default function AdminPosts() {
                   className="font-mono text-sm"
                   value={form.body}
                   onChange={e => setForm(f => ({ ...f, body: e.target.value }))}
-                  onPaste={createTablePasteHandler((md: string) => setForm(f => ({ ...f, body: (f.body ? f.body + '\n\n' : '') + md })))}
+                  onPaste={createTablePasteHandler(setForm)}
                 />
               </div>
             )}
