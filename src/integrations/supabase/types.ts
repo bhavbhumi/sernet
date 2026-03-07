@@ -70,66 +70,6 @@ export type Database = {
           },
         ]
       }
-      analyses: {
-        Row: {
-          author: string
-          body: string | null
-          category: string
-          created_at: string
-          created_by: string | null
-          excerpt: string | null
-          icon_name: string | null
-          id: string
-          item_date: string | null
-          media_url: string | null
-          published_at: string | null
-          read_time: string | null
-          source_url: string | null
-          status: Database["public"]["Enums"]["content_status"]
-          thumbnail_url: string | null
-          title: string
-          updated_at: string
-        }
-        Insert: {
-          author?: string
-          body?: string | null
-          category: string
-          created_at?: string
-          created_by?: string | null
-          excerpt?: string | null
-          icon_name?: string | null
-          id?: string
-          item_date?: string | null
-          media_url?: string | null
-          published_at?: string | null
-          read_time?: string | null
-          source_url?: string | null
-          status?: Database["public"]["Enums"]["content_status"]
-          thumbnail_url?: string | null
-          title: string
-          updated_at?: string
-        }
-        Update: {
-          author?: string
-          body?: string | null
-          category?: string
-          created_at?: string
-          created_by?: string | null
-          excerpt?: string | null
-          icon_name?: string | null
-          id?: string
-          item_date?: string | null
-          media_url?: string | null
-          published_at?: string | null
-          read_time?: string | null
-          source_url?: string | null
-          status?: Database["public"]["Enums"]["content_status"]
-          thumbnail_url?: string | null
-          title?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
       article_likes: {
         Row: {
           article_id: string
@@ -2994,48 +2934,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
-      }
-      reports: {
-        Row: {
-          created_at: string
-          created_by: string | null
-          description: string | null
-          file_url: string | null
-          id: string
-          pages: number | null
-          published_at: string | null
-          report_type: string
-          status: Database["public"]["Enums"]["content_status"]
-          title: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          created_by?: string | null
-          description?: string | null
-          file_url?: string | null
-          id?: string
-          pages?: number | null
-          published_at?: string | null
-          report_type: string
-          status?: Database["public"]["Enums"]["content_status"]
-          title: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          created_by?: string | null
-          description?: string | null
-          file_url?: string | null
-          id?: string
-          pages?: number | null
-          published_at?: string | null
-          report_type?: string
-          status?: Database["public"]["Enums"]["content_status"]
-          title?: string
-          updated_at?: string
-        }
-        Relationships: []
       }
       reviews: {
         Row: {
