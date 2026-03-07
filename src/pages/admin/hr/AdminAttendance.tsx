@@ -105,7 +105,7 @@ const AdminAttendance = () => {
 
   const createLog = useMutation({
     mutationFn: async () => {
-      const payload: Record<string, any> = {
+      const row = {
         employee_id: form.employee_id,
         log_date: form.log_date,
         status: form.status,
@@ -113,13 +113,11 @@ const AdminAttendance = () => {
         check_out: form.check_out ? `${form.log_date}T${form.check_out}:00` : null,
         notes: form.notes || null,
         location_type: form.location_type,
-      };
-      if (geo.captured) {
-        payload.latitude = geo.latitude;
-        payload.longitude = geo.longitude;
-        payload.address_snapshot = geo.address;
-      }
-      const { error } = await supabase.from('attendance_logs').insert(payload);
+        latitude: geo.captured ? geo.latitude : null,
+        longitude: geo.captured ? geo.longitude : null,
+        address_snapshot: geo.captured ? geo.address : null,
+      } as any;
+      const { error } = await supabase.from('attendance_logs').insert(row);
       if (error) throw error;
     },
     onSuccess: () => {
