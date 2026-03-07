@@ -171,9 +171,10 @@ export const CircularsContent = () => {
     queryKey: ['circulars_public'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('circulars')
+        .from('feeds')
         .select('*')
         .eq('status', 'published')
+        .eq('feed_type', 'circular')
         .order('published_at', { ascending: false });
       if (error) throw error;
       return data as DbCircularItem[];

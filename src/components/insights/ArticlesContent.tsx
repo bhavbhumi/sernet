@@ -213,6 +213,7 @@ export const ArticlesContent = () => {
         .from('articles')
         .select('*')
         .eq('status', 'published')
+        .eq('content_type', 'article')
         .order('item_date', { ascending: false, nullsFirst: false });
       if (error) throw error;
       return data;

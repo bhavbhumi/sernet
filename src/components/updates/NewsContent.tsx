@@ -179,9 +179,10 @@ export const NewsContent = () => {
     queryKey: ['news_items_public'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('news_items')
+        .from('feeds')
         .select('*')
         .eq('status', 'published')
+        .eq('feed_type', 'news')
         .order('published_at', { ascending: false });
       if (error) throw error;
       return data as DbNewsItem[];

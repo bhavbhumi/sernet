@@ -49,9 +49,10 @@ export const ReportsContent = () => {
     queryKey: ['reports'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('reports')
+        .from('articles')
         .select('*')
         .eq('status', 'published')
+        .eq('content_type', 'report')
         .order('published_at', { ascending: false });
       if (error) throw error;
       return data;

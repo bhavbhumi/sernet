@@ -65,13 +65,9 @@ const departmentGroups: DepartmentGroup[] = [
     items: [
       {
         label: 'Content Studio', icon: BookOpen, moduleKey: 'marketing/content-studio', children: [
-          { label: 'Articles', icon: FileText, href: R.marketing.content.articles },
-          { label: 'Analysis', icon: BarChart3, href: R.marketing.content.analysis },
-          { label: 'Awareness', icon: Lightbulb, href: R.marketing.content.awareness },
-          { label: 'Reports', icon: BookOpen, href: R.marketing.content.reports },
+          { label: 'Posts', icon: FileText, href: R.marketing.content.posts },
+          { label: 'Feeds', icon: Rss, href: R.marketing.content.feeds },
           { label: 'Bulletin', icon: Bell, href: R.marketing.content.bulletin },
-          { label: 'News', icon: Newspaper, href: R.marketing.updates.news },
-          { label: 'Circulars', icon: AlertCircle, href: R.marketing.updates.circulars },
           { label: 'Press & Media', icon: Mic2, href: R.marketing.press },
         ]
       },

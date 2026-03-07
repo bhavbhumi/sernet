@@ -181,9 +181,10 @@ export const AwarenessContent = () => {
     queryKey: ['awareness-content'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('awareness')
+        .from('articles')
         .select('*')
         .eq('status', 'published')
+        .eq('content_type', 'awareness')
         .order('item_date', { ascending: false, nullsFirst: false });
       if (error) throw error;
       return data as any[];

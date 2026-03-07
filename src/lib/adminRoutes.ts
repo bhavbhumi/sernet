@@ -13,11 +13,13 @@ export const ADMIN_ROUTES = {
   marketing: {
     root: '/admin/marketing',
     content: {
+      posts: '/admin/marketing/content/posts',
       articles: '/admin/marketing/content/articles',
       analysis: '/admin/marketing/content/analysis',
       awareness: '/admin/marketing/content/awareness',
       reports: '/admin/marketing/content/reports',
       bulletin: '/admin/marketing/content/bulletin',
+      feeds: '/admin/marketing/content/feeds',
       import: '/admin/marketing/content/import',
     },
     updates: {
