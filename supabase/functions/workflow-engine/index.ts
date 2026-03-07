@@ -110,7 +110,7 @@ Deno.serve(async (req) => {
 
         for (const action of actions) {
           // Support both "config" and "params" keys for backwards compatibility
-          const cfg = action.config || (action as any).params || {};
+          const cfg = action.config ?? (action as any).params ?? {};
           switch (action.type) {
             case "update_field": {
               const updates: Record<string, string> = {};
