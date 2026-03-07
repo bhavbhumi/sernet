@@ -156,7 +156,7 @@ const SupportProduct = () => {
       {/* Main 2-column layout */}
       <section className="bg-background min-h-[calc(100vh-200px)]">
         <div className="container-sernet py-6">
-          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 items-start">
+          <div className={`grid grid-cols-1 ${selectedArticle ? 'lg:grid-cols-[280px_1fr_300px]' : 'lg:grid-cols-[280px_1fr]'} gap-6 items-start`}>
 
             {/* Left Sidebar */}
             <aside className="hidden lg:block">
