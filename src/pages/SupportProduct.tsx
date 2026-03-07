@@ -331,6 +331,16 @@ const SupportProduct = () => {
                     <p className="text-sm text-muted-foreground mb-6">{selectedArticle.short_summary}</p>
                   )}
 
+                  {/* Resolution Steps — always in middle column */}
+                  {selectedArticle.resolution_steps && (
+                    <div className="mb-6">
+                      <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                        <span className="w-1 h-4 bg-emerald-500 rounded-full" /> Resolution Steps
+                      </h3>
+                      <div className="text-sm text-muted-foreground prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: selectedArticle.resolution_steps }} />
+                    </div>
+                  )}
+
                   {/* Body / Detailed Guide */}
                   {selectedArticle.body && (
                     <div className="mb-6">
@@ -338,16 +348,6 @@ const SupportProduct = () => {
                         <span className="w-1 h-4 bg-primary rounded-full" /> Detailed Guide
                       </h3>
                       <div className="text-sm text-muted-foreground prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: selectedArticle.body }} />
-                    </div>
-                  )}
-
-                   {/* Resolution Steps — always in middle column */}
-                  {selectedArticle.resolution_steps && (
-                    <div className="mb-6">
-                      <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
-                        <span className="w-1 h-4 bg-emerald-500 rounded-full" /> Resolution Steps
-                      </h3>
-                      <div className="text-sm text-muted-foreground prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: selectedArticle.resolution_steps }} />
                     </div>
                   )}
 
