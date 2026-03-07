@@ -110,15 +110,33 @@ const editorStyles = `
 `;
 
 export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
+  const TabIndent = Extension.create({
+    name: 'tabIndent',
+    addKeyboardShortcuts() {
+      return {
+        Tab: ({ editor: ed }) => {
+          if (ed.isActive('listItem')) {
+            return ed.chain().focus().sinkListItem('listItem').run();
+          }
+          return false;
+        },
+        'Shift-Tab': ({ editor: ed }) => {
+          if (ed.isActive('listItem')) {
+            return ed.chain().focus().liftListItem('listItem').run();
+          }
+          return false;
+        },
+      };
+    },
+  });
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
         heading: { levels: [1, 2, 3] },
         bulletList: { keepMarks: true, keepAttributes: false },
         orderedList: { keepMarks: true, keepAttributes: false },
-        listItem: {
-          HTMLAttributes: {},
-        },
+        listItem: { HTMLAttributes: {} },
       }),
       Underline,
       Link.configure({ openOnClick: false }),
@@ -126,6 +144,7 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
       TableRow,
       TableHeader,
       TableCell,
+      TabIndent,
     ],
     content: value || '',
     onUpdate: ({ editor }) => {
@@ -134,22 +153,6 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
     editorProps: {
       attributes: {
         class: 'max-w-none focus:outline-none',
-      },
-      handleKeyDown: (view, event) => {
-        if (event.key === 'Tab') {
-          const ed = editor;
-          if (ed && ed.isActive('listItem')) {
-            event.preventDefault();
-            event.stopPropagation();
-            if (event.shiftKey) {
-              ed.chain().focus().liftListItem('listItem').run();
-            } else {
-              ed.chain().focus().sinkListItem('listItem').run();
-            }
-            return true;
-          }
-        }
-        return false;
       },
     },
   });
