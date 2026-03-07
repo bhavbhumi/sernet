@@ -305,7 +305,7 @@ const App = () => (
             {/* Admin — System Settings */}
             <Route path="/admin/settings/master-data" element={<AdminMasterData />} />
             <Route path="/admin/settings/users" element={<AdminUsers />} />
-            <Route path="/admin/settings/permissions" element={<AdminPermissions />} />
+            <Route path="/admin/settings/permissions" element={<AdminUsers />} />
             <Route path="/admin/settings/rss" element={<AdminRSSSettings />} />
             <Route path="/admin/settings/ai-usage" element={<AdminAIUsage />} />
             <Route path="/admin/settings/audit-log" element={<AdminAuditLog />} />
