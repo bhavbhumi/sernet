@@ -74,12 +74,33 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
     <div className="border border-border rounded-lg overflow-hidden bg-background">
       {/* List style overrides for TipTap */}
       <style>{`
-        .tiptap-editor ul { list-style-type: disc; padding-left: 1.5em; margin: 0.5em 0; }
-        .tiptap-editor ol { list-style-type: decimal; padding-left: 1.5em; margin: 0.5em 0; }
-        .tiptap-editor ul ul { list-style-type: circle; }
-        .tiptap-editor ol ol { list-style-type: lower-alpha; }
-        .tiptap-editor li { margin: 0.15em 0; }
-        .tiptap-editor li p { margin: 0; }
+        .tiptap-editor .tiptap,
+        .tiptap-editor .ProseMirror { min-height: 200px; }
+        .tiptap-editor .tiptap ul,
+        .tiptap-editor .ProseMirror ul { list-style-type: disc !important; padding-left: 1.5em !important; margin: 0.5em 0 !important; }
+        .tiptap-editor .tiptap ol,
+        .tiptap-editor .ProseMirror ol { list-style-type: decimal !important; padding-left: 1.5em !important; margin: 0.5em 0 !important; }
+        .tiptap-editor .tiptap ul ul,
+        .tiptap-editor .ProseMirror ul ul { list-style-type: circle !important; }
+        .tiptap-editor .tiptap ol ol,
+        .tiptap-editor .ProseMirror ol ol { list-style-type: lower-alpha !important; }
+        .tiptap-editor .tiptap li,
+        .tiptap-editor .ProseMirror li { margin: 0.15em 0; display: list-item !important; }
+        .tiptap-editor .tiptap li p,
+        .tiptap-editor .ProseMirror li p { margin: 0; display: inline; }
+        .tiptap-editor .tiptap li > ul,
+        .tiptap-editor .ProseMirror li > ul,
+        .tiptap-editor .tiptap li > ol,
+        .tiptap-editor .ProseMirror li > ol { margin-top: 0.25em !important; }
+        .tiptap-editor .tiptap blockquote,
+        .tiptap-editor .ProseMirror blockquote { border-left: 3px solid hsl(var(--border)); padding-left: 1em; margin: 0.5em 0; color: hsl(var(--muted-foreground)); }
+        .tiptap-editor .tiptap h1, .tiptap-editor .ProseMirror h1 { font-size: 1.5em; font-weight: 700; margin: 0.5em 0; }
+        .tiptap-editor .tiptap h2, .tiptap-editor .ProseMirror h2 { font-size: 1.25em; font-weight: 600; margin: 0.5em 0; }
+        .tiptap-editor .tiptap h3, .tiptap-editor .ProseMirror h3 { font-size: 1.1em; font-weight: 600; margin: 0.5em 0; }
+        .tiptap-editor .tiptap p, .tiptap-editor .ProseMirror p { margin: 0.35em 0; }
+        .tiptap-editor .tiptap table, .tiptap-editor .ProseMirror table { border-collapse: collapse; width: 100%; margin: 0.5em 0; }
+        .tiptap-editor .tiptap td, .tiptap-editor .tiptap th,
+        .tiptap-editor .ProseMirror td, .tiptap-editor .ProseMirror th { border: 1px solid hsl(var(--border)); padding: 0.4em 0.6em; }
       `}</style>
       {/* Toolbar */}
       <div className="flex flex-wrap items-center gap-0.5 px-2 py-1.5 border-b border-border bg-muted/30">
