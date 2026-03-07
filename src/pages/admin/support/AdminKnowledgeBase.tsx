@@ -23,7 +23,7 @@ const fields = [
   { key: 'possible_reasons', label: 'Possible Reasons', type: 'html' as const, colSpan: 2 },
   { key: 'what_to_check', label: 'What To Check', type: 'html' as const, colSpan: 2 },
   { key: 'resolution_steps', label: 'Resolution Steps', type: 'html' as const, colSpan: 2 },
-  { key: 'documents_required', label: 'Documents Required', type: 'textarea' as const, placeholder: 'One document per line', tip: 'Enter each required document on a new line' },
+  { key: 'documents_required', label: 'Essential Requirements', type: 'textarea' as const, placeholder: 'One requirement per line', tip: 'Enter each essential requirement on a new line (documents, prerequisites, etc.)' },
   { key: 'resolution_timeline', label: 'Resolution Timeline', type: 'textarea' as const, placeholder: 'e.g. 24-48 hours\nDescribe the expected resolution timeline in detail' },
   { key: 'when_to_raise_ticket', label: 'When To Raise Ticket', type: 'textarea' as const, colSpan: 2, placeholder: 'Describe conditions when user should escalate to a ticket' },
   { key: 'body', label: 'Full Article Content (Legacy)', type: 'html' as const, colSpan: 2 },
