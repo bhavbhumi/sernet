@@ -17,6 +17,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { useToast } from '@/hooks/use-toast';
 import { FieldInfoTooltip } from '@/components/admin/FieldInfoTooltip';
 import { logAudit } from '@/lib/auditLog';
+import { RichTextEditor } from '@/components/admin/RichTextEditor';
 
 export interface FieldDef {
   key: string;
