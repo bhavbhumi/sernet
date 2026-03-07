@@ -177,9 +177,11 @@ export type Database = {
           author: string
           body: string | null
           category: string
+          content_type: Database["public"]["Enums"]["post_content_type"]
           created_at: string
           created_by: string | null
           excerpt: string | null
+          file_url: string | null
           format: Database["public"]["Enums"]["article_format"]
           id: string
           item_date: string | null
@@ -190,6 +192,7 @@ export type Database = {
           read_time: string | null
           source_url: string | null
           status: Database["public"]["Enums"]["content_status"]
+          sub_category: string | null
           thumbnail_url: string | null
           title: string
           updated_at: string
@@ -198,9 +201,11 @@ export type Database = {
           author?: string
           body?: string | null
           category: string
+          content_type?: Database["public"]["Enums"]["post_content_type"]
           created_at?: string
           created_by?: string | null
           excerpt?: string | null
+          file_url?: string | null
           format?: Database["public"]["Enums"]["article_format"]
           id?: string
           item_date?: string | null
@@ -211,6 +216,7 @@ export type Database = {
           read_time?: string | null
           source_url?: string | null
           status?: Database["public"]["Enums"]["content_status"]
+          sub_category?: string | null
           thumbnail_url?: string | null
           title: string
           updated_at?: string
@@ -219,9 +225,11 @@ export type Database = {
           author?: string
           body?: string | null
           category?: string
+          content_type?: Database["public"]["Enums"]["post_content_type"]
           created_at?: string
           created_by?: string | null
           excerpt?: string | null
+          file_url?: string | null
           format?: Database["public"]["Enums"]["article_format"]
           id?: string
           item_date?: string | null
@@ -232,6 +240,7 @@ export type Database = {
           read_time?: string | null
           source_url?: string | null
           status?: Database["public"]["Enums"]["content_status"]
+          sub_category?: string | null
           thumbnail_url?: string | null
           title?: string
           updated_at?: string
@@ -1605,6 +1614,60 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      feeds: {
+        Row: {
+          category: string
+          created_at: string
+          created_by: string | null
+          feed_type: Database["public"]["Enums"]["feed_type"]
+          id: string
+          is_rss: boolean | null
+          link: string | null
+          published_at: string | null
+          rss_feed_url: string | null
+          source: string
+          status: Database["public"]["Enums"]["content_status"]
+          sub_category: string | null
+          summary: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          feed_type?: Database["public"]["Enums"]["feed_type"]
+          id?: string
+          is_rss?: boolean | null
+          link?: string | null
+          published_at?: string | null
+          rss_feed_url?: string | null
+          source: string
+          status?: Database["public"]["Enums"]["content_status"]
+          sub_category?: string | null
+          summary?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          feed_type?: Database["public"]["Enums"]["feed_type"]
+          id?: string
+          is_rss?: boolean | null
+          link?: string | null
+          published_at?: string | null
+          rss_feed_url?: string | null
+          source?: string
+          status?: Database["public"]["Enums"]["content_status"]
+          sub_category?: string | null
+          summary?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       firm_profile: {
         Row: {
@@ -4072,7 +4135,9 @@ export type Database = {
         | "accounts"
         | "support"
         | "legal"
+      feed_type: "news" | "circular"
       portal_user_type: "client" | "partner"
+      post_content_type: "article" | "analysis" | "awareness" | "report"
       ticket_channel: "phone" | "walk_in" | "website" | "email" | "portal"
       ticket_priority: "low" | "medium" | "high" | "urgent"
       ticket_status:
@@ -4238,7 +4303,9 @@ export const Constants = {
         "dormant",
       ],
       department: ["marketing", "sales", "hr", "accounts", "support", "legal"],
+      feed_type: ["news", "circular"],
       portal_user_type: ["client", "partner"],
+      post_content_type: ["article", "analysis", "awareness", "report"],
       ticket_channel: ["phone", "walk_in", "website", "email", "portal"],
       ticket_priority: ["low", "medium", "high", "urgent"],
       ticket_status: [
