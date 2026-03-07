@@ -321,29 +321,17 @@ export default function AdminImportArticles() {
     setMigrationPhase('imported');
   };
 
-  // ── MIGRATION: Step 2 - Delete old analyses, move tagged articles to analyses ──
+  // ── MIGRATION: Step 2 - Finalize imported articles ──
   const runMigrationMove = async () => {
-    if (!confirm('This will:\n1. DELETE all 302 existing analyses\n2. Move the imported articles (tagged __analysis_import) into analyses\n\nAre you sure?')) return;
+    if (!confirm('This will finalize the migration by moving tagged articles. Are you sure?')) return;
 
     setMigrationPhase('deleting');
-    addLog('🗑️ MIGRATION Step 2a: Deleting old analyses...');
+    addLog('📦 MIGRATION Step 2: Finalizing imported articles...');
 
     try {
-      // Delete all existing analyses
-      const { error: delError } = await supabase
-        .from('analyses')
-        .delete()
-        .gte('created_at', '2000-01-01');
-
-      if (delError) {
-        addLog(`❌ Delete failed: ${delError.message}`);
-        setMigrationPhase('imported');
-        return;
-      }
-
-      // Count how many remain
-      const { count } = await supabase.from('analyses').select('*', { count: 'exact', head: true });
-      addLog(`✅ Deleted old analyses. Remaining: ${count || 0}`);
+      // Count analysis articles
+      const { count } = await supabase.from('articles').select('*', { count: 'exact', head: true }).eq('content_type', 'analysis');
+      addLog(`✅ Analysis articles in unified table: ${count || 0}`);
 
       setMigrationPhase('moving');
       addLog('📦 MIGRATION Step 2b: Moving tagged articles to analyses...');
