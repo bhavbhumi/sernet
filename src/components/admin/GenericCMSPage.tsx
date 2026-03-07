@@ -394,7 +394,7 @@ export function GenericCMSPage({
                   <Textarea placeholder={field.placeholder} rows={3} value={String(form[field.key] ?? '')} onChange={e => setForm(f => ({ ...f, [field.key]: e.target.value }))} />
                 )}
                 {field.type === 'html' && (
-                  <Textarea placeholder={field.placeholder} rows={8} value={String(form[field.key] ?? '')} onChange={e => setForm(f => ({ ...f, [field.key]: e.target.value }))} className="font-mono text-xs" />
+                  <RichTextEditor value={String(form[field.key] ?? '')} onChange={(html) => setForm(f => ({ ...f, [field.key]: html }))} />
                 )}
                 {(field.type === 'text' || field.type === 'url' || field.type === 'number') && (
                   <Input type={field.type === 'number' ? 'number' : 'text'} placeholder={field.placeholder} value={String(form[field.key] ?? '')} onChange={e => setForm(f => ({ ...f, [field.key]: e.target.value }))} />
