@@ -134,7 +134,7 @@ export const ReportsContent = () => {
                   const dateStr = report.published_at
                     ? new Date(report.published_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
                     : '';
-                  const colorClass = typeColors[report.report_type] ?? 'bg-muted text-muted-foreground';
+                  const colorClass = typeColors[report.category] ?? 'bg-muted text-muted-foreground';
                   return (
                     <motion.div
                       key={report.id}
