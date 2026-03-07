@@ -9,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
-import { Plus, Pencil, Trash2, Search, Eye, EyeOff, Rss, Link, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plus, Pencil, Trash2, Search, Eye, EyeOff, Rss, Link, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { CategoryTreeManager, type CategoryNode } from '@/components/admin/CategoryTreeManager';
