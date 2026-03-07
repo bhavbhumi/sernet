@@ -48,6 +48,13 @@ const departmentGroups: DepartmentGroup[] = [
       { label: 'Master Data', icon: Database, href: R.settings.masterData, moduleKey: 'system/master-data' },
       { label: 'Users & Access', icon: Shield, href: R.settings.users, moduleKey: 'system/admin-users' },
       { label: 'Monitor', icon: MonitorDot, href: '/admin/settings/monitor', moduleKey: 'system/monitor' },
+      {
+        label: 'Website', icon: Globe, moduleKey: 'system/website', children: [
+          { label: 'Site Settings', icon: Palette, href: R.marketing.site.settings },
+          { label: 'Page Directory', icon: ScanSearch, href: R.marketing.site.pages },
+          { label: 'Media Library', icon: Images, href: R.marketing.site.media },
+        ]
+      },
     ]
   },
   {
@@ -63,22 +70,9 @@ const departmentGroups: DepartmentGroup[] = [
           { label: 'Awareness', icon: Lightbulb, href: R.marketing.content.awareness },
           { label: 'Reports', icon: BookOpen, href: R.marketing.content.reports },
           { label: 'Bulletin', icon: Bell, href: R.marketing.content.bulletin },
-          { label: 'Import Articles', icon: Download, href: R.marketing.content.import },
-        ]
-      },
-      {
-        label: 'News & Updates', icon: Rss, moduleKey: 'marketing/news-updates', children: [
           { label: 'News', icon: Newspaper, href: R.marketing.updates.news },
           { label: 'Circulars', icon: AlertCircle, href: R.marketing.updates.circulars },
-        ]
-      },
-      {
-        label: 'Engagement', icon: Vote, moduleKey: 'marketing/engagement', children: [
-          { label: 'Polls', icon: Vote, href: R.marketing.engagement.polls },
-          { label: 'Surveys', icon: ClipboardList, href: R.marketing.engagement.surveys },
-          { label: 'Reviews', icon: Star, href: R.marketing.engagement.reviews },
-          { label: 'Subscribers', icon: Mail, href: R.marketing.engagement.newsletter },
-          { label: 'Composer', icon: Mail, href: R.marketing.engagement.composer },
+          { label: 'Press & Media', icon: Mic2, href: R.marketing.press },
         ]
       },
       {
@@ -86,22 +80,22 @@ const departmentGroups: DepartmentGroup[] = [
           { label: 'Campaign Tracker', icon: Target, href: R.marketing.campaigns.tracker },
           { label: 'Lead Attribution', icon: TrendingUp, href: R.marketing.campaigns.attribution },
           { label: 'Events & Webinars', icon: CalendarDays, href: R.marketing.campaigns.events },
+          { label: 'Subscribers', icon: Mail, href: R.marketing.engagement.newsletter },
+          { label: 'Composer', icon: Mail, href: R.marketing.engagement.composer },
         ]
       },
-      { label: 'Press & Media', icon: Mic2, href: R.marketing.press, moduleKey: 'marketing/press-media' },
+      {
+        label: 'Feedback', icon: Vote, moduleKey: 'marketing/feedback', children: [
+          { label: 'Polls', icon: Vote, href: R.marketing.engagement.polls },
+          { label: 'Surveys', icon: ClipboardList, href: R.marketing.engagement.surveys },
+          { label: 'Reviews', icon: Star, href: R.marketing.engagement.reviews },
+        ]
+      },
       {
         label: 'Calendars', icon: CalendarDays, moduleKey: 'marketing/calendars', children: [
           { label: 'Market Holidays', icon: CalendarDays, href: R.marketing.calendars.holidays },
           { label: 'Economic Events', icon: BarChart3, href: R.marketing.calendars.economic },
-          { label: 'Import Economic', icon: Download, href: R.marketing.calendars.importEconomic },
           { label: 'Corporate Events', icon: Briefcase, href: R.marketing.calendars.corporate },
-        ]
-      },
-      {
-        label: 'Website', icon: Globe, moduleKey: 'marketing/website', children: [
-          { label: 'Site Settings', icon: Palette, href: R.marketing.site.settings },
-          { label: 'Page Directory', icon: ScanSearch, href: R.marketing.site.pages },
-          { label: 'Media Library', icon: Images, href: R.marketing.site.media },
         ]
       },
     ]
