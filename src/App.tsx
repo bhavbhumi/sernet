@@ -85,12 +85,7 @@ const PortalDashboard = lazy(() => import("./pages/portal/PortalDashboard"));
 const AdminSetup = lazy(() => import("./pages/admin/AdminSetup"));
 const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
-const AdminArticles = lazy(() => import("./pages/admin/content/AdminArticles"));
-const AdminAwareness = lazy(() => import("./pages/admin/content/AdminAwareness"));
-// Legacy AdminAnalysis & AdminReports removed — unified into AdminPosts
-const AdminBulletin = lazy(() => import("./pages/admin/content/AdminBulletin"));
-const AdminNews = lazy(() => import("./pages/admin/updates/AdminNews"));
-const AdminCirculars = lazy(() => import("./pages/admin/updates/AdminCirculars"));
+// Legacy standalone content admin pages removed — unified into AdminPosts & AdminFeeds
 const AdminPosts = lazy(() => import("./pages/admin/content/AdminPosts"));
 const AdminFeeds = lazy(() => import("./pages/admin/content/AdminFeeds"));
 const AdminPolls = lazy(() => import("./pages/admin/engagement/AdminPolls"));
