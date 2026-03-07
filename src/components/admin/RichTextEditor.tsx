@@ -58,7 +58,7 @@ const editorStyles = `
     display: list-item !important;
     margin: 0.1em 0;
   }
-  .tiptap-editor .ProseMirror li p {
+  .tiptap-editor .ProseMirror li > p {
     margin: 0;
   }
   /* Nested lists */
@@ -115,6 +115,9 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
         heading: { levels: [1, 2, 3] },
         bulletList: { keepMarks: true, keepAttributes: false },
         orderedList: { keepMarks: true, keepAttributes: false },
+        listItem: {
+          HTMLAttributes: {},
+        },
       }),
       Underline,
       Link.configure({ openOnClick: false }),
@@ -131,8 +134,37 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
       attributes: {
         class: 'max-w-none focus:outline-none',
       },
+      handleKeyDown: (view, event) => {
+        // Tab to indent list items, Shift+Tab to outdent
+        if (event.key === 'Tab') {
+          const { editor: ed } = view.state as any;
+          // We need to access the editor instance differently
+          return false; // let TipTap's built-in handler try first
+        }
+        return false;
+      },
     },
   });
+
+  // Add Tab/Shift+Tab keybindings for list nesting
+  useEffect(() => {
+    if (!editor) return;
+    
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Tab' && editor.isActive('listItem')) {
+        e.preventDefault();
+        if (e.shiftKey) {
+          editor.chain().focus().liftListItem('listItem').run();
+        } else {
+          editor.chain().focus().sinkListItem('listItem').run();
+        }
+      }
+    };
+
+    const editorElement = editor.view.dom;
+    editorElement.addEventListener('keydown', handleKeyDown);
+    return () => editorElement.removeEventListener('keydown', handleKeyDown);
+  }, [editor]);
 
   useEffect(() => {
     if (editor && value !== editor.getHTML()) {
@@ -193,10 +225,10 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
         <ToolbarButton active={editor.isActive('orderedList')} onClick={() => editor.chain().focus().toggleOrderedList().run()} title="Numbered List">
           <ListOrdered className="h-3.5 w-3.5" />
         </ToolbarButton>
-        <ToolbarButton onClick={() => editor.chain().focus().sinkListItem('listItem').run()} title="Indent (nest list)">
+        <ToolbarButton onClick={() => editor.chain().focus().sinkListItem('listItem').run()} title="Indent (Tab)">
           <Indent className="h-3.5 w-3.5" />
         </ToolbarButton>
-        <ToolbarButton onClick={() => editor.chain().focus().liftListItem('listItem').run()} title="Outdent (unnest list)">
+        <ToolbarButton onClick={() => editor.chain().focus().liftListItem('listItem').run()} title="Outdent (Shift+Tab)">
           <Outdent className="h-3.5 w-3.5" />
         </ToolbarButton>
 
