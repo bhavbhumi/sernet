@@ -51,7 +51,7 @@ const SupportProduct = () => {
     queryKey: ['kb-product-articles', productKey, debouncedSearch],
     queryFn: async () => {
       let q = db('kb_articles')
-        .select('id, title, slug, category, product, issue_code, short_summary, possible_reasons, what_to_check, resolution_steps, documents_required, resolution_timeline, when_to_raise_ticket, question_variants, body')
+        .select('id, title, slug, category, product, issue_code, short_summary, possible_reasons, what_to_check, resolution_steps, documents_required, resolution_timeline, when_to_raise_ticket, question_variants, body, priority, owner_team')
         .eq('status', 'published')
         .eq('visibility', 'public')
         .eq('product', productKey)
