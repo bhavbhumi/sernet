@@ -256,10 +256,11 @@ export default function AdminImportArticles() {
       }
       items = data.items || [];
 
-      // Also get analyses that already have source_url
+      // Also get articles (analysis type) that already have source_url
       const { data: existingData } = await supabase
-        .from('analyses')
+        .from('articles')
         .select('id, title, source_url')
+        .eq('content_type', 'analysis')
         .not('source_url', 'is', null);
 
       if (existingData) {
