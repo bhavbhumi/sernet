@@ -370,8 +370,8 @@ export function AdminSidebar() {
     if (!session) return false;
     // Super admins see everything
     if (session.role === 'super_admin') return true;
-    // System and Monitor sections only for super_admin
-    if (group.departmentKey === 'system' || group.departmentKey === 'monitor') return false;
+    // System section only for super_admin
+    if (group.departmentKey === 'system') return false;
     // Everyone else sees all departments (with locks on restricted modules)
     return true;
   });

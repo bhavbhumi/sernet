@@ -312,6 +312,7 @@ const App = () => (
             <Route path="/admin/settings/audit-log" element={<AdminAuditLog />} />
             <Route path="/admin/settings/workflows" element={<AdminWorkflows />} />
             <Route path="/admin/settings/health" element={<AdminHealth />} />
+            <Route path="/admin/settings/monitor" element={<AdminMonitor />} />
 
             {/* Sitemap */}
             <Route path="/sitemap" element={<Sitemap />} />
