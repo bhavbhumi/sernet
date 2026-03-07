@@ -11,7 +11,7 @@ import {
   Sparkles, Calculator, UserCheck, CalendarDays, Mail, ScrollText, Scale, Lightbulb,
   TrendingUp, Building2, Gavel, Megaphone, Headphones, Ticket, BookMarked, MessageSquareText, Zap,
   Contact, CalendarClock, Clock, Receipt, Wallet, Lock, KeyRound, Activity, ExternalLink, PanelLeftClose, PanelLeftOpen,
-  Database, Monitor as MonitorIcon
+  Database, MonitorDot
 } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import sernetLogo from '@/assets/sernet-logo.png';
