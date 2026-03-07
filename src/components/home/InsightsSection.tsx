@@ -41,15 +41,17 @@ function useLatestInsights() {
           .order('item_date', { ascending: false, nullsFirst: false })
           .limit(1),
         supabase
-          .from('analyses')
-          .select('id, category, title, excerpt, item_date, published_at, thumbnail_url, media_url')
+          .from('articles')
+          .select('id, category, title, excerpt, item_date, published_at, read_time, thumbnail_url, media_url')
           .eq('status', 'published')
+          .eq('content_type', 'analysis')
           .order('item_date', { ascending: false, nullsFirst: false })
           .limit(1),
         supabase
-          .from('reports')
-          .select('id, report_type, title, description, published_at, file_url')
+          .from('articles')
+          .select('id, category, title, excerpt, item_date, published_at, read_time, thumbnail_url, media_url, file_url')
           .eq('status', 'published')
+          .eq('content_type', 'report')
           .order('published_at', { ascending: false, nullsFirst: false })
           .limit(1),
         supabase
