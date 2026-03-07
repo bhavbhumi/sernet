@@ -45,9 +45,9 @@ export default function AdminDashboard() {
         polls, surveys, reviews, jobs, applications, press,
         leads, calcLeads, tickets, openTickets, breachedTickets
       ] = await Promise.all([
-        supabase.from('articles').select('id', { count: 'exact', head: true }),
-        supabase.from('analyses').select('id', { count: 'exact', head: true }),
-        supabase.from('reports').select('id', { count: 'exact', head: true }),
+        supabase.from('articles').select('id', { count: 'exact', head: true }).eq('content_type', 'article'),
+        supabase.from('articles').select('id', { count: 'exact', head: true }).eq('content_type', 'analysis'),
+        supabase.from('articles').select('id', { count: 'exact', head: true }).eq('content_type', 'report'),
         supabase.from('bulletins').select('id', { count: 'exact', head: true }),
         supabase.from('news_items').select('id', { count: 'exact', head: true }),
         supabase.from('circulars').select('id', { count: 'exact', head: true }),

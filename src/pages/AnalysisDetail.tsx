@@ -73,10 +73,11 @@ export default function AnalysisDetail() {
     queryKey: ['analysis', id],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('analyses')
+        .from('articles')
         .select('*')
         .eq('id', id!)
         .eq('status', 'published')
+        .eq('content_type', 'analysis')
         .single();
       if (error) throw error;
       return data;

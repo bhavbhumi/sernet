@@ -87,8 +87,7 @@ const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const AdminArticles = lazy(() => import("./pages/admin/content/AdminArticles"));
 const AdminAwareness = lazy(() => import("./pages/admin/content/AdminAwareness"));
-const AdminAnalysis = lazy(() => import("./pages/admin/content/AdminAnalysis"));
-const AdminReports = lazy(() => import("./pages/admin/content/AdminReports"));
+// Legacy AdminAnalysis & AdminReports removed — unified into AdminPosts
 const AdminBulletin = lazy(() => import("./pages/admin/content/AdminBulletin"));
 const AdminNews = lazy(() => import("./pages/admin/updates/AdminNews"));
 const AdminCirculars = lazy(() => import("./pages/admin/updates/AdminCirculars"));
