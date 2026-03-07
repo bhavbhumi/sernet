@@ -6,6 +6,7 @@ import { Table } from '@tiptap/extension-table';
 import { TableRow } from '@tiptap/extension-table-row';
 import { TableCell } from '@tiptap/extension-table-cell';
 import { TableHeader } from '@tiptap/extension-table-header';
+import { Extension } from '@tiptap/core';
 import { useEffect, useCallback } from 'react';
 import {
   Bold, Italic, Underline as UnderlineIcon, Strikethrough,
