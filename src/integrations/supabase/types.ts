@@ -189,32 +189,44 @@ export type Database = {
       }
       attendance_logs: {
         Row: {
+          address_snapshot: string | null
           check_in: string | null
           check_out: string | null
           created_at: string
           employee_id: string
           id: string
+          latitude: number | null
+          location_type: string
           log_date: string
+          longitude: number | null
           notes: string | null
           status: string
         }
         Insert: {
+          address_snapshot?: string | null
           check_in?: string | null
           check_out?: string | null
           created_at?: string
           employee_id: string
           id?: string
+          latitude?: number | null
+          location_type?: string
           log_date: string
+          longitude?: number | null
           notes?: string | null
           status?: string
         }
         Update: {
+          address_snapshot?: string | null
           check_in?: string | null
           check_out?: string | null
           created_at?: string
           employee_id?: string
           id?: string
+          latitude?: number | null
+          location_type?: string
           log_date?: string
+          longitude?: number | null
           notes?: string | null
           status?: string
         }
