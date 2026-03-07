@@ -92,6 +92,8 @@ const AdminReports = lazy(() => import("./pages/admin/content/AdminReports"));
 const AdminBulletin = lazy(() => import("./pages/admin/content/AdminBulletin"));
 const AdminNews = lazy(() => import("./pages/admin/updates/AdminNews"));
 const AdminCirculars = lazy(() => import("./pages/admin/updates/AdminCirculars"));
+const AdminPosts = lazy(() => import("./pages/admin/content/AdminPosts"));
+const AdminFeeds = lazy(() => import("./pages/admin/content/AdminFeeds"));
 const AdminPolls = lazy(() => import("./pages/admin/engagement/AdminPolls"));
 const AdminSurveys = lazy(() => import("./pages/admin/engagement/AdminSurveys"));
 const AdminReviews = lazy(() => import("./pages/admin/engagement/AdminReviews"));
