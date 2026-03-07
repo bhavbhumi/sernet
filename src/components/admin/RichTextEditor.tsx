@@ -72,6 +72,15 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
 
   return (
     <div className="border border-border rounded-lg overflow-hidden bg-background">
+      {/* List style overrides for TipTap */}
+      <style>{`
+        .tiptap-editor ul { list-style-type: disc; padding-left: 1.5em; margin: 0.5em 0; }
+        .tiptap-editor ol { list-style-type: decimal; padding-left: 1.5em; margin: 0.5em 0; }
+        .tiptap-editor ul ul { list-style-type: circle; }
+        .tiptap-editor ol ol { list-style-type: lower-alpha; }
+        .tiptap-editor li { margin: 0.15em 0; }
+        .tiptap-editor li p { margin: 0; }
+      `}</style>
       {/* Toolbar */}
       <div className="flex flex-wrap items-center gap-0.5 px-2 py-1.5 border-b border-border bg-muted/30">
         <ToolbarButton active={editor.isActive('bold')} onClick={() => editor.chain().focus().toggleBold().run()} title="Bold">
@@ -137,7 +146,9 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
       </div>
 
       {/* Editor */}
-      <EditorContent editor={editor} />
+      <div className="tiptap-editor">
+        <EditorContent editor={editor} />
+      </div>
     </div>
   );
 }
