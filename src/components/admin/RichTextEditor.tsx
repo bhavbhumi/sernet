@@ -6,6 +6,7 @@ import { Table } from '@tiptap/extension-table';
 import { TableRow } from '@tiptap/extension-table-row';
 import { TableCell } from '@tiptap/extension-table-cell';
 import { TableHeader } from '@tiptap/extension-table-header';
+import { Extension } from '@tiptap/core';
 import { useEffect, useCallback } from 'react';
 import {
   Bold, Italic, Underline as UnderlineIcon, Strikethrough,
@@ -109,15 +110,33 @@ const editorStyles = `
 `;
 
 export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
+  const TabIndent = Extension.create({
+    name: 'tabIndent',
+    addKeyboardShortcuts() {
+      return {
+        Tab: ({ editor: ed }) => {
+          if (ed.isActive('listItem')) {
+            return ed.chain().focus().sinkListItem('listItem').run();
+          }
+          return false;
+        },
+        'Shift-Tab': ({ editor: ed }) => {
+          if (ed.isActive('listItem')) {
+            return ed.chain().focus().liftListItem('listItem').run();
+          }
+          return false;
+        },
+      };
+    },
+  });
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
         heading: { levels: [1, 2, 3] },
         bulletList: { keepMarks: true, keepAttributes: false },
         orderedList: { keepMarks: true, keepAttributes: false },
-        listItem: {
-          HTMLAttributes: {},
-        },
+        listItem: { HTMLAttributes: {} },
       }),
       Underline,
       Link.configure({ openOnClick: false }),
@@ -125,6 +144,7 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
       TableRow,
       TableHeader,
       TableCell,
+      TabIndent,
     ],
     content: value || '',
     onUpdate: ({ editor }) => {
@@ -137,27 +157,6 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
     },
   });
 
-  useEffect(() => {
-    if (!editor) return;
-    
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Tab') {
-        e.preventDefault();
-        e.stopPropagation();
-        if (editor.isActive('listItem')) {
-          if (e.shiftKey) {
-            editor.chain().focus().liftListItem('listItem').run();
-          } else {
-            editor.chain().focus().sinkListItem('listItem').run();
-          }
-        }
-      }
-    };
-
-    const editorElement = editor.view.dom;
-    editorElement.addEventListener('keydown', handleKeyDown, { capture: true });
-    return () => editorElement.removeEventListener('keydown', handleKeyDown, { capture: true });
-  }, [editor]);
 
   useEffect(() => {
     if (editor && value !== editor.getHTML()) {
