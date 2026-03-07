@@ -106,7 +106,7 @@ const AdminAIUsage = lazy(() => import("./pages/admin/settings/AdminAIUsage"));
 const AdminAuditLog = lazy(() => import("./pages/admin/settings/AdminAuditLog"));
 const AdminCalculatorLeads = lazy(() => import("./pages/admin/settings/AdminCalculatorLeads"));
 const AdminWorkflows = lazy(() => import("./pages/admin/settings/AdminWorkflows"));
-const AdminPermissions = lazy(() => import("./pages/admin/settings/AdminPermissions"));
+// AdminPermissions merged into AdminUsers
 const AdminLeads = lazy(() => import("./pages/admin/sales/AdminUnifiedLeads"));
 const AdminCRMPipeline = lazy(() => import("./pages/admin/sales/AdminCRMPipeline"));
 const AdminPipelineConfig = lazy(() => import("./pages/admin/sales/AdminPipelineConfig"));
