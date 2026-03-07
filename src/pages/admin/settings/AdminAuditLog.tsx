@@ -31,11 +31,10 @@ const actionColors: Record<string, string> = {
   import: 'bg-purple-500/10 text-purple-700 dark:text-purple-400',
   login: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400',
   logout: 'bg-muted text-muted-foreground',
-  settings_change: 'bg-orange-500/10 text-orange-700 dark:text-orange-400',
   status_change: 'bg-cyan-500/10 text-cyan-700 dark:text-cyan-400',
 };
 
-export default function AdminAuditLog() {
+export function AuditLogContent() {
   const [entries, setEntries] = useState<AuditEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -66,7 +65,6 @@ export default function AdminAuditLog() {
 
   const totalPages = Math.ceil(total / PAGE_SIZE);
 
-  // Collect unique actions and entity types from current data
   const uniqueActions = ['all', ...new Set(entries.map(e => e.action))];
   const uniqueEntities = ['all', ...new Set(entries.map(e => e.entity_type))];
 
@@ -79,11 +77,7 @@ export default function AdminAuditLog() {
   };
 
   return (
-    <AdminLayout
-      title="Audit Log"
-      subtitle="Complete trail of all admin actions for internal security"
-      actions={<Badge variant="outline" className="gap-1.5"><Shield className="h-3.5 w-3.5" /> Super Admin Only</Badge>}
-    >
+    <div>
       {/* Filters */}
       <div className="flex gap-3 mb-4 flex-wrap items-center">
         <div className="relative flex-1 min-w-[200px]">
@@ -172,6 +166,18 @@ export default function AdminAuditLog() {
           </button>
         </div>
       )}
+    </div>
+  );
+}
+
+export default function AdminAuditLog() {
+  return (
+    <AdminLayout
+      title="Audit Log"
+      subtitle="Complete trail of all admin actions for internal security"
+      actions={<Badge variant="outline" className="gap-1.5"><Shield className="h-3.5 w-3.5" /> Super Admin Only</Badge>}
+    >
+      <AuditLogContent />
     </AdminLayout>
   );
 }
