@@ -198,63 +198,72 @@ const SupportProduct = () => {
                   />
                 </div>
 
-                {/* Category Accordion */}
-                <div className="max-h-[calc(100vh-420px)] overflow-y-auto pr-1 -mr-1">
-                  <Accordion
-                    type="multiple"
-                    value={openCategories}
-                    onValueChange={setOpenCategories}
-                  >
-                    {categoryTree.map(cat => (
-                      <AccordionItem key={cat.name} value={cat.name} className="border-b-0">
-                        <AccordionTrigger className="py-2.5 px-3 text-sm hover:no-underline hover:bg-muted/40 rounded-lg data-[state=open]:bg-muted/30">
-                          <div className="flex items-center gap-2 text-left">
-                            <BookOpen className="h-3.5 w-3.5 text-primary shrink-0" />
-                            <span className="text-foreground font-medium text-[13px] leading-snug">{cat.name}</span>
-                            <Badge variant="secondary" className="text-[9px] px-1 py-0 ml-auto">{cat.articles.length}</Badge>
-                          </div>
-                        </AccordionTrigger>
-                        <AccordionContent className="pb-1 pt-0">
-                          <div className="ml-2 border-l border-border pl-3 space-y-0.5">
-                            {cat.articles.map((article: any) => (
-                              <button
-                                key={article.id}
-                                onClick={() => handleArticleClick(article)}
-                                className={`w-full text-left px-2.5 py-2 rounded-md text-[12px] leading-snug transition-colors ${
-                                  selectedArticleId === article.id
-                                    ? 'bg-primary/10 text-primary font-medium'
-                                    : 'text-muted-foreground hover:text-foreground hover:bg-muted/30'
-                                }`}
-                              >
-                                {article.title}
-                              </button>
-                            ))}
-                          </div>
-                        </AccordionContent>
-                      </AccordionItem>
-                    ))}
-                  </Accordion>
-                </div>
+                {/* Tabbed: Categories / Related */}
+                <Tabs defaultValue="categories" className="w-full">
+                  <TabsList className="w-full grid grid-cols-2 h-9">
+                    <TabsTrigger value="categories" className="text-xs">Categories</TabsTrigger>
+                    <TabsTrigger value="related" className="text-xs" disabled={!selectedArticle || suggestedArticles.length === 0}>
+                      Related {suggestedArticles.length > 0 && selectedArticle ? `(${suggestedArticles.length})` : ''}
+                    </TabsTrigger>
+                  </TabsList>
 
-                {/* Suggested Articles */}
-                {selectedArticle && suggestedArticles.length > 0 && (
-                  <div className="bg-card border border-border rounded-xl p-4">
-                    <h3 className="text-xs font-semibold text-foreground mb-3 flex items-center gap-1.5 uppercase tracking-wide">
-                      <BookOpen className="h-3.5 w-3.5 text-primary" /> Related Articles
-                    </h3>
-                    <div className="space-y-1">
-                      {suggestedArticles.map((article: any) => (
-                        <button
-                          key={article.id}
-                          onClick={() => handleArticleClick(article)}
-                          className="w-full text-left px-2.5 py-2 rounded-md text-[12px] leading-snug text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-colors"
-                        >
-                          {article.title}
-                        </button>
-                      ))}
+                  <TabsContent value="categories" className="mt-3">
+                    <div className="max-h-[calc(100vh-460px)] overflow-y-auto pr-1 -mr-1">
+                      <Accordion
+                        type="multiple"
+                        value={openCategories}
+                        onValueChange={setOpenCategories}
+                      >
+                        {categoryTree.map(cat => (
+                          <AccordionItem key={cat.name} value={cat.name} className="border-b-0">
+                            <AccordionTrigger className="py-2.5 px-3 text-sm hover:no-underline hover:bg-muted/40 rounded-lg data-[state=open]:bg-muted/30">
+                              <div className="flex items-center gap-2 text-left">
+                                <BookOpen className="h-3.5 w-3.5 text-primary shrink-0" />
+                                <span className="text-foreground font-medium text-[13px] leading-snug">{cat.name}</span>
+                                <Badge variant="secondary" className="text-[9px] px-1 py-0 ml-auto">{cat.articles.length}</Badge>
+                              </div>
+                            </AccordionTrigger>
+                            <AccordionContent className="pb-1 pt-0">
+                              <div className="ml-2 border-l border-border pl-3 space-y-0.5">
+                                {cat.articles.map((article: any) => (
+                                  <button
+                                    key={article.id}
+                                    onClick={() => handleArticleClick(article)}
+                                    className={`w-full text-left px-2.5 py-2 rounded-md text-[12px] leading-snug transition-colors ${
+                                      selectedArticleId === article.id
+                                        ? 'bg-primary/10 text-primary font-medium'
+                                        : 'text-muted-foreground hover:text-foreground hover:bg-muted/30'
+                                    }`}
+                                  >
+                                    {article.title}
+                                  </button>
+                                ))}
+                              </div>
+                            </AccordionContent>
+                          </AccordionItem>
+                        ))}
+                      </Accordion>
                     </div>
-                  </div>
-                )}
+                  </TabsContent>
+
+                  <TabsContent value="related" className="mt-3">
+                    <div className="max-h-[calc(100vh-460px)] overflow-y-auto pr-1 -mr-1 space-y-1">
+                      {selectedArticle && suggestedArticles.length > 0 ? (
+                        suggestedArticles.map((article: any) => (
+                          <button
+                            key={article.id}
+                            onClick={() => handleArticleClick(article)}
+                            className="w-full text-left px-2.5 py-2 rounded-md text-[12px] leading-snug text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-colors"
+                          >
+                            {article.title}
+                          </button>
+                        ))
+                      ) : (
+                        <p className="text-xs text-muted-foreground px-2 py-4">Select an article to see related items.</p>
+                      )}
+                    </div>
+                  </TabsContent>
+                </Tabs>
 
               </div>
             </aside>
