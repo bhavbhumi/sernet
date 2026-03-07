@@ -19,7 +19,7 @@ Deno.serve(async (req) => {
 
     // ── 1. Table row counts ──────────────────────────────────
     const contentTables = [
-      "articles", "analyses", "awareness", "reports", "bulletins",
+      "articles", "awareness", "bulletins",
       "news_items", "circulars", "press_items",
     ];
     const operationalTables = [

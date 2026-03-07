@@ -53,13 +53,9 @@ export function AIUsageContent() {
   const { data: contentMap } = useQuery({
     queryKey: ['admin-ai-content-map'],
     queryFn: async () => {
-      const [{ data: arts }, { data: analyses }] = await Promise.all([
-        supabase.from('articles').select('id, title, category'),
-        supabase.from('analyses').select('id, title, category'),
-      ]);
+      const { data: arts } = await supabase.from('articles').select('id, title, category');
       const map: Record<string, { title: string; category: string }> = {};
       arts?.forEach(a => { map[a.id] = { title: a.title, category: a.category }; });
-      analyses?.forEach(a => { map[a.id] = { title: a.title, category: a.category }; });
       return map;
     },
   });
