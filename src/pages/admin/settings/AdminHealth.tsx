@@ -36,7 +36,7 @@ function StatRow({ label, value, sub }: { label: string; value: number | string;
   );
 }
 
-export default function AdminHealth() {
+export function HealthContent() {
   const queryClient = useQueryClient();
   const { data, isLoading: loading, dataUpdatedAt } = useHealthCheck();
   const lastRefresh = dataUpdatedAt ? new Date(dataUpdatedAt).toLocaleTimeString() : '';
@@ -56,7 +56,7 @@ export default function AdminHealth() {
     : <AlertCircle className="h-8 w-8 text-destructive" />;
 
   return (
-    <AdminLayout title="System Health" subtitle="End-to-end project diagnostics">
+    <div>
       {/* Top bar */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-4">
@@ -260,6 +260,14 @@ export default function AdminHealth() {
           </Card>
         </TabsContent>
       </Tabs>
+    </div>
+  );
+}
+
+export default function AdminHealth() {
+  return (
+    <AdminLayout title="System Health" subtitle="End-to-end project diagnostics">
+      <HealthContent />
     </AdminLayout>
   );
 }

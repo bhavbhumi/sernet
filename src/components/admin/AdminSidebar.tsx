@@ -11,7 +11,7 @@ import {
   Sparkles, Calculator, UserCheck, CalendarDays, Mail, ScrollText, Scale, Lightbulb,
   TrendingUp, Building2, Gavel, Megaphone, Headphones, Ticket, BookMarked, MessageSquareText, Zap,
   Contact, CalendarClock, Clock, Receipt, Wallet, Lock, KeyRound, Activity, ExternalLink, PanelLeftClose, PanelLeftOpen,
-  Database, Monitor as MonitorIcon
+  Database, MonitorDot
 } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import sernetLogo from '@/assets/sernet-logo.png';
@@ -47,17 +47,7 @@ const departmentGroups: DepartmentGroup[] = [
     items: [
       { label: 'Master Data', icon: Database, href: R.settings.masterData, moduleKey: 'system/master-data' },
       { label: 'Users & Access', icon: Shield, href: R.settings.users, moduleKey: 'system/admin-users' },
-    ]
-  },
-  {
-    department: 'Monitor',
-    departmentKey: 'monitor',
-    icon: MonitorIcon,
-    color: 'text-rose-500',
-    items: [
-      { label: 'AI Usage', icon: Sparkles, href: R.settings.aiUsage, moduleKey: 'system/ai-usage' },
-      { label: 'Audit Log', icon: ScrollText, href: R.settings.auditLog, moduleKey: 'system/audit-log' },
-      { label: 'System Health', icon: Activity, href: R.settings.health, moduleKey: 'system/health' },
+      { label: 'Monitor', icon: MonitorDot, href: '/admin/settings/monitor', moduleKey: 'system/monitor' },
     ]
   },
   {
@@ -380,8 +370,8 @@ export function AdminSidebar() {
     if (!session) return false;
     // Super admins see everything
     if (session.role === 'super_admin') return true;
-    // System and Monitor sections only for super_admin
-    if (group.departmentKey === 'system' || group.departmentKey === 'monitor') return false;
+    // System section only for super_admin
+    if (group.departmentKey === 'system') return false;
     // Everyone else sees all departments (with locks on restricted modules)
     return true;
   });
