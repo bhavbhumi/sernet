@@ -13,9 +13,10 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import {
-  ExternalLink, Pencil, Eye, EyeOff, AlertTriangle, CheckCircle2,
-  Search, Trash2, Plus, Archive, Globe, EyeOff as EyeOffIcon,
+  ExternalLink, Eye, EyeOff, AlertTriangle, CheckCircle2,
+  Search, Plus, Archive, Globe,
 } from 'lucide-react';
+import { RowActions } from '@/components/admin/RowActions';
 import { toast } from 'sonner';
 
 interface SitePage {
