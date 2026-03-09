@@ -9,7 +9,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { Plus, Pencil } from 'lucide-react';
+import { Plus } from 'lucide-react';
+import { RowActions } from '@/components/admin/RowActions';
 import { toast } from 'sonner';
 import { useState } from 'react';
 
