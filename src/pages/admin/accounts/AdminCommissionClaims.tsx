@@ -10,8 +10,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { toast } from 'sonner';
-import { Plus, Pencil, Trash2, Receipt } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { format } from 'date-fns';
+import { RowActions } from '@/components/admin/RowActions';
 import { Badge } from '@/components/ui/badge';
 
 const emptyForm = {
