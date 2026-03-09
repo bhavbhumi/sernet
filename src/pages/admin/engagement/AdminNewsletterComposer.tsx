@@ -9,7 +9,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Plus, Pencil, Trash2, Send, Clock, Eye, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plus, Send, Clock, Eye, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
+import { RowActions } from '@/components/admin/RowActions';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 
