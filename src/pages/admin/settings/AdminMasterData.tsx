@@ -26,6 +26,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
 import { ADMIN_ROUTES } from '@/lib/adminRoutes';
+import { RowActions } from '@/components/admin/RowActions';
 
 // ── Imported Content Components (inlined from department pages) ──
 import { TaxRatesContent } from '@/pages/admin/accounts/AdminTaxRates';
