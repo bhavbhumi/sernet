@@ -732,6 +732,9 @@ function LeaveTypesContent() {
       const { error } = await db('leave_types').insert({
         name: typeForm.name, code: typeForm.code,
         default_days: typeForm.default_days, is_paid: typeForm.is_paid,
+        description: typeForm.description, carry_forward: typeForm.carry_forward,
+        max_carry_days: typeForm.max_carry_days, encashable: typeForm.encashable,
+        applicable_gender: typeForm.applicable_gender, min_service_days: typeForm.min_service_days,
       });
       if (error) throw error;
     },
