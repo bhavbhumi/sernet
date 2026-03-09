@@ -272,16 +272,6 @@ export default function AdminMediaLibrary() {
                     className="h-7 w-full text-xs gap-1"
                     onClick={() => window.open(file.publicUrl, '_blank')}
                   >
-                    <ExternalLink className="h-3 w-3" /> Open
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="destructive"
-                    className="h-7 w-full text-xs gap-1"
-                    onClick={() => setDeleteTarget(file)}
-                  >
-                    <Trash2 className="h-3 w-3" /> Delete
-                  </Button>
                 </div>
               </div>
             );

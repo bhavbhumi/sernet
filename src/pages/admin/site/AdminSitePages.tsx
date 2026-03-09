@@ -213,10 +213,6 @@ export default function AdminSitePages() {
                               { label: page.maintenance_mode ? 'Go Live' : 'Maintenance', icon: <AlertTriangle className="h-3.5 w-3.5" />, onClick: () => quickMaintenance(page) },
                               { label: 'Visit', icon: <ExternalLink className="h-3.5 w-3.5" />, onClick: () => window.open(`${baseUrl}${page.path}`, '_blank') },
                             ]} />
-                            <Button variant="ghost" size="sm" className="h-6 px-2 text-xs gap-1 text-muted-foreground hover:text-destructive"
-                              onClick={() => setDeleteConfirm(page)}>
-                              <Trash2 className="h-3 w-3" /> Delete
-                            </Button>
                           </div>
                         </td>
                         <td className="px-4 py-3 hidden md:table-cell">
