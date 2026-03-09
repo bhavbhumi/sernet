@@ -2125,31 +2125,52 @@ export type Database = {
       }
       leave_types: {
         Row: {
+          applicable_gender: string | null
+          carry_forward: boolean | null
           code: string
           created_at: string
           default_days: number
+          description: string | null
+          encashable: boolean | null
           id: string
           is_active: boolean
           is_paid: boolean
+          max_carry_days: number | null
+          min_service_days: number | null
           name: string
+          sort_order: number | null
         }
         Insert: {
+          applicable_gender?: string | null
+          carry_forward?: boolean | null
           code: string
           created_at?: string
           default_days?: number
+          description?: string | null
+          encashable?: boolean | null
           id?: string
           is_active?: boolean
           is_paid?: boolean
+          max_carry_days?: number | null
+          min_service_days?: number | null
           name: string
+          sort_order?: number | null
         }
         Update: {
+          applicable_gender?: string | null
+          carry_forward?: boolean | null
           code?: string
           created_at?: string
           default_days?: number
+          description?: string | null
+          encashable?: boolean | null
           id?: string
           is_active?: boolean
           is_paid?: boolean
+          max_carry_days?: number | null
+          min_service_days?: number | null
           name?: string
+          sort_order?: number | null
         }
         Relationships: []
       }
