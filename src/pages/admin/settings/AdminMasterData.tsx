@@ -885,13 +885,11 @@ function LeaveTypesContent() {
                 <TableCell><Badge variant="outline" className="capitalize">{t.applicable_gender || 'all'}</Badge></TableCell>
                 <TableCell><Badge variant={t.is_active ? 'default' : 'secondary'}>{t.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
                 <TableCell>
-                  <div className="flex items-center gap-1">
-                    <Button size="sm" variant="ghost" onClick={() => openEdit(t)} title="Edit"><Pencil className="h-3.5 w-3.5" /></Button>
-                    <Button size="sm" variant="ghost" onClick={() => toggleTypeActive.mutate({ id: t.id, is_active: !t.is_active })} title={t.is_active ? 'Disable' : 'Enable'}>
-                      {t.is_active ? 'Disable' : 'Enable'}
-                    </Button>
-                    <Button size="sm" variant="ghost" className="text-destructive hover:text-destructive" onClick={() => setDeleteTarget({ id: t.id, name: t.name })} title="Delete"><Trash2 className="h-3.5 w-3.5" /></Button>
-                  </div>
+                  <RowActions actions={[
+                    { label: 'Edit', onClick: () => openEdit(t) },
+                    { label: t.is_active ? 'Disable' : 'Enable', onClick: () => toggleTypeActive.mutate({ id: t.id, is_active: !t.is_active }) },
+                    { label: 'Delete', onClick: () => setDeleteTarget({ id: t.id, name: t.name }), variant: 'destructive', separator: true },
+                  ]} />
                 </TableCell>
               </TableRow>
             ))}
