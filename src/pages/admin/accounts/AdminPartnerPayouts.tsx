@@ -116,10 +116,10 @@ export default function AdminPartnerPayouts() {
                   <TableCell><Badge variant={statusColor(r.status)}>{r.status}</Badge></TableCell>
                   <TableCell>{r.paid_date ? format(new Date(r.paid_date), 'dd MMM yyyy') : '—'}</TableCell>
                   <TableCell>
-                    <div className="flex gap-1">
-                      <Button size="icon" variant="ghost" onClick={() => openEdit(r)}><Pencil className="h-4 w-4" /></Button>
-                      <Button size="icon" variant="ghost" onClick={() => handleDelete(r.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
-                    </div>
+                    <RowActions actions={[
+                      { label: 'Edit', onClick: () => openEdit(r) },
+                      { label: 'Delete', onClick: () => handleDelete(r.id), variant: 'destructive', separator: true },
+                    ]} />
                   </TableCell>
                 </TableRow>
               ))}

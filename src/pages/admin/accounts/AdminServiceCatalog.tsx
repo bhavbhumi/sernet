@@ -105,7 +105,7 @@ export const ServiceCatalogContent = () => {
                     <TableCell className="text-sm text-muted-foreground">{s.unit}</TableCell>
                     <TableCell className="text-sm">{s.tax_rates ? `${s.tax_rates.name} (${s.tax_rates.rate}%)` : '—'}</TableCell>
                     <TableCell><Badge variant={s.is_active ? 'default' : 'secondary'}>{s.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
-                    <TableCell><Button size="icon" variant="ghost" onClick={() => edit(s)}><Pencil className="h-3.5 w-3.5" /></Button></TableCell>
+                    <TableCell><RowActions actions={[{ label: 'Edit', onClick: () => edit(s) }]} /></TableCell>
                   </TableRow>
                 ))}
               </TableBody>
