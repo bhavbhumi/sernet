@@ -221,20 +221,12 @@ const AdminNewsletterComposer = () => {
                   {item.scheduled_at ? format(new Date(item.scheduled_at), 'MMM d, yyyy HH:mm') : '—'}
                 </td>
                 <td className="px-4 py-3 text-muted-foreground">{format(new Date(item.created_at), 'MMM d, yyyy')}</td>
-                <td className="px-4 py-3 text-right space-x-1">
-                  <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => { setPreviewItem(item); setPreviewOpen(true); }}>
-                    <Eye className="h-3.5 w-3.5" />
-                  </Button>
-                  {item.status !== 'sent' && (
-                    <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => openEdit(item)}>
-                      <Pencil className="h-3.5 w-3.5" />
-                    </Button>
-                  )}
-                  {item.status === 'draft' && (
-                    <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive" onClick={() => handleDelete(item.id)}>
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </Button>
-                  )}
+                <td className="px-4 py-3 text-right">
+                  <RowActions actions={[
+                    { label: 'View', icon: <Eye className="h-3.5 w-3.5" />, onClick: () => { setPreviewItem(item); setPreviewOpen(true); } },
+                    { label: 'Edit', onClick: () => openEdit(item), hidden: item.status === 'sent' },
+                    { label: 'Delete', onClick: () => handleDelete(item.id), variant: 'destructive', separator: true, hidden: item.status !== 'draft' },
+                  ]} />
                 </td>
               </tr>
             ))}

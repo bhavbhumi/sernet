@@ -204,31 +204,15 @@ export default function AdminSitePages() {
                         <td className="px-4 py-3">
                           <p className="font-medium text-foreground text-sm">{page.title}</p>
                           <p className="text-xs text-muted-foreground font-mono mt-0.5">{page.path}</p>
-                          {/* Action bar */}
                           <div className="flex flex-wrap items-center gap-0.5 mt-1.5">
-                            <Button variant="ghost" size="sm" className="h-6 px-2 text-xs gap-1 text-muted-foreground hover:text-foreground" onClick={() => setEditPage(page)}>
-                              <Pencil className="h-3 w-3" /> Edit
-                            </Button>
-                            <Button variant="ghost" size="sm" className="h-6 px-2 text-xs gap-1 text-muted-foreground hover:text-primary"
-                              onClick={() => quickStatus(page, 'live')} disabled={page.status === 'live'}>
-                              <Globe className="h-3 w-3" /> Publish
-                            </Button>
-                            <Button variant="ghost" size="sm" className="h-6 px-2 text-xs gap-1 text-muted-foreground hover:text-foreground"
-                              onClick={() => quickStatus(page, 'hidden')} disabled={page.status === 'hidden'}>
-                              <EyeOff className="h-3 w-3" /> Unpublish
-                            </Button>
-                            <Button variant="ghost" size="sm" className="h-6 px-2 text-xs gap-1 text-muted-foreground hover:text-destructive"
-                              onClick={() => quickStatus(page, 'archived')} disabled={page.status === 'archived'}>
-                              <Archive className="h-3 w-3" /> Archive
-                            </Button>
-                            <Button variant="ghost" size="sm" className={`h-6 px-2 text-xs gap-1 ${page.maintenance_mode ? 'text-primary' : 'text-muted-foreground'} hover:text-primary`}
-                              onClick={() => quickMaintenance(page)}>
-                              <AlertTriangle className="h-3 w-3" /> {page.maintenance_mode ? 'Go Live' : 'Maintenance'}
-                            </Button>
-                            <Button variant="ghost" size="sm" className="h-6 px-2 text-xs gap-1 text-muted-foreground hover:text-foreground"
-                              onClick={() => window.open(`${baseUrl}${page.path}`, '_blank')}>
-                              <ExternalLink className="h-3 w-3" /> Visit
-                            </Button>
+                            <RowActions actions={[
+                              { label: 'Edit', onClick: () => setEditPage(page) },
+                              { label: 'Publish', icon: <Globe className="h-3.5 w-3.5" />, onClick: () => quickStatus(page, 'live'), disabled: page.status === 'live' },
+                              { label: 'Unpublish', icon: <EyeOff className="h-3.5 w-3.5" />, onClick: () => quickStatus(page, 'hidden'), disabled: page.status === 'hidden' },
+                              { label: 'Archive', onClick: () => quickStatus(page, 'archived'), disabled: page.status === 'archived' },
+                              { label: page.maintenance_mode ? 'Go Live' : 'Maintenance', icon: <AlertTriangle className="h-3.5 w-3.5" />, onClick: () => quickMaintenance(page) },
+                              { label: 'Visit', icon: <ExternalLink className="h-3.5 w-3.5" />, onClick: () => window.open(`${baseUrl}${page.path}`, '_blank') },
+                            ]} />
                             <Button variant="ghost" size="sm" className="h-6 px-2 text-xs gap-1 text-muted-foreground hover:text-destructive"
                               onClick={() => setDeleteConfirm(page)}>
                               <Trash2 className="h-3 w-3" /> Delete
