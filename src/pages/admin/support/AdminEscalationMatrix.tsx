@@ -125,8 +125,10 @@ export function EscalationMatrixContent() {
                   <p className="text-xs text-muted-foreground">Dept: {m.department} • TAT Breach: {m.tat_breach_hours}h • Notify: {(m.notification_channels ?? []).join(', ')}</p>
                 </div>
                 <div className="flex gap-1">
-                  <Button variant="ghost" size="sm" className="h-7 w-7 p-0" onClick={() => { setEditingMatrix(m.id); setMatrixForm({ level: m.level, role_title: m.role_title, department: m.department, tat_breach_hours: m.tat_breach_hours, product: m.product }); setMatrixDialog(true); }}><Pencil className="h-3.5 w-3.5" /></Button>
-                  <Button variant="ghost" size="sm" className="h-7 w-7 p-0 text-destructive" onClick={() => deleteMatrix(m.id)}><Trash2 className="h-3.5 w-3.5" /></Button>
+                  <RowActions actions={[
+                    { label: 'Edit', onClick: () => { setEditingMatrix(m.id); setMatrixForm({ level: m.level, role_title: m.role_title, department: m.department, tat_breach_hours: m.tat_breach_hours, product: m.product }); setMatrixDialog(true); } },
+                    { label: 'Delete', onClick: () => deleteMatrix(m.id), variant: 'destructive', separator: true },
+                  ]} />
                 </div>
               </div>
             ))}
