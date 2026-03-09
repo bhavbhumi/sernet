@@ -13,7 +13,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Plus, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 
 const statusColors: Record<string, string> = {
   draft: 'bg-muted text-muted-foreground',
