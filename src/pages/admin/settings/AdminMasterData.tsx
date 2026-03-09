@@ -742,7 +742,7 @@ function LeaveTypesContent() {
       qc.invalidateQueries({ queryKey: ['leave-types'] });
       toast.success('Leave type created');
       setTypeOpen(false);
-      setTypeForm({ name: '', code: '', default_days: 0, is_paid: true });
+      setTypeForm({ name: '', code: '', default_days: 0, is_paid: true, description: '', carry_forward: false, max_carry_days: 0, encashable: false, applicable_gender: 'all', min_service_days: 0 });
     },
     onError: (e: any) => toast.error(e.message),
   });
