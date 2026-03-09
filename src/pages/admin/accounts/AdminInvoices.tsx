@@ -52,6 +52,15 @@ const AdminInvoices = () => {
     },
   });
 
+  const { data: serviceCatalog = [] } = useQuery({
+    queryKey: ['service-catalog-active'],
+    queryFn: async () => {
+      const { data, error } = await supabase.from('service_catalog').select('id, name, default_rate, unit').eq('is_active', true).order('name');
+      if (error) throw error;
+      return data || [];
+    },
+  });
+
   const subtotal = items.reduce((s, i) => s + i.quantity * i.unit_price, 0);
 
   const createInvoice = useMutation({
