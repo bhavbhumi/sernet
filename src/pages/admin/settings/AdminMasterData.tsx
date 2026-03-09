@@ -716,7 +716,7 @@ function DesignationsContent() {
 function LeaveTypesContent() {
   const qc = useQueryClient();
   const [typeOpen, setTypeOpen] = useState(false);
-  const [typeForm, setTypeForm] = useState({ name: '', code: '', default_days: 0, is_paid: true });
+  const [typeForm, setTypeForm] = useState({ name: '', code: '', default_days: 0, is_paid: true, description: '', carry_forward: false, max_carry_days: 0, encashable: false, applicable_gender: 'all', min_service_days: 0 });
 
   const { data: leaveTypes = [], isLoading } = useQuery({
     queryKey: ['leave-types'],
