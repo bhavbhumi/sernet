@@ -10,7 +10,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import { Plus, Pencil } from 'lucide-react';
+import { Plus } from 'lucide-react';
+import { RowActions } from '@/components/admin/RowActions';
 import { toast } from 'sonner';
 import { useState } from 'react';
 
@@ -119,7 +120,7 @@ export const SalaryComponentsContent = () => {
                     <TableCell className="text-right">{c.calculation_type === 'percentage' ? `${c.default_value}%` : `₹${Number(c.default_value).toLocaleString('en-IN')}`}</TableCell>
                     <TableCell>{c.is_taxable ? '✓' : '—'}</TableCell>
                     <TableCell><Badge variant={c.is_active ? 'default' : 'secondary'}>{c.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
-                    <TableCell><Button size="icon" variant="ghost" onClick={() => edit(c)}><Pencil className="h-3.5 w-3.5" /></Button></TableCell>
+                    <TableCell><RowActions actions={[{ label: 'Edit', onClick: () => edit(c) }]} /></TableCell>
                   </TableRow>
                 ))}
               </TableBody>

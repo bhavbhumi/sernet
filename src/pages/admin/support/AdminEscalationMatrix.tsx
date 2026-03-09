@@ -7,7 +7,8 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Plus, Pencil, Trash2, ArrowUp } from 'lucide-react';
+import { Plus, ArrowUp } from 'lucide-react';
+import { RowActions } from '@/components/admin/RowActions';
 import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
@@ -124,8 +125,10 @@ export function EscalationMatrixContent() {
                   <p className="text-xs text-muted-foreground">Dept: {m.department} • TAT Breach: {m.tat_breach_hours}h • Notify: {(m.notification_channels ?? []).join(', ')}</p>
                 </div>
                 <div className="flex gap-1">
-                  <Button variant="ghost" size="sm" className="h-7 w-7 p-0" onClick={() => { setEditingMatrix(m.id); setMatrixForm({ level: m.level, role_title: m.role_title, department: m.department, tat_breach_hours: m.tat_breach_hours, product: m.product }); setMatrixDialog(true); }}><Pencil className="h-3.5 w-3.5" /></Button>
-                  <Button variant="ghost" size="sm" className="h-7 w-7 p-0 text-destructive" onClick={() => deleteMatrix(m.id)}><Trash2 className="h-3.5 w-3.5" /></Button>
+                  <RowActions actions={[
+                    { label: 'Edit', onClick: () => { setEditingMatrix(m.id); setMatrixForm({ level: m.level, role_title: m.role_title, department: m.department, tat_breach_hours: m.tat_breach_hours, product: m.product }); setMatrixDialog(true); } },
+                    { label: 'Delete', onClick: () => deleteMatrix(m.id), variant: 'destructive', separator: true },
+                  ]} />
                 </div>
               </div>
             ))}
@@ -149,8 +152,10 @@ export function EscalationMatrixContent() {
                     <Badge variant={r.is_active ? 'default' : 'secondary'} className="text-[10px]">{r.is_active ? 'Active' : 'Inactive'}</Badge>
                   </div>
                   <div className="flex gap-1">
-                    <Button variant="ghost" size="sm" className="h-7 w-7 p-0" onClick={() => { setEditingRule(r.id); setRuleForm({ name: r.name, description: r.description ?? '', trigger_type: r.trigger_type, conditions_json: JSON.stringify(r.conditions, null, 2), actions_json: JSON.stringify(r.actions, null, 2) }); setRuleDialog(true); }}><Pencil className="h-3.5 w-3.5" /></Button>
-                    <Button variant="ghost" size="sm" className="h-7 w-7 p-0 text-destructive" onClick={() => deleteRule(r.id)}><Trash2 className="h-3.5 w-3.5" /></Button>
+                    <RowActions actions={[
+                      { label: 'Edit', onClick: () => { setEditingRule(r.id); setRuleForm({ name: r.name, description: r.description ?? '', trigger_type: r.trigger_type, conditions_json: JSON.stringify(r.conditions, null, 2), actions_json: JSON.stringify(r.actions, null, 2) }); setRuleDialog(true); } },
+                      { label: 'Delete', onClick: () => deleteRule(r.id), variant: 'destructive', separator: true },
+                    ]} />
                   </div>
                 </div>
                 {r.description && <p className="text-xs text-muted-foreground mb-2">{r.description}</p>}

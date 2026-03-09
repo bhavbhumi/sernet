@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Eye, Trash2, Search, Download } from 'lucide-react';
+import { Eye, Search, Download } from 'lucide-react';
+import { RowActions } from '@/components/admin/RowActions';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 
@@ -117,14 +118,11 @@ export default function AdminApplications() {
                   <td className="px-4 py-3">
                     <p className="font-medium text-foreground">{app.full_name}</p>
                     <p className="text-xs text-muted-foreground">{app.email} · {app.phone}</p>
-                    {/* Horizontal action bar */}
                     <div className="flex items-center gap-0.5 mt-1.5">
-                      <Button variant="ghost" size="sm" className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground gap-1" onClick={() => setSelected(app)}>
-                        <Eye className="h-3 w-3" /> View
-                      </Button>
-                      <Button variant="ghost" size="sm" className="h-6 px-2 text-xs text-destructive hover:text-destructive gap-1" onClick={() => handleDelete(app.id)}>
-                        <Trash2 className="h-3 w-3" /> Delete
-                      </Button>
+                      <RowActions actions={[
+                        { label: 'View', icon: <Eye className="h-3.5 w-3.5" />, onClick: () => setSelected(app) },
+                        { label: 'Delete', onClick: () => handleDelete(app.id), variant: 'destructive', separator: true },
+                      ]} />
                     </div>
                   </td>
                   <td className="px-4 py-3 text-muted-foreground">{app.preferred_role || '—'}</td>

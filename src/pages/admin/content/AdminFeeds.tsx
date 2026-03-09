@@ -9,7 +9,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
-import { Plus, Pencil, Trash2, Search, Eye, EyeOff, Rss, Link, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
+import { Plus, Search, Eye, EyeOff, Rss, Link, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
+import { RowActions } from '@/components/admin/RowActions';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { CategoryTreeManager, type CategoryNode } from '@/components/admin/CategoryTreeManager';
@@ -254,15 +255,11 @@ export default function AdminFeeds() {
                     <p className="font-medium text-foreground line-clamp-1">{item.title}</p>
                     {item.summary && <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">{item.summary}</p>}
                     <div className="flex items-center gap-0.5 mt-1.5 flex-nowrap">
-                      <Button variant="ghost" size="sm" className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground gap-1" onClick={() => toggleStatus(item)}>
-                        {item.status === 'published' ? <><EyeOff className="h-3 w-3" /> Unpublish</> : <><Eye className="h-3 w-3" /> Publish</>}
-                      </Button>
-                      <Button variant="ghost" size="sm" className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground gap-1" onClick={() => openEdit(item)}>
-                        <Pencil className="h-3 w-3" /> Edit
-                      </Button>
-                      <Button variant="ghost" size="sm" className="h-6 px-2 text-xs text-destructive hover:text-destructive gap-1" onClick={() => handleDelete(item.id)}>
-                        <Trash2 className="h-3 w-3" /> Delete
-                      </Button>
+                      <RowActions actions={[
+                        { label: item.status === 'published' ? 'Unpublish' : 'Publish', icon: item.status === 'published' ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />, onClick: () => toggleStatus(item) },
+                        { label: 'Edit', onClick: () => openEdit(item) },
+                        { label: 'Delete', onClick: () => handleDelete(item.id), variant: 'destructive', separator: true },
+                      ]} />
                     </div>
                   </td>
                   <td className="px-4 py-3 align-top"><Badge variant="outline" className="text-xs capitalize">{item.feed_type}</Badge></td>

@@ -9,7 +9,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Plus, Pencil, Trash2, Send, Clock, Eye, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plus, Pencil, Send, Clock, Eye, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
+import { RowActions } from '@/components/admin/RowActions';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 
@@ -220,20 +221,12 @@ const AdminNewsletterComposer = () => {
                   {item.scheduled_at ? format(new Date(item.scheduled_at), 'MMM d, yyyy HH:mm') : '—'}
                 </td>
                 <td className="px-4 py-3 text-muted-foreground">{format(new Date(item.created_at), 'MMM d, yyyy')}</td>
-                <td className="px-4 py-3 text-right space-x-1">
-                  <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => { setPreviewItem(item); setPreviewOpen(true); }}>
-                    <Eye className="h-3.5 w-3.5" />
-                  </Button>
-                  {item.status !== 'sent' && (
-                    <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => openEdit(item)}>
-                      <Pencil className="h-3.5 w-3.5" />
-                    </Button>
-                  )}
-                  {item.status === 'draft' && (
-                    <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive" onClick={() => handleDelete(item.id)}>
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </Button>
-                  )}
+                <td className="px-4 py-3 text-right">
+                  <RowActions actions={[
+                    { label: 'View', icon: <Eye className="h-3.5 w-3.5" />, onClick: () => { setPreviewItem(item); setPreviewOpen(true); } },
+                    { label: 'Edit', onClick: () => openEdit(item), hidden: item.status === 'sent' },
+                    { label: 'Delete', onClick: () => handleDelete(item.id), variant: 'destructive', separator: true, hidden: item.status !== 'draft' },
+                  ]} />
                 </td>
               </tr>
             ))}

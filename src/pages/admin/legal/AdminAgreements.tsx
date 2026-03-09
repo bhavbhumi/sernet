@@ -10,7 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { toast } from 'sonner';
-import { Plus, Pencil, Trash2, FileSignature } from 'lucide-react';
+import { Plus, FileSignature } from 'lucide-react';
+import { RowActions } from '@/components/admin/RowActions';
 import { format } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -126,10 +127,10 @@ export default function AdminAgreements() {
                   <TableCell>{r.end_date ? format(new Date(r.end_date), 'dd MMM yyyy') : '—'}</TableCell>
                   <TableCell>{r.auto_renew ? 'Yes' : 'No'}</TableCell>
                   <TableCell>
-                    <div className="flex gap-1">
-                      <Button size="icon" variant="ghost" onClick={() => openEdit(r)}><Pencil className="h-4 w-4" /></Button>
-                      <Button size="icon" variant="ghost" onClick={() => handleDelete(r.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
-                    </div>
+                    <RowActions actions={[
+                      { label: 'Edit', onClick: () => openEdit(r) },
+                      { label: 'Delete', onClick: () => handleDelete(r.id), variant: 'destructive', separator: true },
+                    ]} />
                   </TableCell>
                 </TableRow>
               ))}

@@ -8,7 +8,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Plus, Search, Pencil, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plus, Search, ChevronLeft, ChevronRight } from 'lucide-react';
+import { RowActions } from '@/components/admin/RowActions';
 import { useToast } from '@/hooks/use-toast';
 import { PRODUCTS, PRIORITY_CONFIG, RISK_TAGS } from '@/lib/supportClassification';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -197,8 +198,10 @@ export function IssueTypesContent() {
                     <td className="px-4 py-3"><Badge variant="outline" className={`text-[10px] ${risk?.color}`}>{risk?.label}</Badge></td>
                     <td className="px-4 py-3 text-xs">{t.regulator ?? '—'}</td>
                     <td className="px-4 py-3 text-right">
-                      <Button variant="ghost" size="sm" className="h-7 w-7 p-0" onClick={() => openEdit(t)}><Pencil className="h-3.5 w-3.5" /></Button>
-                      <Button variant="ghost" size="sm" className="h-7 w-7 p-0 text-destructive" onClick={() => handleDelete(t.id)}><Trash2 className="h-3.5 w-3.5" /></Button>
+                      <RowActions actions={[
+                        { label: 'Edit', onClick: () => openEdit(t) },
+                        { label: 'Delete', onClick: () => handleDelete(t.id), variant: 'destructive', separator: true },
+                      ]} />
                     </td>
                   </tr>
                 );

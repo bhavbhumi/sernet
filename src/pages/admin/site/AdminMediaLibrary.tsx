@@ -7,9 +7,10 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 import {
-  Upload, Trash2, Copy, Search, Image, FileText, Film, Music,
+  Upload, Copy, Search, Image, FileText, Film, Music,
   RefreshCw, ExternalLink, FolderOpen, CheckCircle2
 } from 'lucide-react';
+import { RowActions } from '@/components/admin/RowActions';
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel,
   AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
@@ -265,23 +266,13 @@ export default function AdminMediaLibrary() {
                   >
                     {isCopied ? <><CheckCircle2 className="h-3 w-3" /> Copied!</> : <><Copy className="h-3 w-3" /> Copy URL</>}
                   </Button>
-                  <Button
-                    size="sm"
-                    variant="secondary"
-                    className="h-7 w-full text-xs gap-1"
-                    onClick={() => window.open(file.publicUrl, '_blank')}
-                  >
-                    <ExternalLink className="h-3 w-3" /> Open
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="destructive"
-                    className="h-7 w-full text-xs gap-1"
-                    onClick={() => setDeleteTarget(file)}
-                  >
-                    <Trash2 className="h-3 w-3" /> Delete
-                  </Button>
+                <div className="mt-1">
+                  <RowActions actions={[
+                    { label: 'Open', icon: <ExternalLink className="h-3.5 w-3.5" />, onClick: () => window.open(file.publicUrl, '_blank') },
+                    { label: 'Delete', onClick: () => setDeleteTarget(file), variant: 'destructive', separator: true },
+                  ]} />
                 </div>
+              </div>
               </div>
             );
           })}

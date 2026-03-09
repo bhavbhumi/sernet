@@ -26,6 +26,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
 import { ADMIN_ROUTES } from '@/lib/adminRoutes';
+import { RowActions } from '@/components/admin/RowActions';
 
 // ── Imported Content Components (inlined from department pages) ──
 import { TaxRatesContent } from '@/pages/admin/accounts/AdminTaxRates';
@@ -332,10 +333,10 @@ function ProductsSection() {
                 <TableCell className="text-sm text-muted-foreground">{r.sort_order}</TableCell>
                 <TableCell><Badge variant={r.is_active ? 'default' : 'secondary'}>{r.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
                 <TableCell>
-                  <div className="flex items-center gap-1">
-                    <Button size="icon" variant="ghost" onClick={() => edit(r)}><Pencil className="h-3.5 w-3.5" /></Button>
-                    <Button size="icon" variant="ghost" className="text-destructive hover:text-destructive" onClick={() => setDeleteTarget({ id: r.id, name: r.name })}><Trash2 className="h-3.5 w-3.5" /></Button>
-                  </div>
+                  <RowActions actions={[
+                    { label: 'Edit', onClick: () => edit(r) },
+                    { label: 'Delete', onClick: () => setDeleteTarget({ id: r.id, name: r.name }), variant: 'destructive', separator: true },
+                  ]} />
                 </TableCell>
               </TableRow>
             ))}
@@ -438,10 +439,10 @@ function DepartmentsSection() {
                 <TableCell className="text-sm text-muted-foreground">{r.sort_order}</TableCell>
                 <TableCell><Badge variant={r.is_active ? 'default' : 'secondary'}>{r.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
                 <TableCell>
-                  <div className="flex items-center gap-1">
-                    <Button size="icon" variant="ghost" onClick={() => edit(r)}><Pencil className="h-3.5 w-3.5" /></Button>
-                    <Button size="icon" variant="ghost" className="text-destructive hover:text-destructive" onClick={() => setDeleteTarget({ id: r.id, name: r.name })}><Trash2 className="h-3.5 w-3.5" /></Button>
-                  </div>
+                  <RowActions actions={[
+                    { label: 'Edit', onClick: () => edit(r) },
+                    { label: 'Delete', onClick: () => setDeleteTarget({ id: r.id, name: r.name }), variant: 'destructive', separator: true },
+                  ]} />
                 </TableCell>
               </TableRow>
             ))}
@@ -561,10 +562,10 @@ function LocationsSection() {
                 <TableCell className="text-sm text-muted-foreground">{r.sort_order}</TableCell>
                 <TableCell><Badge variant={r.is_active ? 'default' : 'secondary'}>{r.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
                 <TableCell>
-                  <div className="flex items-center gap-1">
-                    <Button size="icon" variant="ghost" onClick={() => edit(r)}><Pencil className="h-3.5 w-3.5" /></Button>
-                    <Button size="icon" variant="ghost" className="text-destructive hover:text-destructive" onClick={() => setDeleteTarget({ id: r.id, name: r.name })}><Trash2 className="h-3.5 w-3.5" /></Button>
-                  </div>
+                  <RowActions actions={[
+                    { label: 'Edit', onClick: () => edit(r) },
+                    { label: 'Delete', onClick: () => setDeleteTarget({ id: r.id, name: r.name }), variant: 'destructive', separator: true },
+                  ]} />
                 </TableCell>
               </TableRow>
             ))}
@@ -697,10 +698,10 @@ function DesignationsContent() {
                 <TableCell className="text-sm">{r.departments?.name || 'Any'}</TableCell>
                 <TableCell><Badge variant={r.is_active ? 'default' : 'secondary'}>{r.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
                 <TableCell>
-                  <div className="flex items-center gap-1">
-                    <Button size="icon" variant="ghost" onClick={() => edit(r)}><Pencil className="h-3.5 w-3.5" /></Button>
-                    <Button size="icon" variant="ghost" className="text-destructive hover:text-destructive" onClick={() => setDeleteTarget({ id: r.id, name: r.title })}><Trash2 className="h-3.5 w-3.5" /></Button>
-                  </div>
+                  <RowActions actions={[
+                    { label: 'Edit', onClick: () => edit(r) },
+                    { label: 'Delete', onClick: () => setDeleteTarget({ id: r.id, name: r.title }), variant: 'destructive', separator: true },
+                  ]} />
                 </TableCell>
               </TableRow>
             ))}
@@ -884,13 +885,11 @@ function LeaveTypesContent() {
                 <TableCell><Badge variant="outline" className="capitalize">{t.applicable_gender || 'all'}</Badge></TableCell>
                 <TableCell><Badge variant={t.is_active ? 'default' : 'secondary'}>{t.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
                 <TableCell>
-                  <div className="flex items-center gap-1">
-                    <Button size="sm" variant="ghost" onClick={() => openEdit(t)} title="Edit"><Pencil className="h-3.5 w-3.5" /></Button>
-                    <Button size="sm" variant="ghost" onClick={() => toggleTypeActive.mutate({ id: t.id, is_active: !t.is_active })} title={t.is_active ? 'Disable' : 'Enable'}>
-                      {t.is_active ? 'Disable' : 'Enable'}
-                    </Button>
-                    <Button size="sm" variant="ghost" className="text-destructive hover:text-destructive" onClick={() => setDeleteTarget({ id: t.id, name: t.name })} title="Delete"><Trash2 className="h-3.5 w-3.5" /></Button>
-                  </div>
+                  <RowActions actions={[
+                    { label: 'Edit', onClick: () => openEdit(t) },
+                    { label: t.is_active ? 'Disable' : 'Enable', onClick: () => toggleTypeActive.mutate({ id: t.id, is_active: !t.is_active }) },
+                    { label: 'Delete', onClick: () => setDeleteTarget({ id: t.id, name: t.name }), variant: 'destructive', separator: true },
+                  ]} />
                 </TableCell>
               </TableRow>
             ))}
