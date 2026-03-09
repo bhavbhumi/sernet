@@ -87,7 +87,7 @@ export const BankAccountsContent = () => {
         <CardContent>
           {isLoading ? <p className="text-muted-foreground text-sm">Loading...</p> : accounts.length === 0 ? <p className="text-muted-foreground text-sm">No bank accounts added.</p> : (
             <Table>
-              <TableHeader><TableRow><TableHead>Account Name</TableHead><TableHead>Bank</TableHead><TableHead>A/C No.</TableHead><TableHead>IFSC</TableHead><TableHead>Type</TableHead><TableHead>Status</TableHead><TableHead>Actions</TableHead></TableRow></TableHeader>
+              <TableHeader><TableRow><TableHead>Account Name</TableHead><TableHead>Bank</TableHead><TableHead>A/C No.</TableHead><TableHead>IFSC</TableHead><TableHead>Type</TableHead><TableHead>Status</TableHead><TableHead className="w-12"></TableHead></TableRow></TableHeader>
               <TableBody>
                 {accounts.map((a: any) => (
                   <TableRow key={a.id}>
