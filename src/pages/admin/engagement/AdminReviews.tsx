@@ -219,36 +219,15 @@ export default function AdminReviews() {
               {review.source && <span>via {review.source}</span>}
               <span>{new Date(review.created_at).toLocaleDateString()}</span>
             </div>
-            {/* Horizontal action bar */}
             <div className="flex items-center gap-1 pt-2 border-t border-border/60 flex-wrap">
-              <Button variant="ghost" size="sm" className="h-7 px-2 text-xs gap-1.5" onClick={() => setSelectedReview(review)}>
-                <Eye className="h-3 w-3" /> View
-              </Button>
-              <Button variant="ghost" size="sm" className="h-7 px-2 text-xs gap-1.5" onClick={() => openEdit(review)}>
-                <Pencil className="h-3 w-3" /> Edit
-              </Button>
-              {review.status !== 'approved' && (
-                <Button variant="ghost" size="sm" className="h-7 px-2 text-xs gap-1.5 text-emerald-600 hover:text-emerald-600" onClick={() => updateStatus(review.id, 'approved')}>
-                  <CheckCircle className="h-3 w-3" /> Approve
-                </Button>
-              )}
-              {review.status !== 'rejected' && (
-                <Button variant="ghost" size="sm" className="h-7 px-2 text-xs gap-1.5 text-destructive hover:text-destructive" onClick={() => updateStatus(review.id, 'rejected')}>
-                  <XCircle className="h-3 w-3" /> Reject
-                </Button>
-              )}
-              <Button
-                variant="ghost"
-                size="sm"
-                className={`h-7 px-2 text-xs gap-1.5 ${review.is_featured ? 'text-yellow-500' : ''}`}
-                onClick={() => toggleFeatured(review)}
-              >
-                <Star className={`h-3 w-3 ${review.is_featured ? 'fill-yellow-400' : ''}`} />
-                {review.is_featured ? 'Unfeature' : 'Feature'}
-              </Button>
-              <Button variant="ghost" size="sm" className="h-7 px-2 text-xs gap-1.5 text-destructive hover:text-destructive ml-auto" onClick={() => handleDelete(review.id)}>
-                <Trash2 className="h-3 w-3" /> Delete
-              </Button>
+              <RowActions actions={[
+                { label: 'View', icon: <Eye className="h-3.5 w-3.5" />, onClick: () => setSelectedReview(review) },
+                { label: 'Edit', onClick: () => openEdit(review) },
+                { label: review.status !== 'approved' ? 'Approve' : 'Approved', icon: <CheckCircle className="h-3.5 w-3.5" />, onClick: () => updateStatus(review.id, 'approved'), hidden: review.status === 'approved' },
+                { label: review.status !== 'rejected' ? 'Reject' : 'Rejected', icon: <XCircle className="h-3.5 w-3.5" />, onClick: () => updateStatus(review.id, 'rejected'), hidden: review.status === 'rejected', variant: 'destructive' },
+                { label: review.is_featured ? 'Unfeature' : 'Feature', icon: <Star className={`h-3.5 w-3.5 ${review.is_featured ? 'fill-yellow-400' : ''}`} />, onClick: () => toggleFeatured(review) },
+                { label: 'Delete', onClick: () => handleDelete(review.id), variant: 'destructive', separator: true },
+              ]} />
             </div>
           </div>
         ))}

@@ -152,8 +152,10 @@ export function EscalationMatrixContent() {
                     <Badge variant={r.is_active ? 'default' : 'secondary'} className="text-[10px]">{r.is_active ? 'Active' : 'Inactive'}</Badge>
                   </div>
                   <div className="flex gap-1">
-                    <Button variant="ghost" size="sm" className="h-7 w-7 p-0" onClick={() => { setEditingRule(r.id); setRuleForm({ name: r.name, description: r.description ?? '', trigger_type: r.trigger_type, conditions_json: JSON.stringify(r.conditions, null, 2), actions_json: JSON.stringify(r.actions, null, 2) }); setRuleDialog(true); }}><Pencil className="h-3.5 w-3.5" /></Button>
-                    <Button variant="ghost" size="sm" className="h-7 w-7 p-0 text-destructive" onClick={() => deleteRule(r.id)}><Trash2 className="h-3.5 w-3.5" /></Button>
+                    <RowActions actions={[
+                      { label: 'Edit', onClick: () => { setEditingRule(r.id); setRuleForm({ name: r.name, description: r.description ?? '', trigger_type: r.trigger_type, conditions_json: JSON.stringify(r.conditions, null, 2), actions_json: JSON.stringify(r.actions, null, 2) }); setRuleDialog(true); } },
+                      { label: 'Delete', onClick: () => deleteRule(r.id), variant: 'destructive', separator: true },
+                    ]} />
                   </div>
                 </div>
                 {r.description && <p className="text-xs text-muted-foreground mb-2">{r.description}</p>}

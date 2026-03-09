@@ -129,17 +129,13 @@ export default function AdminPolls() {
             </div>
             <p className="font-medium text-foreground">{poll.question}</p>
             {poll.ends_at && <p className="text-xs text-muted-foreground mt-1">Ends: {new Date(poll.ends_at).toLocaleDateString()}</p>}
-            {/* Horizontal action bar */}
-            <div className="flex items-center gap-1 pt-2 mt-2 border-t border-border/60 flex-wrap">
-              <Button variant="ghost" size="sm" className="h-7 px-2 text-xs gap-1.5" onClick={() => viewResults(poll)}>
-                <BarChart2 className="h-3 w-3" /> Results
-              </Button>
-              <Button variant="ghost" size="sm" className="h-7 px-2 text-xs gap-1.5" onClick={() => openEdit(poll)}>
-                <Pencil className="h-3 w-3" /> Edit
-              </Button>
-              <Button variant="ghost" size="sm" className="h-7 px-2 text-xs gap-1.5 text-destructive hover:text-destructive ml-auto" onClick={() => handleDelete(poll.id)}>
-                <Trash2 className="h-3 w-3" /> Delete
-              </Button>
+            {/* Action menu */}
+            <div className="flex items-center gap-1 pt-2 mt-2 border-t border-border/60">
+              <RowActions actions={[
+                { label: 'Results', icon: <BarChart2 className="h-3.5 w-3.5" />, onClick: () => viewResults(poll) },
+                { label: 'Edit', onClick: () => openEdit(poll) },
+                { label: 'Delete', onClick: () => handleDelete(poll.id), variant: 'destructive', separator: true },
+              ]} />
             </div>
           </div>
         ))}
