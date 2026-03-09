@@ -153,7 +153,18 @@ const AdminInvoices = () => {
                   <div className="space-y-2">
                     {items.map((item, idx) => (
                       <div key={idx} className="grid grid-cols-[1fr_80px_100px_32px] gap-2 items-end">
-                        <div><Input placeholder="Description" value={item.description} onChange={e => updateItem(idx, 'description', e.target.value)} /></div>
+                        <div>
+                          <Select value={item.description} onValueChange={v => {
+                            const svc = serviceCatalog.find((s: any) => s.name === v);
+                            updateItem(idx, 'description', v);
+                            if (svc && svc.default_rate > 0) updateItem(idx, 'unit_price', Number(svc.default_rate));
+                          }}>
+                            <SelectTrigger><SelectValue placeholder="Select service" /></SelectTrigger>
+                            <SelectContent>
+                              {serviceCatalog.map((s: any) => <SelectItem key={s.id} value={s.name}>{s.name}</SelectItem>)}
+                            </SelectContent>
+                          </Select>
+                        </div>
                         <div><Input type="number" min={1} placeholder="Qty" value={item.quantity} onChange={e => updateItem(idx, 'quantity', Number(e.target.value))} /></div>
                         <div><Input type="number" min={0} placeholder="Price" value={item.unit_price} onChange={e => updateItem(idx, 'unit_price', Number(e.target.value))} /></div>
                         <Button type="button" size="icon" variant="ghost" onClick={() => removeItem(idx)} disabled={items.length === 1}><Trash2 className="h-3 w-3" /></Button>
