@@ -814,8 +814,11 @@ function LeaveTypesContent() {
             <TableRow>
               <TableHead>Name</TableHead>
               <TableHead>Code</TableHead>
-              <TableHead>Default Days</TableHead>
+              <TableHead>Days</TableHead>
               <TableHead>Paid</TableHead>
+              <TableHead>Carry Fwd</TableHead>
+              <TableHead>Encashable</TableHead>
+              <TableHead>Gender</TableHead>
               <TableHead>Active</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
@@ -823,10 +826,16 @@ function LeaveTypesContent() {
           <TableBody>
             {leaveTypes.map((t: any) => (
               <TableRow key={t.id}>
-                <TableCell className="font-medium">{t.name}</TableCell>
+                <TableCell>
+                  <div className="font-medium">{t.name}</div>
+                  {t.description && <div className="text-xs text-muted-foreground line-clamp-1 max-w-[200px]">{t.description}</div>}
+                </TableCell>
                 <TableCell className="font-mono">{t.code}</TableCell>
                 <TableCell>{t.default_days}</TableCell>
                 <TableCell>{t.is_paid ? 'Yes' : 'No'}</TableCell>
+                <TableCell>{t.carry_forward ? `Yes (${t.max_carry_days}d)` : 'No'}</TableCell>
+                <TableCell>{t.encashable ? 'Yes' : 'No'}</TableCell>
+                <TableCell><Badge variant="outline" className="capitalize">{t.applicable_gender || 'all'}</Badge></TableCell>
                 <TableCell><Badge variant={t.is_active ? 'default' : 'secondary'}>{t.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
                 <TableCell>
                   <Button size="sm" variant="outline" onClick={() => toggleTypeActive.mutate({ id: t.id, is_active: !t.is_active })}>
