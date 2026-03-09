@@ -7,9 +7,10 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 import {
-  Upload, Trash2, Copy, Search, Image, FileText, Film, Music,
+  Upload, Copy, Search, Image, FileText, Film, Music,
   RefreshCw, ExternalLink, FolderOpen, CheckCircle2
 } from 'lucide-react';
+import { RowActions } from '@/components/admin/RowActions';
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel,
   AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
