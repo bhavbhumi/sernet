@@ -44,9 +44,9 @@ const AdminInvoices = () => {
   });
 
   const { data: contacts = [] } = useQuery({
-    queryKey: ['crm-contacts-list'],
+    queryKey: ['crm-contacts-invoiceable'],
     queryFn: async () => {
-      const { data, error } = await supabase.from('crm_contacts').select('id, full_name').order('full_name');
+      const { data, error } = await supabase.from('crm_contacts').select('id, full_name, relationship_type').in('relationship_type', ['client', 'principal', 'partner']).order('full_name');
       if (error) throw error;
       return data || [];
     },
