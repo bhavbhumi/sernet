@@ -716,7 +716,7 @@ function DesignationsContent() {
 function LeaveTypesContent() {
   const qc = useQueryClient();
   const [typeOpen, setTypeOpen] = useState(false);
-  const [typeForm, setTypeForm] = useState({ name: '', code: '', default_days: 0, is_paid: true });
+  const [typeForm, setTypeForm] = useState({ name: '', code: '', default_days: 0, is_paid: true, description: '', carry_forward: false, max_carry_days: 0, encashable: false, applicable_gender: 'all', min_service_days: 0 });
 
   const { data: leaveTypes = [], isLoading } = useQuery({
     queryKey: ['leave-types'],
@@ -732,6 +732,9 @@ function LeaveTypesContent() {
       const { error } = await db('leave_types').insert({
         name: typeForm.name, code: typeForm.code,
         default_days: typeForm.default_days, is_paid: typeForm.is_paid,
+        description: typeForm.description, carry_forward: typeForm.carry_forward,
+        max_carry_days: typeForm.max_carry_days, encashable: typeForm.encashable,
+        applicable_gender: typeForm.applicable_gender, min_service_days: typeForm.min_service_days,
       });
       if (error) throw error;
     },
@@ -739,7 +742,7 @@ function LeaveTypesContent() {
       qc.invalidateQueries({ queryKey: ['leave-types'] });
       toast.success('Leave type created');
       setTypeOpen(false);
-      setTypeForm({ name: '', code: '', default_days: 0, is_paid: true });
+      setTypeForm({ name: '', code: '', default_days: 0, is_paid: true, description: '', carry_forward: false, max_carry_days: 0, encashable: false, applicable_gender: 'all', min_service_days: 0 });
     },
     onError: (e: any) => toast.error(e.message),
   });
@@ -760,13 +763,45 @@ function LeaveTypesContent() {
           <DialogTrigger asChild><Button size="sm"><Plus className="h-4 w-4 mr-1" />Add Type</Button></DialogTrigger>
           <DialogContent>
             <DialogHeader><DialogTitle>Add Leave Type</DialogTitle></DialogHeader>
-            <div className="space-y-4">
+            <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-1">
               <div><Label>Name</Label><Input value={typeForm.name} onChange={e => setTypeForm(p => ({ ...p, name: e.target.value }))} placeholder="e.g. Casual Leave" /></div>
-              <div><Label>Code</Label><Input value={typeForm.code} onChange={e => setTypeForm(p => ({ ...p, code: e.target.value }))} placeholder="e.g. CL" /></div>
-              <div><Label>Default Days</Label><Input type="number" value={typeForm.default_days} onChange={e => setTypeForm(p => ({ ...p, default_days: Number(e.target.value) }))} /></div>
-              <div className="flex items-center gap-2">
-                <input type="checkbox" checked={typeForm.is_paid} onChange={e => setTypeForm(p => ({ ...p, is_paid: e.target.checked }))} id="is_paid_master" />
-                <Label htmlFor="is_paid_master">Paid Leave</Label>
+              <div className="grid grid-cols-2 gap-3">
+                <div><Label>Code</Label><Input value={typeForm.code} onChange={e => setTypeForm(p => ({ ...p, code: e.target.value }))} placeholder="e.g. CL" /></div>
+                <div><Label>Default Days / Year</Label><Input type="number" value={typeForm.default_days} onChange={e => setTypeForm(p => ({ ...p, default_days: Number(e.target.value) }))} /></div>
+              </div>
+              <div><Label>Description</Label><Textarea value={typeForm.description} onChange={e => setTypeForm(p => ({ ...p, description: e.target.value }))} placeholder="Governing act, conditions..." rows={2} /></div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <Label>Applicable Gender</Label>
+                  <Select value={typeForm.applicable_gender} onValueChange={v => setTypeForm(p => ({ ...p, applicable_gender: v }))}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All</SelectItem>
+                      <SelectItem value="male">Male Only</SelectItem>
+                      <SelectItem value="female">Female Only</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div><Label>Min Service Days</Label><Input type="number" value={typeForm.min_service_days} onChange={e => setTypeForm(p => ({ ...p, min_service_days: Number(e.target.value) }))} placeholder="0" /></div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="flex items-center gap-2">
+                  <input type="checkbox" checked={typeForm.is_paid} onChange={e => setTypeForm(p => ({ ...p, is_paid: e.target.checked }))} id="is_paid_master" />
+                  <Label htmlFor="is_paid_master">Paid Leave</Label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <input type="checkbox" checked={typeForm.encashable} onChange={e => setTypeForm(p => ({ ...p, encashable: e.target.checked }))} id="encashable_master" />
+                  <Label htmlFor="encashable_master">Encashable</Label>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="flex items-center gap-2">
+                  <input type="checkbox" checked={typeForm.carry_forward} onChange={e => setTypeForm(p => ({ ...p, carry_forward: e.target.checked }))} id="carry_fwd_master" />
+                  <Label htmlFor="carry_fwd_master">Carry Forward</Label>
+                </div>
+                {typeForm.carry_forward && (
+                  <div><Label>Max Carry Days</Label><Input type="number" value={typeForm.max_carry_days} onChange={e => setTypeForm(p => ({ ...p, max_carry_days: Number(e.target.value) }))} /></div>
+                )}
               </div>
               <Button className="w-full" disabled={!typeForm.name || !typeForm.code} onClick={() => createType.mutate()}>Add Leave Type</Button>
             </div>
@@ -779,8 +814,11 @@ function LeaveTypesContent() {
             <TableRow>
               <TableHead>Name</TableHead>
               <TableHead>Code</TableHead>
-              <TableHead>Default Days</TableHead>
+              <TableHead>Days</TableHead>
               <TableHead>Paid</TableHead>
+              <TableHead>Carry Fwd</TableHead>
+              <TableHead>Encashable</TableHead>
+              <TableHead>Gender</TableHead>
               <TableHead>Active</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
@@ -788,10 +826,16 @@ function LeaveTypesContent() {
           <TableBody>
             {leaveTypes.map((t: any) => (
               <TableRow key={t.id}>
-                <TableCell className="font-medium">{t.name}</TableCell>
+                <TableCell>
+                  <div className="font-medium">{t.name}</div>
+                  {t.description && <div className="text-xs text-muted-foreground line-clamp-1 max-w-[200px]">{t.description}</div>}
+                </TableCell>
                 <TableCell className="font-mono">{t.code}</TableCell>
                 <TableCell>{t.default_days}</TableCell>
                 <TableCell>{t.is_paid ? 'Yes' : 'No'}</TableCell>
+                <TableCell>{t.carry_forward ? `Yes (${t.max_carry_days}d)` : 'No'}</TableCell>
+                <TableCell>{t.encashable ? 'Yes' : 'No'}</TableCell>
+                <TableCell><Badge variant="outline" className="capitalize">{t.applicable_gender || 'all'}</Badge></TableCell>
                 <TableCell><Badge variant={t.is_active ? 'default' : 'secondary'}>{t.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
                 <TableCell>
                   <Button size="sm" variant="outline" onClick={() => toggleTypeActive.mutate({ id: t.id, is_active: !t.is_active })}>
