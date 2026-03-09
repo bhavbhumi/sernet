@@ -10,7 +10,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import { Plus, Pencil } from 'lucide-react';
+import { Plus } from 'lucide-react';
+import { RowActions } from '@/components/admin/RowActions';
 import { toast } from 'sonner';
 import { useState } from 'react';
 
@@ -83,7 +84,7 @@ export const TaxRatesContent = () => {
         <CardContent>
           {isLoading ? <p className="text-muted-foreground text-sm">Loading...</p> : rates.length === 0 ? <p className="text-muted-foreground text-sm">No tax rates configured.</p> : (
             <Table>
-              <TableHeader><TableRow><TableHead>Name</TableHead><TableHead>Rate</TableHead><TableHead>Type</TableHead><TableHead>SAC/HSN</TableHead><TableHead>Status</TableHead><TableHead>Actions</TableHead></TableRow></TableHeader>
+              <TableHeader><TableRow><TableHead>Name</TableHead><TableHead>Rate</TableHead><TableHead>Type</TableHead><TableHead>SAC/HSN</TableHead><TableHead>Status</TableHead><TableHead className="w-12"></TableHead></TableRow></TableHeader>
               <TableBody>
                 {rates.map((r: any) => (
                   <TableRow key={r.id}>
@@ -92,7 +93,7 @@ export const TaxRatesContent = () => {
                     <TableCell>{r.tax_type}</TableCell>
                     <TableCell className="font-mono text-xs">{r.hsn_sac_code || '—'}</TableCell>
                     <TableCell><Badge variant={r.is_active ? 'default' : 'secondary'}>{r.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
-                    <TableCell><Button size="icon" variant="ghost" onClick={() => edit(r)}><Pencil className="h-3.5 w-3.5" /></Button></TableCell>
+                    <TableCell><RowActions actions={[{ label: 'Edit', onClick: () => edit(r) }]} /></TableCell>
                   </TableRow>
                 ))}
               </TableBody>

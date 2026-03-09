@@ -10,7 +10,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import { Plus, Pencil } from 'lucide-react';
+import { Plus } from 'lucide-react';
+import { RowActions } from '@/components/admin/RowActions';
 import { toast } from 'sonner';
 import { useState } from 'react';
 
@@ -86,7 +87,7 @@ export const BankAccountsContent = () => {
         <CardContent>
           {isLoading ? <p className="text-muted-foreground text-sm">Loading...</p> : accounts.length === 0 ? <p className="text-muted-foreground text-sm">No bank accounts added.</p> : (
             <Table>
-              <TableHeader><TableRow><TableHead>Account Name</TableHead><TableHead>Bank</TableHead><TableHead>A/C No.</TableHead><TableHead>IFSC</TableHead><TableHead>Type</TableHead><TableHead>Status</TableHead><TableHead>Actions</TableHead></TableRow></TableHeader>
+              <TableHeader><TableRow><TableHead>Account Name</TableHead><TableHead>Bank</TableHead><TableHead>A/C No.</TableHead><TableHead>IFSC</TableHead><TableHead>Type</TableHead><TableHead>Status</TableHead><TableHead className="w-12"></TableHead></TableRow></TableHeader>
               <TableBody>
                 {accounts.map((a: any) => (
                   <TableRow key={a.id}>
@@ -96,7 +97,7 @@ export const BankAccountsContent = () => {
                     <TableCell className="font-mono text-xs">{a.ifsc_code || '—'}</TableCell>
                     <TableCell className="capitalize">{a.account_type}</TableCell>
                     <TableCell><Badge variant={a.is_active ? 'default' : 'secondary'}>{a.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
-                    <TableCell><Button size="icon" variant="ghost" onClick={() => edit(a)}><Pencil className="h-3.5 w-3.5" /></Button></TableCell>
+                    <TableCell><RowActions actions={[{ label: 'Edit', onClick: () => edit(a) }]} /></TableCell>
                   </TableRow>
                 ))}
               </TableBody>

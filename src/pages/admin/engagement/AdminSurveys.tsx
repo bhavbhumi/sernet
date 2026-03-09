@@ -8,7 +8,8 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Pencil, Trash2, ClipboardList, X, Eye, MessageSquare } from 'lucide-react';
+import { Plus, ClipboardList, X, MessageSquare } from 'lucide-react';
+import { RowActions } from '@/components/admin/RowActions';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 
@@ -214,17 +215,12 @@ export default function AdminSurveys() {
             <p className="font-medium text-foreground">{survey.title}</p>
             {survey.description && <p className="text-xs text-muted-foreground mt-1 line-clamp-1">{survey.description}</p>}
             {survey.deadline_at && <p className="text-xs text-muted-foreground mt-1">Deadline: {new Date(survey.deadline_at).toLocaleDateString()}</p>}
-            {/* Horizontal action bar */}
-            <div className="flex items-center gap-1 pt-2 mt-2 border-t border-border/60 flex-wrap">
-              <Button variant="ghost" size="sm" className="h-7 px-2 text-xs gap-1.5" onClick={() => viewResponses(survey)}>
-                <MessageSquare className="h-3 w-3" /> Responses
-              </Button>
-              <Button variant="ghost" size="sm" className="h-7 px-2 text-xs gap-1.5" onClick={() => openEdit(survey)}>
-                <Pencil className="h-3 w-3" /> Edit
-              </Button>
-              <Button variant="ghost" size="sm" className="h-7 px-2 text-xs gap-1.5 text-destructive hover:text-destructive ml-auto" onClick={() => handleDelete(survey.id)}>
-                <Trash2 className="h-3 w-3" /> Delete
-              </Button>
+            <div className="flex items-center justify-end pt-2 mt-2 border-t border-border/60">
+              <RowActions actions={[
+                { label: 'Responses', icon: <MessageSquare className="h-3.5 w-3.5" />, onClick: () => viewResponses(survey) },
+                { label: 'Edit', onClick: () => openEdit(survey) },
+                { label: 'Delete', onClick: () => handleDelete(survey.id), variant: 'destructive', separator: true },
+              ]} />
             </div>
           </div>
         ))}

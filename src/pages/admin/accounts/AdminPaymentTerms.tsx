@@ -9,7 +9,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { Plus, Pencil } from 'lucide-react';
+import { Plus } from 'lucide-react';
+import { RowActions } from '@/components/admin/RowActions';
 import { toast } from 'sonner';
 import { useState } from 'react';
 
@@ -71,7 +72,7 @@ export const PaymentTermsContent = () => {
         <CardContent>
           {isLoading ? <p className="text-muted-foreground text-sm">Loading...</p> : terms.length === 0 ? <p className="text-muted-foreground text-sm">No payment terms configured.</p> : (
             <Table>
-              <TableHeader><TableRow><TableHead>Name</TableHead><TableHead>Days</TableHead><TableHead>Description</TableHead><TableHead>Status</TableHead><TableHead>Actions</TableHead></TableRow></TableHeader>
+              <TableHeader><TableRow><TableHead>Name</TableHead><TableHead>Days</TableHead><TableHead>Description</TableHead><TableHead>Status</TableHead><TableHead className="w-12"></TableHead></TableRow></TableHeader>
               <TableBody>
                 {terms.map((t: any) => (
                   <TableRow key={t.id}>
@@ -79,7 +80,7 @@ export const PaymentTermsContent = () => {
                     <TableCell>{t.days}</TableCell>
                     <TableCell className="text-muted-foreground text-sm">{t.description || '—'}</TableCell>
                     <TableCell><Badge variant={t.is_active ? 'default' : 'secondary'}>{t.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
-                    <TableCell><Button size="icon" variant="ghost" onClick={() => edit(t)}><Pencil className="h-3.5 w-3.5" /></Button></TableCell>
+                    <TableCell><RowActions actions={[{ label: 'Edit', onClick: () => edit(t) }]} /></TableCell>
                   </TableRow>
                 ))}
               </TableBody>

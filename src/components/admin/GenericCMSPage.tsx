@@ -12,12 +12,13 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Pencil, Trash2, Search, Eye, EyeOff, Star, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plus, Search, Eye, EyeOff, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { FieldInfoTooltip } from '@/components/admin/FieldInfoTooltip';
 import { logAudit } from '@/lib/auditLog';
 import { RichTextEditor } from '@/components/admin/RichTextEditor';
+import { RowActions } from '@/components/admin/RowActions';
 
 export interface FieldDef {
   key: string;
@@ -334,28 +335,23 @@ export function GenericCMSPage({
                   {tableColumns.map((col, colIdx) => (
                     <td key={col.key} className="px-4 py-3 text-muted-foreground align-top">
                       {colIdx === 0 ? (
-                        <div>
-                          <p className="font-medium text-foreground line-clamp-1">{String(item[col.key] ?? '')}</p>
-                          <div className="flex items-center gap-1 mt-1 flex-nowrap">
-                            {onRowAction && onRowAction(item)}
-                            {hasStatus && (
-                              <Button variant="ghost" size="sm" className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground gap-1" onClick={() => toggleStatus(item)} title={item.status === 'published' ? 'Unpublish' : 'Publish'}>
-                                {item.status === 'published' ? <><EyeOff className="h-3 w-3" /> Unpublish</> : <><Eye className="h-3 w-3" /> Publish</>}
-                              </Button>
-                            )}
-                            {hasFeatured && (
-                              <Button variant="ghost" size="sm" className={`h-6 px-2 text-xs gap-1 ${item.is_featured ? 'text-yellow-500 hover:text-yellow-600' : 'text-muted-foreground hover:text-foreground'}`} onClick={() => toggleFeatured(item)}>
-                                <Star className={`h-3 w-3 ${item.is_featured ? 'fill-yellow-400' : ''}`} />
-                                {item.is_featured ? 'Unfeature' : 'Feature'}
-                              </Button>
-                            )}
-                            <Button variant="ghost" size="sm" className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground gap-1" onClick={() => openEdit(item)}>
-                              <Pencil className="h-3 w-3" /> Edit
-                            </Button>
-                            <Button variant="ghost" size="sm" className="h-6 px-2 text-xs text-destructive hover:text-destructive gap-1" onClick={() => handleDelete(String(item.id))}>
-                              <Trash2 className="h-3 w-3" /> Delete
-                            </Button>
-                          </div>
+                        <div className="flex items-center gap-2">
+                          <p className="font-medium text-foreground line-clamp-1 flex-1">{String(item[col.key] ?? '')}</p>
+                          <RowActions actions={[
+                            ...(onRowAction ? [{ label: 'Custom', icon: onRowAction(item), onClick: () => {} }] : []),
+                            ...(hasStatus ? [{
+                              label: item.status === 'published' ? 'Unpublish' : 'Publish',
+                              icon: item.status === 'published' ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />,
+                              onClick: () => toggleStatus(item),
+                            }] : []),
+                            ...(hasFeatured ? [{
+                              label: item.is_featured ? 'Unfeature' : 'Feature',
+                              icon: <Star className={`h-3.5 w-3.5 ${item.is_featured ? 'fill-yellow-400 text-yellow-500' : ''}`} />,
+                              onClick: () => toggleFeatured(item),
+                            }] : []),
+                            { label: 'Edit', onClick: () => openEdit(item) },
+                            { label: 'Delete', onClick: () => handleDelete(String(item.id)), variant: 'destructive' as const, separator: true },
+                          ].filter(a => a.label !== 'Custom' || onRowAction)} />
                         </div>
                       ) : col.key === 'status' ? (
                         <Badge variant={item[col.key] === 'published' ? 'default' : 'secondary'}>

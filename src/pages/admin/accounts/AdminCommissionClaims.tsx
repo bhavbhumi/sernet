@@ -10,8 +10,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { toast } from 'sonner';
-import { Plus, Pencil, Trash2, Receipt } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { format } from 'date-fns';
+import { RowActions } from '@/components/admin/RowActions';
 import { Badge } from '@/components/ui/badge';
 
 const emptyForm = {
@@ -98,7 +99,7 @@ export default function AdminCommissionClaims() {
                 <TableHead className="text-right">Rate %</TableHead>
                 <TableHead className="text-right">Claim (₹)</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead className="w-24">Actions</TableHead>
+                <TableHead className="w-12"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -116,10 +117,10 @@ export default function AdminCommissionClaims() {
                   <TableCell className="text-right font-semibold">₹{Number(r.claim_amount).toLocaleString('en-IN')}</TableCell>
                   <TableCell><Badge variant={statusColor(r.status)}>{r.status}</Badge></TableCell>
                   <TableCell>
-                    <div className="flex gap-1">
-                      <Button size="icon" variant="ghost" onClick={() => openEdit(r)}><Pencil className="h-4 w-4" /></Button>
-                      <Button size="icon" variant="ghost" onClick={() => handleDelete(r.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
-                    </div>
+                    <RowActions actions={[
+                      { label: 'Edit', onClick: () => openEdit(r) },
+                      { label: 'Delete', onClick: () => handleDelete(r.id), variant: 'destructive', separator: true },
+                    ]} />
                   </TableCell>
                 </TableRow>
               ))}
