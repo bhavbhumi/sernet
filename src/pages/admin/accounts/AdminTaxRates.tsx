@@ -84,7 +84,7 @@ export const TaxRatesContent = () => {
         <CardContent>
           {isLoading ? <p className="text-muted-foreground text-sm">Loading...</p> : rates.length === 0 ? <p className="text-muted-foreground text-sm">No tax rates configured.</p> : (
             <Table>
-              <TableHeader><TableRow><TableHead>Name</TableHead><TableHead>Rate</TableHead><TableHead>Type</TableHead><TableHead>SAC/HSN</TableHead><TableHead>Status</TableHead><TableHead>Actions</TableHead></TableRow></TableHeader>
+              <TableHeader><TableRow><TableHead>Name</TableHead><TableHead>Rate</TableHead><TableHead>Type</TableHead><TableHead>SAC/HSN</TableHead><TableHead>Status</TableHead><TableHead className="w-12"></TableHead></TableRow></TableHeader>
               <TableBody>
                 {rates.map((r: any) => (
                   <TableRow key={r.id}>
