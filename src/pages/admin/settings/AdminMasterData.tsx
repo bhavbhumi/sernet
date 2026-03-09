@@ -333,10 +333,10 @@ function ProductsSection() {
                 <TableCell className="text-sm text-muted-foreground">{r.sort_order}</TableCell>
                 <TableCell><Badge variant={r.is_active ? 'default' : 'secondary'}>{r.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
                 <TableCell>
-                  <div className="flex items-center gap-1">
-                    <Button size="icon" variant="ghost" onClick={() => edit(r)}><Pencil className="h-3.5 w-3.5" /></Button>
-                    <Button size="icon" variant="ghost" className="text-destructive hover:text-destructive" onClick={() => setDeleteTarget({ id: r.id, name: r.name })}><Trash2 className="h-3.5 w-3.5" /></Button>
-                  </div>
+                  <RowActions actions={[
+                    { label: 'Edit', onClick: () => edit(r) },
+                    { label: 'Delete', onClick: () => setDeleteTarget({ id: r.id, name: r.name }), variant: 'destructive', separator: true },
+                  ]} />
                 </TableCell>
               </TableRow>
             ))}
