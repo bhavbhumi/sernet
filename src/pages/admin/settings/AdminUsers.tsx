@@ -530,14 +530,10 @@ export default function AdminUsers() {
                           {format(new Date(user.last_sign_in_at), 'dd MMM, HH:mm')}
                         </span>
                       )}
-                      <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => openEditDialog(user)}>
-                        <Pencil className="h-3.5 w-3.5" />
-                      </Button>
-                      {user.id !== currentUserId && (
-                        <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive hover:text-destructive" onClick={() => handleDelete(user)}>
-                          <Trash2 className="h-3.5 w-3.5" />
-                        </Button>
-                      )}
+                      <RowActions actions={[
+                        { label: 'Edit', onClick: () => openEditDialog(user) },
+                        { label: 'Delete', onClick: () => handleDelete(user), variant: 'destructive', separator: true, hidden: user.id === currentUserId },
+                      ]} />
                     </div>
                   </div>
                 ))}

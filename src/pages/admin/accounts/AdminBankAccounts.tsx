@@ -97,7 +97,7 @@ export const BankAccountsContent = () => {
                     <TableCell className="font-mono text-xs">{a.ifsc_code || '—'}</TableCell>
                     <TableCell className="capitalize">{a.account_type}</TableCell>
                     <TableCell><Badge variant={a.is_active ? 'default' : 'secondary'}>{a.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
-                    <TableCell><Button size="icon" variant="ghost" onClick={() => edit(a)}><Pencil className="h-3.5 w-3.5" /></Button></TableCell>
+                    <TableCell><RowActions actions={[{ label: 'Edit', onClick: () => edit(a) }]} /></TableCell>
                   </TableRow>
                 ))}
               </TableBody>

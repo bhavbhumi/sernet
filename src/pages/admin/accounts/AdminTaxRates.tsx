@@ -93,7 +93,7 @@ export const TaxRatesContent = () => {
                     <TableCell>{r.tax_type}</TableCell>
                     <TableCell className="font-mono text-xs">{r.hsn_sac_code || '—'}</TableCell>
                     <TableCell><Badge variant={r.is_active ? 'default' : 'secondary'}>{r.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
-                    <TableCell><Button size="icon" variant="ghost" onClick={() => edit(r)}><Pencil className="h-3.5 w-3.5" /></Button></TableCell>
+                    <TableCell><RowActions actions={[{ label: 'Edit', onClick: () => edit(r) }]} /></TableCell>
                   </TableRow>
                 ))}
               </TableBody>
