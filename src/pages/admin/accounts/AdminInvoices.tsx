@@ -44,9 +44,9 @@ const AdminInvoices = () => {
   });
 
   const { data: contacts = [] } = useQuery({
-    queryKey: ['crm-contacts-list'],
+    queryKey: ['crm-contacts-invoiceable'],
     queryFn: async () => {
-      const { data, error } = await supabase.from('crm_contacts').select('id, full_name').order('full_name');
+      const { data, error } = await supabase.from('crm_contacts').select('id, full_name, relationship_type').in('relationship_type', ['client', 'principal', 'partner']).order('full_name');
       if (error) throw error;
       return data || [];
     },
@@ -136,10 +136,10 @@ const AdminInvoices = () => {
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label>Client</Label>
+                    <Label>Bill To</Label>
                     <Select value={form.contact_id} onValueChange={v => setForm(p => ({ ...p, contact_id: v }))}>
-                      <SelectTrigger><SelectValue placeholder="Select client" /></SelectTrigger>
-                      <SelectContent>{contacts.map((c: any) => <SelectItem key={c.id} value={c.id}>{c.full_name}</SelectItem>)}</SelectContent>
+                      <SelectTrigger><SelectValue placeholder="Select principal / partner / client" /></SelectTrigger>
+                      <SelectContent>{contacts.map((c: any) => <SelectItem key={c.id} value={c.id}>{c.full_name} <span className="text-muted-foreground ml-1 text-xs">({c.relationship_type})</span></SelectItem>)}</SelectContent>
                     </Select>
                   </div>
                   <div><Label>Due Date</Label><Input type="date" value={form.due_date} onChange={e => setForm(p => ({ ...p, due_date: e.target.value }))} /></div>
