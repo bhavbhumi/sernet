@@ -99,7 +99,7 @@ export default function AdminCommissionClaims() {
                 <TableHead className="text-right">Rate %</TableHead>
                 <TableHead className="text-right">Claim (₹)</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead className="w-24">Actions</TableHead>
+                <TableHead className="w-12"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
