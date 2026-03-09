@@ -716,33 +716,57 @@ function DesignationsContent() {
 function LeaveTypesContent() {
   const qc = useQueryClient();
   const [typeOpen, setTypeOpen] = useState(false);
-  const [typeForm, setTypeForm] = useState({ name: '', code: '', default_days: 0, is_paid: true, description: '', carry_forward: false, max_carry_days: 0, encashable: false, applicable_gender: 'all', min_service_days: 0 });
+  const [editId, setEditId] = useState<string | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
+  const emptyForm = { name: '', code: '', default_days: 0, is_paid: true, description: '', carry_forward: false, max_carry_days: 0, encashable: false, applicable_gender: 'all', min_service_days: 0, sort_order: 0 };
+  const [typeForm, setTypeForm] = useState(emptyForm);
 
   const { data: leaveTypes = [], isLoading } = useQuery({
     queryKey: ['leave-types'],
     queryFn: async () => {
-      const { data, error } = await db('leave_types').select('*').order('name');
+      const { data, error } = await db('leave_types').select('*').order('sort_order').order('name');
       if (error) throw error;
       return data || [];
     },
   });
 
-  const createType = useMutation({
+  const upsertType = useMutation({
     mutationFn: async () => {
-      const { error } = await db('leave_types').insert({
+      const payload = {
         name: typeForm.name, code: typeForm.code,
         default_days: typeForm.default_days, is_paid: typeForm.is_paid,
         description: typeForm.description, carry_forward: typeForm.carry_forward,
         max_carry_days: typeForm.max_carry_days, encashable: typeForm.encashable,
         applicable_gender: typeForm.applicable_gender, min_service_days: typeForm.min_service_days,
-      });
+        sort_order: typeForm.sort_order,
+      };
+      if (editId) {
+        const { error } = await db('leave_types').update(payload).eq('id', editId);
+        if (error) throw error;
+      } else {
+        const { error } = await db('leave_types').insert(payload);
+        if (error) throw error;
+      }
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['leave-types'] });
+      toast.success(editId ? 'Leave type updated' : 'Leave type created');
+      setTypeOpen(false);
+      setEditId(null);
+      setTypeForm(emptyForm);
+    },
+    onError: (e: any) => toast.error(e.message),
+  });
+
+  const deleteType = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await db('leave_types').delete().eq('id', id);
       if (error) throw error;
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['leave-types'] });
-      toast.success('Leave type created');
-      setTypeOpen(false);
-      setTypeForm({ name: '', code: '', default_days: 0, is_paid: true, description: '', carry_forward: false, max_carry_days: 0, encashable: false, applicable_gender: 'all', min_service_days: 0 });
+      toast.success('Leave type deleted');
+      setDeleteTarget(null);
     },
     onError: (e: any) => toast.error(e.message),
   });
@@ -755,19 +779,39 @@ function LeaveTypesContent() {
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['leave-types'] }); toast.success('Leave type updated'); },
   });
 
+  const openEdit = (t: any) => {
+    setEditId(t.id);
+    setTypeForm({
+      name: t.name, code: t.code, default_days: t.default_days, is_paid: t.is_paid,
+      description: t.description || '', carry_forward: t.carry_forward || false,
+      max_carry_days: t.max_carry_days || 0, encashable: t.encashable || false,
+      applicable_gender: t.applicable_gender || 'all', min_service_days: t.min_service_days || 0,
+      sort_order: t.sort_order || 0,
+    });
+    setTypeOpen(true);
+  };
+
+  const openAdd = () => {
+    setEditId(null);
+    setTypeForm(emptyForm);
+    setTypeOpen(true);
+  };
+
   return (
     <>
+      <DeleteConfirm open={!!deleteTarget} onOpenChange={(v) => !v && setDeleteTarget(null)} onConfirm={() => deleteTarget && deleteType.mutate(deleteTarget.id)} label={deleteTarget?.name || 'leave type'} />
       <div className="flex items-center justify-between mb-3">
         <p className="text-xs text-muted-foreground">Consumed by: Leave Management, Attendance</p>
-        <Dialog open={typeOpen} onOpenChange={setTypeOpen}>
-          <DialogTrigger asChild><Button size="sm"><Plus className="h-4 w-4 mr-1" />Add Type</Button></DialogTrigger>
+        <Dialog open={typeOpen} onOpenChange={(v) => { setTypeOpen(v); if (!v) { setEditId(null); setTypeForm(emptyForm); } }}>
+          <Button size="sm" onClick={openAdd}><Plus className="h-4 w-4 mr-1" />Add Type</Button>
           <DialogContent>
-            <DialogHeader><DialogTitle>Add Leave Type</DialogTitle></DialogHeader>
+            <DialogHeader><DialogTitle>{editId ? 'Edit Leave Type' : 'Add Leave Type'}</DialogTitle></DialogHeader>
             <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-1">
               <div><Label>Name</Label><Input value={typeForm.name} onChange={e => setTypeForm(p => ({ ...p, name: e.target.value }))} placeholder="e.g. Casual Leave" /></div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-3 gap-3">
                 <div><Label>Code</Label><Input value={typeForm.code} onChange={e => setTypeForm(p => ({ ...p, code: e.target.value }))} placeholder="e.g. CL" /></div>
                 <div><Label>Default Days / Year</Label><Input type="number" value={typeForm.default_days} onChange={e => setTypeForm(p => ({ ...p, default_days: Number(e.target.value) }))} /></div>
+                <div><Label>Sort Order</Label><Input type="number" value={typeForm.sort_order} onChange={e => setTypeForm(p => ({ ...p, sort_order: Number(e.target.value) }))} /></div>
               </div>
               <div><Label>Description</Label><Textarea value={typeForm.description} onChange={e => setTypeForm(p => ({ ...p, description: e.target.value }))} placeholder="Governing act, conditions..." rows={2} /></div>
               <div className="grid grid-cols-2 gap-3">
@@ -803,7 +847,9 @@ function LeaveTypesContent() {
                   <div><Label>Max Carry Days</Label><Input type="number" value={typeForm.max_carry_days} onChange={e => setTypeForm(p => ({ ...p, max_carry_days: Number(e.target.value) }))} /></div>
                 )}
               </div>
-              <Button className="w-full" disabled={!typeForm.name || !typeForm.code} onClick={() => createType.mutate()}>Add Leave Type</Button>
+              <Button className="w-full" disabled={!typeForm.name || !typeForm.code} onClick={() => upsertType.mutate()}>
+                {editId ? 'Update Leave Type' : 'Add Leave Type'}
+              </Button>
             </div>
           </DialogContent>
         </Dialog>
@@ -838,9 +884,13 @@ function LeaveTypesContent() {
                 <TableCell><Badge variant="outline" className="capitalize">{t.applicable_gender || 'all'}</Badge></TableCell>
                 <TableCell><Badge variant={t.is_active ? 'default' : 'secondary'}>{t.is_active ? 'Active' : 'Inactive'}</Badge></TableCell>
                 <TableCell>
-                  <Button size="sm" variant="outline" onClick={() => toggleTypeActive.mutate({ id: t.id, is_active: !t.is_active })}>
-                    {t.is_active ? 'Disable' : 'Enable'}
-                  </Button>
+                  <div className="flex items-center gap-1">
+                    <Button size="sm" variant="ghost" onClick={() => openEdit(t)} title="Edit"><Pencil className="h-3.5 w-3.5" /></Button>
+                    <Button size="sm" variant="ghost" onClick={() => toggleTypeActive.mutate({ id: t.id, is_active: !t.is_active })} title={t.is_active ? 'Disable' : 'Enable'}>
+                      {t.is_active ? 'Disable' : 'Enable'}
+                    </Button>
+                    <Button size="sm" variant="ghost" className="text-destructive hover:text-destructive" onClick={() => setDeleteTarget({ id: t.id, name: t.name })} title="Delete"><Trash2 className="h-3.5 w-3.5" /></Button>
+                  </div>
                 </TableCell>
               </TableRow>
             ))}
