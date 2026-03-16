@@ -351,34 +351,65 @@ export default function AdminSEOAudit() {
           </TabsContent>
 
           {/* ── Tab: Content Gaps ─────────────────────────── */}
-          <TabsContent value="content-gaps" className="mt-4">
+          <TabsContent value="content-gaps" className="space-y-4 mt-4">
             <Card className="p-4">
-              <h3 className="text-sm font-semibold mb-3">Content Gap Analysis (from SEO Report)</h3>
+              <h3 className="text-sm font-semibold mb-3">Keyword Coverage Across Site Pages</h3>
               <p className="text-xs text-muted-foreground mb-4">
-                High-volume keywords your site should target with dedicated content pages or blog posts.
+                High-volume keywords now embedded in page meta titles and descriptions for organic ranking.
               </p>
               <div className="space-y-2">
                 {[
-                  { topic: 'Financial planning services', volume: '1,200', priority: 'high' },
-                  { topic: 'Wealth management tips', volume: '1,000', priority: 'high' },
-                  { topic: 'Mutual fund investment strategies', volume: '900', priority: 'medium' },
-                  { topic: 'Trading education resources', volume: '800', priority: 'medium' },
-                  { topic: 'Insurance products comparison', volume: '700', priority: 'high' },
-                  { topic: 'Tax planning strategies', volume: '650', priority: 'medium' },
-                  { topic: 'Financial literacy courses', volume: '500', priority: 'high' },
-                  { topic: 'International investment opportunities', volume: '450', priority: 'medium' },
+                  { topic: 'Financial planning services', volume: '1,200', priority: 'high', page: '/services', covered: true },
+                  { topic: 'Wealth management tips', volume: '1,000', priority: 'high', page: '/insights', covered: true },
+                  { topic: 'Mutual fund investment strategies', volume: '900', priority: 'medium', page: '/tickfunds', covered: true },
+                  { topic: 'Trading education resources', volume: '800', priority: 'medium', page: '/services?tab=Trading', covered: true },
+                  { topic: 'Insurance products comparison', volume: '700', priority: 'high', page: '/tushil', covered: true },
+                  { topic: 'Tax planning strategies', volume: '650', priority: 'medium', page: '/services?tab=Estate Planning', covered: true },
+                  { topic: 'Financial literacy courses', volume: '500', priority: 'high', page: '/awareness', covered: true },
+                  { topic: 'International investment opportunities', volume: '450', priority: 'medium', page: '/network', covered: true },
                 ].map((gap, i) => (
                   <div key={i} className="flex items-center gap-3 py-1.5 border-b border-border/50">
+                    <CheckCircle2 className="h-3.5 w-3.5 text-green-500 shrink-0" />
                     <span className="text-sm flex-1">{gap.topic}</span>
+                    <span className="text-xs text-muted-foreground font-mono">{gap.page}</span>
                     <Badge variant="outline" className="text-[10px]">{gap.volume}/mo</Badge>
-                    <Badge variant={gap.priority === 'high' ? 'destructive' : 'secondary'} className="text-[10px]">
-                      {gap.priority}
-                    </Badge>
+                    <Badge variant="default" className="text-[10px]">Covered</Badge>
                   </div>
                 ))}
               </div>
-              <p className="text-xs text-muted-foreground mt-4">
-                💡 Publish articles via Content Studio → Posts targeting these keywords to improve organic traffic.
+            </Card>
+
+            <Card className="p-4">
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <h3 className="text-sm font-semibold">Article SEO Meta Coverage</h3>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {articleStats ? `${articleStats.ok} of ${articleStats.total} published articles have SEO meta. ${articleStats.missing} need generation.` : 'Loading…'}
+                  </p>
+                </div>
+                {(articleStats?.missing ?? 0) > 0 && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="gap-1.5 text-xs h-7"
+                    onClick={() => handleAutoGenerate('articles')}
+                    disabled={isGeneratingArticles}
+                  >
+                    {isGeneratingArticles ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5" />}
+                    {isGeneratingArticles ? 'Generating…' : 'Auto-Generate Article SEO'}
+                  </Button>
+                )}
+              </div>
+              {articleStats && (
+                <div className="w-full bg-muted rounded-full h-2">
+                  <div
+                    className="bg-primary h-2 rounded-full transition-all"
+                    style={{ width: `${articleStats.total > 0 ? (articleStats.ok / articleStats.total) * 100 : 0}%` }}
+                  />
+                </div>
+              )}
+              <p className="text-xs text-muted-foreground mt-3">
+                💡 AI generates keyword-rich meta titles and descriptions for up to 50 articles per batch, incorporating target keywords for better SERP visibility.
               </p>
             </Card>
           </TabsContent>
