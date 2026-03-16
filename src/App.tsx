@@ -112,6 +112,7 @@ const AdminCRMDeals = lazy(() => import("./pages/admin/sales/AdminCRMDeals"));
 const AdminCRMContacts = lazy(() => import("./pages/admin/sales/AdminCRMContacts"));
 const AdminSitePages = lazy(() => import("./pages/admin/site/AdminSitePages"));
 const AdminSiteSettings = lazy(() => import("./pages/admin/site/AdminSiteSettings"));
+const AdminSEOAudit = lazy(() => import("./pages/admin/site/AdminSEOAudit"));
 const AdminMediaLibrary = lazy(() => import("./pages/admin/site/AdminMediaLibrary"));
 const AdminImportArticles = lazy(() => import("./pages/admin/content/AdminImportArticles"));
 const AdminMarketHolidays = lazy(() => import("./pages/admin/calendars/AdminMarketHolidays"));
@@ -258,6 +259,7 @@ const App = () => (
             <Route path="/admin/marketing/calendars/corporate" element={<AdminCorporateEvents />} />
             <Route path="/admin/marketing/site/settings" element={<AdminSiteSettings />} />
             <Route path="/admin/marketing/site/pages" element={<AdminSitePages />} />
+            <Route path="/admin/marketing/site/seo" element={<AdminSEOAudit />} />
             <Route path="/admin/marketing/site/media" element={<AdminMediaLibrary />} />
 
             {/* Admin — Sales */}

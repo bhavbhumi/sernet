@@ -49,6 +49,7 @@ export const ADMIN_ROUTES = {
       settings: '/admin/marketing/site/settings',
       pages: '/admin/marketing/site/pages',
       media: '/admin/marketing/site/media',
+      seoAudit: '/admin/marketing/site/seo',
     },
   },
 

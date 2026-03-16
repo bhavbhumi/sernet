@@ -12,7 +12,8 @@ const SITE_NAME = 'SERNET Financial Services';
 const BASE_URL = 'https://sernetindia.com';
 
 export const SEOHead = ({ title, description, path = '/', type = 'website', jsonLd }: SEOHeadProps) => {
-  const fullTitle = `${title} | ${SITE_NAME}`;
+  const rawTitle = `${title} | ${SITE_NAME}`;
+  const fullTitle = rawTitle.length > 60 ? rawTitle.slice(0, 57) + '…' : rawTitle;
   const url = `${BASE_URL}${path}`;
 
   const defaultJsonLd = {

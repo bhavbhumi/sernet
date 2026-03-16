@@ -11,7 +11,7 @@ import {
   Sparkles, Calculator, UserCheck, CalendarDays, Mail, ScrollText, Scale, Lightbulb,
   TrendingUp, Building2, Gavel, Megaphone, Headphones, Ticket, BookMarked, MessageSquareText, Zap,
   Contact, CalendarClock, Clock, Receipt, Wallet, Lock, KeyRound, Activity, ExternalLink, PanelLeftClose, PanelLeftOpen,
-  Database, MonitorDot
+  Database, MonitorDot, Search
 } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import sernetLogo from '@/assets/sernet-logo.png';
@@ -52,6 +52,7 @@ const departmentGroups: DepartmentGroup[] = [
         label: 'Website', icon: Globe, moduleKey: 'system/website', children: [
           { label: 'Site Settings', icon: Palette, href: R.marketing.site.settings },
           { label: 'Page Directory', icon: ScanSearch, href: R.marketing.site.pages },
+          { label: 'SEO Health', icon: Search, href: R.marketing.site.seoAudit },
           { label: 'Media Library', icon: Images, href: R.marketing.site.media },
         ]
       },
