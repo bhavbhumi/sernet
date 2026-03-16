@@ -175,7 +175,7 @@ export const Header = () => {
             type="button"
             onClick={() => setSearchOpen(true)}
             className="p-2 text-muted-foreground hover:text-primary transition-colors"
-            title="Search"
+            aria-label="Search the site"
           >
             <Search className="h-5 w-5" />
           </button>
