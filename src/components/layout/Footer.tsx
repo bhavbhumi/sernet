@@ -299,6 +299,7 @@ export const Footer = () => {
         </div>
 
         {/* Newsletter Signup Strip */}
+        {(footerCfg?.show_newsletter !== false) && (
         <div className="mt-8 pt-6 border-t border-border">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
             <div className="flex items-center gap-2 shrink-0">
@@ -308,6 +309,7 @@ export const Footer = () => {
             <FooterNewsletterForm />
           </div>
         </div>
+        )}
 
         {/* Disclosure Section - collapsible on mobile */}
         <FooterDisclosure />
