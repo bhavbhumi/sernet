@@ -1,38 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Homepage -->
   <url><loc>https://sernetindia.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+
+  <!-- Core pages -->
   <url><loc>https://sernetindia.com/about</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sernetindia.com/about/philosophy</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://sernetindia.com/services</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://sernetindia.com/network</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://sernetindia.com/insights</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://sernetindia.com/contact</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://sernetindia.com/pricing</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://sernetindia.com/open-account</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://sernetindia.com/schedule-call</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+
+  <!-- Insights & Content -->
+  <url><loc>https://sernetindia.com/insights</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sernetindia.com/awareness</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://sernetindia.com/updates</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://sernetindia.com/opinions</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://sernetindia.com/reviews</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>
+
+  <!-- Calculators -->
   <url><loc>https://sernetindia.com/calculators</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://sernetindia.com/calculators/sip</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://sernetindia.com/calculators/lumpsum</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://sernetindia.com/calculators/brokerage</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://sernetindia.com/calculators/margin</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
+  <!-- Calendars -->
   <url><loc>https://sernetindia.com/calendars</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://sernetindia.com/market-holidays</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://sernetindia.com/economic-calendar</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
-  <url><loc>https://sernetindia.com/updates</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://sernetindia.com/awareness</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://sernetindia.com/opinions</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://sernetindia.com/reviews</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://sernetindia.com/downloads</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://sernetindia.com/support</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://sernetindia.com/complaints</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://sernetindia.com/quick-links</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
+
+  <!-- Product landing pages -->
   <url><loc>https://sernetindia.com/tickfunds</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://sernetindia.com/tushil</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://sernetindia.com/choicefinx</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://sernetindia.com/about/philosophy</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://sernetindia.com/csr</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+
+  <!-- Contact & Lead pages -->
+  <url><loc>https://sernetindia.com/contact</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://sernetindia.com/schedule-call</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sernetindia.com/open-account</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://sernetindia.com/signup</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+
+  <!-- Support -->
+  <url><loc>https://sernetindia.com/support</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://sernetindia.com/complaints</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://sernetindia.com/raise-ticket</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+
+  <!-- Downloads -->
+  <url><loc>https://sernetindia.com/downloads</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+
+  <!-- Company & About -->
   <url><loc>https://sernetindia.com/media</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://sernetindia.com/legal</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
-  <url><loc>https://sernetindia.com/investor-charter</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://sernetindia.com/csr</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://sernetindia.com/credit-claim</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
+
+  <!-- Legal pages -->
+  <url><loc>https://sernetindia.com/legal</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://sernetindia.com/terms</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://sernetindia.com/privacy</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://sernetindia.com/disclosure</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://sernetindia.com/policies</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://sernetindia.com/investor-charter</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
+
+  <!-- Utility -->
+  <url><loc>https://sernetindia.com/quick-links</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
   <url><loc>https://sernetindia.com/sitemap</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>
+
+  <!-- Portal -->
+  <url><loc>https://sernetindia.com/portal/login</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://sernetindia.com/portal/signup</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>
 </urlset>
