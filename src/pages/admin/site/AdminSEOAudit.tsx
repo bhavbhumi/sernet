@@ -217,7 +217,7 @@ export default function AdminSEOAudit() {
       <div className="space-y-6">
 
         {/* ── Score Cards ───────────────────────────────── */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
           <Card className="p-4 text-center">
             <div className="text-3xl font-bold text-primary">{score}%</div>
             <p className="text-xs text-muted-foreground mt-1">Overall SEO Score</p>
@@ -233,6 +233,10 @@ export default function AdminSEOAudit() {
           <Card className="p-4 text-center">
             <div className="text-3xl font-bold text-destructive">{pagesWithIssues.length}</div>
             <p className="text-xs text-muted-foreground mt-1">Pages Need SEO</p>
+          </Card>
+          <Card className="p-4 text-center">
+            <div className="text-3xl font-bold text-destructive">{articleStats?.missing ?? '—'}</div>
+            <p className="text-xs text-muted-foreground mt-1">Articles Need SEO</p>
           </Card>
         </div>
 
