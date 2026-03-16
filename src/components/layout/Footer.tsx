@@ -288,7 +288,7 @@ export const Footer = () => {
           </div>
           <div className="inline-flex items-center gap-2.5">
             {socialLinks.map((social) => (
-              <a key={social.name} href={social.href} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" title={social.name}>
+              <a key={social.name} href={social.href} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label={`Follow SERNET on ${social.name}`}>
                 {social.icon}
               </a>
             ))}

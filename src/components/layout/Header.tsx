@@ -185,6 +185,8 @@ export const Header = () => {
               type="button"
               className="p-2 text-muted-foreground hover:text-primary transition-colors"
               onClick={() => setLangOpen(!langOpen)}
+              aria-label="Change language"
+              aria-expanded={langOpen}
             >
               <Globe className="h-5 w-5" />
             </button>
