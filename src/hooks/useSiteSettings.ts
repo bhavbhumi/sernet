@@ -17,6 +17,8 @@ export interface IdentitySettings {
   social_linkedin: string;
   social_twitter: string;
   social_youtube: string;
+  social_whatsapp: string;
+  social_telegram: string;
   country: string;
   region: string;
   timezone: string;
@@ -81,6 +83,8 @@ const DEFAULTS: SiteSettings = {
     social_linkedin: 'https://www.linkedin.com/company/sernetfspl/',
     social_twitter: '',
     social_youtube: 'https://www.youtube.com/@sernetfspl',
+    social_whatsapp: 'https://wa.me/919206767670',
+    social_telegram: 'https://t.me/sernetindia',
     country: 'India',
     region: 'MH',
     timezone: 'Asia/Kolkata',
