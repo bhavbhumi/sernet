@@ -353,26 +353,52 @@ export default function AdminSEOAudit() {
           {/* ── Tab: Content Gaps ─────────────────────────── */}
           <TabsContent value="content-gaps" className="space-y-4 mt-4">
             <Card className="p-4">
-              <h3 className="text-sm font-semibold mb-3">Keyword Coverage Across Site Pages</h3>
+              <h3 className="text-sm font-semibold mb-3">🎯 Primary Keywords – Embedded in Meta</h3>
               <p className="text-xs text-muted-foreground mb-4">
-                High-volume keywords now embedded in page meta titles and descriptions for organic ranking.
+                High-volume keywords embedded in page meta titles and descriptions for organic ranking.
               </p>
               <div className="space-y-2">
                 {[
-                  { topic: 'Financial planning services', volume: '1,200', priority: 'high', page: '/services', covered: true },
-                  { topic: 'Wealth management tips', volume: '1,000', priority: 'high', page: '/insights', covered: true },
-                  { topic: 'Mutual fund investment strategies', volume: '900', priority: 'medium', page: '/tickfunds', covered: true },
-                  { topic: 'Trading education resources', volume: '800', priority: 'medium', page: '/services?tab=Trading', covered: true },
-                  { topic: 'Insurance products comparison', volume: '700', priority: 'high', page: '/tushil', covered: true },
-                  { topic: 'Tax planning strategies', volume: '650', priority: 'medium', page: '/services?tab=Estate Planning', covered: true },
-                  { topic: 'Financial literacy courses', volume: '500', priority: 'high', page: '/awareness', covered: true },
-                  { topic: 'International investment opportunities', volume: '450', priority: 'medium', page: '/network', covered: true },
+                  { topic: 'Financial advisory services', volume: '1,300', page: '/services' },
+                  { topic: 'Online trading platforms', volume: '1,100', page: '/choicefinx' },
+                  { topic: 'Mutual fund investment strategies', volume: '900', page: '/tickfunds' },
+                  { topic: 'Insurance solutions for families', volume: '800', page: '/tushil' },
+                  { topic: 'Wealth management for individuals', volume: '750', page: '/tickfunds' },
+                  { topic: 'Retirement planning services', volume: '700', page: '/tickfunds' },
+                  { topic: 'Financial literacy programs', volume: '600', page: '/choicefinx' },
+                  { topic: 'Cross-border financial services', volume: '500', page: '/network' },
+                  { topic: 'Investment opportunities in India', volume: '450', page: '/network' },
+                  { topic: 'Financial service providers', volume: '400', page: '/' },
                 ].map((gap, i) => (
                   <div key={i} className="flex items-center gap-3 py-1.5 border-b border-border/50">
                     <CheckCircle2 className="h-3.5 w-3.5 text-green-500 shrink-0" />
                     <span className="text-sm flex-1">{gap.topic}</span>
                     <span className="text-xs text-muted-foreground font-mono">{gap.page}</span>
                     <Badge variant="outline" className="text-[10px]">{gap.volume}/mo</Badge>
+                    <Badge variant="default" className="text-[10px]">Covered</Badge>
+                  </div>
+                ))}
+              </div>
+            </Card>
+
+            <Card className="p-4">
+              <h3 className="text-sm font-semibold mb-3">🔗 Long-Tail Keywords – Embedded in Meta</h3>
+              <p className="text-xs text-muted-foreground mb-4">
+                Conversational long-tail keywords for featured snippets and voice search visibility.
+              </p>
+              <div className="space-y-2">
+                {[
+                  { topic: 'Trusted wealth management services', page: '/' },
+                  { topic: 'Financial services across 54 cities', page: '/' },
+                  { topic: 'Next generation financial service network', page: '/network' },
+                  { topic: 'Investment solutions in 18 countries', page: '/network' },
+                  { topic: 'Comprehensive financial planning', page: '/about' },
+                ].map((gap, i) => (
+                  <div key={i} className="flex items-center gap-3 py-1.5 border-b border-border/50">
+                    <CheckCircle2 className="h-3.5 w-3.5 text-green-500 shrink-0" />
+                    <span className="text-sm flex-1">{gap.topic}</span>
+                    <span className="text-xs text-muted-foreground font-mono">{gap.page}</span>
+                    <Badge variant="outline" className="text-[10px]">Long-tail</Badge>
                     <Badge variant="default" className="text-[10px]">Covered</Badge>
                   </div>
                 ))}
