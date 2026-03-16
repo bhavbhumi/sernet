@@ -97,7 +97,7 @@ export const RecognitionContent = () => {
                   transition={{ duration: 0.35 }}
                   className="w-full p-6 rounded-xl border border-border bg-card"
                 >
-                  <img src={featuredImg} alt={featuredItems[featuredIndex].title} className="w-full h-48 rounded-lg object-cover mb-4" />
+                  <img src={featuredImg} alt={`${featuredItems[featuredIndex].title} – SERNET financial services industry recognition`} className="w-full h-48 rounded-lg object-cover mb-4" loading="lazy" width={400} height={192} />
                   <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
                     <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[0.6875rem] font-medium">Featured</span>
                     <span>{featuredItems[featuredIndex].month}</span>

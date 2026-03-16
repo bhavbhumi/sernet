@@ -295,7 +295,7 @@ export const CompanyContent = () => {
                     <div className="flex flex-col sm:flex-row">
                       {/* Image */}
                       <div className="sm:w-36 h-36 sm:h-auto flex-shrink-0 overflow-hidden">
-                        <img src={event.image} alt={event.title} className="w-full h-full object-cover" />
+                        <img src={event.image} alt={`${event.title} – SERNET company journey milestone`} className="w-full h-full object-cover" loading="lazy" width={144} height={144} />
                       </div>
                       {/* Content */}
                       <div className="p-5 flex-1">

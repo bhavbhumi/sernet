@@ -154,8 +154,11 @@ export const PartnersNetworkContent = () => (
           >
             <img
               src={networkPartnersImg}
-              alt="SERNET partner ecosystem"
+              alt="SERNET partner ecosystem – 50+ financial service partner institutions for referral and distribution"
               className="w-full max-w-[480px] max-h-[400px] h-auto object-contain dark:bg-white dark:rounded-xl dark:p-3"
+              loading="lazy"
+              width={480}
+              height={400}
             />
           </motion.div>
         </div>
