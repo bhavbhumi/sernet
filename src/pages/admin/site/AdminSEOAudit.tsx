@@ -464,7 +464,7 @@ export default function AdminSEOAudit() {
               />
 
               <ActionItem
-                number={3}
+                number={2}
                 title="Submit to Bing Webmaster Tools"
                 description="Bing powers ~10% of searches. Submitting your sitemap ensures coverage on Bing and Yahoo."
                 steps={[
@@ -477,20 +477,19 @@ export default function AdminSEOAudit() {
               />
 
               <ActionItem
-                number={4}
-                title="Create Content for High-Volume Keywords"
-                description="Publishing targeted articles is the #1 way to improve organic traffic over time."
+                number={3}
+                title="Generate Article SEO Meta"
+                description="All published articles need SEO meta titles and descriptions for Google ranking. Use the AI generator in the Content Gaps tab."
                 steps={[
-                  'Go to Admin → Content Studio → Posts in your admin panel.',
-                  'Create articles targeting these keywords: "financial planning services", "wealth management tips", "mutual fund investment strategies".',
-                  'Aim for 1,500+ words per article with relevant internal links.',
-                  'Publish consistently (2-4 articles per month) for best results.',
+                  'Go to the "Content Gaps" tab above.',
+                  'Click "Auto-Generate Article SEO" to fill meta for up to 50 articles per batch.',
+                  'Repeat until all articles have meta coverage.',
+                  'For best results, publish 2-4 keyword-targeted articles per month.',
                 ]}
-                link={{ label: 'Go to Content Studio', href: '/admin/marketing/content/posts' }}
               />
 
               <ActionItem
-                number={5}
+                number={4}
                 title="Convert Remaining Images to WebP"
                 description="WebP images are 25-35% smaller than PNG/JPEG, improving page load speed and Core Web Vitals."
                 steps={[
@@ -502,7 +501,7 @@ export default function AdminSEOAudit() {
               />
 
               <ActionItem
-                number={6}
+                number={5}
                 title="Set Up Social Media Profile Links (Optional)"
                 description="Verify that all social media profile URLs in the footer match your actual accounts."
                 steps={[
