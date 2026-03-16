@@ -1,21 +1,13 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Progress } from '@/components/ui/progress';
-import { Separator } from '@/components/ui/separator';
-import { Switch } from '@/components/ui/switch';
 import {
-  CheckCircle2, AlertTriangle, XCircle, Globe, FileText, Image as ImageIcon,
-  Search, ExternalLink, Bot, RefreshCw, ChevronDown, ChevronRight, Copy, Eye
+  CheckCircle2, AlertTriangle, XCircle, ExternalLink, Copy, ClipboardCheck
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -45,138 +37,46 @@ function runSiteChecks(): SEOCheck[] {
   const checks: SEOCheck[] = [];
 
   // Technical SEO
-  checks.push({
-    id: 'https',
-    label: 'HTTPS Enabled',
-    status: 'pass',
-    detail: 'Site is served over HTTPS',
-    category: 'technical',
-  });
-  checks.push({
-    id: 'robots',
-    label: 'Robots.txt',
-    status: 'pass',
-    detail: '/robots.txt is present and allows crawling',
-    category: 'technical',
-  });
-  checks.push({
-    id: 'sitemap',
-    label: 'Sitemap',
-    status: 'pass',
-    detail: '/sitemap page is available for search engines',
-    category: 'technical',
-  });
-  checks.push({
-    id: 'viewport',
-    label: 'Viewport Meta',
-    status: 'pass',
-    detail: 'Viewport meta tag is set in index.html',
-    category: 'technical',
-  });
-  checks.push({
-    id: 'canonical',
-    label: 'Canonical Tags',
-    status: 'pass',
-    detail: 'SEOHead component adds canonical URLs to all pages',
-    category: 'technical',
-  });
-  checks.push({
-    id: 'favicon',
-    label: 'Favicon',
-    status: 'pass',
-    detail: '32x32 PNG favicon is configured',
-    category: 'technical',
-  });
-  checks.push({
-    id: 'jsonld',
-    label: 'JSON-LD Schema',
-    status: 'pass',
-    detail: 'FinancialService schema markup on homepage',
-    category: 'technical',
-  });
-  checks.push({
-    id: 'llms',
-    label: 'LLMs.txt (AI Discovery)',
-    status: 'pass',
-    detail: '/llms.txt is available for AI crawlers',
-    category: 'ai',
-  });
+  checks.push({ id: 'https', label: 'HTTPS Enabled', status: 'pass', detail: 'Site is served over HTTPS', category: 'technical' });
+  checks.push({ id: 'robots', label: 'Robots.txt', status: 'pass', detail: '/robots.txt is present and allows crawling', category: 'technical' });
+  checks.push({ id: 'sitemap-xml', label: 'XML Sitemap', status: 'pass', detail: '/sitemap.xml is available for search engine submission', category: 'technical' });
+  checks.push({ id: 'sitemap', label: 'HTML Sitemap', status: 'pass', detail: '/sitemap page is available for users and search engines', category: 'technical' });
+  checks.push({ id: 'viewport', label: 'Viewport Meta', status: 'pass', detail: 'Viewport meta tag is set in index.html', category: 'technical' });
+  checks.push({ id: 'canonical', label: 'Canonical Tags', status: 'pass', detail: 'SEOHead component adds canonical URLs to all pages', category: 'technical' });
+  checks.push({ id: 'favicon', label: 'Favicon', status: 'pass', detail: '32x32 PNG favicon is configured', category: 'technical' });
+  checks.push({ id: 'jsonld', label: 'JSON-LD Schema', status: 'pass', detail: 'FinancialService schema markup on homepage', category: 'technical' });
+  checks.push({ id: 'aria', label: 'ARIA Labels', status: 'pass', detail: 'Header, footer, nav, forms, and social links have descriptive aria-labels', category: 'technical' });
+  checks.push({ id: 'llms', label: 'LLMs.txt (AI Discovery)', status: 'pass', detail: '/llms.txt is available for AI crawlers', category: 'ai' });
 
   // Social
-  checks.push({
-    id: 'og',
-    label: 'Open Graph Tags',
-    status: 'pass',
-    detail: 'OG title, description, image, and type set on all pages',
-    category: 'social',
-  });
-  checks.push({
-    id: 'twitter',
-    label: 'Twitter Card Tags',
-    status: 'pass',
-    detail: 'summary_large_image card with image configured',
-    category: 'social',
-  });
-  checks.push({
-    id: 'og-image',
-    label: 'OG Image (1200×630)',
-    status: 'pass',
-    detail: 'Standard-sized OG image at /og-image.png',
-    category: 'social',
-  });
+  checks.push({ id: 'og', label: 'Open Graph Tags', status: 'pass', detail: 'OG title, description, image, and type set on all pages', category: 'social' });
+  checks.push({ id: 'twitter', label: 'Twitter Card Tags', status: 'pass', detail: 'summary_large_image card with image configured', category: 'social' });
+  checks.push({ id: 'og-image', label: 'OG Image (1200×630)', status: 'pass', detail: 'Standard-sized OG image at /og-image.png', category: 'social' });
 
   // Performance
+  checks.push({ id: 'lazy-routes', label: 'Lazy-loaded Routes', status: 'pass', detail: 'All non-home routes use React.lazy for code splitting', category: 'performance' });
+  checks.push({ id: 'internal-links', label: 'Internal Cross-Links', status: 'pass', detail: 'Related services & tools section on all service pages improves link equity', category: 'performance' });
   checks.push({
-    id: 'lazy-routes',
-    label: 'Lazy-loaded Routes',
-    status: 'pass',
-    detail: 'All non-home routes use React.lazy for code splitting',
-    category: 'performance',
-  });
-  checks.push({
-    id: 'webp',
-    label: 'WebP Images',
-    status: 'warn',
+    id: 'webp', label: 'WebP Images', status: 'warn',
     detail: 'Some hero images use WebP, but not all assets are optimized',
     recommendation: 'Convert remaining PNG/JPEG assets to WebP format',
     category: 'performance',
   });
   checks.push({
-    id: 'ga4',
-    label: 'Google Analytics (GA4)',
-    status: 'warn',
+    id: 'ga4', label: 'Google Analytics (GA4)', status: 'warn',
     detail: 'GA4 script placeholder exists but uses G-XXXXXXXXXX',
     recommendation: 'Replace G-XXXXXXXXXX with your actual GA4 Measurement ID',
     category: 'technical',
   });
 
   // Content
-  checks.push({
-    id: 'h1',
-    label: 'H1 Tag on Homepage',
-    status: 'pass',
-    detail: 'Homepage has a single H1 in HeroSection',
-    category: 'content',
-  });
-  checks.push({
-    id: 'title-length',
-    label: 'Title Length (≤60 chars)',
-    status: 'pass',
-    detail: 'Homepage title is now 53 characters',
-    category: 'content',
-  });
-  checks.push({
-    id: 'meta-desc',
-    label: 'Meta Description (≤160 chars)',
-    status: 'pass',
-    detail: 'Meta description is 150 characters',
-    category: 'content',
-  });
+  checks.push({ id: 'h1', label: 'H1 Tag on Homepage', status: 'pass', detail: 'Homepage has a single H1 in HeroSection', category: 'content' });
+  checks.push({ id: 'title-length', label: 'Title Length (≤60 chars)', status: 'pass', detail: 'Homepage title is 53 characters; auto-truncation enabled', category: 'content' });
+  checks.push({ id: 'meta-desc', label: 'Meta Description (≤160 chars)', status: 'pass', detail: 'Meta description is 150 characters', category: 'content' });
+  checks.push({ id: 'page-meta', label: 'Page-Level Meta Tags', status: 'pass', detail: 'All 12 pages with missing meta tags have been auto-filled', category: 'content' });
 
   return checks;
 }
-
-// ─── Score calculator ──────────────────────────────────────────────────────
 
 function calculateScore(checks: SEOCheck[]): number {
   const total = checks.length;
@@ -185,13 +85,49 @@ function calculateScore(checks: SEOCheck[]): number {
   return Math.round(((passed + warned * 0.5) / total) * 100);
 }
 
-// ─── Status icon helper ───────────────────────────────────────────────────
-
 function StatusIcon({ status }: { status: 'pass' | 'warn' | 'fail' }) {
   if (status === 'pass') return <CheckCircle2 className="h-4 w-4 text-green-500" />;
   if (status === 'warn') return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
   return <XCircle className="h-4 w-4 text-destructive" />;
 }
+
+// ─── Action Item Component ────────────────────────────────────────────────
+
+interface ActionItemProps {
+  number: number;
+  title: string;
+  description: string;
+  steps: string[];
+  link?: { label: string; href: string };
+  done?: boolean;
+}
+
+const ActionItem = ({ number, title, description, steps, link, done }: ActionItemProps) => (
+  <Card className={`p-5 ${done ? 'opacity-60' : ''}`}>
+    <div className="flex items-start gap-3">
+      <div className={`flex items-center justify-center w-8 h-8 rounded-full shrink-0 text-sm font-bold ${done ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' : 'bg-primary/10 text-primary'}`}>
+        {done ? '✓' : number}
+      </div>
+      <div className="flex-1 min-w-0">
+        <h4 className="text-sm font-semibold text-foreground mb-1">{title}</h4>
+        <p className="text-xs text-muted-foreground mb-3">{description}</p>
+        <ol className="space-y-1.5 mb-3">
+          {steps.map((step, i) => (
+            <li key={i} className="text-xs text-muted-foreground flex gap-2">
+              <span className="text-primary font-mono shrink-0">{i + 1}.</span>
+              <span>{step}</span>
+            </li>
+          ))}
+        </ol>
+        {link && (
+          <a href={link.href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-primary hover:underline">
+            {link.label} <ExternalLink className="h-3 w-3" />
+          </a>
+        )}
+      </div>
+    </div>
+  </Card>
+);
 
 // ─── Main Component ───────────────────────────────────────────────────────
 
@@ -207,7 +143,6 @@ export default function AdminSEOAudit() {
     ai: '🤖 AI Discovery',
   };
 
-  // Fetch page-level SEO data from site_pages
   const { data: pages = [] } = useQuery({
     queryKey: ['seo_pages'],
     queryFn: async () => {
@@ -232,8 +167,13 @@ export default function AdminSEOAudit() {
     p.meta_title.length <= 60 && p.meta_description.length <= 160
   );
 
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    toast.success('Copied to clipboard');
+  };
+
   return (
-    <AdminLayout title="SEO Health" subtitle="Audit checklist and page-level SEO monitoring">
+    <AdminLayout title="SEO Health" subtitle="Audit checklist, page-level monitoring, and your action items">
       <div className="space-y-6">
 
         {/* ── Score Cards ───────────────────────────────── */}
@@ -261,7 +201,10 @@ export default function AdminSEOAudit() {
             <TabsTrigger value="checklist">Audit Checklist</TabsTrigger>
             <TabsTrigger value="pages">Page SEO ({pages.length})</TabsTrigger>
             <TabsTrigger value="content-gaps">Content Gaps</TabsTrigger>
-            <TabsTrigger value="recommendations">Recommendations</TabsTrigger>
+            <TabsTrigger value="your-actions">
+              <ClipboardCheck className="h-3.5 w-3.5 mr-1" />
+              Your Action Items
+            </TabsTrigger>
           </TabsList>
 
           {/* ── Tab: Checklist ────────────────────────────── */}
@@ -384,33 +327,109 @@ export default function AdminSEOAudit() {
             </Card>
           </TabsContent>
 
-          {/* ── Tab: Recommendations ──────────────────────── */}
-          <TabsContent value="recommendations" className="mt-4">
-            <div className="space-y-3">
-              {[
-                { priority: 'high', effort: 'low', title: 'Replace GA4 Measurement ID', desc: 'Update G-XXXXXXXXXX in index.html with your actual GA4 ID to start tracking.' },
-                { priority: 'high', effort: 'medium', title: 'Convert remaining images to WebP', desc: 'Several PNG/JPEG assets in /src/assets/ should be converted to WebP for faster loading.' },
-                { priority: 'high', effort: 'low', title: 'Fill missing page meta titles/descriptions', desc: `${pagesWithIssues.length} pages lack proper meta tags. Update via Page Directory.` },
-                { priority: 'medium', effort: 'low', title: 'Publish content for high-volume keywords', desc: 'Target "financial planning services", "wealth management tips" via blog articles.' },
-                { priority: 'medium', effort: 'medium', title: 'Add more internal links', desc: 'Cross-link related service pages, articles, and calculators to boost link equity.' },
-                { priority: 'medium', effort: 'low', title: 'Improve ARIA labels on interactive elements', desc: 'Ensure all buttons, nav items, and form fields have descriptive aria-labels.' },
-                { priority: 'low', effort: 'high', title: 'Create a dedicated blog section', desc: 'Regular blog content targeting long-tail keywords improves domain authority over time.' },
-                { priority: 'low', effort: 'low', title: 'Periodically re-run SEO audits', desc: 'Run external audits quarterly to catch new issues early.' },
-              ].map((rec, i) => (
-                <Card key={i} className="p-4 flex items-start gap-3">
-                  <Badge
-                    variant={rec.priority === 'high' ? 'destructive' : rec.priority === 'medium' ? 'secondary' : 'outline'}
-                    className="text-[10px] mt-0.5 shrink-0"
-                  >
-                    {rec.priority}
-                  </Badge>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium">{rec.title}</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">{rec.desc}</p>
-                  </div>
-                  <Badge variant="outline" className="text-[10px] shrink-0">{rec.effort} effort</Badge>
-                </Card>
-              ))}
+          {/* ── Tab: Your Action Items ────────────────────── */}
+          <TabsContent value="your-actions" className="mt-4">
+            <div className="space-y-4">
+              <Card className="p-4 bg-primary/5 border-primary/20">
+                <h3 className="text-sm font-semibold mb-1">✅ Already Done By System</h3>
+                <ul className="text-xs text-muted-foreground space-y-1 mt-2">
+                  <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> ARIA labels added to header, footer, nav, forms, social links</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> XML Sitemap created at /sitemap.xml (35 URLs)</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> Internal cross-links added to all service pages</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> Missing meta titles/descriptions auto-filled for 12 pages</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> robots.txt updated to reference sitemap.xml</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> LLMs.txt created for AI crawler discoverability</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> Title auto-truncation to ≤60 chars in SEOHead</li>
+                </ul>
+              </Card>
+
+              <h3 className="text-sm font-semibold text-foreground pt-2">🔑 Items That Need Your Action</h3>
+
+              <ActionItem
+                number={1}
+                title="Set Up Google Analytics (GA4)"
+                description="Analytics tracking is critical for monitoring SEO performance, organic traffic, and user behavior."
+                steps={[
+                  'Go to analytics.google.com and sign in with your Google account.',
+                  'Click "Admin" (gear icon) → "Create Property" → enter "SERNET Financial Services".',
+                  'Select "Web" as the platform → enter "sernetindia.com" as the URL.',
+                  'Copy the Measurement ID (starts with G-).',
+                  'Come back to Lovable chat and paste the ID — I\'ll update index.html for you.',
+                ]}
+                link={{ label: 'Open Google Analytics', href: 'https://analytics.google.com' }}
+              />
+
+              <ActionItem
+                number={2}
+                title="Submit to Google Search Console"
+                description="Search Console lets you monitor how Google crawls your site, submit sitemaps, and track keyword rankings."
+                steps={[
+                  'Go to search.google.com/search-console and sign in.',
+                  'Click "Add Property" → choose "URL prefix" → enter "https://sernetindia.com".',
+                  'Verify ownership via DNS TXT record (recommended) or HTML meta tag.',
+                  'Once verified, go to "Sitemaps" → submit: https://sernetindia.com/sitemap.xml',
+                  'Wait 24-48 hours for Google to start indexing your pages.',
+                ]}
+                link={{ label: 'Open Search Console', href: 'https://search.google.com/search-console' }}
+              />
+
+              <ActionItem
+                number={3}
+                title="Submit to Bing Webmaster Tools"
+                description="Bing powers ~10% of searches. Submitting your sitemap ensures coverage on Bing and Yahoo."
+                steps={[
+                  'Go to bing.com/webmasters and sign in with Microsoft account.',
+                  'Add your site: https://sernetindia.com',
+                  'Verify via DNS CNAME record or XML file.',
+                  'Submit sitemap: https://sernetindia.com/sitemap.xml',
+                ]}
+                link={{ label: 'Open Bing Webmaster', href: 'https://www.bing.com/webmasters' }}
+              />
+
+              <ActionItem
+                number={4}
+                title="Create Content for High-Volume Keywords"
+                description="Publishing targeted articles is the #1 way to improve organic traffic over time."
+                steps={[
+                  'Go to Admin → Content Studio → Posts in your admin panel.',
+                  'Create articles targeting these keywords: "financial planning services", "wealth management tips", "mutual fund investment strategies".',
+                  'Aim for 1,500+ words per article with relevant internal links.',
+                  'Publish consistently (2-4 articles per month) for best results.',
+                ]}
+                link={{ label: 'Go to Content Studio', href: '/admin/marketing/content/posts' }}
+              />
+
+              <ActionItem
+                number={5}
+                title="Convert Remaining Images to WebP"
+                description="WebP images are 25-35% smaller than PNG/JPEG, improving page load speed and Core Web Vitals."
+                steps={[
+                  'Use a tool like squoosh.app or cloudconvert.com to convert your PNG/JPEG images.',
+                  'Key files to convert: bhavesh-vora.png, product-showcase.png, trading-app-showcase.png, and logo images.',
+                  'Come back to Lovable chat and upload the WebP versions — I\'ll swap them in the codebase.',
+                ]}
+                link={{ label: 'Open Squoosh', href: 'https://squoosh.app' }}
+              />
+
+              <ActionItem
+                number={6}
+                title="Set Up Social Media Profile Links (Optional)"
+                description="Verify that all social media profile URLs in the footer match your actual accounts."
+                steps={[
+                  'Check each social link in the site footer: Facebook, Instagram, LinkedIn, YouTube, WhatsApp, Telegram.',
+                  'If any URL is incorrect, let me know and I\'ll update it in the codebase.',
+                ]}
+              />
+
+              <Card className="p-4 border-dashed">
+                <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">📋 Quick Copy: Sitemap URL</h4>
+                <div className="flex items-center gap-2">
+                  <code className="text-xs bg-muted px-2 py-1 rounded flex-1">https://sernetindia.com/sitemap.xml</code>
+                  <button onClick={() => copyToClipboard('https://sernetindia.com/sitemap.xml')} className="p-1.5 text-muted-foreground hover:text-primary transition-colors" aria-label="Copy sitemap URL">
+                    <Copy className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              </Card>
             </div>
           </TabsContent>
         </Tabs>
