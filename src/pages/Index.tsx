@@ -13,7 +13,7 @@ const Index = () => {
     <Layout>
       <SEOHead
         title="Home"
-        description="SERNET Financial Services — 35+ years of trusted wealth management. Invest in Stocks, IPOs, Mutual Funds, Insurance, Digital Gold & more across 54 cities, 18 countries."
+        description="Trusted wealth management services by SERNET. Financial service providers across 54 cities, 18 countries. Online trading, mutual funds & retirement planning."
         path="/"
         jsonLd={{
           '@context': 'https://schema.org',
