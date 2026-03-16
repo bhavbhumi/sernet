@@ -17,6 +17,8 @@ export interface IdentitySettings {
   social_linkedin: string;
   social_twitter: string;
   social_youtube: string;
+  social_whatsapp: string;
+  social_telegram: string;
   country: string;
   region: string;
   timezone: string;
