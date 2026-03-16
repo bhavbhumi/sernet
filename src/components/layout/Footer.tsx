@@ -185,6 +185,8 @@ const FooterNewsletterForm = () => {
 
 export const Footer = () => {
   const { t } = useTranslation();
+  const { data: settings } = useSiteSettings();
+  const footerCfg = settings?.footer;
 
   return (
     <footer className="bg-muted/30 border-t border-border" role="contentinfo" aria-label="Site footer">
