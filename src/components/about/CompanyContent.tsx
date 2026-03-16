@@ -135,8 +135,11 @@ export const CompanyContent = () => {
                 >
                   <motion.img
                     src={bhaveshVora}
-                    alt="Bhavesh Vora - Founder, SERNET"
+                    alt="Bhavesh Vora – Founder and Promoter of SERNET, trusted wealth management advisor with 35+ years experience"
                     className="w-full h-auto object-cover max-w-[320px] md:max-w-[360px]"
+                    width={360}
+                    height={400}
+                    loading="lazy"
                     whileHover={{ scale: 1.03 }}
                     transition={{ duration: 0.4 }}
                   />
