@@ -133,6 +133,8 @@ export const Header = () => {
               type="button"
               className="flex items-center gap-1 text-[15px] text-muted-foreground hover:text-primary transition-colors"
               onClick={() => setLangOpen(!langOpen)}
+              aria-label="Change language"
+              aria-expanded={langOpen}
             >
               <Globe className="h-4 w-4" />
               <span className="hidden lg:inline">{currentLang.nativeLabel}</span>
