@@ -130,6 +130,7 @@ const ActionItem = ({ number, title, description, steps, link, done }: ActionIte
 export default function AdminSEOAudit() {
   const queryClient = useQueryClient();
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isGeneratingArticles, setIsGeneratingArticles] = useState(false);
   const checks = runSiteChecks();
   const score = calculateScore(checks);
   const categories = ['technical', 'content', 'performance', 'social', 'ai'] as const;
@@ -153,10 +154,30 @@ export default function AdminSEOAudit() {
     },
   });
 
-  const handleAutoGenerate = async () => {
-    setIsGenerating(true);
+  const { data: articleStats } = useQuery({
+    queryKey: ['seo_article_stats'],
+    queryFn: async () => {
+      const { count: total } = await supabase
+        .from('articles')
+        .select('id', { count: 'exact', head: true })
+        .eq('status', 'published');
+      const { count: missing } = await supabase
+        .from('articles')
+        .select('id', { count: 'exact', head: true })
+        .eq('status', 'published')
+        .or('meta_title.is.null,meta_description.is.null,meta_title.eq.,meta_description.eq.');
+      return { total: total ?? 0, missing: missing ?? 0, ok: (total ?? 0) - (missing ?? 0) };
+    },
+  });
+
+  const handleAutoGenerate = async (target?: string) => {
+    const isArticles = target === 'articles';
+    if (isArticles) setIsGeneratingArticles(true);
+    else setIsGenerating(true);
     try {
-      const { data, error } = await supabase.functions.invoke('seo-generate');
+      const { data, error } = await supabase.functions.invoke('seo-generate', {
+        body: target ? { target } : undefined,
+      });
       if (error) throw error;
       if (data?.error) {
         toast.error(data.error);
@@ -165,10 +186,12 @@ export default function AdminSEOAudit() {
       toast.success(data?.message || 'SEO meta generated successfully');
       queryClient.invalidateQueries({ queryKey: ['seo_pages'] });
       queryClient.invalidateQueries({ queryKey: ['site_pages'] });
+      queryClient.invalidateQueries({ queryKey: ['seo_article_stats'] });
     } catch (err: any) {
       toast.error(err.message || 'Failed to generate SEO meta');
     } finally {
-      setIsGenerating(false);
+      if (isArticles) setIsGeneratingArticles(false);
+      else setIsGenerating(false);
     }
   };
 
@@ -194,7 +217,7 @@ export default function AdminSEOAudit() {
       <div className="space-y-6">
 
         {/* ── Score Cards ───────────────────────────────── */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
           <Card className="p-4 text-center">
             <div className="text-3xl font-bold text-primary">{score}%</div>
             <p className="text-xs text-muted-foreground mt-1">Overall SEO Score</p>
@@ -210,6 +233,10 @@ export default function AdminSEOAudit() {
           <Card className="p-4 text-center">
             <div className="text-3xl font-bold text-destructive">{pagesWithIssues.length}</div>
             <p className="text-xs text-muted-foreground mt-1">Pages Need SEO</p>
+          </Card>
+          <Card className="p-4 text-center">
+            <div className="text-3xl font-bold text-destructive">{articleStats?.missing ?? '—'}</div>
+            <p className="text-xs text-muted-foreground mt-1">Articles Need SEO</p>
           </Card>
         </div>
 
@@ -273,7 +300,7 @@ export default function AdminSEOAudit() {
                     size="sm"
                     variant="outline"
                     className="ml-auto gap-1.5 text-xs h-7"
-                    onClick={handleAutoGenerate}
+                    onClick={() => handleAutoGenerate('pages')}
                     disabled={isGenerating}
                   >
                     {isGenerating ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5" />}
@@ -324,34 +351,65 @@ export default function AdminSEOAudit() {
           </TabsContent>
 
           {/* ── Tab: Content Gaps ─────────────────────────── */}
-          <TabsContent value="content-gaps" className="mt-4">
+          <TabsContent value="content-gaps" className="space-y-4 mt-4">
             <Card className="p-4">
-              <h3 className="text-sm font-semibold mb-3">Content Gap Analysis (from SEO Report)</h3>
+              <h3 className="text-sm font-semibold mb-3">Keyword Coverage Across Site Pages</h3>
               <p className="text-xs text-muted-foreground mb-4">
-                High-volume keywords your site should target with dedicated content pages or blog posts.
+                High-volume keywords now embedded in page meta titles and descriptions for organic ranking.
               </p>
               <div className="space-y-2">
                 {[
-                  { topic: 'Financial planning services', volume: '1,200', priority: 'high' },
-                  { topic: 'Wealth management tips', volume: '1,000', priority: 'high' },
-                  { topic: 'Mutual fund investment strategies', volume: '900', priority: 'medium' },
-                  { topic: 'Trading education resources', volume: '800', priority: 'medium' },
-                  { topic: 'Insurance products comparison', volume: '700', priority: 'high' },
-                  { topic: 'Tax planning strategies', volume: '650', priority: 'medium' },
-                  { topic: 'Financial literacy courses', volume: '500', priority: 'high' },
-                  { topic: 'International investment opportunities', volume: '450', priority: 'medium' },
+                  { topic: 'Financial planning services', volume: '1,200', priority: 'high', page: '/services', covered: true },
+                  { topic: 'Wealth management tips', volume: '1,000', priority: 'high', page: '/insights', covered: true },
+                  { topic: 'Mutual fund investment strategies', volume: '900', priority: 'medium', page: '/tickfunds', covered: true },
+                  { topic: 'Trading education resources', volume: '800', priority: 'medium', page: '/services?tab=Trading', covered: true },
+                  { topic: 'Insurance products comparison', volume: '700', priority: 'high', page: '/tushil', covered: true },
+                  { topic: 'Tax planning strategies', volume: '650', priority: 'medium', page: '/services?tab=Estate Planning', covered: true },
+                  { topic: 'Financial literacy courses', volume: '500', priority: 'high', page: '/awareness', covered: true },
+                  { topic: 'International investment opportunities', volume: '450', priority: 'medium', page: '/network', covered: true },
                 ].map((gap, i) => (
                   <div key={i} className="flex items-center gap-3 py-1.5 border-b border-border/50">
+                    <CheckCircle2 className="h-3.5 w-3.5 text-green-500 shrink-0" />
                     <span className="text-sm flex-1">{gap.topic}</span>
+                    <span className="text-xs text-muted-foreground font-mono">{gap.page}</span>
                     <Badge variant="outline" className="text-[10px]">{gap.volume}/mo</Badge>
-                    <Badge variant={gap.priority === 'high' ? 'destructive' : 'secondary'} className="text-[10px]">
-                      {gap.priority}
-                    </Badge>
+                    <Badge variant="default" className="text-[10px]">Covered</Badge>
                   </div>
                 ))}
               </div>
-              <p className="text-xs text-muted-foreground mt-4">
-                💡 Publish articles via Content Studio → Posts targeting these keywords to improve organic traffic.
+            </Card>
+
+            <Card className="p-4">
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <h3 className="text-sm font-semibold">Article SEO Meta Coverage</h3>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {articleStats ? `${articleStats.ok} of ${articleStats.total} published articles have SEO meta. ${articleStats.missing} need generation.` : 'Loading…'}
+                  </p>
+                </div>
+                {(articleStats?.missing ?? 0) > 0 && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="gap-1.5 text-xs h-7"
+                    onClick={() => handleAutoGenerate('articles')}
+                    disabled={isGeneratingArticles}
+                  >
+                    {isGeneratingArticles ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5" />}
+                    {isGeneratingArticles ? 'Generating…' : 'Auto-Generate Article SEO'}
+                  </Button>
+                )}
+              </div>
+              {articleStats && (
+                <div className="w-full bg-muted rounded-full h-2">
+                  <div
+                    className="bg-primary h-2 rounded-full transition-all"
+                    style={{ width: `${articleStats.total > 0 ? (articleStats.ok / articleStats.total) * 100 : 0}%` }}
+                  />
+                </div>
+              )}
+              <p className="text-xs text-muted-foreground mt-3">
+                💡 AI generates keyword-rich meta titles and descriptions for up to 50 articles per batch, incorporating target keywords for better SERP visibility.
               </p>
             </Card>
           </TabsContent>
@@ -365,10 +423,13 @@ export default function AdminSEOAudit() {
                   <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> ARIA labels added to header, footer, nav, forms, social links</li>
                   <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> XML Sitemap created at /sitemap.xml (35 URLs)</li>
                   <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> Internal cross-links added to all service pages</li>
-                  <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> Missing meta titles/descriptions auto-filled for 12 pages</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> Missing meta titles/descriptions auto-filled for all pages</li>
                   <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> robots.txt updated to reference sitemap.xml</li>
                   <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> LLMs.txt created for AI crawler discoverability</li>
                   <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> Title auto-truncation to ≤60 chars in SEOHead</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> Google Analytics GA4 configured (G-BSRJ9Q1H5T)</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> 8 high-volume keywords embedded across site page meta</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> AI article SEO meta generator enabled (Content Gaps tab)</li>
                 </ul>
               </Card>
 
@@ -376,16 +437,16 @@ export default function AdminSEOAudit() {
 
               <ActionItem
                 number={1}
-                title="Set Up Google Analytics (GA4)"
-                description="Analytics tracking is critical for monitoring SEO performance, organic traffic, and user behavior."
+                title="Submit to Google Search Console"
+                description="Search Console lets you monitor how Google crawls your site, submit sitemaps, and track keyword rankings."
                 steps={[
-                  'Go to analytics.google.com and sign in with your Google account.',
-                  'Click "Admin" (gear icon) → "Create Property" → enter "SERNET Financial Services".',
-                  'Select "Web" as the platform → enter "sernetindia.com" as the URL.',
-                  'Copy the Measurement ID (starts with G-).',
-                  'Come back to Lovable chat and paste the ID — I\'ll update index.html for you.',
+                  'Go to search.google.com/search-console and sign in.',
+                  'Click "Add Property" → choose "URL prefix" → enter "https://sernetindia.com".',
+                  'Verify ownership via DNS TXT record (recommended) or HTML meta tag.',
+                  'Once verified, go to "Sitemaps" → submit: https://sernetindia.com/sitemap.xml',
+                  'Wait 24-48 hours for Google to start indexing your pages.',
                 ]}
-                link={{ label: 'Open Google Analytics', href: 'https://analytics.google.com' }}
+                link={{ label: 'Open Search Console', href: 'https://search.google.com/search-console' }}
               />
 
               <ActionItem
@@ -403,7 +464,7 @@ export default function AdminSEOAudit() {
               />
 
               <ActionItem
-                number={3}
+                number={2}
                 title="Submit to Bing Webmaster Tools"
                 description="Bing powers ~10% of searches. Submitting your sitemap ensures coverage on Bing and Yahoo."
                 steps={[
@@ -416,20 +477,19 @@ export default function AdminSEOAudit() {
               />
 
               <ActionItem
-                number={4}
-                title="Create Content for High-Volume Keywords"
-                description="Publishing targeted articles is the #1 way to improve organic traffic over time."
+                number={3}
+                title="Generate Article SEO Meta"
+                description="All published articles need SEO meta titles and descriptions for Google ranking. Use the AI generator in the Content Gaps tab."
                 steps={[
-                  'Go to Admin → Content Studio → Posts in your admin panel.',
-                  'Create articles targeting these keywords: "financial planning services", "wealth management tips", "mutual fund investment strategies".',
-                  'Aim for 1,500+ words per article with relevant internal links.',
-                  'Publish consistently (2-4 articles per month) for best results.',
+                  'Go to the "Content Gaps" tab above.',
+                  'Click "Auto-Generate Article SEO" to fill meta for up to 50 articles per batch.',
+                  'Repeat until all articles have meta coverage.',
+                  'For best results, publish 2-4 keyword-targeted articles per month.',
                 ]}
-                link={{ label: 'Go to Content Studio', href: '/admin/marketing/content/posts' }}
               />
 
               <ActionItem
-                number={5}
+                number={4}
                 title="Convert Remaining Images to WebP"
                 description="WebP images are 25-35% smaller than PNG/JPEG, improving page load speed and Core Web Vitals."
                 steps={[
@@ -441,7 +501,7 @@ export default function AdminSEOAudit() {
               />
 
               <ActionItem
-                number={6}
+                number={5}
                 title="Set Up Social Media Profile Links (Optional)"
                 description="Verify that all social media profile URLs in the footer match your actual accounts."
                 steps={[

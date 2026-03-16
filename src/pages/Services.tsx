@@ -57,8 +57,8 @@ const Services = () => {
   return (
     <Layout>
       <SEOHead
-        title="Financial Services – Trading, Investment & Insurance"
-        description="Explore SERNET's full suite of financial services including trading, mutual funds, insurance, estate planning and credit counselling."
+        title="Financial Planning Services – Trading, Investment & Insurance"
+        description="Explore SERNET's financial planning services: zero-brokerage trading, mutual fund investment strategies, insurance products comparison, estate planning and credit counselling."
         path="/services"
       />
       <PageHero
