@@ -141,8 +141,11 @@ export const ClientsNetworkContent = () => (
           >
             <img
               src={networkClientsImg}
-              alt="SERNET client network"
+              alt="SERNET client network – serving 1500+ families across 18 countries with personalised wealth management"
               className="w-full max-w-[480px] max-h-[400px] h-auto object-contain dark:bg-white dark:rounded-xl dark:p-3"
+              loading="lazy"
+              width={480}
+              height={400}
             />
           </motion.div>
         </div>

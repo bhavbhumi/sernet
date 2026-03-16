@@ -126,8 +126,11 @@ export const NetworkSection = () => {
                     <div className="relative aspect-square overflow-hidden">
                       <img
                         src={client.image}
-                        alt={client.title}
+                        alt={`${client.title} – SERNET financial services client segment`}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                        width={200}
+                        height={200}
                       />
                       {/* Tint overlay */}
                       <div className={`absolute inset-0 ${client.bgTint} pointer-events-none`} />

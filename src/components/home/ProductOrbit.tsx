@@ -20,6 +20,9 @@ const OrbitLogo = ({ src, alt, size = 48 }: OrbitLogoProps) => (
       src={src}
       alt={alt}
       className="w-full h-full object-contain p-1.5 [mix-blend-mode:multiply]"
+      width={size}
+      height={size}
+      loading="lazy"
     />
   </div>
 );

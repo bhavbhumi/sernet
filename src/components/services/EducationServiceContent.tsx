@@ -81,7 +81,7 @@ export const EducationServiceContent = () => (
             transition={{ duration: 0.6, delay: 0.15 }}
             className="flex flex-col items-center justify-center h-full"
           >
-            <img src={sernetShowcase} alt="SERNET education platform showcase" className="rounded-xl w-full max-w-[520px] max-h-[400px] object-contain dark:bg-white dark:p-3" />
+            <img src={sernetShowcase} alt="SERNET financial education platform – courses, coaching and financial literacy programs for investors" className="rounded-xl w-full max-w-[520px] max-h-[400px] object-contain dark:bg-white dark:p-3" loading="lazy" width={520} height={400} />
           </motion.div>
         </div>
       </div>

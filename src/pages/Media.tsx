@@ -388,8 +388,9 @@ const Media = () => {
                     <div className="flex items-center justify-center h-28 mb-5 bg-secondary/50 rounded-md">
                       <img
                         src={sernetLogo}
-                        alt="Sernet India Logo"
+                        alt="SERNET India official logo – financial services brand identity"
                         className="h-12 w-auto object-contain dark:brightness-0 dark:invert"
+                        loading="lazy"
                       />
                     </div>
                     <div className="flex items-center gap-2 mb-2">

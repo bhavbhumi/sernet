@@ -224,8 +224,11 @@ export const PrincipalsNetworkContent = () => (
           >
             <img
               src={networkPrincipalsImg}
-              alt="SERNET principals and regulators"
+              alt="SERNET principal partners – SEBI registered stock brokers, AMFI mutual fund distributors and IRDAI licensed insurance providers"
               className="w-full max-w-[480px] max-h-[400px] h-auto object-contain dark:bg-white dark:rounded-xl dark:p-3"
+              loading="lazy"
+              width={480}
+              height={400}
             />
           </motion.div>
         </div>

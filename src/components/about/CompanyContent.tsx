@@ -135,8 +135,11 @@ export const CompanyContent = () => {
                 >
                   <motion.img
                     src={bhaveshVora}
-                    alt="Bhavesh Vora - Founder, SERNET"
+                    alt="Bhavesh Vora – Founder and Promoter of SERNET, trusted wealth management advisor with 35+ years experience"
                     className="w-full h-auto object-cover max-w-[320px] md:max-w-[360px]"
+                    width={360}
+                    height={400}
+                    loading="lazy"
                     whileHover={{ scale: 1.03 }}
                     transition={{ duration: 0.4 }}
                   />
@@ -295,7 +298,7 @@ export const CompanyContent = () => {
                     <div className="flex flex-col sm:flex-row">
                       {/* Image */}
                       <div className="sm:w-36 h-36 sm:h-auto flex-shrink-0 overflow-hidden">
-                        <img src={event.image} alt={event.title} className="w-full h-full object-cover" />
+                        <img src={event.image} alt={`${event.title} – SERNET company journey milestone`} className="w-full h-full object-cover" loading="lazy" width={144} height={144} />
                       </div>
                       {/* Content */}
                       <div className="p-5 flex-1">

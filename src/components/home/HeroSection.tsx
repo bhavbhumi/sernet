@@ -21,15 +21,21 @@ export const HeroSection = () => {
           >
             <motion.img
               src={heroIllustration}
-              alt="Sernet wealth management - Trade, Invest and Insure with awareness"
+              alt="SERNET wealth management platform – online trading, mutual fund investment and insurance solutions across 54 cities"
               className="w-full max-w-[420px] lg:max-w-[500px] h-auto dark:hidden"
+              width={500}
+              height={500}
+              // @ts-ignore fetchpriority not in React types yet
+              fetchpriority="high"
               animate={{ y: [0, -12, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
             />
             <motion.img
               src={heroIllustrationDark}
-              alt="Sernet wealth management - Trade, Invest and Insure with awareness"
+              alt="SERNET wealth management platform – online trading, mutual fund investment and insurance solutions across 54 cities"
               className="w-full max-w-[420px] lg:max-w-[500px] h-auto hidden dark:block"
+              width={500}
+              height={500}
               style={{ mixBlendMode: 'lighten' }}
               animate={{ y: [0, -12, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
