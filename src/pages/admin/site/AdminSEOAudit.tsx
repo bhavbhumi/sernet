@@ -296,7 +296,7 @@ export default function AdminSEOAudit() {
                     size="sm"
                     variant="outline"
                     className="ml-auto gap-1.5 text-xs h-7"
-                    onClick={handleAutoGenerate}
+                    onClick={() => handleAutoGenerate('pages')}
                     disabled={isGenerating}
                   >
                     {isGenerating ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5" />}
