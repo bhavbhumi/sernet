@@ -160,10 +160,10 @@ const FooterNewsletterForm = () => {
 
   return (
     <div className="flex-1 w-full space-y-3">
-      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row items-center gap-3">
-        <Input type="text" placeholder={t('insights.firstName')} value={firstName} onChange={(e) => setFirstName(e.target.value)} required className="h-9 text-sm" />
-        <Input type="text" placeholder={t('insights.lastName')} value={lastName} onChange={(e) => setLastName(e.target.value)} className="h-9 text-sm" />
-        <Input type="email" placeholder={t('insights.emailPlaceholder')} value={email} onChange={(e) => setEmail(e.target.value)} required className="h-9 text-sm min-w-[200px] flex-[3]" />
+      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row items-center gap-3" aria-label="Newsletter subscription">
+        <Input type="text" placeholder={t('insights.firstName')} value={firstName} onChange={(e) => setFirstName(e.target.value)} required className="h-9 text-sm" aria-label="First name" />
+        <Input type="text" placeholder={t('insights.lastName')} value={lastName} onChange={(e) => setLastName(e.target.value)} className="h-9 text-sm" aria-label="Last name" />
+        <Input type="email" placeholder={t('insights.emailPlaceholder')} value={email} onChange={(e) => setEmail(e.target.value)} required className="h-9 text-sm min-w-[200px] flex-[3]" aria-label="Email address" />
         <Button type="submit" size="sm" disabled={submitting} className="w-full sm:w-auto gap-1.5">
           <Send className="w-3.5 h-3.5" />
           {submitting ? '...' : submitted ? '✓ Subscribed' : t('insights.subscribe')}
@@ -186,7 +186,7 @@ export const Footer = () => {
   const { t } = useTranslation();
 
   return (
-    <footer className="bg-muted/30 border-t border-border">
+    <footer className="bg-muted/30 border-t border-border" role="contentinfo" aria-label="Site footer">
       <div className="container-sernet py-8 md:py-10">
         {/* Main Footer Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
@@ -288,7 +288,7 @@ export const Footer = () => {
           </div>
           <div className="inline-flex items-center gap-2.5">
             {socialLinks.map((social) => (
-              <a key={social.name} href={social.href} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" title={social.name}>
+              <a key={social.name} href={social.href} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label={`Follow SERNET on ${social.name}`}>
                 {social.icon}
               </a>
             ))}

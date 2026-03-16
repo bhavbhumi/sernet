@@ -5,6 +5,7 @@ import { Layout } from '@/components/layout/Layout';
 import { PageHero } from '@/components/layout/PageHero';
 import { SEOHead } from '@/components/shared/SEOHead';
 import { Briefcase } from 'lucide-react';
+import { RelatedServices } from '@/components/shared/RelatedServices';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TradingServiceContent } from '@/components/services/TradingServiceContent';
 import { InvestmentServiceContent } from '@/components/services/InvestmentServiceContent';
@@ -91,6 +92,7 @@ const Services = () => {
       <AnimatePresence mode="wait">
         <motion.div key={activeTab} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.25 }}>
           {tabContent[activeTab]}
+          <RelatedServices currentService={activeTab} />
         </motion.div>
       </AnimatePresence>
     </Layout>

@@ -13,6 +13,7 @@ Allow: /
 User-agent: *
 Allow: /
 
+Sitemap: https://sernetindia.com/sitemap.xml
 Sitemap: https://sernetindia.com/sitemap
 
 # AI / LLM discovery

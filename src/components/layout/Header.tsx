@@ -87,13 +87,13 @@ export const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-background border-b border-border">
-      <nav className="container-sernet flex items-center justify-between h-16">
+    <header className="sticky top-0 z-50 bg-background border-b border-border" role="banner">
+      <nav className="container-sernet flex items-center justify-between h-16" aria-label="Main navigation">
         {/* Logo */}
-        <Link to="/" className="flex items-center">
+        <Link to="/" className="flex items-center" aria-label="SERNET Financial Services — Home">
           <img 
             src={sernetLogo}
-            alt="Sernet"
+            alt="SERNET Financial Services logo"
             className="h-[25px] w-auto dark:brightness-0 dark:invert"
           />
         </Link>
@@ -117,7 +117,7 @@ export const Header = () => {
             type="button"
             onClick={() => setSearchOpen(true)}
             className="flex items-center gap-2 px-3 py-1.5 rounded-md border border-border text-[13px] text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-            title="Search (⌘K)"
+            aria-label="Search the site (⌘K)"
           >
             <Search className="h-3.5 w-3.5" />
             <span className="hidden xl:inline">Search</span>
@@ -133,6 +133,8 @@ export const Header = () => {
               type="button"
               className="flex items-center gap-1 text-[15px] text-muted-foreground hover:text-primary transition-colors"
               onClick={() => setLangOpen(!langOpen)}
+              aria-label="Change language"
+              aria-expanded={langOpen}
             >
               <Globe className="h-4 w-4" />
               <span className="hidden lg:inline">{currentLang.nativeLabel}</span>
@@ -173,7 +175,7 @@ export const Header = () => {
             type="button"
             onClick={() => setSearchOpen(true)}
             className="p-2 text-muted-foreground hover:text-primary transition-colors"
-            title="Search"
+            aria-label="Search the site"
           >
             <Search className="h-5 w-5" />
           </button>
@@ -183,6 +185,8 @@ export const Header = () => {
               type="button"
               className="p-2 text-muted-foreground hover:text-primary transition-colors"
               onClick={() => setLangOpen(!langOpen)}
+              aria-label="Change language"
+              aria-expanded={langOpen}
             >
               <Globe className="h-5 w-5" />
             </button>
