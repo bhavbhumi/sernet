@@ -130,6 +130,7 @@ const ActionItem = ({ number, title, description, steps, link, done }: ActionIte
 export default function AdminSEOAudit() {
   const queryClient = useQueryClient();
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isGeneratingArticles, setIsGeneratingArticles] = useState(false);
   const checks = runSiteChecks();
   const score = calculateScore(checks);
   const categories = ['technical', 'content', 'performance', 'social', 'ai'] as const;
@@ -153,10 +154,30 @@ export default function AdminSEOAudit() {
     },
   });
 
-  const handleAutoGenerate = async () => {
-    setIsGenerating(true);
+  const { data: articleStats } = useQuery({
+    queryKey: ['seo_article_stats'],
+    queryFn: async () => {
+      const { count: total } = await supabase
+        .from('articles')
+        .select('id', { count: 'exact', head: true })
+        .eq('status', 'published');
+      const { count: missing } = await supabase
+        .from('articles')
+        .select('id', { count: 'exact', head: true })
+        .eq('status', 'published')
+        .or('meta_title.is.null,meta_description.is.null,meta_title.eq.,meta_description.eq.');
+      return { total: total ?? 0, missing: missing ?? 0, ok: (total ?? 0) - (missing ?? 0) };
+    },
+  });
+
+  const handleAutoGenerate = async (target?: string) => {
+    const isArticles = target === 'articles';
+    if (isArticles) setIsGeneratingArticles(true);
+    else setIsGenerating(true);
     try {
-      const { data, error } = await supabase.functions.invoke('seo-generate');
+      const { data, error } = await supabase.functions.invoke('seo-generate', {
+        body: target ? { target } : undefined,
+      });
       if (error) throw error;
       if (data?.error) {
         toast.error(data.error);
@@ -165,10 +186,12 @@ export default function AdminSEOAudit() {
       toast.success(data?.message || 'SEO meta generated successfully');
       queryClient.invalidateQueries({ queryKey: ['seo_pages'] });
       queryClient.invalidateQueries({ queryKey: ['site_pages'] });
+      queryClient.invalidateQueries({ queryKey: ['seo_article_stats'] });
     } catch (err: any) {
       toast.error(err.message || 'Failed to generate SEO meta');
     } finally {
-      setIsGenerating(false);
+      if (isArticles) setIsGeneratingArticles(false);
+      else setIsGenerating(false);
     }
   };
 
