@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 
 import sernetLogo from '@/assets/sernet-logo.png';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 const footerLinks = {
   company: [
