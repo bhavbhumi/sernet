@@ -1,13 +1,14 @@
 
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
-  CheckCircle2, AlertTriangle, XCircle, ExternalLink, Copy, ClipboardCheck
+  CheckCircle2, AlertTriangle, XCircle, ExternalLink, Copy, ClipboardCheck, Sparkles, Loader2
 } from 'lucide-react';
 import { toast } from 'sonner';
 
