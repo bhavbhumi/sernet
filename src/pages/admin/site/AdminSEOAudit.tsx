@@ -1,13 +1,14 @@
 
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
-  CheckCircle2, AlertTriangle, XCircle, ExternalLink, Copy, ClipboardCheck
+  CheckCircle2, AlertTriangle, XCircle, ExternalLink, Copy, ClipboardCheck, Sparkles, Loader2
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -132,6 +133,8 @@ const ActionItem = ({ number, title, description, steps, link, done }: ActionIte
 // ─── Main Component ───────────────────────────────────────────────────────
 
 export default function AdminSEOAudit() {
+  const queryClient = useQueryClient();
+  const [isGenerating, setIsGenerating] = useState(false);
   const checks = runSiteChecks();
   const score = calculateScore(checks);
   const categories = ['technical', 'content', 'performance', 'social', 'ai'] as const;
@@ -154,6 +157,25 @@ export default function AdminSEOAudit() {
       return (data ?? []) as unknown as PageSEO[];
     },
   });
+
+  const handleAutoGenerate = async () => {
+    setIsGenerating(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('seo-generate');
+      if (error) throw error;
+      if (data?.error) {
+        toast.error(data.error);
+        return;
+      }
+      toast.success(data?.message || 'SEO meta generated successfully');
+      queryClient.invalidateQueries({ queryKey: ['seo_pages'] });
+      queryClient.invalidateQueries({ queryKey: ['site_pages'] });
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to generate SEO meta');
+    } finally {
+      setIsGenerating(false);
+    }
+  };
 
   const pagesWithIssues = pages.filter(p => {
     if (!p.meta_title || !p.meta_description) return true;
@@ -251,6 +273,18 @@ export default function AdminSEOAudit() {
                 <a href="/admin/marketing/site/pages" className="text-xs text-primary underline flex items-center gap-1">
                   Open <ExternalLink className="h-3 w-3" />
                 </a>
+                {pagesWithIssues.length > 0 && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="ml-auto gap-1.5 text-xs h-7"
+                    onClick={handleAutoGenerate}
+                    disabled={isGenerating}
+                  >
+                    {isGenerating ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5" />}
+                    {isGenerating ? 'Generating…' : 'Auto-Generate Missing SEO'}
+                  </Button>
+                )}
               </div>
 
               {pagesWithIssues.length > 0 && (
