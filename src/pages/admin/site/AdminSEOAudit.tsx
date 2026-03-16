@@ -63,12 +63,7 @@ function runSiteChecks(): SEOCheck[] {
     recommendation: 'Convert remaining PNG/JPEG assets to WebP format',
     category: 'performance',
   });
-  checks.push({
-    id: 'ga4', label: 'Google Analytics (GA4)', status: 'warn',
-    detail: 'GA4 script placeholder exists but uses G-XXXXXXXXXX',
-    recommendation: 'Replace G-XXXXXXXXXX with your actual GA4 Measurement ID',
-    category: 'technical',
-  });
+  checks.push({ id: 'ga4', label: 'Google Analytics (GA4)', status: 'pass', detail: 'GA4 is configured with Measurement ID G-BSRJ9Q1H5T', category: 'technical' });
 
   // Content
   checks.push({ id: 'h1', label: 'H1 Tag on Homepage', status: 'pass', detail: 'Homepage has a single H1 in HeroSection', category: 'content' });
