@@ -423,10 +423,13 @@ export default function AdminSEOAudit() {
                   <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> ARIA labels added to header, footer, nav, forms, social links</li>
                   <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> XML Sitemap created at /sitemap.xml (35 URLs)</li>
                   <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> Internal cross-links added to all service pages</li>
-                  <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> Missing meta titles/descriptions auto-filled for 12 pages</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> Missing meta titles/descriptions auto-filled for all pages</li>
                   <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> robots.txt updated to reference sitemap.xml</li>
                   <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> LLMs.txt created for AI crawler discoverability</li>
                   <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> Title auto-truncation to ≤60 chars in SEOHead</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> Google Analytics GA4 configured (G-BSRJ9Q1H5T)</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> 8 high-volume keywords embedded across site page meta</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> AI article SEO meta generator enabled (Content Gaps tab)</li>
                 </ul>
               </Card>
 
@@ -434,16 +437,16 @@ export default function AdminSEOAudit() {
 
               <ActionItem
                 number={1}
-                title="Set Up Google Analytics (GA4)"
-                description="Analytics tracking is critical for monitoring SEO performance, organic traffic, and user behavior."
+                title="Submit to Google Search Console"
+                description="Search Console lets you monitor how Google crawls your site, submit sitemaps, and track keyword rankings."
                 steps={[
-                  'Go to analytics.google.com and sign in with your Google account.',
-                  'Click "Admin" (gear icon) → "Create Property" → enter "SERNET Financial Services".',
-                  'Select "Web" as the platform → enter "sernetindia.com" as the URL.',
-                  'Copy the Measurement ID (starts with G-).',
-                  'Come back to Lovable chat and paste the ID — I\'ll update index.html for you.',
+                  'Go to search.google.com/search-console and sign in.',
+                  'Click "Add Property" → choose "URL prefix" → enter "https://sernetindia.com".',
+                  'Verify ownership via DNS TXT record (recommended) or HTML meta tag.',
+                  'Once verified, go to "Sitemaps" → submit: https://sernetindia.com/sitemap.xml',
+                  'Wait 24-48 hours for Google to start indexing your pages.',
                 ]}
-                link={{ label: 'Open Google Analytics', href: 'https://analytics.google.com' }}
+                link={{ label: 'Open Search Console', href: 'https://search.google.com/search-console' }}
               />
 
               <ActionItem
