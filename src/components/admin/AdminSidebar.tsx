@@ -52,6 +52,7 @@ const departmentGroups: DepartmentGroup[] = [
         label: 'Website', icon: Globe, moduleKey: 'system/website', children: [
           { label: 'Site Settings', icon: Palette, href: R.marketing.site.settings },
           { label: 'Page Directory', icon: ScanSearch, href: R.marketing.site.pages },
+          { label: 'SEO Health', icon: Search, href: R.marketing.site.seoAudit },
           { label: 'Media Library', icon: Images, href: R.marketing.site.media },
         ]
       },

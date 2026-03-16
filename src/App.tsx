@@ -259,6 +259,7 @@ const App = () => (
             <Route path="/admin/marketing/calendars/corporate" element={<AdminCorporateEvents />} />
             <Route path="/admin/marketing/site/settings" element={<AdminSiteSettings />} />
             <Route path="/admin/marketing/site/pages" element={<AdminSitePages />} />
+            <Route path="/admin/marketing/site/seo" element={<AdminSEOAudit />} />
             <Route path="/admin/marketing/site/media" element={<AdminMediaLibrary />} />
 
             {/* Admin — Sales */}
