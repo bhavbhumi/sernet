@@ -454,7 +454,7 @@ export default function AdminSEOAudit() {
                   <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> LLMs.txt created for AI crawler discoverability</li>
                   <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> Title auto-truncation to ≤60 chars in SEOHead</li>
                   <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> Google Analytics GA4 configured (G-BSRJ9Q1H5T)</li>
-                  <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> 8 high-volume keywords embedded across site page meta</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> 10 primary + 5 long-tail keywords embedded across site page meta</li>
                   <li className="flex items-center gap-2"><CheckCircle2 className="h-3 w-3 text-green-500" /> AI article SEO meta generator enabled (Content Gaps tab)</li>
                 </ul>
               </Card>
