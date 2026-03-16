@@ -117,7 +117,7 @@ export const Header = () => {
             type="button"
             onClick={() => setSearchOpen(true)}
             className="flex items-center gap-2 px-3 py-1.5 rounded-md border border-border text-[13px] text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-            title="Search (⌘K)"
+            aria-label="Search the site (⌘K)"
           >
             <Search className="h-3.5 w-3.5" />
             <span className="hidden xl:inline">Search</span>
