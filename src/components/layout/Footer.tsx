@@ -186,7 +186,7 @@ export const Footer = () => {
   const { t } = useTranslation();
 
   return (
-    <footer className="bg-muted/30 border-t border-border">
+    <footer className="bg-muted/30 border-t border-border" role="contentinfo" aria-label="Site footer">
       <div className="container-sernet py-8 md:py-10">
         {/* Main Footer Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
