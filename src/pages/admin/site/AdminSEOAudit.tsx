@@ -133,6 +133,8 @@ const ActionItem = ({ number, title, description, steps, link, done }: ActionIte
 // ─── Main Component ───────────────────────────────────────────────────────
 
 export default function AdminSEOAudit() {
+  const queryClient = useQueryClient();
+  const [isGenerating, setIsGenerating] = useState(false);
   const checks = runSiteChecks();
   const score = calculateScore(checks);
   const categories = ['technical', 'content', 'performance', 'social', 'ai'] as const;
@@ -155,6 +157,25 @@ export default function AdminSEOAudit() {
       return (data ?? []) as unknown as PageSEO[];
     },
   });
+
+  const handleAutoGenerate = async () => {
+    setIsGenerating(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('seo-generate');
+      if (error) throw error;
+      if (data?.error) {
+        toast.error(data.error);
+        return;
+      }
+      toast.success(data?.message || 'SEO meta generated successfully');
+      queryClient.invalidateQueries({ queryKey: ['seo_pages'] });
+      queryClient.invalidateQueries({ queryKey: ['site_pages'] });
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to generate SEO meta');
+    } finally {
+      setIsGenerating(false);
+    }
+  };
 
   const pagesWithIssues = pages.filter(p => {
     if (!p.meta_title || !p.meta_description) return true;
