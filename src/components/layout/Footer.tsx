@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 
 import sernetLogo from '@/assets/sernet-logo.png';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 const footerLinks = {
   company: [
@@ -184,6 +185,8 @@ const FooterNewsletterForm = () => {
 
 export const Footer = () => {
   const { t } = useTranslation();
+  const { data: settings } = useSiteSettings();
+  const footerCfg = settings?.footer;
 
   return (
     <footer className="bg-muted/30 border-t border-border" role="contentinfo" aria-label="Site footer">
@@ -296,6 +299,7 @@ export const Footer = () => {
         </div>
 
         {/* Newsletter Signup Strip */}
+        {(footerCfg?.show_newsletter !== false) && (
         <div className="mt-8 pt-6 border-t border-border">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
             <div className="flex items-center gap-2 shrink-0">
@@ -305,6 +309,7 @@ export const Footer = () => {
             <FooterNewsletterForm />
           </div>
         </div>
+        )}
 
         {/* Disclosure Section - collapsible on mobile */}
         <FooterDisclosure />
@@ -327,7 +332,7 @@ export const Footer = () => {
         <div className="container-sernet py-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-[13px]">
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 text-muted-foreground">
-              <span>© {t('footer.madeWith')}, 2025</span>
+              <span>{footerCfg?.copyright_text || `© ${t('footer.madeWith')}, 2025`}</span>
             </div>
             <div className="flex items-center gap-4">
               {legalLinks.map((link, index) => (
