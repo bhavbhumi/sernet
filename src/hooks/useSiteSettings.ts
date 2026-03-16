@@ -83,6 +83,8 @@ const DEFAULTS: SiteSettings = {
     social_linkedin: 'https://www.linkedin.com/company/sernetfspl/',
     social_twitter: '',
     social_youtube: 'https://www.youtube.com/@sernetfspl',
+    social_whatsapp: 'https://wa.me/919206767670',
+    social_telegram: 'https://t.me/sernetindia',
     country: 'India',
     region: 'MH',
     timezone: 'Asia/Kolkata',
