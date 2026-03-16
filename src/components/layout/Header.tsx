@@ -90,10 +90,10 @@ export const Header = () => {
     <header className="sticky top-0 z-50 bg-background border-b border-border" role="banner">
       <nav className="container-sernet flex items-center justify-between h-16" aria-label="Main navigation">
         {/* Logo */}
-        <Link to="/" className="flex items-center">
+        <Link to="/" className="flex items-center" aria-label="SERNET Financial Services — Home">
           <img 
             src={sernetLogo}
-            alt="Sernet"
+            alt="SERNET Financial Services logo"
             className="h-[25px] w-auto dark:brightness-0 dark:invert"
           />
         </Link>
