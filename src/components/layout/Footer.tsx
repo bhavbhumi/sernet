@@ -330,7 +330,7 @@ export const Footer = () => {
         <div className="container-sernet py-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-[13px]">
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 text-muted-foreground">
-              <span>© {t('footer.madeWith')}, 2025</span>
+              <span>{footerCfg?.copyright_text || `© ${t('footer.madeWith')}, 2025`}</span>
             </div>
             <div className="flex items-center gap-4">
               {legalLinks.map((link, index) => (
