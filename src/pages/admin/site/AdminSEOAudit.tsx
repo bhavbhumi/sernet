@@ -273,6 +273,18 @@ export default function AdminSEOAudit() {
                 <a href="/admin/marketing/site/pages" className="text-xs text-primary underline flex items-center gap-1">
                   Open <ExternalLink className="h-3 w-3" />
                 </a>
+                {pagesWithIssues.length > 0 && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="ml-auto gap-1.5 text-xs h-7"
+                    onClick={handleAutoGenerate}
+                    disabled={isGenerating}
+                  >
+                    {isGenerating ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5" />}
+                    {isGenerating ? 'Generating…' : 'Auto-Generate Missing SEO'}
+                  </Button>
+                )}
               </div>
 
               {pagesWithIssues.length > 0 && (
