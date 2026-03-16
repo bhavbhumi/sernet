@@ -87,8 +87,8 @@ export const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-background border-b border-border">
-      <nav className="container-sernet flex items-center justify-between h-16">
+    <header className="sticky top-0 z-50 bg-background border-b border-border" role="banner">
+      <nav className="container-sernet flex items-center justify-between h-16" aria-label="Main navigation">
         {/* Logo */}
         <Link to="/" className="flex items-center">
           <img 
