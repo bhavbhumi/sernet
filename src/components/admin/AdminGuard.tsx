@@ -44,7 +44,7 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
 
       if (!roleData) {
         await supabase.auth.signOut();
-        navigate('/admin/login');
+        navigate('/login');
         setLoading(false);
         return;
       }
