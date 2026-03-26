@@ -46,7 +46,7 @@ export function PortalGuard({ children }: { children: React.ReactNode }) {
     if (!profile) {
       // Maybe an admin user — redirect them
       await supabase.auth.signOut();
-      navigate('/portal/login');
+      navigate('/login');
       setLoading(false);
       return;
     }
