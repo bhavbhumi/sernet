@@ -53,7 +53,7 @@ export function PortalGuard({ children }: { children: React.ReactNode }) {
 
     if (profile.status === 'pending_approval' || profile.status === 'suspended') {
       await supabase.auth.signOut();
-      navigate('/portal/login');
+      navigate('/login');
       setLoading(false);
       return;
     }
