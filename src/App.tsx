@@ -229,10 +229,17 @@ const App = () => (
             <Route path="/insights/articles/:id" element={<ArticleDetail />} />
             <Route path="/insights/analysis/:id" element={<AnalysisDetail />} />
 
+            {/* Unified Login */}
+            <Route path="/login" element={<Login />} />
+
             {/* Portal — Client & Partner */}
             <Route path="/portal/login" element={<PortalLogin />} />
             <Route path="/portal/signup" element={<PortalSignup />} />
             <Route path="/portal" element={<PortalDashboard />} />
+            <Route path="/portal/partner" element={<PartnerDashboard />} />
+
+            {/* Employee Portal */}
+            <Route path="/employee" element={<EmployeeDashboard />} />
 
             {/* Admin — Auth */}
             <Route path="/admin/setup" element={<AdminSetup />} />
