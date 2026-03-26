@@ -3998,6 +3998,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_employee_id_for_user: { Args: { _user_id: string }; Returns: string }
       has_department_access: {
         Args: {
           _dept: Database["public"]["Enums"]["department"]

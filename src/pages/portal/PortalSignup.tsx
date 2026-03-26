@@ -97,7 +97,7 @@ export default function PortalSignup() {
                 Partner accounts require admin approval after email verification. We'll notify you once your account is activated.
               </p>
             )}
-            <Link to="/portal/login">
+            <Link to="/login">
               <Button variant="outline" className="w-full">Go to Login</Button>
             </Link>
           </div>
@@ -204,7 +204,7 @@ export default function PortalSignup() {
           <div className="mt-4 text-center">
             <p className="text-sm text-muted-foreground">
               Already have an account?{' '}
-              <Link to="/portal/login" className="text-primary hover:underline font-medium">
+              <Link to="/login" className="text-primary hover:underline font-medium">
                 Sign In
               </Link>
             </p>

@@ -1,0 +1,289 @@
+
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
+import { EmployeeGuard, useEmployeeSession } from '@/components/portal/EmployeeGuard';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { User, Calendar, Clock, Wallet, Users, LogOut, Shield } from 'lucide-react';
+import sernetLogo from '@/assets/sernet-logo.png';
+import { useToast } from '@/hooks/use-toast';
+import { format } from 'date-fns';
+
+/* ─── Profile Tab ─── */
+function ProfileTab() {
+  const { session } = useEmployeeSession();
+  if (!session) return null;
+
+  return (
+    <div className="bg-card border border-border rounded-xl p-5">
+      <div className="flex items-center gap-4 mb-6">
+        {session.photoUrl ? (
+          <img src={session.photoUrl} alt={session.fullName} className="w-16 h-16 rounded-full object-cover" />
+        ) : (
+          <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-xl font-semibold text-primary">
+            {session.fullName.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2)}
+          </div>
+        )}
+        <div>
+          <h3 className="text-lg font-semibold text-foreground">{session.fullName}</h3>
+          <p className="text-sm text-muted-foreground">{session.designation} · {session.department}</p>
+          {session.employeeCode && (
+            <Badge variant="outline" className="mt-1 text-xs">{session.employeeCode}</Badge>
+          )}
+        </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+        <div>
+          <span className="text-muted-foreground text-xs">Email</span>
+          <p className="text-foreground">{session.email}</p>
+        </div>
+        <div>
+          <span className="text-muted-foreground text-xs">Date of Joining</span>
+          <p className="text-foreground">
+            {session.dateOfJoining ? format(new Date(session.dateOfJoining), 'dd MMM yyyy') : '—'}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Attendance Tab ─── */
+function AttendanceTab() {
+  const { session } = useEmployeeSession();
+  const [logs, setLogs] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!session) return;
+    const load = async () => {
+      const { data } = await supabase
+        .from('attendance_logs')
+        .select('*')
+        .eq('employee_id', session.employeeId)
+        .order('log_date', { ascending: false })
+        .limit(30);
+      setLogs(data || []);
+      setLoading(false);
+    };
+    load();
+  }, [session]);
+
+  if (loading) return <div className="p-6 space-y-2">{[1,2,3].map(i => <div key={i} className="h-12 bg-muted animate-pulse rounded-lg" />)}</div>;
+
+  return (
+    <div className="bg-card border border-border rounded-xl">
+      {logs.length === 0 ? (
+        <div className="p-8 text-center text-muted-foreground text-sm">No attendance records found.</div>
+      ) : (
+        <div className="divide-y divide-border">
+          {logs.map((log) => (
+            <div key={log.id} className="p-4 flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-foreground">{format(new Date(log.log_date), 'EEE, dd MMM yyyy')}</p>
+                <p className="text-xs text-muted-foreground">{log.location_type}</p>
+              </div>
+              <div className="text-right">
+                <Badge variant="outline" className={
+                  log.status === 'present' ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' :
+                  log.status === 'half_day' ? 'bg-amber-500/10 text-amber-600 border-amber-500/20' :
+                  'bg-red-500/10 text-red-600 border-red-500/20'
+                }>
+                  {log.status}
+                </Badge>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {log.check_in ? format(new Date(log.check_in), 'HH:mm') : '--:--'} – {log.check_out ? format(new Date(log.check_out), 'HH:mm') : '--:--'}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ─── Leave Tab ─── */
+function LeaveTab() {
+  const { session } = useEmployeeSession();
+  const [requests, setRequests] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!session) return;
+    const load = async () => {
+      const { data } = await supabase
+        .from('leave_requests')
+        .select('*, leave_types(name)')
+        .eq('employee_id', session.employeeId)
+        .order('created_at', { ascending: false })
+        .limit(20);
+      setRequests(data || []);
+      setLoading(false);
+    };
+    load();
+  }, [session]);
+
+  if (loading) return <div className="p-6 space-y-2">{[1,2,3].map(i => <div key={i} className="h-12 bg-muted animate-pulse rounded-lg" />)}</div>;
+
+  return (
+    <div className="bg-card border border-border rounded-xl">
+      {requests.length === 0 ? (
+        <div className="p-8 text-center text-muted-foreground text-sm">No leave requests found.</div>
+      ) : (
+        <div className="divide-y divide-border">
+          {requests.map((req) => (
+            <div key={req.id} className="p-4 flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-foreground">{(req.leave_types as any)?.name || 'Leave'}</p>
+                <p className="text-xs text-muted-foreground">
+                  {format(new Date(req.start_date), 'dd MMM')} – {format(new Date(req.end_date), 'dd MMM yyyy')} · {req.days_count} day{req.days_count > 1 ? 's' : ''}
+                </p>
+                {req.reason && <p className="text-xs text-muted-foreground mt-0.5">{req.reason}</p>}
+              </div>
+              <Badge variant="outline" className={
+                req.status === 'approved' ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' :
+                req.status === 'pending' ? 'bg-amber-500/10 text-amber-600 border-amber-500/20' :
+                'bg-red-500/10 text-red-600 border-red-500/20'
+              }>
+                {req.status}
+              </Badge>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ─── Payslips Tab (placeholder) ─── */
+function PayslipsTab() {
+  return (
+    <div className="bg-card border border-border rounded-xl p-8 text-center">
+      <Wallet className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
+      <h3 className="font-medium text-foreground mb-1">Payslips</h3>
+      <p className="text-sm text-muted-foreground">Your salary slips will appear here once payroll is processed.</p>
+    </div>
+  );
+}
+
+/* ─── Team Directory Tab ─── */
+function TeamTab() {
+  const [team, setTeam] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const load = async () => {
+      const { data } = await supabase
+        .from('employees')
+        .select('id, full_name, designation, department, photo_url, email')
+        .eq('status', 'active')
+        .eq('is_public', true)
+        .order('sort_order', { ascending: true })
+        .limit(50);
+      setTeam(data || []);
+      setLoading(false);
+    };
+    load();
+  }, []);
+
+  if (loading) return <div className="p-6 space-y-2">{[1,2,3,4].map(i => <div key={i} className="h-14 bg-muted animate-pulse rounded-lg" />)}</div>;
+
+  return (
+    <div className="bg-card border border-border rounded-xl">
+      {team.length === 0 ? (
+        <div className="p-8 text-center text-muted-foreground text-sm">No team members found.</div>
+      ) : (
+        <div className="divide-y divide-border">
+          {team.map((member) => (
+            <div key={member.id} className="p-4 flex items-center gap-3">
+              {member.photo_url ? (
+                <img src={member.photo_url} alt={member.full_name} className="w-10 h-10 rounded-full object-cover" />
+              ) : (
+                <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-sm font-medium text-muted-foreground">
+                  {member.full_name.split(' ').map((w: string) => w[0]).join('').toUpperCase().slice(0, 2)}
+                </div>
+              )}
+              <div>
+                <p className="text-sm font-medium text-foreground">{member.full_name}</p>
+                <p className="text-xs text-muted-foreground">{member.designation} · {member.department}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ─── Main Dashboard ─── */
+function EmployeeDashboardContent() {
+  const { session } = useEmployeeSession();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    navigate('/login');
+  };
+
+  if (!session) return null;
+
+  return (
+    <div className="min-h-screen bg-background">
+      <header className="sticky top-0 z-30 bg-background/95 backdrop-blur border-b border-border">
+        <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Link to="/"><img src={sernetLogo} alt="SERNET" className="h-7 object-contain" /></Link>
+            <Badge variant="outline" className="text-xs">Employee Portal</Badge>
+          </div>
+          <div className="flex items-center gap-3">
+            {session.hasAdminAccess && (
+              <Link to="/admin">
+                <Button variant="ghost" size="sm" className="text-xs">
+                  <Shield className="h-3.5 w-3.5 mr-1" /> Admin
+                </Button>
+              </Link>
+            )}
+            <span className="text-sm text-foreground hidden sm:block">{session.fullName}</span>
+            <Button variant="ghost" size="sm" onClick={handleSignOut}>
+              <LogOut className="h-4 w-4 mr-1.5" /> Sign Out
+            </Button>
+          </div>
+        </div>
+      </header>
+
+      <main className="max-w-5xl mx-auto px-4 py-6">
+        <div className="mb-6">
+          <h1 className="text-xl font-semibold text-foreground">Welcome, {session.fullName.split(' ')[0]}</h1>
+          <p className="text-sm text-muted-foreground">{session.designation} · {session.department}</p>
+        </div>
+
+        <Tabs defaultValue="profile" className="space-y-4">
+          <TabsList className="flex-wrap">
+            <TabsTrigger value="profile" className="gap-1.5"><User className="h-4 w-4" /> Profile</TabsTrigger>
+            <TabsTrigger value="attendance" className="gap-1.5"><Clock className="h-4 w-4" /> Attendance</TabsTrigger>
+            <TabsTrigger value="leave" className="gap-1.5"><Calendar className="h-4 w-4" /> Leave</TabsTrigger>
+            <TabsTrigger value="payslips" className="gap-1.5"><Wallet className="h-4 w-4" /> Payslips</TabsTrigger>
+            <TabsTrigger value="team" className="gap-1.5"><Users className="h-4 w-4" /> Team</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="profile"><ProfileTab /></TabsContent>
+          <TabsContent value="attendance"><AttendanceTab /></TabsContent>
+          <TabsContent value="leave"><LeaveTab /></TabsContent>
+          <TabsContent value="payslips"><PayslipsTab /></TabsContent>
+          <TabsContent value="team"><TeamTab /></TabsContent>
+        </Tabs>
+      </main>
+    </div>
+  );
+}
+
+export default function EmployeeDashboard() {
+  return (
+    <EmployeeGuard>
+      <EmployeeDashboardContent />
+    </EmployeeGuard>
+  );
+}

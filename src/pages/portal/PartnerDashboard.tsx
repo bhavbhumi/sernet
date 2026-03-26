@@ -2,20 +2,19 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
-import { usePortalSession } from '@/components/portal/PortalGuard';
-import { PortalGuard } from '@/components/portal/PortalGuard';
+import { PortalGuard, usePortalSession } from '@/components/portal/PortalGuard';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { User, Ticket, LogOut, Shield, Wallet, FileText, Phone, Mail, MapPin, Edit2, Save, X } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { User, Ticket, LogOut, Shield, Phone, Mail, MapPin, Edit2, Save, X } from 'lucide-react';
 import sernetLogo from '@/assets/sernet-logo.png';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 
-function PortalDashboardContent() {
+function PartnerDashboardContent() {
   const { session, refreshProfile } = usePortalSession();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -25,18 +24,11 @@ function PortalDashboardContent() {
     full_name: '', phone: '', city: '', state: '', pan: '', gender: '', date_of_birth: '',
   });
   const [saving, setSaving] = useState(false);
-
-  // Tickets
   const [tickets, setTickets] = useState<any[]>([]);
   const [ticketsLoading, setTicketsLoading] = useState(true);
 
   useEffect(() => {
     if (session) {
-      setProfileForm({
-        full_name: session.name,
-        phone: session.phone,
-        city: '', state: '', pan: '', gender: '', date_of_birth: '',
-      });
       loadFullProfile();
       loadTickets();
     }
@@ -108,18 +100,13 @@ function PortalDashboardContent() {
 
   if (!session) return null;
 
-  const kycColor = session.kycStatus === 'verified' ? 'bg-emerald-500/10 text-emerald-600' :
-    session.kycStatus === 'submitted' ? 'bg-amber-500/10 text-amber-600' :
-    'bg-muted text-muted-foreground';
-
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
       <header className="sticky top-0 z-30 bg-background/95 backdrop-blur border-b border-border">
         <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link to="/"><img src={sernetLogo} alt="SERNET" className="h-7 object-contain" /></Link>
-            <Badge variant="outline" className="capitalize text-xs">{session.userType} Portal</Badge>
+            <Badge variant="outline" className="text-xs">Partner Portal</Badge>
           </div>
           <div className="flex items-center gap-3">
             <span className="text-sm text-foreground hidden sm:block">{session.name}</span>
@@ -130,21 +117,22 @@ function PortalDashboardContent() {
         </div>
       </header>
 
-      {/* Content */}
       <main className="max-w-5xl mx-auto px-4 py-6">
         <div className="mb-6">
           <h1 className="text-xl font-semibold text-foreground">Welcome, {session.name.split(' ')[0]}</h1>
-          <p className="text-sm text-muted-foreground">Manage your profile, documents and support requests</p>
+          <p className="text-sm text-muted-foreground">Manage your partnership, commissions & support</p>
         </div>
 
         <Tabs defaultValue="profile" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="profile" className="gap-1.5"><User className="h-4 w-4" /> Profile & KYC</TabsTrigger>
-            <TabsTrigger value="tickets" className="gap-1.5"><Ticket className="h-4 w-4" /> Support Tickets</TabsTrigger>
+          <TabsList className="flex-wrap">
+            <TabsTrigger value="profile" className="gap-1.5"><User className="h-4 w-4" /> Profile</TabsTrigger>
+            <TabsTrigger value="commissions" className="gap-1.5"><Wallet className="h-4 w-4" /> Commissions</TabsTrigger>
+            <TabsTrigger value="payouts" className="gap-1.5"><FileText className="h-4 w-4" /> Payouts</TabsTrigger>
+            <TabsTrigger value="tickets" className="gap-1.5"><Ticket className="h-4 w-4" /> Support</TabsTrigger>
           </TabsList>
 
           {/* Profile Tab */}
-          <TabsContent value="profile" className="space-y-4">
+          <TabsContent value="profile">
             <div className="bg-card border border-border rounded-xl p-5">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
@@ -157,9 +145,12 @@ function PortalDashboardContent() {
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Badge variant="outline" className={kycColor}>
-                    <Shield className="h-3 w-3 mr-1" />
-                    KYC: {session.kycStatus}
+                  <Badge variant="outline" className={
+                    session.kycStatus === 'verified' ? 'bg-emerald-500/10 text-emerald-600' :
+                    session.kycStatus === 'submitted' ? 'bg-amber-500/10 text-amber-600' :
+                    'bg-muted text-muted-foreground'
+                  }>
+                    <Shield className="h-3 w-3 mr-1" /> KYC: {session.kycStatus}
                   </Badge>
                   {!editing ? (
                     <Button variant="outline" size="sm" onClick={() => setEditing(true)}>
@@ -179,74 +170,46 @@ function PortalDashboardContent() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <Label className="text-xs text-muted-foreground flex items-center gap-1"><User className="h-3 w-3" /> Full Name</Label>
-                  {editing ? (
-                    <Input value={profileForm.full_name} onChange={e => setProfileForm(p => ({ ...p, full_name: e.target.value }))} />
-                  ) : (
-                    <p className="text-sm text-foreground">{profileForm.full_name || '—'}</p>
-                  )}
-                </div>
-                <div className="space-y-1.5">
-                  <Label className="text-xs text-muted-foreground flex items-center gap-1"><Phone className="h-3 w-3" /> Phone</Label>
-                  {editing ? (
-                    <Input value={profileForm.phone} onChange={e => setProfileForm(p => ({ ...p, phone: e.target.value }))} />
-                  ) : (
-                    <p className="text-sm text-foreground">{profileForm.phone || '—'}</p>
-                  )}
-                </div>
-                <div className="space-y-1.5">
-                  <Label className="text-xs text-muted-foreground flex items-center gap-1"><Mail className="h-3 w-3" /> Email</Label>
-                  <p className="text-sm text-foreground">{session.email}</p>
-                </div>
-                <div className="space-y-1.5">
-                  <Label className="text-xs text-muted-foreground">PAN</Label>
-                  {editing ? (
-                    <Input value={profileForm.pan} onChange={e => setProfileForm(p => ({ ...p, pan: e.target.value.toUpperCase() }))} placeholder="ABCDE1234F" maxLength={10} />
-                  ) : (
-                    <p className="text-sm text-foreground">{profileForm.pan || '—'}</p>
-                  )}
-                </div>
-                <div className="space-y-1.5">
-                  <Label className="text-xs text-muted-foreground flex items-center gap-1"><MapPin className="h-3 w-3" /> City</Label>
-                  {editing ? (
-                    <Input value={profileForm.city} onChange={e => setProfileForm(p => ({ ...p, city: e.target.value }))} />
-                  ) : (
-                    <p className="text-sm text-foreground">{profileForm.city || '—'}</p>
-                  )}
-                </div>
-                <div className="space-y-1.5">
-                  <Label className="text-xs text-muted-foreground">State</Label>
-                  {editing ? (
-                    <Input value={profileForm.state} onChange={e => setProfileForm(p => ({ ...p, state: e.target.value }))} />
-                  ) : (
-                    <p className="text-sm text-foreground">{profileForm.state || '—'}</p>
-                  )}
-                </div>
-                <div className="space-y-1.5">
-                  <Label className="text-xs text-muted-foreground">Gender</Label>
-                  {editing ? (
-                    <Select value={profileForm.gender} onValueChange={v => setProfileForm(p => ({ ...p, gender: v }))}>
-                      <SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="male">Male</SelectItem>
-                        <SelectItem value="female">Female</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  ) : (
-                    <p className="text-sm text-foreground capitalize">{profileForm.gender || '—'}</p>
-                  )}
-                </div>
-                <div className="space-y-1.5">
-                  <Label className="text-xs text-muted-foreground">Date of Birth</Label>
-                  {editing ? (
-                    <Input type="date" value={profileForm.date_of_birth} onChange={e => setProfileForm(p => ({ ...p, date_of_birth: e.target.value }))} />
-                  ) : (
-                    <p className="text-sm text-foreground">{profileForm.date_of_birth ? format(new Date(profileForm.date_of_birth), 'dd MMM yyyy') : '—'}</p>
-                  )}
-                </div>
+                {[
+                  { label: 'Full Name', icon: User, field: 'full_name' as const },
+                  { label: 'Phone', icon: Phone, field: 'phone' as const },
+                  { label: 'PAN', icon: null, field: 'pan' as const },
+                  { label: 'City', icon: MapPin, field: 'city' as const },
+                  { label: 'State', icon: null, field: 'state' as const },
+                ].map(({ label, icon: Icon, field }) => (
+                  <div key={field} className="space-y-1.5">
+                    <Label className="text-xs text-muted-foreground flex items-center gap-1">
+                      {Icon && <Icon className="h-3 w-3" />} {label}
+                    </Label>
+                    {editing ? (
+                      <Input
+                        value={profileForm[field]}
+                        onChange={e => setProfileForm(p => ({ ...p, [field]: field === 'pan' ? e.target.value.toUpperCase() : e.target.value }))}
+                      />
+                    ) : (
+                      <p className="text-sm text-foreground">{profileForm[field] || '—'}</p>
+                    )}
+                  </div>
+                ))}
               </div>
+            </div>
+          </TabsContent>
+
+          {/* Commissions Tab */}
+          <TabsContent value="commissions">
+            <div className="bg-card border border-border rounded-xl p-8 text-center">
+              <Wallet className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
+              <h3 className="font-medium text-foreground mb-1">Commission Statements</h3>
+              <p className="text-sm text-muted-foreground">Your commission history and statements will appear here.</p>
+            </div>
+          </TabsContent>
+
+          {/* Payouts Tab */}
+          <TabsContent value="payouts">
+            <div className="bg-card border border-border rounded-xl p-8 text-center">
+              <FileText className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
+              <h3 className="font-medium text-foreground mb-1">Payout History</h3>
+              <p className="text-sm text-muted-foreground">Your payout records and bank transfer history will appear here.</p>
             </div>
           </TabsContent>
 
@@ -260,10 +223,10 @@ function PortalDashboardContent() {
             </div>
             <div className="bg-card border border-border rounded-xl">
               {ticketsLoading ? (
-                <div className="p-6 space-y-2">{Array(3).fill(0).map((_, i) => <div key={i} className="h-12 bg-muted animate-pulse rounded-lg" />)}</div>
+                <div className="p-6 space-y-2">{[1,2,3].map(i => <div key={i} className="h-12 bg-muted animate-pulse rounded-lg" />)}</div>
               ) : tickets.length === 0 ? (
                 <div className="p-8 text-center text-muted-foreground text-sm">
-                  No tickets found. Need help? <Link to="/support?tab=raise" className="text-primary hover:underline">Raise a ticket</Link>
+                  No tickets found. <Link to="/support?tab=raise" className="text-primary hover:underline">Raise a ticket</Link>
                 </div>
               ) : (
                 <div className="divide-y divide-border">
@@ -296,10 +259,10 @@ function PortalDashboardContent() {
   );
 }
 
-export default function PortalDashboard() {
+export default function PartnerDashboard() {
   return (
     <PortalGuard>
-      <PortalDashboardContent />
+      <PartnerDashboardContent />
     </PortalGuard>
   );
 }

@@ -31,7 +31,7 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
     const check = async () => {
       const { data: { session: authSession } } = await supabase.auth.getSession();
       if (!authSession) {
-        navigate('/admin/login');
+        navigate('/login');
         setLoading(false);
         return;
       }
@@ -44,7 +44,7 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
 
       if (!roleData) {
         await supabase.auth.signOut();
-        navigate('/admin/login');
+        navigate('/login');
         setLoading(false);
         return;
       }
@@ -82,7 +82,7 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
       if (event === 'SIGNED_OUT') {
         setSession(null);
-        navigate('/admin/login');
+        navigate('/login');
       }
     });
 

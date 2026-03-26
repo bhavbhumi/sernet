@@ -3,30 +3,33 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 
-interface PortalSession {
+interface EmployeeSession {
   userId: string;
   email: string;
-  name: string;
-  userType: 'client' | 'partner';
-  status: string;
-  kycStatus: string;
-  phone: string;
-  profileId: string;
+  employeeId: string;
+  fullName: string;
+  department: string;
+  designation: string;
+  employeeCode: string | null;
+  photoUrl: string | null;
+  dateOfJoining: string | null;
+  /** Whether this user also has admin access */
+  hasAdminAccess: boolean;
 }
 
-interface PortalContextValue {
-  session: PortalSession | null;
+interface EmployeeContextValue {
+  session: EmployeeSession | null;
   loading: boolean;
   refreshProfile: () => Promise<void>;
 }
 
-const PortalContext = createContext<PortalContextValue>({ session: null, loading: true, refreshProfile: async () => {} });
+const EmployeeContext = createContext<EmployeeContextValue>({ session: null, loading: true, refreshProfile: async () => {} });
 
-export const usePortalSession = () => useContext(PortalContext);
+export const useEmployeeSession = () => useContext(EmployeeContext);
 
-export function PortalGuard({ children }: { children: React.ReactNode }) {
+export function EmployeeGuard({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
-  const [session, setSession] = useState<PortalSession | null>(null);
+  const [session, setSession] = useState<EmployeeSession | null>(null);
   const [loading, setLoading] = useState(true);
 
   const loadProfile = async () => {
@@ -37,36 +40,36 @@ export function PortalGuard({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    const { data: profile } = await supabase
-      .from('profiles')
+    const { data: employee } = await supabase
+      .from('employees')
       .select('*')
       .eq('user_id', authSession.user.id)
       .maybeSingle();
 
-    if (!profile) {
-      // Maybe an admin user — redirect them
-      await supabase.auth.signOut();
+    if (!employee || employee.status !== 'active') {
       navigate('/login');
       setLoading(false);
       return;
     }
 
-    if (profile.status === 'pending_approval' || profile.status === 'suspended') {
-      await supabase.auth.signOut();
-      navigate('/login');
-      setLoading(false);
-      return;
-    }
+    // Check if also admin
+    const { data: roleData } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', authSession.user.id)
+      .maybeSingle();
 
     setSession({
       userId: authSession.user.id,
-      email: authSession.user.email || profile.email || '',
-      name: profile.full_name || authSession.user.user_metadata?.name || '',
-      userType: profile.user_type,
-      status: profile.status,
-      kycStatus: profile.kyc_status,
-      phone: profile.phone || '',
-      profileId: profile.id,
+      email: authSession.user.email || employee.email || '',
+      employeeId: employee.id,
+      fullName: employee.full_name,
+      department: employee.department,
+      designation: employee.designation,
+      employeeCode: employee.employee_code,
+      photoUrl: employee.photo_url,
+      dateOfJoining: employee.date_of_joining,
+      hasAdminAccess: !!roleData,
     });
     setLoading(false);
   };
@@ -98,8 +101,8 @@ export function PortalGuard({ children }: { children: React.ReactNode }) {
   if (!session) return null;
 
   return (
-    <PortalContext.Provider value={{ session, loading, refreshProfile: loadProfile }}>
+    <EmployeeContext.Provider value={{ session, loading, refreshProfile: loadProfile }}>
       {children}
-    </PortalContext.Provider>
+    </EmployeeContext.Provider>
   );
 }

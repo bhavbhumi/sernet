@@ -21,7 +21,7 @@ const menuSections = [
   {
     titleKey: 'menu.signupLogin',
     links: [
-      { name: 'Client & Partner Portal', href: '/portal/login', external: false },
+      { name: 'Login / Portal', href: '/login', external: false },
       { name: 'Tick Funds', href: '/tickfunds', external: false },
       { name: 'Tushil', href: '/tushil', external: false },
       

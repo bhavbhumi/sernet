@@ -76,10 +76,17 @@ const Awareness = lazy(() => import("./pages/Awareness"));
 const Sitemap = lazy(() => import("./pages/Sitemap"));
 const RaiseTicket = lazy(() => import("./pages/RaiseTicket"));
 
+// Unified login
+const Login = lazy(() => import("./pages/Login"));
+
 // Portal pages
 const PortalLogin = lazy(() => import("./pages/portal/PortalLogin"));
 const PortalSignup = lazy(() => import("./pages/portal/PortalSignup"));
 const PortalDashboard = lazy(() => import("./pages/portal/PortalDashboard"));
+const PartnerDashboard = lazy(() => import("./pages/portal/PartnerDashboard"));
+
+// Employee portal
+const EmployeeDashboard = lazy(() => import("./pages/employee/EmployeeDashboard"));
 
 // Admin pages
 const AdminSetup = lazy(() => import("./pages/admin/AdminSetup"));
@@ -222,10 +229,17 @@ const App = () => (
             <Route path="/insights/articles/:id" element={<ArticleDetail />} />
             <Route path="/insights/analysis/:id" element={<AnalysisDetail />} />
 
+            {/* Unified Login */}
+            <Route path="/login" element={<Login />} />
+
             {/* Portal — Client & Partner */}
             <Route path="/portal/login" element={<PortalLogin />} />
             <Route path="/portal/signup" element={<PortalSignup />} />
             <Route path="/portal" element={<PortalDashboard />} />
+            <Route path="/portal/partner" element={<PartnerDashboard />} />
+
+            {/* Employee Portal */}
+            <Route path="/employee" element={<EmployeeDashboard />} />
 
             {/* Admin — Auth */}
             <Route path="/admin/setup" element={<AdminSetup />} />
