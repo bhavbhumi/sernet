@@ -204,7 +204,7 @@ export default function PortalSignup() {
           <div className="mt-4 text-center">
             <p className="text-sm text-muted-foreground">
               Already have an account?{' '}
-              <Link to="/portal/login" className="text-primary hover:underline font-medium">
+              <Link to="/login" className="text-primary hover:underline font-medium">
                 Sign In
               </Link>
             </p>

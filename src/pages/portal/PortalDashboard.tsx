@@ -103,7 +103,7 @@ function PortalDashboardContent() {
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
-    navigate('/portal/login');
+    navigate('/login');
   };
 
   if (!session) return null;

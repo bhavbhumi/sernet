@@ -77,7 +77,7 @@ export function PortalGuard({ children }: { children: React.ReactNode }) {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
       if (event === 'SIGNED_OUT') {
         setSession(null);
-        navigate('/portal/login');
+        navigate('/login');
       }
     });
 
