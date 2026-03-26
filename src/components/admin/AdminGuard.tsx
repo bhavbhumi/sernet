@@ -31,7 +31,7 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
     const check = async () => {
       const { data: { session: authSession } } = await supabase.auth.getSession();
       if (!authSession) {
-        navigate('/admin/login');
+        navigate('/login');
         setLoading(false);
         return;
       }
