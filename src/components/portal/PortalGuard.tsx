@@ -32,7 +32,7 @@ export function PortalGuard({ children }: { children: React.ReactNode }) {
   const loadProfile = async () => {
     const { data: { session: authSession } } = await supabase.auth.getSession();
     if (!authSession) {
-      navigate('/portal/login');
+      navigate('/login');
       setLoading(false);
       return;
     }
