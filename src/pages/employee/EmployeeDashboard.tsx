@@ -126,15 +126,18 @@ function AttendanceTab() {
     try {
       const geo = await getGeoLocation();
       const today = format(new Date(), 'yyyy-MM-dd');
+      const checkInTime = new Date();
+      const { status, isLate } = determineStatus(checkInTime, null, policies);
       const { error } = await supabase.from('attendance_logs').insert({
         employee_id: session.employeeId,
         log_date: today,
-        check_in: new Date().toISOString(),
+        check_in: checkInTime.toISOString(),
         latitude: geo.lat,
         longitude: geo.lng,
         address_snapshot: geo.address,
         location_type: locationType,
-        status: 'present',
+        status,
+        notes: isLate ? 'Late arrival' : null,
       });
       if (error) { sonnerToast.error(error.message); return; }
       sonnerToast.success('Checked in successfully');
