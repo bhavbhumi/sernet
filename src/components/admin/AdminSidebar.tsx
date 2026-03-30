@@ -11,7 +11,7 @@ import {
   Sparkles, Calculator, UserCheck, CalendarDays, Mail, ScrollText, Scale, Lightbulb,
   TrendingUp, Building2, Gavel, Megaphone, Headphones, Ticket, BookMarked, MessageSquareText, Zap,
   Contact, CalendarClock, Clock, Receipt, Wallet, Lock, KeyRound, Activity, ExternalLink, PanelLeftClose, PanelLeftOpen,
-  Database, MonitorDot, Search
+  Database, MonitorDot, Search, GitBranch, FileArchive, Landmark, TrendingUp as TrendingUpIcon, UserMinus, CreditCard, Award
 } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import sernetLogo from '@/assets/sernet-logo.png';
@@ -127,15 +127,35 @@ const departmentGroups: DepartmentGroup[] = [
       {
         label: 'Personnel', icon: Contact, moduleKey: 'hr/personnel', children: [
           { label: 'Employees', icon: Contact, href: R.hr.employees },
+          { label: 'Org Chart', icon: GitBranch, href: R.hr.orgChart },
           { label: 'Attendance', icon: Clock, href: R.hr.attendance },
           { label: 'Attendance Report', icon: BarChart3, href: R.hr.attendanceReport },
           { label: 'Leave Management', icon: CalendarClock, href: R.hr.leave },
-          { label: 'Salary Setup', icon: Calculator, href: R.hr.salarySetup },
-          { label: 'Payroll Run', icon: Receipt, href: R.hr.payrollRun },
-          { label: 'Statutory Dues', icon: Scale, href: R.hr.statutoryDues },
-          { label: 'Import Spine HR', icon: Download, href: R.hr.importSpine },
+          { label: 'Leave Encashment', icon: Landmark, href: R.hr.leaveEncashment },
+          { label: 'Document Vault', icon: FileArchive, href: R.hr.documentVault },
         ]
       },
+      {
+        label: 'Payroll', icon: Receipt, moduleKey: 'hr/payroll', children: [
+          { label: 'Salary Setup', icon: Calculator, href: R.hr.salarySetup },
+          { label: 'Payroll Run', icon: Receipt, href: R.hr.payrollRun },
+          { label: 'Salary Register', icon: BarChart3, href: R.hr.salaryRegister },
+          { label: 'Statutory Dues', icon: Scale, href: R.hr.statutoryDues },
+          { label: 'Increment Letters', icon: Award, href: R.hr.incrementLetters },
+        ]
+      },
+      {
+        label: 'Finance', icon: CreditCard, moduleKey: 'hr/finance', children: [
+          { label: 'Expense Claims', icon: CreditCard, href: R.hr.expenseClaims },
+          { label: 'Loans & Advances', icon: Wallet, href: R.hr.loans },
+        ]
+      },
+      {
+        label: 'Offboarding', icon: UserMinus, moduleKey: 'hr/offboarding', children: [
+          { label: 'Exit & FnF', icon: UserMinus, href: R.hr.employeeExit },
+        ]
+      },
+      { label: 'Import Spine HR', icon: Download, href: R.hr.importSpine, moduleKey: 'hr/import' },
     ]
   },
   {

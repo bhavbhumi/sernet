@@ -143,6 +143,14 @@ const AdminSalarySetup = lazy(() => import("./pages/admin/hr/AdminSalarySetup"))
 const AdminPayrollRun = lazy(() => import("./pages/admin/hr/AdminPayrollRun"));
 const AdminStatutoryDues = lazy(() => import("./pages/admin/hr/AdminStatutoryDues"));
 const AdminImportSpine = lazy(() => import("./pages/admin/hr/AdminImportSpine"));
+const AdminSalaryRegister = lazy(() => import("./pages/admin/hr/AdminSalaryRegister"));
+const AdminLeaveEncashment = lazy(() => import("./pages/admin/hr/AdminLeaveEncashment"));
+const AdminEmployeeExit = lazy(() => import("./pages/admin/hr/AdminEmployeeExit"));
+const AdminExpenseClaims = lazy(() => import("./pages/admin/hr/AdminExpenseClaims"));
+const AdminDocumentVault = lazy(() => import("./pages/admin/hr/AdminDocumentVault"));
+const AdminOrgChart = lazy(() => import("./pages/admin/hr/AdminOrgChart"));
+const AdminLoans = lazy(() => import("./pages/admin/hr/AdminLoans"));
+const AdminIncrementLetters = lazy(() => import("./pages/admin/hr/AdminIncrementLetters"));
 
 const AdminInvoices = lazy(() => import("./pages/admin/accounts/AdminInvoices"));
 const AdminPayroll = lazy(() => import("./pages/admin/accounts/AdminPayroll"));
@@ -300,6 +308,14 @@ const App = () => (
             <Route path="/admin/hr/salary-setup" element={<AdminSalarySetup />} />
             <Route path="/admin/hr/payroll/run" element={<AdminPayrollRun />} />
             <Route path="/admin/hr/payroll/statutory" element={<AdminStatutoryDues />} />
+            <Route path="/admin/hr/payroll/register" element={<AdminSalaryRegister />} />
+            <Route path="/admin/hr/leave/encashment" element={<AdminLeaveEncashment />} />
+            <Route path="/admin/hr/exit" element={<AdminEmployeeExit />} />
+            <Route path="/admin/hr/expenses" element={<AdminExpenseClaims />} />
+            <Route path="/admin/hr/documents" element={<AdminDocumentVault />} />
+            <Route path="/admin/hr/org-chart" element={<AdminOrgChart />} />
+            <Route path="/admin/hr/loans" element={<AdminLoans />} />
+            <Route path="/admin/hr/increment-letters" element={<AdminIncrementLetters />} />
             <Route path="/admin/hr/import-spine" element={<AdminImportSpine />} />
             
 

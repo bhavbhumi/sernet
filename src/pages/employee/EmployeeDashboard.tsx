@@ -6,12 +6,17 @@ import { EmployeeGuard, useEmployeeSession } from '@/components/portal/EmployeeG
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { User, Calendar, Clock, Wallet, Users, LogOut, Shield } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { User, Calendar, Clock, Wallet, Users, LogOut, Shield, CreditCard, FileText } from 'lucide-react';
 import sernetLogo from '@/assets/sernet-logo.png';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 import { PayslipPreview } from '@/components/shared/PayslipPreview';
+import { toast as sonnerToast } from 'sonner';
 
 /* ─── Profile Tab ─── */
 function ProfileTab() {
@@ -388,6 +393,170 @@ function TeamTab() {
   );
 }
 
+/* ─── Expenses Tab ─── */
+function ExpensesTab() {
+  const { session } = useEmployeeSession();
+  const [claims, setClaims] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [form, setForm] = useState({ category: 'travel', description: '', amount: 0, claim_date: format(new Date(), 'yyyy-MM-dd') });
+
+  const loadClaims = async () => {
+    if (!session) return;
+    const { data } = await supabase
+      .from('expense_claims')
+      .select('*')
+      .eq('employee_id', session.employeeId)
+      .order('created_at', { ascending: false });
+    setClaims(data || []);
+    setLoading(false);
+  };
+
+  useEffect(() => { loadClaims(); }, [session]);
+
+  const handleSubmit = async () => {
+    if (!session) return;
+    const { error } = await supabase.from('expense_claims').insert({
+      employee_id: session.employeeId,
+      category: form.category,
+      description: form.description,
+      amount: form.amount,
+      claim_date: form.claim_date,
+    });
+    if (error) { sonnerToast.error(error.message); return; }
+    sonnerToast.success('Expense claim submitted');
+    setDialogOpen(false);
+    setForm({ category: 'travel', description: '', amount: 0, claim_date: format(new Date(), 'yyyy-MM-dd') });
+    loadClaims();
+  };
+
+  if (loading) return <div className="p-6 space-y-2">{[1,2,3].map(i => <div key={i} className="h-12 bg-muted animate-pulse rounded-lg" />)}</div>;
+
+  const statusColors: Record<string, string> = {
+    pending: 'bg-amber-500/10 text-amber-600 border-amber-500/20',
+    approved: 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20',
+    rejected: 'bg-red-500/10 text-red-600 border-red-500/20',
+    reimbursed: 'bg-blue-500/10 text-blue-600 border-blue-500/20',
+  };
+
+  return (
+    <div>
+      <div className="flex justify-end mb-3">
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+          <DialogTrigger asChild>
+            <Button size="sm"><CreditCard className="h-4 w-4 mr-1.5" /> New Claim</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader><DialogTitle>Submit Expense Claim</DialogTitle></DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <Label>Category</Label>
+                <Select value={form.category} onValueChange={v => setForm(p => ({ ...p, category: v }))}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    {['travel','food','office_supplies','communication','medical','other'].map(c => (
+                      <SelectItem key={c} value={c}>{c.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label>Description</Label>
+                <Textarea value={form.description} onChange={e => setForm(p => ({ ...p, description: e.target.value }))} rows={2} />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <Label>Amount (₹)</Label>
+                  <Input type="number" value={form.amount} onChange={e => setForm(p => ({ ...p, amount: Number(e.target.value) }))} />
+                </div>
+                <div>
+                  <Label>Date</Label>
+                  <Input type="date" value={form.claim_date} onChange={e => setForm(p => ({ ...p, claim_date: e.target.value }))} />
+                </div>
+              </div>
+              <Button className="w-full" onClick={handleSubmit} disabled={!form.description || !form.amount}>Submit</Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+      </div>
+      <div className="bg-card border border-border rounded-xl">
+        {claims.length === 0 ? (
+          <div className="p-8 text-center text-muted-foreground text-sm">No expense claims submitted yet.</div>
+        ) : (
+          <div className="divide-y divide-border">
+            {claims.map((c: any) => (
+              <div key={c.id} className="p-4 flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-foreground capitalize">{c.category?.replace('_', ' ')}</p>
+                  <p className="text-xs text-muted-foreground">{c.description}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">{format(new Date(c.claim_date), 'dd MMM yyyy')}</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm font-semibold text-foreground">₹{Math.round(Number(c.amount)).toLocaleString('en-IN')}</p>
+                  <Badge variant="outline" className={statusColors[c.status] || ''}>{c.status}</Badge>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ─── Documents Tab ─── */
+function DocumentsTab() {
+  const { session } = useEmployeeSession();
+  const [docs, setDocs] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!session) return;
+    const load = async () => {
+      const { data } = await supabase
+        .from('employee_documents')
+        .select('*')
+        .eq('employee_id', session.employeeId)
+        .order('created_at', { ascending: false });
+      setDocs(data || []);
+      setLoading(false);
+    };
+    load();
+  }, [session]);
+
+  if (loading) return <div className="p-6 space-y-2">{[1,2,3].map(i => <div key={i} className="h-12 bg-muted animate-pulse rounded-lg" />)}</div>;
+
+  return (
+    <div className="bg-card border border-border rounded-xl">
+      {docs.length === 0 ? (
+        <div className="p-8 text-center text-muted-foreground text-sm">
+          <FileText className="h-10 w-10 mx-auto mb-3 text-muted-foreground" />
+          <p>No documents uploaded yet. Your HR team will add documents here.</p>
+        </div>
+      ) : (
+        <div className="divide-y divide-border">
+          {docs.map((d: any) => (
+            <div key={d.id} className="p-4 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <FileText className="h-5 w-5 text-muted-foreground" />
+                <div>
+                  <p className="text-sm font-medium text-foreground">{d.title}</p>
+                  <p className="text-xs text-muted-foreground capitalize">{d.document_type?.replace('_', ' ')} · {format(new Date(d.created_at), 'dd MMM yyyy')}</p>
+                </div>
+              </div>
+              {d.file_url && (
+                <Button variant="outline" size="sm" asChild>
+                  <a href={d.file_url} target="_blank" rel="noopener noreferrer">View</a>
+                </Button>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 /* ─── Main Dashboard ─── */
 function EmployeeDashboardContent() {
   const { session } = useEmployeeSession();
@@ -436,6 +605,8 @@ function EmployeeDashboardContent() {
             <TabsTrigger value="attendance" className="gap-1.5"><Clock className="h-4 w-4" /> Attendance</TabsTrigger>
             <TabsTrigger value="leave" className="gap-1.5"><Calendar className="h-4 w-4" /> Leave</TabsTrigger>
             <TabsTrigger value="payslips" className="gap-1.5"><Wallet className="h-4 w-4" /> Payslips</TabsTrigger>
+            <TabsTrigger value="expenses" className="gap-1.5"><CreditCard className="h-4 w-4" /> Expenses</TabsTrigger>
+            <TabsTrigger value="documents" className="gap-1.5"><FileText className="h-4 w-4" /> Documents</TabsTrigger>
             <TabsTrigger value="team" className="gap-1.5"><Users className="h-4 w-4" /> Team</TabsTrigger>
           </TabsList>
 
@@ -443,6 +614,8 @@ function EmployeeDashboardContent() {
           <TabsContent value="attendance"><AttendanceTab /></TabsContent>
           <TabsContent value="leave"><LeaveTab /></TabsContent>
           <TabsContent value="payslips"><PayslipsTab /></TabsContent>
+          <TabsContent value="expenses"><ExpensesTab /></TabsContent>
+          <TabsContent value="documents"><DocumentsTab /></TabsContent>
           <TabsContent value="team"><TeamTab /></TabsContent>
         </Tabs>
       </main>
