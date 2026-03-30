@@ -61,7 +61,7 @@ export default function AdminLeaveEncashment() {
         const available = total - used;
         if (available <= 0) return;
 
-        const dailyBasic = (salaryMap.get(b.employee_id) || 0) / 26;
+        const dailyBasic = (Number(salaryMap.get(b.employee_id)) || 0) / 26;
         const encashAmount = Math.round(available * dailyBasic);
 
         if (!empMap.has(b.employee_id)) {
