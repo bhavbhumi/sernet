@@ -135,11 +135,10 @@ const AdminSalarySetup = () => {
   const autoFill = () => {
     if (form.ctc_annual <= 0) { toast.error('Enter CTC first'); return; }
     const monthly = form.ctc_annual / 12;
-    const basic = Math.round(monthly * 0.45);
-    const hra = Math.round(basic * 0.40);
+    const basic = Math.round(monthly * 0.40);
+    const hra = Math.round(basic * 0.50);
     const medical = 1250;
-    const pfEmployer = Math.round(Math.min(basic, 15000) * 0.24);
-    const special = Math.round(monthly - basic - hra - medical - pfEmployer);
+    const special = Math.round(monthly - basic - hra - medical);
     setForm(f => ({
       ...f,
       basic, hra, medical_allowance: medical,
