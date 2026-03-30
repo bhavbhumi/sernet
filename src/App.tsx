@@ -143,6 +143,14 @@ const AdminSalarySetup = lazy(() => import("./pages/admin/hr/AdminSalarySetup"))
 const AdminPayrollRun = lazy(() => import("./pages/admin/hr/AdminPayrollRun"));
 const AdminStatutoryDues = lazy(() => import("./pages/admin/hr/AdminStatutoryDues"));
 const AdminImportSpine = lazy(() => import("./pages/admin/hr/AdminImportSpine"));
+const AdminSalaryRegister = lazy(() => import("./pages/admin/hr/AdminSalaryRegister"));
+const AdminLeaveEncashment = lazy(() => import("./pages/admin/hr/AdminLeaveEncashment"));
+const AdminEmployeeExit = lazy(() => import("./pages/admin/hr/AdminEmployeeExit"));
+const AdminExpenseClaims = lazy(() => import("./pages/admin/hr/AdminExpenseClaims"));
+const AdminDocumentVault = lazy(() => import("./pages/admin/hr/AdminDocumentVault"));
+const AdminOrgChart = lazy(() => import("./pages/admin/hr/AdminOrgChart"));
+const AdminLoans = lazy(() => import("./pages/admin/hr/AdminLoans"));
+const AdminIncrementLetters = lazy(() => import("./pages/admin/hr/AdminIncrementLetters"));
 
 const AdminInvoices = lazy(() => import("./pages/admin/accounts/AdminInvoices"));
 const AdminPayroll = lazy(() => import("./pages/admin/accounts/AdminPayroll"));
