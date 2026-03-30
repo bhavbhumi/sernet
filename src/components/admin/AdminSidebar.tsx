@@ -129,6 +129,7 @@ const departmentGroups: DepartmentGroup[] = [
         label: 'Personnel', icon: Contact, moduleKey: 'hr/personnel', children: [
           { label: 'Employees', icon: Contact, href: R.hr.employees },
           { label: 'Attendance', icon: Clock, href: R.hr.attendance },
+          { label: 'Attendance Report', icon: BarChart3, href: R.hr.attendanceReport },
           { label: 'Leave Management', icon: CalendarClock, href: R.hr.leave },
           { label: 'Salary Setup', icon: Calculator, href: R.hr.salarySetup },
           { label: 'Payroll Run', icon: Receipt, href: R.hr.payrollRun },
