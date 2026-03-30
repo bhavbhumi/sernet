@@ -3067,6 +3067,80 @@ export type Database = {
         }
         Relationships: []
       }
+      salary_structures: {
+        Row: {
+          basic: number
+          created_at: string
+          ctc_annual: number
+          effective_from: string
+          effective_to: string | null
+          employee_id: string
+          hra: number
+          id: string
+          is_esi_applicable: boolean
+          is_pf_applicable: boolean
+          lta: number
+          medical_allowance: number
+          notes: string | null
+          other_allowance: number
+          pf_wage_cap: number
+          regime: string
+          special_allowance: number
+          tds_monthly: number
+          updated_at: string
+        }
+        Insert: {
+          basic?: number
+          created_at?: string
+          ctc_annual?: number
+          effective_from?: string
+          effective_to?: string | null
+          employee_id: string
+          hra?: number
+          id?: string
+          is_esi_applicable?: boolean
+          is_pf_applicable?: boolean
+          lta?: number
+          medical_allowance?: number
+          notes?: string | null
+          other_allowance?: number
+          pf_wage_cap?: number
+          regime?: string
+          special_allowance?: number
+          tds_monthly?: number
+          updated_at?: string
+        }
+        Update: {
+          basic?: number
+          created_at?: string
+          ctc_annual?: number
+          effective_from?: string
+          effective_to?: string | null
+          employee_id?: string
+          hra?: number
+          id?: string
+          is_esi_applicable?: boolean
+          is_pf_applicable?: boolean
+          lta?: number
+          medical_allowance?: number
+          notes?: string | null
+          other_allowance?: number
+          pf_wage_cap?: number
+          regime?: string
+          special_allowance?: number
+          tds_monthly?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "salary_structures_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       service_catalog: {
         Row: {
           created_at: string
