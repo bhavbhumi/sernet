@@ -61,7 +61,7 @@ export function useAttendancePolicies() {
             : DEFAULTS.week_off_days,
         });
       }
-      setShifts((shiftRes.data || []) as DepartmentShift[]);
+      setShifts((shiftRes.data || []) as unknown as DepartmentShift[]);
       setLoading(false);
     });
   }, []);

@@ -56,7 +56,7 @@ const AdminAttendancePolicies = () => {
         .select('*')
         .order('department_name');
       if (error) throw error;
-      return (data || []) as ShiftRow[];
+      return (data || []) as unknown as ShiftRow[];
     },
   });
 
