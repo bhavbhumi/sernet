@@ -46,7 +46,7 @@ export default function AdminLeaveEncashment() {
         usedMap[r.employee_id][r.leave_type_id] = (usedMap[r.employee_id][r.leave_type_id] || 0) + Number(r.days_count);
       });
 
-      const salaryMap = new Map((salaries || []).map((s: any) => [s.employee_id, Number(s.basic)]));
+      const salaryMap = new Map((salaries).map((s: any) => [s.employee_id, Number(s.basic)]));
 
       // Group by employee, only encashable leave types
       const empMap = new Map<string, any>();

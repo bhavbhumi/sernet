@@ -42,8 +42,8 @@ export default function AdminIncrementLetters() {
   const { data: salaries = [] } = useQuery({
     queryKey: ['salary-structures-for-increment'],
     queryFn: async () => {
-      const { data } = await supabase.from('salary_structures').select('employee_id, ctc_annual').eq('is_active', true) as any;
-      return (data || []) as any[];
+      const res: any = await supabase.from('salary_structures').select('employee_id, ctc_annual').eq('is_active', true);
+      return (res.data || []) as any[];
     },
   });
 
