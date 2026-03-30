@@ -231,6 +231,7 @@ function LeaveTab() {
           ))}
         </div>
       )}
+      </div>
     </div>
   );
 }
