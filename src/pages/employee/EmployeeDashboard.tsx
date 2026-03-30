@@ -22,25 +22,69 @@ import { useAttendancePolicies, determineStatus, getEffectiveShift } from '@/hoo
 /* ─── Profile Tab ─── */
 function ProfileTab() {
   const { session } = useEmployeeSession();
+  const [editing, setEditing] = useState(false);
+  const [phone, setPhone] = useState('');
+  const [emergencyContact, setEmergencyContact] = useState('');
+  const [emergencyPhone, setEmergencyPhone] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [profileExtra, setProfileExtra] = useState<any>(null);
+
+  useEffect(() => {
+    if (!session) return;
+    supabase
+      .from('employees')
+      .select('phone, bio')
+      .eq('id', session.employeeId)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data) {
+          setPhone(data.phone || '');
+          // Store emergency contact in bio field as JSON
+          try {
+            const extra = data.bio ? JSON.parse(data.bio) : {};
+            setEmergencyContact(extra.emergency_contact || '');
+            setEmergencyPhone(extra.emergency_phone || '');
+            setProfileExtra(extra);
+          } catch {
+            setProfileExtra({});
+          }
+        }
+      });
+  }, [session]);
+
+  const handleSave = async () => {
+    if (!session) return;
+    setSaving(true);
+    const bio = JSON.stringify({ ...profileExtra, emergency_contact: emergencyContact, emergency_phone: emergencyPhone });
+    const { error } = await supabase.from('employees').update({ phone, bio }).eq('id', session.employeeId);
+    if (error) { sonnerToast.error(error.message); } else { sonnerToast.success('Profile updated'); setEditing(false); }
+    setSaving(false);
+  };
+
   if (!session) return null;
 
   return (
     <div className="bg-card border border-border rounded-xl p-5">
-      <div className="flex items-center gap-4 mb-6">
-        {session.photoUrl ? (
-          <img src={session.photoUrl} alt={session.fullName} className="w-16 h-16 rounded-full object-cover" />
-        ) : (
-          <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-xl font-semibold text-primary">
-            {session.fullName.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2)}
-          </div>
-        )}
-        <div>
-          <h3 className="text-lg font-semibold text-foreground">{session.fullName}</h3>
-          <p className="text-sm text-muted-foreground">{session.designation} · {session.department}</p>
-          {session.employeeCode && (
-            <Badge variant="outline" className="mt-1 text-xs">{session.employeeCode}</Badge>
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-4">
+          {session.photoUrl ? (
+            <img src={session.photoUrl} alt={session.fullName} className="w-16 h-16 rounded-full object-cover" />
+          ) : (
+            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-xl font-semibold text-primary">
+              {session.fullName.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2)}
+            </div>
           )}
+          <div>
+            <h3 className="text-lg font-semibold text-foreground">{session.fullName}</h3>
+            <p className="text-sm text-muted-foreground">{session.designation} · {session.department}</p>
+            {session.employeeCode && (
+              <Badge variant="outline" className="mt-1 text-xs">{session.employeeCode}</Badge>
+            )}
+          </div>
         </div>
+        {!editing && (
+          <Button variant="outline" size="sm" onClick={() => setEditing(true)}>Edit</Button>
+        )}
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
         <div>
@@ -53,6 +97,37 @@ function ProfileTab() {
             {session.dateOfJoining ? format(new Date(session.dateOfJoining), 'dd MMM yyyy') : '—'}
           </p>
         </div>
+        {editing ? (
+          <>
+            <div>
+              <Label className="text-xs">Phone</Label>
+              <Input value={phone} onChange={e => setPhone(e.target.value)} placeholder="Phone number" className="mt-1" />
+            </div>
+            <div>
+              <Label className="text-xs">Emergency Contact Name</Label>
+              <Input value={emergencyContact} onChange={e => setEmergencyContact(e.target.value)} placeholder="Contact name" className="mt-1" />
+            </div>
+            <div>
+              <Label className="text-xs">Emergency Contact Phone</Label>
+              <Input value={emergencyPhone} onChange={e => setEmergencyPhone(e.target.value)} placeholder="Contact phone" className="mt-1" />
+            </div>
+            <div className="md:col-span-2 flex gap-2 justify-end pt-2">
+              <Button variant="outline" size="sm" onClick={() => setEditing(false)}>Cancel</Button>
+              <Button size="sm" onClick={handleSave} disabled={saving}>{saving ? 'Saving…' : 'Save'}</Button>
+            </div>
+          </>
+        ) : (
+          <>
+            <div>
+              <span className="text-muted-foreground text-xs">Phone</span>
+              <p className="text-foreground">{phone || '—'}</p>
+            </div>
+            <div>
+              <span className="text-muted-foreground text-xs">Emergency Contact</span>
+              <p className="text-foreground">{emergencyContact ? `${emergencyContact} · ${emergencyPhone}` : '—'}</p>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
@@ -358,31 +433,119 @@ function LeaveBalanceSummary() {
 function LeaveTab() {
   const { session } = useEmployeeSession();
   const [requests, setRequests] = useState<any[]>([]);
+  const [leaveTypes, setLeaveTypes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [form, setForm] = useState({ leave_type_id: '', start_date: '', end_date: '', reason: '' });
+  const [submitting, setSubmitting] = useState(false);
 
-  useEffect(() => {
+  const loadRequests = async () => {
     if (!session) return;
-    const load = async () => {
-      const { data } = await supabase
+    const [{ data: reqs }, { data: types }] = await Promise.all([
+      supabase
         .from('leave_requests')
         .select('*, leave_types(name)')
         .eq('employee_id', session.employeeId)
         .order('created_at', { ascending: false })
-        .limit(20);
-      setRequests(data || []);
-      setLoading(false);
-    };
-    load();
-  }, [session]);
+        .limit(20),
+      supabase.from('leave_types').select('*').eq('is_active', true).order('name'),
+    ]);
+    setRequests(reqs || []);
+    setLeaveTypes(types || []);
+    setLoading(false);
+  };
+
+  useEffect(() => { loadRequests(); }, [session]);
+
+  const calcDays = () => {
+    if (!form.start_date || !form.end_date) return 0;
+    const start = new Date(form.start_date);
+    const end = new Date(form.end_date);
+    if (end < start) return 0;
+    const diff = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+    return diff;
+  };
+
+  const handleApply = async () => {
+    if (!session) return;
+    const days = calcDays();
+    if (days <= 0) { sonnerToast.error('Invalid date range'); return; }
+    setSubmitting(true);
+    const { error } = await supabase.from('leave_requests').insert({
+      employee_id: session.employeeId,
+      leave_type_id: form.leave_type_id,
+      start_date: form.start_date,
+      end_date: form.end_date,
+      days_count: days,
+      reason: form.reason || null,
+      status: 'pending',
+    });
+    if (error) { sonnerToast.error(error.message); } else {
+      sonnerToast.success('Leave request submitted');
+      setDialogOpen(false);
+      setForm({ leave_type_id: '', start_date: '', end_date: '', reason: '' });
+      loadRequests();
+    }
+    setSubmitting(false);
+  };
 
   if (loading) return <div className="p-6 space-y-2">{[1,2,3].map(i => <div key={i} className="h-12 bg-muted animate-pulse rounded-lg" />)}</div>;
 
+  const days = calcDays();
+
   return (
     <div>
-      <LeaveBalanceSummary />
+      <div className="flex justify-between items-center mb-3">
+        <LeaveBalanceSummary />
+      </div>
+      <div className="flex justify-end mb-3">
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+          <DialogTrigger asChild>
+            <Button size="sm"><Calendar className="h-4 w-4 mr-1.5" /> Apply Leave</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader><DialogTitle>Apply for Leave</DialogTitle></DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <Label>Leave Type</Label>
+                <Select value={form.leave_type_id} onValueChange={v => setForm(p => ({ ...p, leave_type_id: v }))}>
+                  <SelectTrigger><SelectValue placeholder="Select leave type" /></SelectTrigger>
+                  <SelectContent>
+                    {leaveTypes.map(t => (
+                      <SelectItem key={t.id} value={t.id}>
+                        {t.name} {!t.is_paid && <span className="text-muted-foreground">(Unpaid)</span>}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <Label>From</Label>
+                  <Input type="date" value={form.start_date} onChange={e => setForm(p => ({ ...p, start_date: e.target.value }))} />
+                </div>
+                <div>
+                  <Label>To</Label>
+                  <Input type="date" value={form.end_date} onChange={e => setForm(p => ({ ...p, end_date: e.target.value }))} />
+                </div>
+              </div>
+              {days > 0 && (
+                <p className="text-sm text-muted-foreground">Duration: <strong className="text-foreground">{days} day{days > 1 ? 's' : ''}</strong></p>
+              )}
+              <div>
+                <Label>Reason (optional)</Label>
+                <Textarea value={form.reason} onChange={e => setForm(p => ({ ...p, reason: e.target.value }))} rows={2} placeholder="Brief reason for leave" />
+              </div>
+              <Button className="w-full" onClick={handleApply} disabled={!form.leave_type_id || !form.start_date || !form.end_date || days <= 0 || submitting}>
+                {submitting ? 'Submitting…' : 'Submit Request'}
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+      </div>
       <div className="bg-card border border-border rounded-xl">
       {requests.length === 0 ? (
-        <div className="p-8 text-center text-muted-foreground text-sm">No leave requests found.</div>
+        <div className="p-8 text-center text-muted-foreground text-sm">No leave requests found. Use "Apply Leave" to submit your first request.</div>
       ) : (
         <div className="divide-y divide-border">
           {requests.map((req) => (
