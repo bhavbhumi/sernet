@@ -133,6 +133,7 @@ const departmentGroups: DepartmentGroup[] = [
           { label: 'Leave Management', icon: CalendarClock, href: R.hr.leave },
           { label: 'Salary Setup', icon: Calculator, href: R.hr.salarySetup },
           { label: 'Payroll Run', icon: Receipt, href: R.hr.payrollRun },
+          { label: 'Statutory Dues', icon: Scale, href: R.hr.statutoryDues },
         ]
       },
     ]
