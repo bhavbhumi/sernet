@@ -111,7 +111,7 @@ const AdminAttendanceReport = () => {
         details: empLogs.sort((a: any, b: any) => a.log_date.localeCompare(b.log_date)),
       };
     });
-  }, [employees, logs, deptFilter, workingDays]);
+  }, [employees, logs, deptFilter, workingDays, policies]);
 
   const avgAttendance = rows.length > 0 ? Math.round(rows.reduce((s, r) => s + (r.present / r.workingDays) * 100, 0) / rows.length) : 0;
   const totalLate = rows.reduce((s, r) => s + r.late, 0);
