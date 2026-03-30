@@ -77,6 +77,7 @@ export const ADMIN_ROUTES = {
     salarySetup: '/admin/hr/salary-setup',
     payrollRun: '/admin/hr/payroll/run',
     statutoryDues: '/admin/hr/payroll/statutory',
+    importSpine: '/admin/hr/import-spine',
   },
 
   // ── Accounts ──────────────────────────────────
