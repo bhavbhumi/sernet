@@ -17,6 +17,7 @@ import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 import { PayslipPreview } from '@/components/shared/PayslipPreview';
 import { toast as sonnerToast } from 'sonner';
+import { useAttendancePolicies, determineStatus } from '@/hooks/useAttendancePolicies';
 
 /* ─── Profile Tab ─── */
 function ProfileTab() {
