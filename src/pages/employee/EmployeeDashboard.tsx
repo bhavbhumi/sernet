@@ -62,52 +62,209 @@ function AttendanceTab() {
   const { session } = useEmployeeSession();
   const [logs, setLogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [todayLog, setTodayLog] = useState<any>(null);
+  const [locationType, setLocationType] = useState('office');
+  const [geoLoading, setGeoLoading] = useState(false);
+  const [now, setNow] = useState(new Date());
 
+  // live clock
   useEffect(() => {
+    const t = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(t);
+  }, []);
+
+  const loadLogs = async () => {
     if (!session) return;
-    const load = async () => {
-      const { data } = await supabase
+    const today = format(new Date(), 'yyyy-MM-dd');
+    const [{ data: allLogs }, { data: todayData }] = await Promise.all([
+      supabase
         .from('attendance_logs')
         .select('*')
         .eq('employee_id', session.employeeId)
         .order('log_date', { ascending: false })
-        .limit(30);
-      setLogs(data || []);
-      setLoading(false);
-    };
-    load();
-  }, [session]);
+        .limit(30),
+      supabase
+        .from('attendance_logs')
+        .select('*')
+        .eq('employee_id', session.employeeId)
+        .eq('log_date', today)
+        .maybeSingle(),
+    ]);
+    setLogs(allLogs || []);
+    setTodayLog(todayData);
+    setLoading(false);
+  };
+
+  useEffect(() => { loadLogs(); }, [session]);
+
+  const getGeoLocation = (): Promise<{ lat: number; lng: number; address: string }> => {
+    return new Promise((resolve, reject) => {
+      if (!navigator.geolocation) { reject(new Error('Geolocation not supported')); return; }
+      navigator.geolocation.getCurrentPosition(
+        async (pos) => {
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+          let address = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+          try {
+            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`);
+            const data = await res.json();
+            if (data.display_name) address = data.display_name;
+          } catch { /* keep coords as fallback */ }
+          resolve({ lat, lng, address });
+        },
+        (err) => reject(err),
+        { enableHighAccuracy: true, timeout: 15000 }
+      );
+    });
+  };
+
+  const handleCheckIn = async () => {
+    if (!session) return;
+    setGeoLoading(true);
+    try {
+      const geo = await getGeoLocation();
+      const today = format(new Date(), 'yyyy-MM-dd');
+      const { error } = await supabase.from('attendance_logs').insert({
+        employee_id: session.employeeId,
+        log_date: today,
+        check_in: new Date().toISOString(),
+        latitude: geo.lat,
+        longitude: geo.lng,
+        address_snapshot: geo.address,
+        location_type: locationType,
+        status: 'present',
+      });
+      if (error) { sonnerToast.error(error.message); return; }
+      sonnerToast.success('Checked in successfully');
+      loadLogs();
+    } catch (err: any) {
+      sonnerToast.error(err.message || 'Could not get location');
+    } finally {
+      setGeoLoading(false);
+    }
+  };
+
+  const handleCheckOut = async () => {
+    if (!session || !todayLog) return;
+    setGeoLoading(true);
+    try {
+      const { error } = await supabase.from('attendance_logs')
+        .update({ check_out: new Date().toISOString() })
+        .eq('id', todayLog.id);
+      if (error) { sonnerToast.error(error.message); return; }
+      sonnerToast.success('Checked out successfully');
+      loadLogs();
+    } catch (err: any) {
+      sonnerToast.error(err.message || 'Check-out failed');
+    } finally {
+      setGeoLoading(false);
+    }
+  };
 
   if (loading) return <div className="p-6 space-y-2">{[1,2,3].map(i => <div key={i} className="h-12 bg-muted animate-pulse rounded-lg" />)}</div>;
 
+  const hasCheckedIn = !!todayLog;
+  const hasCheckedOut = todayLog?.check_out;
+
   return (
-    <div className="bg-card border border-border rounded-xl">
-      {logs.length === 0 ? (
-        <div className="p-8 text-center text-muted-foreground text-sm">No attendance records found.</div>
-      ) : (
-        <div className="divide-y divide-border">
-          {logs.map((log) => (
-            <div key={log.id} className="p-4 flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-foreground">{format(new Date(log.log_date), 'EEE, dd MMM yyyy')}</p>
-                <p className="text-xs text-muted-foreground">{log.location_type}</p>
-              </div>
-              <div className="text-right">
-                <Badge variant="outline" className={
-                  log.status === 'present' ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' :
-                  log.status === 'half_day' ? 'bg-amber-500/10 text-amber-600 border-amber-500/20' :
-                  'bg-red-500/10 text-red-600 border-red-500/20'
-                }>
-                  {log.status}
-                </Badge>
-                <p className="text-xs text-muted-foreground mt-1">
-                  {log.check_in ? format(new Date(log.check_in), 'HH:mm') : '--:--'} – {log.check_out ? format(new Date(log.check_out), 'HH:mm') : '--:--'}
-                </p>
-              </div>
-            </div>
-          ))}
+    <div className="space-y-4">
+      {/* Check-in / Check-out card */}
+      <div className="bg-card border border-border rounded-xl p-5">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h3 className="font-semibold text-foreground">Today's Attendance</h3>
+            <p className="text-xs text-muted-foreground">{format(now, 'EEEE, dd MMMM yyyy')}</p>
+          </div>
+          <div className="text-2xl font-mono font-bold text-primary">{format(now, 'HH:mm:ss')}</div>
         </div>
-      )}
+
+        {!hasCheckedIn && (
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <Label className="text-xs whitespace-nowrap">Location</Label>
+              <Select value={locationType} onValueChange={setLocationType}>
+                <SelectTrigger className="h-8 text-xs w-40"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="office">Office</SelectItem>
+                  <SelectItem value="client_site">Client Site</SelectItem>
+                  <SelectItem value="field_visit">Field Visit</SelectItem>
+                  <SelectItem value="event">Event</SelectItem>
+                  <SelectItem value="wfh">Work from Home</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <Button onClick={handleCheckIn} disabled={geoLoading} className="w-full">
+              <Clock className="h-4 w-4 mr-2" />
+              {geoLoading ? 'Getting location…' : 'Check In'}
+            </Button>
+          </div>
+        )}
+
+        {hasCheckedIn && !hasCheckedOut && (
+          <div className="space-y-3">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground">Checked in at</span>
+              <Badge variant="outline" className="bg-emerald-500/10 text-emerald-600 border-emerald-500/20">
+                {format(new Date(todayLog.check_in), 'hh:mm a')}
+              </Badge>
+            </div>
+            <p className="text-xs text-muted-foreground">📍 {todayLog.address_snapshot || todayLog.location_type}</p>
+            <Button variant="destructive" onClick={handleCheckOut} disabled={geoLoading} className="w-full">
+              <LogOut className="h-4 w-4 mr-2" />
+              {geoLoading ? 'Processing…' : 'Check Out'}
+            </Button>
+          </div>
+        )}
+
+        {hasCheckedIn && hasCheckedOut && (
+          <div className="space-y-2">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground">Check-in</span>
+              <span className="font-medium text-foreground">{format(new Date(todayLog.check_in), 'hh:mm a')}</span>
+            </div>
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground">Check-out</span>
+              <span className="font-medium text-foreground">{format(new Date(todayLog.check_out), 'hh:mm a')}</span>
+            </div>
+            <Badge variant="outline" className="bg-emerald-500/10 text-emerald-600 border-emerald-500/20 w-full justify-center">
+              ✓ Attendance recorded for today
+            </Badge>
+          </div>
+        )}
+      </div>
+
+      {/* History */}
+      <div className="bg-card border border-border rounded-xl">
+        <div className="p-4 border-b border-border">
+          <h3 className="text-sm font-semibold text-foreground">Recent History</h3>
+        </div>
+        {logs.length === 0 ? (
+          <div className="p-8 text-center text-muted-foreground text-sm">No attendance records found.</div>
+        ) : (
+          <div className="divide-y divide-border">
+            {logs.map((log) => (
+              <div key={log.id} className="p-4 flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-foreground">{format(new Date(log.log_date), 'EEE, dd MMM yyyy')}</p>
+                  <p className="text-xs text-muted-foreground">{log.location_type}{log.address_snapshot ? ` · ${log.address_snapshot.slice(0, 40)}…` : ''}</p>
+                </div>
+                <div className="text-right">
+                  <Badge variant="outline" className={
+                    log.status === 'present' ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' :
+                    log.status === 'half_day' ? 'bg-amber-500/10 text-amber-600 border-amber-500/20' :
+                    'bg-red-500/10 text-red-600 border-red-500/20'
+                  }>
+                    {log.status}
+                  </Badge>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {log.check_in ? format(new Date(log.check_in), 'HH:mm') : '--:--'} – {log.check_out ? format(new Date(log.check_out), 'HH:mm') : '--:--'}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
