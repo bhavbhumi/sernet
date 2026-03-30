@@ -433,31 +433,119 @@ function LeaveBalanceSummary() {
 function LeaveTab() {
   const { session } = useEmployeeSession();
   const [requests, setRequests] = useState<any[]>([]);
+  const [leaveTypes, setLeaveTypes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [form, setForm] = useState({ leave_type_id: '', start_date: '', end_date: '', reason: '' });
+  const [submitting, setSubmitting] = useState(false);
 
-  useEffect(() => {
+  const loadRequests = async () => {
     if (!session) return;
-    const load = async () => {
-      const { data } = await supabase
+    const [{ data: reqs }, { data: types }] = await Promise.all([
+      supabase
         .from('leave_requests')
         .select('*, leave_types(name)')
         .eq('employee_id', session.employeeId)
         .order('created_at', { ascending: false })
-        .limit(20);
-      setRequests(data || []);
-      setLoading(false);
-    };
-    load();
-  }, [session]);
+        .limit(20),
+      supabase.from('leave_types').select('*').eq('is_active', true).order('name'),
+    ]);
+    setRequests(reqs || []);
+    setLeaveTypes(types || []);
+    setLoading(false);
+  };
+
+  useEffect(() => { loadRequests(); }, [session]);
+
+  const calcDays = () => {
+    if (!form.start_date || !form.end_date) return 0;
+    const start = new Date(form.start_date);
+    const end = new Date(form.end_date);
+    if (end < start) return 0;
+    const diff = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+    return diff;
+  };
+
+  const handleApply = async () => {
+    if (!session) return;
+    const days = calcDays();
+    if (days <= 0) { sonnerToast.error('Invalid date range'); return; }
+    setSubmitting(true);
+    const { error } = await supabase.from('leave_requests').insert({
+      employee_id: session.employeeId,
+      leave_type_id: form.leave_type_id,
+      start_date: form.start_date,
+      end_date: form.end_date,
+      days_count: days,
+      reason: form.reason || null,
+      status: 'pending',
+    });
+    if (error) { sonnerToast.error(error.message); } else {
+      sonnerToast.success('Leave request submitted');
+      setDialogOpen(false);
+      setForm({ leave_type_id: '', start_date: '', end_date: '', reason: '' });
+      loadRequests();
+    }
+    setSubmitting(false);
+  };
 
   if (loading) return <div className="p-6 space-y-2">{[1,2,3].map(i => <div key={i} className="h-12 bg-muted animate-pulse rounded-lg" />)}</div>;
 
+  const days = calcDays();
+
   return (
     <div>
-      <LeaveBalanceSummary />
+      <div className="flex justify-between items-center mb-3">
+        <LeaveBalanceSummary />
+      </div>
+      <div className="flex justify-end mb-3">
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+          <DialogTrigger asChild>
+            <Button size="sm"><Calendar className="h-4 w-4 mr-1.5" /> Apply Leave</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader><DialogTitle>Apply for Leave</DialogTitle></DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <Label>Leave Type</Label>
+                <Select value={form.leave_type_id} onValueChange={v => setForm(p => ({ ...p, leave_type_id: v }))}>
+                  <SelectTrigger><SelectValue placeholder="Select leave type" /></SelectTrigger>
+                  <SelectContent>
+                    {leaveTypes.map(t => (
+                      <SelectItem key={t.id} value={t.id}>
+                        {t.name} {!t.is_paid && <span className="text-muted-foreground">(Unpaid)</span>}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <Label>From</Label>
+                  <Input type="date" value={form.start_date} onChange={e => setForm(p => ({ ...p, start_date: e.target.value }))} />
+                </div>
+                <div>
+                  <Label>To</Label>
+                  <Input type="date" value={form.end_date} onChange={e => setForm(p => ({ ...p, end_date: e.target.value }))} />
+                </div>
+              </div>
+              {days > 0 && (
+                <p className="text-sm text-muted-foreground">Duration: <strong className="text-foreground">{days} day{days > 1 ? 's' : ''}</strong></p>
+              )}
+              <div>
+                <Label>Reason (optional)</Label>
+                <Textarea value={form.reason} onChange={e => setForm(p => ({ ...p, reason: e.target.value }))} rows={2} placeholder="Brief reason for leave" />
+              </div>
+              <Button className="w-full" onClick={handleApply} disabled={!form.leave_type_id || !form.start_date || !form.end_date || days <= 0 || submitting}>
+                {submitting ? 'Submitting…' : 'Submit Request'}
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+      </div>
       <div className="bg-card border border-border rounded-xl">
       {requests.length === 0 ? (
-        <div className="p-8 text-center text-muted-foreground text-sm">No leave requests found.</div>
+        <div className="p-8 text-center text-muted-foreground text-sm">No leave requests found. Use "Apply Leave" to submit your first request.</div>
       ) : (
         <div className="divide-y divide-border">
           {requests.map((req) => (

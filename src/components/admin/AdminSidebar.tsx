@@ -119,41 +119,33 @@ const departmentGroups: DepartmentGroup[] = [
     color: 'text-orange-500',
     items: [
       {
-        label: 'Recruitment', icon: Briefcase, moduleKey: 'hr/recruitment', children: [
-          { label: 'Job Openings', icon: Briefcase, href: R.hr.careers.openings },
-          { label: 'Applications', icon: Users, href: R.hr.careers.applications },
-        ]
-      },
-      {
-        label: 'Personnel', icon: Contact, moduleKey: 'hr/personnel', children: [
+        label: 'People', icon: Contact, moduleKey: 'hr/personnel', children: [
           { label: 'Employees', icon: Contact, href: R.hr.employees },
           { label: 'Org Chart', icon: GitBranch, href: R.hr.orgChart },
-          { label: 'Attendance', icon: Clock, href: R.hr.attendance },
-          { label: 'Attendance Report', icon: BarChart3, href: R.hr.attendanceReport },
-          { label: 'Attendance Policies', icon: Settings, href: R.hr.attendancePolicies },
+          { label: 'Documents', icon: FileArchive, href: R.hr.documentVault },
+          { label: 'Recruitment', icon: Briefcase, href: R.hr.careers.openings },
+          { label: 'Applications', icon: Users, href: R.hr.careers.applications },
+          { label: 'Exit & FnF', icon: UserMinus, href: R.hr.employeeExit },
+        ]
+      },
+      {
+        label: 'Attendance & Leave', icon: Clock, moduleKey: 'hr/attendance', children: [
+          { label: 'Daily Log', icon: Clock, href: R.hr.attendance },
+          { label: 'Report', icon: BarChart3, href: R.hr.attendanceReport },
+          { label: 'Policies & Shifts', icon: Settings, href: R.hr.attendancePolicies },
           { label: 'Leave Management', icon: CalendarClock, href: R.hr.leave },
           { label: 'Leave Encashment', icon: Landmark, href: R.hr.leaveEncashment },
-          { label: 'Document Vault', icon: FileArchive, href: R.hr.documentVault },
         ]
       },
       {
-        label: 'Payroll', icon: Receipt, moduleKey: 'hr/payroll', children: [
+        label: 'Payroll & Finance', icon: Receipt, moduleKey: 'hr/payroll', children: [
           { label: 'Salary Setup', icon: Calculator, href: R.hr.salarySetup },
-          { label: 'Payroll Run', icon: Receipt, href: R.hr.payrollRun },
+          { label: 'Run Payroll', icon: Receipt, href: R.hr.payrollRun },
           { label: 'Salary Register', icon: BarChart3, href: R.hr.salaryRegister },
           { label: 'Statutory Dues', icon: Scale, href: R.hr.statutoryDues },
-          { label: 'Increment Letters', icon: Award, href: R.hr.incrementLetters },
-        ]
-      },
-      {
-        label: 'Finance', icon: CreditCard, moduleKey: 'hr/finance', children: [
+          { label: 'Increments', icon: Award, href: R.hr.incrementLetters },
           { label: 'Expense Claims', icon: CreditCard, href: R.hr.expenseClaims },
           { label: 'Loans & Advances', icon: Wallet, href: R.hr.loans },
-        ]
-      },
-      {
-        label: 'Offboarding', icon: UserMinus, moduleKey: 'hr/offboarding', children: [
-          { label: 'Exit & FnF', icon: UserMinus, href: R.hr.employeeExit },
         ]
       },
       { label: 'Import Spine HR', icon: Download, href: R.hr.importSpine, moduleKey: 'hr/import' },
