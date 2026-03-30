@@ -301,7 +301,7 @@ const App = () => (
             <Route path="/admin/hr/payroll/run" element={<AdminPayrollRun />} />
             <Route path="/admin/hr/payroll/statutory" element={<AdminStatutoryDues />} />
             <Route path="/admin/hr/import-spine" element={<AdminImportSpine />} />
-            <Route path="/admin/hr/careers/team" element={<AdminTeamMembers />} />
+            
 
             {/* Admin — Accounts */}
             <Route path="/admin/accounts/firm-profile" element={<AdminFirmProfile />} />

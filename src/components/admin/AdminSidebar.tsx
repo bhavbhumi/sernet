@@ -122,7 +122,6 @@ const departmentGroups: DepartmentGroup[] = [
         label: 'Recruitment', icon: Briefcase, moduleKey: 'hr/recruitment', children: [
           { label: 'Job Openings', icon: Briefcase, href: R.hr.careers.openings },
           { label: 'Applications', icon: Users, href: R.hr.careers.applications },
-          { label: 'Team Members', icon: Contact, href: R.hr.careers.team },
         ]
       },
       {
