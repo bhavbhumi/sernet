@@ -37,7 +37,7 @@ interface SalaryForm {
 const emptyForm: SalaryForm = {
   ctc_annual: 0, basic: 0, hra: 0, special_allowance: 0,
   medical_allowance: 0, lta: 0, other_allowance: 0,
-  is_pf_applicable: true, pf_wage_cap: 15000, is_esi_applicable: false,
+  is_pf_applicable: false, pf_wage_cap: 15000, is_esi_applicable: false,
   tds_monthly: 0, regime: 'new', effective_from: new Date().toISOString().slice(0, 10), notes: '',
 };
 
