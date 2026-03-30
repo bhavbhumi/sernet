@@ -75,6 +75,7 @@ export const ADMIN_ROUTES = {
     leaveEncashment: '/admin/hr/leave/encashment',
     attendance: '/admin/hr/attendance',
     attendanceReport: '/admin/hr/attendance/report',
+    attendancePolicies: '/admin/hr/attendance/policies',
     salarySetup: '/admin/hr/salary-setup',
     payrollRun: '/admin/hr/payroll/run',
     salaryRegister: '/admin/hr/payroll/register',

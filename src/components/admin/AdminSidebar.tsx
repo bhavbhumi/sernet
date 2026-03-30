@@ -130,6 +130,7 @@ const departmentGroups: DepartmentGroup[] = [
           { label: 'Org Chart', icon: GitBranch, href: R.hr.orgChart },
           { label: 'Attendance', icon: Clock, href: R.hr.attendance },
           { label: 'Attendance Report', icon: BarChart3, href: R.hr.attendanceReport },
+          { label: 'Attendance Policies', icon: Settings, href: R.hr.attendancePolicies },
           { label: 'Leave Management', icon: CalendarClock, href: R.hr.leave },
           { label: 'Leave Encashment', icon: Landmark, href: R.hr.leaveEncashment },
           { label: 'Document Vault', icon: FileArchive, href: R.hr.documentVault },
