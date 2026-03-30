@@ -3497,6 +3497,45 @@ export type Database = {
           },
         ]
       }
+      statutory_challans: {
+        Row: {
+          amount: number
+          challan_type: string
+          created_at: string
+          filed_by: string | null
+          filed_on: string | null
+          id: string
+          month: number
+          status: string
+          updated_at: string
+          year: number
+        }
+        Insert: {
+          amount?: number
+          challan_type: string
+          created_at?: string
+          filed_by?: string | null
+          filed_on?: string | null
+          id?: string
+          month: number
+          status?: string
+          updated_at?: string
+          year: number
+        }
+        Update: {
+          amount?: number
+          challan_type?: string
+          created_at?: string
+          filed_by?: string | null
+          filed_on?: string | null
+          id?: string
+          month?: number
+          status?: string
+          updated_at?: string
+          year?: number
+        }
+        Relationships: []
+      }
       support_automation_rules: {
         Row: {
           actions: Json
