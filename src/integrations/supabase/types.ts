@@ -1273,6 +1273,45 @@ export type Database = {
         }
         Relationships: []
       }
+      department_shifts: {
+        Row: {
+          created_at: string
+          department_name: string
+          grace_minutes: number
+          id: string
+          is_active: boolean
+          saturday_end: string
+          saturday_start: string
+          updated_at: string
+          weekday_end: string
+          weekday_start: string
+        }
+        Insert: {
+          created_at?: string
+          department_name: string
+          grace_minutes?: number
+          id?: string
+          is_active?: boolean
+          saturday_end?: string
+          saturday_start?: string
+          updated_at?: string
+          weekday_end?: string
+          weekday_start?: string
+        }
+        Update: {
+          created_at?: string
+          department_name?: string
+          grace_minutes?: number
+          id?: string
+          is_active?: boolean
+          saturday_end?: string
+          saturday_start?: string
+          updated_at?: string
+          weekday_end?: string
+          weekday_start?: string
+        }
+        Relationships: []
+      }
       departments: {
         Row: {
           code: string
@@ -3052,6 +3091,7 @@ export type Database = {
           total_deductions: number
           total_esi: number
           total_gross: number
+          total_lop_days: number | null
           total_net_pay: number
           total_pf: number
           updated_at: string
@@ -3069,6 +3109,7 @@ export type Database = {
           total_deductions?: number
           total_esi?: number
           total_gross?: number
+          total_lop_days?: number | null
           total_net_pay?: number
           total_pf?: number
           updated_at?: string
@@ -3086,6 +3127,7 @@ export type Database = {
           total_deductions?: number
           total_esi?: number
           total_gross?: number
+          total_lop_days?: number | null
           total_net_pay?: number
           total_pf?: number
           updated_at?: string

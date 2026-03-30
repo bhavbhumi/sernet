@@ -17,7 +17,7 @@ import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 import { PayslipPreview } from '@/components/shared/PayslipPreview';
 import { toast as sonnerToast } from 'sonner';
-import { useAttendancePolicies, determineStatus } from '@/hooks/useAttendancePolicies';
+import { useAttendancePolicies, determineStatus, getEffectiveShift } from '@/hooks/useAttendancePolicies';
 
 /* ─── Profile Tab ─── */
 function ProfileTab() {
@@ -67,7 +67,7 @@ function AttendanceTab() {
   const [locationType, setLocationType] = useState('office');
   const [geoLoading, setGeoLoading] = useState(false);
   const [now, setNow] = useState(new Date());
-  const { policies } = useAttendancePolicies();
+  const { policies, shifts } = useAttendancePolicies();
 
   // live clock
   useEffect(() => {
@@ -127,7 +127,7 @@ function AttendanceTab() {
       const geo = await getGeoLocation();
       const today = format(new Date(), 'yyyy-MM-dd');
       const checkInTime = new Date();
-      const { status, isLate } = determineStatus(checkInTime, null, policies);
+      const { status, isLate } = determineStatus(checkInTime, null, policies, session.department, shifts);
       const { error } = await supabase.from('attendance_logs').insert({
         employee_id: session.employeeId,
         log_date: today,
@@ -155,7 +155,7 @@ function AttendanceTab() {
     try {
       const checkOutTime = new Date();
       const checkInTime = new Date(todayLog.check_in);
-      const { status, isLate } = determineStatus(checkInTime, checkOutTime, policies);
+      const { status, isLate } = determineStatus(checkInTime, checkOutTime, policies, session.department, shifts);
       const { error } = await supabase.from('attendance_logs')
         .update({
           check_out: checkOutTime.toISOString(),
