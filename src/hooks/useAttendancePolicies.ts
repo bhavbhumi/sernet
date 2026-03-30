@@ -45,6 +45,7 @@ export function useAttendancePolicies() {
       supabase.from('department_shifts' as any).select('*').eq('is_active', true),
     ]).then(([polRes, shiftRes]) => {
       if (polRes.data && polRes.data.length > 0) {
+
         const map: Record<string, string> = {};
         polRes.data.forEach((r: any) => { map[r.policy_key] = r.policy_value; });
         setPolicies({
