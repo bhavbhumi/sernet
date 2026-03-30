@@ -46,6 +46,7 @@ const AdminAttendanceReport = () => {
   const [logs, setLogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const { policies, loading: policiesLoading } = useAttendancePolicies();
 
   useEffect(() => {
     supabase.from('departments').select('id, name').eq('is_active', true).order('sort_order').then(({ data }) => setDepartments(data || []));
