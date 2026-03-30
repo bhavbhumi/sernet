@@ -107,6 +107,79 @@ function AttendanceTab() {
   );
 }
 
+/* ─── Leave Balance Summary ─── */
+function LeaveBalanceSummary() {
+  const { session } = useEmployeeSession();
+  const [balances, setBalances] = useState<any[]>([]);
+  const [usedMap, setUsedMap] = useState<Record<string, number>>({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!session) return;
+    const currentYear = new Date().getFullYear();
+    const load = async () => {
+      const [{ data: bals }, { data: reqs }] = await Promise.all([
+        supabase
+          .from('leave_balances')
+          .select('*, leave_types(name, code)')
+          .eq('employee_id', session.employeeId)
+          .eq('year', currentYear),
+        supabase
+          .from('leave_requests')
+          .select('leave_type_id, days_count')
+          .eq('employee_id', session.employeeId)
+          .eq('status', 'approved')
+          .gte('start_date', `${currentYear}-01-01`)
+          .lte('start_date', `${currentYear}-12-31`),
+      ]);
+      setBalances(bals || []);
+      const map: Record<string, number> = {};
+      (reqs || []).forEach((r: any) => {
+        map[r.leave_type_id] = (map[r.leave_type_id] || 0) + Number(r.days_count);
+      });
+      setUsedMap(map);
+      setLoading(false);
+    };
+    load();
+  }, [session]);
+
+  if (loading) return <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">{[1,2,3].map(i => <div key={i} className="h-24 bg-muted animate-pulse rounded-xl" />)}</div>;
+  if (balances.length === 0) return null;
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+      {balances.map((bal: any) => {
+        const total = Number(bal.opening_balance) + Number(bal.accrued);
+        const used = usedMap[bal.leave_type_id] || 0;
+        const available = total - used;
+        const pct = total > 0 ? Math.min((used / total) * 100, 100) : 0;
+        const isLow = available < 2 && available >= 0;
+        const typeName = (bal.leave_types as any)?.name || 'Leave';
+
+        return (
+          <div
+            key={bal.id}
+            className={`rounded-xl border p-4 ${isLow ? 'border-amber-500/40 bg-amber-500/5' : 'border-border bg-card'}`}
+          >
+            <p className={`text-sm font-medium mb-2 ${isLow ? 'text-amber-700 dark:text-amber-400' : 'text-foreground'}`}>{typeName}</p>
+            <div className="w-full h-2 rounded-full bg-secondary overflow-hidden mb-3">
+              <div
+                className={`h-full rounded-full transition-all ${isLow ? 'bg-amber-500' : 'bg-primary'}`}
+                style={{ width: `${pct}%` }}
+              />
+            </div>
+            <div className="flex justify-between text-xs text-muted-foreground">
+              <span>Total: <strong className="text-foreground">{total}</strong></span>
+              <span>Used: <strong className="text-foreground">{used}</strong></span>
+              <span>Avail: <strong className={isLow ? 'text-amber-600' : 'text-foreground'}>{available}</strong></span>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 /* ─── Leave Tab ─── */
 function LeaveTab() {
   const { session } = useEmployeeSession();
@@ -131,7 +204,9 @@ function LeaveTab() {
   if (loading) return <div className="p-6 space-y-2">{[1,2,3].map(i => <div key={i} className="h-12 bg-muted animate-pulse rounded-lg" />)}</div>;
 
   return (
-    <div className="bg-card border border-border rounded-xl">
+    <div>
+      <LeaveBalanceSummary />
+      <div className="bg-card border border-border rounded-xl">
       {requests.length === 0 ? (
         <div className="p-8 text-center text-muted-foreground text-sm">No leave requests found.</div>
       ) : (
