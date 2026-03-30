@@ -37,7 +37,7 @@ interface SalaryForm {
 const emptyForm: SalaryForm = {
   ctc_annual: 0, basic: 0, hra: 0, special_allowance: 0,
   medical_allowance: 0, lta: 0, other_allowance: 0,
-  is_pf_applicable: true, pf_wage_cap: 15000, is_esi_applicable: false,
+  is_pf_applicable: false, pf_wage_cap: 15000, is_esi_applicable: false,
   tds_monthly: 0, regime: 'new', effective_from: new Date().toISOString().slice(0, 10), notes: '',
 };
 
@@ -110,7 +110,7 @@ const AdminSalarySetup = () => {
         medical_allowance: Number(data.medical_allowance) || 0,
         lta: Number(data.lta) || 0,
         other_allowance: Number(data.other_allowance) || 0,
-        is_pf_applicable: data.is_pf_applicable ?? true,
+        is_pf_applicable: data.is_pf_applicable ?? false,
         pf_wage_cap: Number(data.pf_wage_cap) || 15000,
         is_esi_applicable: data.is_esi_applicable ?? false,
         tds_monthly: Number(data.tds_monthly) || 0,
@@ -135,11 +135,10 @@ const AdminSalarySetup = () => {
   const autoFill = () => {
     if (form.ctc_annual <= 0) { toast.error('Enter CTC first'); return; }
     const monthly = form.ctc_annual / 12;
-    const basic = Math.round(monthly * 0.45);
-    const hra = Math.round(basic * 0.40);
+    const basic = Math.round(monthly * 0.40);
+    const hra = Math.round(basic * 0.50);
     const medical = 1250;
-    const pfEmployer = Math.round(Math.min(basic, 15000) * 0.24);
-    const special = Math.round(monthly - basic - hra - medical - pfEmployer);
+    const special = Math.round(monthly - basic - hra - medical);
     setForm(f => ({
       ...f,
       basic, hra, medical_allowance: medical,
