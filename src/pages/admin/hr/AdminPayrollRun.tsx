@@ -10,7 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import { AlertTriangle, Play, Eye, Printer, IndianRupee, Users, TrendingDown, Wallet } from 'lucide-react';
+import { AlertTriangle, Play, Eye, IndianRupee, Users, TrendingDown, Wallet } from 'lucide-react';
+import { PayslipPreview } from '@/components/shared/PayslipPreview';
 import { toast } from 'sonner';
 import { useState, useMemo, useCallback, useEffect } from 'react';
 
