@@ -8,7 +8,7 @@ import {
   FileText, Newspaper, AlertCircle, Vote, Star, Briefcase, BarChart3,
   BookOpen, Bell, Users, ClipboardList, UserCheck, Megaphone, TrendingUp,
   Building2, Gavel, Calculator, Ticket, Headphones, AlertTriangle,
-  Activity, CheckCircle2, RefreshCw
+  Activity, CheckCircle2, RefreshCw, Clock, CalendarDays, Wallet
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { useHealthCheck } from '@/hooks/useHealthCheck';
@@ -40,10 +40,18 @@ export default function AdminDashboard() {
   useEffect(() => {
     const fetchStats = async () => {
       const db = (t: string) => supabase.from(t as any) as any;
+
+      const now = new Date();
+      const curMonth = now.getMonth() + 1;
+      const curYear = now.getFullYear();
+      const startDate = `${curYear}-${String(curMonth).padStart(2, '0')}-01`;
+      const endDate = `${curYear}-${String(curMonth).padStart(2, '0')}-${new Date(curYear, curMonth, 0).getDate()}`;
+
       const [
         articles, analyses, reports, bulletins, news, circulars,
         polls, surveys, reviews, jobs, applications, press,
-        leads, calcLeads, tickets, openTickets, breachedTickets
+        leads, calcLeads, tickets, openTickets, breachedTickets,
+        activeEmps, pendingLeaves, attendanceLogs, lateLogs
       ] = await Promise.all([
         supabase.from('articles').select('id', { count: 'exact', head: true }).eq('content_type', 'article'),
         supabase.from('articles').select('id', { count: 'exact', head: true }).eq('content_type', 'analysis'),
@@ -62,6 +70,10 @@ export default function AdminDashboard() {
         db('support_tickets').select('id', { count: 'exact', head: true }),
         db('support_tickets').select('id', { count: 'exact', head: true }).eq('status', 'open'),
         db('support_tickets').select('id', { count: 'exact', head: true }).in('status', ['open', 'in_progress']).lt('tat_deadline', new Date().toISOString()),
+        supabase.from('employees').select('id', { count: 'exact', head: true }).eq('status', 'active'),
+        supabase.from('leave_requests').select('id', { count: 'exact', head: true }).eq('status', 'pending'),
+        supabase.from('attendance_logs').select('id', { count: 'exact', head: true }).gte('log_date', startDate).lte('log_date', endDate),
+        supabase.from('attendance_logs').select('id', { count: 'exact', head: true }).gte('log_date', startDate).lte('log_date', endDate).ilike('notes', '%Late%'),
       ]);
 
       setStats({
@@ -82,6 +94,10 @@ export default function AdminDashboard() {
         tickets: tickets.count ?? 0,
         openTickets: openTickets.count ?? 0,
         breachedTickets: breachedTickets.count ?? 0,
+        activeEmps: activeEmps.count ?? 0,
+        pendingLeaves: pendingLeaves.count ?? 0,
+        attendanceLogs: attendanceLogs.count ?? 0,
+        lateLogs: lateLogs.count ?? 0,
       });
       setLoading(false);
     };
@@ -133,8 +149,12 @@ export default function AdminDashboard() {
       color: 'text-orange-600',
       bgColor: 'bg-orange-500/10',
       cards: [
+        { label: 'Active Employees', count: stats.activeEmps, href: R.hr.employees, icon: Users, color: 'text-orange-600 bg-orange-500/10' },
+        { label: 'Pending Leaves', count: stats.pendingLeaves, href: R.hr.leave, icon: CalendarDays, color: 'text-amber-600 bg-amber-500/10', subtitle: 'Needs approval' },
+        { label: 'Check-ins (MTD)', count: stats.attendanceLogs, href: R.hr.attendanceReport, icon: Clock, color: 'text-blue-600 bg-blue-500/10', subtitle: 'This month' },
+        { label: 'Late Arrivals', count: stats.lateLogs, href: R.hr.attendanceReport, icon: AlertTriangle, color: 'text-red-600 bg-red-500/10', subtitle: 'This month' },
         { label: 'Job Openings', count: stats.jobs, href: R.hr.careers.openings, icon: Briefcase, color: 'text-teal-600 bg-teal-500/10' },
-        { label: 'New Applications', count: stats.newApplications, href: R.hr.careers.applications, icon: Users, color: 'text-orange-600 bg-orange-500/10', subtitle: 'Unreviewed' },
+        { label: 'New Applications', count: stats.newApplications, href: R.hr.careers.applications, icon: Users, color: 'text-violet-600 bg-violet-500/10', subtitle: 'Unreviewed' },
       ],
     },
   ];
@@ -219,7 +239,7 @@ export default function AdminDashboard() {
           {[
             { label: 'New Article', href: `${R.marketing.content.articles}?action=new`, icon: FileText },
             { label: 'Add News', href: `${R.marketing.updates.news}?action=new`, icon: Newspaper },
-            { label: 'Create Poll', href: `${R.marketing.engagement.polls}?action=new`, icon: Vote },
+            { label: 'Run Payroll', href: R.hr.payrollRun, icon: Wallet },
             { label: 'Post Job', href: `${R.hr.careers.openings}?action=new`, icon: Briefcase },
           ].map((action) => (
             <Link
