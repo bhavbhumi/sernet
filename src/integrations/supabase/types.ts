@@ -2512,6 +2512,106 @@ export type Database = {
         }
         Relationships: []
       }
+      payroll_entries: {
+        Row: {
+          basic: number
+          created_at: string
+          days_present: number
+          employee_id: string
+          esi_employee: number
+          esi_employer: number
+          gross: number
+          hra: number
+          id: string
+          lop_days: number
+          lta: number
+          medical_allowance: number
+          net_pay: number
+          other_allowance: number
+          payroll_run_id: string
+          pf_employee: number
+          pf_employer: number
+          professional_tax: number
+          salary_structure_id: string | null
+          special_allowance: number
+          tds: number
+          total_deductions: number
+          updated_at: string
+        }
+        Insert: {
+          basic?: number
+          created_at?: string
+          days_present?: number
+          employee_id: string
+          esi_employee?: number
+          esi_employer?: number
+          gross?: number
+          hra?: number
+          id?: string
+          lop_days?: number
+          lta?: number
+          medical_allowance?: number
+          net_pay?: number
+          other_allowance?: number
+          payroll_run_id: string
+          pf_employee?: number
+          pf_employer?: number
+          professional_tax?: number
+          salary_structure_id?: string | null
+          special_allowance?: number
+          tds?: number
+          total_deductions?: number
+          updated_at?: string
+        }
+        Update: {
+          basic?: number
+          created_at?: string
+          days_present?: number
+          employee_id?: string
+          esi_employee?: number
+          esi_employer?: number
+          gross?: number
+          hra?: number
+          id?: string
+          lop_days?: number
+          lta?: number
+          medical_allowance?: number
+          net_pay?: number
+          other_allowance?: number
+          payroll_run_id?: string
+          pf_employee?: number
+          pf_employer?: number
+          professional_tax?: number
+          salary_structure_id?: string | null
+          special_allowance?: number
+          tds?: number
+          total_deductions?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payroll_entries_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payroll_entries_payroll_run_id_fkey"
+            columns: ["payroll_run_id"]
+            isOneToOne: false
+            referencedRelation: "payroll_runs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payroll_entries_salary_structure_id_fkey"
+            columns: ["salary_structure_id"]
+            isOneToOne: false
+            referencedRelation: "salary_structures"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       payroll_records: {
         Row: {
           allowances: number
@@ -2567,6 +2667,60 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      payroll_runs: {
+        Row: {
+          created_at: string
+          employee_count: number
+          id: string
+          month: number
+          processed_at: string | null
+          processed_by: string | null
+          status: string
+          total_deductions: number
+          total_esi: number
+          total_gross: number
+          total_net_pay: number
+          total_pf: number
+          updated_at: string
+          working_days: number
+          year: number
+        }
+        Insert: {
+          created_at?: string
+          employee_count?: number
+          id?: string
+          month: number
+          processed_at?: string | null
+          processed_by?: string | null
+          status?: string
+          total_deductions?: number
+          total_esi?: number
+          total_gross?: number
+          total_net_pay?: number
+          total_pf?: number
+          updated_at?: string
+          working_days?: number
+          year: number
+        }
+        Update: {
+          created_at?: string
+          employee_count?: number
+          id?: string
+          month?: number
+          processed_at?: string | null
+          processed_by?: string | null
+          status?: string
+          total_deductions?: number
+          total_esi?: number
+          total_gross?: number
+          total_net_pay?: number
+          total_pf?: number
+          updated_at?: string
+          working_days?: number
+          year?: number
+        }
+        Relationships: []
       }
       permission_presets: {
         Row: {
