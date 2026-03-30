@@ -26,7 +26,7 @@ export default function AdminLeaveEncashment() {
         .select('*, leave_types(name, code, encashable), employees!leave_balances_employee_id_fkey(id, full_name, employee_code, department, status)')
         .eq('year', year);
       const balances = balancesRes.data || [];
-      const salariesRes: any = await supabase
+      const salariesRes = await (supabase as any)
         .from('salary_structures')
         .select('employee_id, basic')
         .eq('is_active', true);
