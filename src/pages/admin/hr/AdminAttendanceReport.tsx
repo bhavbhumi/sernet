@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Progress } from '@/components/ui/progress';
 import { Download, ChevronDown, ChevronRight, Users, Clock, Award } from 'lucide-react';
 import { format } from 'date-fns';
+import { useAttendancePolicies } from '@/hooks/useAttendancePolicies';
 
 const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
