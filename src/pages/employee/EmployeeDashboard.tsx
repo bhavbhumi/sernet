@@ -153,8 +153,15 @@ function AttendanceTab() {
     if (!session || !todayLog) return;
     setGeoLoading(true);
     try {
+      const checkOutTime = new Date();
+      const checkInTime = new Date(todayLog.check_in);
+      const { status, isLate } = determineStatus(checkInTime, checkOutTime, policies);
       const { error } = await supabase.from('attendance_logs')
-        .update({ check_out: new Date().toISOString() })
+        .update({
+          check_out: checkOutTime.toISOString(),
+          status,
+          notes: isLate ? 'Late arrival' : todayLog.notes,
+        })
         .eq('id', todayLog.id);
       if (error) { sonnerToast.error(error.message); return; }
       sonnerToast.success('Checked out successfully');
