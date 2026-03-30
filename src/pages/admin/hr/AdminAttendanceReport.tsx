@@ -256,7 +256,9 @@ const AdminAttendanceReport = () => {
                                 {row.details.map((log: any) => {
                                   const inTime = log.check_in ? format(new Date(log.check_in), 'HH:mm') : '—';
                                   const outTime = log.check_out ? format(new Date(log.check_out), 'HH:mm') : '—';
-                                  const isLate = log.check_in && (new Date(log.check_in).getHours() > 10 || (new Date(log.check_in).getHours() === 10 && new Date(log.check_in).getMinutes() > 0));
+                                  const ciMin = log.check_in ? new Date(log.check_in).getHours() * 60 + new Date(log.check_in).getMinutes() : 0;
+                                  const [sH, sM] = policies.office_start_time.split(':').map(Number);
+                                  const isLate = log.check_in && ciMin > (sH * 60 + sM + policies.grace_period_minutes);
                                   return (
                                     <div key={log.id} className="flex items-center justify-between rounded-lg border border-border bg-card px-3 py-2 text-xs">
                                       <span className="font-medium text-foreground">{format(new Date(log.log_date), 'dd MMM, EEE')}</span>
