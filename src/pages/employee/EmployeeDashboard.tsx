@@ -155,7 +155,7 @@ function AttendanceTab() {
     try {
       const checkOutTime = new Date();
       const checkInTime = new Date(todayLog.check_in);
-      const { status, isLate } = determineStatus(checkInTime, checkOutTime, policies);
+      const { status, isLate } = determineStatus(checkInTime, checkOutTime, policies, session.department, shifts);
       const { error } = await supabase.from('attendance_logs')
         .update({
           check_out: checkOutTime.toISOString(),
