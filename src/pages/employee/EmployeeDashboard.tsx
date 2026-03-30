@@ -67,7 +67,7 @@ function AttendanceTab() {
   const [locationType, setLocationType] = useState('office');
   const [geoLoading, setGeoLoading] = useState(false);
   const [now, setNow] = useState(new Date());
-  const { policies } = useAttendancePolicies();
+  const { policies, shifts } = useAttendancePolicies();
 
   // live clock
   useEffect(() => {
