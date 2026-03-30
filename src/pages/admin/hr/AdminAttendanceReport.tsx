@@ -78,14 +78,20 @@ const AdminAttendanceReport = () => {
       const present = uniqueDates.size;
 
       let late = 0;
+      let halfDays = 0;
       let totalHours = 0;
+
+      const [startH, startM] = policies.office_start_time.split(':').map(Number);
+      const graceMin = policies.grace_period_minutes;
+      const lateThresholdMin = startH * 60 + startM + graceMin;
+
       empLogs.forEach(l => {
         if (l.check_in) {
           const checkInTime = new Date(l.check_in);
-          const h = checkInTime.getHours();
-          const m = checkInTime.getMinutes();
-          if (h > 10 || (h === 10 && m > 0)) late++;
+          const ciMin = checkInTime.getHours() * 60 + checkInTime.getMinutes();
+          if (ciMin > lateThresholdMin) late++;
         }
+        if (l.status === 'half_day') halfDays++;
         if (l.check_in && l.check_out) {
           const diff = (new Date(l.check_out).getTime() - new Date(l.check_in).getTime()) / (1000 * 60 * 60);
           if (diff > 0) totalHours += diff;
