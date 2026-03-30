@@ -13,12 +13,12 @@ import { useAttendancePolicies } from '@/hooks/useAttendancePolicies';
 
 const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
-function getWorkingDays(year: number, month: number): number {
+function getWorkingDays(year: number, month: number, weekOffDays: number[]): number {
   const daysInMonth = new Date(year, month, 0).getDate();
   let count = 0;
   for (let d = 1; d <= daysInMonth; d++) {
     const day = new Date(year, month - 1, d).getDay();
-    if (day !== 0) count++; // exclude Sundays
+    if (!weekOffDays.includes(day)) count++;
   }
   return count;
 }
