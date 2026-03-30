@@ -6,10 +6,12 @@ import { EmployeeGuard, useEmployeeSession } from '@/components/portal/EmployeeG
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { User, Calendar, Clock, Wallet, Users, LogOut, Shield } from 'lucide-react';
 import sernetLogo from '@/assets/sernet-logo.png';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
+import { PayslipPreview } from '@/components/shared/PayslipPreview';
 
 /* ─── Profile Tab ─── */
 function ProfileTab() {
@@ -158,14 +160,106 @@ function LeaveTab() {
   );
 }
 
-/* ─── Payslips Tab (placeholder) ─── */
+/* ─── Payslips Tab ─── */
 function PayslipsTab() {
+  const { session } = useEmployeeSession();
+  const [payslips, setPayslips] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [previewData, setPreviewData] = useState<{ entry: any; run: any } | null>(null);
+
+  useEffect(() => {
+    if (!session) return;
+    const load = async () => {
+      const { data } = await supabase
+        .from('payroll_entries')
+        .select('*, payroll_runs!payroll_entries_payroll_run_id_fkey(month, year, working_days)')
+        .eq('employee_id', session.employeeId)
+        .order('created_at', { ascending: false });
+      setPayslips(data || []);
+      setLoading(false);
+    };
+    load();
+  }, [session]);
+
+  if (loading) return <div className="p-6 space-y-2">{[1,2,3].map(i => <div key={i} className="h-20 bg-muted animate-pulse rounded-lg" />)}</div>;
+
+  const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  if (payslips.length === 0) {
+    return (
+      <div className="bg-card border border-border rounded-xl p-8 text-center">
+        <Wallet className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
+        <h3 className="font-medium text-foreground mb-1">Payslips</h3>
+        <p className="text-sm text-muted-foreground">Your payslips will appear here once payroll is processed.</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="bg-card border border-border rounded-xl p-8 text-center">
-      <Wallet className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
-      <h3 className="font-medium text-foreground mb-1">Payslips</h3>
-      <p className="text-sm text-muted-foreground">Your salary slips will appear here once payroll is processed.</p>
-    </div>
+    <>
+      <div className="space-y-3">
+        {payslips.map((entry) => {
+          const run = entry.payroll_runs as any;
+          const monthName = run ? MONTH_NAMES[run.month - 1] : '';
+          return (
+            <div key={entry.id} className="bg-card border border-border rounded-xl p-4 flex items-center justify-between">
+              <div>
+                <p className="font-semibold text-foreground">{monthName} {run?.year}</p>
+                <p className="text-xl font-bold text-primary mt-0.5">
+                  ₹{Math.round(Number(entry.net_pay)).toLocaleString('en-IN')}
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Gross: ₹{Math.round(Number(entry.gross)).toLocaleString('en-IN')} · Deductions: ₹{Math.round(Number(entry.total_deductions)).toLocaleString('en-IN')}
+                </p>
+              </div>
+              <Button variant="outline" size="sm" onClick={() => setPreviewData({ entry, run })}>
+                View Payslip
+              </Button>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Payslip modal */}
+      <Dialog open={!!previewData} onOpenChange={open => { if (!open) setPreviewData(null); }}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-auto">
+          <DialogHeader>
+            <DialogTitle>Salary Slip</DialogTitle>
+          </DialogHeader>
+          {previewData && session && (
+            <PayslipPreview
+              row={{
+                full_name: session.fullName,
+                employee_code: session.employeeCode || '',
+                designation: session.designation,
+                department: session.department,
+                date_of_joining: session.dateOfJoining || null,
+                pan: null,
+                days_present: Number(previewData.entry.days_present),
+                basic: Number(previewData.entry.basic),
+                hra: Number(previewData.entry.hra),
+                special_allowance: Number(previewData.entry.special_allowance),
+                medical_allowance: Number(previewData.entry.medical_allowance),
+                lta: Number(previewData.entry.lta),
+                other_allowance: Number(previewData.entry.other_allowance),
+                gross: Number(previewData.entry.gross),
+                pf_employee: Number(previewData.entry.pf_employee),
+                pf_employer: Number(previewData.entry.pf_employer),
+                esi_employee: Number(previewData.entry.esi_employee),
+                esi_employer: Number(previewData.entry.esi_employer),
+                professional_tax: Number(previewData.entry.professional_tax),
+                tds: Number(previewData.entry.tds),
+                total_deductions: Number(previewData.entry.total_deductions),
+                net_pay: Number(previewData.entry.net_pay),
+              }}
+              month={previewData.run?.month || 1}
+              year={previewData.run?.year || 2026}
+              workingDays={previewData.run?.working_days || 26}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
 
