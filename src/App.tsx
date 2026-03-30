@@ -138,6 +138,7 @@ const AdminEscalationMatrix = lazy(() => import("./pages/admin/support/AdminEsca
 const AdminEmployees = lazy(() => import("./pages/admin/hr/AdminEmployees"));
 const AdminLeaveManagement = lazy(() => import("./pages/admin/hr/AdminLeaveManagement"));
 const AdminAttendance = lazy(() => import("./pages/admin/hr/AdminAttendance"));
+const AdminSalarySetup = lazy(() => import("./pages/admin/hr/AdminSalarySetup"));
 const AdminTeamMembers = lazy(() => import("./pages/admin/careers/AdminTeamMembers"));
 const AdminInvoices = lazy(() => import("./pages/admin/accounts/AdminInvoices"));
 const AdminPayroll = lazy(() => import("./pages/admin/accounts/AdminPayroll"));
@@ -291,6 +292,7 @@ const App = () => (
             <Route path="/admin/hr/employees" element={<AdminEmployees />} />
             <Route path="/admin/hr/leave" element={<AdminLeaveManagement />} />
             <Route path="/admin/hr/attendance" element={<AdminAttendance />} />
+            <Route path="/admin/hr/salary-setup" element={<AdminSalarySetup />} />
             <Route path="/admin/hr/careers/team" element={<AdminTeamMembers />} />
 
             {/* Admin — Accounts */}

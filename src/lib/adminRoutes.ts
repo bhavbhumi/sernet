@@ -73,6 +73,7 @@ export const ADMIN_ROUTES = {
     employees: '/admin/hr/employees',
     leave: '/admin/hr/leave',
     attendance: '/admin/hr/attendance',
+    salarySetup: '/admin/hr/salary-setup',
   },
 
   // ── Accounts ──────────────────────────────────
