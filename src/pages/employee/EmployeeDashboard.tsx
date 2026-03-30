@@ -6,12 +6,17 @@ import { EmployeeGuard, useEmployeeSession } from '@/components/portal/EmployeeG
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { User, Calendar, Clock, Wallet, Users, LogOut, Shield } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { User, Calendar, Clock, Wallet, Users, LogOut, Shield, CreditCard, FileText } from 'lucide-react';
 import sernetLogo from '@/assets/sernet-logo.png';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 import { PayslipPreview } from '@/components/shared/PayslipPreview';
+import { toast as sonnerToast } from 'sonner';
 
 /* ─── Profile Tab ─── */
 function ProfileTab() {
