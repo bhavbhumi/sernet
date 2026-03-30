@@ -2056,6 +2056,54 @@ export type Database = {
         }
         Relationships: []
       }
+      leave_balances: {
+        Row: {
+          accrued: number
+          created_at: string
+          employee_id: string
+          id: string
+          leave_type_id: string
+          opening_balance: number
+          updated_at: string
+          year: number
+        }
+        Insert: {
+          accrued?: number
+          created_at?: string
+          employee_id: string
+          id?: string
+          leave_type_id: string
+          opening_balance?: number
+          updated_at?: string
+          year: number
+        }
+        Update: {
+          accrued?: number
+          created_at?: string
+          employee_id?: string
+          id?: string
+          leave_type_id?: string
+          opening_balance?: number
+          updated_at?: string
+          year?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "leave_balances_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "leave_balances_leave_type_id_fkey"
+            columns: ["leave_type_id"]
+            isOneToOne: false
+            referencedRelation: "leave_types"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       leave_requests: {
         Row: {
           approved_at: string | null
