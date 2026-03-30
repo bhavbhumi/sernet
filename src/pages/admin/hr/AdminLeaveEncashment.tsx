@@ -21,16 +21,14 @@ export default function AdminLeaveEncashment() {
   const { data: employees = [], isLoading } = useQuery({
     queryKey: ['leave-encashment', year],
     queryFn: async () => {
-      const [{ data: balances }, { data: salaries }] = await Promise.all([
-        supabase
-          .from('leave_balances')
-          .select('*, leave_types(name, code, encashable), employees!leave_balances_employee_id_fkey(id, full_name, employee_code, department, status)')
-          .eq('year', year),
-        supabase
-          .from('salary_structures')
-          .select('employee_id, basic')
-          .eq('is_active', true),
-      ]);
+      const { data: balances } = await supabase
+        .from('leave_balances')
+        .select('*, leave_types(name, code, encashable), employees!leave_balances_employee_id_fkey(id, full_name, employee_code, department, status)')
+        .eq('year', year) as any;
+      const { data: salaries } = await supabase
+        .from('salary_structures')
+        .select('employee_id, basic')
+        .eq('is_active', true) as any;
 
       // Get approved leave requests for the year
       const { data: requests } = await supabase
