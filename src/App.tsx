@@ -142,6 +142,7 @@ const AdminAttendanceReport = lazy(() => import("./pages/admin/hr/AdminAttendanc
 const AdminSalarySetup = lazy(() => import("./pages/admin/hr/AdminSalarySetup"));
 const AdminPayrollRun = lazy(() => import("./pages/admin/hr/AdminPayrollRun"));
 const AdminStatutoryDues = lazy(() => import("./pages/admin/hr/AdminStatutoryDues"));
+const AdminImportSpine = lazy(() => import("./pages/admin/hr/AdminImportSpine"));
 const AdminTeamMembers = lazy(() => import("./pages/admin/careers/AdminTeamMembers"));
 const AdminInvoices = lazy(() => import("./pages/admin/accounts/AdminInvoices"));
 const AdminPayroll = lazy(() => import("./pages/admin/accounts/AdminPayroll"));
@@ -299,6 +300,7 @@ const App = () => (
             <Route path="/admin/hr/salary-setup" element={<AdminSalarySetup />} />
             <Route path="/admin/hr/payroll/run" element={<AdminPayrollRun />} />
             <Route path="/admin/hr/payroll/statutory" element={<AdminStatutoryDues />} />
+            <Route path="/admin/hr/import-spine" element={<AdminImportSpine />} />
             <Route path="/admin/hr/careers/team" element={<AdminTeamMembers />} />
 
             {/* Admin — Accounts */}
