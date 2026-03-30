@@ -240,6 +240,33 @@ export type Database = {
           },
         ]
       }
+      attendance_policies: {
+        Row: {
+          description: string | null
+          id: string
+          label: string
+          policy_key: string
+          policy_value: string
+          updated_at: string
+        }
+        Insert: {
+          description?: string | null
+          id?: string
+          label: string
+          policy_key: string
+          policy_value: string
+          updated_at?: string
+        }
+        Update: {
+          description?: string | null
+          id?: string
+          label?: string
+          policy_key?: string
+          policy_value?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       audit_logs: {
         Row: {
           action: string

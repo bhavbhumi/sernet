@@ -9,15 +9,16 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Progress } from '@/components/ui/progress';
 import { Download, ChevronDown, ChevronRight, Users, Clock, Award } from 'lucide-react';
 import { format } from 'date-fns';
+import { useAttendancePolicies } from '@/hooks/useAttendancePolicies';
 
 const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
-function getWorkingDays(year: number, month: number): number {
+function getWorkingDays(year: number, month: number, weekOffDays: number[]): number {
   const daysInMonth = new Date(year, month, 0).getDate();
   let count = 0;
   for (let d = 1; d <= daysInMonth; d++) {
     const day = new Date(year, month - 1, d).getDay();
-    if (day !== 0) count++; // exclude Sundays
+    if (!weekOffDays.includes(day)) count++;
   }
   return count;
 }
@@ -45,6 +46,7 @@ const AdminAttendanceReport = () => {
   const [logs, setLogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const { policies, loading: policiesLoading } = useAttendancePolicies();
 
   useEffect(() => {
     supabase.from('departments').select('id, name').eq('is_active', true).order('sort_order').then(({ data }) => setDepartments(data || []));
@@ -65,7 +67,7 @@ const AdminAttendanceReport = () => {
     });
   }, [month, year]);
 
-  const workingDays = useMemo(() => getWorkingDays(year, month), [year, month]);
+  const workingDays = useMemo(() => getWorkingDays(year, month, policies.week_off_days), [year, month, policies.week_off_days]);
 
   const rows: EmpRow[] = useMemo(() => {
     const filtered = deptFilter === 'all' ? employees : employees.filter(e => e.department === deptFilter);
@@ -76,14 +78,20 @@ const AdminAttendanceReport = () => {
       const present = uniqueDates.size;
 
       let late = 0;
+      let halfDays = 0;
       let totalHours = 0;
+
+      const [startH, startM] = policies.office_start_time.split(':').map(Number);
+      const graceMin = policies.grace_period_minutes;
+      const lateThresholdMin = startH * 60 + startM + graceMin;
+
       empLogs.forEach(l => {
         if (l.check_in) {
           const checkInTime = new Date(l.check_in);
-          const h = checkInTime.getHours();
-          const m = checkInTime.getMinutes();
-          if (h > 10 || (h === 10 && m > 0)) late++;
+          const ciMin = checkInTime.getHours() * 60 + checkInTime.getMinutes();
+          if (ciMin > lateThresholdMin) late++;
         }
+        if (l.status === 'half_day') halfDays++;
         if (l.check_in && l.check_out) {
           const diff = (new Date(l.check_out).getTime() - new Date(l.check_in).getTime()) / (1000 * 60 * 60);
           if (diff > 0) totalHours += diff;
@@ -103,7 +111,7 @@ const AdminAttendanceReport = () => {
         details: empLogs.sort((a: any, b: any) => a.log_date.localeCompare(b.log_date)),
       };
     });
-  }, [employees, logs, deptFilter, workingDays]);
+  }, [employees, logs, deptFilter, workingDays, policies]);
 
   const avgAttendance = rows.length > 0 ? Math.round(rows.reduce((s, r) => s + (r.present / r.workingDays) * 100, 0) / rows.length) : 0;
   const totalLate = rows.reduce((s, r) => s + r.late, 0);
@@ -248,7 +256,9 @@ const AdminAttendanceReport = () => {
                                 {row.details.map((log: any) => {
                                   const inTime = log.check_in ? format(new Date(log.check_in), 'HH:mm') : '—';
                                   const outTime = log.check_out ? format(new Date(log.check_out), 'HH:mm') : '—';
-                                  const isLate = log.check_in && (new Date(log.check_in).getHours() > 10 || (new Date(log.check_in).getHours() === 10 && new Date(log.check_in).getMinutes() > 0));
+                                  const ciMin = log.check_in ? new Date(log.check_in).getHours() * 60 + new Date(log.check_in).getMinutes() : 0;
+                                  const [sH, sM] = policies.office_start_time.split(':').map(Number);
+                                  const isLate = log.check_in && ciMin > (sH * 60 + sM + policies.grace_period_minutes);
                                   return (
                                     <div key={log.id} className="flex items-center justify-between rounded-lg border border-border bg-card px-3 py-2 text-xs">
                                       <span className="font-medium text-foreground">{format(new Date(log.log_date), 'dd MMM, EEE')}</span>
