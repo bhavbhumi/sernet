@@ -127,7 +127,7 @@ function AttendanceTab() {
       const geo = await getGeoLocation();
       const today = format(new Date(), 'yyyy-MM-dd');
       const checkInTime = new Date();
-      const { status, isLate } = determineStatus(checkInTime, null, policies);
+      const { status, isLate } = determineStatus(checkInTime, null, policies, session.department, shifts);
       const { error } = await supabase.from('attendance_logs').insert({
         employee_id: session.employeeId,
         log_date: today,
