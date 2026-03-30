@@ -67,7 +67,7 @@ const AdminAttendanceReport = () => {
     });
   }, [month, year]);
 
-  const workingDays = useMemo(() => getWorkingDays(year, month), [year, month]);
+  const workingDays = useMemo(() => getWorkingDays(year, month, policies.week_off_days), [year, month, policies.week_off_days]);
 
   const rows: EmpRow[] = useMemo(() => {
     const filtered = deptFilter === 'all' ? employees : employees.filter(e => e.department === deptFilter);
