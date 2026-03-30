@@ -110,7 +110,7 @@ const AdminSalarySetup = () => {
         medical_allowance: Number(data.medical_allowance) || 0,
         lta: Number(data.lta) || 0,
         other_allowance: Number(data.other_allowance) || 0,
-        is_pf_applicable: data.is_pf_applicable ?? true,
+        is_pf_applicable: data.is_pf_applicable ?? false,
         pf_wage_cap: Number(data.pf_wage_cap) || 15000,
         is_esi_applicable: data.is_esi_applicable ?? false,
         tds_monthly: Number(data.tds_monthly) || 0,
