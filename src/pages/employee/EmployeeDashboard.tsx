@@ -22,25 +22,69 @@ import { useAttendancePolicies, determineStatus, getEffectiveShift } from '@/hoo
 /* ─── Profile Tab ─── */
 function ProfileTab() {
   const { session } = useEmployeeSession();
+  const [editing, setEditing] = useState(false);
+  const [phone, setPhone] = useState('');
+  const [emergencyContact, setEmergencyContact] = useState('');
+  const [emergencyPhone, setEmergencyPhone] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [profileExtra, setProfileExtra] = useState<any>(null);
+
+  useEffect(() => {
+    if (!session) return;
+    supabase
+      .from('employees')
+      .select('phone, bio')
+      .eq('id', session.employeeId)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data) {
+          setPhone(data.phone || '');
+          // Store emergency contact in bio field as JSON
+          try {
+            const extra = data.bio ? JSON.parse(data.bio) : {};
+            setEmergencyContact(extra.emergency_contact || '');
+            setEmergencyPhone(extra.emergency_phone || '');
+            setProfileExtra(extra);
+          } catch {
+            setProfileExtra({});
+          }
+        }
+      });
+  }, [session]);
+
+  const handleSave = async () => {
+    if (!session) return;
+    setSaving(true);
+    const bio = JSON.stringify({ ...profileExtra, emergency_contact: emergencyContact, emergency_phone: emergencyPhone });
+    const { error } = await supabase.from('employees').update({ phone, bio }).eq('id', session.employeeId);
+    if (error) { sonnerToast.error(error.message); } else { sonnerToast.success('Profile updated'); setEditing(false); }
+    setSaving(false);
+  };
+
   if (!session) return null;
 
   return (
     <div className="bg-card border border-border rounded-xl p-5">
-      <div className="flex items-center gap-4 mb-6">
-        {session.photoUrl ? (
-          <img src={session.photoUrl} alt={session.fullName} className="w-16 h-16 rounded-full object-cover" />
-        ) : (
-          <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-xl font-semibold text-primary">
-            {session.fullName.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2)}
-          </div>
-        )}
-        <div>
-          <h3 className="text-lg font-semibold text-foreground">{session.fullName}</h3>
-          <p className="text-sm text-muted-foreground">{session.designation} · {session.department}</p>
-          {session.employeeCode && (
-            <Badge variant="outline" className="mt-1 text-xs">{session.employeeCode}</Badge>
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-4">
+          {session.photoUrl ? (
+            <img src={session.photoUrl} alt={session.fullName} className="w-16 h-16 rounded-full object-cover" />
+          ) : (
+            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-xl font-semibold text-primary">
+              {session.fullName.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2)}
+            </div>
           )}
+          <div>
+            <h3 className="text-lg font-semibold text-foreground">{session.fullName}</h3>
+            <p className="text-sm text-muted-foreground">{session.designation} · {session.department}</p>
+            {session.employeeCode && (
+              <Badge variant="outline" className="mt-1 text-xs">{session.employeeCode}</Badge>
+            )}
+          </div>
         </div>
+        {!editing && (
+          <Button variant="outline" size="sm" onClick={() => setEditing(true)}>Edit</Button>
+        )}
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
         <div>
@@ -53,6 +97,37 @@ function ProfileTab() {
             {session.dateOfJoining ? format(new Date(session.dateOfJoining), 'dd MMM yyyy') : '—'}
           </p>
         </div>
+        {editing ? (
+          <>
+            <div>
+              <Label className="text-xs">Phone</Label>
+              <Input value={phone} onChange={e => setPhone(e.target.value)} placeholder="Phone number" className="mt-1" />
+            </div>
+            <div>
+              <Label className="text-xs">Emergency Contact Name</Label>
+              <Input value={emergencyContact} onChange={e => setEmergencyContact(e.target.value)} placeholder="Contact name" className="mt-1" />
+            </div>
+            <div>
+              <Label className="text-xs">Emergency Contact Phone</Label>
+              <Input value={emergencyPhone} onChange={e => setEmergencyPhone(e.target.value)} placeholder="Contact phone" className="mt-1" />
+            </div>
+            <div className="md:col-span-2 flex gap-2 justify-end pt-2">
+              <Button variant="outline" size="sm" onClick={() => setEditing(false)}>Cancel</Button>
+              <Button size="sm" onClick={handleSave} disabled={saving}>{saving ? 'Saving…' : 'Save'}</Button>
+            </div>
+          </>
+        ) : (
+          <>
+            <div>
+              <span className="text-muted-foreground text-xs">Phone</span>
+              <p className="text-foreground">{phone || '—'}</p>
+            </div>
+            <div>
+              <span className="text-muted-foreground text-xs">Emergency Contact</span>
+              <p className="text-foreground">{emergencyContact ? `${emergencyContact} · ${emergencyPhone}` : '—'}</p>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
