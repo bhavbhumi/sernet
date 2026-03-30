@@ -141,6 +141,7 @@ const AdminAttendance = lazy(() => import("./pages/admin/hr/AdminAttendance"));
 const AdminAttendanceReport = lazy(() => import("./pages/admin/hr/AdminAttendanceReport"));
 const AdminSalarySetup = lazy(() => import("./pages/admin/hr/AdminSalarySetup"));
 const AdminPayrollRun = lazy(() => import("./pages/admin/hr/AdminPayrollRun"));
+const AdminStatutoryDues = lazy(() => import("./pages/admin/hr/AdminStatutoryDues"));
 const AdminTeamMembers = lazy(() => import("./pages/admin/careers/AdminTeamMembers"));
 const AdminInvoices = lazy(() => import("./pages/admin/accounts/AdminInvoices"));
 const AdminPayroll = lazy(() => import("./pages/admin/accounts/AdminPayroll"));
