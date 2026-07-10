@@ -59,12 +59,18 @@ export const SEOHead = ({ title, description, path = '/', type = 'website', json
     sameAs: socialLinks,
   };
 
+  const isNonCanonicalHost = typeof window !== 'undefined'
+    && (window.location.hostname.includes('lovable.app')
+        || window.location.hostname.includes('lovableproject.com'));
+
   return (
     <Helmet>
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
       <link rel="canonical" href={url} />
       <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+      {isNonCanonicalHost && <meta name="robots" content="noindex, nofollow" />}
+
 
       {settings?.identity?.seo_keywords && (
         <meta name="keywords" content={settings.identity.seo_keywords} />

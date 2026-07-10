@@ -32,7 +32,23 @@
     <meta name="twitter:title" content="SERNET Financial Services — Wealth Management India" />
     <meta name="twitter:description" content="SERNET Financial Services — 35+ years of trusted wealth management. Trading, Mutual Funds, Insurance, Education &amp; more across 54 cities, 18 countries." />
     <meta name="twitter:image" content="https://sernetindia.com/og-image.png" />
+
+    <!-- Deindex non-canonical hosts (lovable.app previews/published subdomain) so Google only shows sernetindia.com -->
+    <script>
+      (function () {
+        try {
+          var host = window.location.hostname;
+          if (host.indexOf('lovable.app') !== -1 || host.indexOf('lovableproject.com') !== -1) {
+            var m = document.createElement('meta');
+            m.name = 'robots';
+            m.content = 'noindex, nofollow';
+            document.head.appendChild(m);
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
+
 
   <body>
     <div id="root"></div>
