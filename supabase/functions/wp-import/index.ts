@@ -331,22 +331,11 @@ Deno.serve(async (req) => {
       }
     }
 
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-
-
-    const authHeader = req.headers.get('authorization') ?? '';
     const callerIp = req.headers.get('x-forwarded-for') || req.headers.get('cf-connecting-ip') || 'unknown';
     const callerUA = req.headers.get('user-agent') || '';
+    const callerUserId: string | null = claimsData.claims.sub ?? null;
+    const callerEmail: string | null = (claimsData.claims as { email?: string }).email ?? null;
 
-    let callerUserId: string | null = null;
-    let callerEmail: string | null = null;
-    try {
-      const token = authHeader.replace('Bearer ', '');
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      callerUserId = payload.sub || null;
-      callerEmail = payload.email || null;
-    } catch { /* ignore */ }
 
     const writeAuditLog = async (logAction: string, details: Record<string, unknown>) => {
       try {
