@@ -12,8 +12,8 @@ const Index = () => {
   return (
     <Layout>
       <SEOHead
-        title="Home"
-        description="Trusted wealth management services by SERNET. Financial service providers across 54 cities, 18 countries. Online trading, mutual funds & retirement planning."
+        title="Wealth Management & Financial Services"
+        description="SERNET — 35+ years of trusted wealth management. Online trading, mutual funds, insurance & retirement planning across 54 cities and 18 countries."
         path="/"
         jsonLd={[
           {
