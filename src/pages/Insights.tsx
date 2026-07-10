@@ -29,6 +29,15 @@ const Insights = () => {
         title="Insights"
         description="Expert articles, market analysis, research reports and bulletins from SERNET Financial Services."
         path="/insights"
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'CollectionPage',
+          name: 'SERNET Insights',
+          description: 'Expert articles, market analysis, research reports and bulletins from SERNET Financial Services.',
+          url: 'https://sernetindia.com/insights',
+          isPartOf: { '@type': 'WebSite', name: 'SERNET Financial Services', url: 'https://sernetindia.com' },
+          about: ['Investing', 'Trading', 'Mutual Funds', 'Market Analysis', 'Financial Awareness'],
+        }}
       />
       <PageHero
         title="Stay ahead with expert"

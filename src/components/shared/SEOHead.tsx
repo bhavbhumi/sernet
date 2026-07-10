@@ -1,12 +1,14 @@
 import { Helmet } from 'react-helmet-async';
 import { useSiteSettings } from '@/hooks/useSiteSettings';
 
+type JsonLdInput = Record<string, unknown> | Array<Record<string, unknown>>;
+
 interface SEOHeadProps {
   title: string;
   description: string;
   path?: string;
   type?: string;
-  jsonLd?: Record<string, unknown>;
+  jsonLd?: JsonLdInput;
 }
 
 const FALLBACK_SITE_NAME = 'SERNET Financial Services';
@@ -90,9 +92,11 @@ export const SEOHead = ({ title, description, path = '/', type = 'website', json
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
 
-      <script type="application/ld+json">
-        {JSON.stringify(jsonLd || defaultJsonLd)}
-      </script>
+      {(Array.isArray(jsonLd) ? jsonLd : [jsonLd || defaultJsonLd]).map((block, i) => (
+        <script key={i} type="application/ld+json">
+          {JSON.stringify(block)}
+        </script>
+      ))}
     </Helmet>
   );
 };
