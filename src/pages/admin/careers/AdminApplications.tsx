@@ -159,10 +159,27 @@ export default function AdminApplications() {
                 </div>
               )}
               {selected.resume_url && (
-                <a href={selected.resume_url} target="_blank" rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2 bg-muted rounded-lg text-sm hover:bg-muted/80 transition-colors">
+                <button
+                  type="button"
+                  onClick={async () => {
+                    // Support both legacy full URLs and new storage paths
+                    let path = selected.resume_url;
+                    const marker = '/cms-resumes/';
+                    const idx = path.indexOf(marker);
+                    if (idx !== -1) path = path.substring(idx + marker.length);
+                    const { data, error } = await supabase.storage
+                      .from('cms-resumes')
+                      .createSignedUrl(path, 300);
+                    if (error || !data?.signedUrl) {
+                      alert('Could not open resume: ' + (error?.message ?? 'unknown error'));
+                      return;
+                    }
+                    window.open(data.signedUrl, '_blank', 'noopener,noreferrer');
+                  }}
+                  className="flex items-center gap-2 px-4 py-2 bg-muted rounded-lg text-sm hover:bg-muted/80 transition-colors"
+                >
                   <Download className="h-4 w-4" /> Download Resume
-                </a>
+                </button>
               )}
               <div>
                 <p className="text-sm font-medium mb-2">Update Status</p>
