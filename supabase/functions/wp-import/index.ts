@@ -270,12 +270,33 @@ Deno.serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
-  // ── Admin key gate (admin-only function) ──
-  const ADMIN_API_KEY = Deno.env.get('ADMIN_API_KEY');
-  const providedKey = req.headers.get('x-admin-key') ?? '';
-  if (!ADMIN_API_KEY || providedKey !== ADMIN_API_KEY) {
+  const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+  const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+  const anonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
+
+  // ── Admin-only: verify caller JWT and is_admin() ──
+  const authHeader = req.headers.get('Authorization') ?? '';
+  if (!authHeader.startsWith('Bearer ')) {
     return new Response(JSON.stringify({ success: false, error: 'Unauthorized' }), {
       status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+  const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2');
+  const userClient = createClient(supabaseUrl, anonKey, {
+    global: { headers: { Authorization: authHeader } },
+  });
+  const bearerToken = authHeader.replace('Bearer ', '');
+  const { data: claimsData, error: claimsErr } = await userClient.auth.getClaims(bearerToken);
+  if (claimsErr || !claimsData?.claims?.sub) {
+    return new Response(JSON.stringify({ success: false, error: 'Unauthorized' }), {
+      status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+  const adminClient = createClient(supabaseUrl, supabaseKey);
+  const { data: isAdminData } = await adminClient.rpc('is_admin', { _user_id: claimsData.claims.sub });
+  if (!isAdminData) {
+    return new Response(JSON.stringify({ success: false, error: 'Forbidden' }), {
+      status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   }
 
