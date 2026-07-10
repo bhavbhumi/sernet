@@ -62,7 +62,7 @@ export default function AdminRSSSettings() {
         <div className="py-8 text-center text-muted-foreground text-sm border-2 border-dashed border-border rounded-lg">
           No RSS feeds configured. Add a feed URL to start syncing content.
           <div className="mt-2 text-xs space-y-0.5">
-            {examples.map(e => <div key={e} className="font-mono text-muted-foreground/60">{e}</div>)}
+            {examples.map(e => <div key={e} className="font-mono text-muted-foreground">{e}</div>)}
           </div>
         </div>
       ) : (
