@@ -111,8 +111,8 @@ const ResumeUploadDialog = ({ jobId, jobTitle }: { jobId?: string; jobTitle?: st
         setSubmitting(false);
         return;
       }
-      const { data: urlData } = supabase.storage.from('cms-resumes').getPublicUrl(uploadData.path);
-      resume_url = urlData?.publicUrl ?? null;
+      // Store the storage path (not a public URL). Admins generate signed URLs on demand.
+      resume_url = uploadData.path;
     }
 
     const { error } = await db('job_applications').insert([{
