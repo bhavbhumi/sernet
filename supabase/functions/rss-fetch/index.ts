@@ -84,14 +84,43 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { feedUrl, limit = 20 } = await req.json();
+    const body = await req.json().catch(() => ({}));
+    const { feedUrl, limit: rawLimit = 20 } = body ?? {};
 
-    if (!feedUrl) {
+    // ── Input validation ──
+    if (typeof feedUrl !== 'string' || feedUrl.length > 2000) {
       return new Response(
-        JSON.stringify({ success: false, error: 'feedUrl is required' }),
+        JSON.stringify({ success: false, error: 'feedUrl must be a string (<=2000 chars)' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
+    let parsedUrl: URL;
+    try { parsedUrl = new URL(feedUrl); } catch {
+      return new Response(
+        JSON.stringify({ success: false, error: 'feedUrl is not a valid URL' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    if (parsedUrl.protocol !== 'https:' && parsedUrl.protocol !== 'http:') {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Only http(s) URLs are allowed' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    // Block local/private hosts to prevent SSRF
+    const host = parsedUrl.hostname.toLowerCase();
+    if (
+      host === 'localhost' || host === '0.0.0.0' || host.endsWith('.local') ||
+      /^127\./.test(host) || /^10\./.test(host) || /^192\.168\./.test(host) ||
+      /^169\.254\./.test(host) || /^172\.(1[6-9]|2\d|3[01])\./.test(host)
+    ) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Host not allowed' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    const limit = Math.min(Math.max(1, Number(rawLimit) || 20), 100);
+
 
     console.log('Fetching RSS feed:', feedUrl);
 
