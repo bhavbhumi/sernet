@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Layout } from '@/components/layout/Layout';
+import { SEOHead } from '@/components/shared/SEOHead';
 import { ArrowLeft, Calendar, User, Clock, FileText, Image, Headphones, Video, Heart, Share2, List } from 'lucide-react';
 import { AISummarizer } from '@/components/shared/AISummarizer';
 import { motion } from 'framer-motion';
@@ -201,8 +202,43 @@ export default function ArticleDetail() {
   const sidebarImageUrl = article.thumbnail_url || (isImageUrl(article.media_url) ? article.media_url : null);
   const hasMedia = (sidebarImageUrl || (article.media_url && ['Audio', 'Video'].includes(article.format)));
 
+  const publishedIso = (article.item_date || article.published_at)
+    ? new Date(article.item_date || article.published_at).toISOString()
+    : undefined;
+  const plainDescription = (article.excerpt || article.title || '')
+    .toString()
+    .replace(/<[^>]+>/g, '')
+    .slice(0, 160);
+
   return (
     <Layout>
+      <SEOHead
+        title={article.title}
+        description={plainDescription || `Read ${article.title} on SERNET Insights.`}
+        path={`/insights/${id}`}
+        type="article"
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'Article',
+          headline: article.title,
+          description: plainDescription,
+          image: sidebarImageUrl ? [sidebarImageUrl] : undefined,
+          datePublished: publishedIso,
+          dateModified: article.updated_at ? new Date(article.updated_at).toISOString() : publishedIso,
+          author: article.author
+            ? { '@type': 'Person', name: article.author }
+            : { '@type': 'Organization', name: 'SERNET Financial Services' },
+          publisher: {
+            '@type': 'Organization',
+            name: 'SERNET Financial Services',
+            logo: { '@type': 'ImageObject', url: 'https://sernetindia.com/favicon-32x32.png' },
+          },
+          mainEntityOfPage: {
+            '@type': 'WebPage',
+            '@id': `https://sernetindia.com/insights/${id}`,
+          },
+        }}
+      />
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
