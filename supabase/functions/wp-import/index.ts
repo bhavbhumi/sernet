@@ -270,12 +270,49 @@ Deno.serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  // ── Admin key gate (admin-only function) ──
+  const ADMIN_API_KEY = Deno.env.get('ADMIN_API_KEY');
+  const providedKey = req.headers.get('x-admin-key') ?? '';
+  if (!ADMIN_API_KEY || providedKey !== ADMIN_API_KEY) {
+    return new Response(JSON.stringify({ success: false, error: 'Unauthorized' }), {
+      status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+
   try {
     const body = await req.json().catch(() => ({}));
     const { action = 'list', article_url } = body;
 
+    // Validate action + article_url
+    const ALLOWED_ACTIONS = ['list', 'scrape_one', 'scrape_batch'];
+    if (typeof action !== 'string' || !ALLOWED_ACTIONS.includes(action)) {
+      return new Response(JSON.stringify({ success: false, error: 'Invalid action' }), {
+        status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+    if (article_url !== undefined) {
+      if (typeof article_url !== 'string' || article_url.length > 2000) {
+        return new Response(JSON.stringify({ success: false, error: 'Invalid article_url' }), {
+          status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+      try {
+        const u = new URL(article_url);
+        if (u.hostname !== 'sernetindia.com' && !u.hostname.endsWith('.sernetindia.com')) {
+          return new Response(JSON.stringify({ success: false, error: 'Only sernetindia.com URLs allowed' }), {
+            status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          });
+        }
+      } catch {
+        return new Response(JSON.stringify({ success: false, error: 'article_url is not a valid URL' }), {
+          status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+    }
+
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+
 
     const authHeader = req.headers.get('authorization') ?? '';
     const callerIp = req.headers.get('x-forwarded-for') || req.headers.get('cf-connecting-ip') || 'unknown';

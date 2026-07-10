@@ -75,8 +75,9 @@ Deno.serve(async (req) => {
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
     );
   } catch (err) {
+    console.error('bootstrap-admin error:', err);
     return new Response(
-      JSON.stringify({ error: err.message }),
+      JSON.stringify({ error: 'Failed to create admin. Check function logs.' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
     );
   }

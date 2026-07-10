@@ -50,6 +50,15 @@ Deno.serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  // ── Admin key gate (admin-only function; also invoked by pg_cron with the key) ──
+  const ADMIN_API_KEY = Deno.env.get('ADMIN_API_KEY');
+  const providedKey = req.headers.get('x-admin-key') ?? '';
+  if (!ADMIN_API_KEY || providedKey !== ADMIN_API_KEY) {
+    return new Response(JSON.stringify({ success: false, error: 'Unauthorized' }), {
+      status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+
   const supabase = createClient(
     Deno.env.get('SUPABASE_URL')!,
     Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
@@ -158,9 +167,10 @@ Deno.serve(async (req) => {
       }
     );
   } catch (err) {
-    addLog(`💥 Fatal error: ${String(err)}`);
+  } catch (err) {
+    console.error('sync-economic-actuals fatal:', err);
     return new Response(
-      JSON.stringify({ success: false, error: String(err), log }),
+      JSON.stringify({ success: false, error: 'Sync failed. Check function logs.' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
