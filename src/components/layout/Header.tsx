@@ -151,7 +151,7 @@ export const Header = () => {
                     onClick={() => handleLangChange(lang.code)}
                   >
                     <span>{lang.nativeLabel}</span>
-                    <span className="text-muted-foreground/60 ml-2 text-[12px]">{lang.label}</span>
+                    <span className="text-muted-foreground ml-2 text-[12px]">{lang.label}</span>
                   </button>
                 ))}
               </div>
@@ -201,7 +201,7 @@ export const Header = () => {
                     onClick={() => handleLangChange(lang.code)}
                   >
                     <span>{lang.nativeLabel}</span>
-                    <span className="text-muted-foreground/60 ml-2 text-[12px]">{lang.label}</span>
+                    <span className="text-muted-foreground ml-2 text-[12px]">{lang.label}</span>
                   </button>
                 ))}
               </div>

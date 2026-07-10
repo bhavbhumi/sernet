@@ -473,7 +473,7 @@ export const CareersContent = () => {
                   </div>
                   <h3 className="text-sm font-medium text-foreground">{member.full_name}</h3>
                   <p className="text-xs text-muted-foreground mt-0.5">{member.designation}</p>
-                  {member.department && <p className="text-xs text-muted-foreground/60">{member.department}</p>}
+                  {member.department && <p className="text-xs text-muted-foreground">{member.department}</p>}
                 </motion.div>
               ))}
             </div>

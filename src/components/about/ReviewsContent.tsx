@@ -524,7 +524,7 @@ export const ReviewsContent = () => {
                           </div>
                         )}
                         {review.published_at && (
-                          <span className="text-[10px] text-muted-foreground/60">
+                          <span className="text-[10px] text-muted-foreground">
                             {new Date(review.published_at).toLocaleDateString('en-IN', { month: 'short', year: 'numeric' })}
                           </span>
                         )}
