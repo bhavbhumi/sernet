@@ -12,19 +12,15 @@ export const HeroSection = () => {
     <section className="section-padding bg-background">
       <div className="container-sernet">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-          {/* Image - shows first on mobile */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.15 }}
-            className="flex justify-center lg:justify-end lg:order-2"
-          >
+          {/* Image - shows first on mobile. No entry-fade so it's a valid LCP paint */}
+          <div className="flex justify-center lg:justify-end lg:order-2">
             <motion.img
               src={heroIllustration}
               alt="SERNET wealth management platform – online trading, mutual fund investment and insurance solutions across 54 cities"
               className="w-full max-w-[420px] lg:max-w-[500px] h-auto dark:hidden"
               width={1200}
               height={1075}
+              decoding="async"
               // @ts-ignore fetchpriority not in React types yet
               fetchpriority="high"
               animate={{ y: [0, -12, 0] }}
@@ -36,11 +32,12 @@ export const HeroSection = () => {
               className="w-full max-w-[420px] lg:max-w-[500px] h-auto hidden dark:block"
               width={1536}
               height={1024}
+              decoding="async"
               style={{ mixBlendMode: 'lighten' }}
               animate={{ y: [0, -12, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
             />
-          </motion.div>
+          </div>
 
           {/* Content */}
           <motion.div
