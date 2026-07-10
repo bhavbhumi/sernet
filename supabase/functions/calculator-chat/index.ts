@@ -11,9 +11,38 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { messages, calcType, aiContext, sessionId, leadCaptured } = await req.json();
+    const body = await req.json().catch(() => ({}));
+    const { messages, calcType, aiContext, sessionId, leadCaptured } = body ?? {};
+
+    // ── Input validation ──
+    const ALLOWED_CALC = ["sip", "lumpsum", "goal", "brokerage", "margin", "insurance", "retirement", "swp", "stp"];
+    if (!Array.isArray(messages) || messages.length === 0 || messages.length > 50) {
+      return new Response(JSON.stringify({ error: "Invalid messages: must be an array of 1-50 items." }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+    for (const m of messages) {
+      if (!m || typeof m !== "object" || !["user", "assistant", "system"].includes(m.role) ||
+          typeof m.content !== "string" || m.content.length > 4000) {
+        return new Response(JSON.stringify({ error: "Invalid message shape (role/content required, content <=4000 chars)." }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      }
+    }
+    if (typeof calcType !== "string" || !ALLOWED_CALC.includes(calcType)) {
+      return new Response(JSON.stringify({ error: "Invalid calcType." }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+    if (aiContext !== undefined && (typeof aiContext !== "string" || aiContext.length > 4000)) {
+      return new Response(JSON.stringify({ error: "Invalid aiContext." }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+    if (sessionId !== undefined && sessionId !== null && (typeof sessionId !== "string" || !/^[a-zA-Z0-9_-]{1,64}$/.test(sessionId))) {
+      return new Response(JSON.stringify({ error: "Invalid sessionId." }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
+
 
     // Log session to DB (fire-and-forget, don't block the AI response)
     if (sessionId) {
@@ -165,7 +194,7 @@ Important:
     });
   } catch (err) {
     console.error("calculator-chat error:", err);
-    return new Response(JSON.stringify({ error: err instanceof Error ? err.message : "Unknown error" }), {
+    return new Response(JSON.stringify({ error: "An unexpected error occurred. Please try again." }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });

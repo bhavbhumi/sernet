@@ -13,13 +13,37 @@ serve(async (req) => {
   }
 
   try {
-    const { goalText, saveLead } = await req.json();
+    const body = await req.json().catch(() => ({}));
+    const { goalText, saveLead } = body ?? {};
 
-    if (!goalText || typeof goalText !== "string" || goalText.trim().length < 5) {
+    // ── Input validation ──
+    if (
+      !goalText || typeof goalText !== "string" ||
+      goalText.trim().length < 5 || goalText.length > 2000 ||
+      /[\x00-\x08\x0B\x0C\x0E-\x1F]/.test(goalText)
+    ) {
       return new Response(
-        JSON.stringify({ error: "Please describe your financial goal." }),
+        JSON.stringify({ error: "Please describe your financial goal (5-2000 chars, no control characters)." }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
+    }
+    if (saveLead !== undefined && (typeof saveLead !== "object" || saveLead === null || Array.isArray(saveLead))) {
+      return new Response(
+        JSON.stringify({ error: "Invalid lead payload." }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+    if (saveLead) {
+      const nameOk = typeof saveLead.name === "string" && saveLead.name.trim().length >= 1 && saveLead.name.length <= 100;
+      const phoneOk = typeof saveLead.phone === "string" && /^\+?[0-9\s\-]{7,20}$/.test(saveLead.phone);
+      const emailOk = saveLead.email === undefined || saveLead.email === null ||
+        (typeof saveLead.email === "string" && saveLead.email.length <= 255 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(saveLead.email));
+      if (!nameOk || !phoneOk || !emailOk) {
+        return new Response(
+          JSON.stringify({ error: "Invalid name, phone, or email." }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
     }
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
@@ -187,7 +211,7 @@ Return ONLY valid JSON matching the tool schema.`;
   } catch (err) {
     console.error("ai-calculator error:", err);
     return new Response(
-      JSON.stringify({ error: err instanceof Error ? err.message : "Unknown error" }),
+      JSON.stringify({ error: "An unexpected error occurred. Please try again." }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }

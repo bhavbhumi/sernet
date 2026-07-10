@@ -13,13 +13,27 @@ serve(async (req) => {
   }
 
   try {
-    const { title, body, contentType = "article", contentId } = await req.json();
+    const payload = await req.json().catch(() => ({}));
+    const { title, body, contentType = "article", contentId } = payload ?? {};
 
-    if (!title || !body) {
-      return new Response(
-        JSON.stringify({ error: "title and body are required" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+    const ALLOWED_TYPES = ["article", "bulletin", "circular", "news", "feed", "press", "awareness"];
+    const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+    if (typeof title !== "string" || title.trim().length < 3 || title.length > 500) {
+      return new Response(JSON.stringify({ error: "title must be a string (3-500 chars)" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+    if (typeof body !== "string" || body.trim().length < 10 || body.length > 100000) {
+      return new Response(JSON.stringify({ error: "body must be a string (10-100000 chars)" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+    if (typeof contentType !== "string" || !ALLOWED_TYPES.includes(contentType)) {
+      return new Response(JSON.stringify({ error: "invalid contentType" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+    if (contentId !== undefined && contentId !== null && (typeof contentId !== "string" || !UUID_RE.test(contentId))) {
+      return new Response(JSON.stringify({ error: "invalid contentId (must be UUID)" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
     // Use service role client to bypass RLS for cache read/write
