@@ -205,7 +205,7 @@ export default function ArticleDetail() {
   const publishedIso = (article.item_date || article.published_at)
     ? new Date(article.item_date || article.published_at).toISOString()
     : undefined;
-  const plainDescription = (article.summary || article.excerpt || article.title || '')
+  const plainDescription = (article.excerpt || article.title || '')
     .toString()
     .replace(/<[^>]+>/g, '')
     .slice(0, 160);
