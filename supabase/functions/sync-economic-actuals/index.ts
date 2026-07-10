@@ -50,10 +50,35 @@ Deno.serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
-  const supabase = createClient(
-    Deno.env.get('SUPABASE_URL')!,
-    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-  );
+  const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+  const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+  const anonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
+
+  // ── Admin-only: verify caller JWT and is_admin() ──
+  const authHeader = req.headers.get('Authorization') ?? '';
+  if (!authHeader.startsWith('Bearer ')) {
+    return new Response(JSON.stringify({ success: false, error: 'Unauthorized' }), {
+      status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+  const userClient = createClient(supabaseUrl, anonKey, {
+    global: { headers: { Authorization: authHeader } },
+  });
+  const token = authHeader.replace('Bearer ', '');
+  const { data: claimsData, error: claimsErr } = await userClient.auth.getClaims(token);
+  if (claimsErr || !claimsData?.claims?.sub) {
+    return new Response(JSON.stringify({ success: false, error: 'Unauthorized' }), {
+      status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+  const supabase = createClient(supabaseUrl, serviceKey);
+  const { data: isAdminData } = await supabase.rpc('is_admin', { _user_id: claimsData.claims.sub });
+  if (!isAdminData) {
+    return new Response(JSON.stringify({ success: false, error: 'Forbidden' }), {
+      status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+
 
   const teKey = Deno.env.get('TE_API_KEY') || 'guest:guest';
   const log: string[] = [];
@@ -158,9 +183,10 @@ Deno.serve(async (req) => {
       }
     );
   } catch (err) {
-    addLog(`💥 Fatal error: ${String(err)}`);
+  } catch (err) {
+    console.error('sync-economic-actuals fatal:', err);
     return new Response(
-      JSON.stringify({ success: false, error: String(err), log }),
+      JSON.stringify({ success: false, error: 'Sync failed. Check function logs.' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }

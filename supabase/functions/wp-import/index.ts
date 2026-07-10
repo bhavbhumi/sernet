@@ -270,25 +270,72 @@ Deno.serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+  const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+  const anonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
+
+  // ── Admin-only: verify caller JWT and is_admin() ──
+  const authHeader = req.headers.get('Authorization') ?? '';
+  if (!authHeader.startsWith('Bearer ')) {
+    return new Response(JSON.stringify({ success: false, error: 'Unauthorized' }), {
+      status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+  const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2');
+  const userClient = createClient(supabaseUrl, anonKey, {
+    global: { headers: { Authorization: authHeader } },
+  });
+  const bearerToken = authHeader.replace('Bearer ', '');
+  const { data: claimsData, error: claimsErr } = await userClient.auth.getClaims(bearerToken);
+  if (claimsErr || !claimsData?.claims?.sub) {
+    return new Response(JSON.stringify({ success: false, error: 'Unauthorized' }), {
+      status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+  const adminClient = createClient(supabaseUrl, supabaseKey);
+  const { data: isAdminData } = await adminClient.rpc('is_admin', { _user_id: claimsData.claims.sub });
+  if (!isAdminData) {
+    return new Response(JSON.stringify({ success: false, error: 'Forbidden' }), {
+      status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+
   try {
     const body = await req.json().catch(() => ({}));
     const { action = 'list', article_url } = body;
 
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    // Validate action + article_url
+    const ALLOWED_ACTIONS = ['list', 'scrape_one', 'scrape_batch'];
+    if (typeof action !== 'string' || !ALLOWED_ACTIONS.includes(action)) {
+      return new Response(JSON.stringify({ success: false, error: 'Invalid action' }), {
+        status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+    if (article_url !== undefined) {
+      if (typeof article_url !== 'string' || article_url.length > 2000) {
+        return new Response(JSON.stringify({ success: false, error: 'Invalid article_url' }), {
+          status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+      try {
+        const u = new URL(article_url);
+        if (u.hostname !== 'sernetindia.com' && !u.hostname.endsWith('.sernetindia.com')) {
+          return new Response(JSON.stringify({ success: false, error: 'Only sernetindia.com URLs allowed' }), {
+            status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          });
+        }
+      } catch {
+        return new Response(JSON.stringify({ success: false, error: 'article_url is not a valid URL' }), {
+          status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+    }
 
-    const authHeader = req.headers.get('authorization') ?? '';
     const callerIp = req.headers.get('x-forwarded-for') || req.headers.get('cf-connecting-ip') || 'unknown';
     const callerUA = req.headers.get('user-agent') || '';
+    const callerUserId: string | null = claimsData.claims.sub ?? null;
+    const callerEmail: string | null = (claimsData.claims as { email?: string }).email ?? null;
 
-    let callerUserId: string | null = null;
-    let callerEmail: string | null = null;
-    try {
-      const token = authHeader.replace('Bearer ', '');
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      callerUserId = payload.sub || null;
-      callerEmail = payload.email || null;
-    } catch { /* ignore */ }
 
     const writeAuditLog = async (logAction: string, details: Record<string, unknown>) => {
       try {
