@@ -9,5 +9,5 @@
 - [x] DMARC corrected to quarantine policy; awaiting Cloudflare rescan
 - [x] support.sernetindia.com and autodiscover.sernetindia.com restored to DNS-only after proxy checks failed
 - [x] Security contact file added; publish required before Cloudflare can detect it
-- [ ] Add the missing www domain verification record, then recheck www activation
+- [x] Added missing www domain verification record — publicly verified; activation recovery pending
 - [ ] Enable Bot Fight Mode and Cloudflare account MFA
