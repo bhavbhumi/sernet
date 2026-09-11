@@ -1,14 +1,13 @@
 project_id = "mmlovfyrjynvofhbnfqq"
 
-[functions.summarize-content]
-verify_jwt = false
-
-[functions.ai-calculator]
-verify_jwt = false
-
-[functions.sync-economic-actuals]
-verify_jwt = false
-
-[functions.dedupe-content]
-verify_jwt = false
-
+[functions]
+  [functions.ai-calculator]
+    verify_jwt = false
+  [functions.auth-email-hook]
+    verify_jwt = false
+  [functions.dedupe-content]
+    verify_jwt = false
+  [functions.summarize-content]
+    verify_jwt = false
+  [functions.sync-economic-actuals]
+    verify_jwt = false
