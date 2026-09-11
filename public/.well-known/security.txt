@@ -1,0 +1,4 @@
+Contact: mailto:bhavesh@sernetindia.com
+Canonical: https://sernetindia.com/.well-known/security.txt
+Preferred-Languages: en
+Expires: 2027-09-11T23:59:59Z
