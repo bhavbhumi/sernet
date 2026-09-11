@@ -1,6 +1,7 @@
 # Roadmap
 
-- [x] Retry Cloudflare DNS inventory after token update (done — 36 records visible)
-- [x] Fix www.sernetindia.com A record in Cloudflare (217.21.89.125 → 185.158.133.1, proxied off)
-- [ ] User: switch nameservers at GoDaddy to nico.ns.cloudflare.com + teagan.ns.cloudflare.com, then verify delegation
-- [ ] After NS cutover: confirm notify.sernetindia.com email DNS verification completes and auth emails send
+- [x] Cloudflare DNS access restored via new token
+- [x] www.sernetindia.com A record corrected to 185.158.133.1
+- [x] Nameservers switched at GoDaddy to Cloudflare (nico/teagan) — verified live
+- [x] notify.sernetindia.com NS delegation re-added in Cloudflare (ns3/ns4.lovable.cloud) — resolving
+- [ ] Send a real test email (password reset) to confirm end-to-end delivery
