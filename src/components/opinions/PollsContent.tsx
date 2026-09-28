@@ -38,18 +38,18 @@ function PollEngagement({ pollId }: { pollId: string }) {
   const { data: likeData } = useQuery({
     queryKey: ['poll_likes', pollId],
     queryFn: async () => {
-      const { data } = await db('poll_likes').select('fingerprint').eq('poll_id', pollId);
-      return data ?? [];
+      const { data } = await (supabase.rpc as any)('get_like_state', { _kind: 'poll', _target: pollId, _fp: fp });
+      return (data ?? { count: 0, liked: false }) as { count: number; liked: boolean };
     },
   });
 
-  const liked = (likeData ?? []).some((l: { fingerprint: string }) => l.fingerprint === fp);
-  const likeCount = (likeData ?? []).length;
+  const liked = !!likeData?.liked;
+  const likeCount = likeData?.count ?? 0;
 
   const toggleLike = useMutation({
     mutationFn: async () => {
       if (liked) {
-        await db('poll_likes').delete().eq('poll_id', pollId).eq('fingerprint', fp);
+        await (supabase.rpc as any)('remove_like', { _kind: 'poll', _target: pollId, _fp: fp });
       } else {
         await db('poll_likes').insert([{ poll_id: pollId, fingerprint: fp }]);
       }
@@ -92,16 +92,17 @@ function PollCard({ poll, index }: { poll: Poll; index: number }) {
     },
   });
 
-  const { data: votes = [] } = useQuery({
+  const { data: results } = useQuery({
     queryKey: ['poll_votes', poll.id],
     queryFn: async () => {
-      const { data } = await db('poll_votes').select('option_id, voter_fingerprint').eq('poll_id', poll.id);
-      return data ?? [];
+      const { data } = await (supabase.rpc as any)('get_poll_results', { _poll: poll.id, _fp: fp });
+      return (data ?? { counts: {}, total: 0, my_vote: null }) as { counts: Record<string, number>; total: number; my_vote: string | null };
     },
   });
+  const voteCounts = results?.counts ?? {};
+  const votes = Object.entries(voteCounts).flatMap(([option_id, n]) => Array.from({ length: Number(n) }, () => ({ option_id })));
 
-  const myVote = (votes as { option_id: string; voter_fingerprint: string | null }[])
-    .find(v => v.voter_fingerprint === fp)?.option_id;
+  const myVote = results?.my_vote ?? undefined;
 
   const hasVoted = !!myVote;
   const showResults = hasVoted || poll.status === 'closed';

@@ -31,16 +31,9 @@ export function useArticleEngagement(articleId: string) {
   const { data: likesData } = useQuery({
     queryKey: ['article-likes', articleId],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('article_likes')
-        .select('id, fingerprint')
-        .eq('article_id', articleId);
+      const { data, error } = await (supabase.rpc as any)('get_like_state', { _kind: 'article', _target: articleId, _fp: fp });
       if (error) throw error;
-      return {
-        count: data.length,
-        liked: data.some((l) => l.fingerprint === fp),
-        myLikeId: data.find((l) => l.fingerprint === fp)?.id ?? null,
-      };
+      return { count: (data?.count as number) ?? 0, liked: !!data?.liked };
     },
     enabled: !!articleId,
   });
@@ -61,8 +54,8 @@ export function useArticleEngagement(articleId: string) {
 
   const likeMutation = useMutation({
     mutationFn: async () => {
-      if (likesData?.liked && likesData.myLikeId) {
-        await supabase.from('article_likes').delete().eq('id', likesData.myLikeId);
+      if (likesData?.liked) {
+        await (supabase.rpc as any)('remove_like', { _kind: 'article', _target: articleId, _fp: fp });
       } else {
         await supabase.from('article_likes').insert({ article_id: articleId, fingerprint: fp });
       }
