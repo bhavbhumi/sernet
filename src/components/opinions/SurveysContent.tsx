@@ -56,18 +56,18 @@ function SurveyEngagement({ surveyId }: { surveyId: string }) {
   const { data: likeData } = useQuery({
     queryKey: ['survey_likes', surveyId],
     queryFn: async () => {
-      const { data } = await db('survey_likes').select('fingerprint').eq('survey_id', surveyId);
-      return data ?? [];
+      const { data } = await (supabase.rpc as any)('get_like_state', { _kind: 'survey', _target: surveyId, _fp: fp });
+      return (data ?? { count: 0, liked: false }) as { count: number; liked: boolean };
     },
   });
 
-  const liked = (likeData ?? []).some((l: { fingerprint: string }) => l.fingerprint === fp);
-  const likeCount = (likeData ?? []).length;
+  const liked = !!likeData?.liked;
+  const likeCount = likeData?.count ?? 0;
 
   const toggleLike = useMutation({
     mutationFn: async () => {
       if (liked) {
-        await db('survey_likes').delete().eq('survey_id', surveyId).eq('fingerprint', fp);
+        await (supabase.rpc as any)('remove_like', { _kind: 'survey', _target: surveyId, _fp: fp });
       } else {
         await db('survey_likes').insert([{ survey_id: surveyId, fingerprint: fp }]);
       }

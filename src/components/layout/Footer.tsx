@@ -167,12 +167,9 @@ const FooterNewsletterForm = () => {
     setSubmitting(true);
     setError('');
     try {
-      const { error: dbError } = await supabase
-        .from('newsletter_subscribers' as any)
-        .upsert(
-          { first_name: firstName, last_name: lastName || null, email, preferences, status: 'active', subscribed_at: new Date().toISOString() } as any,
-          { onConflict: 'email' }
-        );
+      const { error: dbError } = await (supabase.rpc as any)('subscribe_newsletter', {
+        _first_name: firstName, _last_name: lastName || null, _email: email.trim().toLowerCase(), _preferences: preferences,
+      });
       if (dbError) throw dbError;
       setSubmitted(true);
       setFirstName('');

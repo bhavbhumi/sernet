@@ -4680,6 +4680,11 @@ export type Database = {
     }
     Functions: {
       get_employee_id_for_user: { Args: { _user_id: string }; Returns: string }
+      get_like_state: {
+        Args: { _fp: string; _kind: string; _target: string }
+        Returns: Json
+      }
+      get_poll_results: { Args: { _fp: string; _poll: string }; Returns: Json }
       has_department_access: {
         Args: {
           _dept: Database["public"]["Enums"]["department"]
@@ -4689,6 +4694,10 @@ export type Database = {
       }
       is_admin: { Args: { _user_id: string }; Returns: boolean }
       is_super_admin: { Args: { _user_id: string }; Returns: boolean }
+      remove_like: {
+        Args: { _fp: string; _kind: string; _target: string }
+        Returns: undefined
+      }
       search_content: {
         Args: { query_text: string; result_limit?: number }
         Returns: {
@@ -4704,6 +4713,15 @@ export type Database = {
       }
       show_limit: { Args: never; Returns: number }
       show_trgm: { Args: { "": string }; Returns: string[] }
+      subscribe_newsletter: {
+        Args: {
+          _email: string
+          _first_name: string
+          _last_name: string
+          _preferences: Json
+        }
+        Returns: undefined
+      }
       validate_deal_transition: {
         Args: {
           _deal_id: string

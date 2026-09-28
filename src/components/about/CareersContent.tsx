@@ -102,7 +102,7 @@ const ResumeUploadDialog = ({ jobId, jobTitle }: { jobId?: string; jobTitle?: st
 
     // Upload resume if provided
     if (file) {
-      const fileName = `${Date.now()}-${file.name}`;
+      const fileName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from('cms-resumes')
         .upload(fileName, file);
