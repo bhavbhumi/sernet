@@ -1,6 +1,6 @@
 # Roadmap
 
-- [ ] Remove duplicate topics across Investor Charter and Legal pages; give each topic one native home, preserve approved IT/HR editions and old links
+- [x] Remove duplicate topics across Investor Charter and Legal pages; Investor Charter owns guidance, Legal owns contractual/privacy/disclosure/complaint/IT/HR content; approved IT/HR text and PDFs preserved, retired policy/charter links verified in preview
 
 - [x] Prepare HR Policy review draft for Sales and Operations covering recruitment, appraisal, retention and exit — PDF and editable draft prepared; seven pages visually checked
 - [x] Publish approved HR Policy text and PDF under Policies & Procedures — version 1.0 effective 12 October 2026; text, PDF and section link verified
