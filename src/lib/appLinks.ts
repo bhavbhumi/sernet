@@ -10,3 +10,7 @@ export const TICKFUNDS_LINKS = {
   APP_STORE: 'https://apps.apple.com/in/app/tickfunds/id1534139413',
   START_INVESTING: 'https://sernet-web.skylattice.tech/login',
 } as const;
+
+export const TUSHIL_LINKS = {
+  WEB: 'https://insure.tushil.sernetindia.com',
+} as const;
