@@ -7,9 +7,15 @@ export function LegalDocument({ body }: { body: string }) {
     const headings = Array.from(parsed.querySelectorAll('h2')).map((heading, index) => {
       const id = `legal-section-${index + 1}`;
       heading.id = id;
-      return { id, label: heading.textContent || `Section ${index + 1}` };
+      return { id, label: heading.textContent || `Section ${index + 1}`, group: heading.getAttribute('data-policy-group') || '' };
     });
-    return { html: parsed.body.innerHTML, headings };
+    const groups = headings.reduce<{ label: string; headings: typeof headings }[]>((result, heading) => {
+      const lastGroup = result[result.length - 1];
+      if (lastGroup?.label === heading.group) lastGroup.headings.push(heading);
+      else result.push({ label: heading.group, headings: [heading] });
+      return result;
+    }, []);
+    return { html: parsed.body.innerHTML, headings, groups };
   }, [body]);
 
   return (
@@ -19,11 +25,18 @@ export function LegalDocument({ body }: { body: string }) {
         <aside className="order-first lg:order-last">
           <nav aria-label="On this page" className="lg:sticky lg:top-36 border-l border-border pl-5">
             <p className="mb-3 text-xs font-semibold uppercase text-foreground">On this page</p>
-            <ol className="space-y-3">
-              {document.headings.map((heading) => (
-                <li key={heading.id}><a className="text-sm text-muted-foreground hover:text-primary focus-visible:text-primary" href={`#${heading.id}`}>{heading.label}</a></li>
+            <div className="space-y-5">
+              {document.groups.map((group, index) => (
+                <div key={`${group.label}-${index}`}>
+                  {group.label && <p className="mb-2 text-xs font-semibold text-foreground">{group.label}</p>}
+                  <ol className="space-y-3">
+                    {group.headings.map((heading) => (
+                      <li key={heading.id}><a className="text-sm text-muted-foreground hover:text-primary focus-visible:text-primary" href={`#${heading.id}`}>{heading.label}</a></li>
+                    ))}
+                  </ol>
+                </div>
               ))}
-            </ol>
+            </div>
           </nav>
         </aside>
       )}

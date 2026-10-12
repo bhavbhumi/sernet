@@ -4,6 +4,13 @@ import { describe, expect, it } from 'vitest';
 import { LegalDocument } from './LegalDocument';
 
 describe('LegalDocument', () => {
+  it('groups policy navigation while preserving existing numbered anchors', () => {
+    render(<LegalDocument body='<h2 data-policy-group="Investor Services">KYC Policy</h2><h2 data-policy-group="Investor Services">Transactions</h2><h2 data-policy-group="People & Governance">HR Policy</h2>' />);
+    expect(screen.getByText('Investor Services')).toBeInTheDocument();
+    expect(screen.getByText('People & Governance')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'HR Policy' })).toHaveAttribute('href', '#legal-section-3');
+  });
+
   it('builds unique working section anchors from CMS headings', () => {
     render(<LegalDocument body="<h2>Overview</h2><p>Distributor terms.</p><h2>Overview</h2>" />);
     expect(screen.getAllByRole('link', { name: 'Overview' }).map(link => link.getAttribute('href'))).toEqual(['#legal-section-1', '#legal-section-2']);
