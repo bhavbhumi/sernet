@@ -22,4 +22,4 @@
 - [x] Added missing www domain verification record — publicly verified; activation recovery pending
 - [ ] Enable Bot Fight Mode and Cloudflare account MFA
 
-- [ ] Investor Charter v1.0 (11 sections) + merge Policies §1 suitability/§2 KYC/§4 payment safety — draft awaiting approval before going live
+- [x] Publish approved Investor Charter v1.0 with corrected Support → Complaint escalation; replace duplicate investor guidance in Policies with section links; both live pages and KYC deep link verified; IT/HR text and anchors unchanged

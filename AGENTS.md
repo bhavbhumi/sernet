@@ -6,3 +6,4 @@
 - Keep product empanelments and commission download links within the consolidated disclosures CMS document, using uploaded asset URLs; this allows administrators to maintain verified provider information without a second data source.
 - Keep public IT and HR Policy text and their matching versioned PDF links within the Policies & Procedures CMS document; exclude internal review notes and operational secrets so each policy has one maintainable public edition.
 - Group policy navigation using CMS heading `data-policy-group` metadata while preserving the numbered section anchors; this keeps titles and groups editable without breaking existing policy links.
+- Keep detailed investor onboarding, suitability, servicing and payment-safety guidance in the standalone Investor Charter; replace overlapping policy prose with section links while preserving policy heading anchors and approved IT/HR editions to avoid conflicting guidance and broken links.
