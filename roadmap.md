@@ -1,8 +1,8 @@
 # Roadmap
 
 - [x] Prepare HR Policy review draft for Sales and Operations covering recruitment, appraisal, retention and exit — PDF and editable draft prepared; seven pages visually checked
-- [ ] Publish approved HR Policy text and PDF under Policies & Procedures — management approved 12 October 2026
-- [ ] Review existing policies and consolidate their titles into clear groups without changing approved obligations
+- [x] Publish approved HR Policy text and PDF under Policies & Procedures — version 1.0 effective 12 October 2026; text, PDF and section link verified
+- [x] Review existing policies and consolidate their titles into clear groups without changing approved obligations — Distribution & Investor Services; Conduct & Investor Protection; Technology & Information Security; People & Workplace
 - [x] Reorganise Legal & Compliance and footer disclosures around verified AMFI/APMI distributor registrations — all six sections, legacy links and investor guidance checked
 - [ ] Supply remaining provider/product commission schedules and approve legal wording with SERNET compliance reviewer — DSP/SBI schedules received
 - [x] Publish public organisation chart on About → Team tab, driven from HR employees (is_public) — 7 leadership roles per Bhavesh's structure
