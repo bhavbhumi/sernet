@@ -6,16 +6,18 @@ import { PageHero } from '@/components/layout/PageHero';
 import { SEOHead } from '@/components/shared/SEOHead';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CompanyContent } from '@/components/about/CompanyContent';
+import { TeamContent } from '@/components/about/TeamContent';
 import { CareersContent } from '@/components/about/CareersContent';
 import { PressContent } from '@/components/about/PressContent';
 import { RecognitionContent } from '@/components/about/RecognitionContent';
 import { ReviewsContent } from '@/components/about/ReviewsContent';
 
-const aboutTabs = ['Company', 'Careers', 'Press', 'Recognition', 'Reviews'] as const;
+const aboutTabs = ['Company', 'Team', 'Careers', 'Press', 'Recognition', 'Reviews'] as const;
 type AboutTab = (typeof aboutTabs)[number];
 
 const tabI18nKeys: Record<AboutTab, string> = {
   Company: 'about.tabs.company',
+  Team: 'about.tabs.team',
   Careers: 'about.tabs.careers',
   Press: 'about.tabs.press',
   Recognition: 'about.tabs.recognition',
@@ -24,6 +26,7 @@ const tabI18nKeys: Record<AboutTab, string> = {
 
 const tabContent: Record<AboutTab, React.ReactNode> = {
   Company: <CompanyContent />,
+  Team: <TeamContent />,
   Careers: <CareersContent />,
   Press: <PressContent />,
   Recognition: <RecognitionContent />,
