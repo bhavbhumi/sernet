@@ -1,4 +1,4 @@
-import { useSearchParams } from 'react-router-dom';
+import { Navigate, useSearchParams } from 'react-router-dom';
 import { Layout } from '@/components/layout/Layout';
 import { PageHero } from '@/components/layout/PageHero';
 import { SEOHead } from '@/components/shared/SEOHead';
@@ -38,6 +38,12 @@ const Legal = () => {
   });
 
   const activePage = pages?.find(p => p.slug === activeTab);
+
+  if (searchParams.get('tab') === 'commissions') {
+    const next = new URLSearchParams(searchParams);
+    next.set('tab', 'disclosures');
+    return <Navigate to={`/legal?${next.toString()}#legal-section-2`} replace />;
+  }
 
   return (
     <Layout>
