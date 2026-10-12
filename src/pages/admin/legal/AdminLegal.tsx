@@ -6,14 +6,10 @@ import { logAudit } from '@/lib/auditLog';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
-import { Scale, Shield, FileText, AlertTriangle, Save } from 'lucide-react';
+import { Save } from 'lucide-react';
+import { legalTabs } from '@/lib/legalConfig';
 
-const slugConfig = [
-  { slug: 'terms', label: 'Terms & Conditions', icon: Scale },
-  { slug: 'privacy', label: 'Privacy Policy', icon: Shield },
-  { slug: 'policies', label: 'Policies & Procedures', icon: FileText },
-  { slug: 'disclosures', label: 'Disclosures', icon: AlertTriangle },
-];
+const slugConfig = legalTabs.map(tab => ({ ...tab, slug: tab.key }));
 
 export default function AdminLegal() {
   const [activeSlug, setActiveSlug] = useState('terms');
@@ -22,26 +18,32 @@ export default function AdminLegal() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let cancelled = false;
     (async () => {
       setLoading(true);
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('legal_pages' as any)
         .select('body')
         .eq('slug', activeSlug)
-        .single();
+        .maybeSingle();
+      if (cancelled) return;
+      if (error) toast.error('Unable to load the legal document');
       setBody((data as any)?.body || '');
       setLoading(false);
     })();
+    return () => { cancelled = true; };
   }, [activeSlug]);
 
   const handleSave = async () => {
     setSaving(true);
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('legal_pages' as any)
         .update({ body, updated_at: new Date().toISOString() } as any)
-        .eq('slug', activeSlug);
+        .eq('slug', activeSlug)
+        .select('slug');
       if (error) throw error;
+      if (!data?.length) throw new Error('No document was saved. Please reload and try again.');
       await logAudit({ action: 'update', entity_type: 'legal_page', entity_id: activeSlug, details: { slug: activeSlug } });
       toast.success('Legal page saved successfully');
     } catch (err: any) {
@@ -53,10 +55,10 @@ export default function AdminLegal() {
 
   return (
     <AdminGuard>
-      <AdminLayout title="Legal Pages" subtitle="Manage terms, privacy, policies, and disclosures">
+      <AdminLayout title="Legal & Compliance" subtitle="Manage distributor terms, privacy, policies, disclosures, commissions and grievances">
         <div className="p-6 space-y-6">
           <div className="flex items-center justify-end">
-            <Button onClick={handleSave} disabled={saving} className="gap-2">
+            <Button onClick={handleSave} disabled={saving || loading} className="gap-2">
               <Save className="w-4 h-4" />
               {saving ? 'Saving…' : 'Save Changes'}
             </Button>
@@ -67,7 +69,8 @@ export default function AdminLegal() {
             {slugConfig.map((cfg) => {
               const Icon = cfg.icon;
               return (
-                <button
+                <Button
+                  variant={activeSlug === cfg.slug ? 'default' : 'secondary'}
                   key={cfg.slug}
                   onClick={() => setActiveSlug(cfg.slug)}
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
@@ -78,7 +81,7 @@ export default function AdminLegal() {
                 >
                   <Icon className="w-4 h-4" />
                   {cfg.label}
-                </button>
+                </Button>
               );
             })}
           </div>

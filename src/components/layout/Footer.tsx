@@ -9,6 +9,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 
 import sernetLogo from '@/assets/sernet-logo.png';
 import { useSiteSettings } from '@/hooks/useSiteSettings';
+import { distributorRegistrations, distributorScope } from '@/lib/legalConfig';
 
 const footerLinks = {
   company: [
@@ -99,6 +100,8 @@ const legalLinks: { nameKey?: string; label?: string; href: string }[] = [
   { nameKey: 'footer.privacy', href: '/legal?tab=privacy' },
   { nameKey: 'footer.policies', href: '/legal?tab=policies' },
   { nameKey: 'footer.disclosures', href: '/legal?tab=disclosures' },
+  { label: 'Commissions', href: '/legal?tab=commissions' },
+  { label: 'Grievances', href: '/legal?tab=grievances' },
   { label: 'Sitemap', href: '/sitemap' },
 ];
 
@@ -109,31 +112,38 @@ const FooterDisclosure = () => {
     <div className="mt-8 pt-6 border-t border-border">
       {/* First paragraph always visible */}
       <p className="text-[12px] text-muted-foreground leading-relaxed">
-        <span className="font-semibold text-foreground">Compliance Officer:</span> Mr Gaurav V Shah | <a href="mailto:compliance@sernetindia.com" className="text-primary hover:underline">compliance@sernetindia.com</a>. For any complaints, please write to <a href="mailto:complaint@sernetindia.com" className="text-primary hover:underline">complaint@sernetindia.com</a>. Please ensure you carefully read the <Link to="/disclosure" className="text-primary hover:underline">Mandatory Documents</Link> as prescribed by SEBI.
+        <span className="font-semibold text-foreground">Distribution capacity:</span> {distributorScope}
       </p>
+      <div className="mt-3 grid gap-3 lg:grid-cols-2 text-xs text-muted-foreground">
+        {distributorRegistrations.map(item => <p key={item.authority}><span className="font-semibold text-foreground">{item.authority}: {item.registration}</span> · EUIN {item.euin}<br />{item.role} · Valid until {item.validUntil}</p>)}
+      </div>
       
       {/* Collapsible rest */}
       <div className={`space-y-3 mt-3 overflow-hidden transition-all duration-300 ${expanded ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0 md:max-h-[1000px] md:opacity-100'}`}>
         <p className="text-[12px] text-muted-foreground leading-relaxed">
-          Financial Products and Services are provided by SERNET, it's Group Companies and third party service partners as mentioned <Link to="/network" className="text-primary hover:underline">here</Link>.
+          Mutual fund schemes and PMS portfolios are provided by their respective AMCs and portfolio managers. Trading, insurance and other partner services operate under the respective provider’s own registrations and terms. Partner registrations are not SERNET’s registrations. See <Link to="/legal?tab=disclosures" className="text-primary hover:underline">Regulatory Disclosures</Link> and <Link to="/legal?tab=commissions" className="text-primary hover:underline">Commission Disclosure</Link>.
         </p>
         <p className="text-[12px] text-muted-foreground leading-relaxed">
           We do not guarantee returns on any financial products or services what so ever. The tax treatment of these financial products is subject to individual circumstances and may change in the future.
         </p>
         <p className="text-[12px] text-muted-foreground leading-relaxed">
-          <span className="font-semibold text-foreground">Issued in the interest of investors:</span> Prevent unauthorised transactions in your account. Update your mobile numbers/email IDs with your stock brokers. Receive information of your transactions directly from Exchange on your mobile/email at the end of the day | KYC is one time exercise while dealing in securities markets – once KYC is done through a SEBI registered intermediary (broker, DP, Mutual Fund etc.), you need not undergo the same process again when you approach another intermediary | Dear Investor, if you are subscribing to an IPO, there is no need to issue a cheque. Please write the Bank account number and sign the IPO application form to authorize your bank to make payment in case of allotment. In case of non allotment the funds will remain in your bank account | As a business we don't give stock tips, and have not authorized anyone to trade on behalf of others. If you find anyone claiming to be part of SERNET and offering such services, please create a ticket <Link to="/support" className="text-primary hover:underline">here</Link>.
+          <span className="font-semibold text-foreground">Investor protection:</span> Read all scheme and PMS documents before investing. Use authorised payment channels, keep KYC and contact details current, and never share passwords or OTPs. We do not offer assured returns or authorise anyone to trade on behalf of others. Report suspicious requests through <Link to="/support" className="text-primary hover:underline">Support</Link>.
         </p>
+        <p className="text-xs text-muted-foreground leading-relaxed"><span className="font-semibold text-foreground">Compliance queries:</span> <a href="mailto:compliance@sernetindia.com" className="text-primary hover:underline">compliance@sernetindia.com</a> · <span className="font-semibold text-foreground">Complaints:</span> <a href="mailto:complaint@sernetindia.com" className="text-primary hover:underline">complaint@sernetindia.com</a>. See our <Link to="/legal?tab=grievances" className="text-primary hover:underline">Grievance Redressal</Link> process for product-specific escalation.</p>
       </div>
       
       {/* Mobile toggle */}
-      <button
+      <Button
+        variant="ghost"
+        size="sm"
         type="button"
+        aria-expanded={expanded}
         onClick={() => setExpanded(!expanded)}
         className="md:hidden flex items-center gap-1 mt-2 text-xs text-primary hover:underline"
       >
         {expanded ? 'Show less' : 'Read full disclaimer'}
         <ChevronDown className={`w-3 h-3 transition-transform ${expanded ? 'rotate-180' : ''}`} />
-      </button>
+      </Button>
     </div>
   );
 };
@@ -358,14 +368,14 @@ export const Footer = () => {
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 text-muted-foreground">
               <span>{footerCfg?.copyright_text || `© ${t('footer.madeWith')}, 2025`}</span>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-2">
               {legalLinks.map((link, index) => (
                 <span key={link.href} className="flex items-center gap-4">
                   <Link 
                     to={link.href}
                     className="text-muted-foreground hover:text-primary transition-colors"
                   >
-                    {link.label ?? t(link.nameKey!)}
+                    {link.label ?? t(link.nameKey || '')}
                   </Link>
                   {index < legalLinks.length - 1 && <span className="text-muted-foreground/50">|</span>}
                 </span>
