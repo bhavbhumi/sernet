@@ -5,8 +5,10 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { LegalDocument } from '@/components/legal/LegalDocument';
 import { Button } from '@/components/ui/button';
+import { Navigate, useLocation } from 'react-router-dom';
 
 const InvestorCharter = () => {
+  const { hash } = useLocation();
   const { data: body, isLoading, isError, refetch } = useQuery({
     queryKey: ['investor-charter-page'],
     queryFn: async () => {
@@ -15,6 +17,8 @@ const InvestorCharter = () => {
       return data?.body || '';
     },
   });
+  if (hash === '#legal-section-9') return <Navigate to="/legal?tab=disclosures#legal-section-1" replace />;
+  if (hash === '#legal-section-10') return <Navigate to="/legal?tab=grievances" replace />;
   return (
     <Layout>
       <SEOHead title="Investor Charter" description="SERNET investor rights, responsibilities, onboarding, suitability, portfolio review and customer lifecycle guidance." path="/investor-charter" />
