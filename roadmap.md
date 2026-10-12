@@ -1,5 +1,7 @@
 # Roadmap
 
+- [ ] Reorganise Legal & Compliance and footer disclosures around verified AMFI/APMI distributor registrations
+
 - [x] Cloudflare DNS access restored via new token
 - [x] www.sernetindia.com A record corrected to 185.158.133.1
 - [x] Nameservers switched at GoDaddy to Cloudflare (nico/teagan) — verified live
