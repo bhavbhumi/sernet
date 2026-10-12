@@ -18,7 +18,7 @@ SERNET Financial Services is a trusted wealth management company founded in 1989
 ## Platforms
 
 - [Choice FinX](https://choiceindia.com) — Trading and Demat account platform
-- [TickFunds](https://sernet-web.skylattice.tech) — Mutual fund investment platform
+- [TickFunds](https://tickfunds.sernetindia.com/login) — Mutual fund investment platform
 - [Findemy](https://sernetindia.com/services?tab=education) — Financial education portal
 
 ## Key Information
