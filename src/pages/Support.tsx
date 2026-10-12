@@ -12,6 +12,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Badge } from '@/components/ui/badge';
 import { useDebounce } from '@/hooks/useDebounce';
 import { TicketWizard } from '@/components/support/TicketWizard';
+import { TICKFUNDS_LINKS } from '@/lib/appLinks';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { User } from '@supabase/supabase-js';
@@ -294,7 +295,7 @@ const Support = () => {
                             <a href="https://choicefinx.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary hover:underline">
                               <ExternalLink className="h-3 w-3" /> Choice FinX Portal
                             </a>
-                            <a href="https://tickfunds.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary hover:underline">
+                            <a href={TICKFUNDS_LINKS.START_INVESTING} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary hover:underline">
                               <ExternalLink className="h-3 w-3" /> Tick Funds Portal
                             </a>
                             <Link to="/complaints" className="flex items-center gap-2 text-primary hover:underline">
