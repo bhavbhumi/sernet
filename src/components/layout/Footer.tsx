@@ -99,8 +99,7 @@ const legalLinks: { nameKey?: string; label?: string; href: string }[] = [
   { nameKey: 'footer.terms', href: '/legal?tab=terms' },
   { nameKey: 'footer.privacy', href: '/legal?tab=privacy' },
   { nameKey: 'footer.policies', href: '/legal?tab=policies' },
-  { nameKey: 'footer.disclosures', href: '/legal?tab=disclosures' },
-  { label: 'Commissions', href: '/legal?tab=commissions' },
+  { label: 'Disclosures', href: '/legal?tab=disclosures' },
   { label: 'Grievances', href: '/legal?tab=grievances' },
   { label: 'Sitemap', href: '/sitemap' },
 ];
@@ -121,7 +120,7 @@ const FooterDisclosure = () => {
       {/* Collapsible rest */}
       <div className={`space-y-3 mt-3 overflow-hidden transition-all duration-300 ${expanded ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0 md:max-h-[1000px] md:opacity-100'}`}>
         <p className="text-[12px] text-muted-foreground leading-relaxed">
-          Mutual fund schemes and PMS portfolios are provided by their respective AMCs and portfolio managers. Trading, insurance and other partner services operate under the respective provider’s own registrations and terms. Partner registrations are not SERNET’s registrations. See <Link to="/legal?tab=disclosures" className="text-primary hover:underline">Regulatory Disclosures</Link> and <Link to="/legal?tab=commissions" className="text-primary hover:underline">Commission Disclosure</Link>.
+          Mutual fund schemes and PMS portfolios are provided by their respective AMCs and portfolio managers. Trading, insurance and other partner services operate under the respective provider’s own registrations and terms. Partner registrations are not SERNET’s registrations. See <Link to="/legal?tab=disclosures" className="text-primary hover:underline">Disclosures</Link> for registrations, product empanelments and commission schedules.
         </p>
         <p className="text-[12px] text-muted-foreground leading-relaxed">
           We do not guarantee returns on any financial products or services what so ever. The tax treatment of these financial products is subject to individual circumstances and may change in the future.

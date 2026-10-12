@@ -55,7 +55,7 @@ export default function AdminLegal() {
 
   return (
     <AdminGuard>
-      <AdminLayout title="Legal & Compliance" subtitle="Manage distributor terms, privacy, policies, disclosures, commissions and grievances">
+      <AdminLayout title="Legal & Compliance" subtitle="Manage terms, privacy, policies, consolidated disclosures and grievances">
         <div className="p-6 space-y-6">
           <div className="flex items-center justify-end">
             <Button onClick={handleSave} disabled={saving || loading} className="gap-2">
