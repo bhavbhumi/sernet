@@ -4,6 +4,12 @@ import { describe, expect, it } from 'vitest';
 import { LegalDocument } from './LegalDocument';
 
 describe('LegalDocument', () => {
+  it('preserves explicit section anchors after duplicate sections are removed', () => {
+    render(<LegalDocument body='<h2 id="legal-section-9">Information Technology Policy</h2><h2 id="legal-section-10">HR Policy — Sales &amp; Operations</h2>' />);
+    expect(screen.getByRole('link', { name: 'Information Technology Policy' })).toHaveAttribute('href', '#legal-section-9');
+    expect(screen.getByRole('link', { name: 'HR Policy — Sales & Operations' })).toHaveAttribute('href', '#legal-section-10');
+  });
+
   it('groups policy navigation while preserving existing numbered anchors', () => {
     render(<LegalDocument body='<h2 data-policy-group="Investor Services">KYC Policy</h2><h2 data-policy-group="Investor Services">Transactions</h2><h2 data-policy-group="People & Governance">HR Policy</h2>' />);
     expect(screen.getByText('Investor Services')).toBeInTheDocument();

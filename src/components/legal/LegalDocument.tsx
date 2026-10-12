@@ -4,8 +4,12 @@ import DOMPurify from 'dompurify';
 export function LegalDocument({ body }: { body: string }) {
   const document = useMemo(() => {
     const parsed = new DOMParser().parseFromString(DOMPurify.sanitize(body), 'text/html');
+    const usedIds = new Set<string>();
     const headings = Array.from(parsed.querySelectorAll('h2')).map((heading, index) => {
-      const id = `legal-section-${index + 1}`;
+      const requestedId = heading.id;
+      let id = /^legal-section-\d+$/.test(requestedId) && !usedIds.has(requestedId) ? requestedId : `legal-section-${index + 1}`;
+      while (usedIds.has(id)) id = `legal-section-${Number(id.replace('legal-section-', '')) + 1}`;
+      usedIds.add(id);
       heading.id = id;
       return { id, label: heading.textContent || `Section ${index + 1}`, group: heading.getAttribute('data-policy-group') || '' };
     });

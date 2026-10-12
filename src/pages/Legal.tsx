@@ -1,4 +1,4 @@
-import { Navigate, useSearchParams } from 'react-router-dom';
+import { Navigate, useLocation, useSearchParams } from 'react-router-dom';
 import { Layout } from '@/components/layout/Layout';
 import { PageHero } from '@/components/layout/PageHero';
 import { SEOHead } from '@/components/shared/SEOHead';
@@ -14,6 +14,7 @@ interface LegalPage { slug: string; title: string; body: string; updated_at: str
 
 const Legal = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { hash } = useLocation();
   const activeTab = legalTabs.find(tab => tab.key === searchParams.get('tab'))?.key || 'terms';
   const activeConfig = legalTabs.find(tab => tab.key === activeTab);
 
@@ -38,6 +39,20 @@ const Legal = () => {
   });
 
   const activePage = pages?.find(p => p.slug === activeTab);
+
+  const retiredPolicyLinks: Record<string, string> = {
+    '#legal-section-1': '/investor-charter#legal-section-5',
+    '#legal-section-2': '/investor-charter#legal-section-4',
+    '#legal-section-3': '/investor-charter#legal-section-7',
+    '#legal-section-4': '/investor-charter#legal-section-8',
+    '#legal-section-5': '/legal?tab=disclosures#legal-section-3',
+    '#legal-section-6': '/legal?tab=privacy',
+    '#legal-section-7': '/legal?tab=grievances',
+    '#legal-section-8': '/investor-charter#legal-section-3',
+  };
+  if (activeTab === 'policies' && retiredPolicyLinks[hash]) {
+    return <Navigate to={retiredPolicyLinks[hash]} replace />;
+  }
 
   if (searchParams.get('tab') === 'commissions') {
     const next = new URLSearchParams(searchParams);
