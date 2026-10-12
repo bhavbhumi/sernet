@@ -1,6 +1,7 @@
 # Roadmap
 
-- [ ] Reorganise Legal & Compliance and footer disclosures around verified AMFI/APMI distributor registrations
+- [x] Reorganise Legal & Compliance and footer disclosures around verified AMFI/APMI distributor registrations — all six sections, legacy links and investor guidance checked
+- [ ] Supply actual AMC/PMS commission schedule and approve legal wording with SERNET compliance reviewer
 
 - [x] Cloudflare DNS access restored via new token
 - [x] www.sernetindia.com A record corrected to 185.158.133.1
