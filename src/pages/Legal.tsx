@@ -7,7 +7,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { legalTabs } from '@/lib/legalConfig';
-import { RegistrationDetails } from '@/components/legal/RegistrationDetails';
 import { LegalDocument } from '@/components/legal/LegalDocument';
 
 interface LegalPage { slug: string; title: string; body: string; updated_at: string }
@@ -74,7 +73,6 @@ const Legal = () => {
         breadcrumbLabel="Legal"
       />
 
-      <RegistrationDetails />
       <Tabs value={activeTab} onValueChange={handleTabChange}>
       <div className="sticky top-16 z-20 bg-background/95 backdrop-blur-sm border-b border-border">
         <div className="container-sernet">
