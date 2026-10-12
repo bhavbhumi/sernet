@@ -2,7 +2,7 @@
 
 - [x] Reorganise Legal & Compliance and footer disclosures around verified AMFI/APMI distributor registrations — all six sections, legacy links and investor guidance checked
 - [ ] Supply remaining provider/product commission schedules and approve legal wording with SERNET compliance reviewer — DSP/SBI schedules received
-- [ ] Publish public organisation chart on About → Team tab, driven from HR employees (is_public) — 7 leadership roles per Bhavesh's structure
+- [x] Publish public organisation chart on About → Team tab, driven from HR employees (is_public) — 7 leadership roles per Bhavesh's structure
 - [x] Consolidate Disclosures into separate sections and add verified DSP/SBI commission downloads; navigation and hosted PDF contents checked
 
 - [x] Cloudflare DNS access restored via new token
