@@ -4,6 +4,8 @@
 - [ ] Supply remaining provider/product commission schedules and approve legal wording with SERNET compliance reviewer — DSP/SBI schedules received
 - [x] Publish public organisation chart on About → Team tab, driven from HR employees (is_public) — 7 leadership roles per Bhavesh's structure
 - [x] Consolidate Disclosures into separate sections and add verified DSP/SBI commission downloads; navigation and hosted PDF contents checked
+- [x] Prepare original SERNET IT Policy review pack — PDF and editable draft; all seven pages visually checked
+- [ ] Approve IT Policy responsibilities, operating controls and effective date; then add approved text/download under Policies & Procedures — awaiting SERNET management/compliance review
 
 - [x] Cloudflare DNS access restored via new token
 - [x] www.sernetindia.com A record corrected to 185.158.133.1
