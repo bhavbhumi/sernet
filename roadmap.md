@@ -21,3 +21,5 @@
 - [x] Security contact file added; publish required before Cloudflare can detect it
 - [x] Added missing www domain verification record — publicly verified; activation recovery pending
 - [ ] Enable Bot Fight Mode and Cloudflare account MFA
+
+- [ ] Investor Charter v1.0 (11 sections) + merge Policies §1 suitability/§2 KYC/§4 payment safety — draft awaiting approval before going live
