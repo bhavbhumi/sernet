@@ -1,5 +1,7 @@
 # Roadmap
 
+- [ ] Add ICICI Prudential MF empanelment since 4 August 2006, confirmation letter and awaiting-current-brokerage placeholder; distinguish empanelment dates/documents from commission periods
+
 - [x] Remove duplicate topics across Investor Charter and Legal pages; Investor Charter owns guidance, Legal owns contractual/privacy/disclosure/complaint/IT/HR content; approved IT/HR text and PDFs preserved, retired policy/charter links verified in preview
 
 - [x] Prepare HR Policy review draft for Sales and Operations covering recruitment, appraisal, retention and exit — PDF and editable draft prepared; seven pages visually checked
