@@ -1,6 +1,6 @@
 # Roadmap
 
-- [ ] Research comparable distributor websites and strengthen SERNET Terms & Conditions without duplicating other legal pages; verify public terms and links
+- [x] Research comparable distributor websites and strengthen SERNET Terms & Conditions without duplicating other legal pages — Pinaki/NJ/Prudent reviewed; 13 sections, existing anchors and complaint navigation verified in preview and on sernetindia.com
 
 - [x] Add ICICI Prudential MF empanelment since 4 August 2006, confirmation letter and awaiting-current-brokerage placeholder; table verified and hosted PDF returns 200
 
