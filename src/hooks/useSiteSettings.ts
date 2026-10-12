@@ -72,7 +72,7 @@ const DEFAULTS: SiteSettings = {
     tagline: 'Unlock your path to Prosperity',
     site_url: 'https://sernetindia.com',
     seo_title: 'SERNET – Your Prosperity Companion',
-    seo_description: 'SERNET offers competitive full service brokerage trading, investment and insurance products distribution under one roof.',
+    seo_description: 'SERNET is an AMFI-registered mutual fund distributor and APMI-registered PMS distributor, with financial products available through authorised partners.',
     seo_keywords: '',
     schema_org_name: 'SERNET Financial Services Pvt Ltd',
     schema_org_type: 'FinancialService',
@@ -103,7 +103,7 @@ const DEFAULTS: SiteSettings = {
   footer: {
     copyright_text: '© 2026 SERNET. All rights reserved.',
     disclaimer: 'Investments in securities market are subject to market risks. Read all the related documents carefully before investing.',
-    sebi_reg_text: 'SEBI Registered Investment Adviser',
+    sebi_reg_text: 'AMFI ARN 35275 · APMI APRN 10097',
     show_legal_links: true,
     show_logo: true,
     show_newsletter: false,

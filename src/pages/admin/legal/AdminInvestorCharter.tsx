@@ -45,12 +45,12 @@ export default function AdminInvestorCharter() {
 
   return (
     <AdminGuard>
-      <AdminLayout title="Investor Charter" subtitle="Manage the Investor Charter content (SEBI compliance page)">
+      <AdminLayout title="Investor Charter" subtitle="Manage investor guidance for mutual fund and PMS distribution">
         <div className="p-6 space-y-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-muted-foreground">
               <BookOpen className="w-5 h-5" />
-              <span className="text-sm">This page is shown under Support in the footer as a SEBI compliance requirement.</span>
+              <span className="text-sm">Investor guidance and links to the applicable product provider’s charter.</span>
             </div>
             <Button onClick={handleSave} disabled={saving} className="gap-2">
               <Save className="w-4 h-4" />
