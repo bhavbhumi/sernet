@@ -18,9 +18,9 @@ export default function AdminLegal() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let cancelled = false;
     (async () => {
       setLoading(true);
-      let cancelled = false;
       const { data, error } = await supabase
         .from('legal_pages' as any)
         .select('body')
@@ -31,6 +31,7 @@ export default function AdminLegal() {
       setBody((data as any)?.body || '');
       setLoading(false);
     })();
+    return () => { cancelled = true; };
   }, [activeSlug]);
 
   const handleSave = async () => {
