@@ -5,7 +5,7 @@
 - [x] Publish public organisation chart on About → Team tab, driven from HR employees (is_public) — 7 leadership roles per Bhavesh's structure
 - [x] Consolidate Disclosures into separate sections and add verified DSP/SBI commission downloads; navigation and hosted PDF contents checked
 - [x] Prepare original SERNET IT Policy review pack — PDF and editable draft; all seven pages visually checked
-- [ ] Approve IT Policy responsibilities, operating controls and effective date; then add approved text/download under Policies & Procedures — awaiting SERNET management/compliance review
+- [x] Publish approved IT Policy text and matching PDF under Policies & Procedures — version 1.0 effective 12 October 2026; public text, navigation and PDF download verified; all six PDF pages checked
 
 - [x] Cloudflare DNS access restored via new token
 - [x] www.sernetindia.com A record corrected to 185.158.133.1
