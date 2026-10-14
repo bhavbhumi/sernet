@@ -1,6 +1,6 @@
 # Roadmap
 
-- [ ] Add verified Aditya Birla Sun Life and Nippon India empanelments, Birla July–September 2026 brokerage document and pending Nippon brokerage; protect private letter details and verify public downloads.
+- [x] Add verified Aditya Birla Sun Life and Nippon India empanelments; historical Birla July–September 2026 rate card linked, current Birla/Nippon brokerage pending; letters redacted and all three PDFs verified on preview and live.
 
 - [x] Trim the PPFAS brokerage structure description in Disclosures to one short line pointing to the October 2026 document — other provider rows and downloads unchanged
 
