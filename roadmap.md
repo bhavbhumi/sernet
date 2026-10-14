@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Add verified Aditya Birla Sun Life and Nippon India empanelments; historical Birla July–September 2026 rate card linked, current Birla/Nippon brokerage pending; letters redacted and all three PDFs verified on preview and live.
+
 - [x] Trim the PPFAS brokerage structure description in Disclosures to one short line pointing to the October 2026 document — other provider rows and downloads unchanged
 
 - [x] Independently compare Investor Charter and Legal & Compliance with industry/official distributor standards — clarified MF/PMS review responsibilities and AMC-led DDQ scope, strengthened suitability/privacy/complaint safeguards and submitted-content ownership; all six documents verified in preview and live without runtime errors; approved IT/HR and provider table fingerprints unchanged. Operational DDQ applicability and service response standards still require internal confirmation; review is not legal certification.
