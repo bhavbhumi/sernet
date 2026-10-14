@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Trim the PPFAS brokerage structure description in Disclosures to one short line pointing to the October 2026 document — other provider rows and downloads unchanged
+
 - [x] Independently compare Investor Charter and Legal & Compliance with industry/official distributor standards — clarified MF/PMS review responsibilities and AMC-led DDQ scope, strengthened suitability/privacy/complaint safeguards and submitted-content ownership; all six documents verified in preview and live without runtime errors; approved IT/HR and provider table fingerprints unchanged. Operational DDQ applicability and service response standards still require internal confirmation; review is not legal certification.
 
 - [x] Research comparable distributor websites and strengthen SERNET Terms & Conditions without duplicating other legal pages — Pinaki/NJ/Prudent reviewed; 13 sections, existing anchors and complaint navigation verified in preview and on sernetindia.com
