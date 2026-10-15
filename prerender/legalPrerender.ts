@@ -60,15 +60,17 @@ export function legalPrerender(env: Record<string, string>): Plugin {
       if (!fs.existsSync(templatePath)) return;
       const template = fs.readFileSync(templatePath, 'utf8');
 
-      const { JSDOM } = await import('jsdom');
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { JSDOM } = (await import('jsdom' as string)) as any;
       const createDOMPurify = (await import('dompurify')).default;
-      const window = new JSDOM('').window;
-      const purify = createDOMPurify(window as unknown as Window & typeof globalThis);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const window: any = new JSDOM('').window;
+      const purify = createDOMPurify(window);
       // Mirror LegalDocument: sanitize, then stabilise h2 anchors.
       const clean = (body: string) => {
         const doc = new window.DOMParser().parseFromString(purify.sanitize(body), 'text/html');
         const used = new Set<string>();
-        doc.querySelectorAll("h2").forEach((h: Element, i: number) => {
+        doc.querySelectorAll("h2").forEach((h: { id: string }, i: number) => {
           let id = /^legal-section-\d+$/.test(h.id) && !used.has(h.id) ? h.id : `legal-section-${i + 1}`;
           while (used.has(id)) id = `legal-section-${Number(id.replace('legal-section-', '')) + 1}`;
           used.add(id); h.id = id;
