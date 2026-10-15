@@ -14,6 +14,7 @@ const slugConfig = legalTabs.map(tab => ({ ...tab, slug: tab.key }));
 export default function AdminLegal() {
   const [activeSlug, setActiveSlug] = useState('terms');
   const [body, setBody] = useState('');
+  const [reviewedOn, setReviewedOn] = useState('');
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -23,12 +24,13 @@ export default function AdminLegal() {
       setLoading(true);
       const { data, error } = await supabase
         .from('legal_pages' as any)
-        .select('body')
+        .select('body, last_reviewed_on')
         .eq('slug', activeSlug)
         .maybeSingle();
       if (cancelled) return;
       if (error) toast.error('Unable to load the legal document');
       setBody((data as any)?.body || '');
+      setReviewedOn((data as any)?.last_reviewed_on || '');
       setLoading(false);
     })();
     return () => { cancelled = true; };
@@ -39,7 +41,7 @@ export default function AdminLegal() {
     try {
       const { data, error } = await supabase
         .from('legal_pages' as any)
-        .update({ body, updated_at: new Date().toISOString() } as any)
+        .update({ body, last_reviewed_on: reviewedOn || null, updated_at: new Date().toISOString() } as any)
         .eq('slug', activeSlug)
         .select('slug');
       if (error) throw error;
