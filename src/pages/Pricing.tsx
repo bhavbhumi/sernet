@@ -68,9 +68,10 @@ const InvestmentContent = () => (
   <>
     <section className="section-padding bg-background">
       <div className="container-sernet">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
           {[
             { price: '₹0', title: 'Regular mutual funds', desc: 'No fees charged to you; we are paid commission by the fund house, disclosed under Disclosures.' },
+            { price: '₹0', title: 'Bonds', desc: 'Invest in government and corporate bonds at no charge to you; we may earn commission from providers.' },
             { price: '0.30%', title: 'Stocks (Delivery)', desc: 'Buy and hold stocks on Choice FinX at 0.30% per executed delivery order.' },
             { price: '₹0', title: 'Digital gold', desc: 'Invest in 24K digital gold with no extra charges.' },
           ].map((item, i) => (
@@ -89,9 +90,9 @@ const InvestmentContent = () => (
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-12 text-center">Investment charges</motion.h2>
         <div className="max-w-4xl mx-auto space-y-12">
           {[
-            { category: 'Mutual Funds', items: [{ name: 'Regular mutual funds', price: 'FREE', description: 'Zero fees to you, invest in 5000+ funds (distributor commission is paid by the fund house and included in the scheme expense ratio)' }, { name: 'SIP investments', price: 'FREE', description: 'Systematic investment plans at no cost' }] },
-            { category: 'Bonds & FDs', items: [{ name: 'Government bonds', price: 'FREE', description: 'Invest in sovereign bonds at no charge' }, { name: 'Corporate bonds', price: 'FREE', description: 'Access corporate bonds marketplace' }] },
-            { category: 'Others', items: [{ name: 'IPO applications', price: 'FREE', description: 'Apply for IPOs using UPI' }, { name: 'Digital gold', price: 'FREE', description: 'Buy and sell 24K digital gold' }] },
+            { category: 'Funds', items: [{ name: 'Regular mutual funds', price: 'No charge to you', description: 'Zero fees to you, invest in 5,000+ funds (the fund house pays us commission, included in the scheme expense ratio)' }, { name: 'Mutual Funds', price: 'No charge to you', description: 'SIP, lumpsum and goal-based investing across 5,000+ funds from 40+ AMCs' }, { name: 'PMS', price: 'No charge to you', description: 'Portfolio Management Services via your relationship manager; providers pay us a share of the fees, disclosed under Disclosures' }, { name: 'AIF', price: 'No charge to you', description: 'Alternative Investment Funds via your relationship manager; providers pay us a share of the fees, disclosed under Disclosures' }] },
+            { category: 'Bonds & FDs', items: [{ name: 'Government bonds', price: 'No charge to you', description: 'Invest in sovereign bonds at no charge to you; we may earn commission from providers, disclosed under Disclosures' }, { name: 'Corporate bonds', price: 'No charge to you', description: 'Access corporate bonds marketplace; we may earn commission from providers, disclosed under Disclosures' }] },
+            { category: 'Others', items: [{ name: 'Digital gold', price: 'No charge to you', description: 'Buy and sell 24K digital gold' }] },
           ].map((tier, tierIndex) => (
             <motion.div key={tier.category} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: tierIndex * 0.1 }}>
               <h3 className="heading-md text-foreground mb-6">{tier.category}</h3>
@@ -109,6 +110,7 @@ const InvestmentContent = () => (
             </motion.div>
           ))}
         </div>
+        <p className="text-small text-center mt-12 max-w-3xl mx-auto">SERNET is a mutual fund distributor registered with AMFI and a PMS distributor registered with APMI; it does not charge you fees on funds, PMS, AIF, bonds or gold. It is paid commissions or fee shares by fund houses and product providers, disclosed under Disclosures. PMS and AIF are offered through your relationship manager and are subject to market risk; read all scheme-related documents carefully.</p>
       </div>
     </section>
   </>
