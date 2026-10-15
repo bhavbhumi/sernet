@@ -36,8 +36,8 @@ const principalShowcaseItems: ShowcaseItem[] = [
       heading: 'Regular Fund Distribution Services',
       description: 'SERNET is an AMFI-registered Mutual Fund Distributor (MFD) empanelled with leading Asset Management Companies for the regular distribution of mutual funds, Specialized Investment Funds (SIFs), PMS, and AIFs.',
       points: [
-        'AMFI ARN No: ARN-274029 | Valid till: 22-Feb-2028',
-        'APMI Membership for PMS distribution services',
+        'AMFI ARN 35275 · EUIN E025145 · Valid until 28 October 2028',
+        'APMI APRN 10097 · EUIN E19955 · Valid until 28 October 2028 (PMS distribution)',
         'Access to 5,000+ mutual fund schemes across 40+ AMCs (Regular Plans)',
         'SIF, PMS & AIF curated selection for HNI/UHNI investors',
         'Disclaimer: Mutual fund investments are subject to market risks. Read all scheme-related documents carefully. Past performance is not indicative of future returns. SERNET acts as a distributor and does not provide investment advisory services.',
