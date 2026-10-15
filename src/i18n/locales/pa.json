@@ -44,7 +44,6 @@
     "disclosures": "ਖੁਲਾਸੇ",
     "madeWith": "SERNET Financial Services Pvt Ltd ਦੁਆਰਾ ਭਾਰਤ ਵਿੱਚ ♥ ਨਾਲ ਬਣਾਇਆ",
     "philosophy": "ਦਰਸ਼ਨ",
-    "csr": "CSR",
     "legal": "ਕਾਨੂੰਨੀ"
   },
   "common": {
@@ -314,11 +313,6 @@
     "title": "ਸਾਡਾ ਦਰਸ਼ਨ",
     "description": "SERNET ਵਿੱਚ ਅਸੀਂ ਜੋ ਵੀ ਕਰਦੇ ਹਾਂ ਉਸ ਦੀ ਅਗਵਾਈ ਕਰਨ ਵਾਲੇ ਸਿਧਾਂਤ",
     "whyDifferent": "ਅਸੀਂ ਚੀਜ਼ਾਂ ਵੱਖਰੇ ਢੰਗ ਨਾਲ ਕਿਉਂ ਕਰਦੇ ਹਾਂ"
-  },
-  "csr": {
-    "title": "SERNET ਕੇਅਰਜ਼",
-    "description": "ਜ਼ਿੰਮੇਵਾਰ ਕਾਰਪੋਰੇਟ ਨਾਗਰਿਕਤਾ ਰਾਹੀਂ ਸਕਾਰਾਤਮਕ ਸਮਾਜਿਕ ਅਤੇ ਵਾਤਾਵਰਣ ਪ੍ਰਭਾਵ ਪੈਦਾ ਕਰਨ ਦੀ ਸਾਡੀ ਵਚਨਬੱਧਤਾ।",
-    "foundation": "SERNET ਫਾਊਂਡੇਸ਼ਨ"
   },
   "quickLinks": {
     "title": "ਤੇਜ਼ ਲਿੰਕ",
