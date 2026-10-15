@@ -8,8 +8,9 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { legalTabs } from '@/lib/legalConfig';
 import { LegalDocument } from '@/components/legal/LegalDocument';
+import { RegulatoryIdentity, LastReviewed } from '@/components/legal/RegulatoryIdentity';
 
-interface LegalPage { slug: string; title: string; body: string; updated_at: string }
+interface LegalPage { slug: string; title: string; body: string; updated_at: string; last_reviewed_on: string | null }
 
 const Legal = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -30,7 +31,7 @@ const Legal = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('legal_pages' as any)
-        .select('slug, title, body, updated_at')
+        .select('slug, title, body, updated_at, last_reviewed_on')
         .order('slug');
       if (error) throw error;
       return (data as unknown as LegalPage[]) || [];
@@ -98,10 +99,11 @@ const Legal = () => {
 
       {/* Content */}
       <div className="container-sernet section-padding">
+        <div className="mb-8"><RegulatoryIdentity variant="compact" /></div>
         <TabsContent value={activeTab} className="mt-0">
               <div className="mb-6 flex flex-wrap items-baseline justify-between gap-3 border-b border-border pb-5">
                 <h2 className="heading-md text-foreground">{activeConfig?.label}</h2>
-                {activePage?.updated_at && <p className="text-xs text-muted-foreground">Last updated: {new Date(activePage.updated_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}</p>}
+                <LastReviewed date={activePage?.last_reviewed_on} />
               </div>
               {isLoading ? (
                 <div className="space-y-4" role="status" aria-label="Loading legal document">
