@@ -140,9 +140,9 @@ const InsuranceContent = () => (
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-12 text-center">Insurance products</motion.h2>
         <div className="max-w-4xl mx-auto space-y-12">
           {[
-            { category: 'Life Insurance', items: [{ name: 'Term life insurance', price: 'No commission', description: 'Pure term plans from top insurers' }, { name: 'ULIPs', price: 'No commission', description: 'Unit-linked insurance plans' }] },
-            { category: 'Health Insurance', items: [{ name: 'Individual health', price: 'No commission', description: 'Comprehensive health coverage' }, { name: 'Family floater', price: 'No commission', description: 'Coverage for the entire family' }] },
-            { category: 'General Insurance', items: [{ name: 'Motor insurance', price: 'No commission', description: 'Car and bike insurance' }, { name: 'Travel insurance', price: 'No commission', description: 'Domestic and international travel cover' }] },
+            { category: 'Life Insurance', items: [{ name: 'Term life insurance', price: 'No charge to you', description: 'Pure term plans from top insurers; we earn a referral fee from our broker partner' }, { name: 'ULIPs', price: 'No charge to you', description: 'Unit-linked insurance plans; we earn a referral fee from our broker partner' }] },
+            { category: 'Health Insurance', items: [{ name: 'Individual health', price: 'No charge to you', description: 'Comprehensive health coverage; we earn a referral fee from our broker partner' }, { name: 'Family floater', price: 'No charge to you', description: 'Coverage for the entire family; we earn a referral fee from our broker partner' }] },
+            { category: 'General Insurance', items: [{ name: 'Motor insurance', price: 'No charge to you', description: 'Car and bike insurance; we earn a referral fee from our broker partner' }, { name: 'Travel insurance', price: 'No charge to you', description: 'Domestic and international travel cover; we earn a referral fee from our broker partner' }] },
           ].map((tier, tierIndex) => (
             <motion.div key={tier.category} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: tierIndex * 0.1 }}>
               <h3 className="heading-md text-foreground mb-6">{tier.category}</h3>
