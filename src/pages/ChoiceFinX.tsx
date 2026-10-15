@@ -229,7 +229,7 @@ const ChoiceFinX = () => (
     <section className="py-6 bg-muted/30">
       <div className="container-zerodha">
         <p className="text-xs text-muted-foreground text-center max-w-4xl mx-auto leading-relaxed">
-          <strong>Disclaimer:</strong> Investments in securities market are subject to market risks. Read all related documents carefully before investing. Registration granted by SEBI and certification from NISM in no way guarantee performance or provide any assurance of returns. SERNET Financial Services is an Authorised Person (AP) of Choice Equity Broking Pvt. Ltd. (SEBI Reg. No: INZ000160131) and is not itself a stock broker. Trading accounts, order execution, funds, securities, margins and contract notes are provided and handled by Choice. Brokerage will not exceed SEBI/exchange prescribed limits. Complaints about trades may be raised with SERNET Support and with Choice; unresolved exchange-related complaints may be taken to SEBI SCORES or SMART ODR.
+          <strong>Disclaimer:</strong> Investments in securities market are subject to market risks. Read all related documents carefully before investing. Registration granted by SEBI and certification from NISM in no way guarantee performance or provide any assurance of returns. SERNET is an Authorised Person (AP) of Choice Equity Broking Pvt. Ltd. (SEBI Reg. No: INZ000160131) and is not itself a stock broker. Trading accounts, order execution, funds, securities, margins and contract notes are provided and handled by Choice. Brokerage will not exceed SEBI/exchange prescribed limits. Complaints about trades may be raised with SERNET Support and with Choice; unresolved exchange-related complaints may be taken to SEBI SCORES or SMART ODR.
         </p>
       </div>
     </section>
