@@ -1,6 +1,6 @@
 # Roadmap
 
-- [ ] Verify and add Kotak empanelment date and public letter — blocked by password-protected supplied PDF; unlocked copy requested. Supplied brokerage document confirms 1–31 October 2026.
+- [x] Verify and add Kotak empanelment date and public letter — corrected letter confirms 24 May 2006; date and PDF download verified on preview and live. Brokerage remains 1–31 October 2026.
 
 - [x] Add verified Aditya Birla Sun Life and Nippon India empanelments; historical Birla July–September 2026 rate card linked, current Birla/Nippon brokerage pending; letters redacted and all three PDFs verified on preview and live.
 
