@@ -44,7 +44,6 @@
     "disclosures": "Disclosures",
     "madeWith": "Made with ♥ in India by SERNET Financial Services Pvt Ltd",
     "philosophy": "Philosophy",
-    "csr": "CSR",
     "legal": "Legal"
   },
   "common": {
@@ -315,11 +314,6 @@
     "title": "Our Philosophy",
     "description": "The principles that guide everything we do at SERNET",
     "whyDifferent": "Why we do things differently"
-  },
-  "csr": {
-    "title": "SERNET Cares",
-    "description": "Our commitment to creating positive social and environmental impact through responsible corporate citizenship.",
-    "foundation": "SERNET Foundation"
   },
   "quickLinks": {
     "title": "Quick Links",

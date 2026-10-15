@@ -44,7 +44,6 @@
     "disclosures": "प्रकटीकरण",
     "madeWith": "SERNET Financial Services Pvt Ltd द्वारा भारत में ♥ से निर्मित",
     "philosophy": "दर्शन",
-    "csr": "CSR",
     "legal": "कानूनी"
   },
   "common": {
@@ -314,11 +313,6 @@
     "title": "हमारा दर्शन",
     "description": "SERNET में हम जो कुछ भी करते हैं उसका मार्गदर्शन करने वाले सिद्धांत",
     "whyDifferent": "हम चीज़ें अलग क्यों करते हैं"
-  },
-  "csr": {
-    "title": "SERNET केयर्स",
-    "description": "ज़िम्मेदार कॉर्पोरेट नागरिकता के माध्यम से सकारात्मक सामाजिक और पर्यावरणीय प्रभाव बनाने की हमारी प्रतिबद्धता।",
-    "foundation": "SERNET फाउंडेशन"
   },
   "quickLinks": {
     "title": "त्वरित लिंक",

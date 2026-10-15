@@ -60,5 +60,6 @@
 - [x] Compliance gaps: ARN fix, unproven figures removed, distributor wording, platform map, Tick Funds redirects, Media item marked historical
 - [x] Prerendered legal, charter, disclosures, grievance and Tick Funds pages; central regulatory identity; Last reviewed dates; verified review badges; claims register
 - [x] Claims corrected per management (2,500+ clients, 500+ families, 10+ employees, regular MF zero fees, 10+ insurers via partner, 1,000+ policyholders, CSR retired)
+- [x] CSR removed everywhere: site_pages row deleted (plus retire_csr_page migration so a rebuild stays clean), sitemap entry dropped, CSR strings removed from all 8 locale files, Tushil FAQ "CSR" reworded to "claim settlement ratios"; /csr kept only as a redirect to /about so old links don't break. Verified in preview: no CSR text or links on home/About, sitemap clean, no page errors.
 - [ ] Tick Funds "14 fund houses" vs 13 in Disclosures; Pricing page still lists stock-broking charges — awaiting user
 - [ ] Sample testimonials (home fallback + 3 Tick Funds quotes) not marked verified — awaiting real-client confirmation

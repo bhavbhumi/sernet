@@ -50,7 +50,6 @@
 
   <!-- Company & About -->
   <url><loc>https://sernetindia.com/media</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://sernetindia.com/csr</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://sernetindia.com/credit-claim</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
 
   <!-- Legal pages -->

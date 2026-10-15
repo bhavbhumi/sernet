@@ -8,6 +8,13 @@
       "when": 1792075288242,
       "tag": "0000_legal_pages_last_reviewed",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1792076318851,
+      "tag": "0001_retire_csr_page",
+      "breakpoints": true
     }
   ]
 }

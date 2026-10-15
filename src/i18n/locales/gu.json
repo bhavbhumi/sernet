@@ -44,7 +44,6 @@
     "disclosures": "ખુલાસાઓ",
     "madeWith": "SERNET Financial Services Pvt Ltd દ્વારા ભારતમાં ♥ થી બનાવેલ",
     "philosophy": "તત્વજ્ઞાન",
-    "csr": "CSR",
     "legal": "કાનૂની"
   },
   "common": {
@@ -314,11 +313,6 @@
     "title": "અમારું તત્વજ્ઞાન",
     "description": "SERNET માં અમે જે કંઈ કરીએ છીએ તેનું માર્ગદર્શન કરતા સિદ્ધાંતો",
     "whyDifferent": "અમે વસ્તુઓ અલગ રીતે કેમ કરીએ છીએ"
-  },
-  "csr": {
-    "title": "SERNET કેર્સ",
-    "description": "જવાબદાર કોર્પોરેટ નાગરિકત્વ દ્વારા સકારાત્મક સામાજિક અને પર્યાવરણીય અસર ઊભી કરવાની અમારી પ્રતિબદ્ધતા.",
-    "foundation": "SERNET ફાઉન્ડેશન"
   },
   "quickLinks": {
     "title": "ઝડપી લિંક્સ",
