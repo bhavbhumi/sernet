@@ -263,7 +263,7 @@ const Pricing = () => {
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-2xl mx-auto text-center">
             <h2 className="heading-lg text-foreground mb-8">What you get</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
-              {features.map((feature, index) => (
+              {tabFeatures[activeTab].map((feature, index) => (
                 <motion.div key={feature} initial={{ opacity: 0, x: -10 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: index * 0.05 }} className="flex items-center gap-3">
                   <Check className="w-5 h-5 text-success flex-shrink-0" />
                   <span className="text-body">{feature}</span>
