@@ -1,6 +1,6 @@
 # Roadmap
 
-- [ ] Update Alchemy empanelment to 23 September 2026 per provider email and recheck Quant's supplied brokerage period against the original PDF.
+- [x] Update Alchemy empanelment to 23 September 2026 per provider email — verified on preview and live. Rechecked Quant's original PDF: pages 1 and 2 explicitly state 1–31 October 2026; existing period retained pending a revised quarterly document.
 
 - [x] Update DSP empanelment to 10 February 2006 with the supplied letter and add Quant MF alphabetically with its 1–31 October 2026 brokerage schedule; Quant empanelment pending, other details preserved, rows and both PDF downloads verified on preview and live.
 
