@@ -1,6 +1,6 @@
 # Roadmap
 
-- [ ] Update Bandhan MF empanelment to 25 April 2006 with the supplied 15 October 2026 confirmation letter; verify the row and public download without changing brokerage details.
+- [x] Update Bandhan MF empanelment to 25 April 2006 with the supplied 15 October 2026 confirmation letter; row and public PDF download verified on preview and live, brokerage details unchanged.
 
 - [x] Add HDFC MF October–December 2026 brokerage document alphabetically in Disclosures, with standard description and empanelment awaiting confirmation; row, alphabetical ordering and public PDF download verified on preview and live.
 
