@@ -10,9 +10,4 @@ export const legalTabs = [
 
 export type LegalTabKey = typeof legalTabs[number]['key'];
 
-export const distributorRegistrations = [
-  { authority: 'AMFI', role: 'Mutual Fund Distributor', registration: 'ARN 35275', euin: 'E025145', validUntil: '28 October 2028' },
-  { authority: 'APMI', role: 'PMS Distributor', registration: 'APRN 10097', euin: 'E19955', validUntil: '28 October 2028' },
-] as const;
-
-export const distributorScope = 'SERNET is an AMFI-registered mutual fund distributor and an APMI-registered PMS distributor. SERNET is not a stock broker, Research Analyst (RA) or Registered Investment Adviser (RIA).';
+export { distributorRegistrations, distributorScope } from './regulatoryIdentity';
