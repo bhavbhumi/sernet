@@ -163,7 +163,7 @@ const pressReleases: PressItem[] = [
     link: "#",
   },
   {
-    title: "Sernet India registered with SEBI as a stockbroker",
+    title: "Sernet India registered with SEBI as a stockbroker (historical — SERNET now operates only as an AMFI/APMI-registered distributor)",
     source: "Economic Times",
     date: "05 Mar 2016",
     year: 2016,

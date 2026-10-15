@@ -7,9 +7,9 @@ import { TICKFUNDS_LINKS } from '@/lib/appLinks';
 
 
 const stats = [
-  { icon: TrendingUp, value: '₹10,000Cr+', label: 'AUM Managed' },
-  { icon: Users, value: '5L+', label: 'Investors' },
-  { icon: Layers, value: '500+', label: 'Products' },
+  { icon: TrendingUp, value: 'Since 2006', label: 'AMFI-registered (ARN 35275)' },
+  { icon: Users, value: 'APRN 10097', label: 'APMI PMS distributor' },
+  { icon: Layers, value: '14', label: 'Fund houses empanelled' },
 ];
 
 const products = [
@@ -38,7 +38,7 @@ export const InvestmentServiceContent = () => (
               Build long-term wealth with our comprehensive investment distribution platform. As an AMFI-registered Mutual Fund Distributor, we help you access the best mutual funds, bonds, and more — with personalised guidance at every step.
             </p>
             <ul className="space-y-2 mb-8">
-              {['AMFI-Registered Mutual Fund Distributor', 'Regular Plans with Personalised Advisory', 'Curated PMS & AIF for HNI Investors', 'Digital Gold & Silver with Insured Vaults', 'Dedicated Relationship Manager'].map((hook) => (
+              {['AMFI-Registered Mutual Fund Distributor', 'Regular Plans with Relationship Manager Support', 'Curated PMS & AIF for HNI Investors', 'Digital Gold & Silver with Insured Vaults', 'Dedicated Relationship Manager'].map((hook) => (
                 <li key={hook} className="flex items-center gap-2 text-sm text-foreground">
                   <Check className="w-4 h-4 text-primary shrink-0" />
                   {hook}
@@ -144,10 +144,10 @@ export const InvestmentServiceContent = () => (
             </span>
             <h2 className="heading-lg text-foreground mb-3">Free Investment Portfolio Health Checkup</h2>
             <p className="text-body text-muted-foreground mb-6 max-w-xl">
-              Get a comprehensive review of your mutual fund, bond, and equity holdings by our experienced advisory team. We'll evaluate your asset allocation, identify gaps, and recommend improvements — completely free of charge.
+              Get a comprehensive review of your mutual fund, bond, and equity holdings by our distribution team. We'll share observations on asset allocation, overlap and costs for your own decision — completely free of charge.
             </p>
             <ul className="space-y-2 mb-8">
-              {['Asset allocation and rebalancing analysis', 'Fund overlap and expense ratio review', 'Goal-based investment gap assessment', 'Personalised recommendations from our expert team', 'No obligation — 100% free'].map((item) => (
+              {['Asset allocation and rebalancing analysis', 'Fund overlap and expense ratio review', 'Goal-based investment gap assessment', 'Observations from our distribution team — you decide', 'No obligation — 100% free'].map((item) => (
                 <li key={item} className="flex items-center gap-2 text-sm text-foreground justify-center lg:justify-start">
                   <Check className="w-4 h-4 text-primary shrink-0" />
                   {item}
@@ -206,10 +206,10 @@ export const InvestmentServiceContent = () => (
         </motion.p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
-            { icon: Download, step: '01', title: 'Download', description: 'Get the Choice FinX app from Google Play or the Apple App Store to start investing.' },
+            { icon: Download, step: '01', title: 'Download', description: 'Get the Tick Funds app from Google Play or the Apple App Store, or sign in on the Tick Funds web app.' },
             { icon: UserCheck, step: '02', title: 'Complete KYC', description: 'Sign up with your mobile number, complete Aadhaar e-Verification, upload PAN, and finish video verification.' },
             { icon: Wallet, step: '03', title: 'Fund Your Account', description: 'Add funds via UPI, Net Banking, or NEFT/RTGS. Set up SIP mandates for automated investing.' },
-            { icon: Play, step: '04', title: 'Start Investing', description: 'Explore mutual funds, bonds, gold and more. Build a diversified portfolio with expert guidance.' },
+            { icon: Play, step: '04', title: 'Start Investing', description: 'Invest in mutual funds and SIF in the app; contact your RM for PMS, AIF, Bonds and FDs.' },
           ].map((card, index) => (
             <motion.div
               key={card.step}
@@ -252,7 +252,7 @@ export const InvestmentServiceContent = () => (
     <section className="py-6 bg-muted/30">
       <div className="container-sernet">
         <p className="text-xs text-muted-foreground text-center max-w-4xl mx-auto leading-relaxed">
-          <strong>Disclaimer:</strong> Mutual fund investments are subject to market risks. Read all scheme-related documents carefully before investing. Past performance is not indicative of future returns. SERNET is an AMFI-registered Mutual Fund Distributor (ARN-274029) and earns commissions from AMCs for regular plan distribution. SERNET does not provide SEBI-registered investment advisory services. The information provided herein is for general informational purposes only.
+          <strong>Disclaimer:</strong> Mutual fund investments are subject to market risks. Read all scheme-related documents carefully before investing. Past performance is not indicative of future returns. SERNET is an AMFI-registered Mutual Fund Distributor (ARN 35275, EUIN E025145, valid until 28 October 2028) and an APMI-registered PMS distributor (APRN 10097), and earns commissions from product providers for regular plan distribution. SERNET is not a SEBI-registered Investment Adviser, Research Analyst or stock broker; any guidance is incidental to distribution and the investment decision is yours. Mutual funds and SIF are available on the Tick Funds web and mobile app; PMS, AIF, Bonds and Company FDs are currently offered through your relationship manager (in-app access coming soon). The information provided herein is for general informational purposes only.
         </p>
       </div>
     </section>

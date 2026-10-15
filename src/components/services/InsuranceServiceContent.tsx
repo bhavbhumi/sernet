@@ -206,7 +206,7 @@ export const InsuranceServiceContent = () => (
         </motion.p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
-            { icon: Download, step: '01', title: 'Download', description: 'Get the Choice FinX app from Google Play or the Apple App Store to explore insurance products.' },
+            { icon: Download, step: '01', title: 'Download', description: 'Visit the Tushil web platform or contact your relationship manager to explore insurance products.' },
             { icon: UserCheck, step: '02', title: 'Share Your Needs', description: 'Tell us about your insurance requirements, existing policies, and budget preferences.' },
             { icon: FileText, step: '03', title: 'Get Recommendations', description: 'Receive personalised policy recommendations compared across 30+ insurers for the best fit.' },
             { icon: Play, step: '04', title: 'Buy & Relax', description: 'Purchase your policy seamlessly and enjoy dedicated claims support whenever you need it.' },

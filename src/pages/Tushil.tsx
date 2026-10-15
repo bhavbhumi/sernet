@@ -185,7 +185,7 @@ const Tushil = () => (
         <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-center mb-12 max-w-2xl mx-auto">Simple, guided, and hassle-free.</motion.p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
-            { icon: Download, step: '01', title: 'Download App', description: 'Get the Choice FinX app or call us to get started.' },
+            { icon: Download, step: '01', title: 'Download App', description: 'Visit the Tushil web platform or call us to get started.' },
             { icon: UserCheck, step: '02', title: 'Share Your Needs', description: 'Tell us about your requirements, existing policies, and budget.' },
             { icon: FileText, step: '03', title: 'Get Recommendations', description: 'Receive personalised recommendations compared across 30+ insurers.' },
             { icon: Play, step: '04', title: 'Buy & Relax', description: 'Purchase seamlessly and enjoy dedicated claims support.' },
