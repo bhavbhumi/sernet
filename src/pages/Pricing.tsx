@@ -17,9 +17,9 @@ const TradingContent = () => (
       <div className="container-sernet">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
           {[
-            { price: '₹0', title: 'Free equity delivery', desc: 'All equity delivery investments are absolutely free — ₹0 brokerage.' },
-            { price: '₹20', title: 'Intraday and F&O', desc: 'Flat ₹20 or 0.03% (whichever is lower) per executed order.' },
-            { price: '₹0', title: 'Free direct MF', desc: 'All direct mutual fund investments are absolutely free.' },
+            { price: '0.30%', title: 'Equity delivery', desc: '0.30% per executed delivery order on Choice FinX, the full-service broking app from Choice Equity Broking.' },
+            { price: '0.03%', title: 'Equity intraday', desc: '0.03% per executed order on both buy and sell legs for intraday trades.' },
+            { price: '₹0', title: 'Account opening', desc: 'Opening a trading and demat account on Choice FinX is free.' },
           ].map((item, i) => (
             <motion.div key={item.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}>
               <div className="text-5xl font-bold text-primary mb-2">{item.price}</div>
@@ -34,12 +34,13 @@ const TradingContent = () => (
     {/* Detailed Charges */}
     <section className="section-padding bg-section-alt">
       <div className="container-sernet">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-12 text-center">Detailed charges</motion.h2>
+        <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-4 text-center">Detailed charges</motion.h2>
+        <p className="text-small text-center mb-12 max-w-2xl mx-auto">Share trading is provided on Choice FinX, the full-service broking app from Choice Equity Broking Private Limited. Brokerage and statutory charges are levied by Choice Equity Broking as per its schedule; SERNET is not a stock broker.</p>
         <div className="max-w-4xl mx-auto space-y-12">
           {[
-            { category: 'Equity', items: [{ name: 'Equity delivery', price: 'FREE', description: 'All equity delivery investments (NSE, BSE)' }, { name: 'Equity intraday', price: '₹20', description: '0.03% or ₹20/executed order whichever is lower' }] },
-            { category: 'Derivatives', items: [{ name: 'F&O (Equity)', price: '₹20', description: '0.03% or ₹20/executed order whichever is lower' }, { name: 'F&O (Currency)', price: '₹20', description: '0.03% or ₹20/executed order whichever is lower' }, { name: 'F&O (Commodity)', price: '₹20', description: '0.03% or ₹20/executed order whichever is lower' }] },
-            { category: 'Others', items: [{ name: 'Account opening', price: 'FREE', description: 'Opening an account' }, { name: 'AMC', price: 'FREE', description: 'Annual maintenance charge' }] },
+            { category: 'Equity', items: [{ name: 'Equity delivery', price: '0.30%', description: 'Per executed delivery order (NSE, BSE) on Choice FinX' }, { name: 'Equity intraday', price: '0.03%', description: 'Per executed order, charged on both buy and sell legs' }] },
+            { category: 'Derivatives & other segments', items: [{ name: 'F&O, currency and commodity', price: 'As per schedule', description: 'Charged as per the Choice FinX schedule from Choice Equity Broking' }] },
+            { category: 'Account', items: [{ name: 'Account opening', price: 'FREE', description: 'Opening a trading and demat account' }, { name: 'AMC', price: 'FREE', description: 'Annual maintenance charge' }] },
           ].map((tier, tierIndex) => (
             <motion.div key={tier.category} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: tierIndex * 0.1 }}>
               <h3 className="heading-md text-foreground mb-6">{tier.category}</h3>
@@ -70,7 +71,7 @@ const InvestmentContent = () => (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
           {[
             { price: '₹0', title: 'Regular mutual funds', desc: 'No fees charged to you; we are paid commission by the fund house, disclosed under Disclosures.' },
-            { price: '₹0', title: 'Stocks (Delivery)', desc: 'Buy and hold stocks with zero brokerage charges.' },
+            { price: '0.30%', title: 'Stocks (Delivery)', desc: 'Buy and hold stocks on Choice FinX at 0.30% per executed delivery order.' },
             { price: '₹0', title: 'Digital gold', desc: 'Invest in 24K digital gold with no extra charges.' },
           ].map((item, i) => (
             <motion.div key={item.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}>
@@ -171,11 +172,10 @@ const tabContent: Record<PricingTab, React.ReactNode> = {
 };
 
 const features = [
-  'Free equity delivery trades',
-  'Free direct mutual funds',
+  'Full-service broking via Choice FinX',
   'Free account opening',
   'No AMC for demat account',
-  'Flat ₹20 for intraday & F&O',
+  '0.30% delivery, 0.03% intraday',
   'Advanced trading platforms',
   'In-depth reports & analytics',
   'Dedicated support',
@@ -188,13 +188,13 @@ const Pricing = () => {
     <Layout>
       <SEOHead
         title="Pricing"
-        description="Simple and transparent pricing — free equity delivery, flat ₹20 intraday and F&O trades at SERNET."
+        description="Simple and transparent pricing — zero-fee regular mutual funds, and share trading on Choice FinX from Choice Equity Broking at 0.30% delivery and 0.03% intraday."
         path="/pricing"
       />
       <PageHero
         title="Simple, transparent"
         highlight="pricing"
-        description="We pioneered the concept of discount broking and price transparency in India. No hidden charges, ever."
+        description="Clear pricing across every product. Share trading is provided on Choice FinX, the full-service broking app from Choice Equity Broking; SERNET is not a stock broker."
         
       />
 
@@ -260,7 +260,7 @@ const Pricing = () => {
         <div className="container-sernet">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center max-w-2xl mx-auto">
             <h2 className="heading-lg text-foreground mb-4">Open an account</h2>
-            <p className="text-body mb-8">Modern platforms and apps, ₹0 investments, and flat ₹20 intraday and F&O trades.</p>
+            <p className="text-body mb-8">Modern platforms and apps, zero-fee regular mutual funds, and share trading on Choice FinX at 0.30% delivery and 0.03% intraday.</p>
             <Link to="/signup" className="btn-primary">Sign up for free</Link>
           </motion.div>
         </div>

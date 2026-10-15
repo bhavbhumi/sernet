@@ -17,7 +17,7 @@ export const tickfundsHero = {
 export const tickfundsStats = [
   { value: 'Since 2006', label: 'AMFI-registered (ARN 35275)' },
   { value: 'APRN 10097', label: 'APMI PMS distributor' },
-  { value: '14', label: 'Fund houses empanelled' },
+  { value: '40+', label: 'AMCs empanelled' },
 ];
 
 export const tickfundsFeatures = [
