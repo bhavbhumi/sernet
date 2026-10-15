@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Update DSP empanelment to 10 February 2006 with the supplied letter and add Quant MF alphabetically with its 1–31 October 2026 brokerage schedule; Quant empanelment pending, other details preserved, rows and both PDF downloads verified on preview and live.
+
 - [x] Update Bandhan MF empanelment to 25 April 2006 with the supplied 15 October 2026 confirmation letter; row and public PDF download verified on preview and live, brokerage details unchanged.
 
 - [x] Add HDFC MF October–December 2026 brokerage document alphabetically in Disclosures, with standard description and empanelment awaiting confirmation; row, alphabetical ordering and public PDF download verified on preview and live.
