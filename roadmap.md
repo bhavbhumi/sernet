@@ -49,3 +49,5 @@
 - [ ] Enable Bot Fight Mode and Cloudflare account MFA
 
 - [x] Publish approved Investor Charter v1.0 with corrected Support → Complaint escalation; replace duplicate investor guidance in Policies with section links; both live pages and KYC deep link verified; IT/HR text and anchors unchanged
+
+- [ ] Add Nine Alps (AIF — Opportunity Fund) row to Disclosures from the supplied 21 October 2024 referral MoU — 1% referral fee on referred contributions; row and PDF download verification on preview and live pending this turn's checks
