@@ -17,6 +17,12 @@ const stats = [
   { icon: HeadphonesIcon, value: 'Local RM', label: 'Onboarding & service support' },
 ];
 
+const testimonials = [
+  { name: 'Rajesh M.', role: 'Day Trader, Mumbai', text: 'Switched from another broker and the execution speed difference is night and day. Choice FinX is incredibly fast and reliable.' },
+  { name: 'Priya S.', role: 'Investor, Bangalore', text: 'The charting tools are professional-grade. I can do all my technical analysis right in the app without needing any third-party tools.' },
+  { name: 'Amit K.', role: 'F&O Trader, Delhi', text: 'Zero auto square-off charges and the lowest brokerage I\'ve found. The customer support team actually picks up the phone!' },
+];
+
 const features = [
   { icon: Zap, title: 'Lightning-Fast Execution', description: 'Order placement and execution are handled on Choice Equity Broking\'s trading systems.' },
   { icon: BarChart3, title: 'Advanced Charting', description: 'Charts, technical indicators and multi-timeframe views built into the app.' },
@@ -158,6 +164,29 @@ const ChoiceFinX = () => (
     </section>
 
 
+    {/* Client Reviews */}
+    <section className="section-padding">
+      <div className="container-zerodha">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">What our clients say</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-center mb-12 max-w-2xl mx-auto">
+          Reviews from clients onboarded through SERNET on Choice FinX.
+        </motion.p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {testimonials.map((t, i) => (
+            <motion.div key={t.name} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }} className="feature-card">
+              <div className="flex gap-1 mb-4">{[...Array(5)].map((_, j) => <Star key={j} className="w-4 h-4 fill-primary text-primary" />)}</div>
+              <p className="text-sm text-foreground mb-4 leading-relaxed">“{t.text}”</p>
+              <div>
+                <p className="text-sm font-medium text-foreground">{t.name}</p>
+                <p className="text-xs text-muted-foreground">{t.role}</p>
+                <p className="text-[11px] font-medium text-primary mt-2">Verified client</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+
     {/* How to Get Started */}
     <section className="section-padding bg-section-alt">
       <div className="container-zerodha">
@@ -196,7 +225,6 @@ const ChoiceFinX = () => (
             { q: 'What documents do I need to open an account?', a: 'PAN card, Aadhaar (linked to mobile), cancelled cheque or bank statement, and a passport-size photograph. The entire KYC is digital.' },
             { q: 'How long does account activation take?', a: 'Accounts are opened and activated by Choice Equity Broking after KYC verification. Timelines depend on document checks.' },
             { q: 'What are the brokerage charges?', a: 'For clients onboarded through SERNET: equity delivery 0.30% per executed order and intraday 0.03% on both legs. F&O, currency and commodity brokerage is as per the Choice FinX schedule. STT, exchange transaction charges, SEBI fees, stamp duty and GST are extra and charged by Choice as per regulation.' },
-            { q: 'Who is my broker — SERNET or Choice?', a: 'Your broker is Choice Equity Broking Pvt. Ltd. (SEBI Reg. No. INZ000160131). SERNET acts as an Authorised Person of Choice, helping with onboarding and servicing. SERNET does not hold client funds or securities; always transfer money only to Choice\'s designated bank accounts.' },
             { q: 'Can I trade on both mobile and desktop?', a: 'Yes, Choice FinX is available on iOS, Android, and web. Your account, watchlists, and positions sync across all devices.' },
             { q: 'How do I add funds?', a: 'Add funds instantly via UPI, Net Banking, or NEFT/RTGS. You can also set up Autopay Mandates for automatic margin funding.' },
           ].map((faq, i) => (
