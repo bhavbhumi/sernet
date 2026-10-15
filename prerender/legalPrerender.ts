@@ -60,15 +60,17 @@ export function legalPrerender(env: Record<string, string>): Plugin {
       if (!fs.existsSync(templatePath)) return;
       const template = fs.readFileSync(templatePath, 'utf8');
 
-      const { JSDOM } = await import('jsdom');
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { JSDOM } = (await import('jsdom' as string)) as any;
       const createDOMPurify = (await import('dompurify')).default;
-      const window = new JSDOM('').window;
-      const purify = createDOMPurify(window as unknown as Window & typeof globalThis);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const window: any = new JSDOM('').window;
+      const purify = createDOMPurify(window);
       // Mirror LegalDocument: sanitize, then stabilise h2 anchors.
       const clean = (body: string) => {
         const doc = new window.DOMParser().parseFromString(purify.sanitize(body), 'text/html');
         const used = new Set<string>();
-        doc.querySelectorAll('h2').forEach((h, i) => {
+        doc.querySelectorAll("h2").forEach((h: { id: string }, i: number) => {
           let id = /^legal-section-\d+$/.test(h.id) && !used.has(h.id) ? h.id : `legal-section-${i + 1}`;
           while (used.has(id)) id = `legal-section-${Number(id.replace('legal-section-', '')) + 1}`;
           used.add(id); h.id = id;
@@ -99,7 +101,7 @@ ${reviewed(pageReviewDates.tickfunds)}`;
       try {
         const res = await fetch(`${url}/rest/v1/legal_pages?select=slug,title,body,last_reviewed_on`, { headers: { apikey: key, Authorization: `Bearer ${key}` } });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        rows = await res.json();
+        rows = (await res.json()) as Row[];
       } catch (e) { console.warn('[prerender] could not fetch legal_pages:', e); return; }
       const bySlug = Object.fromEntries(rows.map(r => [r.slug, r]));
 

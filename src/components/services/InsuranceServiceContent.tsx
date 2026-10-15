@@ -6,9 +6,9 @@ import choicefinxShowcase from '@/assets/choicefinx-showcase.png';
 
 
 const stats = [
-  { icon: BadgeCheck, value: '₹500Cr+', label: 'Claims Settled' },
-  { icon: Shield, value: '2L+', label: 'Policies Served' },
-  { icon: Handshake, value: '30+', label: 'Insurer Partners' },
+  { icon: Shield, value: '1,000+', label: 'Policyholders' },
+  { icon: Handshake, value: '10+', label: 'Insurers via partner' },
+  { icon: BadgeCheck, value: 'IRDAI', label: 'Registered broker partner' },
 ];
 
 const products = [
@@ -35,10 +35,10 @@ export const InsuranceServiceContent = () => (
           >
             <h2 className="heading-lg text-foreground mb-3">Tushil</h2>
             <p className="text-body text-muted-foreground mb-8">
-              Your trusted insurance distribution partner. We work with 30+ leading insurers to bring you the best policies across life, health, motor, and more — backed by dedicated claims support that makes all the difference when you need it most.
+              Insurance access through our IRDAI-registered broker partner — policies from 10+ insurers across life, health, motor and more, with claims assistance coordinated with the broker.
             </p>
             <ul className="space-y-2 mb-8">
-              {['IRDAI Licensed Insurance Distributor', 'Dedicated Claims Support & Assistance', 'Policies from 30+ Leading Insurers', 'Personalised Policy Recommendations', 'End-to-End Service from Purchase to Claims'].map((hook) => (
+              {['Insurance through an IRDAI-registered broker partner', 'Claims Assistance Coordinated with the Broker', 'Policies from 10+ Insurers via Partner', 'Needs-Based Policy Comparison', 'End-to-End Service from Purchase to Claims'].map((hook) => (
                 <li key={hook} className="flex items-center gap-2 text-sm text-foreground">
                   <Check className="w-4 h-4 text-primary shrink-0" />
                   {hook}
@@ -208,7 +208,7 @@ export const InsuranceServiceContent = () => (
           {[
             { icon: Download, step: '01', title: 'Download', description: 'Visit the Tushil web platform or contact your relationship manager to explore insurance products.' },
             { icon: UserCheck, step: '02', title: 'Share Your Needs', description: 'Tell us about your insurance requirements, existing policies, and budget preferences.' },
-            { icon: FileText, step: '03', title: 'Get Recommendations', description: 'Receive personalised policy recommendations compared across 30+ insurers for the best fit.' },
+            { icon: FileText, step: '03', title: 'Get Recommendations', description: 'Receive personalised policy recommendations compared across 10+ insurers for the best fit.' },
             { icon: Play, step: '04', title: 'Buy & Relax', description: 'Purchase your policy seamlessly and enjoy dedicated claims support whenever you need it.' },
           ].map((card, index) => (
             <motion.div
@@ -252,7 +252,7 @@ export const InsuranceServiceContent = () => (
     <section className="py-6 bg-muted/30">
       <div className="container-zerodha">
         <p className="text-xs text-muted-foreground text-center max-w-4xl mx-auto leading-relaxed">
-          <strong>Disclaimer:</strong> Insurance is the subject matter of solicitation. IRDAI is not involved in activities like selling, endorsing, or soliciting insurance. For more details on risk factors, please read the sales brochure carefully before concluding a sale. SERNET facilitates insurance distribution through its principal partner Srigoda Insurance Broking Services. Premium amounts and benefits are subject to the terms and conditions of the respective insurance company.
+          <strong>Disclaimer:</strong> Insurance is the subject matter of solicitation. SERNET is not an insurer, insurance broker or corporate agent; it refers clients to Shrigoda Insurance Brokers, an IRDAI-registered insurance broker, under a referral agreement and may receive a referral fee from the broker. Policies are sold, issued and serviced by the broker and insurer; claims are decided by the insurer. IRDAI does not endorse or guarantee any product or marketing material. Read the policy document, terms, conditions and exclusions carefully before buying.
         </p>
       </div>
     </section>

@@ -54,7 +54,7 @@ const OpenAccount = () => {
                 Open a free <span className="text-primary">demat account</span>
               </h1>
               <p className="text-body mb-8">
-                Join 1500+ families who trust SERNET for their financial journey.
+                Join 500+ families who trust SERNET for their financial journey.
                 Holistic wealth management, transparent fees, and expert guidance.
               </p>
 

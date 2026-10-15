@@ -43,7 +43,6 @@ const Calendars = lazy(() => import("./pages/Calendars"));
 const Services = lazy(() => import("./pages/Services"));
 const Network = lazy(() => import("./pages/Network"));
 const Media = lazy(() => import("./pages/Media"));
-const CSR = lazy(() => import("./pages/CSR"));
 const Complaints = lazy(() => import("./pages/Complaints"));
 const Philosophy = lazy(() => import("./pages/Philosophy"));
 const OpenAccount = lazy(() => import("./pages/OpenAccount"));
@@ -207,7 +206,7 @@ const App = () => (
             <Route path="/services" element={<Services />} />
             <Route path="/network" element={<Network />} />
             <Route path="/media" element={<Media />} />
-            <Route path="/csr" element={<CSR />} />
+            <Route path="/csr" element={<Navigate to="/about" replace />} />
             <Route path="/about/philosophy" element={<Philosophy />} />
             <Route path="/open-account" element={<OpenAccount />} />
             

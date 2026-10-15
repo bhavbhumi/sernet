@@ -104,7 +104,7 @@ export const NetworkSection = () => {
               <h3 className="heading-md text-foreground">Clients</h3>
             </div>
             <p className="text-sm text-muted-foreground mb-5 ml-[46px]">
-              10,000+ active clients across segments
+              2,500+ active clients across segments
             </p>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">

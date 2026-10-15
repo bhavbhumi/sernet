@@ -12,17 +12,17 @@ import choicefinxShowcase from '@/assets/choicefinx-showcase.png';
 
 
 const stats = [
-  { icon: BadgeCheck, value: '₹500Cr+', label: 'Claims Settled' },
-  { icon: Shield, value: '2L+', label: 'Policies Served' },
-  { icon: Handshake, value: '30+', label: 'Insurer Partners' },
+  { icon: Shield, value: '1,000+', label: 'Policyholders' },
+  { icon: Handshake, value: '10+', label: 'Insurers via partner' },
+  { icon: BadgeCheck, value: 'IRDAI', label: 'Registered broker partner' },
 ];
 
 const features = [
   { icon: HeadphonesIcon, title: 'Dedicated Claims Support', description: 'End-to-end assistance from filing to settlement — we act as your advocate when it matters most.' },
-  { icon: Shield, title: 'IRDAI Licensed', description: 'Fully regulated insurance distribution with complete compliance and transparency.' },
-  { icon: Handshake, title: '30+ Insurer Partners', description: 'Access to policies from all major life, health, motor, and general insurers in India.' },
-  { icon: Award, title: 'Expert Recommendations', description: 'Personalised policy suggestions based on your needs, not sales targets.' },
-  { icon: Clock, title: 'Instant Policy Issuance', description: 'Digital-first process with instant policy documents for most products.' },
+  { icon: Shield, title: 'IRDAI-Registered Broker Partner', description: 'Policies are placed through Shrigoda Insurance Brokers, an IRDAI-registered insurance broker; SERNET acts as a referrer.' },
+  { icon: Handshake, title: '10+ Insurers via Partner', description: 'Access to life, health, motor and general insurance policies from 10+ insurers through our broker partner.' },
+  { icon: Award, title: 'Needs-Based Comparison', description: 'Policy options compared by the broker partner against your stated needs; the final choice is yours.' },
+  { icon: Clock, title: 'Digital Policy Issuance', description: 'Policy documents are issued by the insurer, often digitally, once underwriting is complete.' },
   { icon: Phone, title: 'Always Available', description: 'Reach our experts via call, WhatsApp, or in-person — especially during claims.' },
 ];
 
@@ -56,10 +56,10 @@ const Tushil = () => (
             <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wide uppercase mb-4">Insurance Distribution</span>
             <h1 className="heading-xl mb-4">Insurance with <span className="text-primary font-normal">claims support</span> that matters</h1>
             <p className="text-body text-muted-foreground mb-8 max-w-lg">
-              We work with 30+ leading insurers to bring you the best policies — backed by dedicated claims support that makes all the difference when you need it most.
+              Through our IRDAI-registered broker partner, we help you access policies from 10+ insurers — with claims assistance coordinated with the broker when you need it most.
             </p>
             <ul className="space-y-2 mb-8">
-              {['IRDAI Licensed Insurance Distributor', 'Dedicated Claims Support & Assistance', 'Policies from 30+ Leading Insurers', 'Personalised Policy Recommendations', 'End-to-End Service'].map((hook) => (
+              {['Insurance through an IRDAI-registered broker partner', 'Claims Assistance Coordinated with the Broker', 'Policies from 10+ Insurers via Partner', 'Needs-Based Policy Comparison', 'End-to-End Service'].map((hook) => (
                 <li key={hook} className="flex items-center gap-2 text-sm text-foreground"><Check className="w-4 h-4 text-primary shrink-0" />{hook}</li>
               ))}
             </ul>
@@ -187,7 +187,7 @@ const Tushil = () => (
           {[
             { icon: Download, step: '01', title: 'Download App', description: 'Visit the Tushil web platform or call us to get started.' },
             { icon: UserCheck, step: '02', title: 'Share Your Needs', description: 'Tell us about your requirements, existing policies, and budget.' },
-            { icon: FileText, step: '03', title: 'Get Recommendations', description: 'Receive personalised recommendations compared across 30+ insurers.' },
+            { icon: FileText, step: '03', title: 'Get Recommendations', description: 'Receive policy options compared by our broker partner across 10+ insurers.' },
             { icon: Play, step: '04', title: 'Buy & Relax', description: 'Purchase seamlessly and enjoy dedicated claims support.' },
           ].map((card, i) => (
             <motion.div key={card.step} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }} className="feature-card relative">
@@ -208,9 +208,9 @@ const Tushil = () => (
         <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-center mb-12">Everything you need to know about Tushil</motion.p>
         <Accordion type="single" collapsible className="w-full">
           {[
-            { q: 'How does Tushil earn its revenue?', a: 'We earn commissions from insurance companies whose products we distribute. You never pay extra — the premium is the same whether you buy directly or through us.' },
-            { q: 'What makes your claims support different?', a: 'Our dedicated claims team assists you end-to-end — from filing and documentation to follow-ups and settlement. We act as your advocate during the most critical moment.' },
-            { q: 'How do I choose the right health insurance?', a: 'We evaluate your needs based on age, family size, medical history, and budget, then compare plans across 30+ insurers on coverage, CSR, network hospitals, and exclusions.' },
+            { q: 'How does Tushil earn its revenue?', a: 'SERNET may receive a referral fee from its IRDAI-registered broker partner. You pay no fee to SERNET; the premium is set by the insurer.' },
+            { q: 'What makes your claims support different?', a: 'We help you coordinate with the broker partner on claim intimation, documents and follow-ups. Claims are assessed and settled by the insurer.' },
+            { q: 'How do I choose the right health insurance?', a: 'We evaluate your needs based on age, family size, medical history, and budget, then our broker partner compares plans across 10+ insurers on coverage, CSR, network hospitals, and exclusions.' },
             { q: 'Can you help with corporate insurance?', a: 'Yes, we offer group health, group term life, and key-man insurance solutions for businesses of all sizes.' },
             { q: 'Is the portfolio review really free?', a: 'Yes, completely free with no obligation. We\'ll review your existing policies, identify gaps, and suggest improvements at zero cost.' },
           ].map((faq, i) => (
@@ -227,7 +227,7 @@ const Tushil = () => (
     <section className="py-16 md:py-20 bg-section-alt">
       <div className="container-zerodha text-center">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-4">Get insured with confidence</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-muted-foreground mb-8 max-w-xl mx-auto">Join 2 lakh+ policyholders who trust Tushil for their insurance needs and claims support.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-muted-foreground mb-8 max-w-xl mx-auto">Join 1,000+ policyholders who access insurance through Tushil and our broker partner.</motion.p>
         <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="flex flex-wrap justify-center gap-4">
           <a href="https://ekyc.choiceindia.com/open-free-demat-account" target="_blank" rel="noopener noreferrer" className="btn-primary">Get Insured Today <ArrowRight className="w-4 h-4 ml-2" /></a>
           <Link to="/schedule-call" className="btn-secondary"><CalendarCheck className="w-4 h-4 mr-2" /> Book Consultation</Link>
@@ -239,7 +239,7 @@ const Tushil = () => (
     <section className="py-6 bg-muted/30">
       <div className="container-zerodha">
         <p className="text-xs text-muted-foreground text-center max-w-4xl mx-auto leading-relaxed">
-          <strong>Disclaimer:</strong> Insurance is a subject matter of solicitation. IRDAI does not endorse or guarantee the accuracy of any advertisements or marketing material. SERNET acts as a licensed insurance distributor and earns commissions from its insurer partners. Policy terms, conditions, and exclusions apply. Please read the policy document carefully before purchasing.
+          <strong>Disclaimer:</strong> Insurance is the subject matter of solicitation. SERNET is not an insurer, insurance broker or corporate agent; it refers clients to Shrigoda Insurance Brokers, an IRDAI-registered insurance broker, under a referral agreement and may receive a referral fee from the broker. Policies are sold, issued and serviced by the broker and insurer; claims are decided by the insurer. IRDAI does not endorse or guarantee any product or marketing material. Read the policy document, terms, conditions and exclusions carefully before buying.
         </p>
       </div>
     </section>

@@ -6,7 +6,7 @@ import { AutoScrollShowcase, type ShowcaseItem } from './AutoScrollShowcase';
 import { ReferralFormDialog } from '@/components/shared/ReferralFormDialog';
 
 const clientStats = [
-  { icon: Users, value: '1500+', label: 'Families Served' },
+  { icon: Users, value: '500+', label: 'Families Served' },
   { icon: Building2, value: '200+', label: 'Corporate Clients' },
   { icon: Globe, value: '18', label: 'Countries Served' },
 ];
@@ -141,7 +141,7 @@ export const ClientsNetworkContent = () => (
           >
             <img
               src={networkClientsImg}
-              alt="SERNET client network – serving 1500+ families across 18 countries with personalised wealth management"
+              alt="SERNET client network – serving 500+ families across 18 countries with personalised wealth management"
               className="w-full max-w-[480px] max-h-[400px] h-auto object-contain dark:bg-white dark:rounded-xl dark:p-3"
               loading="lazy"
               width={480}

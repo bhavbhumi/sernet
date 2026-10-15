@@ -35,7 +35,7 @@ const Index = () => {
             description: '35+ years of trusted wealth management across 54 cities and 18 countries.',
             foundingDate: '1989',
             areaServed: 'India',
-            numberOfEmployees: { '@type': 'QuantitativeValue', value: '150+' },
+            numberOfEmployees: { '@type': 'QuantitativeValue', value: '10+' },
             telephone: '+91-22-4973-5000',
             email: 'contact@sernetindia.com',
             address: {

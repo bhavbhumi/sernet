@@ -69,7 +69,7 @@ const InvestmentContent = () => (
       <div className="container-sernet">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
           {[
-            { price: '₹0', title: 'Direct mutual funds', desc: 'Invest in direct mutual funds online, completely free.' },
+            { price: '₹0', title: 'Regular mutual funds', desc: 'No fees charged to you; we are paid commission by the fund house, disclosed under Disclosures.' },
             { price: '₹0', title: 'Stocks (Delivery)', desc: 'Buy and hold stocks with zero brokerage charges.' },
             { price: '₹0', title: 'Digital gold', desc: 'Invest in 24K digital gold with no extra charges.' },
           ].map((item, i) => (
@@ -88,7 +88,7 @@ const InvestmentContent = () => (
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-12 text-center">Investment charges</motion.h2>
         <div className="max-w-4xl mx-auto space-y-12">
           {[
-            { category: 'Mutual Funds', items: [{ name: 'Direct mutual funds', price: 'FREE', description: 'Zero commission, invest in 5000+ funds' }, { name: 'SIP investments', price: 'FREE', description: 'Systematic investment plans at no cost' }] },
+            { category: 'Mutual Funds', items: [{ name: 'Regular mutual funds', price: 'FREE', description: 'Zero fees to you, invest in 5000+ funds (distributor commission is paid by the fund house and included in the scheme expense ratio)' }, { name: 'SIP investments', price: 'FREE', description: 'Systematic investment plans at no cost' }] },
             { category: 'Bonds & FDs', items: [{ name: 'Government bonds', price: 'FREE', description: 'Invest in sovereign bonds at no charge' }, { name: 'Corporate bonds', price: 'FREE', description: 'Access corporate bonds marketplace' }] },
             { category: 'Others', items: [{ name: 'IPO applications', price: 'FREE', description: 'Apply for IPOs using UPI' }, { name: 'Digital gold', price: 'FREE', description: 'Buy and sell 24K digital gold' }] },
           ].map((tier, tierIndex) => (
@@ -120,9 +120,9 @@ const InsuranceContent = () => (
       <div className="container-sernet">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
           {[
-            { price: '₹0', title: 'No commission', desc: 'Zero commission on all insurance products.' },
+            { price: '₹0', title: 'No fees', desc: 'No fee charged to you; our broker partner may pay us a referral fee.' },
             { price: '100%', title: 'Claim support', desc: 'Dedicated support throughout the claims process.' },
-            { price: '10+', title: 'Insurers', desc: 'Choose from a wide range of top insurance providers.' },
+            { price: '10+', title: 'Insurers through Partner', desc: 'Policies from 10+ insurers via our IRDAI-registered broker partner.' },
           ].map((item, i) => (
             <motion.div key={item.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}>
               <div className="text-5xl font-bold text-primary mb-2">{item.price}</div>
