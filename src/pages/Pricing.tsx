@@ -70,7 +70,7 @@ const InvestmentContent = () => (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
           {[
             { price: '₹0', title: 'Regular mutual funds', desc: 'No fees charged to you; we are paid commission by the fund house, disclosed under Disclosures.' },
-            { price: '₹0', title: 'Stocks (Delivery)', desc: 'Buy and hold stocks with zero brokerage charges.' },
+            { price: '0.30%', title: 'Stocks (Delivery)', desc: 'Buy and hold stocks on Choice FinX at 0.30% per executed delivery order.' },
             { price: '₹0', title: 'Digital gold', desc: 'Invest in 24K digital gold with no extra charges.' },
           ].map((item, i) => (
             <motion.div key={item.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}>
