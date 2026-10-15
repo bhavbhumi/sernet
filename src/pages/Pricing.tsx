@@ -35,7 +35,7 @@ const TradingContent = () => (
     <section className="section-padding bg-section-alt">
       <div className="container-sernet">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-4 text-center">Detailed charges</motion.h2>
-        <p className="text-small text-center mb-12 max-w-2xl mx-auto">Share trading is provided on Choice FinX, the full-service broking app from Choice Equity Broking Private Limited. Brokerage and statutory charges are levied by Choice Equity Broking as per its schedule; SERNET is not a stock broker.</p>
+        <p className="text-small text-center mb-12 max-w-2xl mx-auto">Share trading is provided on Choice FinX, the full-service broking app from Choice Equity Broking Private Limited. Brokerage shown applies to clients onboarded through SERNET and is levied by Choice Equity Broking as per its schedule; SERNET is not a stock broker.</p>
         <div className="max-w-4xl mx-auto space-y-12">
           {[
             { category: 'Equity', items: [{ name: 'Equity delivery', price: '0.30%', description: 'Per executed delivery order (NSE, BSE) on Choice FinX' }, { name: 'Equity intraday', price: '0.03%', description: 'Per executed order, charged on both buy and sell legs' }] },
