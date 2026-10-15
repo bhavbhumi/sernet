@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Star, ArrowRight, Play, MapPin, X } from 'lucide-react';
+import { Star, BadgeCheck, ArrowRight, Play, MapPin, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
@@ -87,9 +87,10 @@ type Testimonial = {
   source: string;
   hasVideo: boolean;
   text: string;
+  verified?: boolean;
 };
 
-const TestimonialCard = ({ name, occupation, city, country, rating, source, hasVideo, text }: Testimonial) => (
+const TestimonialCard = ({ name, occupation, city, country, rating, source, hasVideo, text, verified }: Testimonial) => (
   <div className="flex-shrink-0 w-[340px] md:w-[400px] p-6 rounded-xl border border-border bg-card relative group hover:border-primary/30 transition-colors duration-300">
     {/* Top row: rating number + stars left, source icon right */}
     <div className="flex items-center justify-between mb-3">
@@ -115,6 +116,9 @@ const TestimonialCard = ({ name, occupation, city, country, rating, source, hasV
       </div>
     </div>
 
+    {verified && (
+      <p className="mb-2 inline-flex items-center gap-1 text-xs font-medium text-primary"><BadgeCheck className="w-3.5 h-3.5" aria-hidden="true" />Verified client</p>
+    )}
     <p className="text-sm text-muted-foreground leading-relaxed mb-5 line-clamp-3">
       "{text}"
     </p>
@@ -226,6 +230,7 @@ export const TestimonialSection = () => {
         source: (r.source ?? 'google').toLowerCase(),
         hasVideo: r.has_video ?? false,
         text: r.review,
+        verified: true, // approved reviews from real clients who consented to publication
       }))
     : fallbackTestimonials;
 

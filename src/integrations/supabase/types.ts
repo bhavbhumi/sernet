@@ -2589,6 +2589,7 @@ export type Database = {
         Row: {
           body: string | null
           id: string
+          last_reviewed_on: string | null
           published_at: string | null
           slug: string
           title: string
@@ -2598,6 +2599,7 @@ export type Database = {
         Insert: {
           body?: string | null
           id?: string
+          last_reviewed_on?: string | null
           published_at?: string | null
           slug: string
           title: string
@@ -2607,6 +2609,7 @@ export type Database = {
         Update: {
           body?: string | null
           id?: string
+          last_reviewed_on?: string | null
           published_at?: string | null
           slug?: string
           title?: string

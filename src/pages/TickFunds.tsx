@@ -10,44 +10,23 @@ import {
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import choicefinxShowcase from '@/assets/choicefinx-showcase.png';
 import { TICKFUNDS_LINKS } from '@/lib/appLinks';
+import { RegulatoryIdentity, LastReviewed } from '@/components/legal/RegulatoryIdentity';
+import { pageReviewDates } from '@/lib/regulatoryIdentity';
+import { tickfundsSeo, tickfundsHero, tickfundsStats, tickfundsFeatures, tickfundsProducts, tickfundsTestimonials, tickfundsSteps, tickfundsFaqs, tickfundsDisclaimer } from '@/content/tickfunds';
 
 
-const stats = [
-  { icon: TrendingUp, value: 'Since 2006', label: 'AMFI-registered (ARN 35275)' },
-  { icon: Users, value: 'APRN 10097', label: 'APMI PMS distributor' },
-  { icon: Layers, value: '14', label: 'Fund houses empanelled' },
-];
-
-const features = [
-  { icon: Target, title: 'Goal-Based Planning', description: 'We help you map investments to life goals — retirement, education, home, or wealth creation.' },
-  { icon: Shield, title: 'AMFI Registered MFD', description: 'Regulated and compliant mutual fund distribution with complete transparency.' },
-  { icon: Users, title: 'Dedicated Relationship Manager', description: 'A personal RM who knows your portfolio and guides you through every market cycle.' },
-  { icon: RefreshCw, title: 'Regular Portfolio Reviews', description: 'Periodic reviews of your holdings so you can decide whether any rebalancing suits you.' },
-  { icon: Award, title: 'Curated Product Selection', description: 'Access 5,000+ schemes from top AMCs, plus PMS, AIF, bonds, and digital gold.' },
-  { icon: Heart, title: 'Investor-First Approach', description: 'We earn from principals, not from you. Your interests always come first.' },
-];
-
-const products = [
-  { icon: PieChart, name: 'Mutual Funds & SIF', description: 'Invest in regular mutual funds across 5,000+ schemes from top AMCs with personalised guidance.' },
-  { icon: Briefcase, name: 'PMS & AIF', description: 'Portfolio Management Services and Alternative Investment Funds for HNI investors.' },
-  { icon: Landmark, name: 'Bonds', description: 'Government securities, corporate bonds, and tax-free bonds for stable returns.' },
-  { icon: Building2, name: 'Company FD', description: 'Fixed deposits from top-rated corporates offering higher interest rates.' },
-  { icon: Gem, name: 'Digital Gold & Silver', description: 'Buy 24K digital gold and 999 purity silver in any amount — securely stored.' },
-];
-
-const testimonials = [
-  { name: 'Sunita P.', role: 'Investor, Pune', text: 'My RM helped me create a goal-based portfolio that I finally feel confident about. The regular reviews keep me on track.' },
-  { name: 'Vikram J.', role: 'HNI Investor, Hyderabad', text: 'The PMS recommendations from Tick Funds have been excellent. Great product selection and transparent process.' },
-  { name: 'Neha T.', role: 'First-time Investor, Chennai', text: 'I started with just ₹500 SIP and now I have a diversified portfolio. The guidance made all the difference.' },
-];
+const statIcons = [TrendingUp, Users, Layers];
+const stats = tickfundsStats.map((s, i) => ({ ...s, icon: statIcons[i] }));
+const featureIcons = [Target, Shield, Users, RefreshCw, Award, Heart];
+const features = tickfundsFeatures.map((f, i) => ({ ...f, icon: featureIcons[i] }));
+const productIcons = [PieChart, Briefcase, Landmark, Building2, Gem];
+const products = tickfundsProducts.map((p, i) => ({ ...p, icon: productIcons[i] }));
+const testimonials = tickfundsTestimonials;
+const stepIcons = [Download, UserCheck, Wallet, Play];
 
 const TickFunds = () => (
   <Layout>
-    <SEOHead
-      title="Tick Funds — Mutual Fund Platform"
-      description="Invest in 5000+ mutual funds in regular plans through SERNET's Tick Funds platform."
-      path="/tickfunds"
-    />
+    <SEOHead title={tickfundsSeo.title} description={tickfundsSeo.description} path={tickfundsSeo.path} />
     {/* Hero */}
     <section className="section-padding bg-background">
       <div className="container-zerodha">
@@ -59,7 +38,7 @@ const TickFunds = () => (
               Your comprehensive investment distribution platform. As an AMFI-registered Mutual Fund Distributor, we help you access the best mutual funds, bonds, and more — with personalised guidance at every step.
             </p>
             <ul className="space-y-2 mb-8">
-              {['AMFI-Registered Mutual Fund Distributor', 'Regular Plans with Relationship Manager Support', 'Curated PMS & AIF for HNI Investors', 'Digital Gold & Silver with Insured Vaults', 'Dedicated Relationship Manager'].map((hook) => (
+              {tickfundsHero.hooks.map((hook) => (
                 <li key={hook} className="flex items-center gap-2 text-sm text-foreground"><Check className="w-4 h-4 text-primary shrink-0" />{hook}</li>
               ))}
             </ul>
@@ -178,19 +157,14 @@ const TickFunds = () => (
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">Begin your investment journey</motion.h2>
         <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-center mb-12 max-w-2xl mx-auto">Four simple steps to start building wealth.</motion.p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {[
-            { icon: Download, step: '01', title: 'Download', description: 'Get the Tick Funds app from Google Play or the Apple App Store, or sign in on the Tick Funds web app.' },
-            { icon: UserCheck, step: '02', title: 'Complete KYC', description: 'Sign up, complete Aadhaar e-verification, upload PAN, and finish video verification.' },
-            { icon: Wallet, step: '03', title: 'Fund Account', description: 'Add funds via UPI, Net Banking, or NEFT/RTGS. Set up SIP mandates.' },
-            { icon: Play, step: '04', title: 'Start Investing', description: 'Invest in mutual funds and SIF in the app; contact your RM for PMS, AIF, Bonds and FDs.' },
-          ].map((card, i) => (
+          {tickfundsSteps.map((card, i) => { const StepIcon = stepIcons[i]; return (
             <motion.div key={card.step} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }} className="feature-card relative">
               <span className="text-4xl font-bold text-primary/10 absolute top-4 right-4">{card.step}</span>
-              <div className="w-11 h-11 rounded-lg bg-primary/10 flex items-center justify-center mb-4"><card.icon className="w-5 h-5 text-primary" /></div>
+              <div className="w-11 h-11 rounded-lg bg-primary/10 flex items-center justify-center mb-4"><StepIcon className="w-5 h-5 text-primary" /></div>
               <h3 className="heading-md text-foreground mb-2">{card.title}</h3>
               <p className="text-small leading-relaxed">{card.description}</p>
             </motion.div>
-          ))}
+          ); })}
         </div>
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }} className="text-center mt-12">
           <a href={TICKFUNDS_LINKS.START_INVESTING} target="_blank" rel="noopener noreferrer" className="btn-primary">Start Investing Today <ArrowRight className="w-4 h-4 ml-2" /></a>
@@ -204,13 +178,7 @@ const TickFunds = () => (
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">Frequently Asked Questions</motion.h2>
         <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-center mb-12">Everything you need to know about Tick Funds</motion.p>
         <Accordion type="single" collapsible className="w-full">
-          {[
-            { q: 'What is the minimum amount to start investing?', a: 'You can start with as little as ₹500 through a SIP. Lump-sum investments typically start from ₹1,000 depending on the fund house.' },
-            { q: 'Are you a SEBI-registered Investment Advisor?', a: 'No, we are an AMFI-registered Mutual Fund Distributor (MFD). We earn commissions from AMCs for regular plan distribution and do not charge advisory fees.' },
-            { q: 'What is the difference between regular and direct plans?', a: 'Regular plans include a distributor commission in the expense ratio, which is how we are paid for distribution and servicing support. Direct plans have a lower expense ratio and no distributor commission; you can always choose them directly with the AMC.' },
-            { q: 'Is digital gold safe?', a: 'Yes, digital gold is 24K, 999.9 purity stored in MMTC-PAMP insured vaults. Buy from ₹1, convert to physical gold, or redeem for cash anytime.' },
-            { q: 'How are PMS and AIF different?', a: 'PMS involves direct stock investments (min ₹50L). AIF pools money for specialised strategies like PE or hedge funds (min ₹1Cr).' },
-          ].map((faq, i) => (
+          {tickfundsFaqs.map((faq, i) => (
             <AccordionItem key={i} value={`faq-${i}`}>
               <AccordionTrigger className="text-left">{faq.q}</AccordionTrigger>
               <AccordionContent className="text-muted-foreground">{faq.a}</AccordionContent>
@@ -234,9 +202,11 @@ const TickFunds = () => (
 
     {/* Disclaimer */}
     <section className="py-6 bg-muted/30">
-      <div className="container-zerodha">
+      <div className="container-zerodha space-y-4">
+        <div className="max-w-4xl mx-auto"><RegulatoryIdentity variant="compact" /></div>
+        <div className="text-center"><LastReviewed date={pageReviewDates.tickfunds} /></div>
         <p className="text-xs text-muted-foreground text-center max-w-4xl mx-auto leading-relaxed">
-          <strong>Disclaimer:</strong> Mutual fund investments are subject to market risks. Read all scheme-related documents carefully before investing. Past performance is not indicative of future returns. SERNET is an AMFI-registered Mutual Fund Distributor (ARN 35275, EUIN E025145, valid until 28 October 2028) and an APMI-registered PMS distributor (APRN 10097), and earns commissions from product providers for regular plan distribution. SERNET is not a SEBI-registered Investment Adviser, Research Analyst or stock broker; any guidance is incidental to distribution and the investment decision is yours. Mutual funds and SIF are available on the Tick Funds web and mobile app; PMS, AIF, Bonds and Company FDs are currently offered through your relationship manager (in-app access coming soon).
+          <strong>Disclaimer:</strong> {tickfundsDisclaimer}
         </p>
       </div>
     </section>
