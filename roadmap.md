@@ -51,3 +51,5 @@
 - [x] Publish approved Investor Charter v1.0 with corrected Support → Complaint escalation; replace duplicate investor guidance in Policies with section links; both live pages and KYC deep link verified; IT/HR text and anchors unchanged
 
 - [x] Add Nine Alps (AIF — Opportunity Fund) row to Disclosures from the supplied 21 October 2024 referral MoU — 1% referral fee on referred contributions; row, alphabetical position (before Northern Arc) and PDF download verified on preview and live.
+
+- [x] Link HDFC MF appointment letter (dated 15 Oct 2026, no start date stated) and add UTI MF row (empanelled since 6 July 2006, letter dated 15 Oct 2026; brokerage awaiting provider).
