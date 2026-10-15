@@ -89,7 +89,6 @@ const sitemapSections = [
     title: 'Company',
     links: [
       { label: 'Philosophy', href: '/about/philosophy' },
-      { label: 'CSR', href: '/csr' },
       { label: 'Media', href: '/media' },
     ],
   },
