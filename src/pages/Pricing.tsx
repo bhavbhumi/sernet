@@ -68,9 +68,10 @@ const InvestmentContent = () => (
   <>
     <section className="section-padding bg-background">
       <div className="container-sernet">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
           {[
             { price: '₹0', title: 'Regular mutual funds', desc: 'No fees charged to you; we are paid commission by the fund house, disclosed under Disclosures.' },
+            { price: '₹0', title: 'Bonds', desc: 'Invest in government and corporate bonds at no charge to you; we may earn commission from providers.' },
             { price: '0.30%', title: 'Stocks (Delivery)', desc: 'Buy and hold stocks on Choice FinX at 0.30% per executed delivery order.' },
             { price: '₹0', title: 'Digital gold', desc: 'Invest in 24K digital gold with no extra charges.' },
           ].map((item, i) => (
