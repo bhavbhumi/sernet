@@ -26,11 +26,7 @@ const stepIcons = [Download, UserCheck, Wallet, Play];
 
 const TickFunds = () => (
   <Layout>
-    <SEOHead
-      title="Tick Funds — Mutual Fund Platform"
-      description="Invest in 5000+ mutual funds in regular plans through SERNET's Tick Funds platform."
-      path="/tickfunds"
-    />
+    <SEOHead title={tickfundsSeo.title} description={tickfundsSeo.description} path={tickfundsSeo.path} />
     {/* Hero */}
     <section className="section-padding bg-background">
       <div className="container-zerodha">
@@ -161,7 +157,7 @@ const TickFunds = () => (
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">Begin your investment journey</motion.h2>
         <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-center mb-12 max-w-2xl mx-auto">Four simple steps to start building wealth.</motion.p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {tickfundsSteps.map((card, i) => { const StepIcon = stepIcons[i]; return ( (
+          {tickfundsSteps.map((card, i) => { const StepIcon = stepIcons[i]; return (
             <motion.div key={card.step} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }} className="feature-card relative">
               <span className="text-4xl font-bold text-primary/10 absolute top-4 right-4">{card.step}</span>
               <div className="w-11 h-11 rounded-lg bg-primary/10 flex items-center justify-center mb-4"><StepIcon className="w-5 h-5 text-primary" /></div>
