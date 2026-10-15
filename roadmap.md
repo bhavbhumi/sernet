@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Add Invesco India and Mirae Asset MF brokerage structures (1 October–31 December 2026) alphabetically in Disclosures — Mirae row notes its document also covers Platinum SIF; both empanelments await provider confirmation; rows and PDF downloads verified on preview.
+
 - [x] Update Alchemy empanelment to 23 September 2026 per provider email — verified on preview and live. Rechecked Quant's original PDF: pages 1 and 2 explicitly state 1–31 October 2026; existing period retained pending a revised quarterly document.
 
 - [x] Add Nippon India MF 1 October–31 December 2026 brokerage structure from the supplied PDF; empanelment (19 June 2006, redacted letter) unchanged; row and PDF download verified on preview.
