@@ -160,6 +160,7 @@ const InsuranceContent = () => (
             </motion.div>
           ))}
         </div>
+        <p className="text-small text-center mt-12 max-w-3xl mx-auto">Insurance is the subject matter of solicitation. SERNET is not an insurer, insurance broker or corporate agent; it refers clients to Shrigoda Insurance Brokers, an IRDAI-registered insurance broker, under a referral agreement and may receive a referral fee from the broker. Policies are sold, issued and serviced by the broker and insurer; claims are decided by the insurer. Read the policy document, terms, conditions and exclusions carefully before buying.</p>
       </div>
     </section>
   </>
@@ -171,15 +172,33 @@ const tabContent: Record<PricingTab, React.ReactNode> = {
   Insurance: <InsuranceContent />,
 };
 
-const features = [
-  'Full-service broking via Choice FinX',
-  'Free account opening',
-  'No AMC for demat account',
-  '0.30% delivery, 0.03% intraday',
-  'Advanced trading platforms',
-  'In-depth reports & analytics',
-  'Dedicated support',
-];
+const tabFeatures: Record<PricingTab, string[]> = {
+  Trading: [
+    'Full-service broking via Choice FinX',
+    'Free account opening',
+    'No AMC for demat account',
+    '0.30% delivery, 0.03% intraday',
+    'Advanced trading platforms',
+    'In-depth reports & analytics',
+    'Dedicated support',
+  ],
+  Investment: [
+    'Zero-fee regular mutual funds',
+    '5,000+ funds from 40+ AMCs',
+    'SIP, lumpsum and goal-based investing',
+    'PMS, AIF, bonds and FDs via your RM',
+    'Consolidated portfolio view',
+    'Dedicated relationship manager',
+  ],
+  Insurance: [
+    'Life, health and general insurance',
+    'Policies from 10+ insurers',
+    'Placed through Shrigoda Insurance Brokers',
+    'No charge to you — we earn a referral fee',
+    'Dedicated claim support',
+    'Guidance from your relationship manager',
+  ],
+};
 
 const Pricing = () => {
   const [activeTab, setActiveTab] = useState<PricingTab>('Trading');
