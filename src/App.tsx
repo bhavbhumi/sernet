@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { ScrollToTop } from "./components/shared/ScrollToTop";
 import { ScrollDownFAB } from "./components/shared/ScrollDownFAB";
@@ -236,6 +236,10 @@ const App = () => (
             {/* Product landing pages */}
             <Route path="/choicefinx" element={<ChoiceFinX />} />
             <Route path="/tickfunds" element={<TickFunds />} />
+            <Route path="/tick-funds" element={<Navigate to="/tickfunds" replace />} />
+            <Route path="/tick-funds/*" element={<Navigate to="/tickfunds" replace />} />
+            <Route path="/tickfunds/*" element={<Navigate to="/tickfunds" replace />} />
+            <Route path="/services/tickfunds" element={<Navigate to="/tickfunds" replace />} />
             <Route path="/tushil" element={<TushilPage />} />
             <Route path="/awareness" element={<Awareness />} />
 

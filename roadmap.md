@@ -57,3 +57,4 @@
 - [x] Link HDFC MF appointment letter (dated 15 Oct 2026, no start date stated) and add UTI MF row (empanelled since 6 July 2006, letter dated 15 Oct 2026; brokerage awaiting provider).
 
 - [x] Update PGIM India MF empanelment to 22 September 2010 with the supplied letter dated 15 October 2026; brokerage unchanged (1 Oct–31 Dec 2026).
+- [x] Compliance gaps: ARN fix, unproven figures removed, distributor wording, platform map, Tick Funds redirects, Media item marked historical
