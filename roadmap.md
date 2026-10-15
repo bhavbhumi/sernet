@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Add HDFC MF October–December 2026 brokerage document alphabetically in Disclosures, with standard description and empanelment awaiting confirmation; row, alphabetical ordering and public PDF download verified on preview and live.
+
 - [x] Verify and add Kotak empanelment date and public letter — corrected letter confirms 24 May 2006; date and PDF download verified on preview and live. Brokerage remains 1–31 October 2026.
 
 - [x] Add verified Aditya Birla Sun Life and Nippon India empanelments; historical Birla July–September 2026 rate card linked, current Birla/Nippon brokerage pending; letters redacted and all three PDFs verified on preview and live.
