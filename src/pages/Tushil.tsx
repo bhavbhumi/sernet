@@ -210,7 +210,7 @@ const Tushil = () => (
           {[
             { q: 'How does Tushil earn its revenue?', a: 'SERNET may receive a referral fee from its IRDAI-registered broker partner. You pay no fee to SERNET; the premium is set by the insurer.' },
             { q: 'What makes your claims support different?', a: 'We help you coordinate with the broker partner on claim intimation, documents and follow-ups. Claims are assessed and settled by the insurer.' },
-            { q: 'How do I choose the right health insurance?', a: 'We evaluate your needs based on age, family size, medical history, and budget, then our broker partner compares plans across 10+ insurers on coverage, CSR, network hospitals, and exclusions.' },
+            { q: 'How do I choose the right health insurance?', a: 'We evaluate your needs based on age, family size, medical history, and budget, then our broker partner compares plans across 10+ insurers on coverage, claim settlement ratios, network hospitals, and exclusions.' },
             { q: 'Can you help with corporate insurance?', a: 'Yes, we offer group health, group term life, and key-man insurance solutions for businesses of all sizes.' },
             { q: 'Is the portfolio review really free?', a: 'Yes, completely free with no obligation. We\'ll review your existing policies, identify gaps, and suggest improvements at zero cost.' },
           ].map((faq, i) => (
