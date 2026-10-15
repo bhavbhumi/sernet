@@ -17,9 +17,9 @@ const TradingContent = () => (
       <div className="container-sernet">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
           {[
-            { price: '₹0', title: 'Free equity delivery', desc: 'All equity delivery investments are absolutely free — ₹0 brokerage.' },
-            { price: '₹20', title: 'Intraday and F&O', desc: 'Flat ₹20 or 0.03% (whichever is lower) per executed order.' },
-            { price: '₹0', title: 'Free direct MF', desc: 'All direct mutual fund investments are absolutely free.' },
+            { price: '0.30%', title: 'Equity delivery', desc: '0.30% per executed delivery order on Choice FinX, the full-service broking app from Choice Equity Broking.' },
+            { price: '0.03%', title: 'Equity intraday', desc: '0.03% per executed order on both buy and sell legs for intraday trades.' },
+            { price: '₹0', title: 'Account opening', desc: 'Opening a trading and demat account on Choice FinX is free.' },
           ].map((item, i) => (
             <motion.div key={item.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}>
               <div className="text-5xl font-bold text-primary mb-2">{item.price}</div>
