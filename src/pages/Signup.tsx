@@ -45,7 +45,7 @@ const Signup = () => {
                 <span className="text-primary">SERNET</span> account
               </h1>
               <p className="text-body mb-8">
-                Join 1500+ families who trust SERNET for their financial journey.
+                Join 500+ families who trust SERNET for their financial journey.
               </p>
               
               <div className="space-y-4">
