@@ -121,9 +121,9 @@ const InsuranceContent = () => (
       <div className="container-sernet">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
           {[
-            { price: '₹0', title: 'No fees', desc: 'No fee charged to you; our broker partner may pay us a referral fee.' },
+            { price: '₹0', title: 'No fees', desc: 'No fee charged to you; we earn a referral fee from Shrigoda Insurance Brokers.' },
             { price: '100%', title: 'Claim support', desc: 'Dedicated support throughout the claims process.' },
-            { price: '10+', title: 'Insurers through Partner', desc: 'Policies from 10+ insurers via our IRDAI-registered broker partner.' },
+            { price: '10+', title: 'Insurers through Partner', desc: 'Policies from 10+ insurers via Shrigoda Insurance Brokers, our IRDAI-registered broker partner.' },
           ].map((item, i) => (
             <motion.div key={item.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}>
               <div className="text-5xl font-bold text-primary mb-2">{item.price}</div>
@@ -140,9 +140,9 @@ const InsuranceContent = () => (
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-12 text-center">Insurance products</motion.h2>
         <div className="max-w-4xl mx-auto space-y-12">
           {[
-            { category: 'Life Insurance', items: [{ name: 'Term life insurance', price: 'No charge to you', description: 'Pure term plans from top insurers; we earn a referral fee from our broker partner' }, { name: 'ULIPs', price: 'No charge to you', description: 'Unit-linked insurance plans; we earn a referral fee from our broker partner' }] },
-            { category: 'Health Insurance', items: [{ name: 'Individual health', price: 'No charge to you', description: 'Comprehensive health coverage; we earn a referral fee from our broker partner' }, { name: 'Family floater', price: 'No charge to you', description: 'Coverage for the entire family; we earn a referral fee from our broker partner' }] },
-            { category: 'General Insurance', items: [{ name: 'Motor insurance', price: 'No charge to you', description: 'Car and bike insurance; we earn a referral fee from our broker partner' }, { name: 'Travel insurance', price: 'No charge to you', description: 'Domestic and international travel cover; we earn a referral fee from our broker partner' }] },
+            { category: 'Life Insurance', items: [{ name: 'Term life insurance', price: 'No charge to you', description: 'Pure term plans from top insurers; we earn a referral fee from Shrigoda Insurance Brokers' }, { name: 'ULIPs', price: 'No charge to you', description: 'Unit-linked insurance plans; we earn a referral fee from Shrigoda Insurance Brokers' }] },
+            { category: 'Health Insurance', items: [{ name: 'Individual health', price: 'No charge to you', description: 'Comprehensive health coverage; we earn a referral fee from Shrigoda Insurance Brokers' }, { name: 'Family floater', price: 'No charge to you', description: 'Coverage for the entire family; we earn a referral fee from Shrigoda Insurance Brokers' }] },
+            { category: 'General Insurance', items: [{ name: 'Motor insurance', price: 'No charge to you', description: 'Car and bike insurance; we earn a referral fee from Shrigoda Insurance Brokers' }, { name: 'Travel insurance', price: 'No charge to you', description: 'Domestic and international travel cover; we earn a referral fee from Shrigoda Insurance Brokers' }] },
           ].map((tier, tierIndex) => (
             <motion.div key={tier.category} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: tierIndex * 0.1 }}>
               <h3 className="heading-md text-foreground mb-6">{tier.category}</h3>
@@ -160,6 +160,7 @@ const InsuranceContent = () => (
             </motion.div>
           ))}
         </div>
+        <p className="text-small text-center mt-12 max-w-3xl mx-auto">Insurance is the subject matter of solicitation. SERNET is not an insurer, insurance broker or corporate agent; it refers clients to Shrigoda Insurance Brokers, an IRDAI-registered insurance broker, under a referral agreement and may receive a referral fee from the broker. Policies are sold, issued and serviced by the broker and insurer; claims are decided by the insurer. Read the policy document, terms, conditions and exclusions carefully before buying.</p>
       </div>
     </section>
   </>
@@ -171,15 +172,33 @@ const tabContent: Record<PricingTab, React.ReactNode> = {
   Insurance: <InsuranceContent />,
 };
 
-const features = [
-  'Full-service broking via Choice FinX',
-  'Free account opening',
-  'No AMC for demat account',
-  '0.30% delivery, 0.03% intraday',
-  'Advanced trading platforms',
-  'In-depth reports & analytics',
-  'Dedicated support',
-];
+const tabFeatures: Record<PricingTab, string[]> = {
+  Trading: [
+    'Full-service broking via Choice FinX',
+    'Free account opening',
+    'No AMC for demat account',
+    '0.30% delivery, 0.03% intraday',
+    'Advanced trading platforms',
+    'In-depth reports & analytics',
+    'Dedicated support',
+  ],
+  Investment: [
+    'Zero-fee regular mutual funds',
+    '5,000+ funds from 40+ AMCs',
+    'SIP, lumpsum and goal-based investing',
+    'PMS, AIF, bonds and FDs via your RM',
+    'Consolidated portfolio view',
+    'Dedicated relationship manager',
+  ],
+  Insurance: [
+    'Life, health and general insurance',
+    'Policies from 10+ insurers',
+    'Placed through Shrigoda Insurance Brokers',
+    'No charge to you — we earn a referral fee',
+    'Dedicated claim support',
+    'Guidance from your relationship manager',
+  ],
+};
 
 const Pricing = () => {
   const [activeTab, setActiveTab] = useState<PricingTab>('Trading');
@@ -244,7 +263,7 @@ const Pricing = () => {
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-2xl mx-auto text-center">
             <h2 className="heading-lg text-foreground mb-8">What you get</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
-              {features.map((feature, index) => (
+              {tabFeatures[activeTab].map((feature, index) => (
                 <motion.div key={feature} initial={{ opacity: 0, x: -10 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: index * 0.05 }} className="flex items-center gap-3">
                   <Check className="w-5 h-5 text-success flex-shrink-0" />
                   <span className="text-body">{feature}</span>
