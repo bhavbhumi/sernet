@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Update Bandhan MF empanelment to 25 April 2006 with the supplied 15 October 2026 confirmation letter; row and public PDF download verified on preview and live, brokerage details unchanged.
+
 - [x] Add HDFC MF October–December 2026 brokerage document alphabetically in Disclosures, with standard description and empanelment awaiting confirmation; row, alphabetical ordering and public PDF download verified on preview and live.
 
 - [x] Verify and add Kotak empanelment date and public letter — corrected letter confirms 24 May 2006; date and PDF download verified on preview and live. Brokerage remains 1–31 October 2026.
@@ -20,7 +22,7 @@
 - [x] Publish approved HR Policy text and PDF under Policies & Procedures — version 1.0 effective 12 October 2026; text, PDF and section link verified
 - [x] Review existing policies and consolidate their titles into clear groups without changing approved obligations — Distribution & Investor Services; Conduct & Investor Protection; Technology & Information Security; People & Workplace
 - [x] Reorganise Legal & Compliance and footer disclosures around verified AMFI/APMI distributor registrations — all six sections, legacy links and investor guidance checked
-- [ ] Supply remaining provider/product commission schedules and approve legal wording with SERNET compliance reviewer — DSP/SBI/Bandhan schedules received; Bandhan empanelment confirmation still awaited
+- [ ] Supply remaining provider/product commission schedules and approve legal wording with SERNET compliance reviewer — Bandhan empanelment confirmation received; remaining documents and legal approval depend on providers and the reviewer
 - [x] Publish public organisation chart on About → Team tab, driven from HR employees (is_public) — 7 leadership roles per Bhavesh's structure
 - [x] Consolidate Disclosures into separate sections and add verified DSP/SBI commission downloads; navigation and hosted PDF contents checked
 - [x] Prepare original SERNET IT Policy review pack — PDF and editable draft; all seven pages visually checked
