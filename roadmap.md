@@ -59,5 +59,6 @@
 - [x] Update PGIM India MF empanelment to 22 September 2010 with the supplied letter dated 15 October 2026; brokerage unchanged (1 Oct–31 Dec 2026).
 - [x] Compliance gaps: ARN fix, unproven figures removed, distributor wording, platform map, Tick Funds redirects, Media item marked historical
 - [x] Prerendered legal, charter, disclosures, grievance and Tick Funds pages; central regulatory identity; Last reviewed dates; verified review badges; claims register
-- [ ] Reconcile flagged claims (Pricing "direct funds zero commission", 14 vs 13 fund houses, 10,000+ clients vs 1500+ families, 150+ employees) — awaiting user
+- [x] Claims corrected per management (2,500+ clients, 500+ families, 10+ employees, regular MF zero fees, 10+ insurers via partner, 1,000+ policyholders, CSR retired)
+- [ ] Tick Funds "14 fund houses" vs 13 in Disclosures; Pricing page still lists stock-broking charges — awaiting user
 - [ ] Sample testimonials (home fallback + 3 Tick Funds quotes) not marked verified — awaiting real-client confirmation

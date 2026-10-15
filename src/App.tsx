@@ -43,7 +43,6 @@ const Calendars = lazy(() => import("./pages/Calendars"));
 const Services = lazy(() => import("./pages/Services"));
 const Network = lazy(() => import("./pages/Network"));
 const Media = lazy(() => import("./pages/Media"));
-const CSR = lazy(() => import("./pages/CSR"));
 const Complaints = lazy(() => import("./pages/Complaints"));
 const Philosophy = lazy(() => import("./pages/Philosophy"));
 const OpenAccount = lazy(() => import("./pages/OpenAccount"));
