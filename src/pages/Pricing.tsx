@@ -110,6 +110,7 @@ const InvestmentContent = () => (
             </motion.div>
           ))}
         </div>
+        <p className="text-small text-center mt-12 max-w-3xl mx-auto">SERNET is a mutual fund distributor registered with AMFI and a PMS distributor registered with APMI; it does not charge you fees on funds, PMS, AIF, bonds or gold. It is paid commissions or fee shares by fund houses and product providers, disclosed under Disclosures. PMS and AIF are offered through your relationship manager and are subject to market risk; read all scheme-related documents carefully.</p>
       </div>
     </section>
   </>
