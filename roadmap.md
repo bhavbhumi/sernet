@@ -1,6 +1,6 @@
 # Roadmap
 
-- [ ] Update DSP empanelment from the supplied letter and add the verified Quant MF brokerage schedule alphabetically; preserve other provider details and verify downloads.
+- [x] Update DSP empanelment to 10 February 2006 with the supplied letter and add Quant MF alphabetically with its 1–31 October 2026 brokerage schedule; Quant empanelment pending, other details preserved, rows and both PDF downloads verified on preview and live.
 
 - [x] Update Bandhan MF empanelment to 25 April 2006 with the supplied 15 October 2026 confirmation letter; row and public PDF download verified on preview and live, brokerage details unchanged.
 
