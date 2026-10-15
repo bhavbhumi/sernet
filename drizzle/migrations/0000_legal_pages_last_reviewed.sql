@@ -1,0 +1,2 @@
+ALTER TABLE public.legal_pages ADD COLUMN IF NOT EXISTS last_reviewed_on date;
+COMMENT ON COLUMN public.legal_pages.last_reviewed_on IS 'Date the content was actually reviewed; set manually, never by deployment.';
