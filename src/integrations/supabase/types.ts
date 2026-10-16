@@ -4769,7 +4769,7 @@ export type Database = {
         | "accounts"
         | "support"
         | "legal"
-      feed_type: "news" | "circular"
+      feed_type: "news" | "circular" | "awareness"
       portal_user_type: "client" | "partner"
       post_content_type: "article" | "analysis" | "awareness" | "report"
       ticket_channel: "phone" | "walk_in" | "website" | "email" | "portal"
@@ -4937,7 +4937,7 @@ export const Constants = {
         "dormant",
       ],
       department: ["marketing", "sales", "hr", "accounts", "support", "legal"],
-      feed_type: ["news", "circular"],
+      feed_type: ["news", "circular", "awareness"],
       portal_user_type: ["client", "partner"],
       post_content_type: ["article", "analysis", "awareness", "report"],
       ticket_channel: ["phone", "walk_in", "website", "email", "portal"],

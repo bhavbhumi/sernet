@@ -1,6 +1,7 @@
 import amfiLogo from '@/assets/amfi-logo.webp';
 import sebiLogo from '@/assets/sebi-logo.webp';
 import rbiLogo from '@/assets/rbi-logo.webp';
+import ncfeLogo from '@/assets/ncfe-logo.webp';
 
 /**
  * Official logos for feed sources whose sites don't expose a usable favicon.
@@ -10,6 +11,7 @@ const SOURCE_LOGO_OVERRIDES: Array<{ match: string; url: string }> = [
   { match: 'amfiindia.com', url: amfiLogo },
   { match: 'sebi.gov.in', url: sebiLogo },
   { match: 'rbi.org.in', url: rbiLogo },
+  { match: 'ncfe.org.in', url: ncfeLogo },
 ];
 
 export function getSourceLogoUrl(feedUrl: string | null): string | null {

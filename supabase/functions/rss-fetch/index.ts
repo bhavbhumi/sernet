@@ -47,7 +47,7 @@ function extractAtom(xml: string): RssItem[] {
     const summary = extractTag(body, 'summary') || extractTag(body, 'content');
     const pubDate = extractTag(body, 'published') || extractTag(body, 'updated');
     const guid = extractTag(body, 'id') || link;
-    if (title && link) items.push({ title, link, summary, pubDate, guid });
+    if (title && link) items.push({ title, link, summary, pubDate, guid, categories: extractCategories(body) });
   }
   return items;
 }
@@ -58,6 +58,24 @@ interface RssItem {
   summary: string;
   pubDate: string;
   guid: string;
+  categories: string[];
+}
+
+function extractCategories(body: string): string[] {
+  const cats: string[] = [];
+  const re = /<category[^>]*>([\s\S]*?)<\/category>/gi;
+  let m;
+  while ((m = re.exec(body)) !== null) {
+    const val = decodeEntities(stripCdata(m[1]).trim());
+    if (val && !cats.includes(val)) cats.push(val);
+  }
+  // Atom-style: <category term="..."/>
+  const termRe = /<category[^>]*term=["']([^"']+)["'][^>]*\/?>/gi;
+  while ((m = termRe.exec(body)) !== null) {
+    const val = decodeEntities(m[1].trim());
+    if (val && !cats.includes(val)) cats.push(val);
+  }
+  return cats;
 }
 
 function parseRSS(xml: string): RssItem[] {
@@ -94,7 +112,7 @@ function parseRSS(xml: string): RssItem[] {
     const guid = extractTag(body, 'guid') || (link ? `${link}#${title}` : title);
 
     if (title) {
-      items.push({ title, link, summary: cleanSummary, pubDate, guid });
+      items.push({ title, link, summary: cleanSummary, pubDate, guid, categories: extractCategories(body) });
     }
   }
   return items;
