@@ -16,7 +16,7 @@ const BrokerageCalcContent = () => {
     const sell = parseFloat(sellPrice) || 0;
     const qty = parseInt(quantity) || 0;
     const turnover = (buy + sell) * qty;
-    const brokerage = tradeType === 'delivery' ? 0 : Math.min(20, turnover * 0.0003);
+    const brokerage = turnover * (tradeType === 'delivery' ? 0.003 : 0.0003);
     const stt = tradeType === 'delivery' ? turnover * 0.001 : sell * qty * 0.00025;
     const exchangeCharges = turnover * 0.0000345;
     const gst = (brokerage + exchangeCharges) * 0.18;
@@ -34,7 +34,7 @@ const BrokerageCalcContent = () => {
   const chargesPct = results.turnover > 0 ? ((results.totalCharges / results.turnover) * 100).toFixed(3) : '0';
 
   const commentary = buy > 0 && sell > 0 && qty > 0
-    ? `For ${tradeType === 'delivery' ? 'delivery' : 'intraday'} trade of ${qty} shares at ₹${buy} buy / ₹${sell} sell, total statutory charges are ₹${results.totalCharges.toFixed(2)} (${chargesPct}% of turnover). ${tradeType === 'delivery' ? 'Delivery trades have zero brokerage at SerNet but attract 0.1% STT on both sides.' : 'Intraday brokerage is capped at ₹20 per order.'} The largest cost component is typically STT (₹${results.stt.toFixed(2)}). Net P&L after all charges: ₹${results.profit.toFixed(2)}.`
+    ? `For ${tradeType === 'delivery' ? 'delivery' : 'intraday'} trade of ${qty} shares at ₹${buy} buy / ₹${sell} sell, total statutory charges are ₹${results.totalCharges.toFixed(2)} (${chargesPct}% of turnover). ${tradeType === 'delivery' ? 'Delivery brokerage on Choice FinX for clients onboarded through SERNET is 0.30% of each executed order; delivery also attracts 0.1% STT on both sides.' : 'Intraday brokerage on Choice FinX for clients onboarded through SERNET is 0.03% on both legs.'} The largest cost component is typically STT (₹${results.stt.toFixed(2)}). Net P&L after all charges: ₹${results.profit.toFixed(2)}.`
     : 'Enter your buy price, sell price, and quantity to calculate all trading charges.';
 
   const fmt = (n: number) => `₹${n.toFixed(2)}`;
@@ -45,7 +45,7 @@ const BrokerageCalcContent = () => {
       description="Calculate your total trading costs including brokerage, STT, and other charges"
       icon={<BarChart3 className="w-4 h-4" />}
       calcType="brokerage"
-      methodology="Brokerage calculator for equity trades. Computes brokerage, STT (Securities Transaction Tax), exchange charges, GST, SEBI charges, and stamp duty for delivery and intraday trades. SerNet charges zero brokerage on delivery trades."
+      methodology="Brokerage calculator for equity trades. Computes brokerage, STT (Securities Transaction Tax), exchange charges, GST, SEBI charges, and stamp duty for delivery and intraday trades. Brokerage uses the Choice FinX rates for clients onboarded through SERNET: 0.30% per executed delivery order and 0.03% on both legs for intraday."
       formInputs={
         <div className="space-y-5">
           <div className="flex gap-3">
