@@ -1,11 +1,11 @@
-import amfiLogo from '@/assets/amfi-logo.png.asset.json';
+import amfiLogo from '@/assets/amfi-logo.webp';
 
 /**
  * Official logos for feed sources whose sites don't expose a usable favicon.
  * Keyed by hostname fragment (matched with String.includes).
  */
 const SOURCE_LOGO_OVERRIDES: Array<{ match: string; url: string }> = [
-  { match: 'amfiindia.com', url: amfiLogo.url },
+  { match: 'amfiindia.com', url: amfiLogo },
 ];
 
 export function getSourceLogoUrl(feedUrl: string | null): string | null {
