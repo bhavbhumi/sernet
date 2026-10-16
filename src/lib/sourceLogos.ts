@@ -9,6 +9,7 @@ import rbiLogo from '@/assets/rbi-logo.webp';
 const SOURCE_LOGO_OVERRIDES: Array<{ match: string; url: string }> = [
   { match: 'amfiindia.com', url: amfiLogo },
   { match: 'sebi.gov.in', url: sebiLogo },
+  { match: 'rbi.org.in', url: rbiLogo },
 ];
 
 export function getSourceLogoUrl(feedUrl: string | null): string | null {
