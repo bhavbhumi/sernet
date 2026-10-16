@@ -27,9 +27,7 @@ const UpdatesPage = () => {
 
   const handleTabChange = (tab: UpdatesTab) => {
     setSearchParams({ tab }, { replace: false });
-    setActiveTab(tab);
   };
-  const [activeTab, setActiveTab] = useState<UpdatesTab>(activeTab);
 
   return (
     <Layout>
