@@ -75,7 +75,7 @@ export default function UpdatesDetail() {
   if (isError || !item) {
     return (
       <Layout>
-        <div className="container-zerodha py-20 text-center">
+        <div className="container-sernet py-20 text-center">
           <Icon className="h-12 w-12 mx-auto mb-4 opacity-30 text-muted-foreground" />
           <h2 className="text-xl font-semibold mb-2">Item not found</h2>
           <p className="text-muted-foreground mb-6">This item may have been removed or is not published.</p>
@@ -89,7 +89,7 @@ export default function UpdatesDetail() {
 
   return (
     <Layout>
-      <div className="container-zerodha py-10 max-w-3xl">
+      <div className="container-sernet py-10 max-w-3xl">
         {/* Back */}
         <motion.div
           initial={{ opacity: 0, x: -8 }}

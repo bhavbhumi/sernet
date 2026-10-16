@@ -38,11 +38,11 @@ const OpenAccount = () => {
     <Layout>
       <SEOHead
         title="Open Free Demat Account"
-        description="Open a free demat and trading account with SERNET — zero brokerage on equity delivery, free mutual funds."
+        description="Open a free demat and trading account with SERNET — free account opening via Choice FinX and regular mutual funds at no charge to you."
         path="/open-account"
       />
       <section className="section-padding bg-background">
-        <div className="container-zerodha">
+        <div className="container-sernet">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             {/* Left Column - Info */}
             <motion.div

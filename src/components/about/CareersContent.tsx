@@ -358,7 +358,7 @@ export const CareersContent = () => {
     <>
       {/* Section 1: Title + Featured Positions Carousel */}
       <section className="section-padding bg-background">
-        <div className="container-zerodha">
+        <div className="container-sernet">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -434,7 +434,7 @@ export const CareersContent = () => {
 
       {/* Section 2: Work With Us — Values Grid */}
       <section className="section-padding bg-section-alt">
-        <div className="container-zerodha">
+        <div className="container-sernet">
           <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="heading-lg text-foreground mb-12 text-center">
             Work With Us
           </motion.h2>
@@ -456,7 +456,7 @@ export const CareersContent = () => {
 
       {/* Section 3: Team */}
       <section className="section-padding bg-background">
-        <div className="container-zerodha">
+        <div className="container-sernet">
           <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="heading-lg text-foreground mb-12 text-center">
             The People with SERNET
           </motion.h2>
@@ -488,7 +488,7 @@ export const CareersContent = () => {
 
       {/* Section 4: Employee Reviews — auto-scrolling carousel */}
       <section className="section-padding overflow-hidden bg-section-alt">
-        <div className="container-zerodha mb-10">
+        <div className="container-sernet mb-10">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center">
             <h2 className="heading-lg text-foreground mb-3">Team's Experience</h2>
             <p className="text-body max-w-xl mx-auto">Hear from the people who make SERNET what it is every day</p>
@@ -506,13 +506,13 @@ export const CareersContent = () => {
             ))}
           </div>
         ) : (
-          <div className="container-zerodha text-center text-muted-foreground py-8">
+          <div className="container-sernet text-center text-muted-foreground py-8">
             <p className="text-sm">Employee reviews coming soon. Be the first to share your experience!</p>
           </div>
         )}
 
         {/* Social sharing + CTAs */}
-        <div className="container-zerodha mt-10">
+        <div className="container-sernet mt-10">
           <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }} className="flex flex-col items-center gap-5">
             <div className="flex flex-col sm:flex-row items-center gap-3 text-sm text-muted-foreground">
               <span>Share your experience on</span>
@@ -536,7 +536,7 @@ export const CareersContent = () => {
 
       {/* Section 5: Open Positions */}
       <section className="section-padding bg-background">
-        <div className="container-zerodha">
+        <div className="container-sernet">
           <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="heading-lg text-foreground mb-8">
             Open Positions
           </motion.h2>
@@ -578,7 +578,7 @@ export const CareersContent = () => {
 
       {/* Section 6: Upload Resume CTA */}
       <section className="section-padding bg-section-alt">
-        <div className="container-zerodha text-center">
+        <div className="container-sernet text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
             <h2 className="heading-lg text-foreground mb-3">Don't see a position here?</h2>
             <p className="text-body max-w-lg mx-auto mb-8">

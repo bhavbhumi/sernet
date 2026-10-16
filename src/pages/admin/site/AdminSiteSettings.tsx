@@ -192,7 +192,7 @@ const TIMEZONES = ['Asia/Kolkata', 'Asia/Dubai', 'UTC', 'America/New_York', 'Eur
 function IdentityTab() {
   const { data, isLoading } = useSettings('identity');
   const [form, setForm] = useState<Record<string, string>>({
-    site_name: 'SERNET', tagline: 'Zero Brokerage. Total Trust.', site_url: 'https://sernet.lovable.app',
+    site_name: 'SERNET', tagline: 'NextGen Financial Service Network', site_url: 'https://sernet.lovable.app',
     region: 'IN', country: 'India', timezone: 'Asia/Kolkata',
     seo_title: '', seo_description: '', seo_keywords: '',
     schema_org_type: 'FinancialService', schema_org_name: 'SERNET Financial Services',
@@ -216,7 +216,7 @@ function IdentityTab() {
           </div>
           <div className="space-y-1.5">
             <Label>Tagline</Label>
-            <Input value={form.tagline} onChange={e => setForm(p => ({ ...p, tagline: e.target.value }))} placeholder="Zero Brokerage. Total Trust." />
+            <Input value={form.tagline} onChange={e => setForm(p => ({ ...p, tagline: e.target.value }))} placeholder="NextGen Financial Service Network" />
           </div>
           <div className="space-y-1.5">
             <Label>Site URL</Label>
@@ -580,7 +580,7 @@ function FooterTab() {
   const [form, setForm] = useState<Record<string, string>>({
     show_logo: 'true', show_tagline: 'true', show_social_icons: 'true',
     show_newsletter: 'false', show_sebi_reg: 'true',
-    sebi_reg_text: 'SEBI Registered Investment Adviser',
+    sebi_reg_text: 'AMFI-registered Mutual Fund Distributor (ARN 35275) · APMI-registered PMS Distributor (APRN 10097)',
     disclaimer: 'Investments in securities market are subject to market risks. Read all the related documents carefully before investing.',
     copyright_text: '© 2025 SERNET Financial Services Pvt. Ltd. All rights reserved.',
     show_quick_links: 'true', show_services_links: 'true', show_legal_links: 'true',

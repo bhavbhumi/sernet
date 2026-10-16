@@ -107,7 +107,7 @@ export const PressContent = () => {
 
   return (
     <section className="section-padding bg-background">
-      <div className="container-zerodha">
+      <div className="container-sernet">
 
         {/* Section 1: Title + Featured Post Carousel */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch mb-16">

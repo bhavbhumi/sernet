@@ -39,7 +39,7 @@ const MarginCalculator = () => {
   return (
     <Layout>
       <section className="section-padding">
-        <div className="container-zerodha max-w-4xl">
+        <div className="container-sernet max-w-4xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

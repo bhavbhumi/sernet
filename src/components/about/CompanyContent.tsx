@@ -35,11 +35,11 @@ const journeyEvents = [
   { period: 'Aug 2024', title: '20 Years of SERNET', description: 'Celebrating two decades of empowering prosperity with a vision to be one\'s first choice for any financial decision.', image: journeyAnniversary },
   { period: 'Mar 2020', title: 'Digital Transformation', description: 'Accelerated digital-first strategy during the pandemic, ensuring uninterrupted service to all stakeholders.', image: journeyDigital },
   { period: 'Jul 2016', title: 'Network Expansion', description: 'Grew the partner and principal network significantly, extending reach across multiple geographies.', image: journeyNetwork },
-  { period: 'Apr 2012', title: 'Technology Adoption', description: 'Embraced digital trading platforms and online advisory, modernising the client experience.', image: journeyTechnology },
+  { period: 'Apr 2012', title: 'Technology Adoption', description: 'Embraced digital trading and investment platforms, modernising the client experience.', image: journeyTechnology },
   { period: 'Oct 2008', title: 'Weathering the Storm', description: 'Navigated the global financial crisis with client-first principles, strengthening trust and credibility.', image: journeyResilience },
   { period: 'Aug 2004', title: 'SERNET Founded', description: 'The brand SERNET is born — a fusion of SERVICE and NETWORK — with a mission to make wealth creation holistic and enjoyable.', image: journeyFounding },
   { period: 'Jun 2000', title: 'Building Expertise', description: 'Expanded into insurance and mutual fund distribution, broadening the financial service horizon.', image: journeyExpertise },
-  { period: 'Mar 1995', title: 'Market Immersion', description: 'Deep dive into equity and commodity markets, gaining invaluable hands-on trading and advisory experience.', image: journeyMarket },
+  { period: 'Mar 1995', title: 'Market Immersion', description: 'Deep dive into equity and commodity markets, gaining invaluable hands-on market experience.', image: journeyMarket },
   { period: 'Jan 1990', title: 'The Spark', description: 'Bhavesh Vora begins his career in financial services, laying the groundwork for a lifelong mission.', image: journeySpark },
 ];
 
@@ -93,7 +93,7 @@ export const CompanyContent = () => {
     <>
       {/* Story */}
       <section className="section-padding bg-background">
-        <div className="container-zerodha">
+        <div className="container-sernet">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -180,7 +180,7 @@ export const CompanyContent = () => {
 
       {/* Values — SERNET Letters */}
       <section className="section-padding bg-section-alt">
-        <div className="container-zerodha">
+        <div className="container-sernet">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -215,7 +215,7 @@ export const CompanyContent = () => {
 
       {/* People */}
       <section className="section-padding bg-background">
-        <div className="container-zerodha">
+        <div className="container-sernet">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -248,7 +248,7 @@ export const CompanyContent = () => {
 
       {/* Journey So Far - Horizontal with arrows */}
       <section className="section-padding bg-section-alt overflow-hidden">
-        <div className="container-zerodha">
+        <div className="container-sernet">
           <div className="flex items-center justify-between mb-10">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
@@ -317,7 +317,7 @@ export const CompanyContent = () => {
 
       {/* Prosper With Us */}
       <section className="section-padding bg-background">
-        <div className="container-zerodha text-center">
+        <div className="container-sernet text-center">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}

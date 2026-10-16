@@ -118,7 +118,7 @@ const principalShowcaseItems: ShowcaseItem[] = [
       points: [
         'Legally valid will writing compliant with Indian Succession Act',
         'Family trust setup and structuring for wealth preservation',
-        'Nomination and beneficiary management advisory',
+        'Nomination and beneficiary management support',
         'Executor appointment and estate administration guidance',
         'Advisory Note: Writing a will is a personal legal document. It is advisable to consult a qualified legal professional before finalizing. Trust structures should be evaluated for tax implications and family requirements.',
       ],
@@ -224,7 +224,7 @@ export const PrincipalsNetworkContent = () => (
           >
             <img
               src={networkPrincipalsImg}
-              alt="SERNET principal partners – SEBI registered stock brokers, AMFI mutual fund distributors and IRDAI licensed insurance providers"
+              alt="SERNET principal partners – SEBI-registered stock broker, mutual fund houses and IRDAI-registered insurance broker partners"
               className="w-full max-w-[480px] max-h-[400px] h-auto object-contain dark:bg-white dark:rounded-xl dark:p-3"
               loading="lazy"
               width={480}
@@ -249,7 +249,7 @@ export const PrincipalsNetworkContent = () => (
           <Shield className="w-10 h-10 text-primary mx-auto mb-4" />
           <h3 className="heading-md text-foreground mb-3">Fully Licensed & Compliant</h3>
           <p className="text-body text-sm max-w-xl mx-auto">
-            SERNET operates with full regulatory compliance across all its business verticals — stock broking, mutual fund distribution, and insurance advisory. Your investments are always in safe hands.
+            SERNET operates with full regulatory compliance across all its business verticals — mutual fund and PMS distribution, with stock broking and insurance provided by our registered partners. Your investments are always in safe hands.
           </p>
         </motion.div>
       </div>

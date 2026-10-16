@@ -42,7 +42,7 @@ const partnerShowcaseItems: ShowcaseItem[] = [
       points: [
         'Leverage your professional credibility to onboard high-value investors',
         'Access exclusive revenue-sharing models designed for licensed professionals',
-        'Provide holistic financial advisory — compliance, tax, and investments under one roof',
+        'Offer clients compliance, tax and investment products under one roof',
         'Priority onboarding and dedicated relationship manager for your referred clients',
       ],
     },

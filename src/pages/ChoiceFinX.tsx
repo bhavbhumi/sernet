@@ -52,7 +52,7 @@ const ChoiceFinX = () => (
     />
     {/* Hero */}
     <section className="section-padding bg-background">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wide uppercase mb-4">
@@ -97,7 +97,7 @@ const ChoiceFinX = () => (
 
     {/* Why Choice FinX */}
     <section className="section-padding bg-section-alt">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">Why Choice FinX?</motion.h2>
         <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-center mb-12 max-w-2xl mx-auto">
           A full-service broker's platform, with local support from SERNET.
@@ -116,7 +116,7 @@ const ChoiceFinX = () => (
 
     {/* Products */}
     <section className="section-padding">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">Trade across every asset class</motion.h2>
         <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-center mb-12 max-w-2xl mx-auto">
           A complete suite of trading instruments — all accessible from one app.
@@ -135,7 +135,7 @@ const ChoiceFinX = () => (
 
     {/* Pricing */}
     <section className="section-padding bg-section-alt">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">Transparent pricing, no hidden charges</motion.h2>
         <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-center mb-12 max-w-2xl mx-auto">
           Brokerage applicable to clients onboarded through SERNET. Statutory charges and taxes are extra.
@@ -166,7 +166,7 @@ const ChoiceFinX = () => (
 
     {/* Client Reviews */}
     <section className="section-padding">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">What our clients say</motion.h2>
         <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-center mb-12 max-w-2xl mx-auto">
           Reviews from clients onboarded through SERNET on Choice FinX.
@@ -189,7 +189,7 @@ const ChoiceFinX = () => (
 
     {/* How to Get Started */}
     <section className="section-padding bg-section-alt">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">Get started in 4 simple steps</motion.h2>
         <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-center mb-12 max-w-2xl mx-auto">From download to your first trade — in minutes.</motion.p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -217,7 +217,7 @@ const ChoiceFinX = () => (
 
     {/* FAQs */}
     <section className="section-padding">
-      <div className="container-zerodha max-w-3xl">
+      <div className="container-sernet max-w-3xl">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">Frequently Asked Questions</motion.h2>
         <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-center mb-12">About Choice FinX and SERNET's role as Authorised Person</motion.p>
         <Accordion type="single" collapsible className="w-full">
@@ -239,7 +239,7 @@ const ChoiceFinX = () => (
 
     {/* Final CTA */}
     <section className="py-16 md:py-20 bg-section-alt">
-      <div className="container-zerodha text-center">
+      <div className="container-sernet text-center">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-4">Ready to start trading?</motion.h2>
         <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-muted-foreground mb-8 max-w-xl mx-auto">
           Open your free Demat + Trading account in minutes. Account opened with Choice Equity Broking, supported by SERNET as its Authorised Person.
@@ -255,7 +255,7 @@ const ChoiceFinX = () => (
 
     {/* Disclaimer */}
     <section className="py-6 bg-muted/30">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <p className="text-xs text-muted-foreground text-center max-w-4xl mx-auto leading-relaxed">
           <strong>Disclaimer:</strong> Investments in securities market are subject to market risks. Read all related documents carefully before investing. Registration granted by SEBI and certification from NISM in no way guarantee performance or provide any assurance of returns. SERNET is an Authorised Person (AP) of Choice Equity Broking Pvt. Ltd. (SEBI Reg. No: INZ000160131) and is not itself a stock broker. Trading accounts, order execution, funds, securities, margins and contract notes are provided and handled by Choice. Brokerage will not exceed SEBI/exchange prescribed limits. Complaints about trades may be raised with SERNET Support and with Choice; unresolved exchange-related complaints may be taken to SEBI SCORES or SMART ODR.
         </p>
