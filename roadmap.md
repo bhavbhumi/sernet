@@ -1,7 +1,7 @@
 # Roadmap
 
-- [ ] Verify and restore public client/partner signup without changing email confirmation.
-- [ ] Add editable review dates to both legal CMS editors and verify saved dates read back publicly.
+- [x] Verify and restore public client/partner signup without changing email confirmation — hosted settings verified, real signup returned 200 and displayed Verify Your Email.
+- [x] Add editable review dates to both legal CMS editors — signed-in save/reload and public display verified using existing genuine dates, no dates invented; editor changes await publish.
 
 - [x] Add Invesco India and Mirae Asset MF brokerage structures (1 October–31 December 2026) alphabetically in Disclosures — Mirae row notes its document also covers Platinum SIF; both empanelments await provider confirmation; rows and PDF downloads verified on preview.
 
