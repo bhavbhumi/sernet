@@ -271,7 +271,6 @@ export const Header = () => {
                               {link.name || t(link.nameKey!)}
                               <ExternalLink className="h-3 w-3" aria-hidden="true" />
                               <span className="sr-only">(opens in new tab)</span>
-                              {link.note && <span className="text-[11px] text-muted-foreground/80 ml-1">· {link.note}</span>}
                             </a>
                           ) : (
                             <Link
