@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { Calculator, ArrowRight } from 'lucide-react';
+import { SEOHead } from '@/components/shared/SEOHead';
 
 const BrokerageCalculator = () => {
   const [buyPrice, setBuyPrice] = useState('');
@@ -45,6 +46,7 @@ const BrokerageCalculator = () => {
 
   return (
     <Layout>
+      <SEOHead title="Brokerage Calculator" description="Estimate brokerage and charges for trades on Choice FinX." path="/calculators/brokerage" />
       <section className="section-padding">
         <div className="container-sernet max-w-4xl">
           <motion.div

@@ -4,6 +4,7 @@ import { Label } from '@/components/ui/label';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { Calculator, TrendingUp } from 'lucide-react';
+import { SEOHead } from '@/components/shared/SEOHead';
 
 const SIPCalculator = () => {
   const [monthlyInvestment, setMonthlyInvestment] = useState('10000');
@@ -40,6 +41,7 @@ const SIPCalculator = () => {
 
   return (
     <Layout>
+      <SEOHead title="SIP Calculator" description="Estimate the future value of your monthly SIP investments." path="/calculators/sip" />
       <section className="section-padding">
         <div className="container-sernet max-w-4xl">
           <motion.div

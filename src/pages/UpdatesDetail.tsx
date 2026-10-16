@@ -15,6 +15,7 @@ import {
 import { format } from 'date-fns';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { SEOHead } from '@/components/shared/SEOHead';
 
 type UpdatesMode = 'news' | 'circulars';
 
@@ -89,6 +90,7 @@ export default function UpdatesDetail() {
 
   return (
     <Layout>
+      <SEOHead title={item.title} description={item.summary?.slice(0, 155) || `${item.title} — update via SERNET.`} path={`/updates/${mode}/${id}`} />
       <div className="container-sernet py-10 max-w-3xl">
         {/* Back */}
         <motion.div

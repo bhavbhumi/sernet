@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 import { ArticleBodyRenderer, extractToc, TocEntry } from '@/components/shared/ArticleBodyRenderer';
 import { useArticleEngagement } from '@/hooks/useArticleEngagement';
 import { useToast } from '@/hooks/use-toast';
+import { SEOHead } from '@/components/shared/SEOHead';
 
 const iconMap: Record<string, React.ElementType> = {
   TrendingUp,
@@ -186,6 +187,7 @@ export default function AnalysisDetail() {
 
   return (
     <Layout>
+      <SEOHead title={analysis.title} description={analysis.excerpt?.slice(0, 155) || `${analysis.title} — market analysis by SERNET.`} path={`/insights/analysis/${id}`} />
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}

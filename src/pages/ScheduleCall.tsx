@@ -50,8 +50,8 @@ const ScheduleCall = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
             >
-              <div className="w-20 h-20 rounded-full bg-green-100 mx-auto mb-6 flex items-center justify-center">
-                <Phone className="w-10 h-10 text-green-600" />
+              <div className="w-20 h-20 rounded-full bg-success/10 mx-auto mb-6 flex items-center justify-center">
+                <Phone className="w-10 h-10 text-success" />
               </div>
               <h1 className="text-[2rem] font-normal text-foreground mb-4">
                 Call Scheduled!
@@ -249,8 +249,8 @@ const ScheduleCall = () => {
             >
               {/* WhatsApp Card */}
               <div className="bg-card border border-border rounded-lg p-6 text-center">
-                <div className="w-14 h-14 rounded-lg bg-green-100 mx-auto mb-4 flex items-center justify-center">
-                  <MessageCircle className="w-7 h-7 text-green-600" />
+                <div className="w-14 h-14 rounded-lg bg-success/10 mx-auto mb-4 flex items-center justify-center">
+                  <MessageCircle className="w-7 h-7 text-success" />
                 </div>
                 <h3 className="text-foreground font-medium mb-2">Chat on WhatsApp</h3>
                 <p className="text-sm text-muted-foreground mb-4">
@@ -260,7 +260,7 @@ const ScheduleCall = () => {
                   href={whatsappLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block w-full bg-green-600 text-white py-2.5 rounded-md text-sm font-medium hover:bg-green-700 transition-colors"
+                  className="inline-block w-full bg-success text-success-foreground py-2.5 rounded-md text-sm font-medium hover:bg-success/90 transition-colors"
                 >
                   Start Chat
                 </a>

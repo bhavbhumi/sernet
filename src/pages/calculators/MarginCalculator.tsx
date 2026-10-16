@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { Calculator } from 'lucide-react';
+import { SEOHead } from '@/components/shared/SEOHead';
 
 const MarginCalculator = () => {
   const [stockPrice, setStockPrice] = useState('');
@@ -38,6 +39,7 @@ const MarginCalculator = () => {
 
   return (
     <Layout>
+      <SEOHead title="Margin Calculator" description="Estimate margin requirements for trades on Choice FinX." path="/calculators/margin" />
       <section className="section-padding">
         <div className="container-sernet max-w-4xl">
           <motion.div

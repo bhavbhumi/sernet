@@ -4,6 +4,7 @@ import { Label } from '@/components/ui/label';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { Calculator, TrendingUp } from 'lucide-react';
+import { SEOHead } from '@/components/shared/SEOHead';
 
 const LumpsumCalculator = () => {
   const [investment, setInvestment] = useState('100000');
@@ -39,6 +40,7 @@ const LumpsumCalculator = () => {
 
   return (
     <Layout>
+      <SEOHead title="Lumpsum Calculator" description="Estimate the future value of a one-time investment." path="/calculators/lumpsum" />
       <section className="section-padding">
         <div className="container-sernet max-w-4xl">
           <motion.div
