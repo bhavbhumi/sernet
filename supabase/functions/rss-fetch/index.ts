@@ -47,7 +47,7 @@ function extractAtom(xml: string): RssItem[] {
     const summary = extractTag(body, 'summary') || extractTag(body, 'content');
     const pubDate = extractTag(body, 'published') || extractTag(body, 'updated');
     const guid = extractTag(body, 'id') || link;
-    if (title && link) items.push({ title, link, summary, pubDate, guid });
+    if (title && link) items.push({ title, link, summary, pubDate, guid, categories: extractCategories(body) });
   }
   return items;
 }
@@ -112,7 +112,7 @@ function parseRSS(xml: string): RssItem[] {
     const guid = extractTag(body, 'guid') || (link ? `${link}#${title}` : title);
 
     if (title) {
-      items.push({ title, link, summary: cleanSummary, pubDate, guid });
+      items.push({ title, link, summary: cleanSummary, pubDate, guid, categories: extractCategories(body) });
     }
   }
   return items;
