@@ -34,6 +34,30 @@ function decodeEntities(val: string): string {
     .trim();
 }
 
+const MONTHS: Record<string, string> = {
+  jan: '01', feb: '02', mar: '03', apr: '04', may: '05', jun: '06',
+  jul: '07', aug: '08', sep: '09', oct: '10', nov: '11', dec: '12',
+};
+
+// Normalize feed dates to ISO. Handles RFC-822 plus SEBI's "16 Oct, 2026 +0530" style.
+function normalizeDate(raw: string): string {
+  if (!raw) return '';
+  const direct = new Date(raw);
+  if (!isNaN(direct.getTime())) return direct.toISOString();
+  // "16 Oct, 2026 +0530" or "16 Oct 2026"
+  const m = raw.match(/(\d{1,2})\s+([A-Za-z]{3,})\s*,?\s*(\d{4})(?:\s*([+-]\d{2}):?(\d{2}))?/);
+  if (m) {
+    const mon = MONTHS[m[2].slice(0, 3).toLowerCase()];
+    if (mon) {
+      const day = m[1].padStart(2, '0');
+      const tz = m[4] ? `${m[4]}:${m[5] ?? '00'}` : '+00:00';
+      const d = new Date(`${m[3]}-${mon}-${day}T00:00:00${tz}`);
+      if (!isNaN(d.getTime())) return d.toISOString();
+    }
+  }
+  return raw;
+}
+
 function extractAtom(xml: string): RssItem[] {
   const items: RssItem[] = [];
   const entryRe = /<entry[^>]*>([\s\S]*?)<\/entry>/g;
