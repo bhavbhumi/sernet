@@ -42,8 +42,9 @@ const menuSections: { titleKey: string; links: MenuLink[] }[] = [
   {
     titleKey: 'menu.updates',
     links: [
-      { nameKey: 'menu.news', href: '/updates', external: false },
-      { nameKey: 'menu.circulars', href: '/updates', external: false },
+      { nameKey: 'menu.news', href: '/updates?tab=News', external: false },
+      { nameKey: 'menu.circulars', href: '/updates?tab=Circulars', external: false },
+      { name: 'Awareness', href: '/updates?tab=Awareness', external: false },
     ],
   },
 ];
