@@ -1,5 +1,6 @@
 import { Layout } from '@/components/layout/Layout';
 import { Calendar, Clock, Info } from 'lucide-react';
+import { SEOHead } from '@/components/shared/SEOHead';
 
 const MarketHolidays = () => {
   const holidays2024 = [
@@ -25,6 +26,7 @@ const MarketHolidays = () => {
 
   return (
     <Layout>
+      <SEOHead title="Market Holidays" description="NSE, BSE and MCX trading holidays and market timings for the year." path="/market-holidays" />
       <div className="container-sernet section-padding">
         {/* Hero Section */}
         <div className="max-w-4xl mx-auto text-center mb-12">

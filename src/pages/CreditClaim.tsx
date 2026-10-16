@@ -23,12 +23,12 @@ const CreditClaim = () => {
               <h2 className="text-xl font-medium text-foreground">Investor Protection</h2>
             </div>
             <p className="text-muted-foreground mb-4">
-              As a SEBI registered intermediary, SERNET is committed to protecting investor interests. 
-              All client funds and securities are held in segregated accounts as per regulatory requirements.
+              As an AMFI-registered mutual fund distributor and APMI-registered PMS distributor, SERNET is committed to protecting investor interests. 
+              SERNET does not hold client money or securities: investments are made directly with the fund house or product provider, and units are held in your name.
             </p>
             <ul className="list-disc list-inside text-sm text-muted-foreground space-y-2">
-              <li>Client funds are kept separate from company funds</li>
-              <li>Securities held in depository accounts under client names</li>
+              <li>Payments go directly to the fund house or provider, never to SERNET</li>
+              <li>Units and holdings are registered in your own name</li>
               <li>Regular audits and compliance checks</li>
               <li>Investor grievance redressal mechanism in place</li>
             </ul>

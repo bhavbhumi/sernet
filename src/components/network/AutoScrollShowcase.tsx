@@ -45,7 +45,7 @@ export const AutoScrollShowcase = ({
 
   return (
     <section className="section-padding bg-background">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

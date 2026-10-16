@@ -21,7 +21,7 @@ export const EducationServiceContent = () => (
   <>
     {/* Hero — Education */}
     <section className="section-padding bg-background">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-stretch">
           {/* Left */}
           <motion.div
@@ -89,7 +89,7 @@ export const EducationServiceContent = () => (
 
     {/* Programs We Offer */}
     <section className="section-padding bg-section-alt">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">
           Programs we offer
         </motion.h2>
@@ -119,7 +119,7 @@ export const EducationServiceContent = () => (
 
     {/* What Makes SERNET Education Different */}
     <section className="section-padding">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -189,7 +189,7 @@ export const EducationServiceContent = () => (
 
     {/* Ready to Get Started */}
     <section className="section-padding bg-background">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">
           Ready to start learning?
         </motion.h2>
@@ -240,7 +240,7 @@ export const EducationServiceContent = () => (
 
     {/* Advisory Note */}
     <section className="py-6 bg-muted/30">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <p className="text-xs text-muted-foreground text-center max-w-4xl mx-auto leading-relaxed">
           <strong>Advisory Note:</strong> Financial education content is for informational and learning purposes only and does not constitute investment advice, stock recommendations, or financial planning guidance. Learners are advised to consult qualified financial professionals before making any investment decisions. SERNET is not responsible for individual trading or investment outcomes based on course content.
         </p>

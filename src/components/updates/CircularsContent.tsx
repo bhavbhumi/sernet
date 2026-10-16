@@ -148,7 +148,7 @@ export const CircularsContent = () => {
 
   return (
     <section className="section-padding">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}

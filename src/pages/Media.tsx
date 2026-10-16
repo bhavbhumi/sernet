@@ -25,14 +25,6 @@ const pressReleases: PressItem[] = [
     featured: true,
   },
   {
-    title: "How Sernet India is redefining trust in financial advisory",
-    source: "Mint",
-    date: "02 Jan 2025",
-    year: 2025,
-    link: "#",
-    featured: true,
-  },
-  {
     title: "Sernet India launches AI-powered portfolio insights for retail investors",
     source: "CNBC TV18",
     date: "18 Dec 2024",
@@ -135,34 +127,6 @@ const pressReleases: PressItem[] = [
     link: "#",
   },
   {
-    title: "Sernet India's trading volumes surge during market rally",
-    source: "Money Control",
-    date: "02 Dec 2020",
-    year: 2020,
-    link: "#",
-  },
-  {
-    title: "Sernet India introduces zero-brokerage plans for new investors",
-    source: "Business Standard",
-    date: "15 Aug 2019",
-    year: 2019,
-    link: "#",
-  },
-  {
-    title: "Sernet India wins 'Best Emerging Broker' award at industry summit",
-    source: "Forbes India",
-    date: "20 Jun 2018",
-    year: 2018,
-    link: "#",
-  },
-  {
-    title: "Sernet India launches mobile-first trading app",
-    source: "The Times of India",
-    date: "10 Oct 2017",
-    year: 2017,
-    link: "#",
-  },
-  {
     title: "Sernet India registered with SEBI as a stockbroker (historical — SERNET now operates only as an AMFI/APMI-registered distributor)",
     source: "Economic Times",
     date: "05 Mar 2016",
@@ -223,7 +187,7 @@ const Media = () => {
         path="/media"
       />
       <section className="section-padding">
-        <div className="container-zerodha">
+        <div className="container-sernet">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}

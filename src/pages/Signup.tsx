@@ -28,7 +28,7 @@ const Signup = () => {
     <Layout>
       <SEOHead
         title="Sign Up"
-        description="Create your free SERNET account — invest in stocks, mutual funds, insurance and more with zero brokerage."
+        description="Create your free SERNET account — invest in stocks, mutual funds, insurance and more through our partner platforms."
         path="/signup"
       />
       <section className="section-padding bg-hero min-h-[calc(100vh-4rem)]">

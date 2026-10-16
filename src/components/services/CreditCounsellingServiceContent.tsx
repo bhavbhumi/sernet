@@ -23,7 +23,7 @@ export const CreditCounsellingServiceContent = () => (
   <>
     {/* Hero — Athena Credexpert */}
     <section className="section-padding bg-background">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-stretch">
           {/* Left */}
           <motion.div
@@ -125,7 +125,7 @@ export const CreditCounsellingServiceContent = () => (
 
     {/* Services We Offer */}
     <section className="section-padding bg-section-alt">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">
           Services we offer
         </motion.h2>
@@ -155,7 +155,7 @@ export const CreditCounsellingServiceContent = () => (
 
     {/* Free Credit Health Check */}
     <section className="section-padding">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -222,7 +222,7 @@ export const CreditCounsellingServiceContent = () => (
 
     {/* FAQs */}
     <section className="section-padding bg-section-alt">
-      <div className="container-zerodha max-w-3xl">
+      <div className="container-sernet max-w-3xl">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">
           Frequently Asked Questions
         </motion.h2>
@@ -248,7 +248,7 @@ export const CreditCounsellingServiceContent = () => (
 
     {/* Ready to Get Started */}
     <section className="section-padding bg-background">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">
           Ready to get started?
         </motion.h2>
@@ -301,7 +301,7 @@ export const CreditCounsellingServiceContent = () => (
 
     {/* Disclaimer */}
     <section className="py-6 bg-muted/30">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <p className="text-xs text-muted-foreground text-center max-w-4xl mx-auto leading-relaxed">
           <strong>Disclaimer:</strong> Credit counselling and credit repair services are facilitated through our principal partner Athena Credexpert. Credit score improvements depend on individual circumstances and are not guaranteed. SERNET does not directly modify credit bureau records — all disputes are filed through legitimate channels as per RBI and credit bureau guidelines. This service is advisory in nature and does not constitute financial or legal advice.
         </p>

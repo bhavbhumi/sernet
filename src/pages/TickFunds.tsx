@@ -29,7 +29,7 @@ const TickFunds = () => (
     <SEOHead title={tickfundsSeo.title} description={tickfundsSeo.description} path={tickfundsSeo.path} />
     {/* Hero */}
     <section className="section-padding bg-background">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wide uppercase mb-4">Investment Platform</span>
@@ -70,7 +70,7 @@ const TickFunds = () => (
 
     {/* Why Tick Funds */}
     <section className="section-padding bg-section-alt">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">Why Tick Funds?</motion.h2>
         <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-center mb-12 max-w-2xl mx-auto">Personalised wealth building with transparency and trust.</motion.p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -87,7 +87,7 @@ const TickFunds = () => (
 
     {/* Products */}
     <section className="section-padding">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">Investment products we distribute</motion.h2>
         <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-center mb-12 max-w-2xl mx-auto">A comprehensive range across every asset class.</motion.p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -104,7 +104,7 @@ const TickFunds = () => (
 
     {/* Free Health Check CTA */}
     <section className="section-padding bg-section-alt">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="rounded-2xl border border-primary/10 p-8 md:p-12 lg:p-16 flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
           <div className="flex-1 text-center lg:text-left">
             <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wide uppercase mb-4">Free Service</span>
@@ -136,7 +136,7 @@ const TickFunds = () => (
 
     {/* Testimonials */}
     <section className="section-padding">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">What our investors say</motion.h2>
         <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-center mb-12 max-w-2xl mx-auto">Real stories from real investors.</motion.p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -153,7 +153,7 @@ const TickFunds = () => (
 
     {/* How to Get Started */}
     <section className="section-padding bg-section-alt">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">Begin your investment journey</motion.h2>
         <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-center mb-12 max-w-2xl mx-auto">Four simple steps to start building wealth.</motion.p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -174,7 +174,7 @@ const TickFunds = () => (
 
     {/* FAQs */}
     <section className="section-padding">
-      <div className="container-zerodha max-w-3xl">
+      <div className="container-sernet max-w-3xl">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-3 text-center">Frequently Asked Questions</motion.h2>
         <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-center mb-12">Everything you need to know about Tick Funds</motion.p>
         <Accordion type="single" collapsible className="w-full">
@@ -190,7 +190,7 @@ const TickFunds = () => (
 
     {/* Final CTA */}
     <section className="py-16 md:py-20 bg-section-alt">
-      <div className="container-zerodha text-center">
+      <div className="container-sernet text-center">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-4">Start building your wealth today</motion.h2>
         <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-muted-foreground mb-8 max-w-xl mx-auto">Start investing with an AMFI-registered distributor serving investors since 2006.</motion.p>
         <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="flex flex-wrap justify-center gap-4">
@@ -202,7 +202,7 @@ const TickFunds = () => (
 
     {/* Disclaimer */}
     <section className="py-6 bg-muted/30">
-      <div className="container-zerodha space-y-4">
+      <div className="container-sernet space-y-4">
         <div className="max-w-4xl mx-auto"><RegulatoryIdentity variant="compact" /></div>
         <div className="text-center"><LastReviewed date={pageReviewDates.tickfunds} /></div>
         <p className="text-xs text-muted-foreground text-center max-w-4xl mx-auto leading-relaxed">

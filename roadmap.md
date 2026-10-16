@@ -68,3 +68,5 @@
 - [x] CSR removed everywhere: site_pages row deleted (plus retire_csr_page migration so a rebuild stays clean), sitemap entry dropped, CSR strings removed from all 8 locale files, Tushil FAQ "CSR" reworded to "claim settlement ratios"; /csr kept only as a redirect to /about so old links don't break. Verified in preview: no CSR text or links on home/About, sitemap clean, no page errors.
 - [ ] Tick Funds "14 fund houses" vs 13 in Disclosures; Pricing page still lists stock-broking charges — awaiting user
 - [ ] Sample testimonials (home fallback + 3 Tick Funds quotes) not marked verified — awaiting real-client confirmation
+
+- [ ] Audit items 5 (founding year), 6 (unapproved figures), 8 (phone number) — waiting on user facts

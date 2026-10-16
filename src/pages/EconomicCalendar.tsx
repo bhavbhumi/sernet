@@ -1,5 +1,6 @@
 import { Layout } from '@/components/layout/Layout';
 import { Calendar, TrendingUp, Globe, Bell } from 'lucide-react';
+import { SEOHead } from '@/components/shared/SEOHead';
 
 const EconomicCalendar = () => {
   const upcomingEvents = [
@@ -36,6 +37,7 @@ const EconomicCalendar = () => {
 
   return (
     <Layout>
+      <SEOHead title="Economic Calendar" description="Upcoming economic events and data releases that move Indian and global markets." path="/economic-calendar" />
       <div className="container-sernet section-padding">
         {/* Hero Section */}
         <div className="max-w-4xl mx-auto text-center mb-12">

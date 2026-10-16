@@ -68,10 +68,10 @@ const ScheduleCallContent = () => {
   if (submitted) {
     return (
       <section className="section-padding bg-background">
-        <div className="container-zerodha max-w-xl text-center">
+        <div className="container-sernet max-w-xl text-center">
           <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }}>
-            <div className="w-20 h-20 rounded-full bg-green-100 mx-auto mb-6 flex items-center justify-center">
-              <Phone className="w-10 h-10 text-green-600" />
+            <div className="w-20 h-20 rounded-full bg-success/10 mx-auto mb-6 flex items-center justify-center">
+              <Phone className="w-10 h-10 text-success" />
             </div>
             <h2 className="text-[2rem] font-normal text-foreground mb-4">Call Scheduled!</h2>
             <p className="text-muted-foreground text-lg mb-2">
@@ -91,7 +91,7 @@ const ScheduleCallContent = () => {
     <>
       {/* Context Banner */}
       <section className="bg-primary/5 border-b border-primary/10">
-        <div className="container-zerodha py-4">
+        <div className="container-sernet py-4">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
               <Calendar className="w-4.5 h-4.5 text-primary" />
@@ -105,7 +105,7 @@ const ScheduleCallContent = () => {
       </section>
 
       <section className="section-padding bg-background">
-      <div className="container-zerodha">
+      <div className="container-sernet">
         <div className="grid md:grid-cols-3 gap-8">
           {/* Left - Form */}
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.1 }} className="md:col-span-2">
@@ -182,12 +182,12 @@ const ScheduleCallContent = () => {
           {/* Right - Quick Actions */}
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="space-y-5">
             <div className="bg-card border border-border rounded-lg p-6 text-center">
-              <div className="w-14 h-14 rounded-lg bg-green-100 mx-auto mb-4 flex items-center justify-center">
-                <MessageCircle className="w-7 h-7 text-green-600" />
+              <div className="w-14 h-14 rounded-lg bg-success/10 mx-auto mb-4 flex items-center justify-center">
+                <MessageCircle className="w-7 h-7 text-success" />
               </div>
               <h3 className="text-foreground font-medium mb-2">Chat on WhatsApp</h3>
               <p className="text-sm text-muted-foreground mb-4">Get instant answers from our team. Available Mon–Sat, 9 AM to 6 PM.</p>
-              <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="inline-block w-full bg-green-600 text-white py-2.5 rounded-md text-sm font-medium hover:bg-green-700 transition-colors">Start Chat</a>
+              <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="inline-block w-full bg-success text-success-foreground py-2.5 rounded-md text-sm font-medium hover:bg-success/90 transition-colors">Start Chat</a>
             </div>
 
             <div className="bg-card border border-border rounded-lg p-6 text-center">
