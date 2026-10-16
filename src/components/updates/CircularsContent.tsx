@@ -30,6 +30,7 @@ function SourceLogo({ feedUrl, source }: { feedUrl: string | null; source: strin
   );
 }
 import { useQuery } from '@tanstack/react-query';
+import { getSourceLogoUrl } from '@/lib/sourceLogos';
 import { supabase } from '@/integrations/supabase/client';
 import { format, parseISO, isValid } from 'date-fns';
 import { Link } from 'react-router-dom';
