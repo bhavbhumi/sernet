@@ -6,13 +6,15 @@ import { Bell } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NewsContent } from '@/components/updates/NewsContent';
 import { CircularsContent } from '@/components/updates/CircularsContent';
+import { AwarenessFeedContent } from '@/components/updates/AwarenessFeedContent';
 
-const updatesTabs = ['News', 'Circulars'] as const;
+const updatesTabs = ['News', 'Circulars', 'Awareness'] as const;
 type UpdatesTab = (typeof updatesTabs)[number];
 
 const tabContent: Record<UpdatesTab, React.ReactNode> = {
   News: <NewsContent />,
   Circulars: <CircularsContent />,
+  Awareness: <AwarenessFeedContent />,
 };
 
 const UpdatesPage = () => {
