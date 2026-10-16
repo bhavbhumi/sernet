@@ -1,35 +1,9 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   Newspaper, Calendar, ExternalLink, Filter, Loader2, Rss, ArrowRight, AlertCircle,
 } from 'lucide-react';
-
-// ─── Source Logo ──────────────────────────────────────────────────────────────
-
-function SourceLogo({ feedUrl, source }: { feedUrl: string | null; source: string }) {
-  const [failed, setFailed] = useState(false);
-  const faviconUrl = getSourceLogoUrl(feedUrl);
-
-  if (!faviconUrl || failed) {
-    return (
-      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-        <Rss className="w-5 h-5 text-primary" />
-      </div>
-    );
-  }
-
-  return (
-    <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center shrink-0 overflow-hidden border border-border/50">
-      <img
-        src={faviconUrl}
-        alt={source}
-        className="w-6 h-6 object-contain"
-        onError={() => setFailed(true)}
-      />
-    </div>
-  );
-}
-import { useQuery } from '@tanstack/react-query';
+import { useQueries, useQuery } from '@tanstack/react-query';
 import { getSourceLogoUrl } from '@/lib/sourceLogos';
 import { supabase } from '@/integrations/supabase/client';
 import { format, parseISO, isValid } from 'date-fns';
@@ -49,126 +23,41 @@ interface DbNewsItem {
   published_at: string | null;
 }
 
-interface RssFeedItem {
+interface NewsCard {
+  key: string;
   title: string;
-  link: string;
+  link: string | null;
   summary: string;
-  pubDate: string;
-  guid: string;
-  // injected from parent DB record
+  date: string; // ISO or feed date string
   source: string;
   category: string;
-  dbId: string;
+  feedUrl: string | null;
+  internalId: string | null; // set for standalone articles → internal detail page
 }
 
-// ─── Single RSS feed loader ───────────────────────────────────────────────────
+// ─── Source Logo ──────────────────────────────────────────────────────────────
 
-function useRssFeedItems(dbItem: DbNewsItem) {
-  return useQuery<RssFeedItem[], Error>({
-    queryKey: ['rss_feed', dbItem.id],
-    enabled: !!dbItem.is_rss && !!dbItem.rss_feed_url,
-    staleTime: 5 * 60 * 1000,
-    retry: 1,
-    queryFn: async (): Promise<RssFeedItem[]> => {
-      const { data, error } = await supabase.functions.invoke('rss-fetch', {
-        body: { feedUrl: dbItem.rss_feed_url, limit: 20 },
-      });
-      if (error) throw new Error(error.message);
-      if (!data?.success) throw new Error(data?.error ?? 'Feed error');
-      return (data.items as RssFeedItem[])
-        .map((item) => ({
-          ...item,
-          source: dbItem.source,
-          category: dbItem.category,
-          dbId: dbItem.id,
-        }))
-        .sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime());
-    },
-  });
-}
+function SourceLogo({ feedUrl, source }: { feedUrl: string | null; source: string }) {
+  const [failed, setFailed] = useState(false);
+  const logoUrl = getSourceLogoUrl(feedUrl);
 
-// ─── RSS feed expander ────────────────────────────────────────────────────────
-
-function RssFeedBlock({ dbItem, index }: { dbItem: DbNewsItem; index: number }) {
-  const { data: feedItems = [], isLoading, isError, error } = useRssFeedItems(dbItem);
-
-  if (isLoading) {
+  if (!logoUrl || failed) {
     return (
-      <div className="flex items-center gap-2 py-4 px-5 text-muted-foreground text-sm">
-        <Loader2 className="h-4 w-4 animate-spin" />
-        Loading feed from {dbItem.source}…
-      </div>
-    );
-  }
-
-  if (isError || feedItems.length === 0) {
-    const errorMsg = isError && error?.message ? error.message : `No items found in feed from ${dbItem.source}.`;
-    return (
-      <div className="flex gap-3 items-start py-4 px-5 bg-destructive/5 border border-destructive/20 rounded-lg text-sm">
-        <AlertCircle className="h-4 w-4 text-destructive shrink-0 mt-0.5" />
-        <div>
-          <p className="font-medium text-foreground">{dbItem.source} — Feed unavailable</p>
-          <p className="text-muted-foreground mt-0.5">{errorMsg}</p>
-          {dbItem.rss_feed_url && (
-            <p className="text-muted-foreground mt-1 text-xs break-all">URL: {dbItem.rss_feed_url}</p>
-          )}
-        </div>
+      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+        <Rss className="w-5 h-5 text-primary" />
       </div>
     );
   }
 
   return (
-    <>
-      {feedItems.map((item, i) => (
-        <motion.div
-          key={item.guid || item.link}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.04 * (index + i) }}
-          className="flex gap-4 p-5 bg-muted/30 rounded-lg border border-border/50 hover:shadow-md hover:border-primary/20 transition-all group"
-        >
-          <SourceLogo feedUrl={dbItem.rss_feed_url} source={item.source} />
-          <div className="flex-1 min-w-0">
-            <a
-              href={item.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-base font-semibold text-foreground hover:text-primary transition-colors group-hover:text-primary"
-            >
-              {item.title}
-            </a>
-            {item.summary && (
-              <p className="text-sm text-muted-foreground mb-2 mt-1 line-clamp-2">{item.summary}</p>
-            )}
-            <div className="flex items-center gap-3 flex-wrap mt-1">
-              <span className="px-2.5 py-0.5 text-xs font-medium rounded-full bg-blue-500/10 text-blue-600">
-                {item.category}
-              </span>
-              {item.pubDate && isValid(new Date(item.pubDate)) && (
-                <span className="text-xs text-muted-foreground flex items-center gap-1">
-                  <Calendar className="h-3 w-3" />
-                  {format(new Date(item.pubDate), 'MMM d, yyyy')}
-                </span>
-              )}
-              <span className="text-xs text-muted-foreground">via {item.source}</span>
-              <span className="text-xs text-muted-foreground flex items-center gap-1">
-                <Rss className="h-3 w-3" /> RSS
-              </span>
-            </div>
-          </div>
-          {/* External link → source article */}
-          <a
-            href={item.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="self-center shrink-0 p-2 rounded-full hover:bg-muted transition-colors"
-            aria-label="Open article"
-          >
-            <ExternalLink className="w-4 h-4 text-muted-foreground" />
-          </a>
-        </motion.div>
-      ))}
-    </>
+    <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center shrink-0 overflow-hidden border border-border/50">
+      <img
+        src={logoUrl}
+        alt={source}
+        className="w-6 h-6 object-contain"
+        onError={() => setFailed(true)}
+      />
+    </div>
   );
 }
 
@@ -191,13 +80,71 @@ export const NewsContent = () => {
     },
   });
 
-  // Collect unique categories from DB records (used for filter)
-  const categorySet = new Set(dbItems.map((i) => i.category));
-  const categories = ['All', ...Array.from(categorySet)];
+  const rssFeeds = dbItems.filter((i) => i.is_rss && i.rss_feed_url);
+  const standaloneItems = dbItems.filter((i) => !i.is_rss);
 
-  const filteredDbItems = activeCategory === 'All'
-    ? dbItems
-    : dbItems.filter((i) => i.category === activeCategory);
+  const feedQueries = useQueries({
+    queries: rssFeeds.map((feed) => ({
+      queryKey: ['rss_feed', feed.id],
+      staleTime: 5 * 60 * 1000,
+      retry: 1,
+      queryFn: async (): Promise<NewsCard[]> => {
+        const { data, error } = await supabase.functions.invoke('rss-fetch', {
+          body: { feedUrl: feed.rss_feed_url, limit: 20 },
+        });
+        if (error) throw new Error(error.message);
+        if (!data?.success) throw new Error(data?.error ?? 'Feed error');
+        return (data.items as Array<{ title: string; link: string; summary: string; pubDate: string; guid: string }>).map(
+          (item) => ({
+            key: item.guid || item.link,
+            title: item.title,
+            link: item.link,
+            summary: item.summary,
+            date: item.pubDate,
+            source: feed.source,
+            category: feed.category,
+            feedUrl: feed.rss_feed_url,
+            internalId: null,
+          }),
+        );
+      },
+    })),
+  });
+
+  const feedsLoading = feedQueries.some((q) => q.isLoading);
+  const failedFeeds = feedQueries
+    .map((q, i) => ({ q, feed: rssFeeds[i] }))
+    .filter(({ q }) => q.isError);
+
+  // Merge RSS items + standalone articles, sorted globally newest-first
+  const allItems = useMemo(() => {
+    const rssItems = feedQueries.flatMap((q) => q.data ?? []);
+    const standalone: NewsCard[] = standaloneItems.map((i) => ({
+      key: i.id,
+      title: i.title,
+      link: i.link,
+      summary: i.summary ?? '',
+      date: i.published_at ?? '',
+      source: i.source,
+      category: i.category,
+      feedUrl: null,
+      internalId: i.id,
+    }));
+    return [...rssItems, ...standalone].sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [feedQueries, standaloneItems.length]);
+
+  const categories = useMemo(() => {
+    const set = new Set(dbItems.map((i) => i.category));
+    return ['All', ...Array.from(set)];
+  }, [dbItems]);
+
+  const filteredItems =
+    activeCategory === 'All'
+      ? allItems
+      : allItems.filter((i) => i.category === activeCategory);
 
   return (
     <section className="section-padding">
@@ -241,16 +188,33 @@ export const NewsContent = () => {
           </motion.div>
         )}
 
-        {/* Loading DB records */}
-        {isLoading && (
+        {/* Loading */}
+        {(isLoading || feedsLoading) && (
           <div className="flex items-center justify-center py-20 text-muted-foreground gap-2">
             <Loader2 className="h-5 w-5 animate-spin" />
             <span>Loading news…</span>
           </div>
         )}
 
+        {/* Feed errors */}
+        {!feedsLoading &&
+          failedFeeds.map(({ q, feed }) => (
+            <div
+              key={feed.id}
+              className="flex gap-3 items-start py-4 px-5 bg-destructive/5 border border-destructive/20 rounded-lg text-sm mb-3"
+            >
+              <AlertCircle className="h-4 w-4 text-destructive shrink-0 mt-0.5" />
+              <div>
+                <p className="font-medium text-foreground">{feed.source} — Feed unavailable</p>
+                <p className="text-muted-foreground mt-0.5">
+                  {q.error instanceof Error ? q.error.message : 'Feed error'}
+                </p>
+              </div>
+            </div>
+          ))}
+
         {/* Empty state */}
-        {!isLoading && filteredDbItems.length === 0 && (
+        {!isLoading && !feedsLoading && allItems.length === 0 && failedFeeds.length === 0 && (
           <div className="text-center py-20 text-muted-foreground">
             <Newspaper className="h-10 w-10 mx-auto mb-3 opacity-30" />
             <p className="font-medium">No news items available yet.</p>
@@ -258,58 +222,84 @@ export const NewsContent = () => {
           </div>
         )}
 
-        {/* Items */}
-        {!isLoading && filteredDbItems.length > 0 && (
+        {/* Items — globally sorted newest-first across all feeds */}
+        {!feedsLoading && filteredItems.length > 0 && (
           <div className="space-y-3">
-            {filteredDbItems.map((item, index) =>
-              item.is_rss ? (
-                /* RSS feed → expand into individual feed articles */
-                <RssFeedBlock key={item.id} dbItem={item} index={index} />
-              ) : (
-                /* Standalone article → internal detail page */
-                <motion.div
-                  key={item.id}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.35, delay: 0.05 * index }}
-                  className="flex gap-4 p-5 bg-muted/30 rounded-lg border border-border/50 hover:shadow-md hover:border-primary/20 transition-all group"
-                >
+            {filteredItems.map((item, index) => (
+              <motion.div
+                key={item.key}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: Math.min(0.04 * index, 0.6) }}
+                className="flex gap-4 p-5 bg-muted/30 rounded-lg border border-border/50 hover:shadow-md hover:border-primary/20 transition-all group"
+              >
+                {item.internalId ? (
                   <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0">
                     <Newspaper className="w-5 h-5 text-blue-500" />
                   </div>
-                  <div className="flex-1 min-w-0">
+                ) : (
+                  <SourceLogo feedUrl={item.feedUrl} source={item.source} />
+                )}
+                <div className="flex-1 min-w-0">
+                  {item.internalId ? (
                     <Link
-                      to={`/updates/news/${item.id}`}
+                      to={`/updates/news/${item.internalId}`}
                       className="text-base font-semibold text-foreground hover:text-primary transition-colors group-hover:text-primary"
                     >
                       {item.title}
                     </Link>
-                    {item.summary && (
-                      <p className="text-sm text-muted-foreground mb-2 mt-1 line-clamp-2">{item.summary}</p>
-                    )}
-                    <div className="flex items-center gap-3 flex-wrap mt-1">
-                      <span className="px-2.5 py-0.5 text-xs font-medium rounded-full bg-blue-500/10 text-blue-600">
-                        {item.category}
+                  ) : (
+                    <a
+                      href={item.link ?? '#'}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-base font-semibold text-foreground hover:text-primary transition-colors group-hover:text-primary"
+                    >
+                      {item.title}
+                    </a>
+                  )}
+                  {item.summary && (
+                    <p className="text-sm text-muted-foreground mb-2 mt-1 line-clamp-2">{item.summary}</p>
+                  )}
+                  <div className="flex items-center gap-3 flex-wrap mt-1">
+                    <span className="px-2.5 py-0.5 text-xs font-medium rounded-full bg-blue-500/10 text-blue-600">
+                      {item.category}
+                    </span>
+                    {item.date && isValid(new Date(item.date)) && (
+                      <span className="text-xs text-muted-foreground flex items-center gap-1">
+                        <Calendar className="h-3 w-3" />
+                        {format(new Date(item.date), 'MMM d, yyyy')}
                       </span>
-                      {item.published_at && (
-                        <span className="text-xs text-muted-foreground flex items-center gap-1">
-                          <Calendar className="h-3 w-3" />
-                          {format(parseISO(item.published_at), 'MMM d, yyyy')}
-                        </span>
-                      )}
-                      <span className="text-xs text-muted-foreground">via {item.source}</span>
-                    </div>
+                    )}
+                    <span className="text-xs text-muted-foreground">via {item.source}</span>
+                    {!item.internalId && (
+                      <span className="text-xs text-muted-foreground flex items-center gap-1">
+                        <Rss className="h-3 w-3" /> RSS
+                      </span>
+                    )}
                   </div>
+                </div>
+                {item.internalId ? (
                   <Link
-                    to={`/updates/news/${item.id}`}
+                    to={`/updates/news/${item.internalId}`}
                     className="self-center shrink-0 p-2 rounded-full hover:bg-muted transition-colors"
                     aria-label="Read more"
                   >
                     <ArrowRight className="w-4 h-4 text-muted-foreground" />
                   </Link>
-                </motion.div>
-              )
-            )}
+                ) : (
+                  <a
+                    href={item.link ?? '#'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="self-center shrink-0 p-2 rounded-full hover:bg-muted transition-colors"
+                    aria-label="Open article"
+                  >
+                    <ExternalLink className="w-4 h-4 text-muted-foreground" />
+                  </a>
+                )}
+              </motion.div>
+            ))}
           </div>
         )}
       </div>
