@@ -29,16 +29,6 @@ const GoalCalcContent = ({ prefillTargetAmount, prefillReturn, prefillYears }: G
     if (prefillYears) setTimePeriod(String(prefillYears));
   }, [prefillTargetAmount, prefillReturn, prefillYears]);
 
-  const handleAIParams = (params: Record<string, number>) => {
-    if (params.targetAmount) setGoalAmount(String(Math.round(params.targetAmount)));
-    if (params.expectedReturn) setExpectedReturn(String(params.expectedReturn));
-    if (params.timePeriod) setTimePeriod(String(params.timePeriod));
-    if (params.existingCorpus) setExistingCorpus(String(Math.round(params.existingCorpus)));
-    if (params.monthlyInvestment) {
-      // User asked "how much would X/month give me" — invert goal logic
-    }
-  };
-
   const calculate = () => {
     const target = parseFloat(goalAmount) || 0;
     const r = (parseFloat(expectedReturn) || 0) / 100 / 12;
@@ -67,8 +57,7 @@ const GoalCalcContent = ({ prefillTargetAmount, prefillReturn, prefillYears }: G
       description="Find out exactly how much to invest to reach your financial goal"
       icon={<Target className="w-4 h-4" />}
       calcType="goal"
-      aiContext="Goal-based investment planner that works backwards from a target wealth goal to calculate the required monthly SIP or lumpsum investment needed. Accounts for existing corpus and compound growth."
-      onAIParams={handleAIParams}
+      methodology="Goal-based investment planner that works backwards from a target wealth goal to calculate the required monthly SIP or lumpsum investment needed. Accounts for existing corpus and compound growth."
       formInputs={
         <div className="space-y-5">
           <div>

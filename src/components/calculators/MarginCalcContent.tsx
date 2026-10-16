@@ -10,11 +10,6 @@ const MarginCalcContent = () => {
   const [quantity, setQuantity] = useState('');
   const [segment, setSegment] = useState<'equity' | 'fno'>('equity');
 
-  const handleAIParams = (params: Record<string, number>) => {
-    if (params.stockPrice) setStockPrice(String(params.stockPrice));
-    if (params.quantity) setQuantity(String(Math.round(params.quantity)));
-  };
-
   const calculate = () => {
     const price = parseFloat(stockPrice) || 0;
     const qty = parseInt(quantity) || 0;
@@ -45,8 +40,7 @@ const MarginCalcContent = () => {
       description="Calculate the margin required for intraday equity and F&O trades"
       icon={<Layers className="w-4 h-4" />}
       calcType="margin"
-      aiContext="Margin calculator for equity intraday and F&O trades. Computes required margin as a percentage of contract value and shows leverage. Equity intraday requires 20% margin (5x leverage); F&O requires 15% margin."
-      onAIParams={handleAIParams}
+      methodology="Margin calculator for equity intraday and F&O trades. Computes required margin as a percentage of contract value and shows leverage. Equity intraday requires 20% margin (5x leverage); F&O requires 15% margin."
       formInputs={
         <div className="space-y-5">
           <div className="flex gap-3">
