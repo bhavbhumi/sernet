@@ -74,12 +74,14 @@ function RssFeedBlock({ dbItem, index }: { dbItem: DbCircularItem; index: number
       });
       if (error) throw new Error(error.message);
       if (!data?.success) throw new Error(data?.error ?? 'Feed error');
-      return (data.items as RssFeedItem[]).map((item) => ({
-        ...item,
-        source: dbItem.source,
-        category: dbItem.category,
-        dbId: dbItem.id,
-      }));
+      return (data.items as RssFeedItem[])
+        .map((item) => ({
+          ...item,
+          source: dbItem.source,
+          category: dbItem.category,
+          dbId: dbItem.id,
+        }))
+        .sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime());
     },
   });
 

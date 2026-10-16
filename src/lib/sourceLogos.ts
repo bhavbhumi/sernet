@@ -1,5 +1,6 @@
 import amfiLogo from '@/assets/amfi-logo.webp';
 import sebiLogo from '@/assets/sebi-logo.webp';
+import rbiLogo from '@/assets/rbi-logo.webp';
 
 /**
  * Official logos for feed sources whose sites don't expose a usable favicon.
