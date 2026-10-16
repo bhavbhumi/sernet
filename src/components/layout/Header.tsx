@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { languageOptions } from '@/i18n';
 import { ThemeToggle } from '@/components/shared/ThemeToggle';
 import { SearchCommandPalette } from '@/components/shared/SearchCommandPalette';
+import { APP_LINKS, TICKFUNDS_LINKS, TUSHIL_LINKS } from '@/lib/appLinks';
 
 import sernetLogo from '@/assets/sernet-logo.png';
 
@@ -17,15 +18,17 @@ const navLinks = [
   { nameKey: 'nav.contact', href: '/contact' },
 ];
 
-const menuSections = [
+type MenuLink = { name?: string; nameKey?: string; href: string; external: boolean; note?: string };
+
+const menuSections: { titleKey: string; links: MenuLink[] }[] = [
   {
     titleKey: 'menu.signupLogin',
     links: [
       { name: 'Login / Portal', href: '/login', external: false },
-      { name: 'Tick Funds', href: '/tickfunds', external: false },
-      { name: 'Tushil', href: '/tushil', external: false },
-      
-      { name: 'Choice FinX', href: '/choicefinx', external: false },
+      { name: 'Tick Funds', href: TICKFUNDS_LINKS.START_INVESTING, external: true },
+      { name: 'Tushil', href: TUSHIL_LINKS.WEB, external: true },
+      { name: 'Choice FinX Login', href: APP_LINKS.LOGIN, external: true, note: "Choice's site" },
+      { name: 'Open Choice account', href: APP_LINKS.OPEN_ACCOUNT, external: true, note: "Choice's site" },
     ],
   },
   {
@@ -266,7 +269,8 @@ export const Header = () => {
                               onClick={() => setMenuOpen(false)}
                             >
                               {link.name || t(link.nameKey!)}
-                              <ExternalLink className="h-3 w-3" />
+                              <ExternalLink className="h-3 w-3" aria-hidden="true" />
+                              <span className="sr-only">(opens in new tab)</span>
                             </a>
                           ) : (
                             <Link

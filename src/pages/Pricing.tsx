@@ -256,6 +256,14 @@ const Pricing = () => {
           transition={{ duration: 0.25 }}
         >
           {tabContent[activeTab]}
+          <div className="container-sernet pb-8 text-center">
+            <Link
+              to={({ Trading: '/choicefinx', Investment: '/tickfunds', Insurance: '/tushil' } as const)[activeTab]}
+              className="link-primary text-sm font-medium"
+            >
+              Full details on {({ Trading: 'Choice FinX', Investment: 'Tick Funds', Insurance: 'Tushil' } as const)[activeTab]} →
+            </Link>
+          </div>
         </motion.div>
       </AnimatePresence>
 
