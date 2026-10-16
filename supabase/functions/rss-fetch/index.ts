@@ -15,6 +15,17 @@ function extractTag(xml: string, tag: string): string {
   return m ? stripCdata(m[1]).trim() : '';
 }
 
+function decodeEntities(val: string): string {
+  return val
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#0?39;|&apos;/g, "'")
+    .trim();
+}
+
 function extractAtom(xml: string): RssItem[] {
   const items: RssItem[] = [];
   const entryRe = /<entry[^>]*>([\s\S]*?)<\/entry>/g;
