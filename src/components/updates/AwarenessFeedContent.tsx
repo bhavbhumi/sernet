@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
-  GraduationCap, Calendar, ExternalLink, Filter, Loader2, Rss, AlertCircle,
+  GraduationCap, Calendar, ExternalLink, Filter, Loader2, Rss, AlertCircle, Play,
 } from 'lucide-react';
 import { useQueries, useQuery } from '@tanstack/react-query';
 import { getSourceLogoUrl } from '@/lib/sourceLogos';
@@ -31,6 +31,7 @@ interface AwarenessItem {
   categories: string[];
   source: string;
   feedUrl: string | null;
+  feedCategory: string;
 }
 
 // ─── Source Logo ─────────────────────────────────────────────────────────────
@@ -91,11 +92,18 @@ export const AwarenessFeedContent = () => {
         });
         if (error) throw new Error(error.message);
         if (!data?.success) throw new Error(data?.error ?? 'Feed error');
-        return (data.items as Array<Omit<AwarenessItem, 'source' | 'feedUrl'>>).map((item) => ({
+        return (data.items as Array<Omit<AwarenessItem, 'source' | 'feedUrl' | 'feedCategory'>>).map((item) => ({
           ...item,
-          categories: Array.isArray(item.categories) ? item.categories : [],
+          // Fall back to the feed's own category when items carry no tags (e.g. NCFE videos)
+          categories:
+            Array.isArray(item.categories) && item.categories.length > 0
+              ? item.categories
+              : feed.category
+                ? [feed.category]
+                : [],
           source: feed.source,
           feedUrl: feed.rss_feed_url,
+          feedCategory: feed.category,
         }));
       },
     })),
@@ -227,6 +235,11 @@ export const AwarenessFeedContent = () => {
                     <p className="text-sm text-muted-foreground mb-2 mt-1 line-clamp-2">{item.summary}</p>
                   )}
                   <div className="flex items-center gap-3 flex-wrap mt-1">
+                    {item.feedCategory === 'Videos' && (
+                      <span className="px-2.5 py-0.5 text-xs font-medium rounded-full bg-primary/10 text-primary flex items-center gap-1">
+                        <Play className="h-3 w-3" /> Video
+                      </span>
+                    )}
                     {item.categories.map((cat) => (
                       <span
                         key={cat}
