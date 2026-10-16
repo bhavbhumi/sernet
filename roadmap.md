@@ -1,6 +1,6 @@
 # Roadmap
 
-- [ ] Remove calculator-only AI controls, callbacks and services; preserve calculations, charts and enquiry/proposal forms; verify all six calculators.
+- [x] Remove calculator-only AI controls, callbacks and services; preserve calculations and enquiry/proposal forms — six calculators, saved enquiry, printable proposal and 889/390px layouts verified with no AI calls.
 
 - [x] Verify and restore public client/partner signup without changing email confirmation — hosted settings verified, real signup returned 200 and displayed Verify Your Email.
 - [x] Add editable review dates to both legal CMS editors — signed-in save/reload and public display verified using existing genuine dates, no dates invented; editor changes await publish.
