@@ -19,7 +19,7 @@ const BrokerageCalculator = () => {
     const qty = parseInt(quantity) || 0;
 
     const turnover = (buy + sell) * qty;
-    const brokerage = tradeType === 'delivery' ? 0 : Math.min(20, turnover * 0.0003);
+    const brokerage = turnover * (tradeType === 'delivery' ? 0.003 : 0.0003);
     const stt = tradeType === 'delivery' ? turnover * 0.001 : sell * qty * 0.00025;
     const exchangeCharges = turnover * 0.0000345;
     const gst = (brokerage + exchangeCharges) * 0.18;
