@@ -69,7 +69,7 @@ function extractAtom(xml: string): RssItem[] {
       || body.match(/<link[^>]+href=["']([^"']+)["'][^>]*>/i);
     const link = linkMatch ? linkMatch[1] : '';
     const summary = extractTag(body, 'summary') || extractTag(body, 'content');
-    const pubDate = extractTag(body, 'published') || extractTag(body, 'updated');
+    const pubDate = normalizeDate(extractTag(body, 'published') || extractTag(body, 'updated'));
     const guid = extractTag(body, 'id') || link;
     if (title && link) items.push({ title, link, summary, pubDate, guid, categories: extractCategories(body) });
   }
@@ -132,7 +132,7 @@ function parseRSS(xml: string): RssItem[] {
     const summary = extractTag(body, 'description') || extractTag(body, 'summary') || extractTag(body, 'content:encoded');
     const cleanSummary = decodeEntities(summary.replace(/<[^>]+>/g, '')).replace(/\s+/g, ' ').slice(0, 300);
 
-    const pubDate = extractTag(body, 'pubDate') || extractTag(body, 'dc:date') || extractTag(body, 'published');
+    const pubDate = normalizeDate(extractTag(body, 'pubDate') || extractTag(body, 'dc:date') || extractTag(body, 'published'));
     const guid = extractTag(body, 'guid') || (link ? `${link}#${title}` : title);
 
     if (title) {
