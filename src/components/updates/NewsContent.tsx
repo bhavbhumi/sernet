@@ -8,8 +8,7 @@ import {
 
 function SourceLogo({ feedUrl, source }: { feedUrl: string | null; source: string }) {
   const [failed, setFailed] = useState(false);
-  const domain = feedUrl ? (() => { try { return new URL(feedUrl).hostname; } catch { return null; } })() : null;
-  const faviconUrl = domain ? `https://www.google.com/s2/favicons?domain=${domain}&sz=64` : null;
+  const faviconUrl = getSourceLogoUrl(feedUrl);
 
   if (!faviconUrl || failed) {
     return (
@@ -31,6 +30,7 @@ function SourceLogo({ feedUrl, source }: { feedUrl: string | null; source: strin
   );
 }
 import { useQuery } from '@tanstack/react-query';
+import { getSourceLogoUrl } from '@/lib/sourceLogos';
 import { supabase } from '@/integrations/supabase/client';
 import { format, parseISO, isValid } from 'date-fns';
 import { Link } from 'react-router-dom';
