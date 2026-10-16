@@ -5,6 +5,8 @@ import { AdminGuard } from '@/components/admin/AdminGuard';
 import { logAudit } from '@/lib/auditLog';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { Save } from 'lucide-react';
 import { legalTabs } from '@/lib/legalConfig';
@@ -86,6 +88,17 @@ export default function AdminLegal() {
                 </Button>
               );
             })}
+          </div>
+
+          <div className="max-w-xs space-y-2">
+            <Label htmlFor="legal-reviewed-on">Last reviewed</Label>
+            <Input
+              id="legal-reviewed-on"
+              type="date"
+              value={reviewedOn}
+              onChange={(event) => setReviewedOn(event.target.value)}
+              disabled={loading || saving}
+            />
           </div>
 
           {/* Editor */}

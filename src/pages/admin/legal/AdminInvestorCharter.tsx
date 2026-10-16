@@ -5,11 +5,14 @@ import { AdminGuard } from '@/components/admin/AdminGuard';
 import { logAudit } from '@/lib/auditLog';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { Save, BookOpen } from 'lucide-react';
 
 export default function AdminInvestorCharter() {
   const [body, setBody] = useState('');
+  const [reviewedOn, setReviewedOn] = useState('');
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -18,10 +21,11 @@ export default function AdminInvestorCharter() {
       setLoading(true);
       const { data } = await supabase
         .from('legal_pages' as any)
-        .select('body')
+        .select('body, last_reviewed_on')
         .eq('slug', 'investor-charter')
         .single();
       setBody((data as any)?.body || '');
+      setReviewedOn((data as any)?.last_reviewed_on || '');
       setLoading(false);
     })();
   }, []);
@@ -31,7 +35,7 @@ export default function AdminInvestorCharter() {
     try {
       const { error } = await supabase
         .from('legal_pages' as any)
-        .update({ body, updated_at: new Date().toISOString() } as any)
+        .update({ body, last_reviewed_on: reviewedOn || null, updated_at: new Date().toISOString() } as any)
         .eq('slug', 'investor-charter');
       if (error) throw error;
       await logAudit({ action: 'update', entity_type: 'legal_page', entity_id: 'investor-charter', details: { slug: 'investor-charter' } });
@@ -52,10 +56,21 @@ export default function AdminInvestorCharter() {
               <BookOpen className="w-5 h-5" />
               <span className="text-sm">Investor guidance and links to the applicable product provider’s charter.</span>
             </div>
-            <Button onClick={handleSave} disabled={saving} className="gap-2">
+            <Button onClick={handleSave} disabled={saving || loading} className="gap-2">
               <Save className="w-4 h-4" />
               {saving ? 'Saving…' : 'Save Changes'}
             </Button>
+          </div>
+
+          <div className="max-w-xs space-y-2">
+            <Label htmlFor="charter-reviewed-on">Last reviewed</Label>
+            <Input
+              id="charter-reviewed-on"
+              type="date"
+              value={reviewedOn}
+              onChange={(event) => setReviewedOn(event.target.value)}
+              disabled={loading || saving}
+            />
           </div>
 
           <div className="bg-card border border-border rounded-lg p-4">
