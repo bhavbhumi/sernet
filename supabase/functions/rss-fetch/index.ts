@@ -83,7 +83,7 @@ function parseRSS(xml: string): RssItem[] {
     const cleanSummary = decodeEntities(summary.replace(/<[^>]+>/g, '')).replace(/\s+/g, ' ').slice(0, 300);
 
     const pubDate = extractTag(body, 'pubDate') || extractTag(body, 'dc:date') || extractTag(body, 'published');
-    const guid = extractTag(body, 'guid') || link || title;
+    const guid = extractTag(body, 'guid') || (link ? `${link}#${title}` : title);
 
     if (title) {
       items.push({ title, link, summary: cleanSummary, pubDate, guid });
