@@ -27,12 +27,6 @@ const LumpsumCalcContent = ({ prefillAmount, prefillReturn, prefillYears }: Lump
     if (prefillYears) setTimePeriod(String(prefillYears));
   }, [prefillAmount, prefillReturn, prefillYears]);
 
-  const handleAIParams = (params: Record<string, number>) => {
-    if (params.lumpsum) setInvestment(String(Math.round(params.lumpsum)));
-    if (params.expectedReturn) setExpectedReturn(String(params.expectedReturn));
-    if (params.timePeriod) setTimePeriod(String(params.timePeriod));
-  };
-
   const calculate = () => {
     const P = parseFloat(investment) || 0;
     const r = (parseFloat(expectedReturn) || 0) / 100;
@@ -58,8 +52,7 @@ const LumpsumCalcContent = ({ prefillAmount, prefillReturn, prefillYears }: Lump
       description="Calculate returns on your one-time investment over a period"
       icon={<TrendingUp className="w-4 h-4" />}
       calcType="lumpsum"
-      aiContext="Lumpsum investment calculator that computes future value of a one-time investment using compound annual growth rate. Useful for planning FD alternatives, equity investments, or large windfalls."
-      onAIParams={handleAIParams}
+      methodology="Lumpsum investment calculator that computes future value of a one-time investment using compound annual growth rate. Useful for planning FD alternatives, equity investments, or large windfalls."
       formInputs={
         <div className="space-y-5">
           <div>

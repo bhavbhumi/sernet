@@ -11,9 +11,8 @@ interface ProposalDialogProps {
   onOpenChange: (v: boolean) => void;
   calculatorTitle: string;
   result: CalculatorResult;
-  aiContext: string;
+  methodology: string;
   calcType: string;
-  onLeadCaptured?: () => void;
 }
 
 type Step = 'lead' | 'proposal';
@@ -23,9 +22,8 @@ export const ProposalDialog = ({
   onOpenChange,
   calculatorTitle,
   result,
-  aiContext,
+  methodology,
   calcType,
-  onLeadCaptured,
 }: ProposalDialogProps) => {
   const [step, setStep] = useState<Step>('lead');
   const [name, setName] = useState('');
@@ -66,7 +64,6 @@ export const ProposalDialog = ({
       if (error) throw error;
       setLeadSaved(true);
       setStep('proposal');
-      onLeadCaptured?.();
     } catch (err) {
       toast.error('Could not save your details. Please try again.');
     } finally {
@@ -235,7 +232,7 @@ export const ProposalDialog = ({
 
                 {/* Title */}
                 <h1 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '4px' }}>{calculatorTitle}</h1>
-                <p style={{ fontSize: '13px', color: '#6b7280', marginBottom: '20px' }}>{aiContext}</p>
+                <p style={{ fontSize: '13px', color: '#6b7280', marginBottom: '20px' }}>{methodology}</p>
 
                 {/* Your Requirement */}
                 <h2 style={{ fontSize: '13px', fontWeight: 600, color: '#374151', margin: '0 0 10px', borderLeft: '3px solid #0066cc', paddingLeft: '10px' }}>Your Requirement</h2>

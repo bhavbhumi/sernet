@@ -11,12 +11,6 @@ const BrokerageCalcContent = () => {
   const [quantity, setQuantity] = useState('');
   const [tradeType, setTradeType] = useState<'delivery' | 'intraday'>('delivery');
 
-  const handleAIParams = (params: Record<string, number>) => {
-    if (params.buyPrice) setBuyPrice(String(params.buyPrice));
-    if (params.sellPrice) setSellPrice(String(params.sellPrice));
-    if (params.quantity) setQuantity(String(Math.round(params.quantity)));
-  };
-
   const calculate = () => {
     const buy = parseFloat(buyPrice) || 0;
     const sell = parseFloat(sellPrice) || 0;
@@ -51,8 +45,7 @@ const BrokerageCalcContent = () => {
       description="Calculate your total trading costs including brokerage, STT, and other charges"
       icon={<BarChart3 className="w-4 h-4" />}
       calcType="brokerage"
-      aiContext="Brokerage calculator for equity trades. Computes brokerage, STT (Securities Transaction Tax), exchange charges, GST, SEBI charges, and stamp duty for delivery and intraday trades. SerNet charges zero brokerage on delivery trades."
-      onAIParams={handleAIParams}
+      methodology="Brokerage calculator for equity trades. Computes brokerage, STT (Securities Transaction Tax), exchange charges, GST, SEBI charges, and stamp duty for delivery and intraday trades. SerNet charges zero brokerage on delivery trades."
       formInputs={
         <div className="space-y-5">
           <div className="flex gap-3">

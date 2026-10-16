@@ -27,12 +27,6 @@ const SIPCalcContent = ({ prefillMonthly, prefillReturn, prefillYears }: SIPCalc
     if (prefillYears) setTimePeriod(String(prefillYears));
   }, [prefillMonthly, prefillReturn, prefillYears]);
 
-  const handleAIParams = (params: Record<string, number>) => {
-    if (params.monthlyInvestment) setMonthlyInvestment(String(Math.round(params.monthlyInvestment)));
-    if (params.expectedReturn) setExpectedReturn(String(params.expectedReturn));
-    if (params.timePeriod) setTimePeriod(String(params.timePeriod));
-  };
-
   const calculate = () => {
     const P = parseFloat(monthlyInvestment) || 0;
     const r = (parseFloat(expectedReturn) || 0) / 100 / 12;
@@ -58,8 +52,7 @@ const SIPCalcContent = ({ prefillMonthly, prefillReturn, prefillYears }: SIPCalc
       description="Plan your systematic investments and see how your wealth grows over time"
       icon={<TrendingUp className="w-4 h-4" />}
       calcType="sip"
-      aiContext="SIP (Systematic Investment Plan) calculator that computes the future value of recurring monthly investments using compound interest. Helps users plan wealth creation through regular investing."
-      onAIParams={handleAIParams}
+      methodology="SIP (Systematic Investment Plan) calculator that computes the future value of recurring monthly investments using compound interest. Helps users plan wealth creation through regular investing."
       formInputs={
         <div className="space-y-5">
           <div>

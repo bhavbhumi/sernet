@@ -26,14 +26,6 @@ const InsuranceNeedCalcContent = ({ prefillCoverAmount }: InsuranceNeedCalcConte
     if (prefillCoverAmount) setExistingCover(String(prefillCoverAmount));
   }, [prefillCoverAmount]);
 
-  const handleAIParams = (params: Record<string, number>) => {
-    if (params.annualIncome) setAnnualIncome(String(Math.round(params.annualIncome)));
-    if (params.age) setAge(String(params.age));
-    if (params.retirementAge) setRetirementAge(String(params.retirementAge));
-    if (params.liabilities) setExistingLiabilities(String(Math.round(params.liabilities)));
-    if (params.existingCover) setExistingCover(String(Math.round(params.existingCover)));
-  };
-
   const calculate = () => {
     const income = parseFloat(annualIncome) || 0;
     const ageNum = parseInt(age) || 30;
@@ -65,8 +57,7 @@ const InsuranceNeedCalcContent = ({ prefillCoverAmount }: InsuranceNeedCalcConte
       description="Calculate the exact life cover your family needs using the HLV method"
       icon={<ShieldCheck className="w-4 h-4" />}
       calcType="insurance"
-      aiContext="Insurance need estimator using the Human Life Value (HLV) method. Calculates recommended life insurance cover based on income, years to retirement, liabilities, and existing cover. Helps users determine adequate term insurance coverage."
-      onAIParams={handleAIParams}
+      methodology="Insurance need estimator using the Human Life Value (HLV) method. Calculates recommended life insurance cover based on income, years to retirement, liabilities, and existing cover. Helps users determine adequate term insurance coverage."
       formInputs={
         <div className="space-y-5">
           <div>
