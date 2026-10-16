@@ -58,6 +58,24 @@ interface RssItem {
   summary: string;
   pubDate: string;
   guid: string;
+  categories: string[];
+}
+
+function extractCategories(body: string): string[] {
+  const cats: string[] = [];
+  const re = /<category[^>]*>([\s\S]*?)<\/category>/gi;
+  let m;
+  while ((m = re.exec(body)) !== null) {
+    const val = decodeEntities(stripCdata(m[1]).trim());
+    if (val && !cats.includes(val)) cats.push(val);
+  }
+  // Atom-style: <category term="..."/>
+  const termRe = /<category[^>]*term=["']([^"']+)["'][^>]*\/?>/gi;
+  while ((m = termRe.exec(body)) !== null) {
+    const val = decodeEntities(m[1].trim());
+    if (val && !cats.includes(val)) cats.push(val);
+  }
+  return cats;
 }
 
 function parseRSS(xml: string): RssItem[] {
