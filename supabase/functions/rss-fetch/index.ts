@@ -57,12 +57,16 @@ function parseRSS(xml: string): RssItem[] {
     return extractAtom(xml);
   }
 
+  // Channel-level link used as fallback when an item has no link of its own
+  const channelMatch = xml.match(/<channel[^>]*>([\s\S]*?)(?=<item|<\/channel)/i);
+  const channelLink = channelMatch ? extractTag(channelMatch[1], 'link') : '';
+
   const items: RssItem[] = [];
   const itemRe = /<item[^>]*>([\s\S]*?)<\/item>/g;
   let m;
   while ((m = itemRe.exec(xml)) !== null) {
     const body = m[1];
-    const title = extractTag(body, 'title');
+    const title = decodeEntities(extractTag(body, 'title'));
 
     let link = extractTag(body, 'link');
     if (!link) {
@@ -73,14 +77,15 @@ function parseRSS(xml: string): RssItem[] {
       const guidPerm = body.match(/<guid[^>]*isPermaLink=["']true["'][^>]*>([\s\S]*?)<\/guid>/i);
       link = guidPerm ? stripCdata(guidPerm[1]).trim() : '';
     }
+    if (!link) link = channelLink;
 
     const summary = extractTag(body, 'description') || extractTag(body, 'summary') || extractTag(body, 'content:encoded');
-    const cleanSummary = summary.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').trim().slice(0, 300);
+    const cleanSummary = decodeEntities(summary.replace(/<[^>]+>/g, '')).replace(/\s+/g, ' ').slice(0, 300);
 
     const pubDate = extractTag(body, 'pubDate') || extractTag(body, 'dc:date') || extractTag(body, 'published');
-    const guid = extractTag(body, 'guid') || link;
+    const guid = extractTag(body, 'guid') || link || title;
 
-    if (title && link) {
+    if (title) {
       items.push({ title, link, summary: cleanSummary, pubDate, guid });
     }
   }
