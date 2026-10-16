@@ -1,4 +1,5 @@
 import amfiLogo from '@/assets/amfi-logo.webp';
+import sebiLogo from '@/assets/sebi-logo.webp';
 
 /**
  * Official logos for feed sources whose sites don't expose a usable favicon.
@@ -6,6 +7,7 @@ import amfiLogo from '@/assets/amfi-logo.webp';
  */
 const SOURCE_LOGO_OVERRIDES: Array<{ match: string; url: string }> = [
   { match: 'amfiindia.com', url: amfiLogo },
+  { match: 'sebi.gov.in', url: sebiLogo },
 ];
 
 export function getSourceLogoUrl(feedUrl: string | null): string | null {
