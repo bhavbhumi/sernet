@@ -45,7 +45,7 @@ const Tushil = () => (
   <Layout>
     <SEOHead
       title="Tushil Insurance Platform"
-      description="Compare and buy life, health, motor and travel insurance with zero commission through Tushil by SERNET."
+      description="Compare and buy life, health, motor and travel insurance through Tushil by SERNET, placed by our IRDAI-registered broker partner — no charge to you."
       path="/tushil"
     />
     {/* Hero */}
