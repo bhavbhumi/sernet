@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Layout } from '@/components/layout/Layout';
 import { PageHero } from '@/components/layout/PageHero';
 import { SEOHead } from '@/components/shared/SEOHead';
@@ -18,7 +19,17 @@ const tabContent: Record<UpdatesTab, React.ReactNode> = {
 };
 
 const UpdatesPage = () => {
-  const [activeTab, setActiveTab] = useState<UpdatesTab>('News');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const tabParam = searchParams.get('tab');
+  const activeTab = (updatesTabs as readonly string[]).includes(tabParam ?? '')
+    ? (tabParam as UpdatesTab)
+    : 'News';
+
+  const handleTabChange = (tab: UpdatesTab) => {
+    setSearchParams({ tab }, { replace: false });
+    setActiveTab(tab);
+  };
+  const [activeTab, setActiveTab] = useState<UpdatesTab>(activeTab);
 
   return (
     <Layout>
