@@ -66,8 +66,8 @@
 
     --gradient-hero-wash: linear-gradient(115deg, hsl(var(--background)) 12%, hsl(var(--primary) / 0.07) 65%, hsl(var(--success) / 0.05) 100%);
     --gradient-cta-wash: linear-gradient(110deg, hsl(var(--primary) / 0.08), hsl(var(--section-alt)) 48%, hsl(var(--success) / 0.07));
-    --gradient-signature-accent: linear-gradient(90deg, hsl(var(--primary)) 0%, hsl(var(--sernet-red)) 33.333%, hsl(var(--success)) 66.667%, hsl(var(--sernet-yellow)) 100%);
-    --gradient-signature-accent: linear-gradient(90deg in oklch, hsl(var(--primary)) 0%, hsl(var(--sernet-red)) 33.333%, hsl(var(--success)) 66.667%, hsl(var(--sernet-yellow)) 100%);
+    --gradient-signature-accent: linear-gradient(90deg, hsl(var(--primary)) 0%, hsl(var(--sernet-red)) 28%, hsl(24 100% 56%) 40%, hsl(48 100% 55%) 52%, hsl(var(--success)) 66%, hsl(var(--sernet-yellow)) 100%);
+    --gradient-signature-accent: linear-gradient(90deg in oklch, hsl(var(--primary)) 0%, hsl(var(--sernet-red)) 28%, hsl(24 100% 56%) 40%, hsl(48 100% 55%) 52%, hsl(var(--success)) 66%, hsl(var(--sernet-yellow)) 100%);
     --shadow-elevated: 0 1px 2px hsl(var(--foreground) / 0.04), 0 4px 8px -4px hsl(var(--foreground) / 0.06), 0 16px 28px -18px hsl(var(--foreground) / 0.14);
     --shadow-interaction: 0 2px 4px hsl(var(--foreground) / 0.04), 0 8px 16px -8px hsl(var(--foreground) / 0.1), 0 22px 36px -20px hsl(var(--foreground) / 0.2);
   }
