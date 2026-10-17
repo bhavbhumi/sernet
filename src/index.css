@@ -46,8 +46,9 @@
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 100%;
 
-    /* Sernet Yellow */
+    /* Sernet brand accents — from the logo's four colors */
     --sernet-yellow: 45 100% 51%;
+    --sernet-red: 6 74% 53%;
 
     /* Layout tokens */
     --hero-bg: 220 14% 96%;
@@ -65,7 +66,7 @@
 
     --gradient-hero-wash: linear-gradient(115deg, hsl(var(--background)) 12%, hsl(var(--primary) / 0.07) 65%, hsl(var(--success) / 0.05) 100%);
     --gradient-cta-wash: linear-gradient(110deg, hsl(var(--primary) / 0.08), hsl(var(--section-alt)) 48%, hsl(var(--success) / 0.07));
-    --gradient-signature-accent: linear-gradient(100deg, hsl(var(--primary)), hsl(var(--success)) 72%, hsl(var(--sernet-yellow)));
+    --gradient-signature-accent: linear-gradient(100deg, hsl(var(--primary)), hsl(var(--sernet-red)) 34%, hsl(var(--success)) 68%, hsl(var(--sernet-yellow)));
     --shadow-elevated: 0 1px 2px hsl(var(--foreground) / 0.04), 0 4px 8px -4px hsl(var(--foreground) / 0.06), 0 16px 28px -18px hsl(var(--foreground) / 0.14);
     --shadow-interaction: 0 2px 4px hsl(var(--foreground) / 0.04), 0 8px 16px -8px hsl(var(--foreground) / 0.1), 0 22px 36px -20px hsl(var(--foreground) / 0.2);
   }
