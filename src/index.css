@@ -46,8 +46,9 @@
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 100%;
 
-    /* Sernet Yellow */
+    /* Sernet brand accents — from the logo's four colors */
     --sernet-yellow: 45 100% 51%;
+    --sernet-red: 6 74% 53%;
 
     /* Layout tokens */
     --hero-bg: 220 14% 96%;
