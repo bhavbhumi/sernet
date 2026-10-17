@@ -15,7 +15,7 @@ export const HeroSection = () => {
   const parallaxY = useTransform(scrollYProgress, [0, 1], [0, 32]);
 
   return (
-    <section ref={sectionRef} className="hero-wash section-padding bg-background">
+    <section ref={sectionRef} className="section-padding bg-background">
       <div className="container-sernet">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           {/* Image - shows first on mobile. No entry-fade so it's a valid LCP paint */}
@@ -52,6 +52,7 @@ export const HeroSection = () => {
             transition={{ duration: 0.6 }}
             className="lg:order-1"
           >
+            <div aria-hidden="true" className="signature-accent mb-5 h-1 w-24 rounded-sm" />
             <h1 className="text-[2.5rem] md:text-[3.25rem] font-light text-foreground leading-[1.15] mb-5 tracking-tight">
               {t('hero.title')}{' '}
               <span className="text-primary font-normal">{t('hero.highlight')}</span>
