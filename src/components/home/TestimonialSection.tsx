@@ -91,7 +91,7 @@ type Testimonial = {
 };
 
 const TestimonialCard = ({ name, occupation, city, country, rating, source, hasVideo, text, verified }: Testimonial) => (
-  <div className="flex-shrink-0 w-[340px] md:w-[400px] p-6 rounded-xl border border-border bg-card relative group hover:border-primary/30 transition-colors duration-300">
+  <div className="surface-elevated flex-shrink-0 w-[340px] md:w-[400px] p-6 rounded-md border border-border bg-card relative group hover:border-primary/30 transition-colors duration-300">
     {/* Top row: rating number + stars left, source icon right */}
     <div className="flex items-center justify-between mb-3">
       <div className="flex items-center gap-2">
@@ -282,7 +282,7 @@ export const TestimonialSection = () => {
         ref={scrollRef}
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
-        className="flex gap-5 overflow-hidden px-4 py-2"
+        className="flex gap-5 overflow-hidden px-4 py-5"
       >
         {doubledTestimonials.map((t, i) => (
           <TestimonialCard key={i} {...t} />

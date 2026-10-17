@@ -63,9 +63,10 @@
     --stat-purple: 263 70% 50%;
     --stat-pink: 330 81% 60%;
 
-    --shadow-interaction: 0 8px 22px -12px hsl(var(--foreground) / 0.18);
-
-    /* Removed gradient tokens — using flat alternating backgrounds instead */
+    --gradient-hero-wash: linear-gradient(115deg, hsl(var(--background)) 12%, hsl(var(--primary) / 0.07) 65%, hsl(var(--success) / 0.05) 100%);
+    --gradient-cta-wash: linear-gradient(110deg, hsl(var(--primary) / 0.08), hsl(var(--section-alt)) 48%, hsl(var(--success) / 0.07));
+    --shadow-elevated: 0 1px 2px hsl(var(--foreground) / 0.04), 0 4px 8px -4px hsl(var(--foreground) / 0.06), 0 16px 28px -18px hsl(var(--foreground) / 0.14);
+    --shadow-interaction: 0 2px 4px hsl(var(--foreground) / 0.04), 0 8px 16px -8px hsl(var(--foreground) / 0.1), 0 22px 36px -20px hsl(var(--foreground) / 0.2);
   }
 
   .dark {
@@ -99,6 +100,10 @@
 
     --hero-bg: 222 47% 8%;
     --section-alt: 222 47% 6%;
+    --gradient-hero-wash: linear-gradient(115deg, hsl(var(--background)) 12%, hsl(var(--primary) / 0.11) 65%, hsl(var(--success) / 0.06) 100%);
+    --gradient-cta-wash: linear-gradient(110deg, hsl(var(--primary) / 0.12), hsl(var(--section-alt)) 48%, hsl(var(--success) / 0.08));
+    --shadow-elevated: 0 1px 2px hsl(var(--background) / 0.35), 0 4px 8px -4px hsl(var(--background) / 0.5), 0 16px 28px -18px hsl(var(--background) / 0.8);
+    --shadow-interaction: 0 2px 4px hsl(var(--background) / 0.4), 0 8px 16px -8px hsl(var(--background) / 0.6), 0 22px 36px -20px hsl(var(--background) / 0.9);
   }
 }
 
@@ -219,6 +224,20 @@
 }
 
 @layer utilities {
+  .public-site .hero-wash {
+    background-image: var(--gradient-hero-wash);
+  }
+
+  .public-site .cta-wash {
+    background-image: var(--gradient-cta-wash);
+  }
+
+  .public-site .surface-elevated,
+  .public-site .interaction-card,
+  .public-site .feature-card {
+    box-shadow: var(--shadow-elevated);
+  }
+
   .public-site .nav-motion {
     position: relative;
   }

@@ -117,7 +117,7 @@ export const InsightsSection = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {isLoading ? (
             Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="bg-background rounded-2xl overflow-hidden border border-border/50 p-5 space-y-3">
+              <div key={i} className="surface-elevated bg-background rounded-md overflow-hidden border border-border/50 p-5 space-y-3">
                 <Skeleton className="h-5 w-20" />
                 <Skeleton className="h-5 w-full" />
                 <Skeleton className="h-4 w-full" />
@@ -135,7 +135,7 @@ export const InsightsSection = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="interaction-card group bg-background rounded-2xl overflow-hidden border border-border/50 hover:border-primary/20 hover:shadow-lg transition-all duration-300"
+                  className="interaction-card group bg-background rounded-md overflow-hidden border border-border/50 hover:border-primary/20 transition-all duration-300"
                 >
                   {card.imageUrl && (
                     <Link to={meta.route(card.id)}>
