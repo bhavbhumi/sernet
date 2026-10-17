@@ -1,6 +1,7 @@
 import { companyHistory } from '@/lib/companyHistory';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
 import { ArrowRight, BadgeCheck, Clock, Heart } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import heroIllustration from '@/assets/hero-illustration.webp';
@@ -8,13 +9,17 @@ import heroIllustrationDark from '@/assets/hero-illustration-dark.png';
 
 export const HeroSection = () => {
   const { t } = useTranslation();
+  const sectionRef = useRef<HTMLElement>(null);
+  const reducedMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] });
+  const parallaxY = useTransform(scrollYProgress, [0, 1], [0, 32]);
 
   return (
-    <section className="section-padding bg-background">
+    <section ref={sectionRef} className="section-padding bg-background">
       <div className="container-sernet">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           {/* Image - shows first on mobile. No entry-fade so it's a valid LCP paint */}
-          <div className="flex justify-center lg:justify-end lg:order-2">
+          <motion.div style={{ y: reducedMotion ? 0 : parallaxY }} className="hero-motion flex justify-center lg:justify-end lg:order-2">
             <motion.img
               src={heroIllustration}
               alt="SERNET wealth management platform – online trading, mutual fund investment and insurance solutions across 54 cities"
@@ -24,8 +29,8 @@ export const HeroSection = () => {
               decoding="async"
               // @ts-ignore fetchpriority not in React types yet
               fetchpriority="high"
-              animate={{ y: [0, -12, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+              animate={{ y: reducedMotion ? 0 : [0, -6, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
             />
             <motion.img
               src={heroIllustrationDark}
@@ -35,10 +40,10 @@ export const HeroSection = () => {
               height={1024}
               decoding="async"
               style={{ mixBlendMode: 'lighten' }}
-              animate={{ y: [0, -12, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+              animate={{ y: reducedMotion ? 0 : [0, -6, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
             />
-          </div>
+          </motion.div>
 
           {/* Content */}
           <motion.div

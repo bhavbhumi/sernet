@@ -1,5 +1,7 @@
 # Architecture rules
 
+- Scope presentation motion to the public Layout and honor reduced-motion preferences through MotionConfig and CSS; administrative tools remain unaffected.
+
 - Keep family-practice history and company incorporation in `src/lib/companyHistory.ts`, with locale date interpolation and metadata using the distinct incorporation date; this prevents age and origin claims drifting between pages.
 - Use the CMS-backed About Press tab as the single public home for coverage, redirecting `/media` there; this preserves real article links without maintaining a second hardcoded list.
 
