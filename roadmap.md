@@ -1,6 +1,6 @@
 # Roadmap
 
-- [ ] Refine homepage washes: restore the white hero with a signature gradient accent; contain the account CTA wash within the content width and verify preview.
+- [x] Refine homepage washes: white hero restored with a signature gradient accent; account CTA wash contained within content width. Preview checked at 1280/889/390px: no overflow or page errors, signup link intact, build clean. Not published.
 
 - [x] Preview item 2: subtle hero/CTA gradient washes, layered card elevation and 6px corners; desktop/889px/mobile and light/dark checked, no overflow or page errors, hover lift and consultation link verified; build clean. Not published.
 
