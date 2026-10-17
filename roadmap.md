@@ -1,6 +1,6 @@
 # Roadmap
 
-- [ ] Add subtle public-site motion, hero parallax, card hover feedback and navigation underlines; preserve content and layout, verify reduced-motion and navigation.
+- [x] Add subtle public-site motion, hero parallax, card hover feedback and navigation underlines; desktop hover, menu navigation and reduced-motion verified; keep decorative overflow within the public content area. Preview only, not published.
 
 - [x] Remove calculator-only AI controls, callbacks and services; preserve calculations and enquiry/proposal forms — six calculators, saved enquiry, printable proposal and 889/390px layouts verified with no AI calls.
 

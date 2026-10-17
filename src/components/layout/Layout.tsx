@@ -12,7 +12,7 @@ export const Layout = ({ children }: LayoutProps) => {
     <MotionConfig reducedMotion="user">
     <div className="public-site min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 overflow-x-clip">{children}</main>
       <Footer />
     </div>
     </MotionConfig>
