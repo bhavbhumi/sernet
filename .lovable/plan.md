@@ -26,13 +26,13 @@ Use existing genuine family photographs where available. Keep regulatory registr
 ## 3. Replace demo awards with the genuine 2016 memory
 
 - Remove the six demo recognition entries and their unsupported award titles, issuers, dates and categories.
-- Preserve the original photograph without AI alteration. Show it uncropped where practicable, with an option to view it larger.
+- Preserve the original image without AI alteration. The current asset is an illustrated keepsake showing a framed recognition, rather than an event photograph; describe it accurately as an archival image. Show it uncropped where practicable, with an option to view it larger.
 - Use a factual caption: **“Recognition at a CNBC TV18 event sponsored by UTI Mutual Fund, 2016.”**
 - Add a discreet provenance line: **“From the SERNET family archive; event details confirmed by management.”**
 - Do not invent an award title, exact event date, recipient, category or online article. UTI Mutual Fund is identified as the sponsor, not the award issuer.
 - Do not keep empty year/category filters or a carousel pretending that multiple documented awards exist.
 
-An unavailable online article does not make the photograph unusable. Present it as an archival memory rather than a separately verified media report.
+An unavailable online article does not make the image unusable. Present it as an archival memory rather than a separately verified media report. The image visibly carries “BEST IFA AWARDS” and “Financial ADVISOR Forum 2016-17” branding; preserve those original historical details without assigning an unconfirmed personal award title or implying a current investment-adviser registration. Use management’s confirmed event year, 2016.
 
 ## 4. Document the office collection before expanding Recognition
 
@@ -49,6 +49,8 @@ Record supplied information privately, confirm the public caption, and publish o
 ## 5. Preserve genuine press coverage
 
 Accept management’s confirmation that the press items are genuine. Preserve their headlines, sources, dates and article/citation links. Verify that the links displayed on the website open the intended articles; repair presentation problems without deleting genuine coverage merely because an independent search did not find it. Keep Press separate from Recognition.
+
+The main About → Press section reads CMS coverage. A separate `/media` page still uses hardcoded entries whose destinations are `#`; consolidate that legacy page into About → Press with a redirect so it uses the existing real article links, rather than maintaining two lists. Several media-kit download controls also point to `#`; hide those controls until actual files are supplied. No individual CMS article is assumed to lack a link without checking its saved record.
 
 ## Technical implementation and checks
 
