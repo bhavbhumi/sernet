@@ -79,12 +79,12 @@
     "highlight": "Prosperity",
     "description": "Grow, Preserve, Protect and Manage your Wealth. Trade, Invest and Insure with Awareness through Simple and Friendly Online Platforms.",
     "cta": "Open Account",
-    "amfiRegistered": "AMFI Registered",
-    "regulated": "Regulated & Compliant",
+    "amfiRegistered": "{{authorities}} Registered",
+    "regulated": "Registered & Compliant",
     "years": "Since October {{year}}",
-    "ofPractice": "Family practice",
-    "clientRetention": "94.5% Client",
-    "retentionRate": "Retention Rate"
+    "ofPractice": "{{count}} Years of Practice",
+    "clientRetention": "94.5% Retention Rate",
+    "retentionRate": "Clients trust us consistently"
   },
   "stats": {
     "yearsOfPractice": "Years of Practice",

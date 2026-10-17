@@ -79,12 +79,12 @@
     "highlight": "समृद्धि",
     "description": "अपनी संपत्ति बढ़ाएं, संरक्षित करें, सुरक्षित करें और प्रबंधित करें। सरल और सहज ऑनलाइन प्लेटफॉर्म के माध्यम से जागरूकता के साथ ट्रेड, निवेश और बीमा करें।",
     "cta": "खाता खोलें",
-    "amfiRegistered": "AMFI पंजीकृत",
-    "regulated": "विनियमित और अनुपालन",
+    "amfiRegistered": "{{authorities}} पंजीकृत",
+    "regulated": "पंजीकृत और अनुपालनशील",
     "years": "अक्टूबर {{year}} से",
-    "ofPractice": "पारिवारिक व्यवसाय",
-    "clientRetention": "94.5% ग्राहक",
-    "retentionRate": "प्रतिधारण दर"
+    "ofPractice": "{{count}} वर्षों का अनुभव",
+    "clientRetention": "94.5% ग्राहक प्रतिधारण",
+    "retentionRate": "ग्राहकों का निरंतर विश्वास"
   },
   "stats": {
     "yearsOfPractice": "अनुभव के वर्ष",

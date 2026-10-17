@@ -79,12 +79,12 @@
     "highlight": "સમૃદ્ધિ",
     "description": "તમારી સંપત્તિ વધારો, જાળવો, સુરક્ષિત કરો અને વ્યવસ્થાપિત કરો. સરળ અને સહજ ઓનલાઇન પ્લેટફોર્મ દ્વારા જાગૃતિ સાથે ટ્રેડ, રોકાણ અને વીમો કરો.",
     "cta": "ખાતું ખોલો",
-    "amfiRegistered": "AMFI નોંધાયેલ",
-    "regulated": "નિયમનકારી અને અનુપાલન",
+    "amfiRegistered": "{{authorities}} નોંધાયેલ",
+    "regulated": "નોંધાયેલ અને અનુપાલનશીલ",
     "years": "ઓક્ટોબર {{year}}થી",
-    "ofPractice": "પારિવારિક વ્યવસાય",
-    "clientRetention": "94.5% ગ્રાહક",
-    "retentionRate": "જાળવણી દર"
+    "ofPractice": "{{count}} વર્ષનો અનુભવ",
+    "clientRetention": "94.5% ગ્રાહક જાળવણી",
+    "retentionRate": "ગ્રાહકોનો સતત વિશ્વાસ"
   },
   "stats": {
     "yearsOfPractice": "અનુભવના વર્ષો",

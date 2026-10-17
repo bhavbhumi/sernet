@@ -79,12 +79,12 @@
     "highlight": "ಸಮೃದ್ಧಿ",
     "description": "ನಿಮ್ಮ ಸಂಪತ್ತನ್ನು ಬೆಳೆಸಿ, ರಕ್ಷಿಸಿ, ಕಾಪಾಡಿ ಮತ್ತು ನಿರ್ವಹಿಸಿ. ಸರಳ ಮತ್ತು ಸ್ನೇಹಪರ ಆನ್‌ಲೈನ್ ವೇದಿಕೆಗಳ ಮೂಲಕ ಜಾಗೃತಿಯಿಂದ ವ್ಯಾಪಾರ, ಹೂಡಿಕೆ ಮತ್ತು ವಿಮೆ ಮಾಡಿ.",
     "cta": "ಖಾತೆ ತೆರೆಯಿರಿ",
-    "amfiRegistered": "AMFI ನೋಂದಾಯಿತ",
-    "regulated": "ನಿಯಂತ್ರಿತ ಮತ್ತು ಅನುಸರಣೆ",
+    "amfiRegistered": "{{authorities}} ನೋಂದಾಯಿತ",
+    "regulated": "ನೋಂದಾಯಿತ ಮತ್ತು ನಿಯಮಾನುಸಾರ",
     "years": "ಅಕ್ಟೋಬರ್ {{year}} ರಿಂದ",
-    "ofPractice": "ಕುಟುಂಬದ ಉದ್ಯಮ",
-    "clientRetention": "94.5% ಗ್ರಾಹಕ",
-    "retentionRate": "ಉಳಿಸಿಕೊಳ್ಳುವ ದರ"
+    "ofPractice": "{{count}} ವರ್ಷಗಳ ಅನುಭವ",
+    "clientRetention": "94.5% ಗ್ರಾಹಕ ಉಳಿಕೆ ದರ",
+    "retentionRate": "ಗ್ರಾಹಕರ ನಿರಂತರ ವಿಶ್ವಾಸ"
   },
   "stats": {
     "yearsOfPractice": "ಅನುಭವದ ವರ್ಷಗಳು",

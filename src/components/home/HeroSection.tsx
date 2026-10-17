@@ -1,14 +1,17 @@
-import { companyHistory } from '@/lib/companyHistory';
+import { RegulatoryIdentity } from '@/components/legal/RegulatoryIdentity';
+import { companyHistory, completedFamilyPracticeYears } from '@/lib/companyHistory';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
-import { ArrowRight, BadgeCheck, Clock, Heart } from 'lucide-react';
+import { ArrowRight, Clock, Heart } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import heroIllustration from '@/assets/hero-illustration.webp';
 import heroIllustrationDark from '@/assets/hero-illustration-dark.png';
 
 export const HeroSection = () => {
   const { t } = useTranslation();
+  const today = new Date();
+  const practiceYears = completedFamilyPracticeYears(today.getUTCFullYear(), today.getUTCMonth() + 1);
   const sectionRef = useRef<HTMLElement>(null);
   const reducedMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] });
@@ -79,32 +82,24 @@ export const HeroSection = () => {
             </div>
 
             {/* Trust strip */}
-            <div className="flex flex-wrap gap-6 lg:gap-8">
-              <div className="flex items-center gap-2.5">
-                <div className="flex items-center justify-center w-9 h-9 rounded-full bg-primary/10">
-                  <BadgeCheck className="w-4 h-4 text-primary" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-foreground leading-tight">{t('hero.amfiRegistered', 'AMFI Registered')}</p>
-                  <p className="text-xs text-muted-foreground">{t('hero.regulated', 'Regulated & Compliant')}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <div className="flex items-center justify-center w-9 h-9 rounded-full bg-primary/10">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 lg:gap-x-4">
+              <RegulatoryIdentity variant="trust" />
+              <div className="flex min-w-0 items-center gap-2.5">
+                <div className="flex items-center justify-center w-9 h-9 shrink-0 rounded-full bg-primary/10">
                   <Clock className="w-4 h-4 text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-foreground leading-tight">{t('hero.years', { year: companyHistory.familyPracticeStarted.slice(0, 4), defaultValue: companyHistory.familyLegacyLabel })}</p>
-                  <p className="text-xs text-muted-foreground">{t('hero.ofPractice', 'Family practice')}</p>
+                  <p className="text-sm font-medium text-foreground leading-tight">{t('hero.ofPractice', { count: practiceYears })}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">{t('hero.years', { year: companyHistory.familyPracticeStarted.slice(0, 4), defaultValue: companyHistory.familyLegacyLabel })}</p>
                 </div>
               </div>
-              <div className="flex items-center gap-2.5">
-                <div className="flex items-center justify-center w-9 h-9 rounded-full bg-primary/10">
+              <div className="flex min-w-0 items-center gap-2.5">
+                <div className="flex items-center justify-center w-9 h-9 shrink-0 rounded-full bg-primary/10">
                   <Heart className="w-4 h-4 text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-foreground leading-tight">{t('hero.clientRetention', '94.5% Client')}</p>
-                  <p className="text-xs text-muted-foreground">{t('hero.retentionRate', 'Retention Rate')}</p>
+                  <p className="text-sm font-medium text-foreground leading-tight">{t('hero.clientRetention')}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">{t('hero.retentionRate')}</p>
                 </div>
               </div>
             </div>

@@ -1,8 +1,23 @@
+import { useTranslation } from 'react-i18next';
 import { BadgeCheck, CalendarCheck } from 'lucide-react';
 import { distributorRegistrations, distributorScope, regulatoryLimits, regulatoryShortLine, formatReviewDate } from '@/lib/regulatoryIdentity';
 
 /** Central regulatory identity. `compact` = one-line strip for product pages; `panel` = full registration cards. */
-export function RegulatoryIdentity({ variant = 'compact' }: { variant?: 'compact' | 'panel' }) {
+export function RegulatoryIdentity({ variant = 'compact' }: { variant?: 'compact' | 'panel' | 'trust' }) {
+  const { t } = useTranslation();
+  if (variant === 'trust') {
+    return (
+      <div className="flex min-w-0 items-center gap-2.5">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/10">
+          <BadgeCheck className="h-4 w-4 text-primary" aria-hidden="true" />
+        </div>
+        <div className="min-w-0">
+          <p className="text-sm font-medium text-foreground leading-tight">{t('hero.regulated')}</p>
+          <p className="mt-1 text-xs text-muted-foreground">{t('hero.amfiRegistered', { authorities: distributorRegistrations.map((item) => item.authority).join(' & ') })}</p>
+        </div>
+      </div>
+    );
+  }
   if (variant === 'compact') {
     return (
       <aside aria-label="SERNET regulatory status" className="rounded-lg border border-border bg-muted/30 px-4 py-3 text-xs leading-relaxed text-muted-foreground">
