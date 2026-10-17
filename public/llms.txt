@@ -1,10 +1,10 @@
 # SERNET Financial Services
 
-> SERNET Financial Services Pvt Ltd — NextGen Financial Service Network. 35+ years of trusted wealth management across 54 cities and 18 countries.
+> SERNET Financial Services Pvt Ltd — NextGen Financial Service Network. A family financial-services legacy since October 1986 across 54 cities and 18 countries.
 
 ## About
 
-SERNET Financial Services is a trusted wealth management company founded in 1989. We distribute financial products including stock trading, mutual fund investments, insurance, estate planning, credit counselling, and financial education. Operating across 54 cities in 18 countries, we serve retail individuals, HNW families, NRIs, and institutional clients with personalised financial planning.
+The family financial-services practice began in October 1986 with Smt Kiran A Vora in her individual capacity. Shri Arvindkumar J Vora joined in June 1987; Shri Bhavesh Arvindkumar Vora joined in 1994. These individual practices were consolidated into SERNET Financial Services Pvt Ltd on 10 March 2004. We distribute financial products including stock trading, mutual fund investments, insurance, estate planning, credit counselling, and financial education. Operating across 54 cities in 18 countries, we serve retail individuals, HNW families, NRIs, and institutional clients with personalised financial planning.
 
 ## Products & Services
 
@@ -23,7 +23,8 @@ SERNET Financial Services is a trusted wealth management company founded in 1989
 
 ## Key Information
 
-- **Founded**: 1989
+- **Family practice**: Since October 1986
+- **Company incorporated**: 10 March 2004
 - **Headquarters**: India
 - **Registration**: AMFI Registered Mutual Fund Distributor (ARN 35275, EUIN E025145) and APMI Registered PMS Distributor (APRN 10097)
 - **Client Retention**: 94.5%

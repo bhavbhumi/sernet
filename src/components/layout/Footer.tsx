@@ -231,7 +231,7 @@ export const Footer = () => {
             <Link to="/" className="inline-block mb-4">
               <img 
                 src={sernetLogo}
-                alt="SERNET Financial Services – trusted wealth management since 1990"
+                alt="SERNET Financial Services logo"
                 className="h-[25px] w-auto dark:brightness-0 dark:invert"
               />
             </Link>

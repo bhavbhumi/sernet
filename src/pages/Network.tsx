@@ -1,3 +1,4 @@
+import { companyHistory } from '@/lib/companyHistory';
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -48,7 +49,7 @@ const Network = () => {
     <Layout>
       <SEOHead
         title="Our Network"
-        description="SERNET's growing network of clients, partners, and principals across 54 cities and 18 countries — built over 35+ years of trust."
+        description={`SERNET’s growing network across 54 cities and 18 countries — a family financial-services legacy ${companyHistory.familyLegacyLabel.toLowerCase()}.`}
         path="/network"
       />
       <PageHero

@@ -1,3 +1,4 @@
+import { companyHistory } from '@/lib/companyHistory';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -83,7 +84,7 @@ export const NetworkSection = () => {
             Whom we serve
           </h2>
           <p className="text-body max-w-2xl mx-auto text-muted-foreground">
-            Built on 35+ years of trust across 54 cities and 18 countries — a growing ecosystem of clients, partners, and principals.
+            A family legacy {companyHistory.familyLegacyLabel.toLowerCase()}, across 54 cities and 18 countries — a growing ecosystem of clients, partners, and principals.
           </p>
         </motion.div>
 

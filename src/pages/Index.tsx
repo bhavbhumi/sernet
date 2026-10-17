@@ -1,3 +1,4 @@
+import { companyHistory } from '@/lib/companyHistory';
 import { Layout } from '@/components/layout/Layout';
 import { SEOHead } from '@/components/shared/SEOHead';
 import { HeroSection } from '@/components/home/HeroSection';
@@ -13,7 +14,7 @@ const Index = () => {
     <Layout>
       <SEOHead
         title="Wealth Management & Financial Services"
-        description="SERNET — 35+ years of trusted wealth management. Online trading, mutual funds, insurance & retirement planning across 54 cities and 18 countries."
+        description={`SERNET — a family financial-services legacy ${companyHistory.familyLegacyLabel.toLowerCase()}. Trading, mutual funds and insurance across 54 cities and 18 countries.`}
         path="/"
         jsonLd={[
           {
@@ -32,8 +33,8 @@ const Index = () => {
             '@type': 'FinancialService',
             name: 'SERNET Financial Services',
             url: 'https://sernetindia.com',
-            description: '35+ years of trusted wealth management across 54 cities and 18 countries.',
-            foundingDate: '1989',
+            description: `Family financial-services practice ${companyHistory.familyLegacyLabel.toLowerCase()}; SERNET incorporated ${companyHistory.incorporationLabel}. Across 54 cities and 18 countries.`,
+            foundingDate: companyHistory.incorporatedOn,
             areaServed: 'India',
             numberOfEmployees: { '@type': 'QuantitativeValue', value: '10+' },
             telephone: '+91-22-4973-5000',
