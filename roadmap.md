@@ -1,6 +1,6 @@
 # Roadmap
 
-- [ ] Refine public dark-mode contrast, neutral surfaces and restrained washes; preserve light mode, existing section headings/spacing and administrative tools. Verify homepage and inner pages, theme switching and narrow screens; do not publish without a request.
+- [x] Refine public dark-mode contrast, neutral charcoal surfaces, clearer card borders/elevation and restrained washes; light mode, headings/spacing and administrative palette preserved. Verified theme switching, homepage/CTA, Pricing, Services and Legal at desktop and narrow widths: no overflow or page errors, consultation link intact, preview build clean. Not published.
 
 - [x] Review item 3 hero/CTA coverage and update item 4 homepage trust strip; testimonial cards unchanged. Registration drawn from shared identity, practice years calculated from October 1986, localized retention message updated. Checked at 1280/889/390px with no overflow or page errors; consultation link works and anniversary tests pass. Item 3 inner-page actions remain suggestions only; not published.
 
