@@ -79,12 +79,12 @@
     "highlight": "ਖੁਸ਼ਹਾਲੀ",
     "description": "ਆਪਣੀ ਦੌਲਤ ਵਧਾਓ, ਸੁਰੱਖਿਅਤ ਕਰੋ, ਸਾਂਭੋ ਅਤੇ ਪ੍ਰਬੰਧਿਤ ਕਰੋ। ਸਰਲ ਅਤੇ ਸੌਖੇ ਆਨਲਾਈਨ ਪਲੇਟਫਾਰਮਾਂ ਰਾਹੀਂ ਜਾਗਰੂਕਤਾ ਨਾਲ ਟ੍ਰੇਡ, ਨਿਵੇਸ਼ ਅਤੇ ਬੀਮਾ ਕਰੋ।",
     "cta": "ਖਾਤਾ ਖੋਲੋ",
-    "amfiRegistered": "AMFI ਰਜਿਸਟਰਡ",
-    "regulated": "ਨਿਯੰਤ੍ਰਿਤ ਅਤੇ ਅਨੁਪਾਲਨ",
+    "amfiRegistered": "{{authorities}} ਰਜਿਸਟਰਡ",
+    "regulated": "ਰਜਿਸਟਰਡ ਅਤੇ ਨਿਯਮਾਂ ਦੀ ਪਾਲਣਾ",
     "years": "ਅਕਤੂਬਰ {{year}} ਤੋਂ",
-    "ofPractice": "ਪਰਿਵਾਰਕ ਕਾਰੋਬਾਰ",
-    "clientRetention": "94.5% ਗਾਹਕ",
-    "retentionRate": "ਟਿਕਾਊ ਦਰ"
+    "ofPractice": "{{count}} ਸਾਲਾਂ ਦਾ ਤਜਰਬਾ",
+    "clientRetention": "94.5% ਗਾਹਕ ਬਰਕਰਾਰ",
+    "retentionRate": "ਗਾਹਕਾਂ ਦਾ ਨਿਰੰਤਰ ਭਰੋਸਾ"
   },
   "stats": {
     "yearsOfPractice": "ਤਜਰਬੇ ਦੇ ਸਾਲ",
