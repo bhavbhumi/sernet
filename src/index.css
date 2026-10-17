@@ -63,6 +63,8 @@
     --stat-purple: 263 70% 50%;
     --stat-pink: 330 81% 60%;
 
+    --shadow-interaction: 0 8px 22px -12px hsl(var(--foreground) / 0.18);
+
     /* Removed gradient tokens — using flat alternating backgrounds instead */
   }
 
@@ -217,6 +219,63 @@
 }
 
 @layer utilities {
+  .public-site .nav-motion {
+    position: relative;
+  }
+
+  .public-site .nav-motion::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    bottom: -4px;
+    height: 2px;
+    background: hsl(var(--primary));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 220ms ease;
+  }
+
+  .public-site .nav-motion:hover::after,
+  .public-site .nav-motion:focus-visible::after,
+  .public-site .nav-motion[aria-current='page']::after {
+    transform: scaleX(1);
+  }
+
+  .public-site .btn-primary,
+  .public-site .btn-secondary {
+    transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease, box-shadow 220ms ease, transform 220ms ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .public-site .btn-primary:hover,
+    .public-site .btn-secondary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-interaction);
+    }
+
+    .public-site .btn-primary:hover svg,
+    .public-site .btn-secondary:hover svg {
+      transform: translateX(3px);
+    }
+  }
+
+  .public-site .btn-primary svg,
+  .public-site .btn-secondary svg {
+    transition: transform 220ms ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .public-site *,
+    .public-site *::before,
+    .public-site *::after {
+      animation: none !important;
+      transition: none !important;
+      scroll-behavior: auto !important;
+    }
+
+    html { scroll-behavior: auto; }
+  }
+
   .text-balance {
     text-wrap: balance;
   }

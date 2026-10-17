@@ -108,7 +108,8 @@ export const Header = () => {
             <Link
               key={link.href}
               to={link.href}
-              className={`text-[15px] xl:text-[17px] whitespace-nowrap transition-colors hover:text-primary active:text-primary ${
+              aria-current={location.pathname === link.href ? 'page' : undefined}
+              className={`nav-motion text-[15px] xl:text-[17px] whitespace-nowrap transition-colors hover:text-primary active:text-primary ${
                 location.pathname === link.href ? 'text-primary' : 'text-muted-foreground'
               }`}
             >
@@ -239,7 +240,8 @@ export const Header = () => {
                   <Link
                     key={link.href}
                     to={link.href}
-                    className={`block py-2 text-[16px] font-medium transition-colors hover:text-primary active:text-primary ${
+                    aria-current={location.pathname === link.href ? 'page' : undefined}
+                    className={`nav-motion block w-fit py-2 text-[16px] font-medium transition-colors hover:text-primary active:text-primary ${
                       location.pathname === link.href
                         ? 'text-primary'
                         : 'text-muted-foreground'
@@ -269,7 +271,7 @@ export const Header = () => {
                               className="flex items-center gap-1 text-[15px] text-muted-foreground hover:text-primary active:text-primary transition-colors"
                               onClick={() => setMenuOpen(false)}
                             >
-                              {link.name || t(link.nameKey!)}
+                              {link.name || (link.nameKey ? t(link.nameKey) : '')}
                               <ExternalLink className="h-3 w-3" aria-hidden="true" />
                               <span className="sr-only">(opens in new tab)</span>
                             </a>
@@ -279,7 +281,7 @@ export const Header = () => {
                               className="text-[15px] text-muted-foreground hover:text-primary active:text-primary transition-colors"
                               onClick={() => setMenuOpen(false)}
                             >
-                              {link.name || t(link.nameKey!)}
+                              {link.name || (link.nameKey ? t(link.nameKey) : '')}
                             </Link>
                           )}
                         </li>
