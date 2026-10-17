@@ -23,38 +23,38 @@ const departments = [
   {
     icon: Headphones,
     title: 'Support',
-    phone: '+91-22-35000567',
+    phone: '+91-77070 22020',
     description: 'Resolve your support queries',
     email: 'support@sernetindia.com',
   },
   {
     icon: BarChart3,
     title: 'Call & Trade',
-    phone: '+91-22-35000567',
+    phone: '+91-92067 67670',
     description: 'Call to place a trade',
     email: 'trade@sernetindia.com',
   },
   {
     icon: Receipt,
     title: 'Accounts',
-    phone: '+91-22-35000567',
+    phone: '+91-92067 67670',
     description: 'Accounting & billing matters',
     email: 'accounts@sernetindia.com',
   },
   {
     icon: Newspaper,
     title: 'Media & Press',
-    phone: '+91-22-35000567',
+    phone: '+91-92067 67670',
     description: 'Press enquiries & media relations',
     email: 'media@sernetindia.com',
   },
 ];
 
 const escalationMatrix = [
-  { level: 'Level 1', designation: 'Customer Support Executive', contact: 'support@sernetindia.com', phone: '+91-22-35000567', timeline: 'Within 24 hours' },
-  { level: 'Level 2', designation: 'Team Lead', contact: 'escalation@sernetindia.com', phone: '+91-22-35000568', timeline: 'Within 3 working days' },
-  { level: 'Level 3', designation: 'Compliance Officer', contact: 'compliance@sernetindia.com', phone: '+91-22-35000569', timeline: 'Within 7 working days' },
-  { level: 'Level 4', designation: 'Managing Director', contact: 'md@sernetindia.com', phone: '+91-22-35000570', timeline: 'Within 15 working days' },
+  { level: 'Level 1', designation: 'Customer Support Executive', contact: 'support@sernetindia.com', phone: '+91-77070 22020', timeline: 'Within 24 hours' },
+  { level: 'Level 2', designation: 'Team Lead', contact: 'escalation@sernetindia.com', phone: '+91-77070 22020', timeline: 'Within 3 working days' },
+  { level: 'Level 3', designation: 'Compliance Officer', contact: 'compliance@sernetindia.com', phone: '+91-77070 22020', timeline: 'Within 7 working days' },
+  { level: 'Level 4', designation: 'Managing Director', contact: 'md@sernetindia.com', phone: '+91-92067 67670', timeline: 'Within 15 working days' },
 ];
 
 const AskUsContent = () => {
@@ -123,14 +123,12 @@ const AskUsContent = () => {
                 <p className="text-xs text-muted-foreground">For account, trading & service issues, use our dedicated Support Portal.</p>
               </div>
             </div>
-            <a
-              href="https://support.sernetindia.com/portal/en/home"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              to="/support"
               className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-md text-sm font-medium hover:bg-primary/90 transition-colors shrink-0"
             >
-              Go to Support Portal <ExternalLink className="w-4 h-4" />
-            </a>
+              Go to Support Portal <ArrowUpRight className="w-4 h-4" />
+            </Link>
           </div>
         </div>
       </section>
@@ -228,7 +226,7 @@ const AskUsContent = () => {
                 <div>
                   <h3 className="text-xl font-medium text-foreground mb-4">Contact Us</h3>
                   <p className="text-muted-foreground mb-6">
-                    Call us on <a href="tel:+912235000567" className="text-primary hover:underline font-medium">+91-22-35000567</a>
+                    Call us on <a href="tel:+919206767670" className="text-primary hover:underline font-medium">+91 92067 67670</a> (sales) or <a href="tel:+917707022020" className="text-primary hover:underline font-medium">+91 77070 22020</a> (support)
                   </p>
                 </div>
                 <div className="space-y-5 text-sm">
