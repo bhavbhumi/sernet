@@ -312,7 +312,7 @@ const Support = () => {
                           <h3 className="text-sm font-semibold text-foreground mb-3">Contact Us</h3>
                           <div className="space-y-3 text-sm">
                             <div className="flex items-center gap-2 text-muted-foreground">
-                              <Phone className="h-3.5 w-3.5" /> <span>080-47181888</span>
+                              <Phone className="h-3.5 w-3.5" /> <span>+91 77070 22020</span>
                             </div>
                             <div className="flex items-center gap-2 text-muted-foreground">
                               <Mail className="h-3.5 w-3.5" /> <span>support@sernetindia.com</span>

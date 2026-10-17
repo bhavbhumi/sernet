@@ -37,7 +37,7 @@ const Index = () => {
             foundingDate: companyHistory.incorporatedOn,
             areaServed: 'India',
             numberOfEmployees: { '@type': 'QuantitativeValue', value: '10+' },
-            telephone: '+91-22-4973-5000',
+            telephone: '+91-920-676-7670',
             email: 'contact@sernetindia.com',
             address: {
               '@type': 'PostalAddress',
