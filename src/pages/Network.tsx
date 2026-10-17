@@ -55,7 +55,7 @@ const Network = () => {
       <PageHero
         title={t('network.title')}
         highlight={t('network.highlight')}
-        description={t('network.description')}
+        description={t('network.description', { year: companyHistory.familyPracticeStarted.slice(0, 4) })}
         breadcrumbLabel={t('nav.network')}
       />
 

@@ -1,10 +1,11 @@
+import { completedFamilyPracticeYears } from '@/lib/companyHistory';
 import { motion, useMotionValue, useTransform, animate, useInView } from 'framer-motion';
 import { Calendar, TrendingUp, MapPin, Globe, Award } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const stats = [
-  { number: 35, suffix: '', labelKey: 'stats.yearsOfPractice', icon: Calendar },
+  { number: completedFamilyPracticeYears(new Date().getUTCFullYear(), new Date().getUTCMonth() + 1), suffix: '', labelKey: 'stats.yearsOfPractice', icon: Calendar },
   { number: 94.5, suffix: '%', labelKey: 'stats.clientRetention', icon: TrendingUp },
   { number: 500, suffix: '+', labelKey: 'stats.products', icon: Award },
   { number: 54, suffix: '', labelKey: 'stats.citiesDomestic', icon: MapPin },

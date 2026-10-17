@@ -88,7 +88,7 @@ export const HeroSection = () => {
                   <Clock className="w-4 h-4 text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-foreground leading-tight">{t('hero.years', companyHistory.familyLegacyLabel)}</p>
+                  <p className="text-sm font-medium text-foreground leading-tight">{t('hero.years', { year: companyHistory.familyPracticeStarted.slice(0, 4), defaultValue: companyHistory.familyLegacyLabel })}</p>
                   <p className="text-xs text-muted-foreground">{t('hero.ofPractice', 'Family practice')}</p>
                 </div>
               </div>
