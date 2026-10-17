@@ -1,17 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Linkedin, Twitter, Star, Lightbulb, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Linkedin, Twitter, Star, Lightbulb, Heart } from 'lucide-react';
 import bhaveshVora from '@/assets/bhavesh-vora.png';
-import journeyNextgen from '@/assets/journey/nextgen.jpg';
-import journeyAnniversary from '@/assets/journey/anniversary.jpg';
-import journeyDigital from '@/assets/journey/digital.jpg';
-import journeyNetwork from '@/assets/journey/network.jpg';
-import journeyTechnology from '@/assets/journey/technology.jpg';
-import journeyResilience from '@/assets/journey/resilience.jpg';
-import journeyFounding from '@/assets/journey/founding.jpg';
-import journeyExpertise from '@/assets/journey/expertise.jpg';
-import journeyMarket from '@/assets/journey/market.jpg';
-import journeySpark from '@/assets/journey/spark.jpg';
+import { companyHistory } from '@/lib/companyHistory';
 
 const sernetValues = [
   { letter: 'S', value: 'Security', description: 'Safeguarding your wealth with robust risk management and compliance frameworks.' },
@@ -23,24 +14,10 @@ const sernetValues = [
 ];
 
 const people = [
-  { name: 'Arvind Vora', relation: 'Father', role: 'Guiding Legacy Star', icon: Star },
-  { name: 'Kiran Vora', relation: 'Mother', role: 'Guiding Legacy Star', icon: Star },
+  { name: 'Smt Kiran A Vora', relation: 'Mother', role: 'Started the family practice · October 1986', icon: Star },
+  { name: 'Shri Arvindkumar J Vora', relation: 'Father', role: 'Joined the family practice · June 1987', icon: Star },
   { name: 'Bhumika Vora', relation: 'Spouse', role: 'Partner in Prosperity', icon: Heart },
   { name: 'Akshat Vora', relation: 'Son', role: 'The Bright Future', icon: Lightbulb },
-];
-
-// Latest first
-const journeyEvents = [
-  { period: 'Jan 2025', title: 'NextGen Platform', description: 'Launching the next generation financial service network with cutting-edge technology and holistic wealth solutions.', image: journeyNextgen },
-  { period: 'Aug 2024', title: '20 Years of SERNET', description: 'Celebrating two decades of empowering prosperity with a vision to be one\'s first choice for any financial decision.', image: journeyAnniversary },
-  { period: 'Mar 2020', title: 'Digital Transformation', description: 'Accelerated digital-first strategy during the pandemic, ensuring uninterrupted service to all stakeholders.', image: journeyDigital },
-  { period: 'Jul 2016', title: 'Network Expansion', description: 'Grew the partner and principal network significantly, extending reach across multiple geographies.', image: journeyNetwork },
-  { period: 'Apr 2012', title: 'Technology Adoption', description: 'Embraced digital trading and investment platforms, modernising the client experience.', image: journeyTechnology },
-  { period: 'Oct 2008', title: 'Weathering the Storm', description: 'Navigated the global financial crisis with client-first principles, strengthening trust and credibility.', image: journeyResilience },
-  { period: 'Aug 2004', title: 'SERNET Founded', description: 'The brand SERNET is born — a fusion of SERVICE and NETWORK — with a mission to make wealth creation holistic and enjoyable.', image: journeyFounding },
-  { period: 'Jun 2000', title: 'Building Expertise', description: 'Expanded into insurance and mutual fund distribution, broadening the financial service horizon.', image: journeyExpertise },
-  { period: 'Mar 1995', title: 'Market Immersion', description: 'Deep dive into equity and commodity markets, gaining invaluable hands-on market experience.', image: journeyMarket },
-  { period: 'Jan 1990', title: 'The Spark', description: 'Bhavesh Vora begins his career in financial services, laying the groundwork for a lifelong mission.', image: journeySpark },
 ];
 
 const socialLinks = [
@@ -64,31 +41,8 @@ const socialLinks = [
   )},
 ];
 
-// Responsive: show 3 on lg, 2 on md, 1 on sm
-const useVisibleCount = () => {
-  const [count, setCount] = useState(3);
-  useEffect(() => {
-    const update = () => {
-      if (window.innerWidth >= 1024) setCount(3);
-      else if (window.innerWidth >= 768) setCount(2);
-      else setCount(1);
-    };
-    update();
-    window.addEventListener('resize', update);
-    return () => window.removeEventListener('resize', update);
-  }, []);
-  return count;
-};
-
 export const CompanyContent = () => {
   const [isHovered, setIsHovered] = useState(false);
-  const [timelineIndex, setTimelineIndex] = useState(0);
-  const visibleCount = useVisibleCount();
-  const maxIndex = journeyEvents.length - visibleCount;
-
-  const scrollLeft = () => setTimelineIndex((prev) => Math.max(0, prev - 1));
-  const scrollRight = () => setTimelineIndex((prev) => Math.min(maxIndex, prev + 1));
-
   return (
     <>
       {/* Story */}
@@ -102,10 +56,15 @@ export const CompanyContent = () => {
               transition={{ duration: 0.6 }}
               className="flex flex-col justify-center"
             >
-              <h2 className="heading-lg text-foreground mb-6">Our Story</h2>
+              <h2 className="heading-lg text-foreground mb-4">Our Story</h2>
+              <p className="text-primary font-medium mb-2">A family legacy since October 1986</p>
+              <p className="text-small mb-6">SERNET Financial Services Pvt Ltd · Incorporated {companyHistory.incorporationLabel}</p>
               <div className="space-y-4 text-body">
                 <p>
-                  SERNET was founded by Bhavesh Vora in 2004 with a mission to make wealth creation holistic and enjoyable for the world. Our{' '}
+                  {companyHistory.story}
+                </p>
+                <p>
+                  Our{' '}
                   <span className="text-primary font-medium">Vision</span> is to be one's first choice for any financial decision and execution, and our{' '}
                   <span className="text-primary font-medium">Strategy</span> to achieve this is through creative futuristic solutions with an ethical approach and giving excellent service experience.
                 </p>
@@ -135,7 +94,7 @@ export const CompanyContent = () => {
                 >
                   <motion.img
                     src={bhaveshVora}
-                    alt="Bhavesh Vora – Founder and Promoter of SERNET, trusted wealth management advisor with 35+ years experience"
+                    alt="Shri Bhavesh Arvindkumar Vora – joined the family practice in 1994 and consolidated SERNET in 2004"
                     className="w-full h-auto object-cover max-w-[320px] md:max-w-[360px]"
                     width={360}
                     height={400}
@@ -151,7 +110,7 @@ export const CompanyContent = () => {
                     transition={{ duration: 0.3 }}
                   >
                     <h3 className="text-white text-lg font-semibold">Bhavesh Vora</h3>
-                    <p className="text-white/70 text-sm mb-3">Founder & Promoter</p>
+                    <p className="text-white/70 text-sm mb-3">Company Founder & Promoter · Joined the family practice in 1994</p>
                     <div className="flex gap-3">
                       <a
                         href="https://www.linkedin.com/in/bhaveshvora-wealthmanagement/"
@@ -246,72 +205,18 @@ export const CompanyContent = () => {
         </div>
       </section>
 
-      {/* Journey So Far - Horizontal with arrows */}
-      <section className="section-padding bg-section-alt overflow-hidden">
+      <section className="section-padding bg-section-alt">
         <div className="container-sernet">
-          <div className="flex items-center justify-between mb-10">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="heading-lg text-foreground"
-            >
-              Journey So Far
-            </motion.h2>
-            <div className="flex gap-2">
-              <button
-                onClick={scrollLeft}
-                disabled={timelineIndex === 0}
-                className="w-10 h-10 rounded-full border border-border bg-card flex items-center justify-center hover:border-primary/50 hover:text-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <button
-                onClick={scrollRight}
-                disabled={timelineIndex >= maxIndex}
-                className="w-10 h-10 rounded-full border border-border bg-card flex items-center justify-center hover:border-primary/50 hover:text-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
-
-          <div className="overflow-hidden">
-            <motion.div
-              className="flex gap-6"
-              animate={{ x: `-${timelineIndex * (100 / visibleCount)}%` }}
-              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              style={{ width: `${(journeyEvents.length / visibleCount) * 100}%` }}
-            >
-              {journeyEvents.map((event, index) => (
-                <motion.div
-                  key={event.period}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.05 }}
-                  className="flex-shrink-0"
-                  style={{ width: `${100 / journeyEvents.length}%` }}
-                >
-                  <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:border-primary/30 transition-all duration-300">
-                    <div className="flex flex-col sm:flex-row">
-                      {/* Image */}
-                      <div className="sm:w-36 h-36 sm:h-auto flex-shrink-0 overflow-hidden">
-                        <img src={event.image} alt={`${event.title} – SERNET company journey milestone`} className="w-full h-full object-cover" loading="lazy" width={144} height={144} />
-                      </div>
-                      {/* Content */}
-                      <div className="p-5 flex-1">
-                        <span className="text-xs font-semibold text-primary tracking-wide uppercase">{event.period}</span>
-                        <h3 className="heading-md text-foreground mt-1 mb-2">{event.title}</h3>
-                        <p className="text-small leading-relaxed">{event.description}</p>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
+          <h2 className="heading-lg text-foreground mb-8">Journey So Far</h2>
+          <ol className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+            {companyHistory.milestones.map((event) => (
+              <li key={event.period} className="border-l-2 border-primary/40 pl-5">
+                <p className="text-sm font-medium text-primary mb-2">{event.period}</p>
+                <h3 className="heading-md text-foreground mb-2">{event.title}</h3>
+                <p className="text-body">{event.description}</p>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 

@@ -1,3 +1,4 @@
+import { companyHistory } from '@/lib/companyHistory';
 import { Helmet } from 'react-helmet-async';
 import { useSiteSettings } from '@/hooks/useSiteSettings';
 
@@ -45,7 +46,7 @@ export const SEOHead = ({ title, description, path = '/', type = 'website', json
     name: siteName,
     url: baseUrl,
     description: settings?.identity?.seo_description || description,
-    foundingDate: '1989',
+    foundingDate: companyHistory.incorporatedOn,
     areaServed: settings?.identity?.country || 'India',
     ...(settings?.identity?.schema_address && {
       address: {

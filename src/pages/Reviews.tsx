@@ -9,7 +9,7 @@ const Reviews = () => {
     <Layout>
       <SEOHead
         title="Client Reviews"
-        description="Read what thousands of clients say about SERNET Financial Services — trusted for 35+ years."
+        description="Read client reviews of SERNET Financial Services, continuing a family financial-services practice started in October 1986."
         path="/reviews"
       />
       <ReviewsContent />

@@ -1,3 +1,4 @@
+import { companyHistory } from '@/lib/companyHistory';
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -56,7 +57,7 @@ const About = () => {
     <Layout>
       <SEOHead
         title="About SERNET"
-        description="Learn about SERNET Financial Services — 35+ years of engaging, enabling and empowering prosperity globally across 54 cities and 18 countries."
+        description={`SERNET Financial Services Pvt Ltd — a family financial-services legacy ${companyHistory.familyLegacyLabel.toLowerCase()}, incorporated ${companyHistory.incorporationLabel}. Across 54 cities and 18 countries.`}
         path="/about"
       />
       <PageHero

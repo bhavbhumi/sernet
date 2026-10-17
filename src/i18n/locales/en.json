@@ -81,8 +81,8 @@
     "cta": "Open Account",
     "amfiRegistered": "AMFI Registered",
     "regulated": "Regulated & Compliant",
-    "years": "35+ Years",
-    "ofPractice": "of Practice",
+    "years": "Since October {{year}}",
+    "ofPractice": "Family practice",
     "clientRetention": "94.5% Client",
     "retentionRate": "Retention Rate"
   },
@@ -201,7 +201,7 @@
   "network": {
     "title": "Our growing",
     "highlight": "network",
-    "description": "Built over 35+ years of trust — connecting clients, partners, and principals across the financial services ecosystem.",
+    "description": "A family legacy since October {{year}} — connecting clients, partners, and principals across the financial services ecosystem.",
     "tabs": {
       "clients": "Clients",
       "partners": "Partners",

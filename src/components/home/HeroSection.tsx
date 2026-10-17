@@ -1,3 +1,4 @@
+import { companyHistory } from '@/lib/companyHistory';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, BadgeCheck, Clock, Heart } from 'lucide-react';
@@ -87,8 +88,8 @@ export const HeroSection = () => {
                   <Clock className="w-4 h-4 text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-foreground leading-tight">{t('hero.years', '35+ Years')}</p>
-                  <p className="text-xs text-muted-foreground">{t('hero.ofPractice', 'of Practice')}</p>
+                  <p className="text-sm font-medium text-foreground leading-tight">{t('hero.years', { year: companyHistory.familyPracticeStarted.slice(0, 4), defaultValue: companyHistory.familyLegacyLabel })}</p>
+                  <p className="text-xs text-muted-foreground">{t('hero.ofPractice', 'Family practice')}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2.5">

@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Image, Palette, Type, Send } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Send } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -126,19 +126,6 @@ export const PressContent = () => {
               for our commitment to transparency, client empowerment, and innovation.
             </p>
 
-            {/* Media Kit Downloads */}
-            <div className="flex flex-wrap gap-3 mt-4 mb-6">
-              <a href="#" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border text-sm text-foreground hover:border-primary hover:text-primary transition-colors">
-                <Image className="h-3.5 w-3.5" /> Logo Pack
-              </a>
-              <a href="#" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border text-sm text-foreground hover:border-primary hover:text-primary transition-colors">
-                <Palette className="h-3.5 w-3.5" /> Brand Guide
-              </a>
-              <a href="#" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border text-sm text-foreground hover:border-primary hover:text-primary transition-colors">
-                <Type className="h-3.5 w-3.5" /> Typography
-              </a>
-            </div>
-
             <div>
               <Button onClick={() => setShowOpinionForm(true)} className="gap-2 px-8 py-3 text-base">
                 <Send className="w-4 h-4" />
@@ -180,7 +167,7 @@ export const PressContent = () => {
                           onError={(e) => { (e.target as HTMLImageElement).src = pressThumb; }}
                         />
                       </div>
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2 flex-wrap">
                         <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[0.6875rem] font-medium">Featured</span>
                         <span>{formatDate(currentFeatured.published_at)}</span>
                         <span>—</span>
@@ -272,7 +259,7 @@ export const PressContent = () => {
                       />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 text-[0.875rem] text-muted-foreground mb-1">
+                      <div className="flex items-center gap-2 text-[0.875rem] text-muted-foreground mb-1 flex-wrap">
                         <span>{formatDate(item.published_at)}</span><span>—</span><span>{item.source}</span>
                         {item.medium && <span className="px-2 py-0.5 rounded-full bg-muted text-[0.75rem]">{item.medium}</span>}
                         {item.is_featured && <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[0.75rem]">Featured</span>}

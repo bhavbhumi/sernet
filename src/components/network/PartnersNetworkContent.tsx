@@ -1,3 +1,4 @@
+import { companyHistory } from '@/lib/companyHistory';
 import { motion } from 'framer-motion';
 import { ArrowRight, Handshake, Check, User, Briefcase, Megaphone, ArrowRightLeft, Clock, Layers } from 'lucide-react';
 import networkPartnersImg from '@/assets/network-partners-real.jpg';
@@ -7,7 +8,7 @@ import { ReferralFormDialog } from '@/components/shared/ReferralFormDialog';
 const partnerStats = [
   { icon: Handshake, value: '50+', label: 'Partner Institutions' },
   { icon: Layers, value: '5000+', label: 'Products Distributed' },
-  { icon: Clock, value: '35+', label: 'Years of Partnerships' },
+  { icon: Clock, value: companyHistory.familyLegacyLabel, label: 'Family practice' },
 ];
 
 const pointers = [

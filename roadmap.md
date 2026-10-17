@@ -69,5 +69,6 @@
 - [ ] Tick Funds "14 fund houses" vs 13 in Disclosures; Pricing page still lists stock-broking charges — awaiting user
 - [ ] Sample testimonials (home fallback + 3 Tick Funds quotes) not marked verified — awaiting real-client confirmation
 
-- [ ] Present and approve family-history/recognition plan — origins supplied (October 1986; joins June 1987/1994; incorporation 10 March 2004); remove demo awards, retain 2016 archive photo and genuine press; implementation waits on plan approval.
+- [x] Implement approved family-history/recognition plan — confirmed 1986/1987/1994/10 March 2004 timeline, central dates and anniversary tests, all eight locale summaries and metadata corrected; six demo awards removed, original 2016 keepsake enlarged; `/media` redirects to CMS Press, placeholder downloads removed; desktop/mobile verified without page errors or overflow. Publishing pending.
+- [ ] Add further office recognition records — awaits readable photographs and exact certificate/trophy inscriptions from management; 2016 personal award title remains unknown.
 - [ ] Audit items 6 (unapproved figures), 8 (phone number) — waiting on user facts
