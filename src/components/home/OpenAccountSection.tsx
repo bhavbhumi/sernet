@@ -48,7 +48,7 @@ export const OpenAccountSection = () => {
   const { t } = useTranslation();
 
   return (
-    <section className="section-padding relative overflow-hidden bg-section-alt">
+    <section className="cta-wash section-padding relative overflow-hidden bg-section-alt">
       {/* Floating celebration elements */}
       <FloatingShape className="absolute top-8 left-[10%] text-primary/30" delay={0} duration={3.5}>
         <Sparkles className="w-6 h-6" />

@@ -15,7 +15,7 @@ export const HeroSection = () => {
   const parallaxY = useTransform(scrollYProgress, [0, 1], [0, 32]);
 
   return (
-    <section ref={sectionRef} className="section-padding bg-background">
+    <section ref={sectionRef} className="hero-wash section-padding bg-background">
       <div className="container-sernet">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           {/* Image - shows first on mobile. No entry-fade so it's a valid LCP paint */}

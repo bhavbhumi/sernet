@@ -298,7 +298,7 @@ export const PageHero = ({
   const pattern = useMemo(() => resolvePattern(pathname), [pathname]);
 
   return (
-    <section className="relative py-8 md:py-10 bg-section-alt overflow-hidden">
+    <section className="hero-wash relative py-8 md:py-10 bg-section-alt overflow-hidden">
       {/* Route-specific geometric pattern */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <GeometricPattern pattern={pattern} />

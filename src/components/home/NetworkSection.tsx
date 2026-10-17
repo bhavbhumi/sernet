@@ -96,7 +96,7 @@ export const NetworkSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="lg:col-span-2 rounded-xl border border-border bg-card p-6"
+            className="lg:col-span-2 rounded-md border border-border bg-card p-6"
           >
             <div className="flex items-center gap-2.5 mb-1">
               <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -119,7 +119,7 @@ export const NetworkSection = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.4, delay: i * 0.08 }}
-                    className={`interaction-card group relative rounded-lg border border-border/60 ${client.bgTint} overflow-hidden hover:border-primary/30 hover:shadow-md transition-all duration-300 cursor-pointer`}
+                    className={`interaction-card group relative rounded-md border border-border/60 ${client.bgTint} overflow-hidden hover:border-primary/30 transition-all duration-300 cursor-pointer`}
                     onMouseEnter={() => setActiveClient(i)}
                     onMouseLeave={() => setActiveClient(0)}
                   >
@@ -176,7 +176,7 @@ export const NetworkSection = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: 0.15 + index * 0.1 }}
-                  className={`interaction-card flex-1 rounded-xl border border-border bg-gradient-to-br ${card.gradient} p-5 group hover:shadow-md transition-shadow duration-300`}
+                  className={`interaction-card flex-1 rounded-md border border-border bg-gradient-to-br ${card.gradient} p-5 group transition-shadow duration-300`}
                 >
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2.5">
