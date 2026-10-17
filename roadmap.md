@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Refine homepage washes: white hero restored with a signature gradient accent; account CTA wash contained within content width. Preview checked at 1280/889/390px: no overflow or page errors, signup link intact, build clean. Not published.
+
 - [x] Preview item 2: subtle hero/CTA gradient washes, layered card elevation and 6px corners; desktop/889px/mobile and light/dark checked, no overflow or page errors, hover lift and consultation link verified; build clean. Not published.
 
 - [x] Add subtle public-site motion, hero parallax, card hover feedback and navigation underlines; desktop hover, menu navigation and reduced-motion verified; keep decorative overflow within the public content area. Preview only, not published.

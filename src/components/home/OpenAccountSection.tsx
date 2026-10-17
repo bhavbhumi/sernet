@@ -48,7 +48,9 @@ export const OpenAccountSection = () => {
   const { t } = useTranslation();
 
   return (
-    <section className="cta-wash section-padding relative overflow-hidden bg-section-alt">
+    <section className="section-padding bg-background">
+      <div className="container-sernet">
+      <div className="cta-wash section-padding relative overflow-hidden rounded-md px-4 sm:px-6">
       {/* Floating celebration elements */}
       <FloatingShape className="absolute top-8 left-[10%] text-primary/30" delay={0} duration={3.5}>
         <Sparkles className="w-6 h-6" />
@@ -79,7 +81,7 @@ export const OpenAccountSection = () => {
       <Confetti className="bg-success/30 top-20 left-[40%]" delay={0.7} />
       <Confetti className="bg-destructive/25 bottom-16 right-[35%]" delay={1.0} />
 
-      <div className="container-sernet relative z-10">
+      <div className="relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -93,6 +95,8 @@ export const OpenAccountSection = () => {
             {t('openAccount.cta')}
           </Link>
         </motion.div>
+      </div>
+      </div>
       </div>
     </section>
   );
