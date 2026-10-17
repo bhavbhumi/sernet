@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { User, Mail, Phone, MessageSquare, Headphones, BarChart3, Receipt, Newspaper, Tag, Clock, CalendarDays, SunMedium, ChevronRight, ArrowUpRight, Loader2, ExternalLink, HelpCircle, AlertTriangle, Lightbulb } from 'lucide-react';
+import { User, Mail, Phone, MessageSquare, Headphones, BarChart3, Receipt, Newspaper, Tag, Clock, CalendarDays, SunMedium, ChevronRight, ArrowUpRight, Loader2, HelpCircle, AlertTriangle, Lightbulb } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
