@@ -1,5 +1,7 @@
 # Roadmap
 
+- [ ] Refine public dark-mode contrast, neutral surfaces and restrained washes; preserve light mode, existing section headings/spacing and administrative tools. Verify homepage and inner pages, theme switching and narrow screens; do not publish without a request.
+
 - [x] Review item 3 hero/CTA coverage and update item 4 homepage trust strip; testimonial cards unchanged. Registration drawn from shared identity, practice years calculated from October 1986, localized retention message updated. Checked at 1280/889/390px with no overflow or page errors; consultation link works and anniversary tests pass. Item 3 inner-page actions remain suggestions only; not published.
 
 - [x] Refine homepage washes: white hero restored with a signature gradient accent in logo order (gold, blue, red, green, soft pale separations to avoid muddy blends); account CTA wash contained within content width. Inner-page tab underlines stay plain blue by choice. Preview checked at 1280/889/390px: no overflow or page errors, signup link intact, build clean. Not published.
