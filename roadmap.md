@@ -69,4 +69,5 @@
 - [ ] Tick Funds "14 fund houses" vs 13 in Disclosures; Pricing page still lists stock-broking charges — awaiting user
 - [ ] Sample testimonials (home fallback + 3 Tick Funds quotes) not marked verified — awaiting real-client confirmation
 
-- [ ] Audit items 5 (founding year), 6 (unapproved figures), 8 (phone number) — waiting on user facts
+- [ ] Present and approve family-history/recognition plan — origins supplied (October 1986; joins June 1987/1994; incorporation 10 March 2004); remove demo awards, retain 2016 archive photo and genuine press; implementation waits on plan approval.
+- [ ] Audit items 6 (unapproved figures), 8 (phone number) — waiting on user facts
