@@ -107,6 +107,38 @@
     --shadow-elevated: 0 1px 2px hsl(var(--background) / 0.35), 0 4px 8px -4px hsl(var(--background) / 0.5), 0 16px 28px -18px hsl(var(--background) / 0.8);
     --shadow-interaction: 0 2px 4px hsl(var(--background) / 0.4), 0 8px 16px -8px hsl(var(--background) / 0.6), 0 22px 36px -20px hsl(var(--background) / 0.9);
   }
+
+  /* Public dark surfaces: neutral charcoal, clear hierarchy, quieter washes.
+     Keep the existing light theme and administrative palette untouched. */
+  .dark .public-site {
+    --background: 220 12% 8%;
+    --foreground: 210 14% 94%;
+    --card: 220 11% 12%;
+    --card-foreground: 210 14% 94%;
+    --popover: 220 11% 14%;
+    --popover-foreground: 210 14% 94%;
+    --primary-foreground: 220 15% 8%;
+    --secondary: 220 10% 17%;
+    --secondary-foreground: 210 14% 94%;
+    --muted: 220 10% 16%;
+    --muted-foreground: 215 12% 70%;
+    --accent: 220 10% 19%;
+    --accent-foreground: 210 14% 94%;
+    --border: 220 10% 24%;
+    --input: 220 10% 28%;
+    --hero-bg: 220 11% 12%;
+    --section-alt: 220 11% 10%;
+    --text-dark: 210 14% 94%;
+    --text-light: 215 12% 70%;
+    --surface-shadow: 220 15% 2%;
+    --gradient-hero-wash: linear-gradient(115deg, hsl(var(--background)) 12%, hsl(var(--primary) / 0.045) 65%, hsl(var(--success) / 0.025) 100%);
+    --gradient-cta-wash: linear-gradient(110deg, hsl(var(--primary) / 0.065), hsl(var(--card)) 48%, hsl(var(--success) / 0.035));
+    --shadow-elevated: 0 1px 0 hsl(var(--foreground) / 0.035) inset, 0 2px 4px hsl(var(--surface-shadow) / 0.2), 0 12px 24px -14px hsl(var(--surface-shadow) / 0.55);
+    --shadow-interaction: 0 1px 0 hsl(var(--foreground) / 0.06) inset, 0 4px 8px hsl(var(--surface-shadow) / 0.3), 0 18px 30px -16px hsl(var(--surface-shadow) / 0.65);
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    color-scheme: dark;
+  }
 }
 
 @layer base {
