@@ -1,6 +1,6 @@
 # Roadmap
 
-- [ ] Preview item 2: subtle hero/CTA gradient washes, layered card elevation and lightly rounded corners; preserve content, layout and existing motion.
+- [x] Preview item 2: subtle hero/CTA gradient washes, layered card elevation and 6px corners; desktop/889px/mobile and light/dark checked, no overflow or page errors, hover lift and consultation link verified; build clean. Not published.
 
 - [x] Add subtle public-site motion, hero parallax, card hover feedback and navigation underlines; desktop hover, menu navigation and reduced-motion verified; keep decorative overflow within the public content area. Preview only, not published.
 
