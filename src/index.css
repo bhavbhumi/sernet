@@ -264,6 +264,21 @@
     transition: transform 220ms ease;
   }
 
+  .public-site .interaction-card,
+  .public-site .feature-card {
+    transition: translate 260ms ease, box-shadow 260ms ease, border-color 260ms ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .public-site .interaction-card:hover,
+    .public-site .interaction-card:focus-within,
+    .public-site .feature-card:hover,
+    .public-site .feature-card:focus-within {
+      translate: 0 -4px;
+      box-shadow: var(--shadow-interaction);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .public-site *,
     .public-site *::before,

@@ -119,7 +119,7 @@ export const NetworkSection = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.4, delay: i * 0.08 }}
-                    className={`group relative rounded-lg border border-border/60 ${client.bgTint} overflow-hidden hover:border-primary/30 hover:shadow-md transition-all duration-300 cursor-pointer`}
+                    className={`interaction-card group relative rounded-lg border border-border/60 ${client.bgTint} overflow-hidden hover:border-primary/30 hover:shadow-md transition-all duration-300 cursor-pointer`}
                     onMouseEnter={() => setActiveClient(i)}
                     onMouseLeave={() => setActiveClient(0)}
                   >
@@ -176,7 +176,7 @@ export const NetworkSection = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: 0.15 + index * 0.1 }}
-                  className={`flex-1 rounded-xl border border-border bg-gradient-to-br ${card.gradient} p-5 group hover:shadow-md transition-shadow duration-300`}
+                  className={`interaction-card flex-1 rounded-xl border border-border bg-gradient-to-br ${card.gradient} p-5 group hover:shadow-md transition-shadow duration-300`}
                 >
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2.5">
@@ -205,7 +205,7 @@ export const NetworkSection = () => {
 
                   <Link
                     to={`/network?tab=${card.tab}`}
-                    className="inline-flex items-center gap-1.5 text-xs font-medium text-primary mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    className="inline-flex items-center gap-1.5 text-xs font-medium text-primary mt-3"
                   >
                     Learn more
                     <ArrowRight className="w-3 h-3" />
