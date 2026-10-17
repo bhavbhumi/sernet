@@ -5,9 +5,9 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 
 
 const stats = [
-  { icon: ScrollText, value: '5,000+', label: 'Wills Drafted' },
-  { icon: Users, value: '1,200+', label: 'Trusts Created' },
-  { icon: Landmark, value: '₹2,500Cr+', label: 'Assets Planned' },
+  { icon: ScrollText, value: '500+', label: 'Wills Drafted' },
+  { icon: Users, value: '50+', label: 'Trusts Created' },
+  { icon: Shield, value: '100%', label: 'Confidential & Personalised' },
 ];
 
 const products = [
