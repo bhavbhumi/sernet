@@ -1,6 +1,6 @@
 # Roadmap
 
-- [ ] Review item 3 hero/CTA coverage and update item 4 homepage trust strip; keep testimonial cards unchanged.
+- [x] Review item 3 hero/CTA coverage and update item 4 homepage trust strip; testimonial cards unchanged. Registration drawn from shared identity, practice years calculated from October 1986, localized retention message updated. Checked at 1280/889/390px with no overflow or page errors; consultation link works and anniversary tests pass. Item 3 inner-page actions remain suggestions only; not published.
 
 - [x] Refine homepage washes: white hero restored with a signature gradient accent in logo order (gold, blue, red, green, soft pale separations to avoid muddy blends); account CTA wash contained within content width. Inner-page tab underlines stay plain blue by choice. Preview checked at 1280/889/390px: no overflow or page errors, signup link intact, build clean. Not published.
 
