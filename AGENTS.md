@@ -1,5 +1,8 @@
 # Architecture rules
 
+- Keep family-practice history and company incorporation in `src/lib/companyHistory.ts`, with locale date interpolation and metadata using the distinct incorporation date; this prevents age and origin claims drifting between pages.
+- Use the CMS-backed About Press tab as the single public home for coverage, redirecting `/media` there; this preserves real article links without maintaining a second hardcoded list.
+
 - Keep calculators deterministic and form-based, with locally generated proposals and no calculator AI services; this preserves useful planning tools without AI usage costs or chat dependencies.
 
 - Keep Legal & Compliance documents in the existing `legal_pages` CMS, with shared navigation metadata in `src/lib/legalConfig.ts`; this keeps public and administrative sections aligned without duplicating legal documents.
