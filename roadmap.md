@@ -1,6 +1,7 @@
 # Roadmap
 
-- [ ] Correct collapsed article imports to match the supplied article's readable sections; verify reference and affected pages, then publish. Preserve original content, dates and images; do not guess lost table cell boundaries.
+- [x] Restore readable sections and topic indexes for 51 collapsed single-column article imports through the shared renderer; preserve original content, dates, images and valid tables. Reference and affected pages checked, five recovery tests passed.
+- [ ] Restore concatenated numeric tables in the 51 legacy imports — blocked on original reports/HTML with intact cell boundaries; current stored strings do not retain enough information to reconstruct values safely.
 
 - [x] Replace Mirae Disclosures empanelment download with the supplied logo-bearing letter; 28 January 2008 and existing brokerage preserved, preview row visually checked and public PDF download verified (200). Older asset retained for previous publications.
 

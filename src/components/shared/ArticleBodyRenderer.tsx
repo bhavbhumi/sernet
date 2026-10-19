@@ -259,8 +259,9 @@ export function recoverCollapsedArticle(body: string): string {
   // Heading endings are unambiguous when ALL-CAPS text is immediately
   // followed by a Title-case sentence ("...GROWTHMutual fund...").
   const separated = content
-    .replace(/([a-z.!?])([A-Z][A-Z0-9 /&(),%₹–—:?-]{8,}[A-Z0-9?)])(?=[A-Z][a-z])/g, '$1\n\n## $2\n\n')
-    .replace(/^([A-Z][A-Z0-9 /&(),%₹–—:?-]{8,}[A-Z0-9?)])(?=[A-Z][a-z])/gm, '## $1\n\n')
+    .replace(/(Data Source:\s*(?:AMFI|NSDL|NSE|BSE|RBI))(?=[A-Z]{4})/g, '$1\n\n')
+    .replace(/([a-z.!?])([A-Z][A-Z /&(),–—:?-]{8,}[A-Z?)])(?=[A-Z][a-z])/g, '$1\n\n## $2\n\n')
+    .replace(/^([A-Z][A-Z /&(),–—:?-]{8,}[A-Z?)])(?=[A-Z][a-z])/gm, '## $1\n\n')
     .replace(/([.!?])(?=[A-Z][a-z])/g, '$1\n\n');
   return `## ${title}\n\n${separated}`;
 }

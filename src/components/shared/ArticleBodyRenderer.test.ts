@@ -19,6 +19,13 @@ describe('collapsed article recovery', () => {
     expect(recoverCollapsedArticle(body)).toContain('Equity FundCategorySep 2026AUM (₹ Cr)Multi-Cap Fund2,48,18893,75738.33%');
   });
 
+  it('separates a source credit from the next section without creating numeric table headings', () => {
+    const body = '| Fund growth |\n| --- |\n| CPI BASKET COMPONENTSCPI-SEP 2026CPI-AUG 2026Housing2.99Data Source: AMFIRANKING ACTIVE EQUITY FUNDS ON A COMBINED SCOREActive funds were ranked. |';
+    const result = normalizeBody(body);
+    expect(result).toContain('Data Source: AMFI\n\n## RANKING ACTIVE EQUITY FUNDS ON A COMBINED SCORE');
+    expect(extractToc(body).some(entry => entry.text.includes('CPI-SEP'))).toBe(false);
+  });
+
   it('leaves real multi-column tables and already formatted articles unchanged', () => {
     const table = '| Event | Date |\n| --- | --- |\n| Opens | 15 October 2026 |';
     const markdown = '## Company background\n\nA company overview.\n\n## Dates\n\n' + table;
