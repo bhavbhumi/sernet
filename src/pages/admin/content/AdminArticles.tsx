@@ -16,6 +16,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { useToast } from '@/hooks/use-toast';
 import { useQuery } from '@tanstack/react-query';
 import { createTablePasteHandler } from '@/lib/tableUtils';
+import { resolvePublishedAt } from '@/lib/publishedAt';
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const PAGE_SIZE = 25;

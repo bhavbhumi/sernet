@@ -15,6 +15,7 @@ import { FieldInfoTooltip } from '@/components/admin/FieldInfoTooltip';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { createTablePasteHandler } from '@/lib/tableUtils';
+import { resolvePublishedAt } from '@/lib/publishedAt';
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const PAGE_SIZE = 25;
