@@ -78,8 +78,8 @@
 - [x] Prerendered legal, charter, disclosures, grievance and Tick Funds pages; central regulatory identity; Last reviewed dates; verified review badges; claims register
 - [x] Claims corrected per management (2,500+ clients, 500+ families, 10+ employees, regular MF zero fees, 10+ insurers via partner, 1,000+ policyholders, CSR retired)
 - [x] CSR removed everywhere: site_pages row deleted (plus retire_csr_page migration so a rebuild stays clean), sitemap entry dropped, CSR strings removed from all 8 locale files, Tushil FAQ "CSR" reworded to "claim settlement ratios"; /csr kept only as a redirect to /about so old links don't break. Verified in preview: no CSR text or links on home/About, sitemap clean, no page errors.
-- [ ] Tick Funds "14 fund houses" vs 13 in Disclosures; Pricing page still lists stock-broking charges — awaiting user
-- [ ] Sample testimonials (home fallback + 3 Tick Funds quotes) not marked verified — awaiting real-client confirmation
+- [x] Tick Funds now says 40+ AMCs (Disclosures lists only documented providers); Pricing shows Choice FinX brokerage as Choice Equity Broking's (0.30% delivery, 0.03% intraday both legs) — verified and published.
+- [x] Three Choice FinX client reviews confirmed real by management and tagged "Verified client"; sample fallback testimonials removed.
 
 - [x] Implement approved family-history/recognition plan — confirmed 1986/1987/1994/10 March 2004 timeline, central dates and anniversary tests, all eight locale summaries and metadata corrected; six demo awards removed, original 2016 keepsake enlarged; `/media` redirects to CMS Press, placeholder downloads removed; desktop/mobile verified without page errors or overflow. Publishing pending.
 - [ ] Add further office recognition records — awaits readable photographs and exact certificate/trophy inscriptions from management; 2016 personal award title remains unknown.
