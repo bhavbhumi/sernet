@@ -78,9 +78,10 @@
 - [x] Prerendered legal, charter, disclosures, grievance and Tick Funds pages; central regulatory identity; Last reviewed dates; verified review badges; claims register
 - [x] Claims corrected per management (2,500+ clients, 500+ families, 10+ employees, regular MF zero fees, 10+ insurers via partner, 1,000+ policyholders, CSR retired)
 - [x] CSR removed everywhere: site_pages row deleted (plus retire_csr_page migration so a rebuild stays clean), sitemap entry dropped, CSR strings removed from all 8 locale files, Tushil FAQ "CSR" reworded to "claim settlement ratios"; /csr kept only as a redirect to /about so old links don't break. Verified in preview: no CSR text or links on home/About, sitemap clean, no page errors.
-- [ ] Tick Funds "14 fund houses" vs 13 in Disclosures; Pricing page still lists stock-broking charges — awaiting user
-- [ ] Sample testimonials (home fallback + 3 Tick Funds quotes) not marked verified — awaiting real-client confirmation
+- [x] Tick Funds now says 40+ AMCs (Disclosures lists only documented providers); Pricing shows Choice FinX brokerage as Choice Equity Broking's (0.30% delivery, 0.03% intraday both legs) — verified and published.
+- [x] Three Choice FinX client reviews confirmed real by management and tagged "Verified client"; sample fallback testimonials removed.
 
 - [x] Implement approved family-history/recognition plan — confirmed 1986/1987/1994/10 March 2004 timeline, central dates and anniversary tests, all eight locale summaries and metadata corrected; six demo awards removed, original 2016 keepsake enlarged; `/media` redirects to CMS Press, placeholder downloads removed; desktop/mobile verified without page errors or overflow. Publishing pending.
 - [ ] Add further office recognition records — awaits readable photographs and exact certificate/trophy inscriptions from management; 2016 personal award title remains unknown.
-- [ ] Audit items 6 (unapproved figures), 8 (phone number) — waiting on user facts
+- [x] Audit items 6 (Estate Planning stats: 500+ wills, 50+ trusts, confidential stat) and 8 (sales +91 92067 67670, support +91 77070 22020 everywhere) — done and verified.
+- [ ] Unique cover images for draft articles before bulk publish (user-approved: batch-generate per category, publish all at once). Done: 15 published articles re-imaged; 10 category covers; IPO Basket 73/73; Investment 40/81. Remaining: Investment 41, Fundamentals 31, Market Outlook 25, Trading 17, Markets 11, Personal Finance 1, Market Basics 1. Market Wrap (157) and Macro (106) keep shared category covers. Link by exact title (watch curly apostrophes — use ILIKE on mismatch), verify with count query after each batch.
