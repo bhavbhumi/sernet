@@ -260,8 +260,8 @@ export function recoverCollapsedArticle(body: string): string {
   // followed by a Title-case sentence ("...GROWTHMutual fund...").
   const separated = content
     .replace(/(Data Source:\s*(?:AMFI|NSDL|NSE|BSE|RBI))(?=[A-Z]{4})/g, '$1\n\n')
-    .replace(/([a-z.!?])([A-Z][A-Z /&(),–—:?-]{8,}[A-Z?)])(?=[A-Z][a-z])/g, '$1\n\n## $2\n\n')
-    .replace(/^([A-Z][A-Z /&(),–—:?-]{8,}[A-Z?)])(?=[A-Z][a-z])/gm, '## $1\n\n')
+    .replace(/([a-z.!?])([A-Z](?:[A-Z /&(),–—:?-]|20\d{2}|\d-YEAR){8,}[A-Z0-9?)])(?=[A-Z][a-z])/g, '$1\n\n## $2\n\n')
+    .replace(/^([A-Z](?:[A-Z /&(),–—:?-]|20\d{2}|\d-YEAR){8,}[A-Z0-9?)])(?=[A-Z][a-z])/gm, '## $1\n\n')
     .replace(/([.!?])(?=[A-Z][a-z])/g, '$1\n\n');
   return `## ${title}\n\n${separated}`;
 }
