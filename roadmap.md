@@ -1,5 +1,8 @@
 # Roadmap
 
+- [ ] Keep article image/topic index left and details right on tablet/desktop, independently of heading count.
+- [ ] Add article-specific initial HTML sharing metadata from published CMS rows and verify preview metadata.
+
 - [x] Restore readable sections and topic indexes for 51 collapsed single-column article imports through the shared renderer; preserve original content, dates, images and valid tables. Reference and affected pages checked, five recovery tests passed.
 - [ ] Restore concatenated numeric tables in the 51 legacy imports — blocked on original reports/HTML with intact cell boundaries; current stored strings do not retain enough information to reconstruct values safely.
 
