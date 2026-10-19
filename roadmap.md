@@ -1,5 +1,7 @@
 # Roadmap
 
+- [ ] Correct collapsed article imports to match the supplied article's readable sections; verify reference and affected pages, then publish. Preserve original content, dates and images; do not guess lost table cell boundaries.
+
 - [x] Replace Mirae Disclosures empanelment download with the supplied logo-bearing letter; 28 January 2008 and existing brokerage preserved, preview row visually checked and public PDF download verified (200). Older asset retained for previous publications.
 
 - [x] Refine public dark-mode contrast, neutral charcoal surfaces, clearer card borders/elevation and restrained washes; light mode, headings/spacing and administrative palette preserved. Verified theme switching, homepage/CTA, Pricing, Services and Legal at desktop and narrow widths: no overflow or page errors, consultation link intact, preview build clean. Not published.
