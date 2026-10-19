@@ -16,6 +16,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { useToast } from '@/hooks/use-toast';
 import { useQuery } from '@tanstack/react-query';
 import { createTablePasteHandler } from '@/lib/tableUtils';
+import { resolvePublishedAt } from '@/lib/publishedAt';
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const PAGE_SIZE = 25;
@@ -150,7 +151,7 @@ export default function AdminArticles() {
       format: form.format as 'Text' | 'Image' | 'Audio' | 'Video', category: form.category,
       read_time: form.read_time, media_url: form.media_url, thumbnail_url: form.media_url || null,
       status: form.status as 'draft' | 'published' | 'archived', item_date: form.item_date || null,
-      published_at: form.status === 'published' ? new Date().toISOString() : null,
+      published_at: resolvePublishedAt({ status: form.status, itemDate: form.item_date, existingPublishedAt: editItem?.published_at }),
     };
     const { error } = editItem
       ? await supabase.from('articles').update(payload).eq('id', editItem.id)
@@ -168,7 +169,7 @@ export default function AdminArticles() {
 
   const toggleStatus = async (item: Article) => {
     const newStatus = item.status === 'published' ? 'draft' : 'published';
-    await supabase.from('articles').update({ status: newStatus, published_at: newStatus === 'published' ? new Date().toISOString() : null }).eq('id', item.id);
+    await supabase.from('articles').update({ status: newStatus, published_at: resolvePublishedAt({ status: newStatus, itemDate: item.item_date, existingPublishedAt: item.published_at }) }).eq('id', item.id);
     fetchArticles();
   };
 
