@@ -1,5 +1,8 @@
 # Roadmap
 
+- [x] Keep article image/topic index left and details right on tablet/desktop, independently of heading count. Verified loaded covers at 1280/889/390px with no overflow or page errors.
+- [x] Add article-specific initial HTML sharing metadata from published CMS rows and verify preview metadata. Generated 1,020 HTML pages in isolated validation; correct article title/image/canonical verified; eight focused tests passed. Requires publishing for live WhatsApp previews; existing WhatsApp cards may retain previously fetched details.
+
 - [x] Restore readable sections and topic indexes for 51 collapsed single-column article imports through the shared renderer; preserve original content, dates, images and valid tables. Reference and affected pages checked, five recovery tests passed.
 - [ ] Restore concatenated numeric tables in the 51 legacy imports — blocked on original reports/HTML with intact cell boundaries; current stored strings do not retain enough information to reconstruct values safely.
 

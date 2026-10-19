@@ -10,6 +10,7 @@ import { motion } from 'framer-motion';
 import { useArticleEngagement } from '@/hooks/useArticleEngagement';
 import { useToast } from '@/hooks/use-toast';
 import { ArticleBodyRenderer, extractToc, TocEntry } from '@/components/shared/ArticleBodyRenderer';
+import { articlePath, articleShareImage } from '@/lib/articleMetadata';
 
 const formatIcons: Record<string, React.ElementType> = {
   Text: FileText,
@@ -35,7 +36,7 @@ function TableOfContents({ toc, activeSlug }: { toc: TocEntry[]; activeSlug: str
     }
   }, [activeSlug]);
 
-  if (toc.length < 2) return null;
+  if (!toc.length) return null;
 
   return (
     <motion.aside
@@ -43,7 +44,7 @@ function TableOfContents({ toc, activeSlug }: { toc: TocEntry[]; activeSlug: str
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.4, delay: 0.3 }}
     >
-      <div className="sticky top-24 bg-muted/40 border border-border/60 rounded-xl p-4 w-64 max-h-[calc(100vh-8rem)] overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
+      <div className="sticky top-24 bg-muted/40 border border-border/60 rounded-lg p-4 w-full max-h-[calc(100vh-8rem)] overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
         <div className="flex items-center gap-2 mb-3 text-sm font-semibold text-foreground">
           <List className="h-4 w-4 text-primary" />
           Topic Index
@@ -82,10 +83,11 @@ export default function ArticleDetail() {
   const { data: article, isLoading } = useQuery({
     queryKey: ['article', id],
     queryFn: async () => {
+      if (!id) return null;
       const { data, error } = await supabase
         .from('articles')
         .select('*')
-        .eq('id', id!)
+        .eq('id', id)
         .eq('status', 'published')
         .single();
       if (error) throw error;
@@ -215,7 +217,8 @@ export default function ArticleDetail() {
       <SEOHead
         title={article.title}
         description={plainDescription || `Read ${article.title} on SERNET Insights.`}
-        path={`/insights/${id}`}
+        path={articlePath(article.id)}
+        image={articleShareImage(sidebarImageUrl)}
         type="article"
         jsonLd={{
           '@context': 'https://schema.org',
@@ -235,7 +238,7 @@ export default function ArticleDetail() {
           },
           mainEntityOfPage: {
             '@type': 'WebPage',
-            '@id': `https://sernetindia.com/insights/${id}`,
+            '@id': `https://sernetindia.com${articlePath(article.id)}`,
           },
         }}
       />
@@ -256,11 +259,11 @@ export default function ArticleDetail() {
         {/* Two-column layout: TOC sidebar + main content */}
         <div className="flex gap-8 items-start">
           {/* LEFT: TOC sidebar (only shown when there are 2+ headings) */}
-          {toc.length >= 2 && (
-            <div className="shrink-0 hidden lg:block sticky top-24 self-start">
+          {(hasMedia || toc.length > 0) && (
+            <div className="w-52 lg:w-64 shrink-0 hidden md:block sticky top-24 self-start">
               {/* Media / thumbnail at top of sidebar column */}
               {hasMedia && (
-                <div className="w-64 mb-4">
+                <div className="w-full mb-4">
                   {article.media_url && article.format === 'Audio' && (
                     <div className="p-3 bg-muted/40 rounded-xl border border-border mb-3">
                       <audio controls className="w-full" src={article.media_url} />
@@ -273,7 +276,7 @@ export default function ArticleDetail() {
                   )}
                   {sidebarImageUrl && (
                     <div className="rounded-xl overflow-hidden border border-border mb-3">
-                      <img src={sidebarImageUrl} alt={article.title} className="w-full object-cover" onError={(e) => { const wrapper = (e.target as HTMLElement).closest('.w-64'); if (wrapper) (wrapper as HTMLElement).style.display = 'none'; }} />
+                      <img src={sidebarImageUrl} alt={article.title} className="w-full aspect-[3/2] object-cover" />
                     </div>
                   )}
                 </div>
@@ -285,8 +288,8 @@ export default function ArticleDetail() {
           {/* MAIN: Article content */}
           <article className="flex-1 min-w-0">
             {/* Mobile: image + TOC at top before everything else */}
-            {toc.length >= 2 && (
-              <div className="lg:hidden mb-6">
+            {(hasMedia || toc.length > 0) && (
+              <div className="md:hidden mb-6">
                 {sidebarImageUrl && (
                   <div className="rounded-xl overflow-hidden border border-border mb-4">
                     <img src={sidebarImageUrl} alt={article.title} className="w-full object-cover max-h-64" onError={(e) => { const wrapper = (e.target as HTMLElement).closest('.rounded-xl'); if (wrapper) (wrapper as HTMLElement).style.display = 'none'; }} />
@@ -348,27 +351,6 @@ export default function ArticleDetail() {
                 <ShareButton />
               </div>
             </div>
-
-            {/* Media (when no TOC sidebar) */}
-            {toc.length < 2 && (
-              <>
-                {sidebarImageUrl && (
-                  <div className="mb-8 rounded-xl overflow-hidden border border-border">
-                    <img src={sidebarImageUrl} alt={article.title} className="w-full object-cover max-h-80" onError={(e) => { const wrapper = (e.target as HTMLElement).closest('.rounded-xl'); if (wrapper) (wrapper as HTMLElement).style.display = 'none'; }} />
-                  </div>
-                )}
-                {article.media_url && article.format === 'Audio' && (
-                  <div className="mb-8 p-4 bg-muted/40 rounded-xl border border-border">
-                    <audio controls className="w-full" src={article.media_url} />
-                  </div>
-                )}
-                {article.media_url && article.format === 'Video' && (
-                  <div className="mb-8 rounded-xl overflow-hidden border border-border aspect-video">
-                    <video controls className="w-full h-full" src={article.media_url} />
-                  </div>
-                )}
-              </>
-            )}
 
             {/* Excerpt */}
             {article.excerpt && (

@@ -1,5 +1,8 @@
 # Architecture rules
 
+- Prerender published article sharing metadata from paginated CMS rows at build time; share and canonical URLs use the registered article route and its own sized cover, so crawlers need no JavaScript.
+- Keep article media/sidebar independent of heading count with a tablet/desktop two-column layout; short articles must not switch to full-width cover images.
+
 - Recover collapsed single-column article layout imports in the shared body normalizer used by both content and topic indexes; preserve numeric strings rather than guessing lost table cells.
 
 - Scope presentation motion to the public Layout and honor reduced-motion preferences through MotionConfig and CSS; administrative tools remain unaffected.
