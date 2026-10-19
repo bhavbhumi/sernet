@@ -10,17 +10,18 @@ interface SEOHeadProps {
   path?: string;
   type?: string;
   jsonLd?: JsonLdInput;
+  image?: string;
 }
 
 const FALLBACK_SITE_NAME = 'SERNET Financial Services';
 const FALLBACK_BASE_URL = 'https://sernetindia.com';
 
-export const SEOHead = ({ title, description, path = '/', type = 'website', jsonLd }: SEOHeadProps) => {
+export const SEOHead = ({ title, description, path = '/', type = 'website', jsonLd, image }: SEOHeadProps) => {
   const { data: settings } = useSiteSettings();
 
   const siteName = settings?.identity?.schema_org_name || FALLBACK_SITE_NAME;
   const baseUrl = settings?.identity?.site_url || FALLBACK_BASE_URL;
-  const ogImageUrl = settings?.branding?.og_image_url || 'https://sernetindia.com/og-image.png';
+  const ogImageUrl = image || settings?.branding?.og_image_url || 'https://sernetindia.com/og-image.png';
 
   const rawTitle = `${title} | ${siteName}`;
   const fullTitle = rawTitle.length > 60 ? rawTitle.slice(0, 57) + '…' : rawTitle;
