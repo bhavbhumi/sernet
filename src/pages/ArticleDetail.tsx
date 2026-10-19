@@ -352,27 +352,6 @@ export default function ArticleDetail() {
               </div>
             </div>
 
-            {/* Media (when no TOC sidebar) */}
-            {false && (
-              <>
-                {sidebarImageUrl && (
-                  <div className="mb-8 rounded-xl overflow-hidden border border-border">
-                    <img src={sidebarImageUrl} alt={article.title} className="w-full object-cover max-h-80" onError={(e) => { const wrapper = (e.target as HTMLElement).closest('.rounded-xl'); if (wrapper) (wrapper as HTMLElement).style.display = 'none'; }} />
-                  </div>
-                )}
-                {article.media_url && article.format === 'Audio' && (
-                  <div className="mb-8 p-4 bg-muted/40 rounded-xl border border-border">
-                    <audio controls className="w-full" src={article.media_url} />
-                  </div>
-                )}
-                {article.media_url && article.format === 'Video' && (
-                  <div className="mb-8 rounded-xl overflow-hidden border border-border aspect-video">
-                    <video controls className="w-full h-full" src={article.media_url} />
-                  </div>
-                )}
-              </>
-            )}
-
             {/* Excerpt */}
             {article.excerpt && (
               <p className="text-lg text-muted-foreground mb-6 leading-relaxed border-l-4 border-primary/40 pl-4 italic">
