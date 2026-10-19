@@ -83,4 +83,5 @@
 
 - [x] Implement approved family-history/recognition plan — confirmed 1986/1987/1994/10 March 2004 timeline, central dates and anniversary tests, all eight locale summaries and metadata corrected; six demo awards removed, original 2016 keepsake enlarged; `/media` redirects to CMS Press, placeholder downloads removed; desktop/mobile verified without page errors or overflow. Publishing pending.
 - [ ] Add further office recognition records — awaits readable photographs and exact certificate/trophy inscriptions from management; 2016 personal award title remains unknown.
-- [ ] Audit items 6 (unapproved figures), 8 (phone number) — waiting on user facts
+- [x] Audit items 6 (Estate Planning stats: 500+ wills, 50+ trusts, confidential stat) and 8 (sales +91 92067 67670, support +91 77070 22020 everywhere) — done and verified.
+- [ ] Unique cover images for draft articles before bulk publish (user-approved: batch-generate per category, publish all at once). Done: 15 published articles re-imaged; 10 category covers; IPO Basket 73/73; Investment 30/81. Remaining: Investment 51, Fundamentals 31, Market Outlook 25, Trading 17, Markets 11, Personal Finance 1, Market Basics 1. Market Wrap (157) and Macro (106) keep shared category covers. Link by exact title, verify with count query after each batch.
