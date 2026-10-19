@@ -245,10 +245,30 @@ function stripWordPressHtml(text: string): string {
   return text;
 }
 
+// Some legacy imports converted an outer, single-cell layout table before
+// its nested headings/paragraphs. Recover only textual boundaries: numeric
+// table cells that were concatenated cannot safely be inferred here.
+export function recoverCollapsedArticle(body: string): string {
+  const lines = body.trim().split(/\r?\n/);
+  if (lines.length < 3 || !/^\|\s*---\s*\|$/.test(lines[1].trim())) return body;
+  if (!/^\|[^|]+\|$/.test(lines[0].trim())) return body;
+
+  const unwrap = (line: string) => line.trim().replace(/^\|\s?/, '').replace(/\s?\|$/, '');
+  const title = unwrap(lines[0]);
+  const content = lines.slice(2).map((line) => /^\|[^|]+\|$/.test(line.trim()) ? unwrap(line) : line).join('\n');
+  // Heading endings are unambiguous when ALL-CAPS text is immediately
+  // followed by a Title-case sentence ("...GROWTHMutual fund...").
+  const separated = content
+    .replace(/([a-z.!?])([A-Z][A-Z0-9 /&(),%₹–—:?-]{8,}[A-Z0-9?)])(?=[A-Z][a-z])/g, '$1\n\n## $2\n\n')
+    .replace(/^([A-Z][A-Z0-9 /&(),%₹–—:?-]{8,}[A-Z0-9?)])(?=[A-Z][a-z])/gm, '## $1\n\n')
+    .replace(/([.!?])(?=[A-Z][a-z])/g, '$1\n\n');
+  return `## ${title}\n\n${separated}`;
+}
+
 // Normalize body: strip WP HTML, promote ###/####/##### → ##, strip TOC block, remove duplicate plain titles, collapse blank lines
 export function normalizeBody(body: string): string {
   // First: strip any raw WordPress HTML structures
-  let text = stripWordPressHtml(body);
+  let text = stripWordPressHtml(recoverCollapsedArticle(body));
 
   // Collapse excessive inline whitespace
   text = text.split('\n').map(line => {
@@ -573,5 +593,5 @@ export function ArticleBodyRenderer({ body }: Props) {
   }
   flushList();
 
-  return <div className="space-y-0">{wrapped}</div>;
+  return <div className="space-y-0 [overflow-wrap:anywhere]">{wrapped}</div>;
 }

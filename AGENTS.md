@@ -1,5 +1,7 @@
 # Architecture rules
 
+- Recover collapsed single-column article layout imports in the shared body normalizer used by both content and topic indexes; preserve numeric strings rather than guessing lost table cells.
+
 - Scope presentation motion to the public Layout and honor reduced-motion preferences through MotionConfig and CSS; administrative tools remain unaffected.
 - Keep public surface washes and layered card elevation in shared theme tokens with opt-in presentation hooks; this preserves theme consistency without restyling administrative tools.
 - Scope public dark-mode token refinements to `.dark .public-site`; inherited semantic tokens keep public pages consistent while preserving the administrative palette and light theme.
