@@ -6,11 +6,11 @@
 
 Planning only: no website, article, classification, date, image or publication changes have been made.
 
-The read-only inventory found **1,020 published posts: 427 Articles, 586 Analysis, 2 Awareness and 5 Reports**. There are 499 missing subcategories, inconsistent category names and series mixed with subjects. Three repeated-title groups require comparison, not automatic deletion. The administrative list's single request can omit rows beyond 1,000; the public Articles tab's 427 rows currently fit.
+**Inventory: 1,020 published posts—427 Articles, 586 Analysis, 2 Awareness, 5 Reports.** 499 lack subcategories; names and series are inconsistent. Three repeated-title groups need comparison, not automatic deletion. Administrative retrieval can omit rows beyond 1,000; public Articles currently fit.
 
 Sharing metadata exists, but initial HTML lacks full article bodies; the static sitemap lacks individual posts, and CMS SEO overrides are not consistently used.
 
-The [Invoicemonk reference](https://invoicemonk.com/en/blog/the-10-best-personal-finance-blogs) now lists 16 blogs despite its URL. Its useful lesson is audience-focused writing and clear reader needs—not copying a foreign taxonomy or treating it as an Indian regulatory reference.
+The [reference](https://invoicemonk.com/en/blog/the-10-best-personal-finance-blogs) now lists 16 blogs. Adopt its audience-focused approach, not a foreign taxonomy or regulatory claims.
 
 ## 1. Classification model
 
@@ -24,31 +24,31 @@ The [Invoicemonk reference](https://invoicemonk.com/en/blog/the-10-best-personal
 | Media format | Text / Image / Audio / Video |
 | Series: recurring identity | Market Wrap / Triggers Weekly |
 
-Each post gets one primary subject/category path, with optional secondary tags and related links—not duplicate published copies. ETF spans equity, debt and gold; it should not sit exclusively beneath Equity. Market Wrap is a series under Macro & Markets → Markets → Updates.
+One primary path per post; optional cross-topic tags, not duplicate copies. ETF spans asset classes. Market Wrap is a series under Macro & Markets → Markets → Updates.
 
 ## 2. Recommended taxonomy
 
 ### Macro & Markets
 - **Macro:** Economy; Policy & Regulation; Union Budget.
 - **Markets:** Updates; Market Impact; Triggers; Outlook.
-- Tags: GDP, inflation, rates, monetary/fiscal policy, global markets, earnings, liquidity.
-- Market Wrap and Triggers Weekly remain series. Market-wide developments belong here; company/sector investing analysis belongs under Trading.
+- Tags: GDP, inflation, rates, global markets, earnings.
+- Market Wrap and Triggers Weekly remain series; company analysis belongs under Trading.
 
 ### Investment
-- **Mutual Funds:** Equity; Debt; Hybrid; Solution-Oriented; Other Schemes. Tags include Large Cap, Mid Cap, Small Cap, Flexi Cap, Multi Cap, ELSS, Index Funds, ETF and Fund of Funds where applicable. Check current official scheme classifications during mapping.
-- **Specialized Investment Funds (SIF):** a separate category within the MF framework, classified using verified SIF strategies—not forced into ordinary MF scheme groups.
-- **PMS:** Discretionary; Non-Discretionary; Advisory; PRIM. Advisory describes the provider's service, never SERNET's status. PRIM means Portfolio Managers Route for Investing in Mutual Fund Units. A September 2026 SEBI board announcement was located; operative rules and provider availability remain unverified. Educational coverage only until verified, not an available-service claim.
-- **AIF:** Category I; Category II; Category III. Strategy tags: private equity, private debt, venture capital, infrastructure, etc. Do not assume a regulatory category for unusual strategies such as art.
-- **Bonds & Fixed Income:** Government & Sovereign; Corporate; Deposits. Separate overlapping tags for perpetual, market-linked debentures, green/ESG debt, tax-free, secured/unsecured and fixed deposits.
-- **Precious Metals:** Gold; Silver. Tags: bars, coins, jewellery, ETF, fund, EGR, digital gold. Explain differing costs/protections; EGR and digital gold are not equivalent regulated products.
-- **Real Estate:** Direct Property; REITs & Property Funds. Tags: land, building/unit, residential, commercial, industrial, agricultural. This separates physical form, use and investment vehicle.
+- **Mutual Funds:** Equity; Debt; Hybrid; Solution-Oriented; Other Schemes. Tags: Large/Mid/Small Cap, Flexi/Multi Cap, ELSS, Index, ETF, Fund of Funds. Validate official scheme categories.
+- **Specialized Investment Funds (SIF):** separate category within the MF framework; use verified SIF strategies, not ordinary MF groups.
+- **PMS:** Discretionary; Non-Discretionary; Advisory; PRIM. Advisory describes the provider, not SERNET. PRIM = Portfolio Managers Route for Investing in Mutual Fund Units. September 2026 board approval was located; operative rules/provider availability remain unverified. Educational coverage only until verified.
+- **AIF:** Category I; Category II; Category III. Tags: private equity/debt, venture capital, infrastructure. Do not assume classifications for art or unusual strategies.
+- **Bonds & Fixed Income:** Government & Sovereign; Corporate; Deposits. Overlapping tags: perpetual, MLD, green/ESG, tax-free, secured/unsecured, fixed deposits.
+- **Precious Metals:** Gold; Silver. Tags: bars, coins, jewellery, ETF, fund, EGR, digital gold. EGR and digital gold have different protections; explain them.
+- **Real Estate:** Direct Property; REITs & Property Funds. Tags: land, building/unit, residential, commercial, industrial, agricultural. Separate form, use and vehicle.
 
 ### Insurance
 - **Life Insurance:** Term; Traditional; ULIP; Group Life.
 - **Health & Personal Protection:** Mediclaim; Critical Illness; Personal Accident; Travel & Overseas Cover; Group Health.
 - **General Insurance:** Motor; Property / Fire & Burglary; Marine.
 - **Business & Liability Insurance:** Professional Indemnity; Surety; Directors & Officers Liability.
-- Correct spellings: Mediclaim, Burglary, Surety. These are reader-navigation groups, not substitutes for insurers' legal product classifications.
+- Correct spellings: Mediclaim, Burglary, Surety. Navigation groups do not replace legal product classifications.
 
 ### Trading
 - **Stocks & Equity Markets:** IPOs; Stocks; Sectors; Industries.
@@ -56,11 +56,11 @@ Each post gets one primary subject/category path, with optional secondary tags a
 - **Currency:** Currency Derivatives; Hedging & Risk; Currency Market Updates.
 - Tags: futures, options, technical concepts and verified strategies.
 - IPO company notes move primarily here; IPO Basket can remain a recognisable tag/series.
-- Weather can be educational, but do not advertise a tradable weather product without verification. Currency coverage must not imply unrestricted offshore forex trading or unverified broker segments.
+- Weather is educational unless tradability is verified. Do not imply unrestricted offshore forex or unverified broker segments.
 
 ### Credit
 - **Secured Borrowing:** Home; Car; Loan Against Property; Loan Against Mutual Funds (LAMF); Loan Against Securities (LAS); Loan Against Precious Metals (LAPM: Gold & Silver).
-- **Other Borrowing:** Personal; Education; Business; Working Capital; Overdraft. Replace “Unsecured Loans”: several of these facilities can be secured or unsecured; tag that distinction when established.
+- **Other Borrowing:** Personal; Education; Business; Working Capital; Overdraft. Replace “Unsecured”: these facilities can be secured or unsecured; tag the verified distinction.
 - **Credit Counselling:** Credit Profile; Borrowing Capacity; Repayment; Debt Management.
 - Confirmed service scope: SERNET arranges **LAMF, LAS and LAPM only**. Other loan topics invite credit counselling, not loan-arrangement promises.
 
@@ -69,9 +69,9 @@ Each post gets one primary subject/category path, with optional secondary tags a
 - **Budgeting & Money Management:** Cash Flow; Net Worth; Emergency Fund; Debt Management.
 - **Financial Goals:** Tax Planning; Retirement; Education; Lifestyle Goals.
 - **Legacy & Estate Planning:** Wills; Trusts; Succession.
-- Keep planning content educational and distributor-compliant; coverage does not establish SERNET as an investment adviser, tax adviser or legal practitioner.
+- Keep distributor-compliant education; do not imply investment-adviser, tax/legal practitioner status.
 
-**Boundary rule:** classify by the question answered. Insurance-company results are Stocks; life-cover explanations are Insurance. Gold price movements may be Markets/Trading; long-term gold allocation is Investment. Cross-link instead of duplicating.
+**Boundary:** classify by question answered. Insurance-company results → Stocks; life cover → Insurance. Gold prices → Markets/Trading; allocation → Investment. Cross-link, do not duplicate.
 
 ## 3. Listing and detail experience
 
@@ -80,13 +80,13 @@ Each post gets one primary subject/category path, with optional secondary tags a
 - Reveal relevant categories, then subcategories; optional tags refine further. Do not display the entire tree at once.
 - Provide title/topic search, newest-first ordering and genuine publication dates.
 - Preserve complete covers in stable frames and full wrapping titles. Cards show a short excerpt, primary topic, date and author; no regenerated images or cropped cover text.
-- Scrollable tabs and compact deeper filters on phones; existing container/grid on larger screens. Preserve light/dark styling and avoid tiny labels, overlap and empty panels.
+- Compact scrollable filters on phones; existing grid/container on larger screens. Preserve light/dark; no overlap or empty panels.
 - Returning from a post restores filters, page and scroll position. Filter states can be shared without automatically indexing every combination.
 
 ### Details
 - Breadcrumbs: **Insights → Subject → Category → Article**, plus return to the originating list.
 - Preserve cover/topic-index sidebar on tablet/desktop; complete cover on phones and topic index only when headings exist.
-- Show author, sources and original report/publication date. Reviewer credentials and review dates require real evidence; never fabricate expertise or deployment-based freshness.
+- Show author, sources, original date; reviewer/review dates only with evidence, never deployment-based freshness.
 - Finish with relevant related reading and **one contextual action section**, not repeated generic sales banners.
 
 ## 4. Contextual calls to action
@@ -103,18 +103,18 @@ Each post gets one primary subject/category path, with optional secondary tags a
 | Wills / trusts / succession | Estate-planning enquiry with appropriate professional-execution context |
 | Macro / general education | Relevant guides/calculators; enquiry only when appropriate, no forced trading pitch |
 
-Use configurable topic defaults with an article-level override. Detect existing **73 IPO CTAs**, preserving approved wording/links without duplicates; do not blindly append sales text to every body. Add a few naturally related posts and relevant existing product/service links—not arbitrary link quotas. Categories alone must not imply SERNET offers every discussed product.
+Use topic defaults with per-article overrides. Preserve **73 existing IPO CTAs** without duplicates; no blind body appends. Link relevant posts/services naturally. Educational categories do not imply product availability.
 
 ## 5. SEO and financial-content safeguards
 
 - Preserve UUID article URLs and historical dates. Category reorganisation does not require new article URLs; friendly URLs are a separate future decision.
-- Reconcile article/analysis alternate routes to one canonical destination while preserving legacy links.
-- Index useful subject/category hubs with substantive introductions and real posts—not empty or thin tag/filter combinations. Plan filter crawl controls explicitly.
-- Prerender full article content, consistent metadata, Article/BlogPosting and breadcrumb structured data from the same CMS content/shared rendering, with no second editable copy.
-- Use reviewed CMS SEO overrides with title/excerpt fallbacks. Preserve article-specific social images and correct original dates.
-- Generate a sitemap of canonical published posts and useful approved hubs; do not fabricate modification dates from deployments.
-- Cite sources, distinguish facts/interpretation/opinion, explain limitations and link relevant remuneration disclosures. Organisation/schema do not guarantee rankings or leads.
-- Measure product clicks and successful enquiries without putting personal details in analytics; assess enquiry quality, not clicks alone.
+- Reconcile alternate article/analysis routes; preserve legacy links.
+- Index useful hubs with real introductions/posts, not thin tag/filter combinations. Control filter crawling.
+- Prerender full bodies, metadata, Article/BlogPosting and breadcrumb schema from the same CMS source; no second editable copy.
+- Use reviewed SEO overrides/fallbacks, article-specific social images and original dates.
+- Generate canonical post/hub sitemap; genuine modification dates only.
+- Cite sources, distinguish fact/opinion, explain limits/remuneration. No guaranteed rankings or leads.
+- Measure successful enquiries and quality, not clicks alone; no personal data in analytics.
 
 ## 6. Execution after approval
 
@@ -126,7 +126,7 @@ Use configurable topic defaults with an article-level override. Detect existing 
 6. **Preview approval, then publication:** publish only after explicit authorisation.
 
 ### Technical notes
-Preserve existing `articles.content_type`; store editorial subjects separately with controlled identifiers and article–tag relationships. Do not reuse browser-only category trees. Follow existing query, permissions and theme patterns; leave Updates feeds, support, legal and other integrations untouched. Test classification boundaries, CTA eligibility, date preservation, pagination and canonicals; verify actual click/enquiry flows.
+Preserve existing editorial `content_type`; add shared controlled subject/tag identifiers, not browser-only trees. Leave Updates, support, legal and integrations untouched. Test classification/CTA rules, dates, pagination, canonicals and actual enquiry flows.
 
 ### References and unresolved checks
 - [Google: people-first financial content](https://developers.google.com/search/docs/fundamentals/creating-helpful-content)
