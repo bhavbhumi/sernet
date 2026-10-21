@@ -10,7 +10,7 @@ Planning only: no website, article, classification, date, image or publication c
 
 Gaps: initial article bodies, individual-post sitemap entries and consistent SEO overrides. Sharing metadata exists.
 
-The [reference](https://invoicemonk.com/en/blog/the-10-best-personal-finance-blogs) now lists 16 blogs. Adopt its audience-focused approach, not a foreign taxonomy or regulatory claims.
+The [reference](https://invoicemonk.com/en/blog/the-10-best-personal-finance-blogs) supports audience-focused writing, not Indian regulatory classifications.
 
 ## 1. Classification model
 
@@ -32,7 +32,7 @@ One primary path per post; optional cross-topic tags, not duplicate copies. ETF 
 - **Macro:** Economy; Policy & Regulation; Union Budget.
 - **Markets:** Updates; Market Impact; Triggers; Outlook.
 - Tags: GDP, inflation, rates, global markets, earnings.
-- Market Wrap and Triggers Weekly remain series; company analysis belongs under Trading.
+- Keep recurring series distinct from topics.
 
 ### Investment
 - **Mutual Funds:** Equity; Debt; Hybrid; Solution-Oriented; Other Schemes. Tags: Large/Mid/Small Cap, Flexi/Multi Cap, ELSS, Index, ETF, Fund of Funds. Validate official scheme categories.
@@ -54,7 +54,6 @@ One primary path per post; optional cross-topic tags, not duplicate copies. ETF 
 - **Stocks & Equity Markets:** IPOs; Stocks; Sectors; Industries.
 - **Commodities:** Energy; Agriculture; Base Metals; Precious Metals.
 - **Currency:** Currency Derivatives; Hedging & Risk; Currency Market Updates.
-- Tags: futures, options, technical concepts and verified strategies.
 - IPO company notes move primarily here; IPO Basket can remain a recognisable tag/series.
 - Weather is educational unless tradability is verified. Do not imply unrestricted offshore forex or unverified broker segments.
 
@@ -71,14 +70,14 @@ One primary path per post; optional cross-topic tags, not duplicate copies. ETF 
 - **Legacy & Estate Planning:** Wills; Trusts; Succession.
 - Keep distributor-compliant education; do not imply investment-adviser, tax/legal practitioner status.
 
-**Boundary:** classify by question answered. Insurance-company results → Stocks; life cover → Insurance. Gold prices → Markets/Trading; allocation → Investment. Cross-link, do not duplicate.
+**Boundary:** classify by question. Company results → Stocks; life cover → Insurance. Gold prices → Markets; allocation → Investment. Cross-link.
 
 ## 3. Listing and detail experience
 
 ### Listing
 - Insights becomes **All Posts + six subject tabs**. Editorial kind, media format and series become secondary filters; no post kinds are deleted.
 - Reveal categories/subcategories progressively; optional tags refine further.
-- Provide title/topic search, newest-first ordering and genuine publication dates.
+- Search; newest-first; genuine dates.
 - Complete covers, full titles, excerpt, topic, date, author. Preserve images; no cropping.
 - Compact scrollable filters on phones; existing grid/container on larger screens. Preserve light/dark; no overlap or empty panels.
 - Return restores filters/page/scroll; share filter states without indexing every combination.
@@ -87,7 +86,7 @@ One primary path per post; optional cross-topic tags, not duplicate copies. ETF 
 - Breadcrumbs: **Insights → Subject → Category → Article**, plus return to the originating list.
 - Preserve cover/topic-index sidebar on tablet/desktop; complete cover on phones and topic index only when headings exist.
 - Show author, sources, original date; reviewer/review dates only with evidence, never deployment-based freshness.
-- Finish with relevant related reading and **one contextual action section**, not repeated generic sales banners.
+- Related reading and **one contextual CTA**; no repeated banners.
 
 ## 4. Contextual calls to action
 
@@ -103,11 +102,11 @@ One primary path per post; optional cross-topic tags, not duplicate copies. ETF 
 | Wills / trusts / succession | Estate-planning enquiry with appropriate professional-execution context |
 | Macro / general education | Relevant guides/calculators; enquiry only when appropriate, no forced trading pitch |
 
-Use topic defaults with per-article overrides. Preserve **73 existing IPO CTAs** without duplicates; no blind body appends. Link relevant posts/services naturally. Educational categories do not imply product availability.
+Use topic defaults with per-article overrides. Preserve **73 existing IPO CTAs** without duplicates; no blind body appends. Link relevant posts/services naturally. 
 
 ## 5. SEO and financial-content safeguards
 
-- Preserve UUID article URLs and historical dates. Category reorganisation does not require new article URLs; friendly URLs are a separate future decision.
+- Preserve UUID URLs and historical dates; friendly URLs are a separate decision.
 - Reconcile alternate article/analysis routes; preserve legacy links.
 - Index useful hubs with real introductions/posts, not thin tag/filter combinations. Control filter crawling.
 - Prerender full bodies, metadata, Article/BlogPosting and breadcrumb schema from the same CMS source; no second editable copy.
