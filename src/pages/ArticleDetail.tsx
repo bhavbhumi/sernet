@@ -1,3 +1,4 @@
+import { PostBreadcrumb, PostFooter } from '@/components/insights/PostContext';
 import { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';

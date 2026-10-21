@@ -1,4 +1,4 @@
-
+import { POST_TYPES } from '@/lib/insightsTaxonomy';
 import { useEffect, useState, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { AdminLayout } from '@/components/admin/AdminLayout';
