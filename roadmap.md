@@ -1,5 +1,7 @@
 # Roadmap
 
+- [ ] Fit complete Insights listing covers and wrap full titles across phone, tablet and desktop; preserve source images and article content.
+
 - [x] Keep article image/topic index left and details right on tablet/desktop, independently of heading count. Verified loaded covers at 1280/889/390px with no overflow or page errors.
 - [x] Add article-specific initial HTML sharing metadata from published CMS rows and verify preview metadata. Generated 1,020 HTML pages in isolated validation; correct article title/image/canonical verified; eight focused tests passed. Requires publishing for live WhatsApp previews; existing WhatsApp cards may retain previously fetched details.
 
