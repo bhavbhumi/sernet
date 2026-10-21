@@ -26,6 +26,28 @@ The [reference](https://invoicemonk.com/en/blog/the-10-best-personal-finance-blo
 
 One primary path per post; optional cross-topic tags, not duplicate copies. ETF spans asset classes. Market Wrap is a series under Macro & Markets → Markets → Updates.
 
+### Market-series reconciliation
+Four editorial purposes need distinct covers, all under **Macro & Markets → Markets**. Existing **Analysis** remains editorial kind where appropriate.
+
+| Existing series | Proposed series | Subcategory |
+|---|---|---|
+| Mid Night / Midnight News Update | Daily Market News Update | Updates |
+| Weekly Capsule | Weekly Market Impact | Market Impact |
+| Triggers Weekly | Weekly Market Triggers | Triggers |
+| Market Weekly Outlook | Monthly Market Outlook only when content is monthly | Outlook |
+
+Use one distinct signature cover per series, reused within that series—not Market Wrap for both daily news/weekly impact or Market Outlook for both triggers/outlook. Leave other genuine wraps/outlooks untouched.
+
+Audit title variants, actual coverage and cover groups before changing anything. Preserve dates, bodies and URLs. Titles include edition date/period; listing and details show consistent series identity. Verify Capsule is retrospective impact and Triggers is upcoming catalysts.
+
+**Do not turn historical weekly outlooks into monthly reports.** Retain weekly identity for weekly content; Monthly Market Outlook applies to confirmed monthly editions or future reports. Flag exceptions for review.
+
+**Live reconciliation:** all 1,020 published rows retrieved. Confirmed 129 daily updates, 33 retrospective weekly-impact posts (including 27 capsules), and 27 weekly-trigger posts (25 titled triggers plus two legacy weekly outlooks). The Market Wrap cover is shared by 129 daily updates, 27 capsules and one unrelated stock-movers post; the Market Outlook cover is shared by 25 triggers. The legacy weekly outlooks currently have individual covers, but their bodies confirm weekly triggers—not monthly coverage.
+
+One monthly-labelled February report has an empty body and an `example.com` PDF destination: **monthly content remains unverified**. Obtain the genuine report before approving its mapping/cover; do not silently delete it. Flag year/range conflicts in two daily titles and an ambiguous December capsule year without changing dates. Classify by reviewed article IDs and body evidence, not broad title/cover replacement.
+
+After mapping approval, prepare four design-consistent covers without invented figures; preserve full images/titles at every size. No image generation, article edits or publication during this review. Use contextual educational actions, not automatic IPO sales links.
+
 ## 2. Recommended taxonomy
 
 ### Macro & Markets
@@ -33,6 +55,7 @@ One primary path per post; optional cross-topic tags, not duplicate copies. ETF 
 - **Markets:** Updates; Market Impact; Triggers; Outlook.
 - Tags: GDP, inflation, rates, global markets, earnings.
 - Keep recurring series distinct from topics.
+- Replace the current broad Analysis filters (Market Wrap / Market Outlook / Macro) with the approved subject hierarchy and distinct series filters; labels and covers must reflect the same series.
 
 ### Investment
 - **Mutual Funds:** Equity; Debt; Hybrid; Solution-Oriented; Other Schemes. Tags: Large/Mid/Small Cap, Flexi/Multi Cap, ELSS, Index, ETF, Fund of Funds. Validate official scheme categories.
@@ -117,6 +140,7 @@ Use topic defaults with per-article overrides. Preserve **73 existing IPO CTAs**
 
 ## 6. Execution after approval
 1. Retrieve all posts; prepare a mapping register (old/new path, tags, series, CTA, uncertainty). Classify titles/bodies, not category names alone. Review representative samples before bulk changes.
+   - Prioritise the four market series: verify coverage cadence and cover assignments, then present old/new titles and cover groups before any renaming or image production.
 2. Add controlled shared CMS taxonomy, separate editorial/media/series fields and complete pagination.
 3. Build listing/detail presentation, navigation, related reading and contextual actions.
 4. Apply approved mappings reversibly; preserve bodies, covers, dates, status and URLs except approved CTA deduplication.
