@@ -248,7 +248,31 @@ function stripWordPressHtml(text: string): string {
 // Some legacy imports converted an outer, single-cell layout table before
 // its nested headings/paragraphs. Recover only textual boundaries: numeric
 // table cells that were concatenated cannot safely be inferred here.
+// Weekly Market Triggers imports collapsed a two-column table into one line
+// ("Trigger for the WeekHow will it impact?Nifty ..."). Split fragments at
+// glued sentence boundaries and present them as a list (no guessed pairing).
+export function recoverCollapsedTriggers(body: string): string {
+  const head = /^#{0,6}\s*Trigger for the WeekHow will it impact\?/;
+  const trimmed = body.trim();
+  if (!head.test(trimmed)) return body;
+  let s = trimmed.replace(head, '');
+  let note = '';
+  const m = s.match(/#\s*([A-Z][A-Za-z-]{1,}\s*[:–-]\s.*)$/);
+  if (m && m.index !== undefined) { note = m[1].replace(/\s*\\?\|\s*/g, ' · '); s = s.slice(0, m.index); }
+  const parts = s.split(/(?<=[a-z0-9%)?.])(?=[A-Z₹])|(?<=[A-Z]{2})(?=[A-Z][a-z]{2})/).map((p) => p.trim()).filter(Boolean);
+  const out: string[] = [];
+  for (const p of parts) {
+    const prev = out[out.length - 1];
+    if (prev !== undefined && (/(\bQ\d|\bCan)$/.test(prev) || /\d$/.test(prev) && /^X\b/.test(p) || prev.length <= 3)) {
+      out[out.length - 1] = prev + (/\bQ\d$|\bCan$/.test(prev) ? ' ' : '') + p;
+    } else out.push(p);
+  }
+  const list = out.map((x) => '- ' + x.replace(/\s#\s*/g, ': ').replace(/\s*\\?\|\s*/g, ' · ')).join('\n');
+  return `## Triggers for the Week and How They May Impact Markets\n\n${list}${note ? `\n\nAbbreviations — ${note}` : ''}`;
+}
+
 export function recoverCollapsedArticle(body: string): string {
+  body = recoverCollapsedTriggers(body);
   const lines = body.trim().split(/\r?\n/);
   if (lines.length < 3 || !/^\|\s*---\s*\|$/.test(lines[1].trim())) return body;
   if (!/^\|[^|]+\|$/.test(lines[0].trim())) return body;
@@ -277,6 +301,9 @@ export function normalizeBody(body: string): string {
     if (!trimmed) return '';
     return trimmed.replace(/\s{2,}/g, ' ');
   }).join('\n');
+
+  // Drop stray HTML comment markers left by WordPress imports
+  text = text.replace(/^\s*(?:<!--|-->)\s*$/gm, '');
 
   // Merge orphaned list markers: "-" on its own line followed by text
   text = text.replace(/^(-|\*)\s*\n+([^\n-*#|>])/gm, '$1 $2');
@@ -380,7 +407,7 @@ function renderInline(text: string): React.ReactNode[] {
 
 // Parse a markdown pipe-table OR tab-separated table block
 function parseTable(lines: string[]): { headers: string[]; rows: string[][] } | null {
-  if (lines.length < 2) return null;
+  if (lines.length < 1) return null;
 
   // Try pipe-delimited first
   if (lines[0].includes('|')) {
@@ -393,7 +420,8 @@ function parseTable(lines: string[]): { headers: string[]; rows: string[][] } | 
     if (lines.length > 1 && /^[\s|:-]+$/.test(lines[1])) {
       dataStart = 2;
     }
-    const rows = lines.slice(dataStart).map(parsePipeRow);
+    const rows = lines.slice(dataStart).filter((l) => !/^[\s|:-]+$/.test(l)).map(parsePipeRow)
+      .map((r) => (r.length < headers.length ? [...r, ...Array(headers.length - r.length).fill('')] : r));
     return { headers, rows };
   }
 
@@ -558,7 +586,12 @@ export function ArticleBodyRenderer({ body }: Props) {
       if (table) {
         elements.push(table);
       } else {
-        tableLines.forEach((line, idx) => elements.push(renderLine(line, tableStart + idx)));
+        // Single-column layout tables (e.g. chart captions): show cell text only, never raw pipes
+        tableLines.forEach((line, idx) => {
+          const cell = line.trim().replace(/^\|/, '').replace(/\|$/, '').trim();
+          if (!cell || /^[\s|:-]+$/.test(cell)) return;
+          elements.push(renderLine(idx === 0 && !cell.startsWith('*') ? `**${cell}**` : cell, tableStart + idx));
+        });
       }
     } else {
       elements.push(renderLine(lines[i], i));

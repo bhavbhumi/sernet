@@ -39,3 +39,13 @@ describe('collapsed article recovery', () => {
     expect(extractToc(body).at(-1)?.text).toBe('Interested in applying for this IPO?');
   });
 });
+import { recoverCollapsedTriggers as rct } from './ArticleBodyRenderer';
+describe('collapsed weekly triggers', () => {
+  it('splits a glued triggers row into list items', () => {
+    const out = rct('### Trigger for the WeekHow will it impact?Nifty -1% down for the week ending 02-OctEven as crude rose, Q1FY27 results loomWith 1.16X subscribed');
+    expect(out).toContain('- Nifty -1% down for the week ending 02-Oct');
+    expect(out).toContain('- Even as crude rose,');
+    expect(out).not.toContain('WeekHow');
+  });
+  it('leaves other bodies unchanged', () => { expect(rct('Hello')).toBe('Hello'); });
+});
