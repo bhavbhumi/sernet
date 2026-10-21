@@ -302,6 +302,9 @@ export function normalizeBody(body: string): string {
     return trimmed.replace(/\s{2,}/g, ' ');
   }).join('\n');
 
+  // Drop stray HTML comment markers left by WordPress imports
+  text = text.replace(/^\s*(?:<!--|-->)\s*$/gm, '');
+
   // Merge orphaned list markers: "-" on its own line followed by text
   text = text.replace(/^(-|\*)\s*\n+([^\n-*#|>])/gm, '$1 $2');
 
@@ -404,7 +407,7 @@ function renderInline(text: string): React.ReactNode[] {
 
 // Parse a markdown pipe-table OR tab-separated table block
 function parseTable(lines: string[]): { headers: string[]; rows: string[][] } | null {
-  if (lines.length < 2) return null;
+  if (lines.length < 1) return null;
 
   // Try pipe-delimited first
   if (lines[0].includes('|')) {
@@ -417,7 +420,8 @@ function parseTable(lines: string[]): { headers: string[]; rows: string[][] } | 
     if (lines.length > 1 && /^[\s|:-]+$/.test(lines[1])) {
       dataStart = 2;
     }
-    const rows = lines.slice(dataStart).map(parsePipeRow);
+    const rows = lines.slice(dataStart).filter((l) => !/^[\s|:-]+$/.test(l)).map(parsePipeRow)
+      .map((r) => (r.length < headers.length ? [...r, ...Array(headers.length - r.length).fill('')] : r));
     return { headers, rows };
   }
 
@@ -582,7 +586,12 @@ export function ArticleBodyRenderer({ body }: Props) {
       if (table) {
         elements.push(table);
       } else {
-        tableLines.forEach((line, idx) => elements.push(renderLine(line, tableStart + idx)));
+        // Single-column layout tables (e.g. chart captions): show cell text only, never raw pipes
+        tableLines.forEach((line, idx) => {
+          const cell = line.trim().replace(/^\|/, '').replace(/\|$/, '').trim();
+          if (!cell || /^[\s|:-]+$/.test(cell)) return;
+          elements.push(renderLine(idx === 0 && !cell.startsWith('*') ? `**${cell}**` : cell, tableStart + idx));
+        });
       }
     } else {
       elements.push(renderLine(lines[i], i));
