@@ -51,6 +51,7 @@ After mapping approval, prepare four design-consistent covers without invented f
 - **Markets:** Updates; Market Impact; Triggers; Outlook.
 - Tags: GDP, inflation, rates, global markets, earnings.
 - Keep recurring series distinct from topics.
+- Replace the current broad Analysis filters (Market Wrap / Market Outlook / Macro) with the approved subject hierarchy and distinct series filters; labels and covers must reflect the same series.
 
 ### Investment
 - **Mutual Funds:** Equity; Debt; Hybrid; Solution-Oriented; Other Schemes. Tags: Large/Mid/Small Cap, Flexi/Multi Cap, ELSS, Index, ETF, Fund of Funds. Validate official scheme categories.
