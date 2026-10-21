@@ -1,5 +1,7 @@
 # Roadmap
 
+- [ ] Reconcile four distinct market series, existing titles, cadence and shared cover assignments; update the organisation plan only before any article/image changes.
+
 - [x] Review Insights Posts organisation and propose six-topic taxonomy, classification audit, contextual CTA rules, listing/detail presentation and SEO migration safeguards; planning only. Website/content changes require approval of the plan; PRIM operational availability still needs official verification.
 
 - [x] Fit complete Insights listing covers and wrap full titles across Articles, Analysis and Awareness; source images/content preserved. Articles verified at 1280/889/390/320px: 12 loaded covers, unclipped titles, no horizontal overflow or page errors, article navigation works; build clean. Preview only.
