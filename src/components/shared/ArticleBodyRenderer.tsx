@@ -248,7 +248,31 @@ function stripWordPressHtml(text: string): string {
 // Some legacy imports converted an outer, single-cell layout table before
 // its nested headings/paragraphs. Recover only textual boundaries: numeric
 // table cells that were concatenated cannot safely be inferred here.
+// Weekly Market Triggers imports collapsed a two-column table into one line
+// ("Trigger for the WeekHow will it impact?Nifty ..."). Split fragments at
+// glued sentence boundaries and present them as a list (no guessed pairing).
+export function recoverCollapsedTriggers(body: string): string {
+  const head = /^#{0,6}\s*Trigger for the WeekHow will it impact\?/;
+  const trimmed = body.trim();
+  if (!head.test(trimmed)) return body;
+  let s = trimmed.replace(head, '');
+  let note = '';
+  const m = s.match(/#\s*([A-Z][A-Za-z-]{1,}\s*[:–-]\s.*)$/);
+  if (m && m.index !== undefined) { note = m[1].replace(/\s*\\?\|\s*/g, ' · '); s = s.slice(0, m.index); }
+  const parts = s.split(/(?<=[a-z0-9%)?.])(?=[A-Z₹])|(?<=[A-Z]{2})(?=[A-Z][a-z]{2})/).map((p) => p.trim()).filter(Boolean);
+  const out: string[] = [];
+  for (const p of parts) {
+    const prev = out[out.length - 1];
+    if (prev !== undefined && (/(\bQ\d|\bCan)$/.test(prev) || /\d$/.test(prev) && /^X\b/.test(p) || prev.length <= 3)) {
+      out[out.length - 1] = prev + (/\bQ\d$|\bCan$/.test(prev) ? ' ' : '') + p;
+    } else out.push(p);
+  }
+  const list = out.map((x) => '- ' + x.replace(/\s#\s*/g, ': ').replace(/\s*\\?\|\s*/g, ' · ')).join('\n');
+  return `## Triggers for the Week and How They May Impact Markets\n\n${list}${note ? `\n\nAbbreviations — ${note}` : ''}`;
+}
+
 export function recoverCollapsedArticle(body: string): string {
+  body = recoverCollapsedTriggers(body);
   const lines = body.trim().split(/\r?\n/);
   if (lines.length < 3 || !/^\|\s*---\s*\|$/.test(lines[1].trim())) return body;
   if (!/^\|[^|]+\|$/.test(lines[0].trim())) return body;
