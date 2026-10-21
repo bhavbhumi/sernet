@@ -194,13 +194,7 @@ export default function AnalysisDetail() {
         transition={{ duration: 0.4 }}
         className="container-sernet py-10 max-w-6xl mx-auto"
       >
-        {/* Back link */}
-        <Link
-          to="/insights"
-          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground mb-8 transition-colors"
-        >
-          <ArrowLeft className="h-4 w-4" /> Back to Insights
-        </Link>
+        <PostBreadcrumb post={analysis} />
 
         {/* Two-column layout */}
         <div className="flex gap-8 items-start">
