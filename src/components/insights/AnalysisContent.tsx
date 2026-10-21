@@ -49,13 +49,13 @@ function AnalysisCard({ item, index }: { item: any; index: number }) {
     >
       {imageUrl && (
         <Link to={`/insights/analysis/${item.id}`} className="block">
-          <div className="aspect-[16/9] overflow-hidden">
+          <div className="aspect-[16/9] overflow-hidden bg-muted/30">
             <img
               src={imageUrl}
               alt={item.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain"
               loading="lazy"
-              onError={(e) => { (e.target as HTMLImageElement).parentElement!.style.display = 'none'; }}
+              onError={(e) => { const parent = e.currentTarget.parentElement; if (parent) parent.style.display = 'none'; }}
             />
           </div>
         </Link>
@@ -71,7 +71,7 @@ function AnalysisCard({ item, index }: { item: any; index: number }) {
       </div>
 
       <Link to={`/insights/analysis/${item.id}`}>
-        <h3 className="text-lg font-semibold text-foreground mb-2 line-clamp-2 hover:text-primary transition-colors">
+        <h3 className="text-lg font-semibold text-foreground mb-2 break-words hover:text-primary transition-colors">
           {item.title}
         </h3>
       </Link>
@@ -79,12 +79,12 @@ function AnalysisCard({ item, index }: { item: any; index: number }) {
         <p className="text-sm text-muted-foreground mb-4 line-clamp-3 flex-1">{item.excerpt}</p>
       )}
 
-      <div className="flex items-center justify-between text-xs text-muted-foreground mb-4">
+      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 text-xs text-muted-foreground mb-4">
         <div className="flex items-center gap-1">
           <User className="h-3 w-3" />
           <span>{item.author}</span>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
           {item.read_time && <span>{item.read_time}</span>}
           {dateStr && (
             <span className="flex items-center gap-1">

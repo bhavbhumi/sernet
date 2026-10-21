@@ -25,3 +25,5 @@
 - Prerender compliance and product pages at build time (`prerender/legalPrerender.ts`) from the same CMS rows and shared content modules (`src/content/*`) the React pages use; crawlers get real text without a second editable copy. New compliance/product pages must be added there.
 - "Last reviewed" dates come from `legal_pages.last_reviewed_on` or `pageReviewDates`, set only after a genuine content review; both legal CMS editors expose an explicit date input, never derive dates from deploy or edit timestamps.
 - Give each product one full home page (/tickfunds, /tushil, /choicefinx); Services tabs use the short `ServiceOverview` summary and Pricing shows only charges, linking to the product page; this prevents product copy drifting across pages.
+
+- Fit Insights listing covers without cropping in stable image frames and wrap full article titles; embedded cover text must not be cut off at any breakpoint.
