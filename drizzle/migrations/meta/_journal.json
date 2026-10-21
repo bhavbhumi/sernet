@@ -15,6 +15,13 @@
       "when": 1792076318851,
       "tag": "0001_retire_csr_page",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792575658686,
+      "tag": "0002_add_article_taxonomy_fields",
+      "breakpoints": true
     }
   ]
 }
