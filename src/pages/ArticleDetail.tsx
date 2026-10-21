@@ -250,13 +250,7 @@ export default function ArticleDetail() {
         transition={{ duration: 0.4 }}
         className="container-sernet py-10 max-w-6xl mx-auto"
       >
-        {/* Back link */}
-        <Link
-          to="/insights"
-          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground mb-8 transition-colors"
-        >
-          <ArrowLeft className="h-4 w-4" /> Back to Insights
-        </Link>
+        <PostBreadcrumb post={article} />
 
         {/* Two-column layout: TOC sidebar + main content */}
         <div className="flex gap-8 items-start">
@@ -379,6 +373,8 @@ export default function ArticleDetail() {
                 <ArticleBodyRenderer body={article.body} />
               </div>
             )}
+
+            <PostFooter post={article} />
 
             {/* Bottom engagement bar */}
             <div className="mt-12 pt-6 border-t border-border flex items-center justify-between flex-wrap gap-3">
