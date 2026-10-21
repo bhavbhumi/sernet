@@ -101,3 +101,12 @@
 - [ ] Add further office recognition records — awaits readable photographs and exact certificate/trophy inscriptions from management; 2016 personal award title remains unknown.
 - [x] Audit items 6 (Estate Planning stats: 500+ wills, 50+ trusts, confidential stat) and 8 (sales +91 92067 67670, support +91 77070 22020 everywhere) — done and verified.
 - [ ] Unique cover images for draft articles before bulk publish (user-approved: batch-generate per category, publish all at once). Done: 15 published articles re-imaged; 10 category covers; IPO Basket 73/73; Investment 60/81. Remaining: Investment 21, Fundamentals 31, Market Outlook 25, Trading 17, Markets 11, Personal Finance 1, Market Basics 1. Market Wrap (157) and Macro (106) keep shared category covers. Link by exact title (watch curly apostrophes — use ILIKE on mismatch), verify with count query after each batch.
+
+## Insights reorganisation — progress (data layer done)
+- [x] Added `post_type` + `tags` columns to articles (durable migration file still to add)
+- [x] Applied approved mapping to all 1,020 articles (26 batches + 7-row fix; verified 0 unmapped)
+- [ ] Rebuild Insights page tabs (All Posts + 6 Types) with URL-driven filters
+- [ ] AdminPosts: expose Type/Tags fields (keep kind/media internal)
+- [ ] Article detail: breadcrumbs, contextual CTA + disclaimer, related reading
+- [ ] Series signature covers (Daily News, Weekly Impact, Weekly Triggers)
+- [ ] Migration file, generated types refresh, tests, build, then publish
