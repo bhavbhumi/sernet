@@ -6,7 +6,7 @@
 
 Planning only: no website, article, classification, date, image or publication changes have been made.
 
-**Inventory: 1,020 published posts—427 Articles, 586 Analysis, 2 Awareness, 5 Reports.** 499 lack subcategories; names and series are inconsistent. Three repeated-title groups need comparison, not automatic deletion. Administrative retrieval can omit rows beyond 1,000; public Articles currently fit.
+**1,020 posts: 427 Articles, 586 Analysis, 2 Awareness, 5 Reports.** 499 lack subcategories. Names/series are inconsistent. Check three repeated-title groups before deletion. Administrative retrieval can omit posts beyond 1,000.
 
 Gaps: initial article bodies, individual-post sitemap entries and consistent SEO overrides. Sharing metadata exists.
 
@@ -40,7 +40,7 @@ One primary path per post; optional cross-topic tags, not duplicate copies. ETF 
 - **PMS:** Discretionary; Non-Discretionary; Advisory; PRIM. Advisory describes the provider, not SERNET. PRIM = Portfolio Managers Route for Investing in Mutual Fund Units. September 2026 board approval was located; operative rules/provider availability remain unverified. Educational coverage only until verified.
 - **AIF:** Category I; Category II; Category III. Tags: private equity/debt, venture capital, infrastructure. Do not assume classifications for art or unusual strategies.
 - **Bonds & Fixed Income:** Government & Sovereign; Corporate; Deposits. Overlapping tags: perpetual, MLD, green/ESG, tax-free, secured/unsecured, fixed deposits.
-- **Precious Metals:** Gold; Silver. Tags: bars, coins, jewellery, ETF, fund, EGR, digital gold. EGR and digital gold have different protections; explain them.
+- **Precious Metals:** Gold; Silver. Tags: bars, coins, jewellery, ETF/fund, EGR, digital gold. Explain differing protections.
 - **Real Estate:** Direct Property; REITs & Property Funds. Tags: land, building/unit, residential, commercial, industrial, agricultural. Separate form, use and vehicle.
 
 ### Insurance
@@ -127,12 +127,7 @@ Use topic defaults with per-article overrides. Preserve **73 existing IPO CTAs**
 ### Technical notes
 Preserve existing `content_type`; add shared subject/tag identifiers, not browser-only trees. Leave Updates/support/legal/integrations untouched. Test classification, CTA eligibility, dates, pagination and canonicals.
 
-### References and unresolved checks
-- [Google: people-first financial content](https://developers.google.com/search/docs/fundamentals/creating-helpful-content)
-- [Google: URL structure](https://developers.google.com/search/docs/crawling-indexing/url-structure)
-- [Google: faceted navigation](https://developers.google.com/crawling/docs/faceted-navigation)
-- [Google: Article structured data](https://developers.google.com/search/docs/appearance/structured-data/article)
-- [SEBI: September 2026 board announcement / PRIM](https://www.sebi.gov.in/sebi_data/attachdocs/sep-2026/1790259036651.pdf)
-- [SEBI: digital-gold caution](https://www.sebi.gov.in/media-and-notifications/press-releases/nov-2025/caution-to-public-regarding-dealing-in-digital-gold-_97676.html)
+### Validation sources and limits
+[Google people-first financial content](https://developers.google.com/search/docs/fundamentals/creating-helpful-content) and [Article guidance](https://developers.google.com/search/docs/appearance/structured-data/article) support the SEO approach. [SEBI's September 2026 board announcement](https://www.sebi.gov.in/sebi_data/attachdocs/sep-2026/1790259036651.pdf) supports PRIM's announced identity, not verified availability. [SEBI's digital-gold caution](https://www.sebi.gov.in/media-and-notifications/press-releases/nov-2025/caution-to-public-regarding-dealing-in-digital-gold-_97676.html) supports separating its protections from EGR.
 
-Not legal certification. Verify PRIM operational availability, newly promoted product journeys and final body-level mappings before applying those respective parts.
+Not legal certification. Verify PRIM operational rules, new product journeys and uncertain body-level classifications before applying them.
