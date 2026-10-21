@@ -100,6 +100,8 @@ export default function ArticleDetail() {
 
   // Extract TOC from article body
   const toc: TocEntry[] = article?.body ? extractToc(article.body) : [];
+  // Only these headings become chips in the mobile topic index
+  const mobileToc = toc.filter((entry) => entry.level <= 2);
 
   // Intersection observer to highlight active TOC section
   useEffect(() => {
@@ -305,23 +307,25 @@ export default function ArticleDetail() {
                     <video controls className="w-full h-full" src={article.media_url} />
                   </div>
                 )}
-                <div className="bg-muted/40 border border-border/60 rounded-xl p-4">
-                  <div className="flex items-center gap-2 mb-3 text-sm font-semibold text-foreground">
-                    <List className="h-4 w-4 text-primary" />
-                    Topic Index
+                {mobileToc.length > 0 && (
+                  <div className="bg-muted/40 border border-border/60 rounded-xl p-4">
+                    <div className="flex items-center gap-2 mb-3 text-sm font-semibold text-foreground">
+                      <List className="h-4 w-4 text-primary" />
+                      Topic Index
+                    </div>
+                    <div className="flex gap-2 overflow-x-auto pb-2" style={{ scrollbarWidth: 'thin' }}>
+                      {mobileToc.map((entry) => (
+                        <a
+                          key={entry.slug}
+                          href={`#${entry.slug}`}
+                          className="text-xs px-3 py-1.5 rounded-full bg-background border border-border text-muted-foreground hover:text-primary hover:border-primary transition-colors whitespace-nowrap shrink-0"
+                        >
+                          {entry.text}
+                        </a>
+                      ))}
+                    </div>
                   </div>
-                  <div className="flex gap-2 overflow-x-auto pb-2" style={{ scrollbarWidth: 'thin' }}>
-                    {toc.filter(e => e.level <= 2).map((entry) => (
-                      <a
-                        key={entry.slug}
-                        href={`#${entry.slug}`}
-                        className="text-xs px-3 py-1.5 rounded-full bg-background border border-border text-muted-foreground hover:text-primary hover:border-primary transition-colors whitespace-nowrap shrink-0"
-                      >
-                        {entry.text}
-                      </a>
-                    ))}
-                  </div>
-                </div>
+                )}
               </div>
             )}
 
