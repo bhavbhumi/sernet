@@ -1,4 +1,4 @@
-
+import { POST_TYPES } from '@/lib/insightsTaxonomy';
 import { useEffect, useState, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { AdminLayout } from '@/components/admin/AdminLayout';
@@ -48,12 +48,15 @@ interface Post {
   item_date: string | null;
   file_url: string | null;
   source_url: string | null;
+  post_type: string | null;
+  tags: string[] | null;
 }
 
 const emptyForm = {
   title: '', excerpt: '', body: '', author: 'Research Desk',
   content_type: 'article' as ContentType, category: '', sub_category: '',
   media_url: '', status: 'draft', item_date: '', file_url: '', source_url: '',
+  post_type: '', tags: '',
 };
 
 function AdminPagination({ page, totalPages, total, onPage }: { page: number; totalPages: number; total: number; onPage: (p: number) => void }) {
@@ -159,6 +162,7 @@ export default function AdminPosts() {
       sub_category: item.sub_category ?? '', media_url: item.media_url ?? '',
       status: item.status, item_date: item.item_date ?? '',
       file_url: item.file_url ?? '', source_url: item.source_url ?? '',
+      post_type: item.post_type ?? '', tags: (item.tags ?? []).join(', '),
     });
     setDialogOpen(true);
   };
@@ -172,6 +176,8 @@ export default function AdminPosts() {
     const payload: any = {
       title: form.title, excerpt: form.excerpt || null, body: form.body || null, author: form.author,
       content_type: form.content_type, category: form.category, sub_category: form.sub_category || null,
+      post_type: form.post_type || null,
+      tags: form.tags.split(',').map(t => t.trim()).filter(Boolean),
       media_url: form.media_url || null, thumbnail_url: form.media_url || null,
       status: form.status, item_date: form.item_date || null,
       file_url: form.file_url || null, source_url: form.source_url || null,
@@ -368,6 +374,19 @@ export default function AdminPosts() {
                   {CONTENT_TYPES.map(t => <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>)}
                 </SelectContent>
               </Select>
+            </div>
+            <div className="space-y-1.5">
+              <Label>Type <span className="text-destructive">*</span></Label>
+              <Select value={form.post_type || undefined} onValueChange={v => setForm(f => ({ ...f, post_type: v }))}>
+                <SelectTrigger><SelectValue placeholder="Choose Insights tab" /></SelectTrigger>
+                <SelectContent>
+                  {POST_TYPES.map(t => <SelectItem key={t} value={t}>{t}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1.5">
+              <Label>Tags</Label>
+              <Input placeholder="Comma separated, e.g. Nifty, RBI Policy" value={form.tags} onChange={e => setForm(f => ({ ...f, tags: e.target.value }))} />
             </div>
             <div className="space-y-1.5">
               <div className="flex items-center gap-1.5">
