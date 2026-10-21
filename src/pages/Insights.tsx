@@ -1,71 +1,61 @@
-import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Layout } from '@/components/layout/Layout';
 import { PageHero } from '@/components/layout/PageHero';
 import { SEOHead } from '@/components/shared/SEOHead';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArticlesContent } from '@/components/insights/ArticlesContent';
-import { AnalysisContent } from '@/components/insights/AnalysisContent';
-import { ReportsContent } from '@/components/insights/ReportsContent';
+import { motion } from 'framer-motion';
+import { PostsContent } from '@/components/insights/PostsContent';
 import { BulletinContent } from '@/components/insights/BulletinContent';
-import { AwarenessContent } from '@/components/insights/AwarenessContent';
+import { POST_TYPES, typeSlug, typeFromSlug } from '@/lib/insightsTaxonomy';
 
-const insightsTabs = ['Articles', 'Analysis', 'Reports', 'Bulletin', 'Awareness'] as const;
-type InsightsTab = (typeof insightsTabs)[number];
-
-const tabContent: Record<InsightsTab, React.ReactNode> = {
-  Articles: <ArticlesContent />,
-  Analysis: <AnalysisContent />,
-  Reports: <ReportsContent />,
-  Bulletin: <BulletinContent />,
-  Awareness: <AwarenessContent />,
-};
+const tabs = [
+  { slug: 'all', label: 'All Posts' },
+  ...POST_TYPES.map((t) => ({ slug: typeSlug(t), label: t })),
+  { slug: 'bulletin', label: 'Bulletin' },
+];
 
 const Insights = () => {
-  const [activeTab, setActiveTab] = useState<InsightsTab>('Articles');
+  const [params, setParams] = useSearchParams();
+  const raw = (params.get('tab') ?? 'all').toLowerCase();
+  const active = tabs.some((t) => t.slug === raw) ? raw : 'all';
+  const activeLabel = tabs.find((t) => t.slug === active)!.label;
 
   return (
     <Layout>
       <SEOHead
-        title="Insights"
-        description="Expert articles, market analysis, research reports and bulletins from SERNET Financial Services."
-        path="/insights"
+        title={active === 'all' ? 'Insights' : `${activeLabel} Insights`}
+        description="Articles and market updates on macro & markets, investment, insurance, trading, credit and personal finance from SERNET Financial Services."
+        path={active === 'all' ? '/insights' : `/insights?tab=${active}`}
         jsonLd={{
           '@context': 'https://schema.org',
           '@type': 'CollectionPage',
           name: 'SERNET Insights',
-          description: 'Expert articles, market analysis, research reports and bulletins from SERNET Financial Services.',
           url: 'https://sernetindia.com/insights',
           isPartOf: { '@type': 'WebSite', name: 'SERNET Financial Services', url: 'https://sernetindia.com' },
-          about: ['Investing', 'Trading', 'Mutual Funds', 'Market Analysis', 'Financial Awareness'],
+          about: [...POST_TYPES],
         }}
       />
       <PageHero
         title="Stay ahead with expert"
         highlight="Insights"
-        description="Articles, market analysis, research reports, and important bulletins — all in one place."
-        
+        description="Markets, investment, insurance, trading, credit and personal finance — organised so you can find what matters."
       />
 
-      {/* Tab Navigation */}
       <div className="border-b border-border sticky top-16 z-20 bg-background/95 backdrop-blur-sm">
         <div className="container-sernet">
-          <div className="flex gap-8 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
-            {insightsTabs.map((tab) => (
+          <div className="flex gap-8 overflow-x-auto" style={{ scrollbarWidth: 'none' }} role="tablist">
+            {tabs.map((tab) => (
               <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
+                key={tab.slug}
+                role="tab"
+                aria-selected={active === tab.slug}
+                onClick={() => setParams(tab.slug === 'all' ? {} : { tab: tab.slug })}
                 className={`pb-3.5 pt-4 text-[1.0625rem] transition-colors relative whitespace-nowrap ${
-                  activeTab === tab
-                    ? 'text-foreground font-medium'
-                    : 'text-muted-foreground hover:text-foreground'
+                  active === tab.slug ? 'text-foreground font-medium' : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
-                {tab}
-                {activeTab === tab && (
-                  <motion.div
-                    layoutId="insights-tab-underline"
-                    className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-primary"
-                  />
+                {tab.label}
+                {active === tab.slug && (
+                  <motion.div layoutId="insights-tab-underline" className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-primary" />
                 )}
               </button>
             ))}
@@ -73,18 +63,7 @@ const Insights = () => {
         </div>
       </div>
 
-      {/* Tab Content */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activeTab}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.25 }}
-        >
-          {tabContent[activeTab]}
-        </motion.div>
-      </AnimatePresence>
+      {active === 'bulletin' ? <BulletinContent /> : <PostsContent key={active} type={typeFromSlug(active)} />}
     </Layout>
   );
 };
