@@ -100,13 +100,15 @@
 - [x] Implement approved family-history/recognition plan — confirmed 1986/1987/1994/10 March 2004 timeline, central dates and anniversary tests, all eight locale summaries and metadata corrected; six demo awards removed, original 2016 keepsake enlarged; `/media` redirects to CMS Press, placeholder downloads removed; desktop/mobile verified without page errors or overflow. Publishing pending.
 - [ ] Add further office recognition records — awaits readable photographs and exact certificate/trophy inscriptions from management; 2016 personal award title remains unknown.
 - [x] Audit items 6 (Estate Planning stats: 500+ wills, 50+ trusts, confidential stat) and 8 (sales +91 92067 67670, support +91 77070 22020 everywhere) — done and verified.
-- [ ] Unique cover images for draft articles before bulk publish (user-approved: batch-generate per category, publish all at once). Done: 15 published articles re-imaged; 10 category covers; IPO Basket 73/73; Investment 60/81. Remaining: Investment 21, Fundamentals 31, Market Outlook 25, Trading 17, Markets 11, Personal Finance 1, Market Basics 1. Market Wrap (157) and Macro (106) keep shared category covers. Link by exact title (watch curly apostrophes — use ILIKE on mismatch), verify with count query after each batch.
+- [x] Unique cover images for every article before bulk publish — all categories covered (IPO Basket 73/73, Investment 81/81, Fundamentals 31/31, Trading 17/17, Markets 11, Personal Finance 1, Market Basics 1); Market Wrap, Macro and Market Outlook keep shared series covers. All 1,020 articles published, zero drafts, verified live.
 
-## Insights reorganisation — progress (data layer done)
-- [x] Added `post_type` + `tags` columns to articles (durable migration file still to add)
-- [x] Applied approved mapping to all 1,020 articles (26 batches + 7-row fix; verified 0 unmapped)
-- [ ] Rebuild Insights page tabs (All Posts + 6 Types) with URL-driven filters
-- [ ] AdminPosts: expose Type/Tags fields (keep kind/media internal)
-- [ ] Article detail: breadcrumbs, contextual CTA + disclaimer, related reading
-- [ ] Series signature covers (Daily News, Weekly Impact, Weekly Triggers)
-- [ ] Migration file, generated types refresh, tests, build, then publish
+## Insights reorganisation — done and live
+- [x] `post_type` + `tags` columns on articles, recorded durably in `drizzle/migrations/0002_add_article_taxonomy_fields.sql`; generated types refreshed.
+- [x] Approved mapping applied to all 1,020 articles (26 batches + 7-row fix; verified 0 unmapped).
+- [x] Insights page rebuilt: All Posts + 6 Types + Bulletin, category → subcategory chips, tag click, title search, URL-driven filters, pagination; covers shown uncropped.
+- [x] Admin post editor exposes Type and Tags (legacy kind/media kept internal).
+- [x] Article and Analysis pages: Home › Insights › Type › Category trail, contextual next-step CTA and short disclaimer per type; IPO posts keep the approved Choice FinX section only.
+- [x] Weekly Market Impact and Weekly Market Triggers got their own signature covers (52 posts re-pointed; 8 already-unique untouched).
+- [x] Published and verified live on sernetindia.com: tabs, filters, breadcrumb, disclaimer, CTA, both new covers serving, article share preview carries its own title/image, no page errors or phone overflow.
+- [ ] Disclaimer wording and next-step link targets await management/compliance sign-off before wide sharing.
+- [ ] Credit tab stays empty until posts are tagged Credit; no genuine Monthly Market Outlook edition exists yet; the Indistock third-party research report still needs their written permission.
