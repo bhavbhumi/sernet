@@ -21,7 +21,6 @@ const PageLoader = () => (
 
 // Core pages
 const ArticleDetail = lazy(() => import("./pages/ArticleDetail"));
-const AnalysisDetail = lazy(() => import("./pages/AnalysisDetail"));
 const About = lazy(() => import("./pages/About"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const Support = lazy(() => import("./pages/Support"));
@@ -243,7 +242,7 @@ const App = () => (
 
             {/* Article & Analysis detail */}
             <Route path="/insights/articles/:id" element={<ArticleDetail />} />
-            <Route path="/insights/analysis/:id" element={<AnalysisDetail />} />
+            <Route path="/insights/analysis/:id" element={<ArticleDetail />} />
 
             {/* Unified Login */}
             <Route path="/login" element={<Login />} />

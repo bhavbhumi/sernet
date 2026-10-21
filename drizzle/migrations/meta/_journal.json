@@ -29,6 +29,13 @@
       "when": 1792578389989,
       "tag": "0003_temp_weekly_body_staging",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1792578418328,
+      "tag": "0004_disable_weekly_body_staging",
+      "breakpoints": true
     }
   ]
 }
