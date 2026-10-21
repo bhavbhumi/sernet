@@ -125,20 +125,20 @@ After mapping approval, prepare four design-consistent covers without invented f
 Use topic defaults with per-article overrides. Preserve **73 existing IPO CTAs** without duplicates; no blind body appends. Link relevant posts/services naturally. 
 
 ### Contextual disclaimers
-Audit body-level disclaimers separately from CTA identity lines and the global footer; a broker/AP label alone does not establish risk-disclosure coverage. Keep one concise, readable contextual note near the article end/CTA, with relevant inline caveats beside specific figures or strategies. Do not duplicate existing adequate notes or add a long boilerplate panel to every card.
+Audit body-level notes separately from CTA identity/global footer: broker/AP identification alone is not risk coverage. Use one concise note near article end/CTA, plus inline caveats for specific figures/strategies. No duplicate boilerplate or disclaimer panel on listing cards.
 
 | Context | Proposed coverage to review |
 |---|---|
-| Macro / markets | Educational commentary; dated sources, forward-looking uncertainty; no personalised recommendation or assured return |
-| IPO / stocks / derivatives | Securities market risk; IPO allotment/listing gains not assured; derivatives leverage/loss risk when relevant; Choice is broker, SERNET AP |
-| MF / SIF | Exact relevant market-risk statement; Regular Plan/provider remuneration and distributor scope; SIF eligibility/strategy risks only from verified documents |
-| PMS / AIF | Provider-led management, eligibility and liquidity/product risks; SERNET distribution scope, not manager/adviser; no guaranteed returns |
-| Bonds / deposits / precious metals | Credit/default, liquidity and relevant price/interest-rate risks; distinguish sovereign/corporate obligations and digital-gold/EGR protections |
-| Insurance | Policy terms, exclusions, waiting periods and underwriting; Shrigoda broker/SERNET referral role; referral remuneration, not a claim/issuance promise |
-| Credit | Lender approval, rates/terms, collateral and repayment risks where applicable; arrangement only LAMF/LAS/LAPM, otherwise counselling |
-| Tax / estate / personal planning | General education; qualified tax/legal advice where required; suitability context without implying SERNET is an RIA |
+| Macro / markets | Education, dated sources, uncertainty; no personalised recommendation or assured returns |
+| IPO / stocks / derivatives | Market risk; no assured allotment/listing gain; relevant leverage risks; Choice broker/SERNET AP |
+| MF / SIF | Market risk; Regular Plan remuneration/distributor scope; verified SIF eligibility/risks |
+| PMS / AIF | Provider-led management; eligibility, liquidity/other risks; distributor—not manager/adviser |
+| Bonds / deposits / metals | Relevant credit/default, liquidity, price/rate risks; distinguish products/protections |
+| Insurance | Terms/exclusions/underwriting; Shrigoda broker/SERNET referrer, remuneration; no issuance/claim promise |
+| Credit | Lender terms/approval, collateral/repayment risk; arrange LAMF/LAS/LAPM only |
+| Tax / estate / planning | Education; qualified tax/legal advice when needed; no SERNET RIA implication |
 
-Prepare sample wording and a per-post gap register for approval before insertion. Financial-content risk and scope review remains necessary: disclaimers cannot cure misleading recommendations, claims or service promises. Include the same notes in initial HTML.
+Approve sample wording/per-post gaps before insertion. Disclaimers cannot cure misleading recommendations or claims. Include notes in initial HTML.
 
 ## 5. SEO and financial-content safeguards
 
