@@ -1,5 +1,7 @@
 # Roadmap
 
+- [ ] Simplify the proposed posting/display taxonomy to Type → Category → Subcategory + Tags; audit existing contextual post disclaimers and reconcile gaps with CTA rules. Planning only.
+
 - [x] Reconcile market series and cover assignments from all 1,020 live posts; revised plan includes 129 daily updates, 33 weekly-impact posts and 27 weekly triggers. Monthly-labelled report lacks substantive content/genuine PDF; monthly mapping awaits source confirmation. No article/image/publication changes.
 
 - [x] Review Insights Posts organisation and propose six-topic taxonomy, classification audit, contextual CTA rules, listing/detail presentation and SEO migration safeguards; planning only. Website/content changes require approval of the plan; PRIM operational availability still needs official verification.
