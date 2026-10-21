@@ -2,7 +2,7 @@
 
 ## Recommendation and findings
 
-**Keep six subject tabs**, separating subject, editorial kind, format and series. Education must not imply service availability.
+**Keep six Type tabs**, with Category → Subcategory and Tags. No Editorial Kind or Media Format fields/filters in posting or public views for now. Education must not imply service availability.
 
 Planning only: no website, article, classification, date, image or publication changes have been made.
 
@@ -20,14 +20,11 @@ The [reference](https://invoicemonk.com/en/blog/the-10-best-personal-finance-blo
 | Category: product/topic family | Mutual Funds |
 | Subcategory: principal subject | Equity |
 | Tags: reusable finer distinctions | Large Cap, Index Funds, ETF |
-| Editorial kind: existing labels | Article / Analysis / Awareness / Report |
-| Media format | Text / Image / Audio / Video |
-| Series: recurring identity | Market Wrap / Triggers Weekly |
 
-One primary path per post; optional cross-topic tags, not duplicate copies. ETF spans asset classes. Market Wrap is a series under Macro & Markets → Markets → Updates.
+One primary path per post; optional tags, not duplicate copies. Series identity is expressed through contextual titles and controlled tags, not another posting field. ETF spans asset classes. Existing text, attachments and historical kinds remain available internally for compatibility, not visible taxonomy.
 
 ### Market-series reconciliation
-Four editorial purposes need distinct covers, all under **Macro & Markets → Markets**. Existing **Analysis** remains editorial kind where appropriate.
+Four purposes need distinct covers, all under **Macro & Markets → Markets**. Former Analysis posts join this Type; no separate Analysis posting choice or public filter.
 
 | Existing series | Proposed series | Subcategory |
 |---|---|---|
@@ -55,7 +52,7 @@ After mapping approval, prepare four design-consistent covers without invented f
 - **Markets:** Updates; Market Impact; Triggers; Outlook.
 - Tags: GDP, inflation, rates, global markets, earnings.
 - Keep recurring series distinct from topics.
-- Replace the current broad Analysis filters (Market Wrap / Market Outlook / Macro) with the approved subject hierarchy and distinct series filters; labels and covers must reflect the same series.
+- Replace broad Analysis filters with Type/category/subcategory and tags; recurring-series titles, tags and covers must agree.
 
 ### Investment
 - **Mutual Funds:** Equity; Debt; Hybrid; Solution-Oriented; Other Schemes. Tags: Large/Mid/Small Cap, Flexi/Multi Cap, ELSS, Index, ETF, Fund of Funds. Validate official scheme categories.
@@ -77,7 +74,7 @@ After mapping approval, prepare four design-consistent covers without invented f
 - **Stocks & Equity Markets:** IPOs; Stocks; Sectors; Industries.
 - **Commodities:** Energy; Agriculture; Base Metals; Precious Metals.
 - **Currency:** Currency Derivatives; Hedging & Risk; Currency Market Updates.
-- IPO company notes move primarily here; IPO Basket can remain a recognisable tag/series.
+- IPO company notes move here; IPO Basket can remain a tag.
 - Weather is educational unless tradability is verified. Do not imply unrestricted offshore forex or unverified broker segments.
 
 ### Credit
@@ -98,7 +95,7 @@ After mapping approval, prepare four design-consistent covers without invented f
 ## 3. Listing and detail experience
 
 ### Listing
-- Insights becomes **All Posts + six subject tabs**. Editorial kind, media format and series become secondary filters; no post kinds are deleted.
+- Insights becomes **All Posts + six Type tabs**, category/subcategory filters and optional tags. No Editorial Kind, Media Format or separate Series controls. All existing posts/attachments remain accessible.
 - Reveal categories/subcategories progressively; optional tags refine further.
 - Search; newest-first; genuine dates.
 - Complete covers, full titles, excerpt, topic, date, author. Preserve images; no cropping.
@@ -127,6 +124,22 @@ After mapping approval, prepare four design-consistent covers without invented f
 
 Use topic defaults with per-article overrides. Preserve **73 existing IPO CTAs** without duplicates; no blind body appends. Link relevant posts/services naturally. 
 
+### Contextual disclaimers
+Audit body-level disclaimers separately from CTA identity lines and the global footer; a broker/AP label alone does not establish risk-disclosure coverage. Keep one concise, readable contextual note near the article end/CTA, with relevant inline caveats beside specific figures or strategies. Do not duplicate existing adequate notes or add a long boilerplate panel to every card.
+
+| Context | Proposed coverage to review |
+|---|---|
+| Macro / markets | Educational commentary; dated sources, forward-looking uncertainty; no personalised recommendation or assured return |
+| IPO / stocks / derivatives | Securities market risk; IPO allotment/listing gains not assured; derivatives leverage/loss risk when relevant; Choice is broker, SERNET AP |
+| MF / SIF | Exact relevant market-risk statement; Regular Plan/provider remuneration and distributor scope; SIF eligibility/strategy risks only from verified documents |
+| PMS / AIF | Provider-led management, eligibility and liquidity/product risks; SERNET distribution scope, not manager/adviser; no guaranteed returns |
+| Bonds / deposits / precious metals | Credit/default, liquidity and relevant price/interest-rate risks; distinguish sovereign/corporate obligations and digital-gold/EGR protections |
+| Insurance | Policy terms, exclusions, waiting periods and underwriting; Shrigoda broker/SERNET referral role; referral remuneration, not a claim/issuance promise |
+| Credit | Lender approval, rates/terms, collateral and repayment risks where applicable; arrangement only LAMF/LAS/LAPM, otherwise counselling |
+| Tax / estate / personal planning | General education; qualified tax/legal advice where required; suitability context without implying SERNET is an RIA |
+
+Prepare sample wording and a per-post gap register for approval before insertion. Financial-content risk and scope review remains necessary: disclaimers cannot cure misleading recommendations, claims or service promises. Include the same notes in initial HTML.
+
 ## 5. SEO and financial-content safeguards
 
 - Preserve UUID URLs and historical dates; friendly URLs are a separate decision.
@@ -141,14 +154,14 @@ Use topic defaults with per-article overrides. Preserve **73 existing IPO CTAs**
 ## 6. Execution after approval
 1. Retrieve all posts; prepare a mapping register (old/new path, tags, series, CTA, uncertainty). Classify titles/bodies, not category names alone. Review representative samples before bulk changes.
    - Prioritise the four market series: verify coverage cadence and cover assignments, then present old/new titles and cover groups before any renaming or image production.
-2. Add controlled shared CMS taxonomy, separate editorial/media/series fields and complete pagination.
-3. Build listing/detail presentation, navigation, related reading and contextual actions.
+2. Add controlled shared CMS Type/category/subcategory/tags and complete pagination; remove visible Editorial Kind/Media Format choices without deleting historical data or media.
+3. Build listing/detail presentation, navigation, related reading, contextual actions and approved contextual disclaimers.
 4. Apply approved mappings reversibly; preserve bodies, covers, dates, status and URLs except approved CTA deduplication.
 5. Verify totals, initial HTML, sitemap/canonicals, social previews, real enquiry/login flows, accessibility, light/dark and 320/390/889/1280px layouts. Report changes/exceptions.
 6. Preview approval, then explicit publication authorisation.
 
 ### Technical notes
-Preserve existing `content_type`; add shared subject/tag identifiers, not browser-only trees. Leave Updates/support/legal/integrations untouched. Test classification, CTA eligibility, dates, pagination and canonicals.
+Preserve legacy `content_type`/media internally for old routes/import compatibility; new posting uses the four approved taxonomy fields. Add shared Type/tag identifiers, not browser-only trees. Leave Updates/support/legal/integrations untouched. Test classification, CTA/disclaimer rules, dates, pagination and canonicals.
 
 ### Validation sources and limits
 [Google people-first financial content](https://developers.google.com/search/docs/fundamentals/creating-helpful-content) and [Article guidance](https://developers.google.com/search/docs/appearance/structured-data/article) support the SEO approach. [SEBI's September 2026 board announcement](https://www.sebi.gov.in/sebi_data/attachdocs/sep-2026/1790259036651.pdf) supports PRIM's announced identity, not verified availability. [SEBI's digital-gold caution](https://www.sebi.gov.in/media-and-notifications/press-releases/nov-2025/caution-to-public-regarding-dealing-in-digital-gold-_97676.html) supports separating its protections from EGR.
