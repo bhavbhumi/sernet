@@ -4585,6 +4585,21 @@ export type Database = {
         }
         Relationships: []
       }
+      weekly_body_staging: {
+        Row: {
+          body: string
+          id: string
+        }
+        Insert: {
+          body: string
+          id: string
+        }
+        Update: {
+          body?: string
+          id?: string
+        }
+        Relationships: []
+      }
       workflow_logs: {
         Row: {
           actions_executed: Json
