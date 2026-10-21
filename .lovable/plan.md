@@ -141,6 +141,7 @@ Audit body-level notes separately from CTA identity/global footer: broker/AP ide
 Approve sample wording/per-post gaps before insertion. Disclaimers cannot cure misleading recommendations or claims. Include notes in initial HTML.
 
 Initial rendered IPO check confirms Choice/AP CTA identity but no article-specific market-risk note; the footer is separate. One imported target-price report contains Indistock Securities' Research Analyst disclosures: retain source attribution if authorised and genuine, never imply SERNET holds that registration. Review the recommendation, provenance and redistribution permission before deciding suitable treatment; a generic disclaimer alone is insufficient.
+Choose disclaimers by body context, not category alone: insurance-company acquisitions may be equity/business coverage rather than policy solicitation; consumer dark-pattern education does not need a mutual-fund risk warning. Approval is a content/scope review, not a claim that every post requires identical statutory wording.
 
 ## 5. SEO and financial-content safeguards
 
