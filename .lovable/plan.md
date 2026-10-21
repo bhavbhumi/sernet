@@ -2,13 +2,13 @@
 
 ## Recommendation and findings
 
-**Keep your six subject tabs**, but separate subject, editorial kind, media format and recurring series. This makes the library useful without confusing education with services SERNET offers.
+**Keep six subject tabs**, separating subject, editorial kind, format and series. Education must not imply service availability.
 
 Planning only: no website, article, classification, date, image or publication changes have been made.
 
 **Inventory: 1,020 published posts—427 Articles, 586 Analysis, 2 Awareness, 5 Reports.** 499 lack subcategories; names and series are inconsistent. Three repeated-title groups need comparison, not automatic deletion. Administrative retrieval can omit rows beyond 1,000; public Articles currently fit.
 
-Sharing metadata exists, but initial HTML lacks full article bodies; the static sitemap lacks individual posts, and CMS SEO overrides are not consistently used.
+Gaps: initial article bodies, individual-post sitemap entries and consistent SEO overrides. Sharing metadata exists.
 
 The [reference](https://invoicemonk.com/en/blog/the-10-best-personal-finance-blogs) now lists 16 blogs. Adopt its audience-focused approach, not a foreign taxonomy or regulatory claims.
 
@@ -77,11 +77,11 @@ One primary path per post; optional cross-topic tags, not duplicate copies. ETF 
 
 ### Listing
 - Insights becomes **All Posts + six subject tabs**. Editorial kind, media format and series become secondary filters; no post kinds are deleted.
-- Reveal relevant categories, then subcategories; optional tags refine further. Do not display the entire tree at once.
+- Reveal categories/subcategories progressively; optional tags refine further.
 - Provide title/topic search, newest-first ordering and genuine publication dates.
-- Preserve complete covers in stable frames and full wrapping titles. Cards show a short excerpt, primary topic, date and author; no regenerated images or cropped cover text.
+- Complete covers, full titles, excerpt, topic, date, author. Preserve images; no cropping.
 - Compact scrollable filters on phones; existing grid/container on larger screens. Preserve light/dark; no overlap or empty panels.
-- Returning from a post restores filters, page and scroll position. Filter states can be shared without automatically indexing every combination.
+- Return restores filters/page/scroll; share filter states without indexing every combination.
 
 ### Details
 - Breadcrumbs: **Insights → Subject → Category → Article**, plus return to the originating list.
@@ -117,16 +117,15 @@ Use topic defaults with per-article overrides. Preserve **73 existing IPO CTAs**
 - Measure successful enquiries and quality, not clicks alone; no personal data in analytics.
 
 ## 6. Execution after approval
-
-1. **Mapping audit:** retrieve all posts read-only; produce old/proposed classifications, tags, series, CTA and review flags. Read titles/bodies, not old categories alone. Present a representative sample across available subjects before bulk changes.
-2. **Shared organisation:** controlled CMS topics/tags, separate editorial kind/media/series, complete administrative pagination.
-3. **Presentation:** listing filters, retained navigation state, breadcrumbs, related reading and contextual actions. Check short/no-heading posts, long titles and existing IPO CTAs.
-4. **Approved mapping:** reversible batches; preserve bodies, images, dates, publication status and routes except explicitly approved CTA deduplication.
-5. **Validation:** classification totals, initial HTML, canonicals/sitemap, sharing, real enquiry/login links, accessibility, light/dark and 320/390/889/1280px layouts. Report exceptions and changed fields.
-6. **Preview approval, then publication:** publish only after explicit authorisation.
+1. Retrieve all posts; prepare a mapping register (old/new path, tags, series, CTA, uncertainty). Classify titles/bodies, not category names alone. Review representative samples before bulk changes.
+2. Add controlled shared CMS taxonomy, separate editorial/media/series fields and complete pagination.
+3. Build listing/detail presentation, navigation, related reading and contextual actions.
+4. Apply approved mappings reversibly; preserve bodies, covers, dates, status and URLs except approved CTA deduplication.
+5. Verify totals, initial HTML, sitemap/canonicals, social previews, real enquiry/login flows, accessibility, light/dark and 320/390/889/1280px layouts. Report changes/exceptions.
+6. Preview approval, then explicit publication authorisation.
 
 ### Technical notes
-Preserve existing editorial `content_type`; add shared controlled subject/tag identifiers, not browser-only trees. Leave Updates, support, legal and integrations untouched. Test classification/CTA rules, dates, pagination, canonicals and actual enquiry flows.
+Preserve existing `content_type`; add shared subject/tag identifiers, not browser-only trees. Leave Updates/support/legal/integrations untouched. Test classification, CTA eligibility, dates, pagination and canonicals.
 
 ### References and unresolved checks
 - [Google: people-first financial content](https://developers.google.com/search/docs/fundamentals/creating-helpful-content)
