@@ -27,23 +27,22 @@ The [reference](https://invoicemonk.com/en/blog/the-10-best-personal-finance-blo
 One primary path per post; optional cross-topic tags, not duplicate copies. ETF spans asset classes. Market Wrap is a series under Macro & Markets → Markets → Updates.
 
 ### Market-series reconciliation
+Four editorial purposes need distinct covers, all under **Macro & Markets → Markets**. Existing **Analysis** remains editorial kind where appropriate.
 
-Your observation identifies four different editorial purposes, not interchangeable cover groups. All belong under **Macro & Markets → Markets**, while the existing **Analysis** label remains their editorial kind where applicable.
+| Existing series | Proposed series | Subcategory |
+|---|---|---|
+| Mid Night / Midnight News Update | Daily Market News Update | Updates |
+| Weekly Capsule | Weekly Market Impact | Market Impact |
+| Triggers Weekly | Weekly Market Triggers | Triggers |
+| Market Weekly Outlook | Monthly Market Outlook only when content is monthly | Outlook |
 
-| Existing series to review | Proposed contextual series title | Subcategory | Purpose |
-|---|---|---|---|
-| Mid Night / Midnight News Update | Daily Market News Update | Updates | Daily developments and news |
-| Weekly Capsule | Weekly Market Impact | Market Impact | Weekly developments and their implications |
-| Triggers Weekly | Weekly Market Triggers | Triggers | Upcoming events and catalysts |
-| Market Weekly Outlook | Monthly Market Outlook only for genuinely monthly content | Outlook | Forward-looking market conditions |
+Use one distinct signature cover per series, reused within that series—not Market Wrap for both daily news/weekly impact or Market Outlook for both triggers/outlook. Leave other genuine wraps/outlooks untouched.
 
-Use **one distinct signature cover per confirmed series**, reusable within that series. Daily news and weekly impact must not share the Market Wrap identity; weekly triggers and monthly outlook must not share the Market Outlook identity. Other genuine Market Wrap/Outlook posts are not automatically reassigned.
+Audit title variants, actual coverage and cover groups before changing anything. Preserve dates, bodies and URLs. Titles include edition date/period; listing and details show consistent series identity. Verify Capsule is retrospective impact and Triggers is upcoming catalysts.
 
-Before changing anything, inventory exact title variants, covered periods and current image assignments. Preserve original dates, bodies and UUID links. Include the edition date or covered period in each title, so recurring posts remain distinguishable in listings, search and sharing. Tags/series identity must appear consistently in both listing and details.
+**Do not turn historical weekly outlooks into monthly reports.** Retain weekly identity for weekly content; Monthly Market Outlook applies to confirmed monthly editions or future reports. Flag exceptions for review.
 
-**Cadence safeguard:** legacy weekly outlook reports retain a weekly identity if their content covers a week. Do not rename them monthly or merge their bodies by assumption; the proposed Monthly Market Outlook applies to confirmed monthly editions or the future series. Flag mismatches in the mapping register for review. Likewise, confirm whether Weekly Capsule is retrospective impact or merely a news digest before assigning it.
-
-No cover generation or article changes occur during this reconciliation. After mapping approval, prepare four distinct covers consistent with the existing design, without invented data, and verify complete cover/title visibility. Keep market-series actions educational and contextual rather than automatically inserting IPO/trading onboarding.
+After mapping approval, prepare four design-consistent covers without invented figures; preserve full images/titles at every size. No image generation, article edits or publication during this review. Use contextual educational actions, not automatic IPO sales links.
 
 ## 2. Recommended taxonomy
 
