@@ -22,7 +22,7 @@ const CTA: Record<string, { text: string; label: string; to: string }> = {
   Insurance: { text: 'Need to review your insurance cover?', label: 'Explore Tushil', to: '/tushil' },
   Trading: { text: 'Trade through Choice FinX, with SERNET as your partner.', label: 'About Choice FinX', to: '/choicefinx' },
   Credit: { text: 'Need liquidity without selling your investments?', label: 'Talk to us', to: '/contact' },
-  'Personal Finance': { text: 'Plan your finances with a SERNET relationship manager.', label: 'Schedule a call', to: '/contact?tab=schedule' },
+  'Personal Finance': { text: 'Plan your finances with a SERNET relationship manager.', label: 'Schedule a call', to: '/schedule-call' },
   'Macro & Markets': { text: 'Turn market insight into a plan for your money.', label: 'Talk to us', to: '/contact' },
 };
 
