@@ -1,3 +1,4 @@
+import { PostBreadcrumb, PostFooter } from '@/components/insights/PostContext';
 import { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
@@ -194,13 +195,7 @@ export default function AnalysisDetail() {
         transition={{ duration: 0.4 }}
         className="container-sernet py-10 max-w-6xl mx-auto"
       >
-        {/* Back link */}
-        <Link
-          to="/insights"
-          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground mb-8 transition-colors"
-        >
-          <ArrowLeft className="h-4 w-4" /> Back to Insights
-        </Link>
+        <PostBreadcrumb post={analysis} />
 
         {/* Two-column layout */}
         <div className="flex gap-8 items-start">
@@ -306,6 +301,8 @@ export default function AnalysisDetail() {
                 <ArticleBodyRenderer body={analysis.body} />
               </div>
             )}
+
+            <PostFooter post={analysis} />
 
             {/* Bottom engagement bar */}
             <div className="mt-12 pt-6 border-t border-border flex items-center justify-between flex-wrap gap-3">
