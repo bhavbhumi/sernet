@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Revise plan to Type → Category → Subcategory + Tags only; live-screen 1,020 posts and verify a real IPO page. 73 IPO CTAs contain identity/links, not risk notes; third-party research restrictions and contextual disclaimer gaps flagged for approval. No CMS/site/publication changes; monthly reports and research permissions await genuine sources/confirmation.
+
 - [x] Reconcile market series and cover assignments from all 1,020 live posts; revised plan includes 129 daily updates, 33 weekly-impact posts and 27 weekly triggers. Monthly-labelled report lacks substantive content/genuine PDF; monthly mapping awaits source confirmation. No article/image/publication changes.
 
 - [x] Review Insights Posts organisation and propose six-topic taxonomy, classification audit, contextual CTA rules, listing/detail presentation and SEO migration safeguards; planning only. Website/content changes require approval of the plan; PRIM operational availability still needs official verification.
