@@ -140,6 +140,8 @@ Audit body-level notes separately from CTA identity/global footer: broker/AP ide
 
 Approve sample wording/per-post gaps before insertion. Disclaimers cannot cure misleading recommendations or claims. Include notes in initial HTML.
 
+Initial rendered IPO check confirms Choice/AP CTA identity but no article-specific market-risk note; the footer is separate. One imported target-price report contains Indistock Securities' Research Analyst disclosures: retain source attribution if authorised and genuine, never imply SERNET holds that registration. Review the recommendation, provenance and redistribution permission before deciding suitable treatment; a generic disclaimer alone is insufficient.
+
 ## 5. SEO and financial-content safeguards
 
 - Preserve UUID URLs and historical dates; friendly URLs are a separate decision.
