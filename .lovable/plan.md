@@ -42,6 +42,10 @@ Audit title variants, actual coverage and cover groups before changing anything.
 
 **Do not turn historical weekly outlooks into monthly reports.** Retain weekly identity for weekly content; Monthly Market Outlook applies to confirmed monthly editions or future reports. Flag exceptions for review.
 
+**Live reconciliation:** all 1,020 published rows retrieved. Confirmed 129 daily updates, 33 retrospective weekly-impact posts (including 27 capsules), and 27 weekly-trigger posts (25 titled triggers plus two legacy weekly outlooks). The Market Wrap cover is shared by 129 daily updates, 27 capsules and one unrelated stock-movers post; the Market Outlook cover is shared by 25 triggers. The legacy weekly outlooks currently have individual covers, but their bodies confirm weekly triggers—not monthly coverage.
+
+One monthly-labelled February report has an empty body and an `example.com` PDF destination: **monthly content remains unverified**. Obtain the genuine report before approving its mapping/cover; do not silently delete it. Flag year/range conflicts in two daily titles and an ambiguous December capsule year without changing dates. Classify by reviewed article IDs and body evidence, not broad title/cover replacement.
+
 After mapping approval, prepare four design-consistent covers without invented figures; preserve full images/titles at every size. No image generation, article edits or publication during this review. Use contextual educational actions, not automatic IPO sales links.
 
 ## 2. Recommended taxonomy
