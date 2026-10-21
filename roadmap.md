@@ -1,5 +1,7 @@
 # Roadmap
 
+- [ ] Execute approved Insights reorganisation: prepare complete mapping register and sample disclaimer wording first; review gate before bulk classification/title/cover changes. Then CMS fields, listing/details, contextual actions/disclaimers, SEO and end-to-end verification. Publication requires explicit authorisation.
+
 - [x] Revise plan to Type → Category → Subcategory + Tags only; live-screen 1,020 posts and verify a real IPO page. 73 IPO CTAs contain identity/links, not risk notes; third-party research restrictions and contextual disclaimer gaps flagged for approval. No CMS/site/publication changes; monthly reports and research permissions await genuine sources/confirmation.
 
 - [x] Reconcile market series and cover assignments from all 1,020 live posts; revised plan includes 129 daily updates, 33 weekly-impact posts and 27 weekly triggers. Monthly-labelled report lacks substantive content/genuine PDF; monthly mapping awaits source confirmation. No article/image/publication changes.
