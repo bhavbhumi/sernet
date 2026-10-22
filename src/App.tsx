@@ -25,7 +25,6 @@ const About = lazy(() => import("./pages/About"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const Support = lazy(() => import("./pages/Support"));
 const SupportProduct = lazy(() => import("./pages/SupportProduct"));
-const Signup = lazy(() => import("./pages/Signup"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Calculator pages
@@ -184,7 +183,7 @@ const App = () => (
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/support" element={<Support />} />
             <Route path="/support/:productSlug" element={<SupportProduct />} />
-            <Route path="/signup" element={<Signup />} />
+            <Route path="/signup" element={<Navigate to="/open-account?tab=invest" replace />} />
             
             {/* Calculator pages */}
             <Route path="/calculators/brokerage" element={<BrokerageCalculator />} />
