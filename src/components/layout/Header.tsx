@@ -24,11 +24,10 @@ const menuSections: { titleKey: string; links: MenuLink[] }[] = [
   {
     titleKey: 'menu.signupLogin',
     links: [
-      { name: 'Login / Portal', href: '/login', external: false },
+      { name: 'Hub', href: '/login', external: false },
       { name: 'Tick Funds', href: TICKFUNDS_LINKS.START_INVESTING, external: true },
       { name: 'Tushil', href: TUSHIL_LINKS.WEB, external: true },
       { name: 'Choice FinX Login', href: APP_LINKS.LOGIN, external: true, note: "Choice's site" },
-      { name: 'Open Choice account', href: APP_LINKS.OPEN_ACCOUNT, external: true, note: "Choice's site" },
     ],
   },
   {
