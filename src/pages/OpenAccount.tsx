@@ -141,7 +141,7 @@ const InterestForm = ({ tab, requestedInterest }: { tab: OnboardingTab; requeste
         {investorType !== 'Individual' && (
           <p className="text-xs text-muted-foreground">
             Online account opening is for adult Resident Indian individuals. For {investorType} accounts,{' '}
-            <Link to="/downloads?tab=documents" className="text-primary hover:underline">download the account opening form</Link>{' '}
+            <Link to={`/downloads?tab=${tab === 'trade' ? 'trade' : 'invest'}`} className="text-primary hover:underline">download the account opening form</Link>{' '}
             and our team will guide you with the documents needed.
           </p>
         )}

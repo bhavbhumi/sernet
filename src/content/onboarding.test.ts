@@ -23,7 +23,7 @@ describe('partner onboarding', () => {
       const section = tabContent[tab].sections?.find((item) => item.heading === 'Minor, HUF, NRI or Non-Individual?');
       expect(section).toBeDefined();
       expect(section?.intro).toContain('adult Resident Indian individuals');
-      expect(section?.links?.[0].href).toBe('/downloads?tab=documents');
+      expect(section?.links?.[0].href).toBe(`/downloads?tab=${tab}`);
       expect(section?.interest).toBe(tab);
     }
   });
