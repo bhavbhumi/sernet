@@ -13,11 +13,12 @@ interface ServiceOverviewProps {
   learnMore: { label: string; to: string };
   primaryCta?: Cta;
   extra?: ReactNode;
+  eligibility?: { text: string; href: string };
   disclaimer: string;
 }
 
 /** Short Services-tab summary. Full product detail lives on the product page (one home per product). */
-export const ServiceOverview = ({ title, partner, intro, points, learnMore, primaryCta, extra, disclaimer }: ServiceOverviewProps) => (
+export const ServiceOverview = ({ title, partner, intro, points, learnMore, primaryCta, extra, eligibility, disclaimer }: ServiceOverviewProps) => (
   <>
     <section className="section-padding bg-background">
       <div className="container-sernet">
@@ -49,6 +50,12 @@ export const ServiceOverview = ({ title, partner, intro, points, learnMore, prim
                 </Link>
               ))}
             </div>
+            {eligibility && (
+              <p className="text-small text-muted-foreground mt-5">
+                {eligibility.text}{' '}
+                <Link to={eligibility.href} className="text-primary hover:underline">Download forms</Link>
+              </p>
+            )}
           </div>
           <ul className="space-y-3 self-center">
             {points.map((p) => (

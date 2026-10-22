@@ -1,5 +1,4 @@
 import { ServiceOverview } from './ServiceOverview';
-import { APP_LINKS } from '@/lib/appLinks';
 
 export const TradingServiceContent = () => (
   <ServiceOverview
@@ -13,7 +12,8 @@ export const TradingServiceContent = () => (
       'Help from the SERNET team for account and service queries',
     ]}
     learnMore={{ label: 'Explore Choice FinX', to: '/choicefinx' }}
-    primaryCta={{ label: 'Open account', href: APP_LINKS.OPEN_ACCOUNT, external: true }}
+    primaryCta={{ label: 'Open Account', href: '/open-account?tab=trade' }}
+    eligibility={{ text: 'Online opening is for adult Resident Indian individuals. Minors, HUFs, NRIs and non-individuals can use the account opening forms.', href: '/downloads?tab=trade' }}
     disclaimer="Investments in securities market are subject to market risks. Read all related documents carefully before investing. Choice Equity Broking Pvt. Ltd. (SEBI Reg. No. INZ000160131) is the stock broker; SERNET is not a stock broker and acts as its Authorised Person. Statutory charges and GST are extra."
   />
 );

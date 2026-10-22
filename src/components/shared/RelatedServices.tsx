@@ -37,6 +37,11 @@ const allLinks: Record<string, RelatedItem[]> = {
     { label: 'Insurance Services', href: '/services?tab=Insurance', description: 'Protect yourself while you rebuild' },
     { label: 'Schedule a Call', href: '/schedule-call', description: 'Talk to a credit counsellor' },
   ],
+  'Tax Filing': [
+    { label: 'Investment Services', href: '/services?tab=Investment', description: 'Mutual funds, PMS, AIF and bonds' },
+    { label: 'Estate Planning', href: '/services?tab=Estate Planning', description: 'Plan how your assets pass on' },
+    { label: 'Schedule a Call', href: '/schedule-call', description: 'Talk to our team' },
+  ],
 };
 
 export const RelatedServices = ({ currentService }: RelatedServicesProps) => {
