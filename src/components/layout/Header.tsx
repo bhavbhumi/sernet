@@ -10,21 +10,23 @@ import { APP_LINKS, TICKFUNDS_LINKS, TUSHIL_LINKS } from '@/lib/appLinks';
 
 import sernetLogo from '@/assets/sernet-logo.png';
 
-const navLinks = [
+type NavItem = { nameKey: string; href: string; newTab?: boolean };
+
+const navLinks: NavItem[] = [
   { nameKey: 'nav.about', href: '/about' },
   { nameKey: 'nav.services', href: '/services' },
   { nameKey: 'nav.network', href: '/network' },
-  { nameKey: 'nav.insights', href: '/insights' },
+  { nameKey: 'nav.insights', href: '/insights', newTab: true },
   { nameKey: 'nav.contact', href: '/contact' },
 ];
 
-type MenuLink = { name?: string; nameKey?: string; href: string; external: boolean; note?: string };
+type MenuLink = { name?: string; nameKey?: string; href: string; external: boolean; newTab?: boolean; note?: string };
 
 const menuSections: { titleKey: string; links: MenuLink[] }[] = [
   {
     titleKey: 'menu.signupLogin',
     links: [
-      { name: 'Hub', href: '/login', external: false },
+      { name: 'Hub', href: '/login', external: false, newTab: true },
       { name: 'Tick Funds', href: TICKFUNDS_LINKS.START_INVESTING, external: true },
       { name: 'Tushil', href: TUSHIL_LINKS.WEB, external: true },
       { name: 'Choice FinX Login', href: APP_LINKS.LOGIN, external: true, note: "Choice's site" },
