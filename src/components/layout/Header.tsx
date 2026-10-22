@@ -105,18 +105,33 @@ export const Header = () => {
 
         {/* Desktop Navigation */}
         <div className="hidden lg:flex items-center gap-5 xl:gap-8">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              to={link.href}
-              aria-current={location.pathname === link.href ? 'page' : undefined}
-              className={`nav-motion text-[15px] xl:text-[17px] whitespace-nowrap transition-colors hover:text-primary active:text-primary ${
-                location.pathname === link.href ? 'text-primary' : 'text-muted-foreground'
-              }`}
-            >
-              {t(link.nameKey)}
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            const isActive = location.pathname === link.href;
+            const className = `nav-motion text-[15px] xl:text-[17px] whitespace-nowrap transition-colors hover:text-primary active:text-primary ${
+              isActive ? 'text-primary' : 'text-muted-foreground'
+            }`;
+            return link.newTab && !isActive ? (
+              <a
+                key={link.href}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={className}
+              >
+                {t(link.nameKey)}
+                <span className="sr-only">(opens in a new tab)</span>
+              </a>
+            ) : (
+              <Link
+                key={link.href}
+                to={link.href}
+                aria-current={isActive ? 'page' : undefined}
+                className={className}
+              >
+                {t(link.nameKey)}
+              </Link>
+            );
+          })}
 
           {/* Search Button */}
           <button
@@ -237,21 +252,35 @@ export const Header = () => {
             <div className="p-6">
               {/* Mobile/Tablet nav links */}
               <div className="lg:hidden border-b border-border pb-4 mb-4">
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.href}
-                    to={link.href}
-                    aria-current={location.pathname === link.href ? 'page' : undefined}
-                    className={`nav-motion block w-fit py-2 text-[16px] font-medium transition-colors hover:text-primary active:text-primary ${
-                      location.pathname === link.href
-                        ? 'text-primary'
-                        : 'text-muted-foreground'
-                    }`}
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    {t(link.nameKey)}
-                  </Link>
-                ))}
+                {navLinks.map((link) => {
+                  const isActive = location.pathname === link.href;
+                  const className = `nav-motion block w-fit py-2 text-[16px] font-medium transition-colors hover:text-primary active:text-primary ${
+                    isActive ? 'text-primary' : 'text-muted-foreground'
+                  }`;
+                  return link.newTab && !isActive ? (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={className}
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      {t(link.nameKey)}
+                      <span className="sr-only">(opens in a new tab)</span>
+                    </a>
+                  ) : (
+                    <Link
+                      key={link.href}
+                      to={link.href}
+                      aria-current={isActive ? 'page' : undefined}
+                      className={className}
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      {t(link.nameKey)}
+                    </Link>
+                  );
+                })}
               </div>
 
               {/* Menu sections in grid */}
@@ -264,7 +293,7 @@ export const Header = () => {
                     <ul className="space-y-2">
                       {section.links.map((link) => (
                         <li key={link.name || link.nameKey}>
-                          {link.external ? (
+                          {link.external || link.newTab ? (
                             <a
                               href={link.href}
                               target="_blank"
@@ -273,8 +302,8 @@ export const Header = () => {
                               onClick={() => setMenuOpen(false)}
                             >
                               {link.name || (link.nameKey ? t(link.nameKey) : '')}
-                              <ExternalLink className="h-3 w-3" aria-hidden="true" />
-                              <span className="sr-only">(opens in new tab)</span>
+                              {link.external && <ExternalLink className="h-3 w-3" aria-hidden="true" />}
+                              <span className="sr-only">(opens in a new tab)</span>
                             </a>
                           ) : (
                             <Link
