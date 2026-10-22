@@ -1,5 +1,8 @@
 # Roadmap
 
+- [x] Open Account interests trimmed: Tax Planning content and checkbox removed (no partner), PMS and AIF merged into one "PMS / AIF" checkbox, Bonds checkbox removed (Altifi keeps its own signup steps). Seven tests passed; phone/desktop checkbox list and Other Services sections checked, no overflow. Preview only.
+
+
 - [x] Extend Open Account with Altifi below Tick Funds, PMS/AIF callback sections, Other Services and notarisation interest; five tests passed, real enquiry saved correct service selections and test entry removed, phone layout checked. Preview only.
 - [ ] Add direct PMS/AIF onboarding links — awaiting links from management; callback sections available meanwhile.
 
