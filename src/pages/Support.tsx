@@ -347,7 +347,7 @@ const Support = () => {
                     <Ticket className="h-12 w-12 mx-auto mb-4 opacity-40" />
                     <p className="text-lg font-medium">Sign in to view your tickets</p>
                     <p className="text-sm mt-1">You need to be logged in to see your submitted tickets.</p>
-                    <Link to="/signup">
+                    <Link to="/open-account">
                       <Button className="mt-4">Sign In</Button>
                     </Link>
                   </div>

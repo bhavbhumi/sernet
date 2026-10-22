@@ -91,7 +91,7 @@ export const OpenAccountSection = () => {
         >
           <h2 className="heading-lg text-foreground mb-4">{t('openAccount.heading')}</h2>
           <p className="text-body mb-8">{t('openAccount.description')}</p>
-          <Link to="/signup" className="btn-primary text-base px-8 py-4">
+          <Link to="/open-account" className="btn-primary text-base px-8 py-4">
             {t('openAccount.cta')}
           </Link>
         </motion.div>

@@ -290,7 +290,7 @@ const Pricing = () => {
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center max-w-2xl mx-auto">
             <h2 className="heading-lg text-foreground mb-4">Open an account</h2>
             <p className="text-body mb-8">Modern platforms and apps, zero-fee regular mutual funds, and share trading on Choice FinX at 0.30% delivery and 0.03% intraday.</p>
-            <Link to="/signup" className="btn-primary">Sign up for free</Link>
+            <Link to="/open-account" className="btn-primary">Sign up for free</Link>
           </motion.div>
         </div>
       </section>
