@@ -11,7 +11,8 @@ Hero (same style as other inner pages)
 
 Tabs:  Invest | Insure | Trade | CKYC      (deep-link via ?tab=)
 
-Each tab:  left = steps + buttons     right = "Express Your Interest" box
+Each tab:  left = steps + buttons, then "Check before you start" block
+           right = "Express Your Interest" box
 ```
 
 ### Invest tab (Tick Funds)
@@ -26,13 +27,16 @@ Each tab:  left = steps + buttons     right = "Express Your Interest" box
 - Intro: Choice Equity Broking is the broker; SERNET is its partner. Delivery 0.30%, intraday 0.03% both legs for SERNET clients.
 - Buttons: "Open a Choice FinX account" (SERNET referral link), "Already a client? Log in".
 
-### CKYC tab
-- **Useful checks before onboarding anywhere:**
+### "Check before you start" block (same on all four tabs)
   1. Check your KYC status (CVL KRA)
   2. Check your CKYC number (CKYC India)
   3. Check your FATCA status (CAMS)
   4. Verify PAN–Aadhaar link status (CVL)
   5. Link your PAN with Aadhaar (Income Tax portal)
+- Line at the end: "KYC not done? Complete Digital CKYC" (links to the CKYC tab).
+
+### CKYC tab
+- Short intro on what KYC/CKYC is and why it is needed once for all products.
 - **KYC not done?** Button: "Complete Digital CKYC" (UTI MF link whitelisted for SERNET).
 - All outside links open in a new tab with a small outside-site icon.
 
