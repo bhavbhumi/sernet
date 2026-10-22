@@ -220,7 +220,7 @@ export default function ArticleDetail() {
       <SEOHead
         title={article.title}
         description={plainDescription || `Read ${article.title} on SERNET Insights.`}
-        path={articlePath(article.id)}
+        path={articlePath(article.id, article.content_type)}
         image={articleShareImage(sidebarImageUrl)}
         type="article"
         jsonLd={{
@@ -241,7 +241,7 @@ export default function ArticleDetail() {
           },
           mainEntityOfPage: {
             '@type': 'WebPage',
-            '@id': `https://sernetindia.com${articlePath(article.id)}`,
+            '@id': `https://sernetindia.com${articlePath(article.id, article.content_type)}`,
           },
         }}
       />
