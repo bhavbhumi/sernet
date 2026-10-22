@@ -1,5 +1,6 @@
 # Roadmap
 
+- [x] Homepage CTA reworded: heading "Prosper with SERNET", subtitle now names the registered-distributor role, button reads "Open Account" to match the header — all eight locales updated (button label reused from each locale's existing header wording). English and Hindi checked on screen; button label unclipped, no page errors. Preview only, not published.
 - [x] Open Account interests trimmed: Tax Planning content and checkbox removed (no partner), PMS and AIF merged into one "PMS / AIF" checkbox, Bonds checkbox removed (Altifi keeps its own signup steps). Seven tests passed; phone/desktop checkbox list and Other Services sections checked, no overflow. Preview only.
 
 
