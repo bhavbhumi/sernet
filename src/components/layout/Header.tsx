@@ -116,9 +116,10 @@ export const Header = () => {
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={className}
+                className={`${className} inline-flex items-center gap-1`}
               >
                 {t(link.nameKey)}
+                <ExternalLink className="h-3 w-3" aria-hidden="true" />
                 <span className="sr-only">(opens in a new tab)</span>
               </a>
             ) : (
@@ -263,10 +264,13 @@ export const Header = () => {
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={className}
+                      className={`nav-motion inline-flex items-center gap-1 w-fit py-2 text-[16px] font-medium transition-colors hover:text-primary active:text-primary ${
+                        isActive ? 'text-primary' : 'text-muted-foreground'
+                      }`}
                       onClick={() => setMenuOpen(false)}
                     >
                       {t(link.nameKey)}
+                      <ExternalLink className="h-3 w-3" aria-hidden="true" />
                       <span className="sr-only">(opens in a new tab)</span>
                     </a>
                   ) : (
@@ -302,7 +306,7 @@ export const Header = () => {
                               onClick={() => setMenuOpen(false)}
                             >
                               {link.name || (link.nameKey ? t(link.nameKey) : '')}
-                              {link.external && <ExternalLink className="h-3 w-3" aria-hidden="true" />}
+                              <ExternalLink className="h-3 w-3" aria-hidden="true" />
                               <span className="sr-only">(opens in a new tab)</span>
                             </a>
                           ) : (
