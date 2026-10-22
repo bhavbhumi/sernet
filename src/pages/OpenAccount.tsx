@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import { KYC_LINKS } from '@/lib/appLinks';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import {
@@ -170,7 +171,7 @@ const OpenAccount = () => {
     <Layout>
       <SEOHead
         title="Open an Account"
-        description="Start investing with Tick Funds, get insured with Tushil, trade with Choice FinX or complete your CKYC — with SERNET by your side."
+        description="Start investing with Tick Funds, get insured with Tushil, or trade with Choice FinX — with SERNET by your side."
         path="/open-account"
       />
       <PageHero
@@ -218,10 +219,7 @@ const OpenAccount = () => {
                     <p className="font-medium text-foreground">{s.title}</p>
                     {s.text && (
                       <p className="text-small text-muted-foreground">
-                        {s.text.includes('CKYC tab') ? (
-                          <>Not done yet? Complete it on the{' '}
-                            <button type="button" className="text-primary hover:underline" onClick={() => setSearchParams({ tab: 'ckyc' })}>CKYC tab</button>.</>
-                        ) : s.text}
+                        {s.text}
                       </p>
                     )}
                     {s.links && <div className="flex flex-wrap gap-3">{s.links.map((l) => <OutLink key={l.href} link={l} />)}</div>}
@@ -244,14 +242,12 @@ const OpenAccount = () => {
                   </li>
                 ))}
               </ul>
-              {active !== 'ckyc' && (
-                <p className="text-sm text-muted-foreground mt-4">
-                  KYC not done?{' '}
-                  <button type="button" className="text-primary hover:underline font-medium" onClick={() => setSearchParams({ tab: 'ckyc' })}>
-                    Complete Digital CKYC
-                  </button>
-                </p>
-              )}
+              <p className="text-sm text-muted-foreground mt-4">
+                KYC not done?{' '}
+                <a href={KYC_LINKS.UTI_CKYC} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium inline-flex items-center gap-1.5">
+                  Complete Digital CKYC<ExternalLink className="w-3 h-3" aria-label="opens in a new tab" />
+                </a>
+              </p>
             </div>
 
             <p className="text-xs text-muted-foreground leading-relaxed">{content.note}</p>

@@ -1,13 +1,12 @@
 import { APP_LINKS, KYC_LINKS, TICKFUNDS_LINKS, TUSHIL_LINKS } from '@/lib/appLinks';
 
-export const onboardingTabs = ['invest', 'insure', 'trade', 'ckyc'] as const;
+export const onboardingTabs = ['invest', 'insure', 'trade'] as const;
 export type OnboardingTab = (typeof onboardingTabs)[number];
 
 export const tabLabels: Record<OnboardingTab, string> = {
   invest: 'Invest',
   insure: 'Insure',
   trade: 'Trade',
-  ckyc: 'CKYC',
 };
 
 export const investorTypes = ['Individual', 'HUF', 'NRI', 'Minor', 'Non-individual'] as const;
@@ -36,7 +35,7 @@ export const tabContent: Record<OnboardingTab, OnboardingTabContent> = {
     heading: 'Start investing with Tick Funds',
     intro: 'Invest in regular mutual funds and SIF on Tick Funds, with support from a SERNET relationship manager.',
     steps: [
-      { title: 'Make sure your KYC is done', text: 'Not done yet? Complete it on the CKYC tab.' },
+      { title: 'Make sure your KYC is done', links: [{ label: 'Complete Digital CKYC', href: KYC_LINKS.UTI_CKYC }] },
       { title: 'Sign up on Tick Funds', links: [{ label: 'Sign up on Tick Funds', href: TICKFUNDS_LINKS.SIGNUP, primary: true }] },
       { title: 'Or use the mobile app', links: [{ label: 'Google Play', href: TICKFUNDS_LINKS.PLAY_STORE }, { label: 'App Store', href: TICKFUNDS_LINKS.APP_STORE }] },
     ],
@@ -59,15 +58,6 @@ export const tabContent: Record<OnboardingTab, OnboardingTabContent> = {
       { title: 'Already a client?', links: [{ label: 'Log in to Choice FinX', href: APP_LINKS.LOGIN }] },
     ],
     note: 'Choice Equity Broking Pvt. Ltd. (SEBI Reg. No. INZ000160131) is the stock broker; SERNET is not a stock broker. Investments in securities market are subject to market risks. Statutory charges and GST are extra.',
-  },
-  ckyc: {
-    heading: 'Complete your KYC once',
-    intro: 'KYC (Know Your Customer) is a one-time identity check required before you invest, insure or trade. Once done, your CKYC record can be used across providers.',
-    steps: [
-      { title: 'Check your status first', text: 'Use the checks below to see whether your KYC is already done.' },
-      { title: 'KYC not done?', links: [{ label: 'Complete Digital CKYC', href: KYC_LINKS.UTI_CKYC, primary: true }] },
-    ],
-    note: 'Digital CKYC is completed on the UTI Mutual Fund website. Keep your PAN, Aadhaar-linked mobile and a photo ready.',
   },
 };
 
