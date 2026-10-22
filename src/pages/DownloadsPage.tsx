@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Layout } from '@/components/layout/Layout';
 import { PageHero } from '@/components/layout/PageHero';
 import { SEOHead } from '@/components/shared/SEOHead';
@@ -14,8 +14,16 @@ const tabContent: Record<DownloadsTab, React.ReactNode> = {
   Documents: <DocumentsContent />,
 };
 
+const isDownloadsTab = (v: string | null): v is DownloadsTab =>
+  !!v && (downloadsTabs as readonly string[]).map((t) => t.toLowerCase()).includes(v.toLowerCase());
+
 const DownloadsPage = () => {
-  const [activeTab, setActiveTab] = useState<DownloadsTab>('Apps');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const param = searchParams.get('tab');
+  const activeTab: DownloadsTab = isDownloadsTab(param)
+    ? downloadsTabs.find((t) => t.toLowerCase() === param!.toLowerCase())!
+    : 'Apps';
+  const setActiveTab = (tab: DownloadsTab) => setSearchParams({ tab: tab.toLowerCase() });
 
   return (
     <Layout>

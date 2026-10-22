@@ -13,8 +13,19 @@ describe('partner onboarding', () => {
       'Bonds through Altifi',
       'Portfolio Management Services (PMS)',
       'Alternative Investment Funds (AIF)',
+      'Minor, HUF, NRI or Non-Individual?',
     ]);
     expect(tabContent.invest.sections?.[0].steps?.[0].links?.[0].href).toBe('https://altifi.ai/sign_up');
+  });
+
+  it('routes non-individual investors on Invest and Trade to the account opening form', () => {
+    for (const tab of ['invest', 'trade'] as const) {
+      const section = tabContent[tab].sections?.find((item) => item.heading === 'Minor, HUF, NRI or Non-Individual?');
+      expect(section).toBeDefined();
+      expect(section?.intro).toContain('adult Resident Indian individuals');
+      expect(section?.links?.[0].href).toBe('/downloads?tab=documents');
+      expect(section?.interest).toBe(tab);
+    }
   });
 
   it('uses one PMS / AIF interest and no Bonds interest', () => {
