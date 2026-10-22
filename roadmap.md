@@ -14,7 +14,7 @@
 - [x] Add article-specific initial HTML sharing metadata from published CMS rows and verify preview metadata. Generated 1,020 HTML pages in isolated validation; correct article title/image/canonical verified; eight focused tests passed. Requires publishing for live WhatsApp previews; existing WhatsApp cards may retain previously fetched details.
 
 - [x] Restore readable sections and topic indexes for 51 collapsed single-column article imports through the shared renderer; preserve original content, dates, images and valid tables. Reference and affected pages checked, five recovery tests passed.
-- [ ] Restore concatenated numeric tables in the 51 legacy imports — blocked on original reports/HTML with intact cell boundaries; current stored strings do not retain enough information to reconstruct values safely.
+- [x] Restore the 51 legacy article bodies from matching HRBV DATA SENSE 103–153 Word originals; headings, paragraphs, bullets and intact tables restored. All 51 rendered tables and Topic Index targets verified, live reference checked, 950/390px overflow checks passed. Titles, dates, covers, categories and links unchanged; existing automatic reading-time and real update-timestamp triggers retained. Safety copy retained in private document metadata; no temporary database helper enabled.
 
 - [x] Replace Mirae Disclosures empanelment download with the supplied logo-bearing letter; 28 January 2008 and existing brokerage preserved, preview row visually checked and public PDF download verified (200). Older asset retained for previous publications.
 
