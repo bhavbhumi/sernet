@@ -1,6 +1,7 @@
 # Roadmap
 
-- [ ] Extend Open Account with Altifi below Tick Funds, PMS/AIF callback sections, Other Services and notarisation interest; verify selection and enquiry submission. PMS/AIF direct links await management.
+- [x] Extend Open Account with Altifi below Tick Funds, PMS/AIF callback sections, Other Services and notarisation interest; five tests passed, real enquiry saved correct service selections and test entry removed, phone layout checked. Preview only.
+- [ ] Add direct PMS/AIF onboarding links — awaiting links from management; callback sections available meanwhile.
 
 - [ ] Execute approved Insights reorganisation — complete 1,020-post mapping workbook and 10 sample disclaimer texts prepared; 7 mapping checks and workbook read-back passed. Blocked at the approved review gate: management approval of mapping samples/disclaimers before CMS/website changes. Monthly report source and third-party research redistribution permission require confirmation. Publication requires separate explicit authorisation.
 
