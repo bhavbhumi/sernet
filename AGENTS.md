@@ -28,3 +28,4 @@
 
 - Fit Insights listing covers without cropping in stable image frames and wrap full article titles; embedded cover text must not be cut off at any breakpoint.
 - Route all prospect onboarding through `/open-account` tabs using links and copy in `src/content/onboarding.ts`; SERNET only captures interest into `leads` (`lead_type: account_opening`) while KYC and account opening stay on provider pages.
+- Model additional onboarding partners as ordered sections in the shared onboarding content with explicit interest keys; callback actions select those keys in the existing enquiry form without inventing provider signup URLs.

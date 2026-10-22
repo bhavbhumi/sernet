@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -16,26 +16,34 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import {
   onboardingTabs, tabLabels, tabContent, kycChecks, investorTypes, interestOptions,
-  isOnboardingTab, type OnboardingTab, type OnboardingLink,
+  defaultInterests, isOnboardingTab, type OnboardingTab, type OnboardingLink,
 } from '@/content/onboarding';
 
 const OutLink = ({ link }: { link: OnboardingLink }) => (
+  <Button asChild variant={link.primary ? 'default' : 'outline'} className="h-auto min-h-10 whitespace-normal text-left">
   <a
     href={link.href}
     target="_blank"
     rel="noopener noreferrer"
-    className={link.primary ? 'btn-primary inline-flex items-center gap-2' : 'btn-secondary inline-flex items-center gap-2'}
   >
     {link.label}
     <ExternalLink className="w-3.5 h-3.5" aria-label="opens in a new tab" />
   </a>
+  </Button>
 );
 
-const InterestForm = ({ tab }: { tab: OnboardingTab }) => {
+const InterestForm = ({ tab, requestedInterest }: { tab: OnboardingTab; requestedInterest: string | null }) => {
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
   const [investorType, setInvestorType] = useState<string>('Individual');
-  const [interests, setInterests] = useState<string[]>([tab]);
+  const [interests, setInterests] = useState<string[]>(defaultInterests(tab));
+
+  useEffect(() => {
+    if (requestedInterest) {
+      setDone(false);
+      setInterests((current) => current.includes(requestedInterest) ? current : [...current, requestedInterest]);
+    }
+  }, [requestedInterest]);
 
   const toggle = (v: string) =>
     setInterests((p) => (p.includes(v) ? p.filter((x) => x !== v) : [...p, v]));
@@ -90,7 +98,7 @@ const InterestForm = ({ tab }: { tab: OnboardingTab }) => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="feature-card space-y-4">
+    <form onSubmit={handleSubmit} id="express-interest" className="feature-card space-y-4 scroll-mt-36">
       <div>
         <h3 className="heading-md text-foreground">Express your interest</h3>
         <p className="text-small text-muted-foreground mt-1">Share your details and our team will call you back.</p>
@@ -166,6 +174,11 @@ const OpenAccount = () => {
   const param = searchParams.get('tab');
   const active: OnboardingTab = isOnboardingTab(param) ? param : 'invest';
   const content = tabContent[active];
+  const [requestedInterest, setRequestedInterest] = useState<string | null>(null);
+  const requestCallback = (interest: string) => {
+    setRequestedInterest(interest);
+    document.getElementById('express-interest')?.scrollIntoView({ behavior: 'auto', block: 'start' });
+  };
 
   return (
     <Layout>
@@ -189,7 +202,7 @@ const OpenAccount = () => {
                 key={tab}
                 role="tab"
                 aria-selected={active === tab}
-                onClick={() => setSearchParams({ tab })}
+                onClick={() => { setRequestedInterest(null); setSearchParams({ tab }); }}
                 className={`pb-3.5 pt-4 text-[1.0625rem] transition-colors relative whitespace-nowrap ${
                   active === tab ? 'text-foreground font-medium' : 'text-muted-foreground hover:text-foreground'
                 }`}
@@ -228,6 +241,23 @@ const OpenAccount = () => {
               ))}
             </ol>
 
+            {content.sections?.map((section) => (
+              <section key={section.heading} className="border-t border-border pt-8 space-y-4">
+                <h2 className="heading-md text-foreground">{section.heading}</h2>
+                <p className="text-body text-muted-foreground">{section.intro}</p>
+                {section.steps && <ol className="space-y-4">{section.steps.map((step, index) => (
+                  <li key={step.title} className="space-y-2">
+                    <p className="font-medium text-foreground">{index + 1}. {step.title}</p>
+                    {step.text && <p className="text-small text-muted-foreground">{step.text}</p>}
+                    {step.links?.map((link) => <OutLink key={link.href} link={link} />)}
+                  </li>
+                ))}</ol>}
+                {section.links?.map((link) => <OutLink key={link.href} link={link} />)}
+                {section.interest && <Button variant="outline" onClick={() => { if (section.interest) requestCallback(section.interest); }}>Express interest — {section.heading.includes('PMS') ? 'PMS' : section.heading.includes('AIF') ? 'AIF' : section.heading.includes('Altifi') ? 'Bonds' : section.heading.includes('Quicko') ? 'Tax Filing' : section.heading}</Button>}
+                {section.note && <p className="text-xs text-muted-foreground leading-relaxed">{section.note}</p>}
+              </section>
+            ))}
+
             <div className="rounded-md border border-border bg-section-alt p-5">
               <div className="flex items-center gap-2 mb-3">
                 <ShieldCheck className="w-5 h-5 text-primary" />
@@ -254,7 +284,7 @@ const OpenAccount = () => {
           </div>
 
           <div className="lg:sticky lg:top-36">
-            <InterestForm key={active} tab={active} />
+            <InterestForm key={active} tab={active} requestedInterest={requestedInterest} />
           </div>
         </div>
       </section>
