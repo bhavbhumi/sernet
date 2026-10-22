@@ -112,3 +112,5 @@
 - [x] Published and verified live on sernetindia.com: tabs, filters, breadcrumb, disclaimer, CTA, both new covers serving, article share preview carries its own title/image, no page errors or phone overflow.
 - [ ] Disclaimer wording and next-step link targets await management/compliance sign-off before wide sharing.
 - [ ] Credit tab stays empty until posts are tagged Credit; no genuine Monthly Market Outlook edition exists yet; the Indistock third-party research report still needs their written permission.
+
+- [ ] Open Account page: hero + Invest/Insure/Trade/CKYC tabs, KYC useful links, Express Your Interest form to Admin leads

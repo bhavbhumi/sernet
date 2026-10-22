@@ -1,54 +1,62 @@
-# One "Open an account" page for all SERNET products
+# Open an Account page: four tabs + Express Your Interest
 
 ## Goal
-One starting point at `/open-account` for prospects. SERNET collects a short enquiry, then sends each person to the right provider's own sign-up page. KYC and account opening stay with the providers.
+One page at `/open-account` where prospects start with any SERNET product. Account opening and KYC stay on each provider's own pages. SERNET collects interest so the team can call back.
 
-## About Zerodha's investor-type split
-Splitting by investor type is a good idea for SERNET too, but for a different reason. Zerodha does the onboarding itself, so each type gets its own flow. For SERNET, the type decides **where the person goes**:
-- **Individual (resident):** fully online. Use the provider links below.
-- **HUF, NRI, Minor, Non-individual (company, partnership, LLP, trust):** these usually need extra documents, and the provider pages may not support them online. They go to an assisted path: a document checklist plus "Your relationship manager will call you".
-- When a provider confirms online support for a type (for example NRI on Tick Funds), we switch that type to the online links. Nothing is claimed until confirmed.
-
-## Page flow
+## Page layout
 ```text
-Step 1  Who is investing?   Individual | HUF | NRI | Minor | Non-individual
-Step 2  What do you want?   Invest (Tick Funds) | Insure (Tushil) | Trade (Choice FinX)   [multi-select]
-Step 3  Your details        Name, mobile, email, city (no PAN, no documents)
-Step 4  Next steps          Personalised checklist with buttons
+Hero (same style as other inner pages)
+  Title: Open an account with SERNET
+  Subtitle: Invest, insure and trade through trusted partners, with SERNET by your side
+
+Tabs:  Invest | Insure | Trade | CKYC      (deep-link via ?tab=)
+
+Each tab:  left = steps + buttons     right = "Express Your Interest" box
 ```
 
-### Step 4, Individual
-1. **Complete your KYC (if not done)**: UTI MF Digital CKYC link whitelisted for SERNET. Shown for Invest. Note: one KYC works across fund houses.
-2. **Invest:** "Sign up on Tick Funds" (web sign-up) + Play Store / App Store buttons.
-3. **Insure:** "Continue on Tushil" (login / sign-up page). Note: insurance is arranged by Shrigoda Insurance Brokers; SERNET is the referrer.
-4. **Trade:** "Open a Choice FinX account" (SERNET referral link). Note: Choice Equity Broking is the broker; SERNET is its partner.
-- Each button opens in a new tab and is marked as an outside site.
+### Invest tab (Tick Funds)
+- Short intro: regular mutual funds and SIF; SERNET is an AMFI-registered distributor (ARN 35275).
+- Steps: 1) KYC done? If not, go to the CKYC tab. 2) Sign up on Tick Funds (web). 3) Or download the app (Play Store / App Store).
 
-### Step 4, HUF / NRI / Minor / Non-individual
-- Short document checklist per type (for example HUF deed and Karta KYC; NRI passport, overseas address, NRE/NRO bank; Minor birth proof and guardian KYC; company board resolution, PAN and authorised signatory KYC).
-- "We'll call you within one working day" plus sales number +91 92067 67670.
-- Checklists are a starting draft to be confirmed by your team before publishing.
+### Insure tab (Tushil)
+- Intro: insurance arranged by Shrigoda Insurance Brokers; SERNET is the referrer.
+- Button: "Continue on Tushil" (login / sign-up page).
 
-## Lead capture
-- Step 3 saves an enquiry (investor type, products chosen, contact details, source page) to the existing enquiries list in Admin, so the RM can follow up even if the person leaves at the provider's page.
-- Clear consent line linking to Terms and Privacy.
+### Trade tab (Choice FinX)
+- Intro: Choice Equity Broking is the broker; SERNET is its partner. Delivery 0.30%, intraday 0.03% both legs for SERNET clients.
+- Buttons: "Open a Choice FinX account" (SERNET referral link), "Already a client? Log in".
+
+### CKYC tab
+- **Useful checks before onboarding anywhere:**
+  1. Check your KYC status (CVL KRA)
+  2. Check your CKYC number (CKYC India)
+  3. Check your FATCA status (CAMS)
+  4. Verify PAN–Aadhaar link status (CVL)
+  5. Link your PAN with Aadhaar (Income Tax portal)
+- **KYC not done?** Button: "Complete Digital CKYC" (UTI MF link whitelisted for SERNET).
+- All outside links open in a new tab with a small outside-site icon.
+
+## Express Your Interest box (on every tab)
+- Fields: Name, Mobile, Email (optional), City, **Investor type** (Individual, HUF, NRI, Minor, Non-individual), Interested in (pre-ticked for the current tab; can tick more), short message (optional), consent line linking to Terms and Privacy.
+- On submit: saved to the Admin enquiries list as "Account opening".
+- Success message: "Thank you! Your interest has been recorded. Our team will call you back shortly." (no promised time unless you give one).
+
+## About Zerodha's investor types
+A good idea, kept light: instead of separate journeys, investor type is one field in the interest box. Individuals can continue online right away; HUF, NRI, Minor and company/trust clients usually need extra documents, so a note under the box says "Our team will guide you with the documents needed". If you later confirm which providers support these types online, we can add type-specific steps.
 
 ## Clean-up
-- `/signup` and `/open-account` show this same page (one home). Remove the old placeholder text ("Free equity delivery trades", "Flat Rs 20", "Free direct mutual funds") and the forms that saved nothing.
-- Home "Open account" button, header and footer links point here.
-- Header "Sign up / Login" keeps the direct product logins already in place.
+- `/signup` points to this page; old placeholder text ("Free equity delivery trades", "Flat Rs 20", "Free direct mutual funds") and forms that saved nothing are removed.
+- Home "Open account" button and header/footer links point here.
 
 ## What stays the same
-- Product pages, Pricing, regulatory wording, design style and existing links.
+Product pages, Pricing, regulatory wording, design style and existing links.
 
-## Open items for you
-- Confirm the document checklists for HUF, NRI, Minor and Non-individual.
-- Tell us which providers support these types online, if any.
-- Ask providers later for prefilled referral links or status tracking.
+## Verification
+Submit a test interest, confirm it appears in Admin, then remove only that test entry; check all tabs and links on desktop and mobile.
 
 ## Technical details
-- Add `TICKFUNDS_LINKS.SIGNUP`, `TUSHIL_LINKS.LOGIN`, `KYC_LINKS.UTI_CKYC` to `src/lib/appLinks.ts`; reuse `APP_LINKS.OPEN_ACCOUNT`.
-- New `src/content/onboarding.ts`: investor types, product options, per-type checklists, routing rule (`online` vs `assisted`), so rules live in one place; small unit test for routing (Individual → online; others → assisted).
-- New stepper page replacing `OpenAccount.tsx` and `Signup.tsx`; `/signup` redirects to `/open-account`.
-- Insert into existing `leads` table with `lead_type: 'account_opening'` and JSONB context; check RLS allows public insert as other enquiry forms do.
-- Record the onboarding routing rule in AGENTS.md.
+- `src/lib/appLinks.ts`: add `TICKFUNDS_LINKS.SIGNUP`, `TUSHIL_LINKS.LOGIN`, `KYC_LINKS` (UTI CKYC + five check links); reuse `APP_LINKS.OPEN_ACCOUNT` / `LOGIN`.
+- `src/content/onboarding.ts`: tab content, investor types, link lists in one place.
+- Rewrite `OpenAccount.tsx` with `PageHero` + URL-synced tabs; `/signup` redirects to `/open-account?tab=invest`.
+- Insert into existing `leads` table (`lead_type: 'account_opening'`, JSONB context with investor type, products, source tab); confirm public insert-only policy like other enquiry forms.
+- Record the onboarding rule in AGENTS.md.
