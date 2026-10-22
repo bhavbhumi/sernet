@@ -6,9 +6,12 @@ describe('article sharing metadata', () => {
   it('uses the registered article route', () => {
     expect(articlePath('b413f885-3827-5c6d-a5e3-77b0b5f6ae08')).toBe('/insights/articles/b413f885-3827-5c6d-a5e3-77b0b5f6ae08');
   });
+  it('uses the analysis route for analysis posts', () => {
+    expect(articlePath('x', 'analysis')).toBe('/insights/analysis/x');
+  });
   it('uses the same article image in a sized sharing rendition', () => {
     const image = articleShareImage('https://example.com/storage/v1/object/public/cms-media/cover.png');
-    expect(image).toBe('https://example.com/storage/v1/render/image/public/cms-media/cover.png?width=1200&height=630&resize=cover&quality=75');
+    expect(image).toBe('https://example.com/storage/v1/render/image/public/cms-media/cover.png?width=600&height=315&resize=cover&quality=60');
   });
   it('replaces generic metadata in initial HTML, with one self-referencing canonical', () => {
     const template = '<head><title>Generic</title><meta property="og:title" content="Generic"><meta property="og:image" content="generic.png"><meta name="twitter:image" content="generic.png"><link rel="canonical" href="https://example.com/"></head><body></body>';
