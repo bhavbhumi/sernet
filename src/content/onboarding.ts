@@ -50,6 +50,7 @@ export const tabContent: Record<OnboardingTab, OnboardingTabContent> = {
       ], note: 'Activation and demat credit depend on provider verification and settlement. Bonds carry credit, interest-rate and liquidity risks. Use verified transaction-specific payment instructions only.' },
       { heading: 'Portfolio Management Services (PMS)', intro: 'Explore PMS from empanelled managers with your relationship manager. The provider handles eligibility checks, documentation and account opening.', interest: 'pms_aif' },
       { heading: 'Alternative Investment Funds (AIF)', intro: 'For eligible investors, our team can coordinate introductions to AIF partners and the provider’s documentation process.', interest: 'pms_aif' },
+      { heading: 'Minor, HUF, NRI or Non-Individual?', intro: 'Online account opening on Tick Funds and Altifi is only for adult Resident Indian individuals. For Resident Indian minors, HUF, NRIs and non-individuals, download the account opening form and our team will help you complete it.', links: [{ label: 'Download account opening form', href: '/downloads?tab=documents', primary: true }], interest: 'invest' },
     ],
     intro: 'Invest in regular mutual funds and SIF on Tick Funds, with support from a SERNET relationship manager.',
     steps: [
@@ -85,6 +86,9 @@ export const tabContent: Record<OnboardingTab, OnboardingTabContent> = {
     steps: [
       { title: 'Open your account', links: [{ label: 'Open a Choice FinX account', href: APP_LINKS.OPEN_ACCOUNT, primary: true }] },
       { title: 'Already a client?', links: [{ label: 'Log in to Choice FinX', href: APP_LINKS.LOGIN }] },
+    ],
+    sections: [
+      { heading: 'Minor, HUF, NRI or Non-Individual?', intro: 'Online account opening on Choice FinX is only for adult Resident Indian individuals. For Resident Indian minors, HUF, NRIs and non-individuals, download the account opening form and our team will help you complete it.', links: [{ label: 'Download account opening form', href: '/downloads?tab=documents', primary: true }], interest: 'trade' },
     ],
     note: 'Choice Equity Broking Pvt. Ltd. (SEBI Reg. No. INZ000160131) is the stock broker; SERNET is not a stock broker. Investments in securities market are subject to market risks. Statutory charges and GST are extra.',
   },
