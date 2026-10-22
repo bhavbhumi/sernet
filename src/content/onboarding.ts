@@ -16,12 +16,9 @@ export const interestOptions = [
   { value: 'invest', label: 'Investments (Tick Funds)' },
   { value: 'insure', label: 'Insurance (Tushil)' },
   { value: 'trade', label: 'Trading (Choice FinX)' },
-  { value: 'bonds', label: 'Bonds (Altifi)' },
-  { value: 'pms', label: 'PMS' },
-  { value: 'aif', label: 'AIF' },
+  { value: 'pms_aif', label: 'PMS / AIF' },
   { value: 'estate', label: 'Estate Planning' },
   { value: 'credit', label: 'Credit Counselling' },
-  { value: 'tax_planning', label: 'Tax Planning' },
   { value: 'tax_filing', label: 'Tax Filing (Quicko)' },
   { value: 'notarisation', label: 'NRI Documentation Notarisation' },
   { value: 'ckyc', label: 'KYC help' },
@@ -46,13 +43,13 @@ export const tabContent: Record<OnboardingTab, OnboardingTabContent> = {
   invest: {
     heading: 'Start investing with Tick Funds',
     sections: [
-      { heading: 'Bonds through Altifi', intro: 'Open your account with Northern Arc Securities Private Limited (NASPL) on Altifi, then coordinate your bond purchase with your SERNET relationship manager.', interest: 'bonds', steps: [
+      { heading: 'Bonds through Altifi', intro: 'Open your account with Northern Arc Securities Private Limited (NASPL) on Altifi, then coordinate your bond purchase with your SERNET relationship manager.', steps: [
         { title: 'Create your Altifi account', text: 'Use your name as shown on PAN, mobile number and email.', links: [{ label: 'Open an Altifi account', href: 'https://altifi.ai/sign_up', primary: true }] },
         { title: 'Log in and complete KYC on Altifi', text: 'Log in with your mobile OTP. Keep PAN, Aadhaar, bank account and IFSC, and demat account details ready.' },
         { title: 'Coordinate your purchase', text: 'After account activation, contact your relationship manager for the selected bond, exact amount and current provider payment instructions.' },
       ], note: 'Activation and demat credit depend on provider verification and settlement. Bonds carry credit, interest-rate and liquidity risks. Use verified transaction-specific payment instructions only.' },
-      { heading: 'Portfolio Management Services (PMS)', intro: 'Explore PMS from empanelled managers with your relationship manager. The provider handles eligibility checks, documentation and account opening.', interest: 'pms' },
-      { heading: 'Alternative Investment Funds (AIF)', intro: 'For eligible investors, our team can coordinate introductions to AIF partners and the provider’s documentation process.', interest: 'aif' },
+      { heading: 'Portfolio Management Services (PMS)', intro: 'Explore PMS from empanelled managers with your relationship manager. The provider handles eligibility checks, documentation and account opening.', interest: 'pms_aif' },
+      { heading: 'Alternative Investment Funds (AIF)', intro: 'For eligible investors, our team can coordinate introductions to AIF partners and the provider’s documentation process.', interest: 'pms_aif' },
     ],
     intro: 'Invest in regular mutual funds and SIF on Tick Funds, with support from a SERNET relationship manager.',
     steps: [
@@ -64,12 +61,11 @@ export const tabContent: Record<OnboardingTab, OnboardingTabContent> = {
   },
   other: {
     heading: 'Other services',
-    intro: 'Connect with our team for estate planning, credit counselling and tax-planning enquiries, or continue to Quicko for tax filing.',
+    intro: 'Connect with our team for estate planning or credit counselling, or continue to Quicko for tax filing.',
     steps: [],
     sections: [
       { heading: 'Estate Planning', intro: 'Share your will, trust or succession-planning requirements. Our team will coordinate the next steps with the service partner.', interest: 'estate' },
       { heading: 'Credit Counselling', intro: 'Request help understanding your credit report, repayment concerns or credit-report disputes. Outcomes and loan approvals are not guaranteed.', interest: 'credit' },
-      { heading: 'Tax Planning', intro: 'Share your tax-planning enquiry and our team will discuss the appropriate next steps.', interest: 'tax_planning' },
       { heading: 'Tax Filing through Quicko', intro: 'Continue to Quicko Infosoft Pvt Ltd for tax filing using the SERNET referral link.', links: [{ label: 'Continue to Quicko', href: 'https://www.quicko.com?ref=sernetfspl', primary: true }], interest: 'tax_filing', note: 'Confirm with Quicko whether your residency status and filing requirements are supported, especially for NRI cases. SERNET does not perform the filing.' },
     ],
     note: 'For NRI Documentation Notarisation, select the checkbox in Express your interest. Service availability, documentation and charges are confirmed before proceeding; do not submit sensitive documents through this form.',
