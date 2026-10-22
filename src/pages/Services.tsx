@@ -12,9 +12,10 @@ import { InvestmentServiceContent } from '@/components/services/InvestmentServic
 import { InsuranceServiceContent } from '@/components/services/InsuranceServiceContent';
 import { EducationServiceContent } from '@/components/services/EducationServiceContent';
 import { EstatePlanningServiceContent } from '@/components/services/EstatePlanningServiceContent';
+import { TaxFilingServiceContent } from '@/components/services/TaxFilingServiceContent';
 import { CreditCounsellingServiceContent } from '@/components/services/CreditCounsellingServiceContent';
 
-const servicesTabs = ['Trading', 'Investment', 'Insurance', 'Estate Planning', 'Credit Counselling'] as const;
+const servicesTabs = ['Investment', 'Insurance', 'Trading', 'Estate Planning', 'Credit Counselling', 'Tax Filing'] as const;
 type ServicesTab = (typeof servicesTabs)[number];
 
 const tabI18nKeys: Record<ServicesTab, string> = {
@@ -24,6 +25,7 @@ const tabI18nKeys: Record<ServicesTab, string> = {
   
   'Estate Planning': 'services.tabs.estatePlanning',
   'Credit Counselling': 'services.tabs.creditCounselling',
+  'Tax Filing': 'services.tabs.taxFiling',
 };
 
 const tabContent: Record<ServicesTab, React.ReactNode> = {
@@ -33,6 +35,7 @@ const tabContent: Record<ServicesTab, React.ReactNode> = {
   
   'Estate Planning': <EstatePlanningServiceContent />,
   'Credit Counselling': <CreditCounsellingServiceContent />,
+  'Tax Filing': <TaxFilingServiceContent />,
 };
 
 const Services = () => {
@@ -40,7 +43,7 @@ const Services = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const tabParam = searchParams.get('tab') as ServicesTab | null;
   const [activeTab, setActiveTab] = useState<ServicesTab>(
-    tabParam && servicesTabs.includes(tabParam) ? tabParam : 'Trading'
+    tabParam && servicesTabs.includes(tabParam) ? tabParam : 'Investment'
   );
 
   useEffect(() => {
@@ -79,7 +82,7 @@ const Services = () => {
                   activeTab === tab ? 'text-foreground font-medium' : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
-                {t(tabI18nKeys[tab])}
+                {t(tabI18nKeys[tab], { defaultValue: tab })}
                 {activeTab === tab && (
                   <motion.div layoutId="services-tab-underline" className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-primary" />
                 )}

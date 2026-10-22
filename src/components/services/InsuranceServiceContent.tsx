@@ -1,5 +1,4 @@
 import { ServiceOverview } from './ServiceOverview';
-import { TUSHIL_LINKS } from '@/lib/appLinks';
 
 export const InsuranceServiceContent = () => (
   <ServiceOverview
@@ -13,7 +12,7 @@ export const InsuranceServiceContent = () => (
       'No charge to you; SERNET earns a referral fee from the broker',
     ]}
     learnMore={{ label: 'Explore Tushil', to: '/tushil' }}
-    primaryCta={{ label: 'Open Tushil', href: TUSHIL_LINKS.WEB, external: true }}
+    primaryCta={{ label: 'Open Account', href: '/open-account?tab=insure' }}
     disclaimer="Insurance is the subject matter of solicitation. SERNET is not an insurer, insurance broker or corporate agent; it refers clients to Shrigoda Insurance Brokers, an IRDAI-registered insurance broker, and may receive a referral fee. Policies are issued by the insurer and claims are decided by the insurer. Read the policy terms and exclusions carefully before buying."
   />
 );
