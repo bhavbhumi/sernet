@@ -21,14 +21,14 @@ import {
 
 const OutLink = ({ link }: { link: OnboardingLink }) => (
   <Button asChild variant={link.primary ? 'default' : 'outline'} className="h-auto min-h-10 whitespace-normal text-left">
-  <a
-    href={link.href}
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    {link.label}
-    <ExternalLink className="w-3.5 h-3.5" aria-label="opens in a new tab" />
-  </a>
+    {link.href.startsWith('/') ? (
+      <Link to={link.href}>{link.label}</Link>
+    ) : (
+      <a href={link.href} target="_blank" rel="noopener noreferrer">
+        {link.label}
+        <ExternalLink className="w-3.5 h-3.5" aria-label="opens in a new tab" />
+      </a>
+    )}
   </Button>
 );
 
@@ -139,7 +139,11 @@ const InterestForm = ({ tab, requestedInterest }: { tab: OnboardingTab; requeste
           ))}
         </div>
         {investorType !== 'Individual' && (
-          <p className="text-xs text-muted-foreground">Our team will guide you with the documents needed for {investorType} accounts.</p>
+          <p className="text-xs text-muted-foreground">
+            Online account opening is for adult Resident Indian individuals. For {investorType} accounts,{' '}
+            <Link to="/downloads?tab=documents" className="text-primary hover:underline">download the account opening form</Link>{' '}
+            and our team will guide you with the documents needed.
+          </p>
         )}
       </div>
       <div className="space-y-1.5">
