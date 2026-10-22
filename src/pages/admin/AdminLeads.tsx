@@ -96,6 +96,9 @@ const AdminLeads = () => {
     if (lead.source === 'tieup') {
       return (ctx.org_name as string) ?? (ctx.category as string) ?? null;
     }
+    if (lead.source === 'open_account') {
+      return `Open account: ${((ctx.interests as string[]) ?? []).join(', ')} (${(ctx.investor_type as string) ?? ''})`;
+    }
     if (ctx.service) return `Service: ${ctx.service as string}`;
     return null;
   };

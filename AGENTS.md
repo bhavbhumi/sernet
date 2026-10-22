@@ -27,3 +27,4 @@
 - Give each product one full home page (/tickfunds, /tushil, /choicefinx); Services tabs use the short `ServiceOverview` summary and Pricing shows only charges, linking to the product page; this prevents product copy drifting across pages.
 
 - Fit Insights listing covers without cropping in stable image frames and wrap full article titles; embedded cover text must not be cut off at any breakpoint.
+- Route all prospect onboarding through `/open-account` tabs using links and copy in `src/content/onboarding.ts`; SERNET only captures interest into `leads` (`lead_type: account_opening`) while KYC and account opening stay on provider pages.
