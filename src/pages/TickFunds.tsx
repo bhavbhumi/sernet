@@ -11,6 +11,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import choicefinxShowcase from '@/assets/choicefinx-showcase.png';
 import { TICKFUNDS_LINKS } from '@/lib/appLinks';
 import { RegulatoryIdentity, LastReviewed } from '@/components/legal/RegulatoryIdentity';
+import { ProductOnboardingBlock } from '@/components/shared/ProductOnboardingBlock';
 import { pageReviewDates } from '@/lib/regulatoryIdentity';
 import { tickfundsSeo, tickfundsHero, tickfundsStats, tickfundsFeatures, tickfundsProducts, tickfundsTestimonials, tickfundsSteps, tickfundsFaqs, tickfundsDisclaimer } from '@/content/tickfunds';
 
@@ -67,6 +68,8 @@ const TickFunds = () => (
         </div>
       </div>
     </section>
+
+    <ProductOnboardingBlock tab="invest" />
 
     {/* Why Tick Funds */}
     <section className="section-padding bg-section-alt">
@@ -167,7 +170,7 @@ const TickFunds = () => (
           ); })}
         </div>
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }} className="text-center mt-12">
-          <a href={TICKFUNDS_LINKS.START_INVESTING} target="_blank" rel="noopener noreferrer" className="btn-primary">Start Investing Today <ArrowRight className="w-4 h-4 ml-2" /></a>
+          <Link to="/open-account?tab=invest" className="btn-primary">Open Account <ArrowRight className="w-4 h-4 ml-2" /></Link>
         </motion.div>
       </div>
     </section>
@@ -194,7 +197,7 @@ const TickFunds = () => (
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="heading-lg text-foreground mb-4">Start building your wealth today</motion.h2>
         <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-muted-foreground mb-8 max-w-xl mx-auto">Start investing with an AMFI-registered distributor serving investors since 2006.</motion.p>
         <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="flex flex-wrap justify-center gap-4">
-          <a href={TICKFUNDS_LINKS.START_INVESTING} target="_blank" rel="noopener noreferrer" className="btn-primary">Open Free Account <ArrowRight className="w-4 h-4 ml-2" /></a>
+          <Link to="/open-account?tab=invest" className="btn-primary">Open Account <ArrowRight className="w-4 h-4 ml-2" /></Link>
           <Link to="/services" className="btn-secondary">Explore All Services</Link>
         </motion.div>
       </div>

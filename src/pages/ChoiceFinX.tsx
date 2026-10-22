@@ -7,6 +7,7 @@ import {
   TrendingUp, BarChart3, Layers, Globe, DollarSign, Rocket, RefreshCw, Landmark,
   Users, Star, Shield, Zap, Clock, Smartphone, HeadphonesIcon, Award
 } from 'lucide-react';
+import { ProductOnboardingBlock } from '@/components/shared/ProductOnboardingBlock';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import choicefinxShowcase from '@/assets/choicefinx-showcase.png';
 import { APP_LINKS } from '@/lib/appLinks';
@@ -95,6 +96,8 @@ const ChoiceFinX = () => (
       </div>
     </section>
 
+    <ProductOnboardingBlock tab="trade" />
+
     {/* Why Choice FinX */}
     <section className="section-padding bg-section-alt">
       <div className="container-sernet">
@@ -140,22 +143,20 @@ const ChoiceFinX = () => (
         <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-body text-center mb-12 max-w-2xl mx-auto">
           Brokerage applicable to clients onboarded through SERNET. Statutory charges and taxes are extra.
         </motion.p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-          {[
-            { title: 'Account Opening', price: '₹0', items: ['Free Demat + Trading Account', 'Free demat AMC', 'Digital KYC with Choice'] },
-            { title: 'Equity Delivery', price: '0.30%', items: ['Per executed order', 'Plus statutory charges & GST', 'Shown on Choice contract note'], featured: true },
-            { title: 'Equity Intraday', price: '0.03%', items: ['On both buy and sell legs', 'F&O, currency, commodity: as per Choice FinX schedule', 'Plus statutory charges & GST'] },
-          ].map((plan, i) => (
-            <motion.div key={plan.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }} className={`rounded-xl border p-8 text-center ${plan.featured ? 'border-primary bg-primary/5 shadow-lg' : 'border-border bg-card'}`}>
-              <h3 className="heading-md text-foreground mb-2">{plan.title}</h3>
-              <p className="text-4xl font-bold text-primary mb-6">{plan.price}</p>
-              <ul className="space-y-3 text-left">
-                {plan.items.map((item) => (
-                  <li key={item} className="flex items-center gap-2 text-sm text-foreground"><Check className="w-4 h-4 text-primary shrink-0" />{item}</li>
-                ))}
-              </ul>
-            </motion.div>
-          ))}
+        <div className="max-w-3xl mx-auto overflow-x-auto rounded-lg border border-border bg-card">
+          <table className="w-full text-sm">
+            <thead className="bg-muted/50 text-left"><tr><th className="p-4 font-semibold text-foreground">Segment</th><th className="p-4 font-semibold text-foreground">Brokerage</th><th className="p-4 font-semibold text-foreground">Notes</th></tr></thead>
+            <tbody>
+              {[
+                ['Account opening', '₹0', 'Demat + trading account with Choice; free demat AMC'],
+                ['Equity delivery', '0.30%', 'Per executed order'],
+                ['Equity intraday', '0.03%', 'On both buy and sell legs'],
+                ['F&O, currency, commodity', 'As per Choice schedule', 'Shown on the Choice contract note'],
+              ].map(([a, b, c]) => (
+                <tr key={a} className="border-t border-border"><td className="p-4 text-foreground">{a}</td><td className="p-4 font-semibold text-primary whitespace-nowrap">{b}</td><td className="p-4 text-muted-foreground">{c}</td></tr>
+              ))}
+            </tbody>
+          </table>
         </div>
         <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="text-center mt-8">
           <Link to="/pricing" className="link-primary inline-flex items-center gap-1 text-sm font-medium">View detailed pricing <ArrowRight className="w-4 h-4" /></Link>
@@ -208,9 +209,9 @@ const ChoiceFinX = () => (
           ))}
         </div>
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }} className="text-center mt-12">
-          <a href={APP_LINKS.OPEN_ACCOUNT} target="_blank" rel="noopener noreferrer" className="btn-primary">
-            Open Demat + Trading Account <ArrowRight className="w-4 h-4 ml-2" />
-          </a>
+          <Link to="/open-account?tab=trade" className="btn-primary">
+            Open Account <ArrowRight className="w-4 h-4 ml-2" />
+          </Link>
         </motion.div>
       </div>
     </section>
@@ -245,9 +246,9 @@ const ChoiceFinX = () => (
           Open your free Demat + Trading account in minutes. Account opened with Choice Equity Broking, supported by SERNET as its Authorised Person.
         </motion.p>
         <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="flex flex-wrap justify-center gap-4">
-          <a href={APP_LINKS.OPEN_ACCOUNT} target="_blank" rel="noopener noreferrer" className="btn-primary">
-            Open Demat + Trading Account <ArrowRight className="w-4 h-4 ml-2" />
-          </a>
+          <Link to="/open-account?tab=trade" className="btn-primary">
+            Open Account <ArrowRight className="w-4 h-4 ml-2" />
+          </Link>
           <Link to="/services" className="btn-secondary">Explore All Services</Link>
         </motion.div>
       </div>
