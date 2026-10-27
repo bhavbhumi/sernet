@@ -30,7 +30,7 @@ const TYPE_ROUTE: Record<string, (id: string, url?: string | null) => string> = 
   news: (_id, url) => url || '/updates',
   bulletin: () => '/insights',
   press: (_id, url) => url || '/about?tab=Press',
-  report: (_id, url) => url || '/insights?tab=Reports',
+  report: (id) => `/insights/articles/${id}`,
 };
 
 export function useSearch(query: string) {

@@ -22,7 +22,7 @@ interface InsightCard {
 const TYPE_BADGE: Record<string, { label: string; route: (id: string) => string }> = {
   article: { label: 'Article', route: (id) => `/insights/articles/${id}` },
   analysis: { label: 'Analysis', route: (id) => `/insights/analysis/${id}` },
-  report: { label: 'Report', route: (id) => `/insights?tab=Reports` },
+  report: { label: 'Report', route: (id) => `/insights/articles/${id}` },
   awareness: { label: 'Awareness', route: (id) => `/insights/articles/${id}` },
 };
 

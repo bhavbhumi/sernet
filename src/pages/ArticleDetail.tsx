@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Layout } from '@/components/layout/Layout';
 import { SEOHead } from '@/components/shared/SEOHead';
-import { ArrowLeft, Calendar, User, Clock, FileText, Image, Headphones, Video, Heart, Share2, List } from 'lucide-react';
+import { ArrowLeft, Calendar, User, Clock, FileText, Image, Headphones, Video, Heart, Share2, List, Download } from 'lucide-react';
 import { AISummarizer } from '@/components/shared/AISummarizer';
 import { motion } from 'framer-motion';
 import { useArticleEngagement } from '@/hooks/useArticleEngagement';
@@ -356,6 +356,25 @@ export default function ArticleDetail() {
               <p className="text-lg text-muted-foreground mb-6 leading-relaxed border-l-4 border-primary/40 pl-4 italic">
                 {article.excerpt}
               </p>
+            )}
+
+            {/* Report download */}
+            {article.file_url && (
+              <a
+                href={article.file_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 mb-6 p-4 rounded-lg border border-primary/30 bg-primary/5 hover:bg-primary/10 transition-colors group"
+              >
+                <span className="flex items-center justify-center h-10 w-10 rounded-lg bg-primary/10 text-primary shrink-0">
+                  <Download className="h-5 w-5" />
+                </span>
+                <span className="flex-1 min-w-0">
+                  <span className="block text-sm font-semibold text-foreground group-hover:text-primary transition-colors">Download the full report</span>
+                  <span className="block text-xs text-muted-foreground">PDF document — opens in a new tab</span>
+                </span>
+                <ArrowLeft className="h-4 w-4 text-primary rotate-180 shrink-0" />
+              </a>
             )}
 
             {/* AI Summarizer */}
