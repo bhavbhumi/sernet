@@ -121,3 +121,5 @@
 - [ ] Credit tab stays empty until posts are tagged Credit; no genuine Monthly Market Outlook edition exists yet; the Indistock third-party research report still needs their written permission.
 
 - [x] Open Account page: hero + Invest/Insure/Trade/CKYC tabs, KYC useful links, Express Your Interest form to Admin leads
+
+- [ ] Client portal (Profile, Risk Profile, Suitability, Review, Tickets) — plan drafted, parked by user until content update is done
