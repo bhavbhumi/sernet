@@ -117,6 +117,7 @@
 - [x] Article and Analysis pages: Home › Insights › Type › Category trail, contextual next-step CTA and short disclaimer per type; IPO posts keep the approved Choice FinX section only.
 - [x] Weekly Market Impact and Weekly Market Triggers got their own signature covers (52 posts re-pointed; 8 already-unique untouched).
 - [x] Published and verified live on sernetindia.com: tabs, filters, breadcrumb, disclaimer, CTA, both new covers serving, article share preview carries its own title/image, no page errors or phone overflow.
+- [x] 16 new drafts published (3 IPOs, 4 Daily Market News Updates, Weekly Capsule, Triggers Weekly, 5 Macro/Economy, MF Flows Sept-26, Swiggy) — all had covers, bodies and correct Type/Category; display dates preserved (midnight IST of item date); live Insights listing shows all of them. Share-preview HTML for the new pages awaits the in-progress deployment.
 - [ ] Disclaimer wording and next-step link targets await management/compliance sign-off before wide sharing.
 - [ ] Credit tab stays empty until posts are tagged Credit; no genuine Monthly Market Outlook edition exists yet; the Indistock third-party research report still needs their written permission.
 
