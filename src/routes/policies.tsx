@@ -1,6 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
-import Policies from "@/pages/Policies";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/policies")({
-  component: Policies,
+  beforeLoad: () => {
+    throw redirect({ to: "/legal", search: { tab: "policies" }, replace: true, statusCode: 301 });
+  },
 });
