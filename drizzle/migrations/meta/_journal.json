@@ -43,6 +43,13 @@
       "when": 1792666479359,
       "tag": "0005_allow_open_account_leads",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1793701779662,
+      "tag": "0006_security_hardening_nov_2026",
+      "breakpoints": true
     }
   ]
 }

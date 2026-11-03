@@ -2056,6 +2056,21 @@ export type Database = {
           },
         ]
       }
+      internal_config: {
+        Row: {
+          key: string
+          value: string
+        }
+        Insert: {
+          key: string
+          value: string
+        }
+        Update: {
+          key?: string
+          value?: string
+        }
+        Relationships: []
+      }
       invoice_items: {
         Row: {
           amount: number
