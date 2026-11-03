@@ -1,7 +1,8 @@
 # Architecture rules
 
-- Prerender published article sharing metadata from paginated CMS rows at build time; share and canonical URLs use the registered article route and its own sized cover, so crawlers need no JavaScript.
-- After publishing new CMS articles, update `prerender/contentStamp.json` before republishing; a publish without a code change reuses the previous build, so new posts would get generic share previews.
+- The site runs on TanStack Start with server rendering; article routes build share/canonical metadata in route `loader` + `head()` from the live CMS row and its own sized cover, so new posts get correct previews on every request without a rebuild.
+- Public pages set server-rendered titles/descriptions via route `head()` (`src/lib/routeHead.ts`); `SEOHead` only syncs the open document after navigation, so new public pages need both.
+- Code rendered during SSR must not touch browser globals (window, localStorage, DOMParser) at render or module scope; guard them or move them into effects, otherwise the page silently falls back to client-only rendering.
 - Keep article media/sidebar independent of heading count with a tablet/desktop two-column layout; short articles must not switch to full-width cover images.
 
 - Recover collapsed single-column article layout imports in the shared body normalizer used by both content and topic indexes; preserve numeric strings rather than guessing lost table cells.
@@ -23,7 +24,7 @@
 - Group policy navigation using CMS heading `data-policy-group` metadata while preserving the numbered section anchors; this keeps titles and groups editable without breaking existing policy links.
 - Give each topic one CMS home: Investor Charter for investor guidance, Disclosures for registrations/remuneration/product risks/provider responsibilities, Grievance Redressal for complaint procedures, Privacy for data practices, Terms for contractual website/service terms, and Policies for IT/HR; remove duplicate sections rather than retaining placeholder summaries.
 - Preserve explicit numbered CMS heading IDs when removing or reordering legal sections, and redirect retired policy anchors to their native document; this keeps existing links working without empty navigation entries.- Keep SERNET's registrations, scope and limits in `src/lib/regulatoryIdentity.ts` and show them only via `RegulatoryIdentity` (including its localized homepage trust variant); one verified source prevents conflicting ARN/scope wording across pages (including Tick Funds Global).
-- Prerender compliance and product pages at build time (`prerender/legalPrerender.ts`) from the same CMS rows and shared content modules (`src/content/*`) the React pages use; crawlers get real text without a second editable copy. New compliance/product pages must be added there.
+- Compliance and product routes prefetch the same CMS queries their pages use in route loaders, so legal text is in the server-rendered HTML without a second editable copy; legal HTML is sanitised with string-based `sanitize-html` so server and browser output match.
 - "Last reviewed" dates come from `legal_pages.last_reviewed_on` or `pageReviewDates`, set only after a genuine content review; both legal CMS editors expose an explicit date input, never derive dates from deploy or edit timestamps.
 - Give each product one full home page (/tickfunds, /tushil, /choicefinx); Services tabs use the short `ServiceOverview` summary and Pricing shows only charges, linking to the product page; this prevents product copy drifting across pages.
 
