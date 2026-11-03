@@ -30,8 +30,7 @@ export const HeroSection = () => {
               width={1200}
               height={1075}
               decoding="async"
-              // @ts-ignore fetchpriority not in React types yet
-              fetchpriority="high"
+              fetchPriority="high"
               animate={{ y: reducedMotion ? 0 : [0, -6, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
             />
