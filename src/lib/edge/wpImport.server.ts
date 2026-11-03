@@ -444,7 +444,7 @@ export const handle = async (req: Request): Promise<Response> => {
       }
 
       // Determine category: use WP tag if available, else keyword mapping on title
-      const finalTitle = scraped.title || article_url.replace(/\/$/, '').split('/').pop()!.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+      const finalTitle = scraped.title || article_url.replace(/\/$/, '').split('/').pop()!.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase());
       const category = scraped.wpCategory ? mapCategory(scraped.wpCategory) : mapCategory(finalTitle);
 
       const insertRes = await fetch(`${supabaseUrl}/rest/v1/articles`, {
