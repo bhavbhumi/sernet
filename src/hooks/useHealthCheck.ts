@@ -1,3 +1,4 @@
+import { invokeBackendTool } from "@/lib/backendTools";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -25,7 +26,7 @@ export interface HealthData {
 }
 
 async function fetchHealth(): Promise<HealthData> {
-  const { data, error } = await supabase.functions.invoke("health-check");
+  const { data, error } = await invokeBackendTool("health-check");
   if (error) throw error;
   return data as HealthData;
 }

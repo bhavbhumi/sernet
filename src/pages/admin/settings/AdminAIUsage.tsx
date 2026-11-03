@@ -291,7 +291,7 @@ export function AIUsageContent() {
 
                 return (
                   <div key={s.id} className="px-4 py-3 flex items-start gap-4 hover:bg-muted/20 transition-colors">
-                    <span className={`mt-0.5 shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium ${
+                    <span className={`mt-0.5 shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-[10px] font-medium ${
                       s.content_type === 'article' ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'
                     }`}>
                       {s.content_type === 'article' ? <FileText className="h-2.5 w-2.5" /> : <BarChart3 className="h-2.5 w-2.5" />}
@@ -304,7 +304,7 @@ export function AIUsageContent() {
                       </p>
                       <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">{s.tldr}</p>
                       <div className="flex items-center gap-3 mt-1.5 flex-wrap">
-                        <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium ${sConf.className}`}>
+                        <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-sm text-[10px] font-medium ${sConf.className}`}>
                           <SIcon className="h-2.5 w-2.5" />
                           {sConf.label}
                         </span>
@@ -324,7 +324,7 @@ export function AIUsageContent() {
                       <button
                         onClick={() => handleDelete(s.id)}
                         disabled={deletingId === s.id}
-                        className="p-1 rounded hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors disabled:opacity-40"
+                        className="p-1 rounded-sm hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors disabled:opacity-40"
                         title="Delete to force regeneration"
                       >
                         <Trash2 className="h-3.5 w-3.5" />

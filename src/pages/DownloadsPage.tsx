@@ -1,4 +1,4 @@
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from '@/lib/router-compat';
 import { Layout } from '@/components/layout/Layout';
 import { PageHero } from '@/components/layout/PageHero';
 import { SEOHead } from '@/components/shared/SEOHead';
@@ -28,7 +28,7 @@ const DownloadsPage = () => {
         breadcrumbLabel="Downloads"
       />
 
-      <div className="border-b border-border sticky top-16 z-20 bg-background/95 backdrop-blur-sm">
+      <div className="border-b border-border sticky top-16 z-20 bg-background/95 backdrop-blur-xs">
         <div className="container-sernet">
           <div className="flex gap-8 overflow-x-auto" style={{ scrollbarWidth: 'none' }} role="tablist">
             {downloadsTabs.map((tab) => (

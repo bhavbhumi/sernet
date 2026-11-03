@@ -4,7 +4,7 @@ import { PageHero } from '@/components/layout/PageHero';
 import { SEOHead } from '@/components/shared/SEOHead';
 import { Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router-compat';
 
 const pricingTabs = ['Trading', 'Investment', 'Insurance'] as const;
 type PricingTab = (typeof pricingTabs)[number];
@@ -220,7 +220,7 @@ const Pricing = () => {
       />
 
       {/* Tab Navigation */}
-      <div className="border-b border-border sticky top-16 z-20 bg-background/95 backdrop-blur-sm">
+      <div className="border-b border-border sticky top-16 z-20 bg-background/95 backdrop-blur-xs">
         <div className="container-sernet">
           <div className="flex gap-8 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
             {pricingTabs.map((tab) => (

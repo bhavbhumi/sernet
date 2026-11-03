@@ -1,6 +1,6 @@
 import { POST_TYPES } from '@/lib/insightsTaxonomy';
 import { useEffect, useState, useRef } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from '@/lib/router-compat';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -304,7 +304,7 @@ export default function AdminPosts() {
             <tbody className="divide-y divide-border">
               {loading ? (
                 Array(5).fill(0).map((_, i) => (
-                  <tr key={i}><td colSpan={7} className="px-4 py-3"><div className="h-4 bg-muted animate-pulse rounded" /></td></tr>
+                  <tr key={i}><td colSpan={7} className="px-4 py-3"><div className="h-4 bg-muted animate-pulse rounded-sm" /></td></tr>
                 ))
               ) : paginated.length === 0 ? (
                 <tr><td colSpan={7} className="px-4 py-12 text-center text-muted-foreground">No posts found</td></tr>
@@ -475,7 +475,7 @@ export default function AdminPosts() {
               {form.media_url ? (
                 <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg border border-border">
                   {/\.(jpg|jpeg|png|gif|webp|svg)/i.test(form.media_url) && (
-                    <img src={form.media_url} alt="" className="w-16 h-12 object-cover rounded" />
+                    <img src={form.media_url} alt="" className="w-16 h-12 object-cover rounded-sm" />
                   )}
                   <span className="flex-1 text-xs text-muted-foreground truncate">{form.media_url}</span>
                   <Button variant="ghost" size="sm" onClick={() => setForm(f => ({ ...f, media_url: '' }))}><X className="h-4 w-4" /></Button>

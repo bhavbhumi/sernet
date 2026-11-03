@@ -6,7 +6,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { LegalDocument } from '@/components/legal/LegalDocument';
 import { RegulatoryIdentity, LastReviewed } from '@/components/legal/RegulatoryIdentity';
 import { Button } from '@/components/ui/button';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation } from '@/lib/router-compat';
 
 const InvestorCharter = () => {
   const { hash } = useLocation();
@@ -26,7 +26,7 @@ const InvestorCharter = () => {
       <PageHero title="Investor" highlight="Charter" description="Investor rights, responsibilities, onboarding and portfolio servicing." />
       <div className="container-sernet section-padding">
         <div className="mb-8 space-y-3"><RegulatoryIdentity variant="compact" /><LastReviewed date={page?.last_reviewed_on} /></div>
-        {isLoading ? <div role="status" aria-label="Loading investor guidance" className="h-40 animate-pulse bg-muted rounded" /> : isError ? <div role="alert"><p className="mb-3 text-muted-foreground">This document could not be loaded.</p><Button variant="outline" onClick={() => void refetch()}>Try again</Button></div> : page?.body ? <LegalDocument body={page.body} /> : <p className="text-muted-foreground">Please contact <a href="mailto:support@sernetindia.com" className="text-primary underline">support@sernetindia.com</a> for investor guidance.</p>}
+        {isLoading ? <div role="status" aria-label="Loading investor guidance" className="h-40 animate-pulse bg-muted rounded-sm" /> : isError ? <div role="alert"><p className="mb-3 text-muted-foreground">This document could not be loaded.</p><Button variant="outline" onClick={() => void refetch()}>Try again</Button></div> : page?.body ? <LegalDocument body={page.body} /> : <p className="text-muted-foreground">Please contact <a href="mailto:support@sernetindia.com" className="text-primary underline">support@sernetindia.com</a> for investor guidance.</p>}
       </div>
     </Layout>
   );

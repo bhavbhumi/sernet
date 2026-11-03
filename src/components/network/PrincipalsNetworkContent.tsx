@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Shield, TrendingUp, Landmark, Award, ArrowRight, Banknote, Heart, Coins, ScrollText, CreditCard, Scale, Check, Handshake } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router-compat';
 import networkPrincipalsImg from '@/assets/network-principals-real.jpg';
 import { AutoScrollShowcase, type ShowcaseItem } from './AutoScrollShowcase';
 import { TieupFormDialog } from '@/components/shared/TieupFormDialog';

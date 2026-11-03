@@ -1,7 +1,7 @@
 import { Layout } from '@/components/layout/Layout';
 import { SEOHead } from '@/components/shared/SEOHead';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router-compat';
 import {
   ArrowRight, Check, Download, UserCheck, Wallet, Play,
   TrendingUp, BarChart3, Layers, Globe, DollarSign, Rocket, RefreshCw, Landmark,

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router-compat';
 import { ArrowRight, ExternalLink, UserCheck } from 'lucide-react';
 import { kycChecks } from '@/content/onboarding';
 import { KYC_LINKS } from '@/lib/appLinks';

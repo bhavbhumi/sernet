@@ -16,7 +16,7 @@ const AnimatedCounter = ({ value, suffix, decimals = 0 }: { value: number; suffi
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
   const motionValue = useMotionValue(0);
-  const rounded = useTransform(motionValue, (v) =>
+  const rounded-sm = useTransform(motionValue, (v) =>
     decimals > 0 ? v.toFixed(decimals) : Math.round(v).toString()
   );
 
@@ -28,7 +28,7 @@ const AnimatedCounter = ({ value, suffix, decimals = 0 }: { value: number; suffi
 
   return (
     <span ref={ref}>
-      <motion.span>{rounded}</motion.span>
+      <motion.span>{rounded-sm}</motion.span>
       {suffix}
     </span>
   );

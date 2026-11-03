@@ -162,7 +162,7 @@ const MarketHolidaysContent = () => {
                 value={search}
                 onChange={e => setSearch(e.target.value)}
                 placeholder="Search holidays..."
-                className="pl-9 pr-4 py-2 text-sm bg-muted border border-border rounded-lg text-foreground focus:outline-none focus:ring-1 focus:ring-primary w-48"
+                className="pl-9 pr-4 py-2 text-sm bg-muted border border-border rounded-lg text-foreground focus:outline-hidden focus:ring-1 focus:ring-primary w-48"
               />
             </div>
             <button

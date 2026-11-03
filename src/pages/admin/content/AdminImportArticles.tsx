@@ -1,3 +1,4 @@
+import { invokeBackendTool } from "@/lib/backendTools";
 import { useState } from 'react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { Button } from '@/components/ui/button';
@@ -47,7 +48,7 @@ export default function AdminImportArticles() {
 
     let allUrls: string[] = [];
     try {
-      const { data, error } = await supabase.functions.invoke('wp-import', {
+      const { data, error } = await invokeBackendTool("wp-import", {
         body: { action: 'list' },
       });
       if (error || !data?.success) {
@@ -74,7 +75,7 @@ export default function AdminImportArticles() {
 
       await Promise.all(batch.map(async (url) => {
         try {
-          const { data, error } = await supabase.functions.invoke('wp-import', {
+          const { data, error } = await invokeBackendTool("wp-import", {
             body: { action: 'scrape_one', article_url: url },
           });
           if (error || !data?.success) {
@@ -115,7 +116,7 @@ export default function AdminImportArticles() {
 
     let allUrls: string[] = [];
     try {
-      const { data, error } = await supabase.functions.invoke('wp-import', {
+      const { data, error } = await invokeBackendTool("wp-import", {
         body: { action: 'list_existing' },
       });
       if (error || !data?.success) {
@@ -142,7 +143,7 @@ export default function AdminImportArticles() {
 
       await Promise.all(batch.map(async (url) => {
         try {
-          const { data, error } = await supabase.functions.invoke('wp-import', {
+          const { data, error } = await invokeBackendTool("wp-import", {
             body: { action: 'rescrape_one', article_url: url },
           });
           if (error || !data?.success) {
@@ -180,7 +181,7 @@ export default function AdminImportArticles() {
 
     let items: { id: string; title: string; url: string }[] = [];
     try {
-      const { data, error } = await supabase.functions.invoke('wp-import', {
+      const { data, error } = await invokeBackendTool("wp-import", {
         body: { action: 'match_analyses' },
       });
       if (error || !data?.success) {
@@ -207,7 +208,7 @@ export default function AdminImportArticles() {
 
       await Promise.all(batch.map(async (item) => {
         try {
-          const { data, error } = await supabase.functions.invoke('wp-import', {
+          const { data, error } = await invokeBackendTool("wp-import", {
             body: { action: 'rescrape_analysis', article_url: item.url, analysis_id: item.id },
           });
           if (error || !data?.success) {
@@ -246,7 +247,7 @@ export default function AdminImportArticles() {
 
     let items: { id: string; title: string; url: string }[] = [];
     try {
-      const { data, error } = await supabase.functions.invoke('wp-import', {
+      const { data, error } = await invokeBackendTool("wp-import", {
         body: { action: 'match_analyses' },
       });
       if (error || !data?.success) {
@@ -288,7 +289,7 @@ export default function AdminImportArticles() {
 
       await Promise.all(batch.map(async (item) => {
         try {
-          const { data, error } = await supabase.functions.invoke('wp-import', {
+          const { data, error } = await invokeBackendTool("wp-import", {
             body: { action: 'import_analysis_as_article', article_url: item.url, analysis_id: item.id, original_title: item.title },
           });
           if (error || !data?.success) {
@@ -336,7 +337,7 @@ export default function AdminImportArticles() {
       setMigrationPhase('moving');
       addLog('📦 MIGRATION Step 2b: Moving tagged articles to analyses...');
 
-      const { data, error } = await supabase.functions.invoke('wp-import', {
+      const { data, error } = await invokeBackendTool("wp-import", {
         body: { action: 'move_analyses_from_articles' },
       });
 
@@ -439,7 +440,7 @@ export default function AdminImportArticles() {
               <CardContent className="pt-4">
                 <h3 className="font-medium text-sm mb-2">How this migration works</h3>
                 <ul className="text-xs text-muted-foreground space-y-1">
-                  <li><strong>Step 1:</strong> Takes all 302 analysis titles, builds WP blog URLs, scrapes each one using the proven articles scraper, and inserts into articles table with a <code className="bg-muted px-1 rounded">__analysis_import::</code> category tag</li>
+                  <li><strong>Step 1:</strong> Takes all 302 analysis titles, builds WP blog URLs, scrapes each one using the proven articles scraper, and inserts into articles table with a <code className="bg-muted px-1 rounded-sm">__analysis_import::</code> category tag</li>
                   <li><strong>Verify:</strong> Check the imported articles in the Articles admin to confirm titles, images, and body look correct</li>
                   <li><strong>Step 2:</strong> Deletes all old analyses records, then moves the tagged articles into the analyses table with proper categories</li>
                 </ul>
@@ -451,7 +452,7 @@ export default function AdminImportArticles() {
           <TabsContent value="articles">
             <div className="mb-4">
               <p className="text-muted-foreground text-sm">
-                Scrapes articles from <code className="bg-muted px-1.5 py-0.5 rounded text-xs">sernetindia.com/blog-dynamic/</code>
+                Scrapes articles from <code className="bg-muted px-1.5 py-0.5 rounded-sm text-xs">sernetindia.com/blog-dynamic/</code>
               </p>
             </div>
 
@@ -581,7 +582,7 @@ export default function AdminImportArticles() {
               <CardContent className="pt-4">
                 <h3 className="font-medium text-sm mb-2">How this works</h3>
                 <ul className="text-xs text-muted-foreground space-y-1">
-                  <li>• Finds all analyses without a <code className="bg-muted px-1 rounded">source_url</code> (not yet linked to WP)</li>
+                  <li>• Finds all analyses without a <code className="bg-muted px-1 rounded-sm">source_url</code> (not yet linked to WP)</li>
                   <li>• Converts their slug-like titles (e.g. "Rbi Policy 4") to WP blog URLs</li>
                   <li>• Scrapes each matched URL for: proper title, featured image, excerpt, cleaned body</li>
                   <li>• Removes TOC blocks, converts HTML tables to Markdown, promotes H3→H2</li>

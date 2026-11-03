@@ -1,0 +1,15 @@
+{"functions": [
+  {"name": "auth-email-hook", "classification": "webhook receiver", "signal": "auth email hook called by the sign-in service; no src/ call sites", "outcome": "left"},
+  {"name": "bootstrap-admin", "classification": "internal-only", "signal": "called from src/pages/admin/AdminSetup.tsx", "outcome": "migrated"},
+  {"name": "dedupe-content", "classification": "unknown", "signal": "no src/ call sites, no signature signal", "outcome": "left"},
+  {"name": "health-check", "classification": "internal-only", "signal": "called from src/hooks/useHealthCheck.ts", "outcome": "migrated"},
+  {"name": "manage-users", "classification": "internal-only", "signal": "called from src/pages/admin/settings/AdminUsers.tsx", "outcome": "migrated"},
+  {"name": "prenormalize-content", "classification": "unknown", "signal": "no src/ call sites, no signature signal", "outcome": "left"},
+  {"name": "rss-fetch", "classification": "cron target", "signal": "pg_cron job rss-auto-sync-hourly posts to its URL", "outcome": "left"},
+  {"name": "seed-amc-data", "classification": "unknown", "signal": "no src/ call sites, no signature signal", "outcome": "left"},
+  {"name": "seo-generate", "classification": "internal-only", "signal": "called from src/pages/admin/site/AdminSEOAudit.tsx", "outcome": "migrated"},
+  {"name": "summarize-content", "classification": "internal-only", "signal": "called from src/components/shared/AISummarizer.tsx", "outcome": "migrated"},
+  {"name": "sync-economic-actuals", "classification": "cron target", "signal": "pg_cron job sync-economic-actuals-nightly posts to its URL", "outcome": "left"},
+  {"name": "workflow-engine", "classification": "cron target", "signal": "database trigger in supabase/migrations calls it via net.http_post", "outcome": "left"},
+  {"name": "wp-import", "classification": "internal-only", "signal": "called from src/pages/admin/content/AdminImportArticles.tsx", "outcome": "migrated"}
+]}

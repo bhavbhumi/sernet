@@ -1,3 +1,4 @@
+import { invokeBackendTool } from "@/lib/backendTools";
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, TrendingUp, TrendingDown, Minus, ChevronDown, ChevronUp, Loader2, Zap } from 'lucide-react';
@@ -51,7 +52,7 @@ export function AISummarizer({ contentId, title, body, contentType = 'article' }
     }
     setLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke('summarize-content', {
+      const { data, error } = await invokeBackendTool("summarize-content", {
         body: { contentId, title, body, contentType },
       });
 
@@ -124,7 +125,7 @@ export function AISummarizer({ contentId, title, body, contentType = 'article' }
                   <span className="text-sm font-semibold text-foreground">AI Summary</span>
                   <span className="text-xs text-muted-foreground">· {summary.readTime}</span>
                   {isCached && (
-                    <span className="inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
+                    <span className="inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded-sm bg-muted text-muted-foreground">
                       <Zap className="h-2.5 w-2.5" /> cached
                     </span>
                   )}

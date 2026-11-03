@@ -122,7 +122,7 @@ const ScheduleCall = () => {
                         maxLength={100}
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full px-4 py-2.5 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
+                        className="w-full px-4 py-2.5 rounded-md border border-border bg-background text-foreground text-sm focus:outline-hidden focus:ring-2 focus:ring-primary/30 focus:border-primary"
                         placeholder="Your name"
                       />
                     </div>
@@ -136,7 +136,7 @@ const ScheduleCall = () => {
                           maxLength={255}
                           value={formData.email}
                           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                          className="w-full pl-10 pr-4 py-2.5 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
+                          className="w-full pl-10 pr-4 py-2.5 rounded-md border border-border bg-background text-foreground text-sm focus:outline-hidden focus:ring-2 focus:ring-primary/30 focus:border-primary"
                           placeholder="you@example.com"
                         />
                       </div>
@@ -151,7 +151,7 @@ const ScheduleCall = () => {
                           maxLength={15}
                           value={formData.phone}
                           onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                          className="w-full pl-10 pr-4 py-2.5 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
+                          className="w-full pl-10 pr-4 py-2.5 rounded-md border border-border bg-background text-foreground text-sm focus:outline-hidden focus:ring-2 focus:ring-primary/30 focus:border-primary"
                           placeholder="+91 XXXXX XXXXX"
                         />
                       </div>
@@ -163,7 +163,7 @@ const ScheduleCall = () => {
                         <select
                           value={selectedTopic}
                           onChange={(e) => setSelectedTopic(e.target.value)}
-                          className="w-full pl-10 pr-4 py-2.5 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary appearance-none"
+                          className="w-full pl-10 pr-4 py-2.5 rounded-md border border-border bg-background text-foreground text-sm focus:outline-hidden focus:ring-2 focus:ring-primary/30 focus:border-primary appearance-none"
                         >
                           <option value="">Select a topic</option>
                           {topics.map((t) => (
@@ -190,7 +190,7 @@ const ScheduleCall = () => {
                       max={maxDate}
                       value={selectedDate}
                       onChange={(e) => setSelectedDate(e.target.value)}
-                      className="w-full max-w-xs px-4 py-2.5 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
+                      className="w-full max-w-xs px-4 py-2.5 rounded-md border border-border bg-background text-foreground text-sm focus:outline-hidden focus:ring-2 focus:ring-primary/30 focus:border-primary"
                     />
                   </div>
                   <div>
@@ -225,7 +225,7 @@ const ScheduleCall = () => {
                     rows={3}
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary resize-none"
+                    className="w-full px-4 py-2.5 rounded-md border border-border bg-background text-foreground text-sm focus:outline-hidden focus:ring-2 focus:ring-primary/30 focus:border-primary resize-none"
                     placeholder="Tell us briefly what you'd like to discuss..."
                   />
                 </div>

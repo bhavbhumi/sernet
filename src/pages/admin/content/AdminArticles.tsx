@@ -1,6 +1,6 @@
 
 import { useEffect, useState, useRef } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from '@/lib/router-compat';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -263,7 +263,7 @@ export default function AdminArticles() {
             <tbody className="divide-y divide-border">
               {loading ? (
                 Array(5).fill(0).map((_, i) => (
-                  <tr key={i}><td colSpan={7} className="px-4 py-3"><div className="h-4 bg-muted animate-pulse rounded" /></td></tr>
+                  <tr key={i}><td colSpan={7} className="px-4 py-3"><div className="h-4 bg-muted animate-pulse rounded-sm" /></td></tr>
                 ))
               ) : paginated.length === 0 ? (
                 <tr><td colSpan={7} className="px-4 py-12 text-center text-muted-foreground">No articles found</td></tr>

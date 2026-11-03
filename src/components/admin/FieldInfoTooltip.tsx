@@ -14,7 +14,7 @@ export function FieldInfoTooltip({ tip }: FieldInfoTooltipProps) {
       <PopoverTrigger asChild>
         <button
           type="button"
-          className="inline-flex items-center justify-center focus:outline-none"
+          className="inline-flex items-center justify-center focus:outline-hidden"
           onMouseEnter={() => setOpen(true)}
           onMouseLeave={() => setOpen(false)}
         >

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router-compat';
 import { ArrowRight, BookOpen, GraduationCap, Award, Check, Download, UserCheck, Play, Lightbulb, Users, Video, FileText, Globe, Clock } from 'lucide-react';
 
 
@@ -157,7 +157,7 @@ export const EducationServiceContent = () => (
             </a>
           </div>
           <div className="flex-shrink-0 w-full max-w-[280px] lg:max-w-[320px]">
-            <div className="rounded-xl bg-background border border-border p-6 shadow-sm space-y-4">
+            <div className="rounded-xl bg-background border border-border p-6 shadow-xs space-y-4">
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
                   <BookOpen className="w-5 h-5 text-primary" />

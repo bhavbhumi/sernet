@@ -159,7 +159,7 @@ function FontZoneRow({ zoneKey, label, form, setForm }: { zoneKey: string; label
         <select
           value={form[fontKey] || 'Inter'}
           onChange={e => setForm((p: any) => ({ ...p, [fontKey]: e.target.value }))}
-          className="w-full h-8 rounded-md border border-input bg-background px-2.5 text-xs focus:outline-none focus:ring-1 focus:ring-ring"
+          className="w-full h-8 rounded-md border border-input bg-background px-2.5 text-xs focus:outline-hidden focus:ring-1 focus:ring-ring"
         >
           {GOOGLE_FONTS.map(f => <option key={f} value={f}>{f}</option>)}
         </select>
@@ -169,7 +169,7 @@ function FontZoneRow({ zoneKey, label, form, setForm }: { zoneKey: string; label
         <select
           value={form[weightKey] || '400'}
           onChange={e => setForm((p: any) => ({ ...p, [weightKey]: e.target.value }))}
-          className="w-full h-8 rounded-md border border-input bg-background px-2.5 text-xs focus:outline-none focus:ring-1 focus:ring-ring"
+          className="w-full h-8 rounded-md border border-input bg-background px-2.5 text-xs focus:outline-hidden focus:ring-1 focus:ring-ring"
         >
           {FONT_WEIGHTS.map(w => <option key={w} value={w}>{w}</option>)}
         </select>
@@ -244,7 +244,7 @@ function IdentityTab() {
             <select
               value={form.timezone}
               onChange={e => setForm(p => ({ ...p, timezone: e.target.value }))}
-              className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus:outline-hidden focus:ring-2 focus:ring-ring"
             >
               {TIMEZONES.map(tz => <option key={tz} value={tz}>{tz}</option>)}
             </select>
@@ -286,7 +286,7 @@ function IdentityTab() {
             <select
               value={form.schema_org_type}
               onChange={e => setForm(p => ({ ...p, schema_org_type: e.target.value }))}
-              className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus:outline-hidden focus:ring-2 focus:ring-ring"
             >
               {['FinancialService', 'Organization', 'LocalBusiness', 'Corporation'].map(t => <option key={t}>{t}</option>)}
             </select>
@@ -470,14 +470,14 @@ function TypographyTab() {
         <div className="space-y-1.5">
           <Label>Base Font Size</Label>
           <select value={form.base_font_size} onChange={e => setForm(p => ({ ...p, base_font_size: e.target.value }))}
-            className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring">
+            className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus:outline-hidden focus:ring-2 focus:ring-ring">
             {FONT_SIZES.map(s => <option key={s} value={s}>{s}</option>)}
           </select>
         </div>
         <div className="space-y-1.5">
           <Label>Heading Scale Ratio</Label>
           <select value={form.heading_scale} onChange={e => setForm(p => ({ ...p, heading_scale: e.target.value }))}
-            className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring">
+            className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus:outline-hidden focus:ring-2 focus:ring-ring">
             {['1.125','1.2','1.25','1.333','1.414','1.5'].map(s => <option key={s} value={s}>{s}</option>)}
           </select>
         </div>
@@ -634,7 +634,7 @@ function FooterTab() {
           <div className="space-y-1.5">
             <Label>Number of Columns</Label>
             <select value={form.footer_columns} onChange={e => setForm(p => ({ ...p, footer_columns: e.target.value }))}
-              className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring">
+              className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus:outline-hidden focus:ring-2 focus:ring-ring">
               {['2','3','4','5'].map(n => <option key={n}>{n}</option>)}
             </select>
           </div>
@@ -724,7 +724,7 @@ function PageHierarchyTab() {
             <div className="space-y-1"><Label className="text-xs">Tab Name</Label><Input value={addForm.tab_name} onChange={e => setAddForm(p => ({ ...p, tab_name: e.target.value }))} placeholder="My Tab" className="h-8 text-xs" /></div>
             <div className="space-y-1 sm:col-span-2"><Label className="text-xs">Parent Path (leave blank for top-level)</Label>
               <select value={addForm.parent || ''} onChange={e => setAddForm(p => ({ ...p, parent: e.target.value || null }))}
-                className="w-full h-8 rounded-md border border-input bg-background px-2.5 text-xs focus:outline-none focus:ring-1 focus:ring-ring">
+                className="w-full h-8 rounded-md border border-input bg-background px-2.5 text-xs focus:outline-hidden focus:ring-1 focus:ring-ring">
                 <option value="">— Top Level —</option>
                 {roots.map(r => <option key={r.path} value={r.path}>{r.page_name} ({r.path})</option>)}
               </select>

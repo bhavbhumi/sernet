@@ -1,5 +1,6 @@
+import { invokeBackendTool } from "@/lib/backendTools";
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from '@/lib/router-compat';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -37,22 +38,12 @@ export default function AdminSetup() {
     setError('');
 
     try {
-      const res = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/bootstrap-admin`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'apikey': import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
-          },
-          body: JSON.stringify({ email, password, name }),
-        }
-      );
+      const { data, error: toolError } = await invokeBackendTool<{ error?: string }>('bootstrap-admin', {
+        body: { email, password, name },
+      });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error || 'Something went wrong.');
+      if (toolError) {
+        setError(data?.error || toolError.message || 'Something went wrong.');
         return;
       }
 

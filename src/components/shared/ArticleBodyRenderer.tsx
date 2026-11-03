@@ -392,7 +392,7 @@ function renderInline(text: string): React.ReactNode[] {
     const bold = part.match(/^\*\*(.+)\*\*$/);
     if (bold) return <strong key={i} className="font-semibold text-foreground">{bold[1]}</strong>;
     const code = part.match(/^`(.+)`$/);
-    if (code) return <code key={i} className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono">{code[1]}</code>;
+    if (code) return <code key={i} className="bg-muted px-1.5 py-0.5 rounded-sm text-sm font-mono">{code[1]}</code>;
     // Markdown link: [text](url)
     const mdLink = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
     if (mdLink) return <a key={i} href={mdLink[2]} target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80 transition-colors">{mdLink[1]}</a>;

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router-compat';
 import { motion } from 'framer-motion';
 import { ArrowRight, Clock, Calendar, BarChart3, FileText, Newspaper, Lightbulb } from 'lucide-react';
 import { useTranslation } from 'react-i18next';

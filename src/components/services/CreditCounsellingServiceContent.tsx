@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router-compat';
 import { ArrowRight, Check, FileText, UserCheck, Download, Play, CreditCard, TrendingUp, ShieldCheck, BarChart3, AlertTriangle, Building2, User } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
@@ -81,7 +81,7 @@ export const CreditCounsellingServiceContent = () => (
             transition={{ duration: 0.6, delay: 0.15 }}
             className="flex flex-col items-center justify-center h-full"
           >
-            <div className="rounded-xl bg-background border border-border p-8 shadow-sm w-full max-w-[420px]">
+            <div className="rounded-xl bg-background border border-border p-8 shadow-xs w-full max-w-[420px]">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
                   <CreditCard className="w-6 h-6 text-primary" />
@@ -190,7 +190,7 @@ export const CreditCounsellingServiceContent = () => (
             </a>
           </div>
           <div className="flex-shrink-0 w-full max-w-[280px] lg:max-w-[320px]">
-            <div className="rounded-xl bg-background border border-border p-6 shadow-sm space-y-4">
+            <div className="rounded-xl bg-background border border-border p-6 shadow-xs space-y-4">
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
                   <BarChart3 className="w-5 h-5 text-primary" />

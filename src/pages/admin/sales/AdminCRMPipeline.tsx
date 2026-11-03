@@ -14,7 +14,7 @@ import { toast } from 'sonner';
 import { Plus, User, Phone, IndianRupee, ArrowRight, ShieldAlert, AlertTriangle, ChevronDown, Settings2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router-compat';
 import { ADMIN_ROUTES } from '@/lib/adminRoutes';
 import { DealDetailDrawer } from '@/components/admin/DealDetailDrawer';
 
@@ -292,7 +292,7 @@ function DealCard({ deal, stages, subStatusLabels, subStatusColors, onMove, onSe
                 disabled={ss.sub_status_key === deal.sub_status || moving}
                 onClick={() => handleMove(deal.stage, ss.sub_status_key)}
                 className={cn(
-                  'w-full text-left text-xs px-2 py-1.5 rounded hover:bg-accent disabled:opacity-40',
+                  'w-full text-left text-xs px-2 py-1.5 rounded-sm hover:bg-accent disabled:opacity-40',
                   ss.sub_status_key === deal.sub_status && 'font-semibold'
                 )}
               >
@@ -311,7 +311,7 @@ function DealCard({ deal, stages, subStatusLabels, subStatusColors, onMove, onSe
       )}
 
       {validationErrors.length > 0 && (
-        <div className="bg-destructive/10 border border-destructive/20 rounded p-2 space-y-1">
+        <div className="bg-destructive/10 border border-destructive/20 rounded-sm p-2 space-y-1">
           <div className="flex items-center gap-1 text-destructive text-[10px] font-medium">
             <ShieldAlert className="h-3 w-3" /> Blueprint blocked
           </div>

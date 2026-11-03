@@ -1,6 +1,6 @@
 import { Layout } from '@/components/layout/Layout';
 import { SEOHead } from '@/components/shared/SEOHead';
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router-compat';
 import { ExternalLink } from 'lucide-react';
 
 const quickLinksData = [

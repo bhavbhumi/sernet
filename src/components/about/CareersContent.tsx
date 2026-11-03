@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router-compat';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Clock, ArrowRight, Upload, Star, Users, Heart, Smile, Award, Target, Shield, Briefcase, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -554,7 +554,7 @@ export const CareersContent = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.06 }}
-                  className="bg-card border border-border rounded-lg p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:border-primary/30 hover:shadow-sm transition-all duration-300"
+                  className="bg-card border border-border rounded-lg p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:border-primary/30 hover:shadow-xs transition-all duration-300"
                 >
                   <div>
                     <div className="flex items-center gap-2 mb-1">

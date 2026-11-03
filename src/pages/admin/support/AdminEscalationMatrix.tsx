@@ -162,11 +162,11 @@ export function EscalationMatrixContent() {
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Conditions</p>
-                    <pre className="text-[11px] bg-muted/50 rounded p-2 overflow-auto max-h-20">{JSON.stringify(r.conditions, null, 2)}</pre>
+                    <pre className="text-[11px] bg-muted/50 rounded-sm p-2 overflow-auto max-h-20">{JSON.stringify(r.conditions, null, 2)}</pre>
                   </div>
                   <div>
                     <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Actions</p>
-                    <pre className="text-[11px] bg-muted/50 rounded p-2 overflow-auto max-h-20">{JSON.stringify(r.actions, null, 2)}</pre>
+                    <pre className="text-[11px] bg-muted/50 rounded-sm p-2 overflow-auto max-h-20">{JSON.stringify(r.actions, null, 2)}</pre>
                   </div>
                 </div>
               </div>

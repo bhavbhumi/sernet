@@ -1,3 +1,4 @@
+import { invokeBackendTool } from "@/lib/backendTools";
 
 import { useEffect, useState, useCallback } from 'react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
@@ -158,7 +159,7 @@ export default function AdminUsers() {
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) throw new Error('Not authenticated');
 
-    const res = await supabase.functions.invoke('manage-users', {
+    const res = await invokeBackendTool("manage-users", {
       body: payload,
     });
 

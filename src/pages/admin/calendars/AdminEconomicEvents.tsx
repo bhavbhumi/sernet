@@ -4,7 +4,7 @@ import type { FieldDef } from '@/components/admin/GenericCMSPage';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { Zap, Loader2, CheckCircle2, Link } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from '@/lib/router-compat';
 import {
   Dialog,
   DialogContent,

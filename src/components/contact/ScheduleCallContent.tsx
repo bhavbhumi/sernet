@@ -117,27 +117,27 @@ const ScheduleCallContent = () => {
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm text-muted-foreground mb-1.5">Full Name *</label>
-                    <input type="text" required maxLength={100} value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full px-4 py-2.5 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary" placeholder="Your name" />
+                    <input type="text" required maxLength={100} value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full px-4 py-2.5 rounded-md border border-border bg-background text-foreground text-sm focus:outline-hidden focus:ring-2 focus:ring-primary/30 focus:border-primary" placeholder="Your name" />
                   </div>
                   <div>
                     <label className="block text-sm text-muted-foreground mb-1.5">Email *</label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                      <input type="email" required maxLength={255} value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full pl-10 pr-4 py-2.5 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary" placeholder="you@example.com" />
+                      <input type="email" required maxLength={255} value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full pl-10 pr-4 py-2.5 rounded-md border border-border bg-background text-foreground text-sm focus:outline-hidden focus:ring-2 focus:ring-primary/30 focus:border-primary" placeholder="you@example.com" />
                     </div>
                   </div>
                   <div>
                     <label className="block text-sm text-muted-foreground mb-1.5">Phone *</label>
                     <div className="relative">
                       <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                      <input type="tel" required maxLength={15} value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} className="w-full pl-10 pr-4 py-2.5 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary" placeholder="+91 XXXXX XXXXX" />
+                      <input type="tel" required maxLength={15} value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} className="w-full pl-10 pr-4 py-2.5 rounded-md border border-border bg-background text-foreground text-sm focus:outline-hidden focus:ring-2 focus:ring-primary/30 focus:border-primary" placeholder="+91 XXXXX XXXXX" />
                     </div>
                   </div>
                   <div>
                     <label className="block text-sm text-muted-foreground mb-1.5">Topic</label>
                     <div className="relative">
                       <FileText className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                      <select value={selectedTopic} onChange={(e) => setSelectedTopic(e.target.value)} className="w-full pl-10 pr-4 py-2.5 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary appearance-none">
+                      <select value={selectedTopic} onChange={(e) => setSelectedTopic(e.target.value)} className="w-full pl-10 pr-4 py-2.5 rounded-md border border-border bg-background text-foreground text-sm focus:outline-hidden focus:ring-2 focus:ring-primary/30 focus:border-primary appearance-none">
                         <option value="">Select a topic</option>
                         {topics.map((t) => <option key={t} value={t}>{t}</option>)}
                       </select>
@@ -152,7 +152,7 @@ const ScheduleCallContent = () => {
                 </h2>
                 <div className="mb-5">
                   <label className="block text-sm text-muted-foreground mb-1.5">Preferred Date *</label>
-                  <input type="date" required min={minDate} max={maxDate} value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} className="w-full max-w-xs px-4 py-2.5 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary" />
+                  <input type="date" required min={minDate} max={maxDate} value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} className="w-full max-w-xs px-4 py-2.5 rounded-md border border-border bg-background text-foreground text-sm focus:outline-hidden focus:ring-2 focus:ring-primary/30 focus:border-primary" />
                 </div>
                 <div>
                   <label className="block text-sm text-muted-foreground mb-2 flex items-center gap-1.5">
@@ -170,7 +170,7 @@ const ScheduleCallContent = () => {
 
               <div className="bg-card border border-border rounded-lg p-6">
                 <label className="block text-sm text-muted-foreground mb-1.5">Additional Message (optional)</label>
-                <textarea maxLength={500} rows={3} value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="w-full px-4 py-2.5 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary resize-none" placeholder="Tell us briefly what you'd like to discuss..." />
+                <textarea maxLength={500} rows={3} value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="w-full px-4 py-2.5 rounded-md border border-border bg-background text-foreground text-sm focus:outline-hidden focus:ring-2 focus:ring-primary/30 focus:border-primary resize-none" placeholder="Tell us briefly what you'd like to discuss..." />
               </div>
 
               <button type="submit" disabled={isSubmitting || !selectedDate || !selectedTime || !formData.name || !formData.email || !formData.phone} className="w-full bg-primary text-primary-foreground py-3.5 rounded-md text-base font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">

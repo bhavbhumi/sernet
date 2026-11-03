@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from '@/lib/router-compat';
 import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -157,7 +157,7 @@ const GeometricPattern = ({ pattern }: { pattern: PatternKey }) => {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}
             className="absolute top-[28%] right-[13%] w-8 h-0.5 bg-primary/25 origin-left" />
           <div className="absolute bottom-3 left-[4%] flex gap-4 opacity-[0.2]">
-            {[14, 24, 18, 28].map((h, i) => <div key={i} className="w-1.5 rounded-sm bg-foreground" style={{ height: h }} />)}
+            {[14, 24, 18, 28].map((h, i) => <div key={i} className="w-1.5 rounded-xs bg-foreground" style={{ height: h }} />)}
           </div>
         </>
       );
