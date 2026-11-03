@@ -1,0 +1,16 @@
+{
+  "customizations": [
+    { "token": "--success / --warning colour tokens", "source": "src/index.css + tailwind.config.ts", "reappliedIn": "src/styles.css" },
+    { "token": "--sernet-yellow / --sernet-red brand accents", "source": "src/index.css + tailwind.config.ts", "reappliedIn": "src/styles.css" },
+    { "token": "--hero-bg / --section-alt layout colours", "source": "src/index.css + tailwind.config.ts", "reappliedIn": "src/styles.css" },
+    { "token": "--stat-* colours", "source": "src/index.css + tailwind.config.ts", "reappliedIn": "src/styles.css" },
+    { "token": "--gradient-hero-wash / --gradient-cta-wash / --gradient-signature-accent", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "--shadow-elevated / --shadow-interaction", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": ".dark .public-site scoped dark tokens", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "custom fontSize scale (xs–5xl) and system font stack", "source": "tailwind.config.ts", "reappliedIn": "src/styles.css" },
+    { "token": "container (centered, 2rem padding, 1400px)", "source": "tailwind.config.ts", "reappliedIn": "src/styles.css" },
+    { "token": "component classes (container-sernet, section-padding, heading-*, text-body, text-small, btn-*, feature-card, link-primary, stat-*)", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "public-site presentation utilities (hero-wash, cta-wash, signature-accent, surface-elevated, interaction-card, nav-motion, reduced-motion)", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "animations (fade-in, slide-up, marquee) and text-balance", "source": "src/index.css", "reappliedIn": "src/styles.css" }
+  ]
+}

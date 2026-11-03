@@ -1,0 +1,424 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* SERNET design system — system fonts, flat UI.
+ * Colour tokens stay as HSL channel triplets (e.g. `217 91% 60%`) so existing
+ * `hsl(var(--token) / alpha)` usages and the scoped `.dark .public-site`
+ * overrides keep working; @theme inline maps them to Tailwind utilities. */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-success: hsl(var(--success));
+  --color-success-foreground: hsl(var(--success-foreground));
+  --color-warning: hsl(var(--warning));
+  --color-warning-foreground: hsl(var(--warning-foreground));
+  --color-sernet-yellow: hsl(var(--sernet-yellow));
+  --color-hero: hsl(var(--hero-bg));
+  --color-section-alt: hsl(var(--section-alt));
+  --color-stat-blue: hsl(var(--stat-blue));
+  --color-stat-green: hsl(var(--stat-green));
+  --color-stat-orange: hsl(var(--stat-orange));
+  --color-stat-purple: hsl(var(--stat-purple));
+  --color-stat-pink: hsl(var(--stat-pink));
+  --color-ring-offset-background: hsl(var(--background));
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1.5;
+  --text-sm: 0.8125rem;
+  --text-sm--line-height: 1.5;
+  --text-base: 0.875rem;
+  --text-base--line-height: 1.5;
+  --text-lg: 1.125rem;
+  --text-lg--line-height: 1.6;
+  --text-xl: 1.25rem;
+  --text-xl--line-height: 1.4;
+  --text-2xl: 1.5rem;
+  --text-2xl--line-height: 1.35;
+  --text-3xl: 1.75rem;
+  --text-3xl--line-height: 1.3;
+  --text-4xl: 2.25rem;
+  --text-4xl--line-height: 1.2;
+  --text-5xl: 2.75rem;
+  --text-5xl--line-height: 1.2;
+}
+
+/* Tailwind v3 `container` config: centered, 2rem padding, 1400px at 2xl */
+@utility container {
+  margin-inline: auto;
+  padding-inline: 2rem;
+  @media (width >= 96rem) {
+    max-width: 1400px;
+  }
+}
+
+:root {
+  /* Sernet India inspired colors - Blue theme */
+  --background: 0 0% 100%;
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+  --primary: 217 91% 60%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 210 40% 96%;
+  --secondary-foreground: 222 47% 11%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215 16% 47%;
+  --accent: 217 91% 60%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
+  --ring: 217 91% 60%;
+  --radius: 0.5rem;
+
+  --success: 142 76% 36%;
+  --success-foreground: 0 0% 100%;
+  --warning: 38 92% 50%;
+  --warning-foreground: 0 0% 100%;
+
+  /* Sernet brand accents — from the logo's four colors */
+  --sernet-yellow: 45 100% 51%;
+  --sernet-red: 6 74% 53%;
+
+  --hero-bg: 220 14% 96%;
+  --section-alt: 210 20% 98%;
+  --text-dark: 222 47% 11%;
+  --text-light: 215 16% 47%;
+
+  --stat-blue: 217 91% 60%;
+  --stat-green: 142 76% 36%;
+  --stat-orange: 25 95% 53%;
+  --stat-purple: 263 70% 50%;
+  --stat-pink: 330 81% 60%;
+
+  --gradient-hero-wash: linear-gradient(115deg, hsl(var(--background)) 12%, hsl(var(--primary) / 0.07) 65%, hsl(var(--success) / 0.05) 100%);
+  --gradient-cta-wash: linear-gradient(110deg, hsl(var(--primary) / 0.08), hsl(var(--section-alt)) 48%, hsl(var(--success) / 0.07));
+  --gradient-signature-accent: linear-gradient(90deg, hsl(var(--primary)) 0%, hsl(var(--sernet-red)) 33.333%, hsl(var(--success)) 66.667%, hsl(var(--sernet-yellow)) 100%);
+  --shadow-elevated: 0 1px 2px hsl(var(--foreground) / 0.04), 0 4px 8px -4px hsl(var(--foreground) / 0.06), 0 16px 28px -18px hsl(var(--foreground) / 0.14);
+  --shadow-interaction: 0 2px 4px hsl(var(--foreground) / 0.04), 0 8px 16px -8px hsl(var(--foreground) / 0.1), 0 22px 36px -20px hsl(var(--foreground) / 0.2);
+}
+
+.dark {
+  --background: 222 47% 4%;
+  --foreground: 210 40% 98%;
+  --card: 222 47% 8%;
+  --card-foreground: 210 40% 98%;
+  --popover: 222 47% 8%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 217 91% 60%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 217 33% 17%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217 33% 17%;
+  --muted-foreground: 215 20% 65%;
+  --accent: 217 33% 17%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 63% 31%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 217 33% 17%;
+  --input: 217 33% 17%;
+  --ring: 217 91% 60%;
+  --hero-bg: 222 47% 8%;
+  --section-alt: 222 47% 6%;
+  --gradient-hero-wash: linear-gradient(115deg, hsl(var(--background)) 12%, hsl(var(--primary) / 0.11) 65%, hsl(var(--success) / 0.06) 100%);
+  --gradient-cta-wash: linear-gradient(110deg, hsl(var(--primary) / 0.12), hsl(var(--section-alt)) 48%, hsl(var(--success) / 0.08));
+  --shadow-elevated: 0 1px 2px hsl(var(--background) / 0.35), 0 4px 8px -4px hsl(var(--background) / 0.5), 0 16px 28px -18px hsl(var(--background) / 0.8);
+  --shadow-interaction: 0 2px 4px hsl(var(--background) / 0.4), 0 8px 16px -8px hsl(var(--background) / 0.6), 0 22px 36px -20px hsl(var(--background) / 0.9);
+}
+
+/* Public dark surfaces: neutral charcoal, clear hierarchy, quieter washes.
+   Keep the existing light theme and administrative palette untouched. */
+.dark .public-site {
+  --background: 220 12% 8%;
+  --foreground: 210 14% 94%;
+  --card: 220 11% 12%;
+  --card-foreground: 210 14% 94%;
+  --popover: 220 11% 14%;
+  --popover-foreground: 210 14% 94%;
+  --primary-foreground: 220 15% 8%;
+  --secondary: 220 10% 17%;
+  --secondary-foreground: 210 14% 94%;
+  --muted: 220 10% 16%;
+  --muted-foreground: 215 12% 70%;
+  --accent: 220 10% 19%;
+  --accent-foreground: 210 14% 94%;
+  --border: 220 10% 24%;
+  --input: 220 10% 28%;
+  --hero-bg: 220 11% 12%;
+  --section-alt: 220 11% 10%;
+  --text-dark: 210 14% 94%;
+  --text-light: 215 12% 70%;
+  --surface-shadow: 220 15% 2%;
+  --gradient-hero-wash: linear-gradient(115deg, hsl(var(--background)) 12%, hsl(var(--primary) / 0.045) 65%, hsl(var(--success) / 0.025) 100%);
+  --gradient-cta-wash: linear-gradient(110deg, hsl(var(--primary) / 0.065), hsl(var(--card)) 48%, hsl(var(--success) / 0.035));
+  --shadow-elevated: 0 1px 0 hsl(var(--foreground) / 0.035) inset, 0 2px 4px hsl(var(--surface-shadow) / 0.2), 0 12px 24px -14px hsl(var(--surface-shadow) / 0.55);
+  --shadow-interaction: 0 1px 0 hsl(var(--foreground) / 0.06) inset, 0 4px 8px hsl(var(--surface-shadow) / 0.3), 0 18px 30px -16px hsl(var(--surface-shadow) / 0.65);
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  color-scheme: dark;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: hsl(var(--foreground));
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  /* Tailwind v4 defaults buttons to cursor: default; keep the v3 pointer. */
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  .container-sernet {
+    @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-padding {
+    @apply py-8 md:py-12;
+  }
+
+  .heading-xl {
+    font-size: 2.25rem;
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: hsl(var(--foreground));
+  }
+
+  @media (min-width: 768px) {
+    .heading-xl {
+      font-size: 2.75rem;
+    }
+  }
+
+  .heading-lg {
+    font-size: 1.75rem;
+    font-weight: 400;
+    line-height: 1.3;
+    color: hsl(var(--foreground));
+  }
+
+  @media (min-width: 768px) {
+    .heading-lg {
+      font-size: 2rem;
+    }
+  }
+
+  .heading-md {
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 1.4;
+    color: hsl(var(--foreground));
+  }
+
+  .text-body {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .text-small {
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-6 py-3 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors duration-200;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-6 py-3 text-sm font-medium border border-primary text-primary rounded-md hover:bg-primary/5 transition-colors duration-200;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-foreground hover:text-primary transition-colors duration-200;
+  }
+
+  .feature-card {
+    @apply p-6 rounded-lg bg-card border border-border hover:shadow-lg transition-shadow duration-300;
+  }
+
+  .link-primary {
+    @apply text-primary hover:text-primary/80 transition-colors duration-200;
+  }
+
+  .stat-number {
+    @apply text-3xl md:text-4xl font-bold text-foreground;
+  }
+
+  .stat-label {
+    @apply text-sm text-muted-foreground;
+  }
+}
+
+@layer utilities {
+  .public-site .hero-wash {
+    background-image: var(--gradient-hero-wash);
+  }
+
+  .public-site .cta-wash {
+    background-image: var(--gradient-cta-wash);
+  }
+
+  .public-site .signature-accent {
+    background-image: var(--gradient-signature-accent);
+  }
+
+  .public-site .surface-elevated,
+  .public-site .interaction-card,
+  .public-site .feature-card {
+    box-shadow: var(--shadow-elevated);
+  }
+
+  .public-site .nav-motion {
+    position: relative;
+  }
+
+  .public-site .nav-motion::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    bottom: -4px;
+    height: 2px;
+    background: hsl(var(--primary));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 220ms ease;
+  }
+
+  .public-site .nav-motion:hover::after,
+  .public-site .nav-motion:focus-visible::after,
+  .public-site .nav-motion[aria-current='page']::after {
+    transform: scaleX(1);
+  }
+
+  .public-site .btn-primary,
+  .public-site .btn-secondary {
+    transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease, box-shadow 220ms ease, transform 220ms ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .public-site .btn-primary:hover,
+    .public-site .btn-secondary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-interaction);
+    }
+
+    .public-site .btn-primary:hover svg,
+    .public-site .btn-secondary:hover svg {
+      transform: translateX(3px);
+    }
+  }
+
+  .public-site .btn-primary svg,
+  .public-site .btn-secondary svg {
+    transition: transform 220ms ease;
+  }
+
+  .public-site .interaction-card,
+  .public-site .feature-card {
+    transition: translate 260ms ease, box-shadow 260ms ease, border-color 260ms ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .public-site .interaction-card:hover,
+    .public-site .interaction-card:focus-within,
+    .public-site .feature-card:hover,
+    .public-site .feature-card:focus-within {
+      translate: 0 -4px;
+      box-shadow: var(--shadow-interaction);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .public-site *,
+    .public-site *::before,
+    .public-site *::after {
+      animation: none !important;
+      transition: none !important;
+      scroll-behavior: auto !important;
+    }
+
+    html { scroll-behavior: auto; }
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.5s ease-out forwards;
+  }
+
+  .animate-marquee {
+    display: inline-block;
+    animation: marquee 30s linear infinite;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
