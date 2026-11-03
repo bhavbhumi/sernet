@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router-compat';
 import { motion } from 'framer-motion';
 import { Star, BadgeCheck, ArrowRight, Play, MapPin, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';

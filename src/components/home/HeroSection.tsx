@@ -1,6 +1,6 @@
 import { RegulatoryIdentity } from '@/components/legal/RegulatoryIdentity';
 import { companyHistory, completedFamilyPracticeYears } from '@/lib/companyHistory';
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router-compat';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { ArrowRight, Clock, Heart } from 'lucide-react';

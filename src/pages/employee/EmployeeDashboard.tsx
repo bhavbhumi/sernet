@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from '@/lib/router-compat';
 import { supabase } from '@/integrations/supabase/client';
 import { EmployeeGuard, useEmployeeSession } from '@/components/portal/EmployeeGuard';
 import { Button } from '@/components/ui/button';

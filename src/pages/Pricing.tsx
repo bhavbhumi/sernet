@@ -4,7 +4,7 @@ import { PageHero } from '@/components/layout/PageHero';
 import { SEOHead } from '@/components/shared/SEOHead';
 import { Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router-compat';
 
 const pricingTabs = ['Trading', 'Investment', 'Insurance'] as const;
 type PricingTab = (typeof pricingTabs)[number];

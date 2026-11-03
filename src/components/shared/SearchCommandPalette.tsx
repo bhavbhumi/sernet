@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from '@/lib/router-compat';
 import { Search, X, FileText, BarChart2, Bell, Newspaper, AlertCircle, Loader2, Mic, BookOpen } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSearch, SearchResult } from '@/hooks/useSearch';

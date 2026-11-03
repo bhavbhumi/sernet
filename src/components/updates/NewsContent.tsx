@@ -7,7 +7,7 @@ import { useQueries, useQuery } from '@tanstack/react-query';
 import { getSourceLogoUrl } from '@/lib/sourceLogos';
 import { supabase } from '@/integrations/supabase/client';
 import { format, parseISO, isValid } from 'date-fns';
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router-compat';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 

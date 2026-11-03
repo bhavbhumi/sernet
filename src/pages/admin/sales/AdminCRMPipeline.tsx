@@ -14,7 +14,7 @@ import { toast } from 'sonner';
 import { Plus, User, Phone, IndianRupee, ArrowRight, ShieldAlert, AlertTriangle, ChevronDown, Settings2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router-compat';
 import { ADMIN_ROUTES } from '@/lib/adminRoutes';
 import { DealDetailDrawer } from '@/components/admin/DealDetailDrawer';
 

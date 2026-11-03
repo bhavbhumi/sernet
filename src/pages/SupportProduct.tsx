@@ -1,7 +1,7 @@
 import { Layout } from '@/components/layout/Layout';
 import { SEOHead } from '@/components/shared/SEOHead';
 import { motion } from 'framer-motion';
-import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from '@/lib/router-compat';
 import {
   Search, BookOpen, Send, ChevronRight, Clock, FileText, Phone,
   Download, TrendingUp, Shield, BarChart3, Landmark, AlertTriangle,

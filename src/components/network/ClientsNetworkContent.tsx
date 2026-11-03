@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router-compat';
 import { Users, Building2, Globe, ArrowRight, Gift, UserCheck, Check } from 'lucide-react';
 import networkClientsImg from '@/assets/network-clients-real.jpg';
 import { AutoScrollShowcase, type ShowcaseItem } from './AutoScrollShowcase';

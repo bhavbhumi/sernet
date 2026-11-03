@@ -6,7 +6,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { LegalDocument } from '@/components/legal/LegalDocument';
 import { RegulatoryIdentity, LastReviewed } from '@/components/legal/RegulatoryIdentity';
 import { Button } from '@/components/ui/button';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation } from '@/lib/router-compat';
 
 const InvestorCharter = () => {
   const { hash } = useLocation();

@@ -24,7 +24,7 @@ import {
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router-compat';
 import { ADMIN_ROUTES } from '@/lib/adminRoutes';
 import { RowActions } from '@/components/admin/RowActions';
 

@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from '@/lib/router-compat';
 import { useQuery } from '@tanstack/react-query';
 import { Calendar, Loader2, Search, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';

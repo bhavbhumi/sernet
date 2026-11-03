@@ -1,7 +1,7 @@
 import { Layout } from '@/components/layout/Layout';
 import { SEOHead } from '@/components/shared/SEOHead';
 import { ReviewsContent } from '@/components/about/ReviewsContent';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from '@/lib/router-compat';
 import { useEffect } from 'react';
 
 const Reviews = () => {

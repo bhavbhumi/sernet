@@ -1,7 +1,7 @@
 import { Layout } from '@/components/layout/Layout';
 import { SEOHead } from '@/components/shared/SEOHead';
 import { PageHero } from '@/components/layout/PageHero';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from '@/lib/router-compat';
 import {
   Search, BookOpen, Send, ChevronRight, Clock, FileText, Phone, Mail, ExternalLink,
   AlertTriangle, Download, TrendingUp, Shield, BarChart3, Landmark, ArrowRight, Ticket
