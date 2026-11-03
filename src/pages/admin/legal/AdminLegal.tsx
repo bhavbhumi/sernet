@@ -112,7 +112,7 @@ export default function AdminLegal() {
               </span>
             </div>
             {loading ? (
-              <div className="h-[400px] bg-muted rounded-sm animate-pulse" />
+              <div className="h-[400px] bg-muted rounded animate-pulse" />
             ) : (
               <Textarea
                 value={body}

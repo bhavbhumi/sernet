@@ -174,7 +174,7 @@ export function LeadDetailDrawer({ leadId, leadType, open, onClose, onConverted 
             {isWeb && context && (
               <Card className="p-3">
                 <p className="text-[10px] text-muted-foreground uppercase mb-1">Context</p>
-                <pre className="text-xs text-muted-foreground whitespace-pre-wrap bg-muted/50 rounded-sm p-2">{JSON.stringify(context, null, 2)}</pre>
+                <pre className="text-xs text-muted-foreground whitespace-pre-wrap bg-muted/50 rounded p-2">{JSON.stringify(context, null, 2)}</pre>
               </Card>
             )}
             {!isWeb && (
@@ -182,7 +182,7 @@ export function LeadDetailDrawer({ leadId, leadType, open, onClose, onConverted 
                 <p className="text-[10px] text-muted-foreground uppercase mb-1">Goal</p>
                 <p className="text-sm">{(lead as any).goal_text}</p>
                 {(lead as any).calculated_result && (
-                  <pre className="text-xs text-muted-foreground whitespace-pre-wrap bg-muted/50 rounded-sm p-2 mt-2">
+                  <pre className="text-xs text-muted-foreground whitespace-pre-wrap bg-muted/50 rounded p-2 mt-2">
                     {JSON.stringify((lead as any).calculated_result, null, 2)}
                   </pre>
                 )}

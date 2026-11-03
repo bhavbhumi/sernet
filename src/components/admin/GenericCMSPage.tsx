@@ -326,7 +326,7 @@ export function GenericCMSPage({
             <tbody className="divide-y divide-border">
               {loading ? (
                 Array(5).fill(0).map((_, i) => (
-                  <tr key={i}><td colSpan={colSpan} className="px-4 py-3"><div className="h-4 bg-muted animate-pulse rounded-sm" /></td></tr>
+                  <tr key={i}><td colSpan={colSpan} className="px-4 py-3"><div className="h-4 bg-muted animate-pulse rounded" /></td></tr>
                 ))
               ) : paginated.length === 0 ? (
                 <tr><td colSpan={colSpan} className="px-4 py-12 text-center text-muted-foreground">No items found. Click "New" to add one.</td></tr>
@@ -441,7 +441,7 @@ export function GenericCMSPage({
                 )}
                 {field.type === 'checkbox' && (
                   <label className="flex items-center gap-2 cursor-pointer mt-1">
-                    <input type="checkbox" checked={Boolean(form[field.key])} onChange={e => setForm(f => ({ ...f, [field.key]: e.target.checked }))} className="w-4 h-4 accent-primary rounded-sm" />
+                    <input type="checkbox" checked={Boolean(form[field.key])} onChange={e => setForm(f => ({ ...f, [field.key]: e.target.checked }))} className="w-4 h-4 accent-primary rounded" />
                     <span className="text-sm text-muted-foreground">{field.placeholder || `Enable ${field.label}`}</span>
                   </label>
                 )}

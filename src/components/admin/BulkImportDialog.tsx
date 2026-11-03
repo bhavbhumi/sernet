@@ -188,7 +188,7 @@ export function BulkImportDialog({ open, onClose, tableName, title, fieldMapping
                 )}
               </div>
               {result.errors.length > 0 && (
-                <div className="bg-destructive/10 rounded-sm p-2 space-y-1 max-h-24 overflow-y-auto">
+                <div className="bg-destructive/10 rounded p-2 space-y-1 max-h-24 overflow-y-auto">
                   {result.errors.map((e, i) => <p key={i} className="text-[10px] text-destructive">{e}</p>)}
                 </div>
               )}

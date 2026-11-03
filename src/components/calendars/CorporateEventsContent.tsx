@@ -184,7 +184,7 @@ const CorporateEventsContent = () => {
                         {dayEvents.slice(0, 2).map((ev, i) => {
                           const cfg = eventTypeConfig[ev.event_type as EventType] || eventTypeConfig.other;
                           return (
-                            <div key={i} className={`text-[10px] px-1.5 py-0.5 rounded-sm truncate ${cfg.color}`}>
+                            <div key={i} className={`text-[10px] px-1.5 py-0.5 rounded truncate ${cfg.color}`}>
                               {ev.company_name}
                             </div>
                           );

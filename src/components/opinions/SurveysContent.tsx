@@ -233,7 +233,7 @@ function SurveyFormDialog({ survey, open, onClose }: { survey: Survey | null; op
                           onClick={() => toggleMulti(q.id, opt)}
                           className={`w-full text-left px-4 py-2.5 rounded-lg border text-sm transition-all flex items-center gap-2 ${sel ? 'border-primary bg-primary/5 text-foreground font-medium' : 'border-border/50 hover:border-primary/30 text-muted-foreground'}`}
                         >
-                          <div className={`h-4 w-4 rounded-sm border-2 flex items-center justify-center shrink-0 ${sel ? 'border-primary bg-primary' : 'border-muted-foreground'}`}>
+                          <div className={`h-4 w-4 rounded border-2 flex items-center justify-center shrink-0 ${sel ? 'border-primary bg-primary' : 'border-muted-foreground'}`}>
                             {sel && <CheckCircle2 className="h-2.5 w-2.5 text-primary-foreground" />}
                           </div>
                           {opt}
