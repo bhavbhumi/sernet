@@ -3,7 +3,7 @@ import { createClient } from "jsr:@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
+  "Access-Control-Allow-Headers": "authorization, x-admin-key, x-workflow-secret, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
 interface WorkflowCondition {
@@ -44,15 +44,34 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
+    // Only the database trigger knows this secret (stored in a locked table).
+    const provided = req.headers.get("x-workflow-secret") ?? "";
+    const { data: cfg } = await supabase
+      .from("internal_config").select("value").eq("key", "workflow_secret").maybeSingle();
+    if (!cfg?.value || provided.length !== cfg.value.length || provided !== cfg.value) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const ALLOWED_ENTITIES = ["crm_deals", "profiles", "support_tickets"];
+    const ALLOWED_EVENTS = ["insert", "update"];
     const payload = await req.json();
     const entity_type = payload.entity_type;
     const trigger_event = payload.trigger_event;
-    const record = payload.record || {};
     const old_record = payload.old_record || null;
-    // Support both explicit entity_id and extraction from record
-    const entity_id = payload.entity_id || record?.id;
+    const entity_id = payload.record?.id;
 
-    if (!entity_type || !trigger_event || !entity_id) {
+    if (!ALLOWED_ENTITIES.includes(entity_type) || !ALLOWED_EVENTS.includes(trigger_event) || !entity_id) {
+      return new Response(JSON.stringify({ error: "Invalid request" }), {
+        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // Use the stored record, never caller-supplied values
+    const { data: record } = await supabase.from(entity_type).select("*").eq("id", entity_id).maybeSingle();
+
+    if (!record) {
       return new Response(JSON.stringify({ error: "Missing required fields" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },

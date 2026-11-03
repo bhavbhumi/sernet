@@ -253,6 +253,20 @@ Deno.serve(async (req) => {
 
     if (action === 'update_role') {
       const { user_id, role, department } = params;
+      if (!['super_admin', 'admin', 'editor'].includes(role)) {
+        return new Response(JSON.stringify({ error: 'Invalid role.' }), {
+          status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+      if (!isServiceRole && callerRole !== 'super_admin') {
+        const { data: target } = await supabaseAdmin
+          .from('user_roles').select('role').eq('user_id', user_id).maybeSingle();
+        if (role === 'super_admin' || target?.role === 'super_admin') {
+          return new Response(JSON.stringify({ error: 'Only super admins can grant or change the super admin role.' }), {
+            status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          });
+        }
+      }
       const { error } = await supabaseAdmin
         .from('user_roles')
         .update({ role, department: department || null })

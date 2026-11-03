@@ -185,6 +185,19 @@ Deno.serve(async (req) => {
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
+    // Only fetch feeds that an admin has registered in the CMS
+    const sbUrl = Deno.env.get('SUPABASE_URL')!;
+    const sbKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const chk = await fetch(`${sbUrl}/rest/v1/feeds?select=id&is_rss=eq.true&rss_feed_url=eq.${encodeURIComponent(feedUrl)}&limit=1`, {
+      headers: { apikey: sbKey, Authorization: `Bearer ${sbKey}` },
+    });
+    const allowed = chk.ok ? await chk.json() : [];
+    if (!Array.isArray(allowed) || allowed.length === 0) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Feed not registered' }),
+        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
     const limit = Math.min(Math.max(1, Number(rawLimit) || 20), 100);
 
 
