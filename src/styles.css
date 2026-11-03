@@ -69,6 +69,11 @@
   --text-5xl--line-height: 1.2;
 }
 
+/* Tailwind v3 bare `rounded` (0.25rem); v4 no longer ships it by default */
+@utility rounded {
+  border-radius: 0.25rem;
+}
+
 /* Tailwind v3 `container` config: centered, 2rem padding, 1400px at 2xl */
 @utility container {
   margin-inline: auto;
