@@ -28,6 +28,7 @@ i18n
     // Render English on the server and first client paint (no hydration mismatch);
     // applyDetectedLanguage() switches to the visitor's saved language after mount.
     lng: 'en',
+    showSupportNotice: false,
     fallbackLng: 'en',
     interpolation: { escapeValue: false },
     detection: {
