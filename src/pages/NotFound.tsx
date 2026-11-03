@@ -2,7 +2,6 @@ import { useLocation, Link } from "@/lib/router-compat";
 import { useEffect } from "react";
 import { Layout } from '@/components/layout/Layout';
 import { SEOHead } from '@/components/shared/SEOHead';
-import { Helmet } from '@/lib/helmet';
 import { Home, Search, ArrowRight } from 'lucide-react';
 
 const NotFound = () => {
@@ -18,8 +17,8 @@ const NotFound = () => {
         title="Page Not Found"
         description="The page you're looking for doesn't exist. Browse SERNET Financial Services for trading, investment, and insurance solutions."
         path={location.pathname}
+        noindex
       />
-      <Helmet><meta name="robots" content="noindex, follow" /></Helmet>
       <section className="section-padding bg-background min-h-[60vh] flex items-center">
         <div className="container-sernet text-center max-w-xl mx-auto">
           <div className="text-8xl font-bold text-primary/20 mb-4">404</div>
