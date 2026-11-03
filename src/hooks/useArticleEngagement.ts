@@ -4,6 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 
 // Simple browser fingerprint stored in localStorage
 function getFingerprint(): string {
+  if (typeof window === 'undefined') return '';
   const key = 'sernet_fp';
   let fp = localStorage.getItem(key);
   if (!fp) {
@@ -15,6 +16,7 @@ function getFingerprint(): string {
 
 // Track whether this device has already shared this article
 function hasShared(articleId: string): boolean {
+  if (typeof window === 'undefined') return false;
   const key = `sernet_shared_${articleId}`;
   return localStorage.getItem(key) === '1';
 }
@@ -35,7 +37,7 @@ export function useArticleEngagement(articleId: string) {
       if (error) throw error;
       return { count: (data?.count as number) ?? 0, liked: !!data?.liked };
     },
-    enabled: !!articleId,
+    enabled: !!articleId && !!fp,
   });
 
   // Fetch share count
