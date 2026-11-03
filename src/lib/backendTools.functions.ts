@@ -38,12 +38,6 @@ export const runBackendTool = createServerFn({ method: "POST" })
       body: JSON.stringify(data.body ?? {}),
     });
     const response = await handler(request);
-    const text = await response.text();
-    let json: unknown = null;
-    try {
-      json = text ? JSON.parse(text) : null;
-    } catch {
-      json = { error: text };
-    }
-    return { status: response.status, data: json as Record<string, unknown> | null };
+    // Return the raw JSON text; the client helper parses it (keeps the RPC payload serializable).
+    return { status: response.status, body: await response.text() };
   });
