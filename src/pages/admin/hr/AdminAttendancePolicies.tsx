@@ -235,7 +235,7 @@ const AdminAttendancePolicies = () => {
           </CardHeader>
           <CardContent>
             {shiftsLoading ? (
-              <div className="space-y-2">{[1,2,3].map(i => <div key={i} className="h-10 bg-muted animate-pulse rounded-sm" />)}</div>
+              <div className="space-y-2">{[1,2,3].map(i => <div key={i} className="h-10 bg-muted animate-pulse rounded" />)}</div>
             ) : (
               <>
                 <div className="overflow-auto">

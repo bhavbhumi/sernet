@@ -411,7 +411,7 @@ const Support = () => {
                   </div>
                 ) : (
                   <div className="space-y-8">
-                    {docCategories.map((cat: { name: string; docs: any[] }) => (
+                    {(docCategories as { name: string; docs: any[] }[]).map((cat) => (
                       <div key={cat.name}>
                         <h2 className="heading-md mb-4">{cat.name}</h2>
                         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">

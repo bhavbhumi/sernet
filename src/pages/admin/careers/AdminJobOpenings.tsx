@@ -120,7 +120,7 @@ export default function AdminJobOpenings() {
             </thead>
             <tbody className="divide-y divide-border">
               {loading ? (
-                Array(4).fill(0).map((_, i) => <tr key={i}><td colSpan={6} className="px-4 py-3"><div className="h-4 bg-muted animate-pulse rounded-sm" /></td></tr>)
+                Array(4).fill(0).map((_, i) => <tr key={i}><td colSpan={6} className="px-4 py-3"><div className="h-4 bg-muted animate-pulse rounded" /></td></tr>)
               ) : filtered.length === 0 ? (
                 <tr><td colSpan={6} className="px-4 py-12 text-center text-muted-foreground">No job openings found.</td></tr>
               ) : filtered.map(job => (

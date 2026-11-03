@@ -240,8 +240,8 @@ export const PressContent = () => {
                   <div key={i} className="flex items-center gap-4 py-5">
                     <div className="w-12 h-12 rounded-md bg-muted animate-pulse flex-shrink-0" />
                     <div className="flex-1 space-y-2">
-                      <div className="h-3 bg-muted animate-pulse rounded-sm w-32" />
-                      <div className="h-4 bg-muted animate-pulse rounded-sm w-3/4" />
+                      <div className="h-3 bg-muted animate-pulse rounded w-32" />
+                      <div className="h-4 bg-muted animate-pulse rounded w-3/4" />
                     </div>
                   </div>
                 ))
@@ -249,7 +249,7 @@ export const PressContent = () => {
                 <p className="text-center text-muted-foreground py-16 text-[1rem]">No results found.</p>
               ) : (
                 filteredReleases.map((item, index) => (
-                  <motion.a key={item.id} href={item.link ?? '#'} target="_blank" rel="noopener noreferrer" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: index * 0.04 }} className="flex items-center gap-4 py-5 group hover:bg-muted/30 -mx-4 px-4 rounded-sm transition-colors">
+                  <motion.a key={item.id} href={item.link ?? '#'} target="_blank" rel="noopener noreferrer" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: index * 0.04 }} className="flex items-center gap-4 py-5 group hover:bg-muted/30 -mx-4 px-4 rounded transition-colors">
                     <div className="w-12 h-12 rounded-md flex-shrink-0 border border-border bg-muted/30 flex items-center justify-center overflow-hidden">
                       <img
                         src={getFaviconUrl(item.link) ?? pressThumb}

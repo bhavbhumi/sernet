@@ -30,8 +30,7 @@ export const HeroSection = () => {
               width={1200}
               height={1075}
               decoding="async"
-              // @ts-ignore fetchpriority not in React types yet
-              fetchpriority="high"
+              fetchPriority="high"
               animate={{ y: reducedMotion ? 0 : [0, -6, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
             />
@@ -55,7 +54,7 @@ export const HeroSection = () => {
             transition={{ duration: 0.6 }}
             className="lg:order-1"
           >
-            <div aria-hidden="true" className="signature-accent mb-5 h-1 w-24 rounded-xs" />
+            <div aria-hidden="true" className="signature-accent mb-5 h-1 w-24 rounded-sm" />
             <h1 className="text-[2.5rem] md:text-[3.25rem] font-light text-foreground leading-[1.15] mb-5 tracking-tight">
               {t('hero.title')}{' '}
               <span className="text-primary font-normal">{t('hero.highlight')}</span>

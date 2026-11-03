@@ -58,7 +58,7 @@ function TableOfContents({ toc, activeSlug }: { toc: TocEntry[]; activeSlug: str
                 key={entry.slug}
                 ref={isActive ? activeRef : undefined}
                 href={`#${entry.slug}`}
-                className={`block text-xs leading-snug py-1.5 transition-colors rounded-sm px-2 ${
+                className={`block text-xs leading-snug py-1.5 transition-colors rounded px-2 ${
                   entry.level === 1 ? 'font-semibold' : entry.level === 2 ? 'pl-3' : 'pl-5 text-muted-foreground'
                 } ${
                   isActive
@@ -139,11 +139,11 @@ export default function ArticleDetail() {
     return (
       <Layout>
         <div className="container-sernet py-16 max-w-5xl mx-auto space-y-4">
-          <div className="h-6 w-32 bg-muted animate-pulse rounded-sm" />
-          <div className="h-10 w-3/4 bg-muted animate-pulse rounded-sm" />
-          <div className="h-4 w-1/2 bg-muted animate-pulse rounded-sm" />
+          <div className="h-6 w-32 bg-muted animate-pulse rounded" />
+          <div className="h-10 w-3/4 bg-muted animate-pulse rounded" />
+          <div className="h-4 w-1/2 bg-muted animate-pulse rounded" />
           <div className="space-y-2 mt-8">
-            {Array(8).fill(0).map((_, i) => <div key={i} className="h-4 bg-muted animate-pulse rounded-sm" />)}
+            {Array(8).fill(0).map((_, i) => <div key={i} className="h-4 bg-muted animate-pulse rounded" />)}
           </div>
         </div>
       </Layout>
@@ -166,7 +166,7 @@ export default function ArticleDetail() {
   const FormatIcon = formatIcons[article.format] ?? FileText;
   const fmtColor = formatColors[article.format] ?? formatColors['Text'];
   const dateStr = (article.item_date || article.published_at)
-    ? new Date(article.item_date || article.published_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })
+    ? new Date((article.item_date || article.published_at)!).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })
     : '';
 
   const LikeButton = ({ size = 'sm' }: { size?: 'sm' | 'md' }) => (
@@ -208,7 +208,7 @@ export default function ArticleDetail() {
   const hasMedia = (sidebarImageUrl || (article.media_url && ['Audio', 'Video'].includes(article.format)));
 
   const publishedIso = (article.item_date || article.published_at)
-    ? new Date(article.item_date || article.published_at).toISOString()
+    ? new Date((article.item_date || article.published_at)!).toISOString()
     : undefined;
   const plainDescription = (article.excerpt || article.title || '')
     .toString()

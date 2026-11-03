@@ -108,7 +108,7 @@ const Legal = () => {
               {isLoading ? (
                 <div className="space-y-4" role="status" aria-label="Loading legal document">
                   {[1, 2, 3].map(i => (
-                    <div key={i} className="h-4 max-w-2xl bg-muted rounded-sm animate-pulse" />
+                    <div key={i} className="h-4 max-w-2xl bg-muted rounded animate-pulse" />
                   ))}
                 </div>
               ) : isError ? (

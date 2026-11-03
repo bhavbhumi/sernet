@@ -130,7 +130,7 @@ export const SearchCommandPalette = ({ open, onClose }: SearchCommandPaletteProp
                     <X className="h-4 w-4" />
                   </button>
                 )}
-                <kbd className="hidden sm:flex items-center gap-1 px-2 py-1 text-[11px] text-muted-foreground border border-border rounded-sm font-mono">
+                <kbd className="hidden sm:flex items-center gap-1 px-2 py-1 text-[11px] text-muted-foreground border border-border rounded font-mono">
                   ESC
                 </kbd>
               </div>
@@ -177,7 +177,7 @@ export const SearchCommandPalette = ({ open, onClose }: SearchCommandPaletteProp
                                 onMouseEnter={() => setActiveIndex(flatIdx)}
                                 onClick={() => handleSelect(item)}
                               >
-                                <span className={`mt-0.5 shrink-0 inline-flex items-center justify-center h-5 w-5 rounded-sm ${TYPE_COLOR[type]}`}>
+                                <span className={`mt-0.5 shrink-0 inline-flex items-center justify-center h-5 w-5 rounded ${TYPE_COLOR[type]}`}>
                                   {TYPE_ICON[type]}
                                 </span>
                                 <div className="min-w-0 flex-1">
@@ -208,8 +208,8 @@ export const SearchCommandPalette = ({ open, onClose }: SearchCommandPaletteProp
               {/* Footer */}
               {hasResults && (
                 <div className="px-4 py-2 border-t border-border flex items-center gap-4 text-[11px] text-muted-foreground">
-                  <span className="flex items-center gap-1"><kbd className="font-mono border border-border rounded-sm px-1">↑↓</kbd> navigate</span>
-                  <span className="flex items-center gap-1"><kbd className="font-mono border border-border rounded-sm px-1">↵</kbd> open</span>
+                  <span className="flex items-center gap-1"><kbd className="font-mono border border-border rounded px-1">↑↓</kbd> navigate</span>
+                  <span className="flex items-center gap-1"><kbd className="font-mono border border-border rounded px-1">↵</kbd> open</span>
                   <span className="ml-auto">{flatResults.length} result{flatResults.length !== 1 ? 's' : ''}</span>
                 </div>
               )}

@@ -227,7 +227,7 @@ export default function AdminUnifiedLeads() {
       const { data: activities } = await supabase.from('crm_activities').select('contact_id').in('contact_id', contactIds);
       const counts: Record<string, number> = {};
       for (const act of activities || []) {
-        const leadId = contactToLead.get(act.contact_id);
+        const leadId = act.contact_id ? contactToLead.get(act.contact_id) : undefined;
         if (leadId) counts[leadId] = (counts[leadId] || 0) + 1;
       }
       return counts;

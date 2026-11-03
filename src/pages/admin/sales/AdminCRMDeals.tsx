@@ -237,7 +237,7 @@ function DealCard({ deal, stages, subStatusLabels, subStatusColors, onMove, onSe
             {currentStage.pipeline_sub_statuses.map(ss => (
               <button key={ss.sub_status_key} disabled={ss.sub_status_key === deal.sub_status || moving}
                 onClick={e => { e.stopPropagation(); handleMove(deal.stage, ss.sub_status_key); }}
-                className={cn('w-full text-left text-xs px-2 py-1.5 rounded-sm hover:bg-accent disabled:opacity-40', ss.sub_status_key === deal.sub_status && 'font-semibold')}>
+                className={cn('w-full text-left text-xs px-2 py-1.5 rounded hover:bg-accent disabled:opacity-40', ss.sub_status_key === deal.sub_status && 'font-semibold')}>
                 {ss.sub_status_label}
               </button>
             ))}
@@ -251,7 +251,7 @@ function DealCard({ deal, stages, subStatusLabels, subStatusColors, onMove, onSe
         </div>
       )}
       {validationErrors.length > 0 && (
-        <div className="bg-destructive/10 border border-destructive/20 rounded-sm p-2 space-y-1">
+        <div className="bg-destructive/10 border border-destructive/20 rounded p-2 space-y-1">
           <div className="flex items-center gap-1 text-destructive text-[10px] font-medium"><ShieldAlert className="h-3 w-3" /> Blueprint blocked</div>
           {validationErrors.map((err, i) => (
             <p key={i} className="text-[10px] text-destructive/80 flex items-start gap-1"><AlertTriangle className="h-3 w-3 shrink-0 mt-0.5" /> {err}</p>

@@ -17,7 +17,14 @@ export async function invokeBackendTool<T = any>(
     if (token && !headers["Authorization"] && !headers["authorization"]) {
       headers["Authorization"] = `Bearer ${token}`;
     }
-    const result = await runBackendTool({ data: { name, body: options.body }, headers });
+    const raw = await runBackendTool({ data: { name, body: options.body }, headers });
+    let parsed: Record<string, unknown> | null = null;
+    try {
+      parsed = raw.body ? (JSON.parse(raw.body) as Record<string, unknown>) : null;
+    } catch {
+      parsed = { error: raw.body };
+    }
+    const result = { status: raw.status, data: parsed };
     if (result.status >= 400) {
       const message =
         (result.data && typeof result.data["error"] === "string" && (result.data["error"] as string)) ||

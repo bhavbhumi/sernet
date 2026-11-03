@@ -1,26 +1,66 @@
 import { useMemo } from 'react';
-import DOMPurify from 'dompurify';
+import sanitizeHtml from 'sanitize-html';
+
+// String-based sanitising (no DOM) so the same output is produced on the server
+// and in the browser: legal text ships in the initial HTML and hydrates cleanly.
+const SANITIZE_OPTIONS: sanitizeHtml.IOptions = {
+  allowedTags: [...sanitizeHtml.defaults.allowedTags, 'img', 'h1', 'h2', 'span', 'u', 's', 'sup', 'sub', 'del', 'ins', 'figure', 'figcaption'],
+  allowedAttributes: {
+    '*': ['id', 'class', 'title', 'data-policy-group', 'style'],
+    a: ['href', 'name', 'target', 'rel', 'download', 'aria-label'],
+    img: ['src', 'alt', 'width', 'height', 'loading'],
+    td: ['colspan', 'rowspan', 'scope'],
+    th: ['colspan', 'rowspan', 'scope'],
+  },
+  allowedStyles: { '*': { 'text-align': [/^(left|right|center|justify)$/] } },
+  allowedSchemes: ['http', 'https', 'mailto', 'tel'],
+  allowProtocolRelative: false,
+  allowedEmptyAttributes: ['alt', 'download'],
+};
+
+function decodeEntities(value: string): string {
+  return value
+    .replace(/&#x([0-9a-f]+);/gi, (_, hex: string) => String.fromCodePoint(parseInt(hex, 16)))
+    .replace(/&#(\d+);/g, (_, dec: string) => String.fromCodePoint(Number(dec)))
+    .replace(/&nbsp;/g, '\u00a0')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;|&apos;/g, "'")
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&');
+}
+
+function readAttribute(attributes: string, name: string): string {
+  const match = attributes.match(new RegExp(`\\s${name}="([^"]*)"`));
+  return match ? decodeEntities(match[1]) : '';
+}
+
+export function processLegalHtml(body: string) {
+  const usedIds = new Set<string>();
+  const headings: { id: string; label: string; group: string }[] = [];
+  let index = 0;
+  const html = sanitizeHtml(body, SANITIZE_OPTIONS).replace(/<h2((?:\s[^>]*)?)>([\s\S]*?)<\/h2>/g, (_match, attributes: string, inner: string) => {
+    const requestedId = readAttribute(attributes, 'id');
+    let id = /^legal-section-\d+$/.test(requestedId) && !usedIds.has(requestedId) ? requestedId : `legal-section-${index + 1}`;
+    while (usedIds.has(id)) id = `legal-section-${Number(id.replace('legal-section-', '')) + 1}`;
+    usedIds.add(id);
+    const label = decodeEntities(inner.replace(/<[^>]*>/g, '')).trim() || `Section ${index + 1}`;
+    headings.push({ id, label, group: readAttribute(attributes, 'data-policy-group') });
+    index += 1;
+    const otherAttributes = attributes.replace(/\sid="[^"]*"/, '');
+    return `<h2 id="${id}"${otherAttributes}>${inner}</h2>`;
+  });
+  const groups = headings.reduce<{ label: string; headings: typeof headings }[]>((result, heading) => {
+    const lastGroup = result[result.length - 1];
+    if (lastGroup?.label === heading.group) lastGroup.headings.push(heading);
+    else result.push({ label: heading.group, headings: [heading] });
+    return result;
+  }, []);
+  return { html, headings, groups };
+}
 
 export function LegalDocument({ body }: { body: string }) {
-  const document = useMemo(() => {
-    const parsed = new DOMParser().parseFromString(DOMPurify.sanitize(body), 'text/html');
-    const usedIds = new Set<string>();
-    const headings = Array.from(parsed.querySelectorAll('h2')).map((heading, index) => {
-      const requestedId = heading.id;
-      let id = /^legal-section-\d+$/.test(requestedId) && !usedIds.has(requestedId) ? requestedId : `legal-section-${index + 1}`;
-      while (usedIds.has(id)) id = `legal-section-${Number(id.replace('legal-section-', '')) + 1}`;
-      usedIds.add(id);
-      heading.id = id;
-      return { id, label: heading.textContent || `Section ${index + 1}`, group: heading.getAttribute('data-policy-group') || '' };
-    });
-    const groups = headings.reduce<{ label: string; headings: typeof headings }[]>((result, heading) => {
-      const lastGroup = result[result.length - 1];
-      if (lastGroup?.label === heading.group) lastGroup.headings.push(heading);
-      else result.push({ label: heading.group, headings: [heading] });
-      return result;
-    }, []);
-    return { html: parsed.body.innerHTML, headings, groups };
-  }, [body]);
+  const document = useMemo(() => processLegalHtml(body), [body]);
 
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_220px]">

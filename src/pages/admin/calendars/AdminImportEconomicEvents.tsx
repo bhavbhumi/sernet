@@ -243,7 +243,7 @@ export default function AdminImportEconomicEvents() {
                       <Globe className="h-3.5 w-3.5" /> investing.com
                     </p>
                     <ol className="list-decimal list-inside space-y-0.5 text-xs">
-                      <li>Go to <code className="bg-muted px-1 rounded-sm">investing.com/economic-calendar</code></li>
+                      <li>Go to <code className="bg-muted px-1 rounded">investing.com/economic-calendar</code></li>
                       <li>Set date range (e.g. 2026 full year)</li>
                       <li>Filter countries: India, USA, Europe, UK, China, Japan</li>
                       <li>Click <strong>Download CSV</strong> button (top right)</li>
@@ -255,7 +255,7 @@ export default function AdminImportEconomicEvents() {
                       <Zap className="h-3.5 w-3.5" /> tradingeconomics.com
                     </p>
                     <ol className="list-decimal list-inside space-y-0.5 text-xs">
-                      <li>Go to <code className="bg-muted px-1 rounded-sm">tradingeconomics.com/calendar</code></li>
+                      <li>Go to <code className="bg-muted px-1 rounded">tradingeconomics.com/calendar</code></li>
                       <li>Filter by country and date range</li>
                       <li>Click the <strong>Excel/CSV</strong> export icon</li>
                       <li>Select <strong>tradingeconomics</strong> source above</li>
@@ -284,12 +284,12 @@ export default function AdminImportEconomicEvents() {
               </TabsList>
               <TabsContent value="investing">
                 <p className="text-xs text-muted-foreground mt-2">
-                  Expected columns: <code className="bg-muted px-1 rounded-sm">Date, Time, Currency, Importance, Event, Actual, Forecast, Previous</code>
+                  Expected columns: <code className="bg-muted px-1 rounded">Date, Time, Currency, Importance, Event, Actual, Forecast, Previous</code>
                 </p>
               </TabsContent>
               <TabsContent value="tradingeconomics">
                 <p className="text-xs text-muted-foreground mt-2">
-                  Expected columns: <code className="bg-muted px-1 rounded-sm">Date, Country, Category, Event, Actual, Previous, Forecast, Unit</code>
+                  Expected columns: <code className="bg-muted px-1 rounded">Date, Country, Category, Event, Actual, Previous, Forecast, Unit</code>
                 </p>
               </TabsContent>
             </Tabs>
@@ -365,7 +365,7 @@ export default function AdminImportEconomicEvents() {
                         <td className="px-3 py-1.5">{ev.country}</td>
                         <td className="px-3 py-1.5 max-w-[200px] truncate">{ev.event_name}</td>
                         <td className="px-3 py-1.5">
-                        <span className={`px-1.5 py-0.5 rounded-sm text-xs font-medium ${
+                        <span className={`px-1.5 py-0.5 rounded text-xs font-medium ${
                             ev.impact === 'high' ? 'bg-destructive/10 text-destructive'
                             : ev.impact === 'medium' ? 'bg-primary/10 text-primary'
                             : 'bg-muted text-muted-foreground'
@@ -462,7 +462,7 @@ export default function AdminImportEconomicEvents() {
                 <p className="font-medium text-foreground">Auto-Actuals Sync is Active</p>
                 <p className="text-muted-foreground mt-1">
                   A nightly background job runs at <strong>6:00 AM IST</strong> to fetch released actual values from
-                  public sources and update any events where the <code className="bg-muted px-1 rounded-sm">actual_value</code> is
+                  public sources and update any events where the <code className="bg-muted px-1 rounded">actual_value</code> is
                   still empty. You can also trigger an immediate sync from the{' '}
                   <strong>Economic Events</strong> admin page using the <strong>Sync Actuals</strong> button.
                 </p>
@@ -480,13 +480,13 @@ export default function AdminImportEconomicEvents() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
               <div>
                 <p className="font-medium mb-1">investing.com</p>
-                <pre className="bg-muted rounded-sm p-2 text-muted-foreground overflow-x-auto">{`"Date","Time","Currency","Importance","Event","Actual","Forecast","Previous"
+                <pre className="bg-muted rounded p-2 text-muted-foreground overflow-x-auto">{`"Date","Time","Currency","Importance","Event","Actual","Forecast","Previous"
 "01/07/2026","10:30","INR","3","RBI Rate Decision","6.25%","6.25%","6.25%"
 "01/08/2026","15:30","USD","3","FOMC Minutes","","",""`}</pre>
               </div>
               <div>
                 <p className="font-medium mb-1">tradingeconomics.com</p>
-                <pre className="bg-muted rounded-sm p-2 text-muted-foreground overflow-x-auto">{`"Date","Country","Category","Event","Actual","Previous","Forecast"
+                <pre className="bg-muted rounded p-2 text-muted-foreground overflow-x-auto">{`"Date","Country","Category","Event","Actual","Previous","Forecast"
 "2026-01-07 10:30:00","India","Interest Rate","RBI Rate Decision","6.25%","6.25%","6.25%"
 "2026-01-08 15:30:00","United States","Fed","FOMC Minutes","","",""`}</pre>
               </div>

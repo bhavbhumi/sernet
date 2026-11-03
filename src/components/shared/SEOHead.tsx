@@ -1,5 +1,5 @@
 import { companyHistory } from '@/lib/companyHistory';
-import { Helmet } from 'react-helmet-async';
+import { useEffect } from 'react';
 import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 type JsonLdInput = Record<string, unknown> | Array<Record<string, unknown>>;
@@ -11,12 +11,14 @@ interface SEOHeadProps {
   type?: string;
   jsonLd?: JsonLdInput;
   image?: string;
+  /** Adds `robots: noindex, follow` (e.g. the not-found page). */
+  noindex?: boolean;
 }
 
 const FALLBACK_SITE_NAME = 'SERNET Financial Services';
 const FALLBACK_BASE_URL = 'https://sernetindia.com';
 
-export const SEOHead = ({ title, description, path = '/', type = 'website', jsonLd, image }: SEOHeadProps) => {
+export const SEOHead = ({ title, description, path = '/', type = 'website', jsonLd, image, noindex = false }: SEOHeadProps) => {
   const { data: settings } = useSiteSettings();
 
   const siteName = settings?.identity?.schema_org_name || FALLBACK_SITE_NAME;
@@ -63,42 +65,62 @@ export const SEOHead = ({ title, description, path = '/', type = 'website', json
     sameAs: socialLinks,
   };
 
-  const isNonCanonicalHost = typeof window !== 'undefined'
-    && (window.location.hostname.includes('lovable.app')
-        || window.location.hostname.includes('lovableproject.com'));
+  const keywords = settings?.identity?.seo_keywords || '';
+  const jsonLdText = JSON.stringify(Array.isArray(jsonLd) ? jsonLd : [jsonLd || defaultJsonLd]);
 
-  return (
-    <Helmet>
-      <title>{fullTitle}</title>
-      <meta name="description" content={description} />
-      <link rel="canonical" href={url} />
-      <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-      {isNonCanonicalHost && <meta name="robots" content="noindex, nofollow" />}
+  // Server-rendered titles/share tags come from route head() (see src/lib/routeHead.ts);
+  // this keeps the open document in sync after hydration and client navigation.
+  useEffect(() => {
+    const head = document.head;
+    const setMeta = (attr: 'name' | 'property', key: string, content: string) => {
+      let el = head.querySelector<HTMLMetaElement>(`meta[${attr}="${key}"]`);
+      if (!content) {
+        if (el?.dataset.seohead) el.remove();
+        return;
+      }
+      if (!el) {
+        el = document.createElement('meta');
+        el.setAttribute(attr, key);
+        el.dataset.seohead = '1';
+        head.appendChild(el);
+      }
+      el.setAttribute('content', content);
+    };
+    document.title = fullTitle;
+    setMeta('name', 'description', description);
+    if (keywords) setMeta('name', 'keywords', keywords);
+    setMeta('property', 'og:title', fullTitle);
+    setMeta('property', 'og:description', description);
+    setMeta('property', 'og:url', url);
+    setMeta('property', 'og:type', type);
+    setMeta('property', 'og:site_name', siteName);
+    setMeta('property', 'og:image', ogImageUrl);
+    setMeta('name', 'twitter:card', 'summary_large_image');
+    setMeta('name', 'twitter:image', ogImageUrl);
+    setMeta('name', 'twitter:title', fullTitle);
+    setMeta('name', 'twitter:description', description);
 
+    const isNonCanonicalHost = window.location.hostname.includes('lovable.app')
+      || window.location.hostname.includes('lovableproject.com');
+    setMeta('name', 'robots', isNonCanonicalHost ? 'noindex, nofollow' : noindex ? 'noindex, follow' : '');
 
-      {settings?.identity?.seo_keywords && (
-        <meta name="keywords" content={settings.identity.seo_keywords} />
-      )}
+    let canonical = head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.rel = 'canonical';
+      head.appendChild(canonical);
+    }
+    canonical.href = url;
 
-      <meta property="og:title" content={fullTitle} />
-      <meta property="og:description" content={description} />
-      <meta property="og:url" content={url} />
-      <meta property="og:type" content={type} />
-      <meta property="og:site_name" content={siteName} />
-      <meta property="og:image" content={ogImageUrl} />
-      <meta property="og:image:width" content="1200" />
-      <meta property="og:image:height" content="630" />
+    head.querySelectorAll('script[data-seohead]').forEach((el) => el.remove());
+    for (const block of JSON.parse(jsonLdText) as unknown[]) {
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.dataset.seohead = '1';
+      script.textContent = JSON.stringify(block);
+      head.appendChild(script);
+    }
+  }, [fullTitle, description, url, type, siteName, ogImageUrl, keywords, noindex, jsonLdText]);
 
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:image" content={ogImageUrl} />
-      <meta name="twitter:title" content={fullTitle} />
-      <meta name="twitter:description" content={description} />
-
-      {(Array.isArray(jsonLd) ? jsonLd : [jsonLd || defaultJsonLd]).map((block, i) => (
-        <script key={i} type="application/ld+json">
-          {JSON.stringify(block)}
-        </script>
-      ))}
-    </Helmet>
-  );
+  return null;
 };

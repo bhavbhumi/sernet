@@ -9,7 +9,6 @@ import {
   useRouter,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
-import { HelmetProvider } from "react-helmet-async";
 import { ThemeProvider } from "next-themes";
 
 import appCss from "../styles.css?url";
@@ -135,7 +134,6 @@ function RootComponent() {
     applyDetectedLanguage();
   }, []);
   return (
-    <HelmetProvider>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <QueryClientProvider client={queryClient}>
           <TooltipProvider>
@@ -147,6 +145,5 @@ function RootComponent() {
           </TooltipProvider>
         </QueryClientProvider>
       </ThemeProvider>
-    </HelmetProvider>
   );
 }

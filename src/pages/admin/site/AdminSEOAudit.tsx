@@ -540,7 +540,7 @@ export default function AdminSEOAudit() {
               <Card className="p-4 border-dashed">
                 <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">📋 Quick Copy: Sitemap URL</h4>
                 <div className="flex items-center gap-2">
-                  <code className="text-xs bg-muted px-2 py-1 rounded-sm flex-1">https://sernetindia.com/sitemap.xml</code>
+                  <code className="text-xs bg-muted px-2 py-1 rounded flex-1">https://sernetindia.com/sitemap.xml</code>
                   <button onClick={() => copyToClipboard('https://sernetindia.com/sitemap.xml')} className="p-1.5 text-muted-foreground hover:text-primary transition-colors" aria-label="Copy sitemap URL">
                     <Copy className="h-3.5 w-3.5" />
                   </button>

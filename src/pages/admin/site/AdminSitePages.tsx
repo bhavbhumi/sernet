@@ -72,7 +72,7 @@ export default function AdminSitePages() {
   const [editPage, setEditPage] = useState<SitePage | null>(null);
   const [newPage, setNewPage] = useState<Partial<SitePage> | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<SitePage | null>(null);
-  const baseUrl = window.location.origin.replace(/\/admin.*/, '');
+  const baseUrl = typeof window !== 'undefined' ? window.location.origin.replace(/\/admin.*/, '') : '';
 
   const { data: pages = [], isLoading } = useQuery({
     queryKey: ['site_pages'],

@@ -222,7 +222,7 @@ export function HealthContent() {
                 <div key={i} className="flex items-center justify-between py-2 border-b border-border last:border-0">
                   <span className="text-sm">{task.name}</span>
                   <div className="flex items-center gap-2">
-                    <code className="text-xs bg-muted px-2 py-0.5 rounded-sm">{task.schedule}</code>
+                    <code className="text-xs bg-muted px-2 py-0.5 rounded">{task.schedule}</code>
                     <Badge variant={task.active ? 'default' : 'secondary'} className="text-[10px]">
                       {task.active ? 'Active' : 'Paused'}
                     </Badge>
