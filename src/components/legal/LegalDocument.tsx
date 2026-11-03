@@ -15,6 +15,7 @@ const SANITIZE_OPTIONS: sanitizeHtml.IOptions = {
   allowedStyles: { '*': { 'text-align': [/^(left|right|center|justify)$/] } },
   allowedSchemes: ['http', 'https', 'mailto', 'tel'],
   allowProtocolRelative: false,
+  allowedEmptyAttributes: ['alt', 'download'],
 };
 
 function decodeEntities(value: string): string {
