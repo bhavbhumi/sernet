@@ -511,7 +511,7 @@ export function AdminSidebar() {
         {/* Collapse toggle — overlapping the sidebar edge */}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="absolute -right-3 top-[15px] z-40 h-6 w-6 rounded-full border border-border bg-background shadow-sm flex items-center justify-center hover:bg-muted transition-colors text-muted-foreground"
+          className="absolute -right-3 top-[15px] z-40 h-6 w-6 rounded-full border border-border bg-background shadow-xs flex items-center justify-center hover:bg-muted transition-colors text-muted-foreground"
         >
           {collapsed ? <PanelLeftOpen className="h-3 w-3" /> : <PanelLeftClose className="h-3 w-3" />}
         </button>

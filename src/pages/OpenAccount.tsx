@@ -198,7 +198,7 @@ const OpenAccount = () => {
         breadcrumbLabel="Open Account"
       />
 
-      <div className="border-b border-border sticky top-16 z-20 bg-background/95 backdrop-blur-sm">
+      <div className="border-b border-border sticky top-16 z-20 bg-background/95 backdrop-blur-xs">
         <div className="container-sernet">
           <div className="flex gap-8 overflow-x-auto" style={{ scrollbarWidth: 'none' }} role="tablist">
             {onboardingTabs.map((tab) => (

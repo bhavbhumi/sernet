@@ -102,7 +102,7 @@ function PartnerDashboardContent() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-30 bg-background/95 backdrop-blur border-b border-border">
+      <header className="sticky top-0 z-30 bg-background/95 backdrop-blur-sm border-b border-border">
         <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link to="/"><img src={sernetLogo} alt="SERNET" className="h-7 object-contain" /></Link>

@@ -136,7 +136,7 @@ export const NetworkSection = () => {
                       {/* Tint overlay */}
                       <div className={`absolute inset-0 ${client.bgTint} pointer-events-none`} />
                       {/* Icon badge */}
-                      <div className="absolute top-2 right-2 w-7 h-7 rounded-md bg-card/90 backdrop-blur-sm flex items-center justify-center shadow-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="absolute top-2 right-2 w-7 h-7 rounded-md bg-card/90 backdrop-blur-xs flex items-center justify-center shadow-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         <Icon className="w-3.5 h-3.5 text-primary" />
                       </div>
                     </div>

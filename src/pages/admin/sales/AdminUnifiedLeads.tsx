@@ -405,7 +405,7 @@ export default function AdminUnifiedLeads() {
                             <td className="px-4 py-3">
                               {updatingId === lead.id ? <Loader2 className="w-4 h-4 animate-spin" /> : (
                                 <select value={lead.status} onChange={e => updateStatus(lead.id, e.target.value)}
-                                  className={`text-xs px-2 py-1 rounded-full border-0 font-medium cursor-pointer focus:outline-none ${STATUS_COLOR[lead.status] ?? 'bg-muted text-muted-foreground'}`}>
+                                  className={`text-xs px-2 py-1 rounded-full border-0 font-medium cursor-pointer focus:outline-hidden ${STATUS_COLOR[lead.status] ?? 'bg-muted text-muted-foreground'}`}>
                                   {STATUS_OPTIONS.map(s => <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
                                 </select>
                               )}

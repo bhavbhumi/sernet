@@ -161,7 +161,7 @@ export const ProposalDialog = ({
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     maxLength={100}
-                    className="w-full pl-9 pr-3 py-2.5 text-sm rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/30"
+                    className="w-full pl-9 pr-3 py-2.5 text-sm rounded-lg border border-border bg-background focus:outline-hidden focus:ring-2 focus:ring-primary/30"
                   />
                 </div>
                 <div className="relative">
@@ -172,7 +172,7 @@ export const ProposalDialog = ({
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     maxLength={15}
-                    className="w-full pl-9 pr-3 py-2.5 text-sm rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/30"
+                    className="w-full pl-9 pr-3 py-2.5 text-sm rounded-lg border border-border bg-background focus:outline-hidden focus:ring-2 focus:ring-primary/30"
                   />
                 </div>
                 <div className="relative">
@@ -183,7 +183,7 @@ export const ProposalDialog = ({
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     maxLength={255}
-                    className="w-full pl-9 pr-3 py-2.5 text-sm rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/30"
+                    className="w-full pl-9 pr-3 py-2.5 text-sm rounded-lg border border-border bg-background focus:outline-hidden focus:ring-2 focus:ring-primary/30"
                   />
                 </div>
               </div>

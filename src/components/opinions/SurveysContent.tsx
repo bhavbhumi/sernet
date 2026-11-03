@@ -172,11 +172,11 @@ function SurveyFormDialog({ survey, open, onClose }: { survey: Survey | null; op
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
                 <label className="text-xs font-medium text-muted-foreground">Your Name (optional)</label>
-                <input className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
+                <input className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background focus:outline-hidden focus:ring-1 focus:ring-primary" placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
               </div>
               <div className="space-y-1">
                 <label className="text-xs font-medium text-muted-foreground">Email (optional)</label>
-                <input className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background focus:outline-none focus:ring-1 focus:ring-primary" placeholder="email@example.com" value={email} onChange={e => setEmail(e.target.value)} />
+                <input className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background focus:outline-hidden focus:ring-1 focus:ring-primary" placeholder="email@example.com" value={email} onChange={e => setEmail(e.target.value)} />
               </div>
             </div>
 
@@ -187,7 +187,7 @@ function SurveyFormDialog({ survey, open, onClose }: { survey: Survey | null; op
                 {q.question_type === 'text' && (
                   <textarea
                     rows={3}
-                    className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background focus:outline-none focus:ring-1 focus:ring-primary resize-none"
+                    className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background focus:outline-hidden focus:ring-1 focus:ring-primary resize-none"
                     placeholder="Your answer..."
                     value={String(answers[q.id] ?? '')}
                     onChange={e => setAnswer(q.id, e.target.value)}
@@ -233,7 +233,7 @@ function SurveyFormDialog({ survey, open, onClose }: { survey: Survey | null; op
                           onClick={() => toggleMulti(q.id, opt)}
                           className={`w-full text-left px-4 py-2.5 rounded-lg border text-sm transition-all flex items-center gap-2 ${sel ? 'border-primary bg-primary/5 text-foreground font-medium' : 'border-border/50 hover:border-primary/30 text-muted-foreground'}`}
                         >
-                          <div className={`h-4 w-4 rounded border-2 flex items-center justify-center shrink-0 ${sel ? 'border-primary bg-primary' : 'border-muted-foreground'}`}>
+                          <div className={`h-4 w-4 rounded-sm border-2 flex items-center justify-center shrink-0 ${sel ? 'border-primary bg-primary' : 'border-muted-foreground'}`}>
                             {sel && <CheckCircle2 className="h-2.5 w-2.5 text-primary-foreground" />}
                           </div>
                           {opt}

@@ -141,7 +141,7 @@ const AdminLeads = () => {
               placeholder="Search by name, phone or email…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 text-sm rounded-md border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/30"
+              className="w-full pl-9 pr-3 py-2 text-sm rounded-md border border-border bg-background focus:outline-hidden focus:ring-2 focus:ring-primary/30"
             />
           </div>
           <div className="relative">
@@ -149,7 +149,7 @@ const AdminLeads = () => {
             <select
               value={sourceFilter}
               onChange={(e) => setSourceFilter(e.target.value)}
-              className="pl-9 pr-8 py-2 text-sm rounded-md border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/30 appearance-none"
+              className="pl-9 pr-8 py-2 text-sm rounded-md border border-border bg-background focus:outline-hidden focus:ring-2 focus:ring-primary/30 appearance-none"
             >
               {SOURCE_OPTIONS.map((s) => (
                 <option key={s} value={s}>{s === 'all' ? 'All Sources' : SOURCE_LABELS[s]?.label ?? s}</option>
@@ -161,7 +161,7 @@ const AdminLeads = () => {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="pl-3 pr-8 py-2 text-sm rounded-md border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/30 appearance-none"
+              className="pl-3 pr-8 py-2 text-sm rounded-md border border-border bg-background focus:outline-hidden focus:ring-2 focus:ring-primary/30 appearance-none"
             >
               {STATUS_OPTIONS.map((s) => (
                 <option key={s} value={s}>{s === 'all' ? 'All Statuses' : s.charAt(0).toUpperCase() + s.slice(1)}</option>
@@ -235,7 +235,7 @@ const AdminLeads = () => {
                             <select
                               value={lead.status}
                               onChange={(e) => updateStatus(lead.id, e.target.value)}
-                              className={`text-xs px-2 py-1 rounded-full border-0 font-medium cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/30 ${STATUS_COLOR[lead.status] ?? 'bg-muted text-muted-foreground'}`}
+                              className={`text-xs px-2 py-1 rounded-full border-0 font-medium cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-primary/30 ${STATUS_COLOR[lead.status] ?? 'bg-muted text-muted-foreground'}`}
                             >
                               {STATUS_OPTIONS.filter(s => s !== 'all').map((s) => (
                                 <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>

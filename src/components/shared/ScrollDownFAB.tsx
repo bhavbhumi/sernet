@@ -45,7 +45,7 @@ export function ScrollDownFAB() {
           exit={{ opacity: 0, scale: 0.8 }}
           transition={{ duration: 0.2 }}
           onClick={handleClick}
-          className="fixed bottom-6 right-6 z-50 w-10 h-10 rounded-full bg-primary/80 text-primary-foreground shadow-lg flex items-center justify-center hover:bg-primary transition-colors backdrop-blur-sm"
+          className="fixed bottom-6 right-6 z-50 w-10 h-10 rounded-full bg-primary/80 text-primary-foreground shadow-lg flex items-center justify-center hover:bg-primary transition-colors backdrop-blur-xs"
           aria-label={mode === 'down' ? 'Scroll down' : 'Scroll to top'}
         >
           {mode === 'down' ? (

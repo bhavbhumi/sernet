@@ -137,7 +137,7 @@ const Support = () => {
       />
 
       {/* Tabs */}
-      <div className="border-b border-border sticky top-16 z-20 bg-background/95 backdrop-blur-sm">
+      <div className="border-b border-border sticky top-16 z-20 bg-background/95 backdrop-blur-xs">
         <div className="container-sernet">
           <div className="flex gap-8 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
             {TABS.map((tab) => (
@@ -177,7 +177,7 @@ const Support = () => {
                           placeholder="Search articles — e.g. How do I add a nominee?"
                           value={kbSearch}
                           onChange={e => setKbSearch(e.target.value)}
-                          className="w-full pl-12 pr-4 py-3.5 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-base"
+                          className="w-full pl-12 pr-4 py-3.5 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary text-base"
                         />
                       </div>
 

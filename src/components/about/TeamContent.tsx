@@ -40,7 +40,7 @@ const initials = (name: string) =>
 function OrgCard({ node, root }: { node: OrgNode; root?: boolean }) {
   return (
     <div
-      className={`flex flex-col items-center text-center rounded-xl border bg-card shadow-sm hover:shadow-md transition-shadow ${
+      className={`flex flex-col items-center text-center rounded-xl border bg-card shadow-xs hover:shadow-md transition-shadow ${
         root ? 'border-primary/30 px-6 py-5 min-w-[200px]' : 'border-border px-4 py-4 min-w-[150px]'
       }`}
     >

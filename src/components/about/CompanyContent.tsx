@@ -116,7 +116,7 @@ export const CompanyContent = () => {
                         href="https://www.linkedin.com/in/bhaveshvora-wealthmanagement/"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-9 h-9 rounded-full bg-white/15 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-colors"
+                        className="w-9 h-9 rounded-full bg-white/15 backdrop-blur-xs flex items-center justify-center hover:bg-white/30 transition-colors"
                       >
                         <Linkedin className="w-4 h-4 text-white" />
                       </a>
@@ -124,7 +124,7 @@ export const CompanyContent = () => {
                         href="https://x.com/bhavtweetss"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-9 h-9 rounded-full bg-white/15 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-colors"
+                        className="w-9 h-9 rounded-full bg-white/15 backdrop-blur-xs flex items-center justify-center hover:bg-white/30 transition-colors"
                       >
                         <Twitter className="w-4 h-4 text-white" />
                       </a>

@@ -122,7 +122,7 @@ const CorporateEventsContent = () => {
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search company or ticker..."
-              className="pl-9 pr-4 py-2 text-sm bg-muted border border-border rounded-lg text-foreground focus:outline-none focus:ring-1 focus:ring-primary w-56"
+              className="pl-9 pr-4 py-2 text-sm bg-muted border border-border rounded-lg text-foreground focus:outline-hidden focus:ring-1 focus:ring-primary w-56"
             />
           </div>
           <div className="flex gap-2">
@@ -184,7 +184,7 @@ const CorporateEventsContent = () => {
                         {dayEvents.slice(0, 2).map((ev, i) => {
                           const cfg = eventTypeConfig[ev.event_type as EventType] || eventTypeConfig.other;
                           return (
-                            <div key={i} className={`text-[10px] px-1.5 py-0.5 rounded truncate ${cfg.color}`}>
+                            <div key={i} className={`text-[10px] px-1.5 py-0.5 rounded-sm truncate ${cfg.color}`}>
                               {ev.company_name}
                             </div>
                           );

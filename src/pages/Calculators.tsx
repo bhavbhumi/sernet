@@ -65,7 +65,7 @@ const Calculators = () => {
       />
 
       {/* ── Service tabs (primary) ── */}
-      <div className="border-b border-border sticky top-16 z-20 bg-background/95 backdrop-blur-sm">
+      <div className="border-b border-border sticky top-16 z-20 bg-background/95 backdrop-blur-xs">
         <div className="container-sernet">
           <div className="flex gap-0 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
             {serviceTabs.map((service) => (

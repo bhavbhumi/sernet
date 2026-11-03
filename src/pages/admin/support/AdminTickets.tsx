@@ -219,7 +219,7 @@ export default function AdminTickets() {
             <tbody className="divide-y divide-border">
               {loading ? (
                 Array(5).fill(0).map((_, i) => (
-                  <tr key={i}><td colSpan={8} className="px-4 py-3"><div className="h-4 bg-muted animate-pulse rounded" /></td></tr>
+                  <tr key={i}><td colSpan={8} className="px-4 py-3"><div className="h-4 bg-muted animate-pulse rounded-sm" /></td></tr>
                 ))
               ) : paginated.length === 0 ? (
                 <tr><td colSpan={8} className="px-4 py-12 text-center text-muted-foreground">No tickets found.</td></tr>
@@ -232,7 +232,7 @@ export default function AdminTickets() {
                       <p className="font-medium text-foreground line-clamp-1">{t.subject}</p>
                       <div className="flex items-center gap-1.5 mt-0.5">
                         <span className="text-xs text-muted-foreground">{t.ticket_number}</span>
-                        {t.issue_code && <span className="font-mono text-[10px] text-muted-foreground bg-muted px-1 rounded">{t.issue_code}</span>}
+                        {t.issue_code && <span className="font-mono text-[10px] text-muted-foreground bg-muted px-1 rounded-sm">{t.issue_code}</span>}
                       </div>
                     </td>
                     <td className="px-4 py-3">

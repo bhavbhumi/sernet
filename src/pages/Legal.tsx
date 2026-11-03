@@ -75,7 +75,7 @@ const Legal = () => {
       />
 
       <Tabs value={activeTab} onValueChange={handleTabChange}>
-      <div className="sticky top-16 z-20 bg-background/95 backdrop-blur-sm border-b border-border">
+      <div className="sticky top-16 z-20 bg-background/95 backdrop-blur-xs border-b border-border">
         <div className="container-sernet">
           <div className="overflow-x-auto">
           <TabsList aria-label="Legal and compliance sections" className="h-auto w-max justify-start gap-0 rounded-none bg-transparent p-0">
@@ -108,7 +108,7 @@ const Legal = () => {
               {isLoading ? (
                 <div className="space-y-4" role="status" aria-label="Loading legal document">
                   {[1, 2, 3].map(i => (
-                    <div key={i} className="h-4 max-w-2xl bg-muted rounded animate-pulse" />
+                    <div key={i} className="h-4 max-w-2xl bg-muted rounded-sm animate-pulse" />
                   ))}
                 </div>
               ) : isError ? (

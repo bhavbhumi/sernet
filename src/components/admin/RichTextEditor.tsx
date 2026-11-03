@@ -152,7 +152,7 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
     },
     editorProps: {
       attributes: {
-        class: 'max-w-none focus:outline-none',
+        class: 'max-w-none focus:outline-hidden',
       },
     },
   });

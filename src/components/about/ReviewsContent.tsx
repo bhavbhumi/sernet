@@ -150,7 +150,7 @@ function SubmitReviewDialog({ open, onClose }: { open: boolean; onClose: () => v
                 <select
                   value={form.review_type}
                   onChange={e => setForm(f => ({ ...f, review_type: e.target.value }))}
-                  className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background focus:outline-hidden focus:ring-1 focus:ring-primary"
                 >
                   <option value="Client">Client</option>
                   <option value="Partner">Partner</option>
@@ -163,7 +163,7 @@ function SubmitReviewDialog({ open, onClose }: { open: boolean; onClose: () => v
                 <select
                   value={form.source}
                   onChange={e => setForm(f => ({ ...f, source: e.target.value }))}
-                  className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background focus:outline-hidden focus:ring-1 focus:ring-primary"
                 >
                   <option value="website">Website</option>
                   <option value="google">Google</option>
@@ -178,7 +178,7 @@ function SubmitReviewDialog({ open, onClose }: { open: boolean; onClose: () => v
               <div className="space-y-1.5">
                 <label className="text-sm font-medium text-foreground">Full Name <span className="text-destructive">*</span></label>
                 <input
-                  className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background focus:outline-hidden focus:ring-1 focus:ring-primary"
                   placeholder="Your name"
                   value={form.name}
                   onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
@@ -187,7 +187,7 @@ function SubmitReviewDialog({ open, onClose }: { open: boolean; onClose: () => v
               <div className="space-y-1.5">
                 <label className="text-sm font-medium text-foreground">Occupation</label>
                 <input
-                  className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background focus:outline-hidden focus:ring-1 focus:ring-primary"
                   placeholder="e.g. Business Owner"
                   value={form.occupation}
                   onChange={e => setForm(f => ({ ...f, occupation: e.target.value }))}
@@ -200,7 +200,7 @@ function SubmitReviewDialog({ open, onClose }: { open: boolean; onClose: () => v
               <div className="space-y-1.5">
                 <label className="text-sm font-medium text-foreground">City</label>
                 <input
-                  className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background focus:outline-hidden focus:ring-1 focus:ring-primary"
                   placeholder="Mumbai"
                   value={form.city}
                   onChange={e => setForm(f => ({ ...f, city: e.target.value }))}
@@ -211,7 +211,7 @@ function SubmitReviewDialog({ open, onClose }: { open: boolean; onClose: () => v
                 <select
                   value={form.country}
                   onChange={e => setForm(f => ({ ...f, country: e.target.value }))}
-                  className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background focus:outline-hidden focus:ring-1 focus:ring-primary"
                 >
                   <option value="IN">🇮🇳 India</option>
                   <option value="US">🇺🇸 USA</option>
@@ -226,7 +226,7 @@ function SubmitReviewDialog({ open, onClose }: { open: boolean; onClose: () => v
               <label className="text-sm font-medium text-foreground">Your Review <span className="text-destructive">*</span></label>
               <textarea
                 rows={4}
-                className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background focus:outline-none focus:ring-1 focus:ring-primary resize-none"
+                className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background focus:outline-hidden focus:ring-1 focus:ring-primary resize-none"
                 placeholder="Share your experience with SERNET..."
                 value={form.review}
                 onChange={e => setForm(f => ({ ...f, review: e.target.value }))}

@@ -194,7 +194,7 @@ const SupportProduct = () => {
                     placeholder="Filter articles…"
                     value={kbSearch}
                     onChange={e => setKbSearch(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2.5 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                    className="w-full pl-9 pr-3 py-2.5 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary text-sm"
                   />
                 </div>
 

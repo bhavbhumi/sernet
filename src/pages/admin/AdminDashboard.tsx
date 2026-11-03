@@ -222,7 +222,7 @@ export default function AdminDashboard() {
                     <span className="text-xs text-muted-foreground">{card.label}</span>
                   </div>
                   <div className="text-xl font-bold text-foreground">
-                    {loading ? <div className="h-6 w-10 bg-muted animate-pulse rounded" /> : card.count}
+                    {loading ? <div className="h-6 w-10 bg-muted animate-pulse rounded-sm" /> : card.count}
                   </div>
                   {card.subtitle && <p className="text-[11px] text-muted-foreground mt-0.5">{card.subtitle}</p>}
                 </Link>
