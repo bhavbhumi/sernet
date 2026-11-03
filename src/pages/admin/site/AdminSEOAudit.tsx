@@ -1,3 +1,4 @@
+import { invokeBackendTool } from "@/lib/backendTools";
 
 import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -175,7 +176,7 @@ export default function AdminSEOAudit() {
     if (isArticles) setIsGeneratingArticles(true);
     else setIsGenerating(true);
     try {
-      const { data, error } = await supabase.functions.invoke('seo-generate', {
+      const { data, error } = await invokeBackendTool("seo-generate", {
         body: target ? { target } : undefined,
       });
       if (error) throw error;

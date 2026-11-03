@@ -1,3 +1,4 @@
+import { invokeBackendTool } from "@/lib/backendTools";
 import { useState } from 'react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { Button } from '@/components/ui/button';
@@ -47,7 +48,7 @@ export default function AdminImportArticles() {
 
     let allUrls: string[] = [];
     try {
-      const { data, error } = await supabase.functions.invoke('wp-import', {
+      const { data, error } = await invokeBackendTool("wp-import", {
         body: { action: 'list' },
       });
       if (error || !data?.success) {
@@ -74,7 +75,7 @@ export default function AdminImportArticles() {
 
       await Promise.all(batch.map(async (url) => {
         try {
-          const { data, error } = await supabase.functions.invoke('wp-import', {
+          const { data, error } = await invokeBackendTool("wp-import", {
             body: { action: 'scrape_one', article_url: url },
           });
           if (error || !data?.success) {
@@ -115,7 +116,7 @@ export default function AdminImportArticles() {
 
     let allUrls: string[] = [];
     try {
-      const { data, error } = await supabase.functions.invoke('wp-import', {
+      const { data, error } = await invokeBackendTool("wp-import", {
         body: { action: 'list_existing' },
       });
       if (error || !data?.success) {
@@ -142,7 +143,7 @@ export default function AdminImportArticles() {
 
       await Promise.all(batch.map(async (url) => {
         try {
-          const { data, error } = await supabase.functions.invoke('wp-import', {
+          const { data, error } = await invokeBackendTool("wp-import", {
             body: { action: 'rescrape_one', article_url: url },
           });
           if (error || !data?.success) {
@@ -180,7 +181,7 @@ export default function AdminImportArticles() {
 
     let items: { id: string; title: string; url: string }[] = [];
     try {
-      const { data, error } = await supabase.functions.invoke('wp-import', {
+      const { data, error } = await invokeBackendTool("wp-import", {
         body: { action: 'match_analyses' },
       });
       if (error || !data?.success) {
@@ -207,7 +208,7 @@ export default function AdminImportArticles() {
 
       await Promise.all(batch.map(async (item) => {
         try {
-          const { data, error } = await supabase.functions.invoke('wp-import', {
+          const { data, error } = await invokeBackendTool("wp-import", {
             body: { action: 'rescrape_analysis', article_url: item.url, analysis_id: item.id },
           });
           if (error || !data?.success) {
@@ -246,7 +247,7 @@ export default function AdminImportArticles() {
 
     let items: { id: string; title: string; url: string }[] = [];
     try {
-      const { data, error } = await supabase.functions.invoke('wp-import', {
+      const { data, error } = await invokeBackendTool("wp-import", {
         body: { action: 'match_analyses' },
       });
       if (error || !data?.success) {
@@ -288,7 +289,7 @@ export default function AdminImportArticles() {
 
       await Promise.all(batch.map(async (item) => {
         try {
-          const { data, error } = await supabase.functions.invoke('wp-import', {
+          const { data, error } = await invokeBackendTool("wp-import", {
             body: { action: 'import_analysis_as_article', article_url: item.url, analysis_id: item.id, original_title: item.title },
           });
           if (error || !data?.success) {
@@ -336,7 +337,7 @@ export default function AdminImportArticles() {
       setMigrationPhase('moving');
       addLog('📦 MIGRATION Step 2b: Moving tagged articles to analyses...');
 
-      const { data, error } = await supabase.functions.invoke('wp-import', {
+      const { data, error } = await invokeBackendTool("wp-import", {
         body: { action: 'move_analyses_from_articles' },
       });
 
