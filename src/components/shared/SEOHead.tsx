@@ -1,5 +1,5 @@
 import { companyHistory } from '@/lib/companyHistory';
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from '@/lib/helmet';
 import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 type JsonLdInput = Record<string, unknown> | Array<Record<string, unknown>>;

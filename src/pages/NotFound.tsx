@@ -2,7 +2,7 @@ import { useLocation, Link } from "@/lib/router-compat";
 import { useEffect } from "react";
 import { Layout } from '@/components/layout/Layout';
 import { SEOHead } from '@/components/shared/SEOHead';
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from '@/lib/helmet';
 import { Home, Search, ArrowRight } from 'lucide-react';
 
 const NotFound = () => {

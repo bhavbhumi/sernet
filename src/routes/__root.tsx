@@ -9,7 +9,7 @@ import {
   useRouter,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
-import { HelmetProvider } from "react-helmet-async";
+import { HelmetProvider } from "@/lib/helmet";
 import { ThemeProvider } from "next-themes";
 
 import appCss from "../styles.css?url";
