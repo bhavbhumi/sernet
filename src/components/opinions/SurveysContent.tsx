@@ -113,7 +113,7 @@ function SurveyFormDialog({ survey, open, onClose }: { survey: Survey | null; op
     setEmail('');
     setSubmitted(false);
     db('survey_questions').select('*').eq('survey_id', survey.id).order('sort_order').then(({ data }: { data: unknown[] | null }) => {
-      setQuestions((data ?? []).map((q: Record<string, unknown>) => ({
+      setQuestions(((data ?? []) as Record<string, unknown>[]).map((q) => ({
         id: String(q.id),
         question: String(q.question),
         question_type: String(q.question_type) as Question['question_type'],

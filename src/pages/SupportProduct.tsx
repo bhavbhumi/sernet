@@ -70,7 +70,7 @@ const SupportProduct = () => {
 
   // Build category tree
   const categoryTree = useMemo(() => {
-    const cats = [...new Set(kbArticles.map((a: any) => String(a.category)))].sort();
+    const cats = [...new Set<string>(kbArticles.map((a: any) => String(a.category)))].sort();
     return cats.map((cat: string) => ({
       name: cat,
       articles: kbArticles.filter((a: any) => a.category === cat),

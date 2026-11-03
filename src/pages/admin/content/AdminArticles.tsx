@@ -131,7 +131,7 @@ export default function AdminArticles() {
   const fetchArticles = async () => {
     setLoading(true);
     const { data } = await supabase.from('articles').select('*').order('created_at', { ascending: false });
-    setArticles(data ?? []);
+    setArticles((data ?? []) as unknown as Article[]);
     setLoading(false);
   };
 

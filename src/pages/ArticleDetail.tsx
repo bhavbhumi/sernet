@@ -166,7 +166,7 @@ export default function ArticleDetail() {
   const FormatIcon = formatIcons[article.format] ?? FileText;
   const fmtColor = formatColors[article.format] ?? formatColors['Text'];
   const dateStr = (article.item_date || article.published_at)
-    ? new Date(article.item_date || article.published_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })
+    ? new Date((article.item_date || article.published_at)!).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })
     : '';
 
   const LikeButton = ({ size = 'sm' }: { size?: 'sm' | 'md' }) => (
@@ -208,7 +208,7 @@ export default function ArticleDetail() {
   const hasMedia = (sidebarImageUrl || (article.media_url && ['Audio', 'Video'].includes(article.format)));
 
   const publishedIso = (article.item_date || article.published_at)
-    ? new Date(article.item_date || article.published_at).toISOString()
+    ? new Date((article.item_date || article.published_at)!).toISOString()
     : undefined;
   const plainDescription = (article.excerpt || article.title || '')
     .toString()
