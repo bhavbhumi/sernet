@@ -99,7 +99,7 @@ export const ProductOrbit = () => {
   return (
     <div className="relative flex items-center justify-center overflow-visible" style={{ width: 460, height: 460 }}>
 
-      {/* Outermost orbit ring-3 — dashed */}
+      {/* Outermost orbit ring — dashed */}
       <div
         className="absolute rounded-full border border-dashed"
         style={{
@@ -109,7 +109,7 @@ export const ProductOrbit = () => {
         }}
       />
 
-      {/* Middle orbit ring-3 — dashed */}
+      {/* Middle orbit ring — dashed */}
       <div
         className="absolute rounded-full border border-dashed"
         style={{
@@ -119,7 +119,7 @@ export const ProductOrbit = () => {
         }}
       />
 
-      {/* Inner orbit ring-3 — dashed */}
+      {/* Inner orbit ring — dashed */}
       <div
         className="absolute rounded-full border border-dashed"
         style={{
@@ -182,10 +182,10 @@ export const ProductOrbit = () => {
 
       {/* Decorative dots on different rings in SERNET brand colors */}
       {[
-        { angle: 45, radius: 70, color: 'hsl(210 80% 55% / 0.5)', duration: 18 },    // blue - inner ring-3
-        { angle: 200, radius: 130, color: 'hsl(45 90% 50% / 0.45)', duration: 18 },   // gold - middle ring-3
-        { angle: 320, radius: 130, color: 'hsl(0 70% 50% / 0.4)', duration: 26 },     // red - middle ring-3
-        { angle: 135, radius: 200, color: 'hsl(145 60% 40% / 0.45)', duration: 26 },  // green - outer ring-3
+        { angle: 45, radius: 70, color: 'hsl(210 80% 55% / 0.5)', duration: 18 },    // blue - inner ring
+        { angle: 200, radius: 130, color: 'hsl(45 90% 50% / 0.45)', duration: 18 },   // gold - middle ring
+        { angle: 320, radius: 130, color: 'hsl(0 70% 50% / 0.4)', duration: 26 },     // red - middle ring
+        { angle: 135, radius: 200, color: 'hsl(145 60% 40% / 0.45)', duration: 26 },  // green - outer ring
       ].map((dot, i) => (
         <div
           key={i}
