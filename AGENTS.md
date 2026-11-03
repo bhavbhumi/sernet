@@ -1,6 +1,7 @@
 # Architecture rules
 
 - Prerender published article sharing metadata from paginated CMS rows at build time; share and canonical URLs use the registered article route and its own sized cover, so crawlers need no JavaScript.
+- After publishing new CMS articles, update `prerender/contentStamp.json` before republishing; a publish without a code change reuses the previous build, so new posts would get generic share previews.
 - Keep article media/sidebar independent of heading count with a tablet/desktop two-column layout; short articles must not switch to full-width cover images.
 
 - Recover collapsed single-column article layout imports in the shared body normalizer used by both content and topic indexes; preserve numeric strings rather than guessing lost table cells.
