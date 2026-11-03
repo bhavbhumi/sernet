@@ -25,6 +25,9 @@ i18n
       te: { translation: te },
       kn: { translation: kn },
     },
+    // Render English on the server and first client paint (no hydration mismatch);
+    // applyDetectedLanguage() switches to the visitor's saved language after mount.
+    lng: 'en',
     fallbackLng: 'en',
     interpolation: { escapeValue: false },
     detection: {
@@ -32,6 +35,16 @@ i18n
       caches: ['localStorage'],
     },
   });
+
+export function applyDetectedLanguage() {
+  if (typeof window === 'undefined') return;
+  const detected = i18n.services.languageDetector?.detect();
+  const lang = Array.isArray(detected) ? detected[0] : detected;
+  const code = lang?.split('-')[0];
+  if (code && code !== i18n.language && Object.keys(i18n.options.resources ?? {}).includes(code)) {
+    void i18n.changeLanguage(code);
+  }
+}
 
 export const languageOptions = [
   { code: 'en', label: 'English', nativeLabel: 'English' },
