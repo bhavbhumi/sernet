@@ -7,7 +7,7 @@ const SANITIZE_OPTIONS: sanitizeHtml.IOptions = {
   allowedTags: [...sanitizeHtml.defaults.allowedTags, 'img', 'h1', 'h2', 'span', 'u', 's', 'sup', 'sub', 'del', 'ins', 'figure', 'figcaption'],
   allowedAttributes: {
     '*': ['id', 'class', 'title', 'data-policy-group', 'style'],
-    a: ['href', 'name', 'target', 'rel'],
+    a: ['href', 'name', 'target', 'rel', 'download', 'aria-label'],
     img: ['src', 'alt', 'width', 'height', 'loading'],
     td: ['colspan', 'rowspan', 'scope'],
     th: ['colspan', 'rowspan', 'scope'],
