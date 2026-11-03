@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import { screen } from '@testing-library/dom';
 import { describe, expect, it } from 'vitest';
-import { LegalDocument } from './LegalDocument';
+import { LegalDocument, processLegalHtml } from './LegalDocument';
 
 describe('LegalDocument', () => {
   it('preserves explicit section anchors after duplicate sections are removed', () => {
@@ -29,5 +29,12 @@ describe('LegalDocument', () => {
     expect(container.querySelector('[onclick]')).toBeNull();
     expect(screen.getByText('Bad link')).not.toHaveAttribute('href');
     expect(screen.getByRole('link', { name: 'Complaints' })).toHaveAttribute('href', '/legal?tab=grievances');
+  });
+
+  it('produces the same sanitised HTML without a browser DOM (server rendering)', () => {
+    const { html, headings } = processLegalHtml('<h2>Fees</h2><img src="x" onerror="alert(1)"><a href="/legal" download aria-label="Get PDF">PDF</a>');
+    expect(html).not.toContain('onerror');
+    expect(html).toContain('download');
+    expect(headings).toEqual([{ id: 'legal-section-1', label: 'Fees', group: '' }]);
   });
 });
