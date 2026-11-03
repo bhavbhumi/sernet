@@ -4,7 +4,7 @@ import { requireAdmin } from "../_shared/adminAuth.ts";
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
+    "authorization, x-admin-key, x-workflow-secret, x-client-info, apikey, content-type",
 };
 
 // Determine office type from city/address heuristics
