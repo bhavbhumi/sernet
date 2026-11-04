@@ -1,6 +1,7 @@
 
 import { AdminSidebar } from './AdminSidebar';
 import { AdminGuard } from './AdminGuard';
+import { AdminMISRefresh } from './AdminMISRefresh';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -12,12 +13,13 @@ interface AdminLayoutProps {
 export function AdminLayout({ children, title, subtitle, actions }: AdminLayoutProps) {
   return (
     <AdminGuard>
+      <AdminMISRefresh />
       <div className="flex min-h-screen bg-background">
         <AdminSidebar />
         <div className="flex-1 flex flex-col min-w-0">
           {/* Page Header */}
           <header className="sticky top-0 z-30 bg-background/95 backdrop-blur-sm border-b border-border px-6 h-[53px] flex items-center mt-14 md:mt-0">
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex w-full items-center justify-between gap-4">
               <div>
                 <h1 className="text-lg font-semibold text-foreground">{title}</h1>
                 {subtitle && <p className="text-xs text-muted-foreground mt-0.5">{subtitle}</p>}
