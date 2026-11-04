@@ -1,3 +1,5 @@
+import { useMISAutoRefresh } from '@/hooks/useMISAutoRefresh';
+import { readAllMISRows } from '@/lib/misRefresh';
 
 import { useEffect, useState } from 'react';
 import { useNavigate } from '@/lib/router-compat';
@@ -81,6 +83,12 @@ export default function AdminTickets() {
   };
 
   useEffect(() => { fetchAll(); }, []);
+  useMISAutoRefresh(async () => {
+    try {
+      const data = await readAllMISRows((from, to) => db('support_tickets').select('*, crm_contacts(full_name, email, phone), support_issue_categories(name), support_issue_types(issue_code, title, priority, tat_hours)').order('created_at', { ascending: false }).order('id').range(from, to));
+      setTickets(data);
+    } catch { toast({ title: 'Tickets could not be refreshed', variant: 'destructive' }); }
+  });
 
   const filteredIssueTypesForForm = issueTypes.filter(t =>
     (t.product === form.product || t.product === 'all') &&

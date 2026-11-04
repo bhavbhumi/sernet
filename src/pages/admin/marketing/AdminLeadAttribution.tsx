@@ -1,3 +1,4 @@
+import { readAllMISRows } from '@/lib/misRefresh';
 import { AdminGuard } from '@/components/admin/AdminGuard';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { useQuery } from '@tanstack/react-query';
@@ -34,16 +35,11 @@ function getDateFilter(range: string) {
 export default function AdminLeadAttribution() {
   const [range, setRange] = useState('30d');
 
-  const { data: leads = [] } = useQuery({
+  const { data: leads = [], error: loadError } = useQuery({
     queryKey: ['lead-attribution', range],
     queryFn: async () => {
       const since = getDateFilter(range);
-      const { data } = await supabase
-        .from('leads')
-        .select('id, source, lead_type, status, created_at')
-        .gte('created_at', since)
-        .order('created_at', { ascending: false });
-      return data || [];
+      return readAllMISRows((from, to) => supabase.from('leads').select('id, source, lead_type, status, created_at').gte('created_at', since).order('created_at', { ascending: false }).order('id').range(from, to));
     },
   });
 
@@ -87,6 +83,7 @@ export default function AdminLeadAttribution() {
     <AdminGuard>
       <AdminLayout title="Lead Attribution" subtitle="Understand which sources and campaigns drive your leads">
         <div className="space-y-6">
+        {loadError && <p role="alert" className="text-destructive">Lead figures could not be refreshed.</p>}
         <div className="flex items-end justify-end">
           <Select value={range} onValueChange={setRange}>
             <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>

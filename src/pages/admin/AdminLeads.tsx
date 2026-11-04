@@ -1,3 +1,4 @@
+import { readAllMISRows } from '@/lib/misRefresh';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -54,9 +55,7 @@ const AdminLeads = () => {
       let q = supabase.from('leads').select('*').order('created_at', { ascending: false });
       if (statusFilter !== 'all') q = q.eq('status', statusFilter);
       if (sourceFilter !== 'all') q = q.eq('source', sourceFilter);
-      const { data, error } = await q;
-      if (error) throw error;
-      return data as Lead[];
+      return await readAllMISRows((from, to) => q.order('id').range(from, to)) as Lead[];
     },
   });
 
@@ -118,7 +117,7 @@ const AdminLeads = () => {
         {/* Stats strip */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           {[
-            { label: 'Total', value: stats.total, color: 'text-foreground' },
+            { label: 'Filtered Total', value: stats.total, color: 'text-foreground' },
             { label: 'New', value: stats.new, color: 'text-blue-600' },
             { label: 'Converted', value: stats.converted, color: 'text-green-600' },
             { label: 'AI Calculator', value: stats.calculator, color: 'text-primary' },
