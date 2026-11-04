@@ -1,3 +1,4 @@
+import { readAllMISRows } from '@/lib/misRefresh';
 import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -200,9 +201,7 @@ export default function AdminUnifiedLeads() {
     queryFn: async () => {
       let q = supabase.from('leads').select('*').order('created_at', { ascending: false });
       if (statusFilter !== 'all') q = q.eq('status', statusFilter);
-      const { data, error } = await q;
-      if (error) throw error;
-      return data as WebLead[];
+      return await readAllMISRows((from, to) => q.order('id').range(from, to)) as WebLead[];
     },
   });
 
@@ -210,9 +209,7 @@ export default function AdminUnifiedLeads() {
   const { data: calcLeads = [], isLoading: calcLoading } = useQuery({
     queryKey: ['calculator-leads'],
     queryFn: async () => {
-      const { data, error } = await supabase.from('calculator_leads').select('*').order('created_at', { ascending: false });
-      if (error) throw error;
-      return data as CalcLead[];
+      return await readAllMISRows((from, to) => supabase.from('calculator_leads').select('*').order('created_at', { ascending: false }).order('id').range(from, to)) as CalcLead[];
     },
   });
 
@@ -220,11 +217,10 @@ export default function AdminUnifiedLeads() {
   const { data: activityCounts = {} } = useQuery({
     queryKey: ['lead-activity-counts'],
     queryFn: async () => {
-      const { data: contacts } = await supabase.from('crm_contacts').select('id, lead_id').not('lead_id', 'is', null);
+      const contacts = await readAllMISRows((from, to) => supabase.from('crm_contacts').select('id, lead_id').not('lead_id', 'is', null).order('id').range(from, to));
       if (!contacts?.length) return {};
       const contactToLead = new Map(contacts.map(c => [c.id, c.lead_id]));
-      const contactIds = contacts.map(c => c.id);
-      const { data: activities } = await supabase.from('crm_activities').select('contact_id').in('contact_id', contactIds);
+      const activities = await readAllMISRows((from, to) => supabase.from('crm_activities').select('contact_id').not('contact_id', 'is', null).order('id').range(from, to));
       const counts: Record<string, number> = {};
       for (const act of activities || []) {
         const leadId = act.contact_id ? contactToLead.get(act.contact_id) : undefined;

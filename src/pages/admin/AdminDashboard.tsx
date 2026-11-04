@@ -1,5 +1,7 @@
 
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { readMISCount } from '@/lib/misRefresh';
+import { Button } from '@/components/ui/button';
 import { Link } from '@/lib/router-compat';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { supabase } from '@/integrations/supabase/client';
@@ -17,7 +19,7 @@ const R = ADMIN_ROUTES;
 
 interface StatCard {
   label: string;
-  count: number | null;
+  count: number | null | undefined;
   href: string;
   icon: React.ComponentType<{ className?: string }>;
   color: string;
@@ -33,77 +35,11 @@ interface DepartmentKPIs {
 }
 
 export default function AdminDashboard() {
-  const [stats, setStats] = useState<Record<string, number>>({});
-  const [loading, setLoading] = useState(true);
+  const { data: stats = {}, isPending: loading, isFetching, dataUpdatedAt, refetch } = useQuery<Record<string, number | null>>({
+    queryKey: ['admin-dashboard-stats'],
+    queryFn: fetchDashboardStats,
+  });
   const { data: healthData } = useHealthCheck();
-
-  useEffect(() => {
-    const fetchStats = async () => {
-      const db = (t: string) => supabase.from(t as any) as any;
-
-      const now = new Date();
-      const curMonth = now.getMonth() + 1;
-      const curYear = now.getFullYear();
-      const startDate = `${curYear}-${String(curMonth).padStart(2, '0')}-01`;
-      const endDate = `${curYear}-${String(curMonth).padStart(2, '0')}-${new Date(curYear, curMonth, 0).getDate()}`;
-
-      const [
-        articles, analyses, reports, bulletins, news, circulars,
-        polls, surveys, reviews, jobs, applications, press,
-        leads, calcLeads, tickets, openTickets, breachedTickets,
-        activeEmps, pendingLeaves, attendanceLogs, lateLogs
-      ] = await Promise.all([
-        supabase.from('articles').select('id', { count: 'exact', head: true }).eq('content_type', 'article'),
-        supabase.from('articles').select('id', { count: 'exact', head: true }).eq('content_type', 'analysis'),
-        supabase.from('articles').select('id', { count: 'exact', head: true }).eq('content_type', 'report'),
-        supabase.from('bulletins').select('id', { count: 'exact', head: true }),
-        supabase.from('news_items').select('id', { count: 'exact', head: true }),
-        supabase.from('circulars').select('id', { count: 'exact', head: true }),
-        supabase.from('polls').select('id', { count: 'exact', head: true }),
-        supabase.from('surveys').select('id', { count: 'exact', head: true }),
-        supabase.from('reviews').select('id', { count: 'exact', head: true }).eq('status', 'pending'),
-        supabase.from('job_openings').select('id', { count: 'exact', head: true }),
-        supabase.from('job_applications').select('id', { count: 'exact', head: true }).eq('status', 'new'),
-        supabase.from('press_items').select('id', { count: 'exact', head: true }),
-        supabase.from('leads').select('id', { count: 'exact', head: true }),
-        supabase.from('calculator_leads').select('id', { count: 'exact', head: true }),
-        db('support_tickets').select('id', { count: 'exact', head: true }),
-        db('support_tickets').select('id', { count: 'exact', head: true }).eq('status', 'open'),
-        db('support_tickets').select('id', { count: 'exact', head: true }).in('status', ['open', 'in_progress']).lt('tat_deadline', new Date().toISOString()),
-        supabase.from('employees').select('id', { count: 'exact', head: true }).eq('status', 'active'),
-        supabase.from('leave_requests').select('id', { count: 'exact', head: true }).eq('status', 'pending'),
-        supabase.from('attendance_logs').select('id', { count: 'exact', head: true }).gte('log_date', startDate).lte('log_date', endDate),
-        supabase.from('attendance_logs').select('id', { count: 'exact', head: true }).gte('log_date', startDate).lte('log_date', endDate).ilike('notes', '%Late%'),
-      ]);
-
-      setStats({
-        articles: articles.count ?? 0,
-        analyses: analyses.count ?? 0,
-        reports: reports.count ?? 0,
-        bulletins: bulletins.count ?? 0,
-        news: news.count ?? 0,
-        circulars: circulars.count ?? 0,
-        polls: polls.count ?? 0,
-        surveys: surveys.count ?? 0,
-        pendingReviews: reviews.count ?? 0,
-        jobs: jobs.count ?? 0,
-        newApplications: applications.count ?? 0,
-        press: press.count ?? 0,
-        leads: leads.count ?? 0,
-        calcLeads: calcLeads.count ?? 0,
-        tickets: tickets.count ?? 0,
-        openTickets: openTickets.count ?? 0,
-        breachedTickets: breachedTickets.count ?? 0,
-        activeEmps: activeEmps.count ?? 0,
-        pendingLeaves: pendingLeaves.count ?? 0,
-        attendanceLogs: attendanceLogs.count ?? 0,
-        lateLogs: lateLogs.count ?? 0,
-      });
-      setLoading(false);
-    };
-
-    fetchStats();
-  }, []);
 
   const departments: DepartmentKPIs[] = [
     {
@@ -116,8 +52,8 @@ export default function AdminDashboard() {
         { label: 'Analysis', count: stats.analyses, href: R.marketing.content.analysis, icon: BarChart3, color: 'text-indigo-600 bg-indigo-500/10' },
         { label: 'Reports', count: stats.reports, href: R.marketing.content.reports, icon: BookOpen, color: 'text-emerald-600 bg-emerald-500/10' },
         { label: 'Bulletin', count: stats.bulletins, href: R.marketing.content.bulletin, icon: Bell, color: 'text-amber-600 bg-amber-500/10' },
-        { label: 'News', count: stats.news, href: R.marketing.updates.news, icon: Newspaper, color: 'text-cyan-600 bg-cyan-500/10' },
-        { label: 'Circulars', count: stats.circulars, href: R.marketing.updates.circulars, icon: AlertCircle, color: 'text-red-600 bg-red-500/10' },
+        { label: 'News Sources', count: stats.news, href: R.marketing.updates.news, icon: Newspaper, color: 'text-cyan-600 bg-cyan-500/10' },
+        { label: 'Circular Sources', count: stats.circulars, href: R.marketing.updates.circulars, icon: AlertCircle, color: 'text-red-600 bg-red-500/10' },
         { label: 'Polls', count: stats.polls, href: R.marketing.engagement.polls, icon: Vote, color: 'text-violet-600 bg-violet-500/10' },
         { label: 'Reviews', count: stats.pendingReviews, href: R.marketing.engagement.reviews, icon: Star, color: 'text-yellow-600 bg-yellow-500/10', subtitle: 'Pending' },
         { label: 'Press', count: stats.press, href: R.marketing.press, icon: FileText, color: 'text-slate-600 bg-slate-500/10' },
@@ -129,7 +65,7 @@ export default function AdminDashboard() {
       color: 'text-emerald-600',
       bgColor: 'bg-emerald-500/10',
       cards: [
-        { label: 'All Leads', count: stats.leads + stats.calcLeads, href: R.sales.leads, icon: UserCheck, color: 'text-emerald-600 bg-emerald-500/10' },
+        { label: 'All Leads', count: stats.leads == null || stats.calcLeads == null ? null : stats.leads + stats.calcLeads, href: R.sales.leads, icon: UserCheck, color: 'text-emerald-600 bg-emerald-500/10' },
       ],
     },
     {
@@ -164,6 +100,13 @@ export default function AdminDashboard() {
       title="Master Dashboard"
       subtitle="Cross-department KPIs — SERNET Operations Hub"
     >
+      <div className="mb-4 flex flex-wrap items-center justify-end gap-2 text-xs text-muted-foreground">
+        {dataUpdatedAt > 0 && <span>Updated {new Date(dataUpdatedAt).toLocaleTimeString('en-IN')} · refreshes every minute</span>}
+        <Button variant="outline" size="icon" aria-label="Refresh dashboard" title="Refresh dashboard" disabled={isFetching} onClick={() => void refetch()}>
+          <RefreshCw className={isFetching ? 'animate-spin' : ''} />
+        </Button>
+      </div>
+      {Object.values(stats).some(value => value === null) && <p role="alert" className="mb-4 text-sm text-destructive">Some figures could not be loaded. Unavailable values are shown as —, not zero.</p>}
       {/* System Health Summary */}
       {healthData && (
         <Link
@@ -222,7 +165,7 @@ export default function AdminDashboard() {
                     <span className="text-xs text-muted-foreground">{card.label}</span>
                   </div>
                   <div className="text-xl font-bold text-foreground">
-                    {loading ? <div className="h-6 w-10 bg-muted animate-pulse rounded" /> : card.count}
+                    {loading ? <div className="h-6 w-10 bg-muted animate-pulse rounded" /> : card.count ?? '—'}
                   </div>
                   {card.subtitle && <p className="text-[11px] text-muted-foreground mt-0.5">{card.subtitle}</p>}
                 </Link>
@@ -255,4 +198,67 @@ export default function AdminDashboard() {
       </div>
     </AdminLayout>
   );
+}
+
+async function fetchDashboardStats(): Promise<Record<string, number | null>> {
+      const db = (t: string) => supabase.from(t as any) as any;
+
+      const now = new Date();
+      const curMonth = now.getMonth() + 1;
+      const curYear = now.getFullYear();
+      const startDate = `${curYear}-${String(curMonth).padStart(2, '0')}-01`;
+      const endDate = `${curYear}-${String(curMonth).padStart(2, '0')}-${new Date(curYear, curMonth, 0).getDate()}`;
+
+      const [
+        articles, analyses, reports, bulletins, news, circulars,
+        polls, surveys, reviews, jobs, applications, press,
+        leads, calcLeads, tickets, openTickets, breachedTickets,
+        activeEmps, pendingLeaves, attendanceLogs, lateLogs
+      ] = await Promise.all([
+        supabase.from('articles').select('id', { count: 'exact', head: true }).eq('content_type', 'article'),
+        supabase.from('articles').select('id', { count: 'exact', head: true }).eq('content_type', 'analysis'),
+        supabase.from('articles').select('id', { count: 'exact', head: true }).eq('content_type', 'report'),
+        supabase.from('bulletins').select('id', { count: 'exact', head: true }),
+        supabase.from('feeds').select('id', { count: 'exact', head: true }).eq('feed_type', 'news'),
+        supabase.from('feeds').select('id', { count: 'exact', head: true }).eq('feed_type', 'circular'),
+        supabase.from('polls').select('id', { count: 'exact', head: true }),
+        supabase.from('surveys').select('id', { count: 'exact', head: true }),
+        supabase.from('reviews').select('id', { count: 'exact', head: true }).eq('status', 'pending'),
+        supabase.from('job_openings').select('id', { count: 'exact', head: true }),
+        supabase.from('job_applications').select('id', { count: 'exact', head: true }).eq('status', 'new'),
+        supabase.from('press_items').select('id', { count: 'exact', head: true }),
+        supabase.from('leads').select('id', { count: 'exact', head: true }),
+        supabase.from('calculator_leads').select('id', { count: 'exact', head: true }),
+        db('support_tickets').select('id', { count: 'exact', head: true }),
+        db('support_tickets').select('id', { count: 'exact', head: true }).eq('status', 'open'),
+        db('support_tickets').select('id', { count: 'exact', head: true }).in('status', ['open', 'in_progress']).lt('tat_deadline', new Date().toISOString()),
+        supabase.from('employees').select('id', { count: 'exact', head: true }).eq('status', 'active'),
+        supabase.from('leave_requests').select('id', { count: 'exact', head: true }).eq('status', 'pending'),
+        supabase.from('attendance_logs').select('id', { count: 'exact', head: true }).gte('log_date', startDate).lte('log_date', endDate),
+        supabase.from('attendance_logs').select('id', { count: 'exact', head: true }).gte('log_date', startDate).lte('log_date', endDate).ilike('notes', '%Late%'),
+      ]);
+
+      return {
+        articles: readMISCount(articles),
+        analyses: readMISCount(analyses),
+        reports: readMISCount(reports),
+        bulletins: readMISCount(bulletins),
+        news: readMISCount(news),
+        circulars: readMISCount(circulars),
+        polls: readMISCount(polls),
+        surveys: readMISCount(surveys),
+        pendingReviews: readMISCount(reviews),
+        jobs: readMISCount(jobs),
+        newApplications: readMISCount(applications),
+        press: readMISCount(press),
+        leads: readMISCount(leads),
+        calcLeads: readMISCount(calcLeads),
+        tickets: readMISCount(tickets),
+        openTickets: readMISCount(openTickets),
+        breachedTickets: readMISCount(breachedTickets),
+        activeEmps: readMISCount(activeEmps),
+        pendingLeaves: readMISCount(pendingLeaves),
+        attendanceLogs: readMISCount(attendanceLogs),
+        lateLogs: readMISCount(lateLogs),
+      };
 }

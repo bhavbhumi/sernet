@@ -32,3 +32,6 @@
 - Route all prospect onboarding through `/open-account` tabs using links and copy in `src/content/onboarding.ts`; SERNET only captures interest into `leads` (`lead_type: account_opening`) while KYC and account opening stay on provider pages.
 - Model additional onboarding partners as ordered sections in the shared onboarding content with explicit interest keys; callback actions select those keys in the existing enquiry form without inventing provider signup URLs.
 - Admin and background backend functions must call the shared `requireAdmin` check (admin sign-in or internal admin key); database-triggered functions authenticate with a secret kept in the locked `internal_config` table; this keeps privileged tools unreachable by the public.
+
+- Admin operational MIS refreshes through the shared mounted refresh coordinator on a bounded visible/online cycle; health diagnostics remain on-demand to avoid unnecessary traffic.
+- MIS totals must use exact error-aware counts or stable paginated reads; never treat query failures as zero or derive full totals from capped lists.

@@ -1,3 +1,4 @@
+import { readAllMISRows } from '@/lib/misRefresh';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -33,12 +34,7 @@ const AdminPayroll = () => {
   const { data: records = [], isLoading } = useQuery({
     queryKey: ['payroll-records'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('payroll_records')
-        .select('*, employees!payroll_records_employee_id_fkey(full_name, employee_code)')
-        .order('pay_date', { ascending: false });
-      if (error) throw error;
-      return data || [];
+      return await readAllMISRows((from, to) => supabase.from('payroll_records').select('*, employees!payroll_records_employee_id_fkey(full_name, employee_code)').order('pay_date', { ascending: false }).order('id').range(from, to));
     },
   });
 

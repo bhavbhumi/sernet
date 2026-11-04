@@ -1,3 +1,5 @@
+import { useMISAutoRefresh } from '@/hooks/useMISAutoRefresh';
+import { readAllMISRows } from '@/lib/misRefresh';
 import { POST_TYPES } from '@/lib/insightsTaxonomy';
 import { useEffect, useState, useRef } from 'react';
 import { useSearchParams } from '@/lib/router-compat';
@@ -144,14 +146,17 @@ export default function AdminPosts() {
     setUploadingMedia(false);
   };
 
-  const fetchItems = async () => {
-    setLoading(true);
-    const { data } = await supabase.from('articles').select('*').order('created_at', { ascending: false });
-    setItems((data as Post[] | null) ?? []);
-    setLoading(false);
+  const fetchItems = async (initial = false) => {
+    if (initial) setLoading(true);
+    try {
+      const data = await readAllMISRows((from, to) => supabase.from('articles').select('*').order('created_at', { ascending: false }).order('id').range(from, to));
+      setItems(data as Post[]);
+    } catch {
+      toast({ title: 'Content could not be refreshed', variant: 'destructive' });
+    } finally { setLoading(false); }
   };
-
-  useEffect(() => { fetchItems(); }, []);
+  useEffect(() => { void fetchItems(true); }, []);
+  useMISAutoRefresh(fetchItems);
 
   const openNew = () => { setEditItem(null); setForm(emptyForm); setDialogOpen(true); };
   const openEdit = (item: Post) => {

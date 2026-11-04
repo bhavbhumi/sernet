@@ -1,3 +1,6 @@
+import { useMISAutoRefresh } from '@/hooks/useMISAutoRefresh';
+import { readAllMISRows } from '@/lib/misRefresh';
+import { toast } from 'sonner';
 import { useEffect, useState, useMemo } from 'react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { supabase } from '@/integrations/supabase/client';
@@ -59,23 +62,22 @@ const AdminAttendanceReport = () => {
     supabase.from('leave_types').select('id, is_paid').then(({ data }) => setLeaveTypes(data || []));
   }, []);
 
-  useEffect(() => {
-    setLoading(true);
+  const refreshReport = async (initial = false) => {
+    if (initial) setLoading(true);
     const startDate = `${year}-${String(month).padStart(2, '0')}-01`;
     const endDate = `${year}-${String(month).padStart(2, '0')}-${new Date(year, month, 0).getDate()}`;
-
-    Promise.all([
-      supabase.from('employees').select('id, full_name, employee_code, department').eq('status', 'active'),
-      supabase.from('attendance_logs').select('*').gte('log_date', startDate).lte('log_date', endDate),
-      supabase.from('leave_requests').select('employee_id, leave_type_id, days_count')
-        .eq('status', 'approved').gte('start_date', startDate).lte('start_date', endDate),
-    ]).then(([empRes, logRes, leaveRes]) => {
-      setEmployees(empRes.data || []);
-      setLogs(logRes.data || []);
-      setLeaveData(leaveRes.data || []);
-      setLoading(false);
-    });
-  }, [month, year]);
+    try {
+      const [empRows, logRows, leaveRows] = await Promise.all([
+        readAllMISRows((from, to) => supabase.from('employees').select('id, full_name, employee_code, department').eq('status', 'active').order('id').range(from, to)),
+        readAllMISRows((from, to) => supabase.from('attendance_logs').select('*').gte('log_date', startDate).lte('log_date', endDate).order('id').range(from, to)),
+        readAllMISRows((from, to) => supabase.from('leave_requests').select('employee_id, leave_type_id, days_count').eq('status', 'approved').gte('start_date', startDate).lte('start_date', endDate).order('id').range(from, to)),
+      ]);
+      setEmployees(empRows); setLogs(logRows); setLeaveData(leaveRows);
+    } catch { toast.error('Attendance figures could not be refreshed'); }
+    finally { setLoading(false); }
+  };
+  useEffect(() => { void refreshReport(true); }, [month, year]);
+  useMISAutoRefresh(refreshReport);
 
   const paidTypeIds = useMemo(() => new Set(leaveTypes.filter((t: any) => t.is_paid).map((t: any) => t.id)), [leaveTypes]);
 

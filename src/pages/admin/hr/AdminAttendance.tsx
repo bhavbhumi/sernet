@@ -1,3 +1,4 @@
+import { readAllMISRows } from '@/lib/misRefresh';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -84,13 +85,7 @@ const AdminAttendance = () => {
   const { data: logs = [], isLoading } = useQuery({
     queryKey: ['attendance-logs'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('attendance_logs')
-        .select('*, employees!attendance_logs_employee_id_fkey(full_name, employee_code)')
-        .order('log_date', { ascending: false })
-        .limit(200);
-      if (error) throw error;
-      return data || [];
+      return await readAllMISRows((from, to) => supabase.from('attendance_logs').select('*, employees!attendance_logs_employee_id_fkey(full_name, employee_code)').order('log_date', { ascending: false }).order('id').range(from, to));
     },
   });
 

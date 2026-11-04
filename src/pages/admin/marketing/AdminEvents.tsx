@@ -1,3 +1,4 @@
+import { readAllMISRows } from '@/lib/misRefresh';
 import { AdminGuard } from '@/components/admin/AdminGuard';
 import { GenericCMSPage } from '@/components/admin/GenericCMSPage';
 import { useState } from 'react';
@@ -12,16 +13,11 @@ import { format } from 'date-fns';
 function EventRegistrationsDialog({ eventId, eventTitle, open, onClose }: {
   eventId: string; eventTitle: string; open: boolean; onClose: () => void;
 }) {
-  const { data: registrations = [] } = useQuery({
+  const { data: registrations = [], error: loadError } = useQuery({
     queryKey: ['event-registrations', eventId],
     enabled: open,
     queryFn: async () => {
-      const { data } = await supabase
-        .from('event_registrations')
-        .select('*')
-        .eq('event_id', eventId)
-        .order('created_at', { ascending: false });
-      return data || [];
+      return readAllMISRows((from, to) => supabase.from('event_registrations').select('*').eq('event_id', eventId).order('created_at', { ascending: false }).order('id').range(from, to));
     },
   });
 
@@ -36,6 +32,7 @@ function EventRegistrationsDialog({ eventId, eventTitle, open, onClose }: {
             Registrations — {eventTitle}
           </DialogTitle>
         </DialogHeader>
+        {loadError && <p role="alert" className="text-destructive">Registrations could not be refreshed.</p>}
         <div className="flex gap-2 text-xs text-muted-foreground mb-3">
           <Badge variant="outline">{registrations.length} registered</Badge>
           <Badge variant="secondary">{attended} attended</Badge>

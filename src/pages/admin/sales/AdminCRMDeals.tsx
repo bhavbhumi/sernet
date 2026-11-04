@@ -1,3 +1,4 @@
+import { readAllMISRows } from '@/lib/misRefresh';
 import { useState } from 'react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { AdminGuard } from '@/components/admin/AdminGuard';
@@ -288,12 +289,7 @@ export default function AdminCRMDeals() {
   const { data: deals = [], isLoading: dealsLoading } = useQuery({
     queryKey: ['crm-deals'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('crm_deals')
-        .select('*, crm_contacts(full_name, phone)')
-        .order('created_at', { ascending: false });
-      if (error) throw error;
-      return data as Deal[];
+      return await readAllMISRows((from, to) => supabase.from('crm_deals').select('*, crm_contacts(full_name, phone)').order('created_at', { ascending: false }).order('id').range(from, to)) as Deal[];
     },
   });
 

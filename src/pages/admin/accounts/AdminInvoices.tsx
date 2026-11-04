@@ -1,3 +1,4 @@
+import { readAllMISRows } from '@/lib/misRefresh';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -34,12 +35,7 @@ const AdminInvoices = () => {
   const { data: invoices = [], isLoading } = useQuery({
     queryKey: ['invoices'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('invoices')
-        .select('*, crm_contacts(full_name)')
-        .order('created_at', { ascending: false });
-      if (error) throw error;
-      return data || [];
+      return await readAllMISRows((from, to) => supabase.from('invoices').select('*, crm_contacts(full_name)').order('created_at', { ascending: false }).order('id').range(from, to));
     },
   });
 

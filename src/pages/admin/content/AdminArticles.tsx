@@ -1,3 +1,5 @@
+import { useMISAutoRefresh } from '@/hooks/useMISAutoRefresh';
+import { readAllMISRows } from '@/lib/misRefresh';
 
 import { useEffect, useState, useRef } from 'react';
 import { useSearchParams } from '@/lib/router-compat';
@@ -128,14 +130,17 @@ export default function AdminArticles() {
     setUploadingMedia(false);
   };
 
-  const fetchArticles = async () => {
-    setLoading(true);
-    const { data } = await supabase.from('articles').select('*').order('created_at', { ascending: false });
-    setArticles((data ?? []) as unknown as Article[]);
-    setLoading(false);
+  const fetchArticles = async (initial = false) => {
+    if (initial) setLoading(true);
+    try {
+      const data = await readAllMISRows((from, to) => supabase.from('articles').select('*').order('created_at', { ascending: false }).order('id').range(from, to));
+      setArticles(data as unknown as Article[]);
+    } catch {
+      toast({ title: 'Content could not be refreshed', variant: 'destructive' });
+    } finally { setLoading(false); }
   };
-
-  useEffect(() => { fetchArticles(); }, []);
+  useEffect(() => { void fetchArticles(true); }, []);
+  useMISAutoRefresh(fetchArticles);
 
   const openNew = () => { setEditItem(null); setForm(emptyForm); setDialogOpen(true); };
   const openEdit = (item: Article) => { setEditItem(item); setForm({ ...item, item_date: item.item_date ?? '' }); setDialogOpen(true); };
