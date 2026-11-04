@@ -126,7 +126,7 @@
 - [ ] Client portal (Profile, Risk Profile, Suitability, Review, Tickets) — plan drafted, parked by user until content update is done
 
 ## Post-migration verification and MIS
-- [ ] Check public/admin layouts across desktop/tablet/mobile with authenticated dashboard verification.
-- [ ] Correct main-dashboard figures and audit all MIS components for update freshness; add bounded refresh to identified MIS queries.
-- [ ] Remove confirmed unused migration leftovers, preserving active email/cron/webhook integrations.
-- [ ] Run focused tests/security checks and request publication of verified changes.
+- [x] Check public/admin layouts across desktop/tablet/mobile with authenticated dashboard verification — no horizontal overflow or page errors; automatic and manual dashboard refresh verified.
+- [x] Correct main-dashboard source counts and add bounded refresh for admin operational queries, content lists, tickets and attendance reports; remove row caps from content, leads, attribution, registrations, CRM deals, invoices, payroll and attendance. Content verified at 1,055 records, with 21 automatic dashboard reads after one minute. Health remains on-demand. Employee/client/partner portal changes stay outside this admin update and client portal redesign remains parked.
+- [x] Remove four unused direct libraries, obsolete compiler caches and migration test backups. Preserve potentially manual-use seed/normalisation utilities and active email/cron/webhook integrations until use is confirmed.
+- [ ] Run focused tests/security checks and request publication of verified changes — 24 focused tests passed, build OK, quick security check has no active findings. Dependency advisory detected in Zod; major-version remediation needs compatibility testing, not an untested upgrade during migration publication.
