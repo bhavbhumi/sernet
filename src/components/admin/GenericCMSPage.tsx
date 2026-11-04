@@ -1,3 +1,5 @@
+import { useMISAutoRefresh } from '@/hooks/useMISAutoRefresh';
+import { readAllMISRows } from '@/lib/misRefresh';
 
 // Generic CMS table page factory for simple content types
 // Used by: Reports, Bulletin, News, Circulars, Press
@@ -122,18 +124,20 @@ export function GenericCMSPage({
   const [form, setForm] = useState<Record<string, unknown>>(defaultForm);
   const [saving, setSaving] = useState(false);
 
-  const fetchItems = async () => {
-    setLoading(true);
-    const sortCol = orderBy?.column ?? 'published_at';
-    const sortAsc = orderBy?.ascending ?? false;
-    const { data } = await db(tableName).select('*')
-      .order(sortCol, { ascending: sortAsc, nullsFirst: false })
-      .order('created_at', { ascending: false });
-    setItems(data ?? []);
-    setLoading(false);
+  const fetchItems = async (initial = false) => {
+    if (initial) setLoading(true);
+    try {
+      const sortCol = orderBy?.column ?? 'published_at';
+      const sortAsc = orderBy?.ascending ?? false;
+      const data = await readAllMISRows<Record<string, unknown>>((from, to) => db(tableName).select('*')
+        .order(sortCol, { ascending: sortAsc, nullsFirst: false }).order('created_at', { ascending: false }).order('id').range(from, to));
+      setItems(data);
+    } catch {
+      toast({ title: 'Records could not be refreshed', variant: 'destructive' });
+    } finally { setLoading(false); }
   };
-
-  useEffect(() => { fetchItems(); }, []);
+  useEffect(() => { void fetchItems(true); }, [tableName]);
+  useMISAutoRefresh(fetchItems);
 
   const openNew = () => { setEditItem(null); setForm(defaultForm); setDialogOpen(true); };
   const openEdit = (item: Record<string, unknown>) => { setEditItem(item); setForm({ ...item }); setDialogOpen(true); };
