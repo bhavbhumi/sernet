@@ -124,3 +124,9 @@
 - [x] Open Account page: hero + Invest/Insure/Trade/CKYC tabs, KYC useful links, Express Your Interest form to Admin leads
 
 - [ ] Client portal (Profile, Risk Profile, Suitability, Review, Tickets) — plan drafted, parked by user until content update is done
+
+## Post-migration verification and MIS
+- [ ] Check public/admin layouts across desktop/tablet/mobile with authenticated dashboard verification.
+- [ ] Correct main-dashboard figures and audit all MIS components for update freshness; add bounded refresh to identified MIS queries.
+- [ ] Remove confirmed unused migration leftovers, preserving active email/cron/webhook integrations.
+- [ ] Run focused tests/security checks and request publication of verified changes.
