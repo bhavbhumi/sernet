@@ -3,7 +3,7 @@ import sanitizeHtml from 'sanitize-html';
 
 // String-based sanitising (no DOM) so the same output is produced on the server
 // and in the browser: legal text ships in the initial HTML and hydrates cleanly.
-const SANITIZE_OPTIONS: sanitizeHtml.IOptions = {
+const SANITIZE_OPTIONS: sanitizeHtml.IOptions & { allowedEmptyAttributes: string[] } = {
   allowedTags: [...sanitizeHtml.defaults.allowedTags, 'img', 'h1', 'h2', 'span', 'u', 's', 'sup', 'sub', 'del', 'ins', 'figure', 'figcaption'],
   allowedAttributes: {
     '*': ['id', 'class', 'title', 'data-policy-group', 'style'],
