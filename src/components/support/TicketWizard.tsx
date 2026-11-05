@@ -14,6 +14,7 @@ const PRODUCTS = [
   { key: 'all', label: 'General / KYC', description: 'Account & KYC queries', color: 'text-amber-600', bg: 'bg-amber-50 dark:bg-amber-900/20' },
 ];
 import { CheckCircle, Clock, Shield, FileText, ChevronRight, AlertTriangle, BookOpen, ThumbsUp, ArrowRight } from 'lucide-react';
+import { sanitizeRichText } from '@/lib/sanitizeRichText';
 
 const db = (t: string) => supabase.from(t as any) as any;
 
@@ -463,19 +464,19 @@ function SuggestedArticleCard({ article }: { article: any }) {
           {article.possible_reasons && (
             <div>
               <p className="text-xs font-semibold text-foreground mb-1">Possible Reasons</p>
-              <div className="text-xs text-muted-foreground prose-sm" dangerouslySetInnerHTML={{ __html: article.possible_reasons }} />
+              <div className="text-xs text-muted-foreground prose-sm" dangerouslySetInnerHTML={{ __html: sanitizeRichText(article.possible_reasons) }} />
             </div>
           )}
           {article.what_to_check && (
             <div>
               <p className="text-xs font-semibold text-foreground mb-1">What To Check</p>
-              <div className="text-xs text-muted-foreground prose-sm" dangerouslySetInnerHTML={{ __html: article.what_to_check }} />
+              <div className="text-xs text-muted-foreground prose-sm" dangerouslySetInnerHTML={{ __html: sanitizeRichText(article.what_to_check) }} />
             </div>
           )}
           {article.resolution_steps && (
             <div>
               <p className="text-xs font-semibold text-foreground mb-1">Resolution Steps</p>
-              <div className="text-xs text-muted-foreground prose-sm" dangerouslySetInnerHTML={{ __html: article.resolution_steps }} />
+              <div className="text-xs text-muted-foreground prose-sm" dangerouslySetInnerHTML={{ __html: sanitizeRichText(article.resolution_steps) }} />
             </div>
           )}
           {(article.documents_required ?? []).length > 0 && (

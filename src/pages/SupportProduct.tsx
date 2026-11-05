@@ -19,6 +19,7 @@ import {
 import {
   Accordion, AccordionContent, AccordionItem, AccordionTrigger
 } from '@/components/ui/accordion';
+import { sanitizeRichText } from '@/lib/sanitizeRichText';
 
 const db = (t: string) => supabase.from(t as any) as any;
 
@@ -346,7 +347,7 @@ const SupportProduct = () => {
                       <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
                         <span className="w-1 h-4 bg-emerald-500 rounded-full" /> Resolution Steps
                       </h3>
-                      <div className="text-sm text-muted-foreground prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: selectedArticle.resolution_steps }} />
+                      <div className="text-sm text-muted-foreground prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: sanitizeRichText(selectedArticle.resolution_steps) }} />
                     </div>
                   )}
 
@@ -356,7 +357,7 @@ const SupportProduct = () => {
                       <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
                         <span className="w-1 h-4 bg-primary rounded-full" /> Detailed Guide
                       </h3>
-                      <div className="text-sm text-muted-foreground prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: selectedArticle.body }} />
+                      <div className="text-sm text-muted-foreground prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: sanitizeRichText(selectedArticle.body) }} />
                     </div>
                   )}
 
@@ -516,14 +517,14 @@ const SupportProduct = () => {
                       </TabsContent>
                       <TabsContent value="check" className="p-4 mt-0">
                         {selectedArticle.what_to_check ? (
-                          <div className="text-sm text-muted-foreground prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: selectedArticle.what_to_check }} />
+                          <div className="text-sm text-muted-foreground prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: sanitizeRichText(selectedArticle.what_to_check) }} />
                         ) : (
                           <p className="text-xs text-muted-foreground italic">No checks documented</p>
                         )}
                       </TabsContent>
                       <TabsContent value="reasons" className="p-4 mt-0">
                         {selectedArticle.possible_reasons ? (
-                          <div className="text-sm text-muted-foreground prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: selectedArticle.possible_reasons }} />
+                          <div className="text-sm text-muted-foreground prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: sanitizeRichText(selectedArticle.possible_reasons) }} />
                         ) : (
                           <p className="text-xs text-muted-foreground italic">No reasons documented</p>
                         )}
