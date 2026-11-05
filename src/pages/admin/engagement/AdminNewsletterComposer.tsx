@@ -13,6 +13,7 @@ import { Plus, Pencil, Send, Clock, Eye, Calendar, ChevronLeft, ChevronRight } f
 import { RowActions } from '@/components/admin/RowActions';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
+import { sanitizeRichText } from '@/lib/sanitizeRichText';
 
 interface Newsletter {
   id: string;
@@ -357,7 +358,7 @@ const AdminNewsletterComposer = () => {
               <div className="border border-border rounded-lg p-4">
                 <div className="text-xs text-muted-foreground mb-2">Body</div>
                 {previewItem.body ? (
-                  <div className="prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: previewItem.body }} />
+                  <div className="prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: sanitizeRichText(previewItem.body) }} />
                 ) : (
                   <p className="text-muted-foreground italic">No body content</p>
                 )}
