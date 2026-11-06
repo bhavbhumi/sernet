@@ -179,6 +179,19 @@ export default function AdminSEOAudit() {
     p.meta_title.length <= 60 && p.meta_description.length <= 160
   );
 
+  const dataChecks: SEOCheck[] = [
+    { id: 'page-meta', label: 'Page-Level Meta Tags', category: 'content',
+      status: pagesWithIssues.length ? 'warn' : 'pass',
+      detail: pagesWithIssues.length ? `${pagesWithIssues.length} of ${pages.length} pages need a title/description fix` : `All ${pages.length} pages have valid titles and descriptions`,
+      recommendation: pagesWithIssues.length ? 'Fix them in the Page SEO tab' : undefined },
+    ...(articleStats ? [{ id: 'article-meta', label: 'Article Meta Tags', category: 'content' as const,
+      status: (articleStats.missing ? 'warn' : 'pass') as SEOCheck['status'],
+      detail: articleStats.missing ? `${articleStats.missing} of ${articleStats.total} published articles lack SEO meta (pages fall back to article title/summary)` : `All ${articleStats.total} published articles have SEO meta`,
+      recommendation: articleStats.missing ? 'Use Auto-Generate in Content Gaps' : undefined }] : []),
+  ];
+  const checks = [...liveChecks, ...MANUAL_CHECKS, ...dataChecks];
+  const score = calculateScore(checks);
+
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     toast.success('Copied to clipboard');
@@ -225,6 +238,16 @@ export default function AdminSEOAudit() {
 
           {/* ── Tab: Checklist ────────────────────────────── */}
           <TabsContent value="checklist" className="space-y-6 mt-4">
+            <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
+              <span>
+                {liveQuery.isFetching ? 'Checking sernetindia.com…'
+                  : liveQuery.isError ? 'Could not reach sernetindia.com — showing database checks only'
+                  : liveQuery.data ? `Live check of sernetindia.com · last checked ${new Date(liveQuery.data.checkedAt).toLocaleString('en-IN')}` : ''}
+              </span>
+              <Button size="sm" variant="outline" onClick={() => liveQuery.refetch()} disabled={liveQuery.isFetching}>
+                {liveQuery.isFetching ? <Loader2 className="h-3.5 w-3.5 mr-1 animate-spin" /> : null}Recheck now
+              </Button>
+            </div>
             {categories.map(cat => {
               const catChecks = checks.filter(c => c.category === cat);
               if (!catChecks.length) return null;
