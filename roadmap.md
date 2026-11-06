@@ -119,7 +119,8 @@
 - [x] Published and verified live on sernetindia.com: tabs, filters, breadcrumb, disclaimer, CTA, both new covers serving, article share preview carries its own title/image, no page errors or phone overflow.
 - [x] 16 new drafts published (3 IPOs, 4 Daily Market News Updates, Weekly Capsule, Triggers Weekly, 5 Macro/Economy, MF Flows Sept-26, Swiggy) — all had covers, bodies and correct Type/Category; display dates preserved (midnight IST of item date); live Insights listing shows all of them. Share-preview HTML for the new pages awaits the in-progress deployment.
 - [x] Disclaimer wording and next-step link targets approved by management on 6 November 2026 ("All six are fine") — six type disclaimers and their six button targets in `src/components/insights/PostContext.tsx` are now signed off; IPO posts keep the earlier approved Choice FinX section.
-- [ ] Credit tab stays empty until posts are tagged Credit; no genuine Monthly Market Outlook edition exists yet; the Indistock third-party research report still needs their written permission.
+- [x] Five Credit articles published with covers; Indistock HDFC report credited (owner confirmed permission).
+- [ ] Monthly Market Review editions dated 1 Jun–1 Nov 2026 (retrospective), then forward Outlook from 1 Dec 2026 — awaiting approval of the proposed scope/format
 
 - [x] Open Account page: hero + Invest/Insure/Trade/CKYC tabs, KYC useful links, Express Your Interest form to Admin leads
 
