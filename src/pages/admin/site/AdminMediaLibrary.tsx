@@ -51,23 +51,34 @@ export default function AdminMediaLibrary() {
   const [copied, setCopied] = useState<string | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<MediaFile | null>(null);
   const [filter, setFilter] = useState<'all' | 'image' | 'document' | 'video'>('all');
+  const [folder, setFolder] = useState('');
 
-  const { data: files = [], isLoading, refetch } = useQuery({
-    queryKey: ['media_library'],
+  const { data: listing, isLoading, refetch } = useQuery({
+    queryKey: ['media_library', folder],
     queryFn: async () => {
-      const { data, error } = await supabase.storage.from(BUCKET).list('', {
-        limit: 200,
-        sortBy: { column: 'updated_at', order: 'desc' },
-      });
-      if (error) throw error;
-      return (data ?? [])
-        .filter(f => f.name !== '.emptyFolderPlaceholder')
-        .map(f => ({
-          ...f,
-          publicUrl: supabase.storage.from(BUCKET).getPublicUrl(f.name).data.publicUrl,
-        })) as MediaFile[];
+      const all: any[] = [];
+      for (let offset = 0; ; offset += 1000) {
+        const { data, error } = await supabase.storage.from(BUCKET).list(folder, {
+          limit: 1000,
+          offset,
+          sortBy: { column: 'updated_at', order: 'desc' },
+        });
+        if (error) throw error;
+        all.push(...(data ?? []));
+        if (!data || data.length < 1000) break;
+      }
+      const folders = all.filter(f => f.id === null).map(f => f.name as string);
+      const files = all
+        .filter(f => f.id !== null && f.name !== '.emptyFolderPlaceholder')
+        .map(f => {
+          const path = folder ? `${folder}/${f.name}` : f.name;
+          return { ...f, name: path, publicUrl: supabase.storage.from(BUCKET).getPublicUrl(path).data.publicUrl };
+        }) as MediaFile[];
+      return { folders, files };
     },
   });
+  const files = listing?.files ?? [];
+  const folders = listing?.folders ?? [];
 
   const deleteMutation = useMutation({
     mutationFn: async (name: string) => {
@@ -93,7 +104,7 @@ export default function AdminMediaLibrary() {
       }
       const ext = file.name.split('.').pop();
       const safeName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
-      const { error } = await supabase.storage.from(BUCKET).upload(safeName, file, { upsert: false });
+      const { error } = await supabase.storage.from(BUCKET).upload(folder ? `${folder}/${safeName}` : safeName, file, { upsert: false });
       if (error) { toast.error(`Failed to upload ${file.name}`); continue; }
       success++;
     }
@@ -198,6 +209,17 @@ export default function AdminMediaLibrary() {
             onChange={e => handleUpload(e.target.files)}
           />
         </div>
+      </div>
+
+      {/* Folders */}
+      <div className="flex flex-wrap items-center gap-1.5 mb-5 text-xs">
+        <span className="text-muted-foreground mr-1">Folder:</span>
+        <button onClick={() => setFolder('')} className={`px-3 py-1.5 rounded-full border font-medium ${folder === '' ? 'bg-primary text-primary-foreground border-primary' : 'bg-muted/40 text-muted-foreground border-border hover:bg-muted'}`}>Main</button>
+        {(folder ? [folder, ...folders.map(f => `${folder}/${f}`)] : folders).filter(Boolean).map(f => (
+          <button key={f} onClick={() => setFolder(f)} className={`px-3 py-1.5 rounded-full border font-medium ${folder === f ? 'bg-primary text-primary-foreground border-primary' : 'bg-muted/40 text-muted-foreground border-border hover:bg-muted'}`}>
+            {f === 'posts' ? 'Insights covers (posts)' : f}
+          </button>
+        ))}
       </div>
 
       {/* Drop zone hint */}
