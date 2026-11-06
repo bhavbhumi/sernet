@@ -125,7 +125,7 @@
 
 - [x] Open Account page: hero + Invest/Insure/Trade/CKYC tabs, KYC useful links, Express Your Interest form to Admin leads
 
-- [ ] Client portal (Profile, Risk Profile, Suitability, Review, Tickets) — plan drafted, parked by user until content update is done
+- [ ] Client portal (Profile, Risk Profile, Suitability, Review, Tickets) — five-tab plan written and saved; parked by user, resuming 7 November 2026
 
 ## Post-migration verification and MIS
 - [x] Check public/admin layouts across desktop/tablet/mobile with authenticated dashboard verification — no horizontal overflow or page errors; automatic and manual dashboard refresh verified.
