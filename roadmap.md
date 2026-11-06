@@ -88,7 +88,7 @@
 - [x] support.sernetindia.com and autodiscover.sernetindia.com restored to DNS-only after proxy checks failed
 - [x] Security contact file added; publish required before Cloudflare can detect it
 - [x] Added missing www domain verification record — publicly verified; activation recovery pending
-- [ ] Enable Bot Fight Mode and Cloudflare account MFA
+- [x] Cloudflare account MFA enabled by owner; Bot Fight Mode deliberately left off (owner decision)
 
 - [x] Publish approved Investor Charter v1.0 with corrected Support → Complaint escalation; replace duplicate investor guidance in Policies with section links; both live pages and KYC deep link verified; IT/HR text and anchors unchanged
 
