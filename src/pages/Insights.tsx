@@ -3,14 +3,24 @@ import { Layout } from '@/components/layout/Layout';
 import { PageHero } from '@/components/layout/PageHero';
 import { SEOHead } from '@/components/shared/SEOHead';
 import { motion } from 'framer-motion';
+import { LayoutGrid, TrendingUp, PiggyBank, ShieldCheck, CandlestickChart, Landmark, Wallet, Newspaper, type LucideIcon } from 'lucide-react';
 import { PostsContent } from '@/components/insights/PostsContent';
 import { BulletinContent } from '@/components/insights/BulletinContent';
 import { POST_TYPES, typeSlug, typeFromSlug } from '@/lib/insightsTaxonomy';
 
+// Topic icons tinted with the four logo colours (blue, red, green, yellow), cycling.
+const TOPIC_ICON: Record<string, { icon: LucideIcon; tone: string }> = {
+  'Macro & Markets': { icon: TrendingUp, tone: 'text-primary' },
+  Investment: { icon: PiggyBank, tone: 'text-[hsl(var(--sernet-red))]' },
+  Insurance: { icon: ShieldCheck, tone: 'text-success' },
+  Trading: { icon: CandlestickChart, tone: 'text-[hsl(var(--sernet-yellow))]' },
+  Credit: { icon: Landmark, tone: 'text-primary' },
+  'Personal Finance': { icon: Wallet, tone: 'text-[hsl(var(--sernet-red))]' },
+};
 const tabs = [
-  { slug: 'all', label: 'All Posts' },
-  ...POST_TYPES.map((t) => ({ slug: typeSlug(t), label: t })),
-  { slug: 'bulletin', label: 'Bulletin' },
+  { slug: 'all', label: 'All Posts', icon: LayoutGrid, tone: 'text-muted-foreground' },
+  ...POST_TYPES.map((t) => ({ slug: typeSlug(t), label: t, ...TOPIC_ICON[t] })),
+  { slug: 'bulletin', label: 'Bulletin', icon: Newspaper, tone: 'text-success' },
 ];
 
 const Insights = () => {
@@ -49,10 +59,11 @@ const Insights = () => {
                 role="tab"
                 aria-selected={active === tab.slug}
                 onClick={() => setParams(tab.slug === 'all' ? {} : { tab: tab.slug })}
-                className={`pb-3.5 pt-4 text-[1.0625rem] transition-colors relative whitespace-nowrap ${
+                className={`pb-3.5 pt-4 text-[1.0625rem] transition-colors relative whitespace-nowrap inline-flex items-center gap-2 ${
                   active === tab.slug ? 'text-foreground font-medium' : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
+                <tab.icon className={`h-4 w-4 ${tab.tone}`} aria-hidden="true" />
                 {tab.label}
                 {active === tab.slug && (
                   <motion.div layoutId="insights-tab-underline" className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-primary" />
