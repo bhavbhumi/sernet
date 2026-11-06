@@ -37,3 +37,4 @@
 - Admin operational MIS refreshes through the shared mounted refresh coordinator on a bounded visible/online cycle; health diagnostics remain on-demand to avoid unnecessary traffic.
 - MIS totals must use exact error-aware counts or stable paginated reads; never treat query failures as zero or derive full totals from capped lists.
 - Serve `/sitemap.xml` from the server route `src/routes/sitemap[.]xml.ts` (static public paths plus paginated published articles, no lastmod); new posts appear automatically, so keep no static `public/sitemap.xml` that would shadow it.
+- Admin SEO Health derives checklist status from live checks of the published site (`src/lib/seoLiveChecks.ts`) plus database counts; never hardcode pass/warn results, so the checklist stays accurate without manual edits.
