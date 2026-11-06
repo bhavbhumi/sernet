@@ -1,7 +1,7 @@
 import { Link } from '@/lib/router-compat';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import pricingZero from '@/assets/pricing-zero-sernet.png';
+import pricingZero from '@/assets/pricing-zero-sernet.webp';
 
 export const PricingSection = () => {
   const { t } = useTranslation();

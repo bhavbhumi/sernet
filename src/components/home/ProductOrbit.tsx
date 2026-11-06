@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
-import sernetIcon from '@/assets/sernet-icon.png';
-import tickFundsLogo from '@/assets/tickfunds-icon.png';
-import tushilLogo from '@/assets/tushil-icon.png';
-import choiceFinxLogo from '@/assets/choicefinx-icon.png';
+import sernetIcon from '@/assets/sernet-icon.webp';
+import tickFundsLogo from '@/assets/tickfunds-icon.webp';
+import tushilLogo from '@/assets/tushil-icon.webp';
+import choiceFinxLogo from '@/assets/choicefinx-icon.webp';
 
 
 interface OrbitLogoProps {
