@@ -10,7 +10,7 @@ import {
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { ProductOnboardingBlock } from '@/components/shared/ProductOnboardingBlock';
 import { TUSHIL_LINKS } from '@/lib/appLinks';
-import choicefinxShowcase from '@/assets/choicefinx-showcase.png';
+import choicefinxShowcase from '@/assets/choicefinx-showcase.webp';
 
 
 const stats = [

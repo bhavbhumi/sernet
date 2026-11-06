@@ -6,7 +6,7 @@ import { useRef } from 'react';
 import { ArrowRight, Clock, Heart } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import heroIllustration from '@/assets/hero-illustration.webp';
-import heroIllustrationDark from '@/assets/hero-illustration-dark.png';
+import heroIllustrationDark from '@/assets/hero-illustration-dark.webp';
 
 export const HeroSection = () => {
   const { t } = useTranslation();

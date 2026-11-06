@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 
-import sernetLogo from '@/assets/sernet-logo.png';
+import sernetLogo from '@/assets/sernet-logo.webp';
 import { useSiteSettings } from '@/hooks/useSiteSettings';
 import { distributorRegistrations, distributorScope } from '@/lib/legalConfig';
 

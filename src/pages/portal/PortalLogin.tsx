@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Eye, EyeOff, Lock, ArrowLeft } from 'lucide-react';
-import sernetLogo from '@/assets/sernet-logo.png';
+import sernetLogo from '@/assets/sernet-logo.webp';
 import { useToast } from '@/hooks/use-toast';
 
 export default function PortalLogin() {

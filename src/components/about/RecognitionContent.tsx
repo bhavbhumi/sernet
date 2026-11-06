@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Expand } from 'lucide-react';
-import featuredImg from '@/assets/recognition-featured.png';
+import featuredImg from '@/assets/recognition-featured.webp';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 

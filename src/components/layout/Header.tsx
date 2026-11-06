@@ -8,7 +8,7 @@ import { ThemeToggle } from '@/components/shared/ThemeToggle';
 import { SearchCommandPalette } from '@/components/shared/SearchCommandPalette';
 import { APP_LINKS, TICKFUNDS_LINKS, TUSHIL_LINKS } from '@/lib/appLinks';
 
-import sernetLogo from '@/assets/sernet-logo.png';
+import sernetLogo from '@/assets/sernet-logo.webp';
 
 type NavItem = { nameKey: string; href: string; newTab?: boolean };
 

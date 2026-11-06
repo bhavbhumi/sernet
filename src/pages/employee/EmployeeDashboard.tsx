@@ -12,7 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { User, Calendar, Clock, Wallet, Users, LogOut, Shield, CreditCard, FileText } from 'lucide-react';
-import sernetLogo from '@/assets/sernet-logo.png';
+import sernetLogo from '@/assets/sernet-logo.webp';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 import { PayslipPreview } from '@/components/shared/PayslipPreview';

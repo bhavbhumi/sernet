@@ -23,7 +23,7 @@ export const SEOHead = ({ title, description, path = '/', type = 'website', json
 
   const siteName = settings?.identity?.schema_org_name || FALLBACK_SITE_NAME;
   const baseUrl = settings?.identity?.site_url || FALLBACK_BASE_URL;
-  const ogImageUrl = image || settings?.branding?.og_image_url || 'https://sernetindia.com/og-image.png';
+  const ogImageUrl = image || settings?.branding?.og_image_url || 'https://sernetindia.com/og-image.jpg';
 
   const rawTitle = `${title} | ${siteName}`;
   const fullTitle = rawTitle.length > 60 ? rawTitle.slice(0, 57) + '…' : rawTitle;

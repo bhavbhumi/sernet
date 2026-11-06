@@ -14,7 +14,7 @@ import {
   Database, MonitorDot, Search, GitBranch, FileArchive, Landmark, TrendingUp as TrendingUpIcon, UserMinus, CreditCard, Award
 } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import sernetLogo from '@/assets/sernet-logo.png';
+import sernetLogo from '@/assets/sernet-logo.webp';
 import { cn } from '@/lib/utils';
 import { ADMIN_ROUTES } from '@/lib/adminRoutes';
 import { toast } from 'sonner';

@@ -8,7 +8,7 @@ import {
   TrendingUp, Users, Layers, Shield, Target, Award, Star, Heart, RefreshCw
 } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import choicefinxShowcase from '@/assets/choicefinx-showcase.png';
+import choicefinxShowcase from '@/assets/choicefinx-showcase.webp';
 import { TICKFUNDS_LINKS } from '@/lib/appLinks';
 import { RegulatoryIdentity, LastReviewed } from '@/components/legal/RegulatoryIdentity';
 import { ProductOnboardingBlock } from '@/components/shared/ProductOnboardingBlock';

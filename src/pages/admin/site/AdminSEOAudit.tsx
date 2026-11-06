@@ -53,7 +53,7 @@ function runSiteChecks(): SEOCheck[] {
   // Social
   checks.push({ id: 'og', label: 'Open Graph Tags', status: 'pass', detail: 'OG title, description, image, and type set on all pages', category: 'social' });
   checks.push({ id: 'twitter', label: 'Twitter Card Tags', status: 'pass', detail: 'summary_large_image card with image configured', category: 'social' });
-  checks.push({ id: 'og-image', label: 'OG Image (1200×630)', status: 'pass', detail: 'Standard-sized OG image at /og-image.png', category: 'social' });
+  checks.push({ id: 'og-image', label: 'OG Image (1200×630)', status: 'pass', detail: 'Standard-sized OG image at /og-image.jpg', category: 'social' });
 
   // Performance
   checks.push({ id: 'lazy-routes', label: 'Lazy-loaded Routes', status: 'pass', detail: 'All non-home routes use React.lazy for code splitting', category: 'performance' });
