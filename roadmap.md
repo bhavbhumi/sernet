@@ -7,7 +7,7 @@
 - [x] Extend Open Account with Altifi below Tick Funds, PMS/AIF callback sections, Other Services and notarisation interest; five tests passed, real enquiry saved correct service selections and test entry removed, phone layout checked. Preview only.
 - [ ] Add direct PMS/AIF onboarding links — awaiting links from management; callback sections available meanwhile.
 
-- [ ] Execute approved Insights reorganisation — complete 1,020-post mapping workbook and 10 sample disclaimer texts prepared; 7 mapping checks and workbook read-back passed. Blocked at the approved review gate: management approval of mapping samples/disclaimers before CMS/website changes. Monthly report source and third-party research redistribution permission require confirmation. Publication requires separate explicit authorisation.
+- [x] Execute approved Insights reorganisation — 1,020-post mapping applied, filters/breadcrumbs/CTAs/disclaimers and Admin fields rebuilt, taxonomy workbook used, and the batch published; disclaimer wording approved 6 November 2026. Remaining gaps tracked separately (Credit/Monthly editions, third-party research permission).
 
 - [x] Revise plan to Type → Category → Subcategory + Tags only; live-screen 1,020 posts and verify a real IPO page. 73 IPO CTAs contain identity/links, not risk notes; third-party research restrictions and contextual disclaimer gaps flagged for approval. No CMS/site/publication changes; monthly reports and research permissions await genuine sources/confirmation.
 
@@ -118,7 +118,7 @@
 - [x] Weekly Market Impact and Weekly Market Triggers got their own signature covers (52 posts re-pointed; 8 already-unique untouched).
 - [x] Published and verified live on sernetindia.com: tabs, filters, breadcrumb, disclaimer, CTA, both new covers serving, article share preview carries its own title/image, no page errors or phone overflow.
 - [x] 16 new drafts published (3 IPOs, 4 Daily Market News Updates, Weekly Capsule, Triggers Weekly, 5 Macro/Economy, MF Flows Sept-26, Swiggy) — all had covers, bodies and correct Type/Category; display dates preserved (midnight IST of item date); live Insights listing shows all of them. Share-preview HTML for the new pages awaits the in-progress deployment.
-- [ ] Disclaimer wording and next-step link targets await management/compliance sign-off before wide sharing.
+- [x] Disclaimer wording and next-step link targets approved by management on 6 November 2026 ("All six are fine") — six type disclaimers and their six button targets in `src/components/insights/PostContext.tsx` are now signed off; IPO posts keep the earlier approved Choice FinX section.
 - [ ] Credit tab stays empty until posts are tagged Credit; no genuine Monthly Market Outlook edition exists yet; the Indistock third-party research report still needs their written permission.
 
 - [x] Open Account page: hero + Invest/Insure/Trade/CKYC tabs, KYC useful links, Express Your Interest form to Admin leads
