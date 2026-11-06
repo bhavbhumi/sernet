@@ -1,4 +1,4 @@
-import { companyHistory } from '@/lib/companyHistory';
+import { homeJsonLd } from '@/lib/homeJsonLd';
 import { Layout } from '@/components/layout/Layout';
 import { SEOHead } from '@/components/shared/SEOHead';
 import { HeroSection } from '@/components/home/HeroSection';
@@ -17,45 +17,7 @@ const Index = () => {
         exactTitle
         description="AMFI-registered mutual fund and APMI PMS distributor (ARN-35275). Invest via Tick Funds, insure via Tushil, trade via Choice FinX. A family practice since 1986."
         path="/"
-        jsonLd={[
-          {
-            '@context': 'https://schema.org',
-            '@type': 'WebSite',
-            name: 'SERNET Financial Services',
-            url: 'https://sernetindia.com',
-            potentialAction: {
-              '@type': 'SearchAction',
-              target: 'https://sernetindia.com/?q={search_term_string}',
-              'query-input': 'required name=search_term_string',
-            },
-          },
-          {
-            '@context': 'https://schema.org',
-            '@type': 'FinancialService',
-            name: 'SERNET Financial Services',
-            url: 'https://sernetindia.com',
-            description: `Family financial-services practice ${companyHistory.familyLegacyLabel.toLowerCase()}; SERNET incorporated ${companyHistory.incorporationLabel}. Across 54 cities and 18 countries.`,
-            foundingDate: companyHistory.incorporatedOn,
-            areaServed: 'India',
-            numberOfEmployees: { '@type': 'QuantitativeValue', value: '10+' },
-            telephone: '+91-920-676-7670',
-            email: 'contact@sernetindia.com',
-            address: {
-              '@type': 'PostalAddress',
-              streetAddress: 'A-412, Kanakia Wall Street, Andheri-Kurla Road, Chakala',
-              addressLocality: 'Mumbai',
-              addressRegion: 'Maharashtra',
-              postalCode: '400093',
-              addressCountry: 'IN',
-            },
-            sameAs: [
-              'https://www.instagram.com/sernetfspl',
-              'https://www.youtube.com/@sernetfspl',
-              'https://www.linkedin.com/company/sernetfspl/',
-              'https://www.facebook.com/sernetfspl/',
-            ],
-          },
-        ]}
+        jsonLd={homeJsonLd}
       />
       <HeroSection />
       <EcosystemSection />
