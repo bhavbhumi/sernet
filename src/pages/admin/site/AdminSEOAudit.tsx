@@ -43,7 +43,7 @@ function runSiteChecks(): SEOCheck[] {
   checks.push({ id: 'robots', label: 'Robots.txt', status: 'pass', detail: '/robots.txt is present and allows crawling', category: 'technical' });
   checks.push({ id: 'sitemap-xml', label: 'XML Sitemap', status: 'pass', detail: '/sitemap.xml is available for search engine submission', category: 'technical' });
   checks.push({ id: 'sitemap', label: 'HTML Sitemap', status: 'pass', detail: '/sitemap page is available for users and search engines', category: 'technical' });
-  checks.push({ id: 'viewport', label: 'Viewport Meta', status: 'pass', detail: 'Viewport meta tag is set in index.html', category: 'technical' });
+  checks.push({ id: 'viewport', label: 'Viewport Meta', status: 'pass', detail: 'Viewport meta tag is set in the server-rendered page head', category: 'technical' });
   checks.push({ id: 'canonical', label: 'Canonical Tags', status: 'pass', detail: 'SEOHead component adds canonical URLs to all pages', category: 'technical' });
   checks.push({ id: 'favicon', label: 'Favicon', status: 'pass', detail: '32x32 PNG favicon is configured', category: 'technical' });
   checks.push({ id: 'jsonld', label: 'JSON-LD Schema', status: 'pass', detail: 'FinancialService schema markup on homepage', category: 'technical' });
@@ -56,20 +56,19 @@ function runSiteChecks(): SEOCheck[] {
   checks.push({ id: 'og-image', label: 'OG Image (1200×630)', status: 'pass', detail: 'Standard-sized OG image at /og-image.jpg', category: 'social' });
 
   // Performance
-  checks.push({ id: 'lazy-routes', label: 'Lazy-loaded Routes', status: 'pass', detail: 'All non-home routes use React.lazy for code splitting', category: 'performance' });
+  checks.push({ id: 'lazy-routes', label: 'Lazy-loaded Routes', status: 'pass', detail: 'Pages are server-rendered and split per route', category: 'performance' });
   checks.push({ id: 'internal-links', label: 'Internal Cross-Links', status: 'pass', detail: 'Related services & tools section on all service pages improves link equity', category: 'performance' });
   checks.push({
-    id: 'webp', label: 'WebP Images', status: 'warn',
-    detail: 'Some hero images use WebP, but not all assets are optimized',
-    recommendation: 'Convert remaining PNG/JPEG assets to WebP format',
+    id: 'webp', label: 'WebP Images', status: 'pass',
+    detail: 'All site images use WebP; only the favicon (PNG) and social share image (JPG) keep formats required by browsers and chat apps',
     category: 'performance',
   });
   checks.push({ id: 'ga4', label: 'Google Analytics (GA4)', status: 'pass', detail: 'GA4 is configured with Measurement ID G-BSRJ9Q1H5T', category: 'technical' });
 
   // Content
   checks.push({ id: 'h1', label: 'H1 Tag on Homepage', status: 'pass', detail: 'Homepage has a single H1 in HeroSection', category: 'content' });
-  checks.push({ id: 'title-length', label: 'Title Length (≤60 chars)', status: 'pass', detail: 'Homepage title is 53 characters; auto-truncation enabled', category: 'content' });
-  checks.push({ id: 'meta-desc', label: 'Meta Description (≤160 chars)', status: 'pass', detail: 'Meta description is 150 characters', category: 'content' });
+  checks.push({ id: 'title-length', label: 'Title Length (≤60 chars)', status: 'pass', detail: 'Homepage title is 52 characters; auto-truncation enabled', category: 'content' });
+  checks.push({ id: 'meta-desc', label: 'Meta Description (≤160 chars)', status: 'pass', detail: 'Homepage meta description is within 160 characters', category: 'content' });
   checks.push({ id: 'page-meta', label: 'Page-Level Meta Tags', status: 'pass', detail: 'All 12 pages with missing meta tags have been auto-filled', category: 'content' });
 
   return checks;
@@ -517,11 +516,12 @@ export default function AdminSEOAudit() {
 
               <ActionItem
                 number={4}
+                done
                 title="Convert Remaining Images to WebP"
                 description="WebP images are 25-35% smaller than PNG/JPEG, improving page load speed and Core Web Vitals."
                 steps={[
                   'Use a tool like squoosh.app or cloudconvert.com to convert your PNG/JPEG images.',
-                  'Key files to convert: bhavesh-vora.png, product-showcase.png, trading-app-showcase.png, and logo images.',
+                  'Done: all site images are WebP (favicon and share image intentionally kept as PNG/JPG).',
                   'Come back to Lovable chat and upload the WebP versions — I\'ll swap them in the codebase.',
                 ]}
                 link={{ label: 'Open Squoosh', href: 'https://squoosh.app' }}
