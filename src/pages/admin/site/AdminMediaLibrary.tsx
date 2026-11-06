@@ -18,6 +18,11 @@ import {
 } from '@/components/ui/alert-dialog';
 
 const BUCKET = 'cms-media';
+
+const SITE_IMAGES = Object.entries(
+  import.meta.glob('/src/assets/**/*.{webp,jpg,jpeg,png,svg,gif}', { eager: true, query: '?url', import: 'default' }) as Record<string, string>,
+).map(([path, url]) => ({ path, url, name: path.split('/').pop() ?? path }))
+  .sort((a, b) => a.name.localeCompare(b.name));
 const MAX_SIZE_MB = 5;
 
 type MediaFile = {
@@ -56,24 +61,35 @@ export default function AdminMediaLibrary() {
   const { data: listing, isLoading, refetch } = useQuery({
     queryKey: ['media_library', folder],
     queryFn: async () => {
-      const all: any[] = [];
-      for (let offset = 0; ; offset += 1000) {
-        const { data, error } = await supabase.storage.from(BUCKET).list(folder, {
-          limit: 1000,
-          offset,
-          sortBy: { column: 'updated_at', order: 'desc' },
-        });
-        if (error) throw error;
-        all.push(...(data ?? []));
-        if (!data || data.length < 1000) break;
-      }
-      const folders = all.filter(f => f.id === null).map(f => f.name as string);
-      const files = all
+      const listAll = async (dir: string) => {
+        const all: any[] = [];
+        for (let offset = 0; ; offset += 1000) {
+          const { data, error } = await supabase.storage.from(BUCKET).list(dir, {
+            limit: 1000,
+            offset,
+            sortBy: { column: 'updated_at', order: 'desc' },
+          });
+          if (error) throw error;
+          all.push(...(data ?? []));
+          if (!data || data.length < 1000) break;
+        }
+        return all;
+      };
+      const toFiles = (dir: string, items: any[]) => items
         .filter(f => f.id !== null && f.name !== '.emptyFolderPlaceholder')
         .map(f => {
-          const path = folder ? `${folder}/${f.name}` : f.name;
+          const path = dir ? `${dir}/${f.name}` : f.name;
           return { ...f, name: path, publicUrl: supabase.storage.from(BUCKET).getPublicUrl(path).data.publicUrl };
         }) as MediaFile[];
+      const all = await listAll(folder);
+      const folders = all.filter(f => f.id === null).map(f => f.name as string);
+      let files = toFiles(folder, all);
+      // "Main" shows everything: include files from each top-level folder too.
+      if (!folder) {
+        const nested = await Promise.all(folders.map(async d => toFiles(d, await listAll(d))));
+        files = [...files, ...nested.flat()].sort((a: any, b: any) =>
+          String(b.updated_at ?? '').localeCompare(String(a.updated_at ?? '')));
+      }
       return { folders, files };
     },
   });
@@ -214,7 +230,7 @@ export default function AdminMediaLibrary() {
       {/* Folders */}
       <div className="flex flex-wrap items-center gap-1.5 mb-5 text-xs">
         <span className="text-muted-foreground mr-1">Folder:</span>
-        <button onClick={() => setFolder('')} className={`px-3 py-1.5 rounded-full border font-medium ${folder === '' ? 'bg-primary text-primary-foreground border-primary' : 'bg-muted/40 text-muted-foreground border-border hover:bg-muted'}`}>Main</button>
+        <button onClick={() => setFolder('')} className={`px-3 py-1.5 rounded-full border font-medium ${folder === '' ? 'bg-primary text-primary-foreground border-primary' : 'bg-muted/40 text-muted-foreground border-border hover:bg-muted'}`}>All uploads</button>
         {(folder ? [folder, ...folders.map(f => `${folder}/${f}`)] : folders).filter(Boolean).map(f => (
           <button key={f} onClick={() => setFolder(f)} className={`px-3 py-1.5 rounded-full border font-medium ${folder === f ? 'bg-primary text-primary-foreground border-primary' : 'bg-muted/40 text-muted-foreground border-border hover:bg-muted'}`}>
             {f === 'posts' ? 'Insights covers (posts)' : f}
@@ -300,6 +316,22 @@ export default function AdminMediaLibrary() {
           })}
         </div>
       )}
+
+      {/* Website images bundled with the site (read-only) */}
+      <div className="mt-10">
+        <h2 className="text-base font-semibold text-foreground">Website images ({SITE_IMAGES.length})</h2>
+        <p className="text-xs text-muted-foreground mb-4">Built into the website pages. Shown for reference; they are changed with site updates, not uploaded here.</p>
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3">
+          {SITE_IMAGES.map(img => (
+            <a key={img.path} href={img.url} target="_blank" rel="noreferrer" className="block border border-border rounded-lg overflow-hidden bg-muted/20 hover:shadow-sm">
+              <div className="aspect-video bg-background flex items-center justify-center">
+                <img src={img.url} alt={img.name} loading="lazy" className="max-h-full max-w-full object-contain" />
+              </div>
+              <p className="px-2 py-1.5 text-[11px] text-muted-foreground truncate" title={img.path}>{img.name}</p>
+            </a>
+          ))}
+        </div>
+      </div>
 
       {/* Delete confirm */}
       <AlertDialog open={!!deleteTarget} onOpenChange={() => setDeleteTarget(null)}>

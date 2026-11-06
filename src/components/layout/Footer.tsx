@@ -153,7 +153,7 @@ const PREFERENCE_OPTIONS = [
   { key: 'promotions', label: 'Promotions' },
 ];
 
-const FooterNewsletterForm = () => {
+export const FooterNewsletterForm = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
