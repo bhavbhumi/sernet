@@ -356,7 +356,23 @@ const DepartmentSection = React.memo(function DepartmentSection({
   );
 });
 
-export { departmentGroups, getDepartmentModuleKeys };
+/** Find the permission module that owns an admin path (children inherit their parent's key). */
+function getModuleKeyForPath(pathname: string): string | undefined {
+  let best: { key: string; len: number } | undefined;
+  const visit = (items: NavItem[], inherited?: string) => {
+    for (const item of items) {
+      const key = item.moduleKey ?? inherited;
+      if (item.href && key && (pathname === item.href || pathname.startsWith(item.href + '/'))) {
+        if (!best || item.href.length > best.len) best = { key, len: item.href.length };
+      }
+      if (item.children) visit(item.children, key);
+    }
+  };
+  for (const g of departmentGroups) visit(g.items);
+  return best?.key;
+}
+
+export { departmentGroups, getDepartmentModuleKeys, getModuleKeyForPath, isModuleAllowed };
 
 export function AdminSidebar() {
   const navigate = useNavigate();

@@ -1,6 +1,24 @@
 
-import { AdminSidebar } from './AdminSidebar';
-import { AdminGuard } from './AdminGuard';
+import { AdminSidebar, getModuleKeyForPath, isModuleAllowed } from './AdminSidebar';
+import { AdminGuard, useAdminSession } from './AdminGuard';
+import { useLocation } from '@/lib/router-compat';
+import { ShieldAlert } from 'lucide-react';
+
+/** Blocks pages outside the user's allowed modules, even when opened by typing the address. */
+function ModuleGate({ children }: { children: React.ReactNode }) {
+  const { session } = useAdminSession();
+  const { pathname } = useLocation();
+  if (isModuleAllowed(getModuleKeyForPath(pathname), session)) return <>{children}</>;
+  return (
+    <div className="flex flex-col items-center justify-center text-center py-24 gap-3">
+      <ShieldAlert className="h-8 w-8 text-muted-foreground" />
+      <h2 className="text-base font-semibold text-foreground">Access restricted</h2>
+      <p className="text-sm text-muted-foreground max-w-sm">
+        You don't have permission to open this section. Ask an administrator to grant access.
+      </p>
+    </div>
+  );
+}
 import { AdminMISRefresh } from './AdminMISRefresh';
 
 interface AdminLayoutProps {
@@ -30,7 +48,7 @@ export function AdminLayout({ children, title, subtitle, actions }: AdminLayoutP
 
           {/* Page Content */}
           <main className="flex-1 p-4 md:p-6 overflow-auto">
-            {children}
+            <ModuleGate>{children}</ModuleGate>
           </main>
         </div>
       </div>
