@@ -6,6 +6,8 @@ type JsonLdInput = Record<string, unknown> | Array<Record<string, unknown>>;
 
 interface SEOHeadProps {
   title: string;
+  /** Use the title as-is, without appending the site name. */
+  exactTitle?: boolean;
   description: string;
   path?: string;
   type?: string;
@@ -18,14 +20,14 @@ interface SEOHeadProps {
 const FALLBACK_SITE_NAME = 'SERNET Financial Services';
 const FALLBACK_BASE_URL = 'https://sernetindia.com';
 
-export const SEOHead = ({ title, description, path = '/', type = 'website', jsonLd, image, noindex = false }: SEOHeadProps) => {
+export const SEOHead = ({ title, description, path = '/', type = 'website', jsonLd, image, noindex = false, exactTitle = false }: SEOHeadProps) => {
   const { data: settings } = useSiteSettings();
 
   const siteName = settings?.identity?.schema_org_name || FALLBACK_SITE_NAME;
   const baseUrl = settings?.identity?.site_url || FALLBACK_BASE_URL;
   const ogImageUrl = image || settings?.branding?.og_image_url || 'https://sernetindia.com/og-image.jpg';
 
-  const rawTitle = `${title} | ${siteName}`;
+  const rawTitle = exactTitle ? title : `${title} | ${siteName}`;
   const fullTitle = rawTitle.length > 60 ? rawTitle.slice(0, 57) + '…' : rawTitle;
   const url = `${baseUrl}${path}`;
 

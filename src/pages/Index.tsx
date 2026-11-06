@@ -13,8 +13,9 @@ const Index = () => {
   return (
     <Layout>
       <SEOHead
-        title="Wealth Management & Financial Services"
-        description={`SERNET — a family financial-services legacy ${companyHistory.familyLegacyLabel.toLowerCase()}. Trading, mutual funds and insurance across 54 cities and 18 countries.`}
+        title="SERNET | Mutual Funds, Insurance & Trading Since 1986"
+        exactTitle
+        description="AMFI-registered mutual fund and APMI PMS distributor (ARN-35275). Invest via Tick Funds, insure via Tushil, trade via Choice FinX. A family practice since 1986."
         path="/"
         jsonLd={[
           {
