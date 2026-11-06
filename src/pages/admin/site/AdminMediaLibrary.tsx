@@ -18,6 +18,11 @@ import {
 } from '@/components/ui/alert-dialog';
 
 const BUCKET = 'cms-media';
+
+const SITE_IMAGES = Object.entries(
+  import.meta.glob('/src/assets/**/*.{webp,jpg,jpeg,png,svg,gif}', { eager: true, query: '?url', import: 'default' }) as Record<string, string>,
+).map(([path, url]) => ({ path, url, name: path.split('/').pop() ?? path }))
+  .sort((a, b) => a.name.localeCompare(b.name));
 const MAX_SIZE_MB = 5;
 
 type MediaFile = {
@@ -311,6 +316,22 @@ export default function AdminMediaLibrary() {
           })}
         </div>
       )}
+
+      {/* Website images bundled with the site (read-only) */}
+      <div className="mt-10">
+        <h2 className="text-base font-semibold text-foreground">Website images ({SITE_IMAGES.length})</h2>
+        <p className="text-xs text-muted-foreground mb-4">Built into the website pages. Shown for reference; they are changed with site updates, not uploaded here.</p>
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3">
+          {SITE_IMAGES.map(img => (
+            <a key={img.path} href={img.url} target="_blank" rel="noreferrer" className="block border border-border rounded-lg overflow-hidden bg-muted/20 hover:shadow-sm">
+              <div className="aspect-video bg-background flex items-center justify-center">
+                <img src={img.url} alt={img.name} loading="lazy" className="max-h-full max-w-full object-contain" />
+              </div>
+              <p className="px-2 py-1.5 text-[11px] text-muted-foreground truncate" title={img.path}>{img.name}</p>
+            </a>
+          ))}
+        </div>
+      </div>
 
       {/* Delete confirm */}
       <AlertDialog open={!!deleteTarget} onOpenChange={() => setDeleteTarget(null)}>
