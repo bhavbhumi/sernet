@@ -132,8 +132,9 @@ export default function AdminPosts({ initialType }: { initialType?: ContentType 
   });
 
   const uploadFile = async (file: File) => {
-    if (file.size > MAX_FILE_SIZE) {
-      toast({ title: 'File too large', description: 'Max file size is 5MB.', variant: 'destructive' });
+    const limit = /^(audio|video)\//.test(file.type) ? 50 * 1024 * 1024 : MAX_FILE_SIZE;
+    if (file.size > limit) {
+      toast({ title: 'File too large', description: `Max file size is ${limit / 1048576}MB.`, variant: 'destructive' });
       return;
     }
     setUploadingMedia(true);
@@ -189,7 +190,8 @@ export default function AdminPosts({ initialType }: { initialType?: ContentType 
       content_type: form.content_type, category: form.category, sub_category: form.sub_category || null,
       post_type: form.post_type || null, media_kind: form.media_kind,
       tags: form.tags.split(',').map(t => t.trim()).filter(Boolean),
-      media_url: form.media_url || null, thumbnail_url: form.media_url || null,
+      media_url: form.media_url || null,
+      thumbnail_url: ['audio', 'video'].includes(form.media_kind) ? (editItem?.thumbnail_url ?? null) : (form.media_url || null),
       status: form.status, item_date: form.item_date || null,
       file_url: form.file_url || null, source_url: form.source_url || null,
       published_at: resolvePublishedAt({ status: form.status, itemDate: form.item_date, existingPublishedAt: editItem?.published_at }),
