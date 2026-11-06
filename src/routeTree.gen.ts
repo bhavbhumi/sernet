@@ -38,6 +38,7 @@ import { Route as ReviewsRouteImport } from './routes/reviews'
 import { Route as ScheduleCallRouteImport } from './routes/schedule-call'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SitemapRouteImport } from './routes/sitemap'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TushilRouteImport } from './routes/tushil'
 import { Route as AboutIndexRouteImport } from './routes/about/index'
@@ -293,6 +294,11 @@ const SignupRoute = SignupRouteImport.update({
 const SitemapRoute = SitemapRouteImport.update({
   id: '/sitemap',
   path: '/sitemap',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TermsRoute = TermsRouteImport.update({
@@ -920,6 +926,7 @@ export interface FileRoutesByFullPath {
   '/schedule-call': typeof ScheduleCallRoute
   '/signup': typeof SignupRoute
   '/sitemap': typeof SitemapRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/tushil': typeof TushilRoute
   '/about/philosophy': typeof AboutPhilosophyRoute
@@ -1062,6 +1069,7 @@ export interface FileRoutesByTo {
   '/schedule-call': typeof ScheduleCallRoute
   '/signup': typeof SignupRoute
   '/sitemap': typeof SitemapRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/tushil': typeof TushilRoute
   '/about/philosophy': typeof AboutPhilosophyRoute
@@ -1205,6 +1213,7 @@ export interface FileRoutesById {
   '/schedule-call': typeof ScheduleCallRoute
   '/signup': typeof SignupRoute
   '/sitemap': typeof SitemapRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/tushil': typeof TushilRoute
   '/about/philosophy': typeof AboutPhilosophyRoute
@@ -1349,6 +1358,7 @@ export interface FileRouteTypes {
     | '/schedule-call'
     | '/signup'
     | '/sitemap'
+    | '/sitemap.xml'
     | '/terms'
     | '/tushil'
     | '/about/philosophy'
@@ -1491,6 +1501,7 @@ export interface FileRouteTypes {
     | '/schedule-call'
     | '/signup'
     | '/sitemap'
+    | '/sitemap.xml'
     | '/terms'
     | '/tushil'
     | '/about/philosophy'
@@ -1633,6 +1644,7 @@ export interface FileRouteTypes {
     | '/schedule-call'
     | '/signup'
     | '/sitemap'
+    | '/sitemap.xml'
     | '/terms'
     | '/tushil'
     | '/about/philosophy'
@@ -1776,6 +1788,7 @@ export interface RootRouteChildren {
   ScheduleCallRoute: typeof ScheduleCallRoute
   SignupRoute: typeof SignupRoute
   SitemapRoute: typeof SitemapRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   TushilRoute: typeof TushilRoute
   AboutPhilosophyRoute: typeof AboutPhilosophyRoute
@@ -2092,6 +2105,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap'
       fullPath: '/sitemap'
       preLoaderRoute: typeof SitemapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/terms': {
@@ -2904,6 +2924,7 @@ const rootRouteChildren: RootRouteChildren = {
   ScheduleCallRoute: ScheduleCallRoute,
   SignupRoute: SignupRoute,
   SitemapRoute: SitemapRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   TushilRoute: TushilRoute,
   AboutPhilosophyRoute: AboutPhilosophyRoute,
