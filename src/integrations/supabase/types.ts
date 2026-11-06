@@ -124,6 +124,7 @@ export type Database = {
           file_url: string | null
           format: Database["public"]["Enums"]["article_format"]
           id: string
+          is_featured: boolean
           item_date: string | null
           media_kind: string
           media_url: string | null
@@ -151,6 +152,7 @@ export type Database = {
           file_url?: string | null
           format?: Database["public"]["Enums"]["article_format"]
           id?: string
+          is_featured?: boolean
           item_date?: string | null
           media_kind?: string
           media_url?: string | null
@@ -178,6 +180,7 @@ export type Database = {
           file_url?: string | null
           format?: Database["public"]["Enums"]["article_format"]
           id?: string
+          is_featured?: boolean
           item_date?: string | null
           media_kind?: string
           media_url?: string | null
