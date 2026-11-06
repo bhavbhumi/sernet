@@ -90,7 +90,8 @@ function AdminPagination({ page, totalPages, total, onPage }: { page: number; to
   );
 }
 
-export default function AdminPosts() {
+export default function AdminPosts({ initialType }: { initialType?: ContentType } = {}) {
+  const freshForm = { ...emptyForm, content_type: initialType ?? emptyForm.content_type };
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
   const [items, setItems] = useState<Post[]>([]);
@@ -98,11 +99,11 @@ export default function AdminPosts() {
   const [search, setSearch] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [filterCategory, setFilterCategory] = useState('all');
-  const [filterContentType, setFilterContentType] = useState('all');
+  const [filterContentType, setFilterContentType] = useState<string>(initialType ?? 'all');
   const [page, setPage] = useState(1);
   const [dialogOpen, setDialogOpen] = useState(searchParams.get('action') === 'new');
   const [editItem, setEditItem] = useState<Post | null>(null);
-  const [form, setForm] = useState(emptyForm);
+  const [form, setForm] = useState(freshForm);
   const [saving, setSaving] = useState(false);
   const [uploadingMedia, setUploadingMedia] = useState(false);
   const mediaInputRef = useRef<HTMLInputElement>(null);
@@ -158,7 +159,7 @@ export default function AdminPosts() {
   useEffect(() => { void fetchItems(true); }, []);
   useMISAutoRefresh(fetchItems);
 
-  const openNew = () => { setEditItem(null); setForm(emptyForm); setDialogOpen(true); };
+  const openNew = () => { setEditItem(null); setForm(freshForm); setDialogOpen(true); };
   const openEdit = (item: Post) => {
     setEditItem(item);
     setForm({

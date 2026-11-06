@@ -40,11 +40,12 @@ export default function UpdatesDetail() {
   const { data: item, isLoading, isError } = useQuery({
     queryKey: ['updates_detail', mode, id],
     queryFn: async () => {
-      const table = isNews ? 'news_items' : 'circulars';
+      // Public lists link to rows in `feeds` (the single source edited in Admin → Feeds).
       const { data, error } = await supabase
-        .from(table as 'news_items' | 'circulars')
+        .from('feeds')
         .select('*')
         .eq('id', id!)
+        .eq('feed_type', isNews ? 'news' : 'circular')
         .eq('status', 'published')
         .single();
       if (error) throw error;
