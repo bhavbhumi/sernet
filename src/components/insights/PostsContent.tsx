@@ -1,17 +1,19 @@
 import { useMemo, useState } from 'react';
 import { Link, useSearchParams } from '@/lib/router-compat';
 import { useQuery } from '@tanstack/react-query';
-import { Calendar, Loader2, Search, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
+import { Calendar, Loader2, Search, ChevronLeft, ChevronRight, ArrowRight, BookOpen, PlayCircle, Headphones, Star } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { Input } from '@/components/ui/input';
-import { POST_TYPES, postPath, type PostType } from '@/lib/insightsTaxonomy';
+import { POST_TYPES, postPath, mediaGroupOf, MEDIA_GROUPS, type PostType, type MediaGroup } from '@/lib/insightsTaxonomy';
+
+const FORMAT_ICON: Record<MediaGroup, typeof BookOpen> = { Read: BookOpen, Watch: PlayCircle, Listen: Headphones };
 
 const PAGE_SIZE = 12;
 
 type Post = {
   id: string; title: string; excerpt: string | null; category: string; sub_category: string | null;
   tags: string[]; post_type: string | null; content_type: string; thumbnail_url: string | null;
-  media_url: string | null; item_date: string | null; published_at: string | null; read_time: string | null;
+  media_url: string | null; media_kind: string | null; is_featured: boolean | null; item_date: string | null; published_at: string | null; read_time: string | null;
 };
 
 async function fetchAll(): Promise<Post[]> {
@@ -19,7 +21,7 @@ async function fetchAll(): Promise<Post[]> {
   for (let from = 0; ; from += 1000) {
     const { data, error } = await supabase
       .from('articles')
-      .select('id,title,excerpt,category,sub_category,tags,post_type,content_type,thumbnail_url,media_url,item_date,published_at,read_time')
+      .select('id,title,excerpt,category,sub_category,tags,post_type,content_type,thumbnail_url,media_url,media_kind,is_featured,item_date,published_at,read_time')
       .eq('status', 'published')
       .order('published_at', { ascending: false, nullsFirst: false })
       .range(from, from + 999);
@@ -49,6 +51,8 @@ export function PostsContent({ type }: { type: PostType | 'All' }) {
   const category = params.get('category') ?? 'All';
   const sub = params.get('sub') ?? 'All';
   const tag = params.get('tag');
+  const fmtRaw = params.get('format');
+  const format = (MEDIA_GROUPS as readonly string[]).includes(fmtRaw ?? '') ? (fmtRaw as MediaGroup) : 'All';
   const page = Math.max(1, Number(params.get('page') ?? 1));
   const [q, setQ] = useState('');
 
@@ -61,7 +65,13 @@ export function PostsContent({ type }: { type: PostType | 'All' }) {
     setParams(p, { replace: true });
   };
 
-  const byType = useMemo(() => (type === 'All' ? posts : posts.filter((p) => p.post_type === type)), [posts, type]);
+  const byType = useMemo(() => posts.filter((p) => (type === 'All' || p.post_type === type) && (format === 'All' || mediaGroupOf(p.media_kind) === format)), [posts, type, format]);
+  const formatCounts = useMemo(() => {
+    const c: Record<string, number> = {};
+    posts.forEach((p) => { if (type === 'All' || p.post_type === type) { const g = mediaGroupOf(p.media_kind); c[g] = (c[g] ?? 0) + 1; } });
+    return c;
+  }, [posts, type]);
+  const picks = useMemo(() => byType.filter((p) => p.is_featured).slice(0, 3), [byType]);
   const categories = useMemo(() => [...new Set(byType.map((p) => p.category))].sort(), [byType]);
   const byCat = category === 'All' ? byType : byType.filter((p) => p.category === category);
   const subs = useMemo(() => [...new Set(byCat.map((p) => p.sub_category).filter(Boolean) as string[])].sort(), [byCat]);
@@ -76,6 +86,19 @@ export function PostsContent({ type }: { type: PostType | 'All' }) {
     <section className="section-padding">
       <div className="container-sernet">
         <div className="flex flex-col gap-4 mb-8">
+          <div className="inline-flex self-start rounded-lg border border-border p-1 bg-muted/30" role="group" aria-label="Format">
+            {(['All', ...MEDIA_GROUPS] as const).map((g) => {
+              const Icon = g === 'All' ? null : FORMAT_ICON[g];
+              const n = g === 'All' ? null : formatCounts[g] ?? 0;
+              if (n === 0) return null;
+              return (
+                <button key={g} aria-pressed={format === g} onClick={() => update({ format: g === 'All' ? null : g, category: null, sub: null })}
+                  className={`flex items-center gap-1.5 px-3.5 py-1.5 text-sm rounded-md transition-colors ${format === g ? 'bg-background text-foreground font-medium shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}>
+                  {Icon && <Icon className="h-4 w-4" />}{g === 'All' ? 'All formats' : g}
+                </button>
+              );
+            })}
+          </div>
           <div className="relative max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input value={q} onChange={(e) => { setQ(e.target.value); update({}); }} placeholder="Search posts by title" className="pl-9" aria-label="Search posts" />
@@ -106,6 +129,22 @@ export function PostsContent({ type }: { type: PostType | 'All' }) {
           <p className="text-center py-20 text-muted-foreground">No posts match these filters.</p>
         ) : (
           <>
+            {picks.length > 0 && page === 1 && category === 'All' && !tag && !ql && (
+              <div className="mb-10">
+                <h2 className="flex items-center gap-2 text-lg font-semibold text-foreground mb-4"><Star className="h-5 w-5 text-primary" />Editor's Pick</h2>
+                <div className="grid md:grid-cols-3 gap-4">
+                  {picks.map((p) => (
+                    <Link key={p.id} to={postPath(p)} className="surface-elevated flex gap-3 items-start p-4 rounded-md border border-primary/20 bg-primary/5 hover:border-primary/40 transition-colors">
+                      {p.thumbnail_url && <img src={p.thumbnail_url} alt="" loading="lazy" className="w-20 h-14 object-contain rounded bg-muted/30 shrink-0" />}
+                      <div className="min-w-0">
+                        <span className="text-xs text-primary font-medium">{p.category}</span>
+                        <p className="text-sm font-semibold text-foreground line-clamp-2">{p.title}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
             <p className="text-xs text-muted-foreground mb-4">
               Showing {(page - 1) * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE, filtered.length)} of {filtered.length}
             </p>
@@ -114,6 +153,8 @@ export function PostsContent({ type }: { type: PostType | 'All' }) {
                 const img = p.thumbnail_url || (p.media_url && /\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i.test(p.media_url) ? p.media_url : null);
                 const d = p.item_date || p.published_at;
                 const href = postPath(p);
+                const grp = mediaGroupOf(p.media_kind);
+                const FIcon = FORMAT_ICON[grp];
                 return (
                   <article key={p.id} className="bg-card rounded-lg overflow-hidden border border-border/60 hover:shadow-lg transition-shadow flex flex-col">
                     {img && (
@@ -123,6 +164,7 @@ export function PostsContent({ type }: { type: PostType | 'All' }) {
                     )}
                     <div className="p-5 flex flex-col flex-1">
                       <div className="flex flex-wrap gap-1.5 mb-3 text-xs">
+                        <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-muted text-muted-foreground" title={grp}><FIcon className="h-3.5 w-3.5" />{grp}</span>
                         {type === 'All' && p.post_type && <span className="px-2.5 py-1 rounded-full bg-muted text-muted-foreground">{p.post_type}</span>}
                         <span className="px-2.5 py-1 rounded-full bg-primary/10 text-primary font-medium">{p.category}</span>
                         {p.sub_category && <span className="px-2.5 py-1 rounded-full bg-muted text-muted-foreground">{p.sub_category}</span>}
@@ -140,7 +182,7 @@ export function PostsContent({ type }: { type: PostType | 'All' }) {
                         <span className="flex items-center gap-1">
                           {d && <><Calendar className="h-3 w-3" />{new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</>}
                         </span>
-                        <Link to={href} className="flex items-center gap-1 text-primary text-sm font-medium hover:underline">Read <ArrowRight className="h-4 w-4" /></Link>
+                        <Link to={href} className="flex items-center gap-1 text-primary text-sm font-medium hover:underline">{grp === 'Read' ? 'Read' : grp === 'Watch' ? 'Watch' : 'Listen'} <ArrowRight className="h-4 w-4" /></Link>
                       </div>
                     </div>
                   </article>

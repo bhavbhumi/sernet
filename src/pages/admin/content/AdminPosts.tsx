@@ -53,13 +53,14 @@ interface Post {
   post_type: string | null;
   tags: string[] | null;
   media_kind: string | null;
+  is_featured?: boolean | null;
 }
 
 const emptyForm = {
   title: '', excerpt: '', body: '', author: 'Research Desk',
   content_type: 'article' as ContentType, category: '', sub_category: '',
   media_url: '', status: 'draft', item_date: '', file_url: '', source_url: '',
-  post_type: '', tags: '', media_kind: 'image_text',
+  post_type: '', tags: '', media_kind: 'image_text', is_featured: false,
 };
 
 function AdminPagination({ page, totalPages, total, onPage }: { page: number; totalPages: number; total: number; onPage: (p: number) => void }) {
@@ -173,7 +174,7 @@ export default function AdminPosts({ initialType }: { initialType?: ContentType 
       status: item.status, item_date: item.item_date ?? '',
       file_url: item.file_url ?? '', source_url: item.source_url ?? '',
       post_type: item.post_type ?? '', tags: (item.tags ?? []).join(', '),
-      media_kind: item.media_kind ?? 'image_text',
+      media_kind: item.media_kind ?? 'image_text', is_featured: !!item.is_featured,
     });
     setDialogOpen(true);
   };
@@ -188,7 +189,7 @@ export default function AdminPosts({ initialType }: { initialType?: ContentType 
     const payload: any = {
       title: form.title, excerpt: form.excerpt || null, body: form.body || null, author: form.author,
       content_type: form.content_type, category: form.category, sub_category: form.sub_category || null,
-      post_type: form.post_type || null, media_kind: form.media_kind,
+      post_type: form.post_type || null, media_kind: form.media_kind, is_featured: form.is_featured,
       tags: form.tags.split(',').map(t => t.trim()).filter(Boolean),
       media_url: form.media_url || null,
       thumbnail_url: ['audio', 'video'].includes(form.media_kind) ? (editItem?.thumbnail_url ?? null) : (form.media_url || null),
@@ -438,6 +439,10 @@ export default function AdminPosts({ initialType }: { initialType?: ContentType 
               <Label>Tags</Label>
               <Input placeholder="Comma separated, e.g. Nifty, RBI Policy" value={form.tags} onChange={e => setForm(f => ({ ...f, tags: e.target.value }))} />
             </div>
+            <label className="flex items-center gap-2 text-sm cursor-pointer">
+              <input type="checkbox" checked={form.is_featured} onChange={e => setForm(f => ({ ...f, is_featured: e.target.checked }))} className="h-4 w-4 accent-primary" />
+              Editor's Pick (show in the highlighted row on Insights)
+            </label>
             <div className="space-y-1.5">
               <div className="flex items-center gap-1.5">
                 <Label>Post Date</Label>
