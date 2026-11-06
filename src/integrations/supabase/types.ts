@@ -1826,6 +1826,21 @@ export type Database = {
           },
         ]
       }
+      excerpt_staging: {
+        Row: {
+          excerpt: string
+          id: string
+        }
+        Insert: {
+          excerpt: string
+          id: string
+        }
+        Update: {
+          excerpt?: string
+          id?: string
+        }
+        Relationships: []
+      }
       expense_claims: {
         Row: {
           amount: number
