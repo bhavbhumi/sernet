@@ -2,8 +2,8 @@ const SITE = "https://sernetindia.com";
 const SITE_NAME = "SERNET Financial Services";
 
 /** Server-rendered title, description and canonical for a public page (mirrors SEOHead). */
-export function pageHead({ title, description, path }: { title: string; description: string; path: string }) {
-  const rawTitle = `${title} | ${SITE_NAME}`;
+export function pageHead({ title, description, path, exactTitle = false }: { title: string; description: string; path: string; exactTitle?: boolean }) {
+  const rawTitle = exactTitle ? title : `${title} | ${SITE_NAME}`;
   const fullTitle = rawTitle.length > 60 ? `${rawTitle.slice(0, 57)}…` : rawTitle;
   const url = `${SITE}${path}`;
   return {
