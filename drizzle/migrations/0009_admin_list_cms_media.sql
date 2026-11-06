@@ -1,0 +1,1 @@
+CREATE POLICY "Admins can list cms-media" ON storage.objects FOR SELECT TO authenticated USING (bucket_id = 'cms-media' AND public.is_admin(auth.uid()));

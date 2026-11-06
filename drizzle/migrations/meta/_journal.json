@@ -64,6 +64,13 @@
       "when": 1793962521617,
       "tag": "0008_articles_is_featured",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1793964308239,
+      "tag": "0009_admin_list_cms_media",
+      "breakpoints": true
     }
   ]
 }
