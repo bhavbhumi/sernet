@@ -48,9 +48,9 @@ export default function AdminDashboard() {
       color: 'text-blue-600',
       bgColor: 'bg-blue-500/10',
       cards: [
-        { label: 'Articles', count: stats.articles, href: R.marketing.content.articles, icon: FileText, color: 'text-blue-600 bg-blue-500/10' },
-        { label: 'Analysis', count: stats.analyses, href: R.marketing.content.analysis, icon: BarChart3, color: 'text-indigo-600 bg-indigo-500/10' },
-        { label: 'Reports', count: stats.reports, href: R.marketing.content.reports, icon: BookOpen, color: 'text-emerald-600 bg-emerald-500/10' },
+        { label: 'Read', count: stats.articles, href: `${R.marketing.content.posts}?format=read`, icon: BookOpen, color: 'text-blue-600 bg-blue-500/10', subtitle: 'Text · Image + Text' },
+        { label: 'Watch', count: stats.analyses, href: `${R.marketing.content.posts}?format=watch`, icon: FileText, color: 'text-indigo-600 bg-indigo-500/10', subtitle: 'Image · GIF · Video' },
+        { label: 'Listen', count: stats.reports, href: `${R.marketing.content.posts}?format=listen`, icon: BarChart3, color: 'text-emerald-600 bg-emerald-500/10', subtitle: 'Audio' },
         { label: 'Bulletin', count: stats.bulletins, href: R.marketing.content.bulletin, icon: Bell, color: 'text-amber-600 bg-amber-500/10' },
         { label: 'News Sources', count: stats.news, href: R.marketing.updates.news, icon: Newspaper, color: 'text-cyan-600 bg-cyan-500/10' },
         { label: 'Circular Sources', count: stats.circulars, href: R.marketing.updates.circulars, icon: AlertCircle, color: 'text-red-600 bg-red-500/10' },
@@ -180,7 +180,7 @@ export default function AdminDashboard() {
         <h2 className="text-sm font-semibold text-foreground mb-4">Quick Actions</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
-            { label: 'New Article', href: `${R.marketing.content.articles}?action=new`, icon: FileText },
+            { label: 'New Post', href: `${R.marketing.content.posts}?action=new`, icon: FileText },
             { label: 'Add News', href: `${R.marketing.updates.news}?action=new`, icon: Newspaper },
             { label: 'Run Payroll', href: R.hr.payrollRun, icon: Wallet },
             { label: 'Post Job', href: `${R.hr.careers.openings}?action=new`, icon: Briefcase },
@@ -215,9 +215,9 @@ async function fetchDashboardStats(): Promise<Record<string, number | null>> {
         leads, calcLeads, tickets, openTickets, breachedTickets,
         activeEmps, pendingLeaves, attendanceLogs, lateLogs
       ] = await Promise.all([
-        supabase.from('articles').select('id', { count: 'exact', head: true }).eq('content_type', 'article'),
-        supabase.from('articles').select('id', { count: 'exact', head: true }).eq('content_type', 'analysis'),
-        supabase.from('articles').select('id', { count: 'exact', head: true }).eq('content_type', 'report'),
+        supabase.from('articles').select('id', { count: 'exact', head: true }).in('media_kind', ['text', 'image_text']),
+        supabase.from('articles').select('id', { count: 'exact', head: true }).in('media_kind', ['image', 'gif', 'video']),
+        supabase.from('articles').select('id', { count: 'exact', head: true }).eq('media_kind', 'audio'),
         supabase.from('bulletins').select('id', { count: 'exact', head: true }),
         supabase.from('feeds').select('id', { count: 'exact', head: true }).eq('feed_type', 'news'),
         supabase.from('feeds').select('id', { count: 'exact', head: true }).eq('feed_type', 'circular'),

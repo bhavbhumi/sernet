@@ -205,7 +205,9 @@ export default function ArticleDetail() {
   const isImageUrl = (url: string | null) => url && /\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i.test(url);
   // thumbnail_url or media_url (now stores actual image, not blog URL)
   const sidebarImageUrl = article.thumbnail_url || (isImageUrl(article.media_url) ? article.media_url : null);
-  const hasMedia = (sidebarImageUrl || (article.media_url && ['Audio', 'Video'].includes(article.format)));
+  const mk = (article as { media_kind?: string }).media_kind;
+  const mediaFormat = mk === 'audio' ? 'Audio' : mk === 'video' ? 'Video' : article.format;
+  const hasMedia = (sidebarImageUrl || (article.media_url && ['Audio', 'Video'].includes(mediaFormat)));
 
   const publishedIso = (article.item_date || article.published_at)
     ? new Date((article.item_date || article.published_at)!).toISOString()
@@ -261,14 +263,14 @@ export default function ArticleDetail() {
               {/* Media / thumbnail at top of sidebar column */}
               {hasMedia && (
                 <div className="w-full mb-4">
-                  {article.media_url && article.format === 'Audio' && (
+                  {article.media_url && mediaFormat === 'Audio' && (
                     <div className="p-3 bg-muted/40 rounded-xl border border-border mb-3">
                       <audio controls className="w-full" src={article.media_url} />
                     </div>
                   )}
-                  {article.media_url && article.format === 'Video' && (
+                  {article.media_url && mediaFormat === 'Video' && (
                     <div className="rounded-xl overflow-hidden border border-border aspect-video mb-3">
-                      <video controls className="w-full h-full" src={article.media_url} />
+                      <video controls preload="metadata" poster={article.thumbnail_url ?? undefined} className="w-full h-full" src={article.media_url} />
                     </div>
                   )}
                   {sidebarImageUrl && (
@@ -292,14 +294,14 @@ export default function ArticleDetail() {
                     <img src={sidebarImageUrl} alt={article.title} className="w-full object-cover max-h-64" onError={(e) => { const wrapper = (e.target as HTMLElement).closest('.rounded-xl'); if (wrapper) (wrapper as HTMLElement).style.display = 'none'; }} />
                   </div>
                 )}
-                {article.media_url && article.format === 'Audio' && (
+                {article.media_url && mediaFormat === 'Audio' && (
                   <div className="p-4 bg-muted/40 rounded-xl border border-border mb-4">
                     <audio controls className="w-full" src={article.media_url} />
                   </div>
                 )}
-                {article.media_url && article.format === 'Video' && (
+                {article.media_url && mediaFormat === 'Video' && (
                   <div className="rounded-xl overflow-hidden border border-border aspect-video mb-4">
-                    <video controls className="w-full h-full" src={article.media_url} />
+                    <video controls preload="metadata" poster={article.thumbnail_url ?? undefined} className="w-full h-full" src={article.media_url} />
                   </div>
                 )}
                 {mobileToc.length > 0 && (

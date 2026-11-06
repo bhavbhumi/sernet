@@ -125,6 +125,7 @@ export type Database = {
           format: Database["public"]["Enums"]["article_format"]
           id: string
           item_date: string | null
+          media_kind: string
           media_url: string | null
           meta_description: string | null
           meta_title: string | null
@@ -151,6 +152,7 @@ export type Database = {
           format?: Database["public"]["Enums"]["article_format"]
           id?: string
           item_date?: string | null
+          media_kind?: string
           media_url?: string | null
           meta_description?: string | null
           meta_title?: string | null
@@ -177,6 +179,7 @@ export type Database = {
           format?: Database["public"]["Enums"]["article_format"]
           id?: string
           item_date?: string | null
+          media_kind?: string
           media_url?: string | null
           meta_description?: string | null
           meta_title?: string | null

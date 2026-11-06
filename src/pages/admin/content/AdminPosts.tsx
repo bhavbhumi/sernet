@@ -1,6 +1,6 @@
 import { useMISAutoRefresh } from '@/hooks/useMISAutoRefresh';
 import { readAllMISRows } from '@/lib/misRefresh';
-import { POST_TYPES } from '@/lib/insightsTaxonomy';
+import { POST_TYPES, MEDIA_GROUPS, MEDIA_KINDS, kindsFor, mediaGroupOf, categoriesFor, subCategoriesFor, type MediaGroup } from '@/lib/insightsTaxonomy';
 import { useEffect, useState, useRef } from 'react';
 import { useSearchParams } from '@/lib/router-compat';
 import { AdminLayout } from '@/components/admin/AdminLayout';
@@ -52,13 +52,14 @@ interface Post {
   source_url: string | null;
   post_type: string | null;
   tags: string[] | null;
+  media_kind: string | null;
 }
 
 const emptyForm = {
   title: '', excerpt: '', body: '', author: 'Research Desk',
   content_type: 'article' as ContentType, category: '', sub_category: '',
   media_url: '', status: 'draft', item_date: '', file_url: '', source_url: '',
-  post_type: '', tags: '',
+  post_type: '', tags: '', media_kind: 'image_text',
 };
 
 function AdminPagination({ page, totalPages, total, onPage }: { page: number; totalPages: number; total: number; onPage: (p: number) => void }) {
@@ -92,6 +93,7 @@ function AdminPagination({ page, totalPages, total, onPage }: { page: number; to
 
 export default function AdminPosts({ initialType }: { initialType?: ContentType } = {}) {
   const freshForm = { ...emptyForm, content_type: initialType ?? emptyForm.content_type };
+  void CONTENT_TYPES;
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
   const [items, setItems] = useState<Post[]>([]);
@@ -99,7 +101,8 @@ export default function AdminPosts({ initialType }: { initialType?: ContentType 
   const [search, setSearch] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [filterCategory, setFilterCategory] = useState('all');
-  const [filterContentType, setFilterContentType] = useState<string>(initialType ?? 'all');
+  const [filterContentType, setFilterContentType] = useState<string>(searchParams.get('format') ?? 'all');
+  const [filterPostType, setFilterPostType] = useState<string>(searchParams.get('type') ?? 'all');
   const [page, setPage] = useState(1);
   const [dialogOpen, setDialogOpen] = useState(searchParams.get('action') === 'new');
   const [editItem, setEditItem] = useState<Post | null>(null);
@@ -129,8 +132,9 @@ export default function AdminPosts({ initialType }: { initialType?: ContentType 
   });
 
   const uploadFile = async (file: File) => {
-    if (file.size > MAX_FILE_SIZE) {
-      toast({ title: 'File too large', description: 'Max file size is 5MB.', variant: 'destructive' });
+    const limit = /^(audio|video)\//.test(file.type) ? 50 * 1024 * 1024 : MAX_FILE_SIZE;
+    if (file.size > limit) {
+      toast({ title: 'File too large', description: `Max file size is ${limit / 1048576}MB.`, variant: 'destructive' });
       return;
     }
     setUploadingMedia(true);
@@ -169,22 +173,25 @@ export default function AdminPosts({ initialType }: { initialType?: ContentType 
       status: item.status, item_date: item.item_date ?? '',
       file_url: item.file_url ?? '', source_url: item.source_url ?? '',
       post_type: item.post_type ?? '', tags: (item.tags ?? []).join(', '),
+      media_kind: item.media_kind ?? 'image_text',
     });
     setDialogOpen(true);
   };
 
   const handleSave = async () => {
-    if (!form.title || !form.category) {
-      toast({ title: 'Required fields missing', description: 'Title and category are required.', variant: 'destructive' });
+    const needsSub = subCategoriesFor(form.post_type, form.category).length > 0;
+    if (!form.title || !form.post_type || !form.category || (needsSub && !form.sub_category)) {
+      toast({ title: 'Required fields missing', description: 'Title, Format, Type, Category and Sub Category are required.', variant: 'destructive' });
       return;
     }
     setSaving(true);
     const payload: any = {
       title: form.title, excerpt: form.excerpt || null, body: form.body || null, author: form.author,
       content_type: form.content_type, category: form.category, sub_category: form.sub_category || null,
-      post_type: form.post_type || null,
+      post_type: form.post_type || null, media_kind: form.media_kind,
       tags: form.tags.split(',').map(t => t.trim()).filter(Boolean),
-      media_url: form.media_url || null, thumbnail_url: form.media_url || null,
+      media_url: form.media_url || null,
+      thumbnail_url: ['audio', 'video'].includes(form.media_kind) ? (editItem?.thumbnail_url ?? null) : (form.media_url || null),
       status: form.status, item_date: form.item_date || null,
       file_url: form.file_url || null, source_url: form.source_url || null,
       published_at: resolvePublishedAt({ status: form.status, itemDate: form.item_date, existingPublishedAt: editItem?.published_at }),
@@ -213,11 +220,12 @@ export default function AdminPosts({ initialType }: { initialType?: ContentType 
     const matchSearch = a.title.toLowerCase().includes(search.toLowerCase());
     const matchStatus = filterStatus === 'all' || a.status === filterStatus;
     const matchCat = filterCategory === 'all' || a.category === filterCategory;
-    const matchType = filterContentType === 'all' || a.content_type === filterContentType;
-    return matchSearch && matchStatus && matchCat && matchType;
+    const matchType = filterContentType === 'all' || mediaGroupOf(a.media_kind).toLowerCase() === filterContentType;
+    const matchPostType = filterPostType === 'all' || a.post_type === filterPostType;
+    return matchSearch && matchStatus && matchCat && matchType && matchPostType;
   });
 
-  const categoryOptions = ['all', ...Array.from(new Set(items.map(a => a.category).filter(Boolean))).sort()];
+  const categoryOptions = ['all', ...(filterPostType === 'all' ? Array.from(new Set(items.map(a => a.category).filter(Boolean))).sort() : categoriesFor(filterPostType))];
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
   const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
@@ -234,12 +242,16 @@ export default function AdminPosts({ initialType }: { initialType?: ContentType 
     archived: items.filter(a => a.status === 'archived').length,
   };
 
-  const contentTypeLabel = (ct: string) => CONTENT_TYPES.find(t => t.value === ct)?.label ?? ct;
+  const kindLabel = (k: string | null) => { const m = MEDIA_KINDS.find(x => x.value === k); return m ? `${m.group} · ${m.label}` : 'Read'; };
+  const formGroup = mediaGroupOf(form.media_kind);
+  const catOpts = categoriesFor(form.post_type);
+  const subOpts = subCategoriesFor(form.post_type, form.category);
+  const mediaAccept = form.media_kind === 'audio' ? 'audio/*' : form.media_kind === 'video' ? 'video/*' : form.media_kind === 'gif' ? 'image/gif' : 'image/*';
 
   return (
     <AdminLayout
       title="Posts"
-      subtitle="Unified content hub — articles, analysis, awareness, and reports"
+      subtitle="Insights posts — Read, Watch and Listen"
       actions={<Button onClick={openNew} size="sm"><Plus className="h-4 w-4 mr-1.5" /> New Post</Button>}
     >
       {/* Stat chips */}
@@ -266,8 +278,15 @@ export default function AdminPosts({ initialType }: { initialType?: ContentType 
         <Select value={filterContentType} onValueChange={handleFilterContentType}>
           <SelectTrigger className="w-36"><SelectValue /></SelectTrigger>
           <SelectContent>
+            <SelectItem value="all">All Formats</SelectItem>
+            {MEDIA_GROUPS.map(g => <SelectItem key={g} value={g.toLowerCase()}>{g}</SelectItem>)}
+          </SelectContent>
+        </Select>
+        <Select value={filterPostType} onValueChange={v => { setFilterPostType(v); setFilterCategory('all'); setPage(1); }}>
+          <SelectTrigger className="w-44"><SelectValue /></SelectTrigger>
+          <SelectContent>
             <SelectItem value="all">All Types</SelectItem>
-            {CONTENT_TYPES.map(t => <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>)}
+            {POST_TYPES.map(t => <SelectItem key={t} value={t}>{t}</SelectItem>)}
           </SelectContent>
         </Select>
         <Select value={filterStatus} onValueChange={handleFilterStatus}>
@@ -299,9 +318,9 @@ export default function AdminPosts({ initialType }: { initialType?: ContentType 
             <thead>
               <tr className="border-b border-border bg-muted/30">
                 <th className="px-4 py-3 text-left font-medium text-muted-foreground">Title</th>
-                <th className="px-4 py-3 text-left font-medium text-muted-foreground w-24">Type</th>
+                <th className="px-4 py-3 text-left font-medium text-muted-foreground w-32">Format</th>
                 <th className="px-4 py-3 text-left font-medium text-muted-foreground w-28">Date</th>
-                <th className="px-4 py-3 text-left font-medium text-muted-foreground w-28">Category</th>
+                <th className="px-4 py-3 text-left font-medium text-muted-foreground w-40">Type / Category</th>
                 <th className="px-4 py-3 text-left font-medium text-muted-foreground w-24">Author</th>
                 <th className="px-4 py-3 text-left font-medium text-muted-foreground w-24">Status</th>
                 <th className="px-4 py-3 text-left font-medium text-muted-foreground w-28">Engagement</th>
@@ -327,13 +346,13 @@ export default function AdminPosts({ initialType }: { initialType?: ContentType 
                       ]} />
                     </div>
                   </td>
-                  <td className="px-4 py-3 align-top"><Badge variant="outline" className="text-xs">{contentTypeLabel(item.content_type)}</Badge></td>
+                  <td className="px-4 py-3 align-top"><Badge variant="outline" className="text-xs whitespace-nowrap">{kindLabel(item.media_kind)}</Badge></td>
                   <td className="px-4 py-3 text-muted-foreground text-xs align-top">
                     {(item.item_date || item.published_at)
                       ? new Date(item.item_date ?? item.published_at!).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
                       : '—'}
                   </td>
-                  <td className="px-4 py-3 text-muted-foreground align-top">{item.category}</td>
+                  <td className="px-4 py-3 text-muted-foreground align-top text-xs"><span className="text-foreground">{item.post_type ?? "—"}</span><br />{item.category}{item.sub_category ? ` › ${item.sub_category}` : ""}</td>
                   <td className="px-4 py-3 text-muted-foreground align-top">{item.author}</td>
                   <td className="px-4 py-3 align-top">
                     <Badge variant={item.status === 'published' ? 'default' : 'secondary'}>{item.status}</Badge>
@@ -371,19 +390,24 @@ export default function AdminPosts({ initialType }: { initialType?: ContentType 
             </div>
             <div className="space-y-1.5">
               <div className="flex items-center gap-1.5">
-                <Label>Content Type <span className="text-destructive">*</span></Label>
-                <FieldInfoTooltip tip="Determines which section this post appears in: Article, Analysis, Awareness, or Report." />
+                <Label>Format <span className="text-destructive">*</span></Label>
+                <FieldInfoTooltip tip="Read: text or image + text. Watch: picture-only, GIF or video. Listen: audio." />
               </div>
-              <Select value={form.content_type} onValueChange={(v: ContentType) => setForm(f => ({ ...f, content_type: v }))}>
+              <Select value={formGroup} onValueChange={(g: MediaGroup) => setForm(f => ({ ...f, media_kind: kindsFor(g)[g === 'Read' ? 1 : 0].value }))}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  {CONTENT_TYPES.map(t => <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>)}
-                </SelectContent>
+                <SelectContent>{MEDIA_GROUPS.map(g => <SelectItem key={g} value={g}>{g}</SelectItem>)}</SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1.5">
+              <Label>{formGroup} as <span className="text-destructive">*</span></Label>
+              <Select value={form.media_kind} onValueChange={v => setForm(f => ({ ...f, media_kind: v }))}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>{kindsFor(formGroup).map(k => <SelectItem key={k.value} value={k.value}>{k.label}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div className="space-y-1.5">
               <Label>Type <span className="text-destructive">*</span></Label>
-              <Select value={form.post_type || undefined} onValueChange={v => setForm(f => ({ ...f, post_type: v }))}>
+              <Select value={form.post_type || undefined} onValueChange={v => setForm(f => ({ ...f, post_type: v, category: '', sub_category: '' }))}>
                 <SelectTrigger><SelectValue placeholder="Choose Insights tab" /></SelectTrigger>
                 <SelectContent>
                   {POST_TYPES.map(t => <SelectItem key={t} value={t}>{t}</SelectItem>)}
@@ -391,22 +415,28 @@ export default function AdminPosts({ initialType }: { initialType?: ContentType 
               </Select>
             </div>
             <div className="space-y-1.5">
+              <Label>Category <span className="text-destructive">*</span></Label>
+              <Select value={form.category || undefined} disabled={!form.post_type} onValueChange={v => setForm(f => ({ ...f, category: v, sub_category: '' }))}>
+                <SelectTrigger><SelectValue placeholder={form.post_type ? 'Choose category' : 'Choose Type first'} /></SelectTrigger>
+                <SelectContent>
+                  {form.category && !catOpts.includes(form.category) && <SelectItem value={form.category}>{form.category} (old)</SelectItem>}
+                  {catOpts.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1.5">
+              <Label>Sub Category {subOpts.length > 0 && <span className="text-destructive">*</span>}</Label>
+              <Select value={form.sub_category || undefined} disabled={subOpts.length === 0} onValueChange={v => setForm(f => ({ ...f, sub_category: v }))}>
+                <SelectTrigger><SelectValue placeholder={subOpts.length ? 'Choose sub category' : 'None for this category'} /></SelectTrigger>
+                <SelectContent>
+                  {form.sub_category && !subOpts.includes(form.sub_category) && <SelectItem value={form.sub_category}>{form.sub_category} (old)</SelectItem>}
+                  {subOpts.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1.5">
               <Label>Tags</Label>
               <Input placeholder="Comma separated, e.g. Nifty, RBI Policy" value={form.tags} onChange={e => setForm(f => ({ ...f, tags: e.target.value }))} />
-            </div>
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-1.5">
-                <Label>Category <span className="text-destructive">*</span></Label>
-                <FieldInfoTooltip tip="Topic category for filtering (e.g. Fundamentals, Markets, Financial Literacy)." />
-              </div>
-              <Input placeholder="e.g. Fundamentals, Markets" value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))} />
-            </div>
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-1.5">
-                <Label>Sub Category</Label>
-                <FieldInfoTooltip tip="Optional sub-category for finer classification within the category." />
-              </div>
-              <Input placeholder="e.g. IPO, Derivatives" value={form.sub_category} onChange={e => setForm(f => ({ ...f, sub_category: e.target.value }))} />
             </div>
             <div className="space-y-1.5">
               <div className="flex items-center gap-1.5">
@@ -437,7 +467,7 @@ export default function AdminPosts({ initialType }: { initialType?: ContentType 
               </Select>
             </div>
 
-            {form.content_type === 'report' && (
+            {(form.content_type === 'report' || form.file_url) && (
               <div className="col-span-2 space-y-1.5">
                 <div className="flex items-center gap-1.5">
                   <Label>PDF File URL</Label>
@@ -475,7 +505,7 @@ export default function AdminPosts({ initialType }: { initialType?: ContentType 
             {/* Media upload */}
             <div className="col-span-2 space-y-1.5">
               <div className="flex items-center gap-1.5">
-                <Label>Media / Thumbnail</Label>
+                <Label>{form.media_kind === 'audio' ? 'Audio file' : form.media_kind === 'video' ? 'Video file or link' : form.media_kind === 'gif' ? 'GIF' : form.media_kind === 'text' ? 'Cover image (optional)' : 'Image'}</Label>
                 <FieldInfoTooltip tip="Upload an image, audio, or video file. Also used as the listing thumbnail." />
               </div>
               {form.media_url ? (
@@ -492,7 +522,7 @@ export default function AdminPosts({ initialType }: { initialType?: ContentType 
                   <Button variant="outline" size="sm" onClick={() => mediaInputRef.current?.click()} disabled={uploadingMedia}>
                     {uploadingMedia ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
                   </Button>
-                  <input ref={mediaInputRef} type="file" className="hidden" accept="image/*,audio/*,video/*" onChange={e => e.target.files?.[0] && uploadFile(e.target.files[0])} />
+                  <input ref={mediaInputRef} type="file" className="hidden" accept={mediaAccept} onChange={e => e.target.files?.[0] && uploadFile(e.target.files[0])} />
                 </div>
               )}
             </div>
