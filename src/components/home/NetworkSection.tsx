@@ -3,10 +3,10 @@ import { useState } from 'react';
 import { Link } from '@/lib/router-compat';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Users, Handshake, Building2, Briefcase, Globe, Crown, Building } from 'lucide-react';
-import clientRetail from '@/assets/client-retail.png';
-import clientHnw from '@/assets/client-hnw.png';
-import clientNri from '@/assets/client-nri.png';
-import clientInstitutions from '@/assets/client-institutions.png';
+import clientRetail from '@/assets/client-retail.webp';
+import clientHnw from '@/assets/client-hnw.webp';
+import clientNri from '@/assets/client-nri.webp';
+import clientInstitutions from '@/assets/client-institutions.webp';
 
 const clientTypes = [
   {

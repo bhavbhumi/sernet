@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import { ProductOnboardingBlock } from '@/components/shared/ProductOnboardingBlock';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import choicefinxShowcase from '@/assets/choicefinx-showcase.png';
+import choicefinxShowcase from '@/assets/choicefinx-showcase.webp';
 import { APP_LINKS } from '@/lib/appLinks';
 
 const stats = [

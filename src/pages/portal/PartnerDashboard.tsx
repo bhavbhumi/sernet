@@ -10,7 +10,7 @@ import { User, Ticket, LogOut, Shield, Wallet, FileText, Phone, Mail, MapPin, Ed
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import sernetLogo from '@/assets/sernet-logo.png';
+import sernetLogo from '@/assets/sernet-logo.webp';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 

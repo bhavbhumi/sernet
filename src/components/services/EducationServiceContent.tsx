@@ -3,7 +3,7 @@ import { Link } from '@/lib/router-compat';
 import { ArrowRight, BookOpen, GraduationCap, Award, Check, Download, UserCheck, Play, Lightbulb, Users, Video, FileText, Globe, Clock } from 'lucide-react';
 
 
-import sernetShowcase from '@/assets/sernet-product-showcase.png';
+import sernetShowcase from '@/assets/sernet-product-showcase.webp';
 
 const stats = [
   { icon: BookOpen, value: '50+', label: 'Courses' },

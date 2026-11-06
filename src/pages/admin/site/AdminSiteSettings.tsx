@@ -19,7 +19,7 @@ import {
   Instagram, Youtube, Facebook, Shield, MapPin, Clock, Tag, ChevronRight,
   ChevronDown, Link2
 } from 'lucide-react';
-import sernetLogo from '@/assets/sernet-logo.png';
+import sernetLogo from '@/assets/sernet-logo.webp';
 
 const GOOGLE_FONTS = [
   'Inter', 'Roboto', 'Open Sans', 'Lato', 'Poppins', 'Montserrat',

@@ -5,7 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import sernetLogo from '@/assets/sernet-logo.png';
+import sernetLogo from '@/assets/sernet-logo.webp';
 import { Eye, EyeOff, ShieldCheck, Lock } from 'lucide-react';
 
 export default function AdminSetup() {

@@ -1,7 +1,7 @@
 import { companyHistory } from '@/lib/companyHistory';
 import { motion } from 'framer-motion';
 import { ArrowRight, Handshake, Check, User, Briefcase, Megaphone, ArrowRightLeft, Clock, Layers } from 'lucide-react';
-import networkPartnersImg from '@/assets/network-partners-real.jpg';
+import networkPartnersImg from '@/assets/network-partners-real.webp';
 import { AutoScrollShowcase, type ShowcaseItem } from './AutoScrollShowcase';
 import { ReferralFormDialog } from '@/components/shared/ReferralFormDialog';
 

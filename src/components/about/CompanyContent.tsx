@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Linkedin, Twitter, Star, Lightbulb, Heart } from 'lucide-react';
-import bhaveshVora from '@/assets/bhavesh-vora.png';
+import bhaveshVora from '@/assets/bhavesh-vora.webp';
 import { companyHistory } from '@/lib/companyHistory';
 
 const sernetValues = [
