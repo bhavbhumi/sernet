@@ -101,8 +101,10 @@ export default function AdminSEOAudit() {
   const liveQuery = useQuery({
     queryKey: ['seo_live_checks'],
     queryFn: () => runLiveSeoChecks(),
-    refetchInterval: 10 * 60_000,
-    refetchOnWindowFocus: true,
+    staleTime: 0,
+    refetchOnMount: 'always',
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
   });
   const liveChecks = (liveQuery.data?.checks ?? []) as SEOCheck[];
   const categories = ['technical', 'content', 'performance', 'social', 'ai'] as const;
