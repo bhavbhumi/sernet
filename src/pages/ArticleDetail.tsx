@@ -1,3 +1,4 @@
+import { InlineNewsletter } from '@/components/insights/InlineNewsletter';
 import { PostBreadcrumb, PostFooter } from '@/components/insights/PostContext';
 import { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from '@/lib/router-compat';
@@ -397,6 +398,8 @@ export default function ArticleDetail() {
             )}
 
             <PostFooter post={article} />
+
+            <InlineNewsletter className="mt-10" />
 
             {/* Bottom engagement bar */}
             <div className="mt-12 pt-6 border-t border-border flex items-center justify-between flex-wrap gap-3">

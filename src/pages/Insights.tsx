@@ -1,3 +1,4 @@
+import { InlineNewsletter } from '@/components/insights/InlineNewsletter';
 import { useSearchParams } from '@/lib/router-compat';
 import { Layout } from '@/components/layout/Layout';
 import { PageHero } from '@/components/layout/PageHero';
@@ -75,6 +76,7 @@ const Insights = () => {
       </div>
 
       {active === 'bulletin' ? <BulletinContent /> : <PostsContent key={active} type={typeFromSlug(active)} />}
+      <div className="container-sernet pb-12"><InlineNewsletter /></div>
     </Layout>
   );
 };
