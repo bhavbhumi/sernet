@@ -12,6 +12,7 @@ import {
   CheckCircle2, AlertTriangle, XCircle, ExternalLink, Copy, ClipboardCheck, Sparkles, Loader2
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { runLiveSeoChecks } from '@/lib/seoLiveChecks.functions';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -33,46 +34,12 @@ interface PageSEO {
   status: string;
 }
 
-// ─── Hardcoded checks that run client-side ─────────────────────────────────
-
-function runSiteChecks(): SEOCheck[] {
-  const checks: SEOCheck[] = [];
-
-  // Technical SEO
-  checks.push({ id: 'https', label: 'HTTPS Enabled', status: 'pass', detail: 'Site is served over HTTPS', category: 'technical' });
-  checks.push({ id: 'robots', label: 'Robots.txt', status: 'pass', detail: '/robots.txt is present and allows crawling', category: 'technical' });
-  checks.push({ id: 'sitemap-xml', label: 'XML Sitemap', status: 'pass', detail: '/sitemap.xml is available for search engine submission', category: 'technical' });
-  checks.push({ id: 'sitemap', label: 'HTML Sitemap', status: 'pass', detail: '/sitemap page is available for users and search engines', category: 'technical' });
-  checks.push({ id: 'viewport', label: 'Viewport Meta', status: 'pass', detail: 'Viewport meta tag is set in the server-rendered page head', category: 'technical' });
-  checks.push({ id: 'canonical', label: 'Canonical Tags', status: 'pass', detail: 'SEOHead component adds canonical URLs to all pages', category: 'technical' });
-  checks.push({ id: 'favicon', label: 'Favicon', status: 'pass', detail: '32x32 PNG favicon is configured', category: 'technical' });
-  checks.push({ id: 'jsonld', label: 'JSON-LD Schema', status: 'pass', detail: 'FinancialService schema markup on homepage', category: 'technical' });
-  checks.push({ id: 'aria', label: 'ARIA Labels', status: 'pass', detail: 'Header, footer, nav, forms, and social links have descriptive aria-labels', category: 'technical' });
-  checks.push({ id: 'llms', label: 'LLMs.txt (AI Discovery)', status: 'pass', detail: '/llms.txt is available for AI crawlers', category: 'ai' });
-
-  // Social
-  checks.push({ id: 'og', label: 'Open Graph Tags', status: 'pass', detail: 'OG title, description, image, and type set on all pages', category: 'social' });
-  checks.push({ id: 'twitter', label: 'Twitter Card Tags', status: 'pass', detail: 'summary_large_image card with image configured', category: 'social' });
-  checks.push({ id: 'og-image', label: 'OG Image (1200×630)', status: 'pass', detail: 'Standard-sized OG image at /og-image.jpg', category: 'social' });
-
-  // Performance
-  checks.push({ id: 'lazy-routes', label: 'Lazy-loaded Routes', status: 'pass', detail: 'Pages are server-rendered and split per route', category: 'performance' });
-  checks.push({ id: 'internal-links', label: 'Internal Cross-Links', status: 'pass', detail: 'Related services & tools section on all service pages improves link equity', category: 'performance' });
-  checks.push({
-    id: 'webp', label: 'WebP Images', status: 'pass',
-    detail: 'All site images use WebP; only the favicon (PNG) and social share image (JPG) keep formats required by browsers and chat apps',
-    category: 'performance',
-  });
-  checks.push({ id: 'ga4', label: 'Google Analytics (GA4)', status: 'pass', detail: 'GA4 is configured with Measurement ID G-BSRJ9Q1H5T', category: 'technical' });
-
-  // Content
-  checks.push({ id: 'h1', label: 'H1 Tag on Homepage', status: 'pass', detail: 'Homepage has a single H1 in HeroSection', category: 'content' });
-  checks.push({ id: 'title-length', label: 'Title Length (≤60 chars)', status: 'pass', detail: 'Homepage title is 52 characters; auto-truncation enabled', category: 'content' });
-  checks.push({ id: 'meta-desc', label: 'Meta Description (≤160 chars)', status: 'pass', detail: 'Homepage meta description is within 160 characters', category: 'content' });
-  checks.push({ id: 'page-meta', label: 'Page-Level Meta Tags', status: 'pass', detail: 'All 12 pages with missing meta tags have been auto-filled', category: 'content' });
-
-  return checks;
-}
+// Live checks run against the published website; these two are code-level
+// facts that can't be read from HTML and are reviewed manually.
+const MANUAL_CHECKS: SEOCheck[] = [
+  { id: 'aria', label: 'ARIA Labels', status: 'pass', detail: 'Header, footer, nav and forms have descriptive labels (manual review)', category: 'technical' },
+  { id: 'internal-links', label: 'Internal Cross-Links', status: 'pass', detail: 'Related services & tools links on service pages (manual review)', category: 'performance' },
+];
 
 function calculateScore(checks: SEOCheck[]): number {
   const total = checks.length;
@@ -131,8 +98,13 @@ export default function AdminSEOAudit() {
   const queryClient = useQueryClient();
   const [isGenerating, setIsGenerating] = useState(false);
   const [isGeneratingArticles, setIsGeneratingArticles] = useState(false);
-  const checks = runSiteChecks();
-  const score = calculateScore(checks);
+  const liveQuery = useQuery({
+    queryKey: ['seo_live_checks'],
+    queryFn: () => runLiveSeoChecks(),
+    refetchInterval: 10 * 60_000,
+    refetchOnWindowFocus: true,
+  });
+  const liveChecks = (liveQuery.data?.checks ?? []) as SEOCheck[];
   const categories = ['technical', 'content', 'performance', 'social', 'ai'] as const;
   const categoryLabels: Record<string, string> = {
     technical: '🔧 Technical SEO',

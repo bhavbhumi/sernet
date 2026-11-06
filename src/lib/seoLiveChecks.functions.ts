@@ -9,10 +9,11 @@ async function get(path: string, binary = false): Promise<FetchedResource> {
       headers: { "user-agent": "SERNET-SEO-Health/1.0" },
       redirect: "follow",
     });
-    const body = binary
-      ? String.fromCharCode(...new Uint8Array(0)).padEnd((await res.arrayBuffer()).byteLength, " ")
-      : await res.text();
-    return { ok: res.ok, status: res.status, body, url: res.url, contentType: res.headers.get("content-type") ?? undefined };
+    let body = "";
+    let size: number;
+    if (binary) size = (await res.arrayBuffer()).byteLength;
+    else { body = await res.text(); size = body.length; }
+    return { ok: res.ok, status: res.status, body, size, url: res.url, contentType: res.headers.get("content-type") ?? undefined };
   } catch {
     return { ok: false, status: 0, body: "" };
   }

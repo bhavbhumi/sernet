@@ -14,6 +14,7 @@ export interface FetchedResource {
   ok: boolean;
   status: number;
   body: string;
+  size?: number;
   contentType?: string;
   url?: string;
 }
@@ -100,7 +101,7 @@ export function evaluateLiveChecks(input: LiveInputs): LiveSEOCheck[] {
   add({ id: 'twitter', label: 'Twitter Card Tags', category: 'social',
     status: card ? 'pass' : 'warn', detail: card ? `twitter:card is "${card}"` : 'No twitter:card tag' });
 
-  const imgKb = ogImage ? Math.round(ogImage.body.length / 1024) : 0;
+  const imgKb = ogImage ? Math.round((ogImage.size ?? ogImage.body.length) / 1024) : 0;
   add({ id: 'og-image', label: 'Share Image', category: 'social',
     status: !ogImage || !ogImage.ok ? 'fail' : imgKb > 300 ? 'warn' : 'pass',
     detail: !ogImage ? 'No share image declared' : !ogImage.ok ? `Share image returned ${ogImage.status}` : `Share image loads (${imgKb} KB)`,
