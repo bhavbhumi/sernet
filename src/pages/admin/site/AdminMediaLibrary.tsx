@@ -56,24 +56,35 @@ export default function AdminMediaLibrary() {
   const { data: listing, isLoading, refetch } = useQuery({
     queryKey: ['media_library', folder],
     queryFn: async () => {
-      const all: any[] = [];
-      for (let offset = 0; ; offset += 1000) {
-        const { data, error } = await supabase.storage.from(BUCKET).list(folder, {
-          limit: 1000,
-          offset,
-          sortBy: { column: 'updated_at', order: 'desc' },
-        });
-        if (error) throw error;
-        all.push(...(data ?? []));
-        if (!data || data.length < 1000) break;
-      }
-      const folders = all.filter(f => f.id === null).map(f => f.name as string);
-      const files = all
+      const listAll = async (dir: string) => {
+        const all: any[] = [];
+        for (let offset = 0; ; offset += 1000) {
+          const { data, error } = await supabase.storage.from(BUCKET).list(dir, {
+            limit: 1000,
+            offset,
+            sortBy: { column: 'updated_at', order: 'desc' },
+          });
+          if (error) throw error;
+          all.push(...(data ?? []));
+          if (!data || data.length < 1000) break;
+        }
+        return all;
+      };
+      const toFiles = (dir: string, items: any[]) => items
         .filter(f => f.id !== null && f.name !== '.emptyFolderPlaceholder')
         .map(f => {
-          const path = folder ? `${folder}/${f.name}` : f.name;
+          const path = dir ? `${dir}/${f.name}` : f.name;
           return { ...f, name: path, publicUrl: supabase.storage.from(BUCKET).getPublicUrl(path).data.publicUrl };
         }) as MediaFile[];
+      const all = await listAll(folder);
+      const folders = all.filter(f => f.id === null).map(f => f.name as string);
+      let files = toFiles(folder, all);
+      // "Main" shows everything: include files from each top-level folder too.
+      if (!folder) {
+        const nested = await Promise.all(folders.map(async d => toFiles(d, await listAll(d))));
+        files = [...files, ...nested.flat()].sort((a: any, b: any) =>
+          String(b.updated_at ?? '').localeCompare(String(a.updated_at ?? '')));
+      }
       return { folders, files };
     },
   });
@@ -214,7 +225,7 @@ export default function AdminMediaLibrary() {
       {/* Folders */}
       <div className="flex flex-wrap items-center gap-1.5 mb-5 text-xs">
         <span className="text-muted-foreground mr-1">Folder:</span>
-        <button onClick={() => setFolder('')} className={`px-3 py-1.5 rounded-full border font-medium ${folder === '' ? 'bg-primary text-primary-foreground border-primary' : 'bg-muted/40 text-muted-foreground border-border hover:bg-muted'}`}>Main</button>
+        <button onClick={() => setFolder('')} className={`px-3 py-1.5 rounded-full border font-medium ${folder === '' ? 'bg-primary text-primary-foreground border-primary' : 'bg-muted/40 text-muted-foreground border-border hover:bg-muted'}`}>All uploads</button>
         {(folder ? [folder, ...folders.map(f => `${folder}/${f}`)] : folders).filter(Boolean).map(f => (
           <button key={f} onClick={() => setFolder(f)} className={`px-3 py-1.5 rounded-full border font-medium ${folder === f ? 'bg-primary text-primary-foreground border-primary' : 'bg-muted/40 text-muted-foreground border-border hover:bg-muted'}`}>
             {f === 'posts' ? 'Insights covers (posts)' : f}

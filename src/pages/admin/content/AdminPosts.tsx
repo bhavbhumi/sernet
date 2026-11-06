@@ -170,7 +170,7 @@ export default function AdminPosts({ initialType }: { initialType?: ContentType 
     setForm({
       title: item.title, excerpt: item.excerpt ?? '', body: item.body ?? '',
       author: item.author, content_type: item.content_type, category: item.category,
-      sub_category: item.sub_category ?? '', media_url: item.media_url ?? '',
+      sub_category: item.sub_category ?? '', media_url: item.media_url ?? item.thumbnail_url ?? '',
       status: item.status, item_date: item.item_date ?? '',
       file_url: item.file_url ?? '', source_url: item.source_url ?? '',
       post_type: item.post_type ?? '', tags: (item.tags ?? []).join(', '),
@@ -515,8 +515,8 @@ export default function AdminPosts({ initialType }: { initialType?: ContentType 
               </div>
               {form.media_url ? (
                 <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg border border-border">
-                  {/\.(jpg|jpeg|png|gif|webp|svg)/i.test(form.media_url) && (
-                    <img src={form.media_url} alt="" className="w-16 h-12 object-cover rounded" />
+                  {!['audio', 'video'].includes(form.media_kind) && (
+                    <img src={form.media_url} alt="Cover preview" className="w-32 h-20 object-contain rounded bg-background border border-border" />
                   )}
                   <span className="flex-1 text-xs text-muted-foreground truncate">{form.media_url}</span>
                   <Button variant="ghost" size="sm" onClick={() => setForm(f => ({ ...f, media_url: '' }))}><X className="h-4 w-4" /></Button>
