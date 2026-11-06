@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { articlePath } from "@/lib/articleRoute";
+import { articlePath } from "@/lib/articleMetadata";
 
 const BASE_URL = "https://sernetindia.com";
 
