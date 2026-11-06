@@ -1,6 +1,7 @@
 import { Link } from '@/lib/router-compat';
 import { motion } from 'framer-motion';
-import { ArrowRight, Clock, Calendar, BarChart3, FileText, Newspaper, Lightbulb } from 'lucide-react';
+import { ArrowRight, Clock, Calendar, BookOpen, PlayCircle, Headphones } from 'lucide-react';
+import { postPath, mediaGroupOf, type MediaGroup } from '@/lib/insightsTaxonomy';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -8,81 +9,36 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { format } from 'date-fns';
 
 interface InsightCard {
-  id: string;
-  type: 'article' | 'analysis' | 'report' | 'awareness';
-  category: string;
-  title: string;
-  excerpt: string | null;
-  date: string | null;
-  readTime?: string | null;
-  url?: string | null;
-  imageUrl?: string | null;
+  id: string; content_type: string; post_type: string | null; category: string; sub_category: string | null;
+  title: string; excerpt: string | null; date: string | null; readTime?: string | null; imageUrl?: string | null; media_kind: string | null;
 }
 
-const TYPE_BADGE: Record<string, { label: string; route: (id: string) => string }> = {
-  article: { label: 'Article', route: (id) => `/insights/articles/${id}` },
-  analysis: { label: 'Analysis', route: (id) => `/insights/analysis/${id}` },
-  report: { label: 'Report', route: (id) => `/insights/articles/${id}` },
-  awareness: { label: 'Awareness', route: (id) => `/insights/articles/${id}` },
-};
+const FORMAT_ICON: Record<MediaGroup, typeof BookOpen> = { Read: BookOpen, Watch: PlayCircle, Listen: Headphones };
 
+// Latest posts using the current posting structure: one per Type (newest first), Editor's Picks preferred.
 function useLatestInsights() {
   return useQuery({
-    queryKey: ['home-insights'],
+    queryKey: ['home-insights-v2'],
     queryFn: async (): Promise<InsightCard[]> => {
-      const awarenessCategories = ['Financial Literacy', 'Investor Protection', 'Scam Alerts', 'Market Basics', 'Personal Finance'];
-
-      const [articlesRes, analysisRes, reportsRes, awarenessRes] = await Promise.all([
-        supabase
-          .from('articles')
-          .select('id, category, title, excerpt, item_date, published_at, read_time, thumbnail_url, media_url')
-          .eq('status', 'published')
-          .eq('content_type', 'article')
-          .not('category', 'in', `(${awarenessCategories.join(',')})`)
-          .order('item_date', { ascending: false, nullsFirst: false })
-          .limit(1),
-        supabase
-          .from('articles')
-          .select('id, category, title, excerpt, item_date, published_at, read_time, thumbnail_url, media_url')
-          .eq('status', 'published')
-          .eq('content_type', 'analysis')
-          .order('item_date', { ascending: false, nullsFirst: false })
-          .limit(1),
-        supabase
-          .from('articles')
-          .select('id, category, title, excerpt, item_date, published_at, read_time, thumbnail_url, media_url, file_url')
-          .eq('status', 'published')
-          .eq('content_type', 'report')
-          .order('published_at', { ascending: false, nullsFirst: false })
-          .limit(1),
-        supabase
-          .from('articles')
-          .select('id, category, title, excerpt, item_date, published_at, read_time, thumbnail_url, media_url')
-          .eq('status', 'published')
-          .in('category', awarenessCategories)
-          .order('item_date', { ascending: false, nullsFirst: false })
-          .limit(1),
-      ]);
-
+      const { data, error } = await supabase
+        .from('articles')
+        .select('id, content_type, post_type, category, sub_category, title, excerpt, item_date, published_at, read_time, thumbnail_url, media_url, media_kind, is_featured')
+        .eq('status', 'published')
+        .not('post_type', 'is', null)
+        .order('published_at', { ascending: false, nullsFirst: false })
+        .limit(60);
+      if (error) throw error;
+      const rows = [...(data ?? [])].sort((x, y) => Number(!!y.is_featured) - Number(!!x.is_featured));
+      const seen = new Set<string>();
       const cards: InsightCard[] = [];
-
-      if (articlesRes.data?.[0]) {
-        const a = articlesRes.data[0];
-        cards.push({ id: a.id, type: 'article', category: a.category, title: a.title, excerpt: a.excerpt, date: a.item_date || a.published_at, readTime: a.read_time, imageUrl: a.thumbnail_url || a.media_url });
+      for (const a of rows) {
+        if (cards.length === 3) break;
+        if (seen.has(a.post_type!)) continue;
+        seen.add(a.post_type!);
+        cards.push({ id: a.id, content_type: a.content_type, post_type: a.post_type, category: a.category, sub_category: a.sub_category,
+          title: a.title, excerpt: a.excerpt, date: a.item_date || a.published_at, readTime: a.read_time,
+          imageUrl: a.thumbnail_url || (a.media_url && /\.(jpe?g|png|gif|webp)(\?|$)/i.test(a.media_url) ? a.media_url : null), media_kind: a.media_kind });
       }
-      if (analysisRes.data?.[0]) {
-        const a = analysisRes.data[0];
-        cards.push({ id: a.id, type: 'analysis', category: a.category, title: a.title, excerpt: a.excerpt, date: a.item_date || a.published_at, readTime: a.read_time, imageUrl: a.thumbnail_url || a.media_url });
-      }
-      if (reportsRes.data?.[0]) {
-        const r = reportsRes.data[0];
-        cards.push({ id: r.id, type: 'report', category: r.category, title: r.title, excerpt: r.excerpt, date: r.published_at, imageUrl: r.thumbnail_url || r.media_url });
-      }
-      if (awarenessRes.data?.[0]) {
-        const a = awarenessRes.data[0];
-        cards.push({ id: a.id, type: 'awareness', category: a.category, title: a.title, excerpt: a.excerpt, date: a.item_date || a.published_at, readTime: a.read_time, imageUrl: a.thumbnail_url || a.media_url });
-      }
-
       return cards;
     },
     staleTime: 5 * 60 * 1000,
@@ -126,8 +82,9 @@ export const InsightsSection = () => {
             ))
           ) : (
             cards.map((card, index) => {
-              const meta = TYPE_BADGE[card.type];
-              const TypeIcon = card.type === 'awareness' ? Lightbulb : card.type === 'analysis' ? BarChart3 : card.type === 'report' ? FileText : Newspaper;
+              const href = postPath(card);
+              const grp = mediaGroupOf(card.media_kind);
+              const TypeIcon = FORMAT_ICON[grp];
               return (
                 <motion.article
                   key={card.id}
@@ -138,12 +95,12 @@ export const InsightsSection = () => {
                   className="interaction-card group bg-background rounded-md overflow-hidden border border-border/50 hover:border-primary/20 transition-all duration-300"
                 >
                   {card.imageUrl && (
-                    <Link to={meta.route(card.id)}>
+                    <Link to={href}>
                       <div className="aspect-[16/9] overflow-hidden">
                         <img
                           src={card.imageUrl}
                           alt={card.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          className="w-full h-full object-contain bg-muted/30 group-hover:scale-105 transition-transform duration-500"
                           loading="lazy"
                         />
                       </div>
@@ -152,11 +109,11 @@ export const InsightsSection = () => {
                   <div className="p-5">
                     <div className="flex items-center gap-2 mb-3">
                       <TypeIcon className="w-4 h-4 text-primary" />
-                      <span className="text-xs font-semibold text-primary uppercase tracking-wider">{meta.label}</span>
+                      <span className="text-xs font-semibold text-primary uppercase tracking-wider">{card.post_type}</span>
                       <span className="text-xs text-muted-foreground">·</span>
-                      <span className="text-xs text-muted-foreground">{card.category}</span>
+                      <span className="text-xs text-muted-foreground truncate">{card.sub_category || card.category}</span>
                     </div>
-                    <Link to={meta.route(card.id)}>
+                    <Link to={href}>
                       <h3 className="text-base font-semibold text-foreground leading-snug mb-2 group-hover:text-primary transition-colors line-clamp-2">
                         {card.title}
                       </h3>
