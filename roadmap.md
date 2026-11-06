@@ -120,7 +120,8 @@
 - [x] 16 new drafts published (3 IPOs, 4 Daily Market News Updates, Weekly Capsule, Triggers Weekly, 5 Macro/Economy, MF Flows Sept-26, Swiggy) — all had covers, bodies and correct Type/Category; display dates preserved (midnight IST of item date); live Insights listing shows all of them. Share-preview HTML for the new pages awaits the in-progress deployment.
 - [x] Disclaimer wording and next-step link targets approved by management on 6 November 2026 ("All six are fine") — six type disclaimers and their six button targets in `src/components/insights/PostContext.tsx` are now signed off; IPO posts keep the earlier approved Choice FinX section.
 - [x] Five Credit articles published with covers; Indistock HDFC report credited (owner confirmed permission).
-- [ ] Monthly Market Review editions dated 1 Jun–1 Nov 2026 (retrospective), then forward Outlook from 1 Dec 2026 — scope approved; May 2026 sample saved as draft, awaiting user review before June–Oct editions
+- [x] Six Monthly Market Review editions (May–Oct 2026, dated 1 Jun–1 Nov) published with series cover
+- [ ] First forward-looking Monthly Market Outlook due 1 Dec 2026 (add October AMFI data after ~10 Nov)
 
 - [x] Open Account page: hero + Invest/Insure/Trade/CKYC tabs, KYC useful links, Express Your Interest form to Admin leads
 
