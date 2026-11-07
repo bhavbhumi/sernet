@@ -48,6 +48,9 @@ const tableColumns = [
   { key: 'country', label: 'Country' },
   { key: 'impact', label: 'Impact' },
   { key: 'category', label: 'Category' },
+  { key: 'previous_value', label: 'Previous' },
+  { key: 'forecast_value', label: 'Forecast' },
+  { key: 'actual_value', label: 'Actual' },
   { key: 'status', label: 'Status' },
 ];
 
