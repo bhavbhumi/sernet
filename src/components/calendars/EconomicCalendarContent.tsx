@@ -1,17 +1,9 @@
 import { useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { TrendingUp, Globe, Bell, Search, Download } from 'lucide-react';
 import { format } from 'date-fns';
-
-const fallbackEvents = [
-  { event_date: '2025-02-06', event_time: '17:30', event_name: 'RBI Monetary Policy Decision', country: 'India', impact: 'high', category: 'Interest Rates', previous_value: '6.50%', forecast_value: '6.25%', actual_value: '' },
-  { event_date: '2025-02-12', event_time: '17:30', event_name: 'CPI Inflation Rate YoY', country: 'India', impact: 'high', category: 'Inflation Data', previous_value: '5.22%', forecast_value: '4.80%', actual_value: '' },
-  { event_date: '2025-02-14', event_time: '12:00', event_name: 'WPI Inflation YoY', country: 'India', impact: 'medium', category: 'Inflation Data', previous_value: '2.37%', forecast_value: '2.10%', actual_value: '' },
-  { event_date: '2025-02-19', event_time: '20:00', event_name: 'FOMC Meeting Minutes', country: 'USA', impact: 'high', category: 'Interest Rates', previous_value: '-', forecast_value: '-', actual_value: '' },
-  { event_date: '2025-02-28', event_time: '18:30', event_name: 'GDP Growth Rate Q3', country: 'India', impact: 'high', category: 'GDP & Growth', previous_value: '5.4%', forecast_value: '6.0%', actual_value: '' },
-  { event_date: '2025-03-06', event_time: '12:00', event_name: 'Manufacturing PMI', country: 'India', impact: 'medium', category: 'Manufacturing', previous_value: '57.7', forecast_value: '57.0', actual_value: '' },
-];
 
 const getImpactColor = (impact: string) => {
   switch (impact) {
@@ -32,7 +24,7 @@ const EconomicCalendarContent = () => {
   const [countryFilter, setCountryFilter] = useState('All');
   const [categoryFilter, setCategoryFilter] = useState('All');
 
-  const { data: events = [], isLoading } = useQuery({
+  const { data: events = [], isLoading, isError, refetch } = useQuery({
     queryKey: ['economic_events'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -45,7 +37,7 @@ const EconomicCalendarContent = () => {
     },
   });
 
-  const displayData = events.length > 0 ? events : fallbackEvents;
+  const displayData = events;
 
   const filtered = useMemo(() => {
     return displayData.filter(e => {
@@ -132,6 +124,8 @@ const EconomicCalendarContent = () => {
             <div className="overflow-x-auto">
               {isLoading ? (
                 <div className="p-10 text-center text-muted-foreground text-sm">Loading events...</div>
+              ) : isError ? (
+                <div role="alert" className="p-10 text-center text-destructive text-sm">Calendar records could not be loaded. <Button variant="outline" size="sm" onClick={() => void refetch()}>Retry</Button></div>
               ) : filtered.length === 0 ? (
                 <div className="p-10 text-center text-muted-foreground text-sm">No events match your filters.</div>
               ) : (

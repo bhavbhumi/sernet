@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { Calendar, Clock, Info, Download, Search } from 'lucide-react';
 import { format, isAfter, isSameDay, parseISO } from 'date-fns';
@@ -18,18 +19,6 @@ type HolidayRow = {
   updated_at: string;
   created_by: string | null;
 };
-
-const fallbackHolidays: HolidayRow[] = [
-  { id: '1', holiday_date: '2025-01-26', holiday_name: 'Republic Day', day_of_week: 'Sunday', markets: 'NSE, BSE, MCX', notes: null, holiday_type: ['Market'], status: 'published', year: 2025, created_at: '', updated_at: '', created_by: null },
-  { id: '2', holiday_date: '2025-03-14', holiday_name: 'Holi', day_of_week: 'Friday', markets: 'NSE, BSE', notes: null, holiday_type: ['Market'], status: 'published', year: 2025, created_at: '', updated_at: '', created_by: null },
-  { id: '3', holiday_date: '2025-04-14', holiday_name: 'Dr. Ambedkar Jayanti', day_of_week: 'Monday', markets: 'NSE, BSE', notes: null, holiday_type: ['Market'], status: 'published', year: 2025, created_at: '', updated_at: '', created_by: null },
-  { id: '4', holiday_date: '2025-04-18', holiday_name: 'Good Friday', day_of_week: 'Friday', markets: 'NSE, BSE, MCX', notes: null, holiday_type: ['Market', 'Settlement'], status: 'published', year: 2025, created_at: '', updated_at: '', created_by: null },
-  { id: '5', holiday_date: '2025-08-15', holiday_name: 'Independence Day', day_of_week: 'Friday', markets: 'NSE, BSE, MCX', notes: null, holiday_type: ['Market'], status: 'published', year: 2025, created_at: '', updated_at: '', created_by: null },
-  { id: '6', holiday_date: '2025-10-02', holiday_name: 'Mahatma Gandhi Jayanti', day_of_week: 'Thursday', markets: 'NSE, BSE, MCX', notes: null, holiday_type: ['Market'], status: 'published', year: 2025, created_at: '', updated_at: '', created_by: null },
-  { id: '7', holiday_date: '2025-10-21', holiday_name: 'Diwali (Laxmi Pujan)', day_of_week: 'Tuesday', markets: 'NSE, BSE', notes: 'Muhurat trading session in evening', holiday_type: ['Market', 'Settlement'], status: 'published', year: 2025, created_at: '', updated_at: '', created_by: null },
-  { id: '8', holiday_date: '2025-11-05', holiday_name: 'Guru Nanak Jayanti', day_of_week: 'Wednesday', markets: 'NSE, BSE', notes: null, holiday_type: ['Market'], status: 'published', year: 2025, created_at: '', updated_at: '', created_by: null },
-  { id: '9', holiday_date: '2025-12-25', holiday_name: 'Christmas', day_of_week: 'Thursday', markets: 'NSE, BSE, MCX', notes: null, holiday_type: ['Market'], status: 'published', year: 2025, created_at: '', updated_at: '', created_by: null },
-];
 
 const currentYear = new Date().getFullYear();
 const years = [currentYear - 1, currentYear, currentYear + 1];
@@ -54,7 +43,7 @@ const MarketHolidaysContent = () => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  const { data: holidays = [], isLoading } = useQuery({
+  const { data: holidays = [], isLoading, isError, refetch } = useQuery({
     queryKey: ['market_holidays', selectedYear],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -68,7 +57,7 @@ const MarketHolidaysContent = () => {
     },
   });
 
-  const displayData: HolidayRow[] = holidays.length > 0 ? holidays : (selectedYear === currentYear ? fallbackHolidays : []);
+  const displayData: HolidayRow[] = holidays;
 
   // Find the next upcoming holiday (today or future)
   const nextHolidayIndex = useMemo(() => {
@@ -184,6 +173,8 @@ const MarketHolidaysContent = () => {
             <div className="overflow-x-auto">
               {isLoading ? (
                 <div className="p-10 text-center text-muted-foreground text-sm">Loading holidays...</div>
+              ) : isError ? (
+                <div role="alert" className="p-10 text-center text-destructive text-sm">Calendar records could not be loaded. <Button variant="outline" size="sm" onClick={() => void refetch()}>Retry</Button></div>
               ) : filtered.length === 0 ? (
                 <div className="p-10 text-center text-muted-foreground text-sm">No holidays found.</div>
               ) : (

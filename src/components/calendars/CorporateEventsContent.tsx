@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
+import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { Building2, Calendar, TrendingUp, Users, FileText, DollarSign, Search, Download, ChevronLeft, ChevronRight } from 'lucide-react';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, getDay, isSameDay, parseISO, addMonths, subMonths } from 'date-fns';
@@ -18,16 +19,6 @@ const eventTypeConfig: Record<EventType, { label: string; color: string; icon: t
   other: { label: 'Other', color: 'bg-muted text-muted-foreground', icon: Calendar },
 };
 
-const fallbackEvents = [
-  { event_date: '2025-02-10', company_name: 'Reliance Industries', ticker: 'RELIANCE', event_type: 'board', event_details: 'Q3 FY25 results declaration', amount: '' },
-  { event_date: '2025-02-12', company_name: 'TCS', ticker: 'TCS', event_type: 'dividend', event_details: 'Interim dividend, Ex-date', amount: '₹10 per share' },
-  { event_date: '2025-02-14', company_name: 'HDFC Bank', ticker: 'HDFCBANK', event_type: 'agm', event_details: 'Annual General Meeting for FY2024-25', amount: '' },
-  { event_date: '2025-02-18', company_name: 'Bajaj Finance', ticker: 'BAJFINANCE', event_type: 'board', event_details: 'Fund raising proposals consideration', amount: '' },
-  { event_date: '2025-02-20', company_name: 'ITC Ltd', ticker: 'ITC', event_type: 'split', event_details: 'Stock split from ₹10 to ₹1 face value', amount: '10:1' },
-  { event_date: '2025-02-22', company_name: 'Wipro', ticker: 'WIPRO', event_type: 'buyback', event_details: 'Share buyback via tender offer', amount: '₹305 per share' },
-  { event_date: '2025-02-25', company_name: 'Maruti Suzuki', ticker: 'MARUTI', event_type: 'board', event_details: 'Q3 results and interim dividend', amount: '' },
-];
-
 const allTypes: EventType[] = ['board', 'dividend', 'agm', 'bonus', 'split', 'buyback', 'rights', 'other'];
 
 const CorporateEventsContent = () => {
@@ -36,7 +27,7 @@ const CorporateEventsContent = () => {
   const [viewMode, setViewMode] = useState<'table' | 'calendar'>('table');
   const [calendarMonth, setCalendarMonth] = useState(new Date());
 
-  const { data: events = [], isLoading } = useQuery({
+  const { data: events = [], isLoading, isError, refetch } = useQuery({
     queryKey: ['corporate_events'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -49,7 +40,7 @@ const CorporateEventsContent = () => {
     },
   });
 
-  const displayData = events.length > 0 ? events : fallbackEvents;
+  const displayData = events;
 
   const filtered = useMemo(() => {
     return displayData.filter(e => {
@@ -215,7 +206,9 @@ const CorporateEventsContent = () => {
               <div className="overflow-x-auto">
                 {isLoading ? (
                   <div className="p-10 text-center text-muted-foreground text-sm">Loading events...</div>
-                ) : filtered.length === 0 ? (
+                ) : isError ? (
+                <div role="alert" className="p-10 text-center text-destructive text-sm">Calendar records could not be loaded. <Button variant="outline" size="sm" onClick={() => void refetch()}>Retry</Button></div>
+              ) : filtered.length === 0 ? (
                   <div className="p-10 text-center text-muted-foreground text-sm">No events found.</div>
                 ) : (
                   <table className="w-full">
