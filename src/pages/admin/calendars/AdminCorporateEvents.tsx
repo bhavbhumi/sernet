@@ -26,7 +26,7 @@ const emptyForm = {
 };
 
 const tableColumns = [
-  { key: 'event_date', label: 'Date' },
+  { key: 'event_date', label: 'Date', format: 'date' as const },
   { key: 'company_name', label: 'Company' },
   { key: 'ticker', label: 'Ticker' },
   { key: 'event_type', label: 'Event Type' },
@@ -43,6 +43,7 @@ const AdminCorporateEvents = () => (
     emptyForm={emptyForm}
     tableColumns={tableColumns}
     hasStatus
+    orderBy={{ column: 'event_date', ascending: false }}
     categoryField="event_type"
   />
 );

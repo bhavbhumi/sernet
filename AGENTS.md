@@ -1,4 +1,5 @@
 # Architecture rules
+- Generic CMS lists use declared table-specific sort/date fields; publication status must not imply a `published_at` column, and calendar public views show only CMS rows, never sample fallbacks, so admin and public records remain consistent.
 
 - The site runs on TanStack Start with server rendering; article routes build share/canonical metadata in route `loader` + `head()` from the live CMS row and its own sized cover, so new posts get correct previews on every request without a rebuild.
 - Public pages set server-rendered titles/descriptions via route `head()` (`src/lib/routeHead.ts`); `SEOHead` only syncs the open document after navigation, so new public pages need both.
