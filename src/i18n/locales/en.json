@@ -243,8 +243,7 @@
     "description": "Market holidays, economic events, and data releases — stay ahead of what moves the markets.",
     "tabs": {
       "holidayEvents": "Holiday Events",
-      "economicEvents": "Economic Events",
-      "corporateEvents": "Corporate Events"
+      "economicEvents": "Economic Events"
     }
   },
   "updates": {

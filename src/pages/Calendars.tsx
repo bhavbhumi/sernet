@@ -5,15 +5,13 @@ import { SEOHead } from '@/components/shared/SEOHead';
 import { motion, AnimatePresence } from 'framer-motion';
 import MarketHolidaysContent from '@/components/calendars/MarketHolidaysContent';
 import EconomicCalendarContent from '@/components/calendars/EconomicCalendarContent';
-import CorporateEventsContent from '@/components/calendars/CorporateEventsContent';
 
-const calendarTabs = ['Holiday Events', 'Economic Events', 'Corporate Events'] as const;
+const calendarTabs = ['Holiday Events', 'Economic Events'] as const;
 type CalendarTab = (typeof calendarTabs)[number];
 
 const tabContent: Record<CalendarTab, React.ReactNode> = {
   'Holiday Events': <MarketHolidaysContent />,
   'Economic Events': <EconomicCalendarContent />,
-  'Corporate Events': <CorporateEventsContent />,
 };
 
 const Calendars = () => {
@@ -23,7 +21,7 @@ const Calendars = () => {
     <Layout>
       <SEOHead
         title="Market Calendars"
-        description="Market holidays, economic events and corporate action calendars for Indian stock markets."
+        description="Market holidays, economic events and data release calendars for Indian markets."
         path="/calendars"
       />
       <PageHero
