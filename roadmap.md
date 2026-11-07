@@ -1,4 +1,5 @@
 # Roadmap
+- [ ] Add 2027 market holidays from confirmed official exchange schedules; do not publish projected festival dates as exchange holidays.
 - [x] Remove Corporate Events public tab, admin page/navigation, route and all eight translated labels; mark unused database table deprecated (retained only for earlier deployments). Public economic list still shows 110 events; signed-in admin listing verified, mobile has no overflow/page errors, three CMS tests pass and build OK. Preview changes require publication.
 - [x] Repair calendar/subscriber admin query columns, calendar saves/status changes, searchable fields and date displays; remove public sample fallbacks and show errors explicitly. Seven tests pass; public view matches 30 holidays for 2026, 110 economic events and zero corporate rows. Newsletter signup repaired and verified through UI plus stored preferences; test entry removed and original two subscribers retained. Preview changes require publication.
 - [ ] Signed-in verification of calendar saves and subscriber admin listing — preview session could not be minted for requester; requires owner to sign in in preview.
