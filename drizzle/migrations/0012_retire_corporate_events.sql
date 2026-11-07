@@ -1,0 +1,1 @@
+COMMENT ON TABLE public.corporate_events IS 'DEPRECATED: Corporate Events removed from public and administrative calendars at management request on 7 November 2026. No longer read or written by the app; retained only for compatibility with prior deployments.';
