@@ -85,6 +85,13 @@
       "when": 1794036264919,
       "tag": "0011_fix_newsletter_preferences_array",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1794038256160,
+      "tag": "0012_retire_corporate_events",
+      "breakpoints": true
     }
   ]
 }

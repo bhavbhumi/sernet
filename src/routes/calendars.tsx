@@ -7,7 +7,7 @@ export const Route = createFileRoute("/calendars")({
     pageHead({
       title: "Market Calendars",
       description:
-        "Market holidays, economic events and corporate action calendars for Indian stock markets.",
+        "Market holidays, economic events and data release calendars for Indian markets.",
       path: "/calendars",
     }),
   component: Calendars,

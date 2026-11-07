@@ -117,7 +117,6 @@ import { Route as AdminHrLeaveEncashmentRouteImport } from './routes/admin/hr/le
 import { Route as AdminHrPayrollRegisterRouteImport } from './routes/admin/hr/payroll/register'
 import { Route as AdminHrPayrollRunRouteImport } from './routes/admin/hr/payroll/run'
 import { Route as AdminHrPayrollStatutoryRouteImport } from './routes/admin/hr/payroll/statutory'
-import { Route as AdminMarketingCalendarsCorporateRouteImport } from './routes/admin/marketing/calendars/corporate'
 import { Route as AdminMarketingCalendarsEconomicRouteImport } from './routes/admin/marketing/calendars/economic'
 import { Route as AdminMarketingCalendarsHolidaysRouteImport } from './routes/admin/marketing/calendars/holidays'
 import { Route as AdminMarketingCalendarsImportEconomicRouteImport } from './routes/admin/marketing/calendars/import-economic'
@@ -705,12 +704,6 @@ const AdminHrPayrollStatutoryRoute = AdminHrPayrollStatutoryRouteImport.update({
   path: '/admin/hr/payroll/statutory',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminMarketingCalendarsCorporateRoute =
-  AdminMarketingCalendarsCorporateRouteImport.update({
-    id: '/admin/marketing/calendars/corporate',
-    path: '/admin/marketing/calendars/corporate',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const AdminMarketingCalendarsEconomicRoute =
   AdminMarketingCalendarsEconomicRouteImport.update({
     id: '/admin/marketing/calendars/economic',
@@ -1003,7 +996,6 @@ export interface FileRoutesByFullPath {
   '/admin/hr/payroll/register': typeof AdminHrPayrollRegisterRoute
   '/admin/hr/payroll/run': typeof AdminHrPayrollRunRoute
   '/admin/hr/payroll/statutory': typeof AdminHrPayrollStatutoryRoute
-  '/admin/marketing/calendars/corporate': typeof AdminMarketingCalendarsCorporateRoute
   '/admin/marketing/calendars/economic': typeof AdminMarketingCalendarsEconomicRoute
   '/admin/marketing/calendars/holidays': typeof AdminMarketingCalendarsHolidaysRoute
   '/admin/marketing/calendars/import-economic': typeof AdminMarketingCalendarsImportEconomicRoute
@@ -1146,7 +1138,6 @@ export interface FileRoutesByTo {
   '/admin/hr/payroll/register': typeof AdminHrPayrollRegisterRoute
   '/admin/hr/payroll/run': typeof AdminHrPayrollRunRoute
   '/admin/hr/payroll/statutory': typeof AdminHrPayrollStatutoryRoute
-  '/admin/marketing/calendars/corporate': typeof AdminMarketingCalendarsCorporateRoute
   '/admin/marketing/calendars/economic': typeof AdminMarketingCalendarsEconomicRoute
   '/admin/marketing/calendars/holidays': typeof AdminMarketingCalendarsHolidaysRoute
   '/admin/marketing/calendars/import-economic': typeof AdminMarketingCalendarsImportEconomicRoute
@@ -1290,7 +1281,6 @@ export interface FileRoutesById {
   '/admin/hr/payroll/register': typeof AdminHrPayrollRegisterRoute
   '/admin/hr/payroll/run': typeof AdminHrPayrollRunRoute
   '/admin/hr/payroll/statutory': typeof AdminHrPayrollStatutoryRoute
-  '/admin/marketing/calendars/corporate': typeof AdminMarketingCalendarsCorporateRoute
   '/admin/marketing/calendars/economic': typeof AdminMarketingCalendarsEconomicRoute
   '/admin/marketing/calendars/holidays': typeof AdminMarketingCalendarsHolidaysRoute
   '/admin/marketing/calendars/import-economic': typeof AdminMarketingCalendarsImportEconomicRoute
@@ -1435,7 +1425,6 @@ export interface FileRouteTypes {
     | '/admin/hr/payroll/register'
     | '/admin/hr/payroll/run'
     | '/admin/hr/payroll/statutory'
-    | '/admin/marketing/calendars/corporate'
     | '/admin/marketing/calendars/economic'
     | '/admin/marketing/calendars/holidays'
     | '/admin/marketing/calendars/import-economic'
@@ -1578,7 +1567,6 @@ export interface FileRouteTypes {
     | '/admin/hr/payroll/register'
     | '/admin/hr/payroll/run'
     | '/admin/hr/payroll/statutory'
-    | '/admin/marketing/calendars/corporate'
     | '/admin/marketing/calendars/economic'
     | '/admin/marketing/calendars/holidays'
     | '/admin/marketing/calendars/import-economic'
@@ -1721,7 +1709,6 @@ export interface FileRouteTypes {
     | '/admin/hr/payroll/register'
     | '/admin/hr/payroll/run'
     | '/admin/hr/payroll/statutory'
-    | '/admin/marketing/calendars/corporate'
     | '/admin/marketing/calendars/economic'
     | '/admin/marketing/calendars/holidays'
     | '/admin/marketing/calendars/import-economic'
@@ -1865,7 +1852,6 @@ export interface RootRouteChildren {
   AdminHrPayrollRegisterRoute: typeof AdminHrPayrollRegisterRoute
   AdminHrPayrollRunRoute: typeof AdminHrPayrollRunRoute
   AdminHrPayrollStatutoryRoute: typeof AdminHrPayrollStatutoryRoute
-  AdminMarketingCalendarsCorporateRoute: typeof AdminMarketingCalendarsCorporateRoute
   AdminMarketingCalendarsEconomicRoute: typeof AdminMarketingCalendarsEconomicRoute
   AdminMarketingCalendarsHolidaysRoute: typeof AdminMarketingCalendarsHolidaysRoute
   AdminMarketingCalendarsImportEconomicRoute: typeof AdminMarketingCalendarsImportEconomicRoute
@@ -2660,13 +2646,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminHrPayrollStatutoryRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/marketing/calendars/corporate': {
-      id: '/admin/marketing/calendars/corporate'
-      path: '/admin/marketing/calendars/corporate'
-      fullPath: '/admin/marketing/calendars/corporate'
-      preLoaderRoute: typeof AdminMarketingCalendarsCorporateRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/admin/marketing/calendars/economic': {
       id: '/admin/marketing/calendars/economic'
       path: '/admin/marketing/calendars/economic'
@@ -3001,7 +2980,6 @@ const rootRouteChildren: RootRouteChildren = {
   AdminHrPayrollRegisterRoute: AdminHrPayrollRegisterRoute,
   AdminHrPayrollRunRoute: AdminHrPayrollRunRoute,
   AdminHrPayrollStatutoryRoute: AdminHrPayrollStatutoryRoute,
-  AdminMarketingCalendarsCorporateRoute: AdminMarketingCalendarsCorporateRoute,
   AdminMarketingCalendarsEconomicRoute: AdminMarketingCalendarsEconomicRoute,
   AdminMarketingCalendarsHolidaysRoute: AdminMarketingCalendarsHolidaysRoute,
   AdminMarketingCalendarsImportEconomicRoute:

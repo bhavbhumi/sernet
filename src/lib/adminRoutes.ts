@@ -43,7 +43,6 @@ export const ADMIN_ROUTES = {
       holidays: '/admin/marketing/calendars/holidays',
       economic: '/admin/marketing/calendars/economic',
       importEconomic: '/admin/marketing/calendars/import-economic',
-      corporate: '/admin/marketing/calendars/corporate',
     },
     site: {
       settings: '/admin/marketing/site/settings',

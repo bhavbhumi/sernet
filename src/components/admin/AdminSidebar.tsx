@@ -92,7 +92,6 @@ const departmentGroups: DepartmentGroup[] = [
         label: 'Calendars', icon: CalendarDays, moduleKey: 'marketing/calendars', children: [
           { label: 'Market Holidays', icon: CalendarDays, href: R.marketing.calendars.holidays },
           { label: 'Economic Events', icon: BarChart3, href: R.marketing.calendars.economic },
-          { label: 'Corporate Events', icon: Briefcase, href: R.marketing.calendars.corporate },
         ]
       },
     ]
