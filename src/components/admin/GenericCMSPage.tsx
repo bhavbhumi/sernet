@@ -1,5 +1,7 @@
 import { useMISAutoRefresh } from '@/hooks/useMISAutoRefresh';
 import { readAllMISRows } from '@/lib/misRefresh';
+import { cmsOrderColumn, cmsPublicationPatch, matchesCMSRecord } from '@/lib/cmsRecords';
+import { useQueryClient } from '@tanstack/react-query';
 
 // Generic CMS table page factory for simple content types
 // Used by: Reports, Bulletin, News, Circulars, Press
@@ -14,7 +16,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Search, Eye, EyeOff, Star, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plus, Search, Eye, EyeOff, Star, ChevronLeft, ChevronRight, RefreshCw } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { FieldInfoTooltip } from '@/components/admin/FieldInfoTooltip';
@@ -112,6 +114,9 @@ export function GenericCMSPage({
 }: GenericCMSPageProps) {
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const hasPublicationDate = fields.some(field => field.key === 'published_at');
+  const [loadError, setLoadError] = useState('');
   const [items, setItems] = useState<Record<string, unknown>[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -127,12 +132,14 @@ export function GenericCMSPage({
   const fetchItems = async (initial = false) => {
     if (initial) setLoading(true);
     try {
-      const sortCol = orderBy?.column ?? 'published_at';
+      const sortCol = cmsOrderColumn(fields, orderBy?.column);
       const sortAsc = orderBy?.ascending ?? false;
       const data = await readAllMISRows<Record<string, unknown>>((from, to) => db(tableName).select('*')
         .order(sortCol, { ascending: sortAsc, nullsFirst: false }).order('created_at', { ascending: false }).order('id').range(from, to));
       setItems(data);
-    } catch {
+      setLoadError('');
+    } catch (error) {
+      setLoadError(error instanceof Error ? error.message : 'Records could not be refreshed');
       toast({ title: 'Records could not be refreshed', variant: 'destructive' });
     } finally { setLoading(false); }
   };
@@ -162,9 +169,7 @@ export function GenericCMSPage({
     });
     const payload = {
       ...cleanedForm,
-      ...(hasStatus && cleanedForm.status === 'published' && !adminEnteredDate
-        ? { published_at: new Date().toISOString() }
-        : {}),
+      ...cmsPublicationPatch(hasPublicationDate, cleanedForm.status, adminEnteredDate),
     };
     const { error } = editItem
       ? await db(tableName).update(payload).eq('id', editItem.id as string)
@@ -178,6 +183,7 @@ export function GenericCMSPage({
         entity_id: editItem ? String(editItem.id) : undefined,
         details: { title: form.title || form.question || form.name || '' },
       });
+      void queryClient.invalidateQueries({ queryKey: [tableName] });
       toast({ title: editItem ? 'Updated successfully' : 'Created successfully' }); setDialogOpen(false); fetchItems();
     }
     setSaving(false);
@@ -186,7 +192,9 @@ export function GenericCMSPage({
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this item?')) return;
     const item = items.find(i => String(i.id) === id);
-    await db(tableName).delete().eq('id', id);
+    const { error } = await db(tableName).delete().eq('id', id);
+    if (error) { toast({ title: 'Delete failed', description: error.message, variant: 'destructive' }); return; }
+    void queryClient.invalidateQueries({ queryKey: [tableName] });
     logAudit({ action: 'delete', entity_type: tableName, entity_id: id, details: { title: item?.title || '' } });
     fetchItems();
   };
@@ -201,17 +209,18 @@ export function GenericCMSPage({
   const toggleStatus = async (item: Record<string, unknown>) => {
     const newStatus = item.status === 'published' ? 'draft' : 'published';
     const existingDate = item.published_at ? String(item.published_at).trim() : '';
-    await db(tableName).update({
+    const { error } = await db(tableName).update({
       status: newStatus,
-      ...(newStatus === 'published' && !existingDate ? { published_at: new Date().toISOString() } : {}),
+      ...cmsPublicationPatch(hasPublicationDate, newStatus, existingDate),
     }).eq('id', item.id as string);
+    if (error) { toast({ title: 'Status change failed', description: error.message, variant: 'destructive' }); return; }
+    void queryClient.invalidateQueries({ queryKey: [tableName] });
     logAudit({ action: newStatus === 'published' ? 'publish' : 'unpublish', entity_type: tableName, entity_id: String(item.id), details: { title: item.title || '' } });
     fetchItems();
   };
 
   const filtered = items.filter(item => {
-    const titleVal = String(item.title ?? '');
-    const matchSearch = titleVal.toLowerCase().includes(search.toLowerCase());
+    const matchSearch = matchesCMSRecord(item, tableColumns.map(column => column.key), search);
     const matchStatus = !hasStatus || filterStatus === 'all' || item.status === filterStatus;
     const matchCat = !categoryField || filterCategory === 'all' || String(item[categoryField] ?? '') === filterCategory;
     const matchExtra = !extraFilterField || filterExtra === 'all' || String(item[extraFilterField] ?? '') === filterExtra;
@@ -254,7 +263,7 @@ export function GenericCMSPage({
     <AdminLayout
       title={title}
       subtitle={subtitle}
-      actions={<div className="flex items-center gap-2">{headerActions}<Button onClick={openNew} size="sm"><Plus className="h-4 w-4 mr-1.5" /> New</Button></div>}
+      actions={<div className="flex items-center gap-2">{headerActions}<Button variant="outline" size="sm" aria-label="Refresh records" onClick={() => void fetchItems(true)} disabled={loading}><RefreshCw className="h-4 w-4" /></Button><Button onClick={openNew} size="sm"><Plus className="h-4 w-4 mr-1.5" /> New</Button></div>}
     >
       {/* Status stat chips */}
       {statusCounts && (
@@ -332,6 +341,8 @@ export function GenericCMSPage({
                 Array(5).fill(0).map((_, i) => (
                   <tr key={i}><td colSpan={colSpan} className="px-4 py-3"><div className="h-4 bg-muted animate-pulse rounded" /></td></tr>
                 ))
+              ) : loadError ? (
+                <tr><td colSpan={colSpan} className="px-4 py-8 text-center text-destructive" role="alert">Records could not be loaded: {loadError}</td></tr>
               ) : paginated.length === 0 ? (
                 <tr><td colSpan={colSpan} className="px-4 py-12 text-center text-muted-foreground">No items found. Click "New" to add one.</td></tr>
               ) : paginated.map(item => (
@@ -409,7 +420,7 @@ export function GenericCMSPage({
                   <Input type={field.type === 'number' ? 'number' : 'text'} placeholder={field.placeholder} value={String(form[field.key] ?? '')} onChange={e => setForm(f => ({ ...f, [field.key]: e.target.value }))} />
                 )}
                 {field.type === 'date' && (
-                  <Input type="date" placeholder={field.placeholder} value={String(form[field.key] ?? '')} onChange={e => setForm(f => ({ ...f, [field.key]: e.target.value }))} />
+                  <Input type="date" placeholder={field.placeholder} value={String(form[field.key] ?? '').slice(0, 10)} onChange={e => setForm(f => ({ ...f, [field.key]: e.target.value }))} />
                 )}
                 {field.type === 'select' && field.options && (
                   <Select value={String(form[field.key] ?? '')} onValueChange={v => setForm(f => ({ ...f, [field.key]: v }))}>

@@ -25,7 +25,7 @@ const emptyForm = {
 
 const tableColumns = [
   { key: 'holiday_name', label: 'Holiday' },
-  { key: 'holiday_date', label: 'Date' },
+  { key: 'holiday_date', label: 'Date', format: 'date' as const },
   { key: 'holiday_type', label: 'Type' },
   { key: 'markets', label: 'Markets' },
   { key: 'year', label: 'Year' },
@@ -41,6 +41,7 @@ const AdminMarketHolidays = () => (
     emptyForm={emptyForm}
     tableColumns={tableColumns}
     hasStatus
+    orderBy={{ column: 'holiday_date', ascending: false }}
     categoryField="year"
   />
 );

@@ -78,6 +78,13 @@
       "when": 1793970861619,
       "tag": "0010_excerpt_staging",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1794036264919,
+      "tag": "0011_fix_newsletter_preferences_array",
+      "breakpoints": true
     }
   ]
 }

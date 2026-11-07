@@ -1,4 +1,7 @@
 # Roadmap
+- [x] Repair calendar/subscriber admin query columns, calendar saves/status changes, searchable fields and date displays; remove public sample fallbacks and show errors explicitly. Seven tests pass; public view matches 30 holidays for 2026, 110 economic events and zero corporate rows. Newsletter signup repaired and verified through UI plus stored preferences; test entry removed and original two subscribers retained. Preview changes require publication.
+- [ ] Signed-in verification of calendar saves and subscriber admin listing — preview session could not be minted for requester; requires owner to sign in in preview.
+- [ ] Review economic calendar source dates and actuals — existing 110 rows have no forecasts/actuals; verified values or working provider sync required before data completion. Do not invent values or corporate events.
 
 - [x] Homepage CTA reworded: heading "Prosper with SERNET", subtitle now names the registered-distributor role, button reads "Open Account" to match the header — all eight locales updated (button label reused from each locale's existing header wording). English and Hindi checked on screen; button label unclipped, no page errors. Preview only, not published.
 - [x] Open Account interests trimmed: Tax Planning content and checkbox removed (no partner), PMS and AIF merged into one "PMS / AIF" checkbox, Bonds checkbox removed (Altifi keeps its own signup steps). Seven tests passed; phone/desktop checkbox list and Other Services sections checked, no overflow. Preview only.

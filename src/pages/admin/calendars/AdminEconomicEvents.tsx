@@ -42,7 +42,7 @@ const emptyForm = {
 };
 
 const tableColumns = [
-  { key: 'event_date', label: 'Date' },
+  { key: 'event_date', label: 'Date', format: 'date' as const },
   { key: 'event_time', label: 'Time' },
   { key: 'event_name', label: 'Event' },
   { key: 'country', label: 'Country' },
@@ -136,6 +136,7 @@ const AdminEconomicEvents = () => {
       emptyForm={emptyForm}
       tableColumns={tableColumns}
       hasStatus
+      orderBy={{ column: 'event_date', ascending: false }}
       categoryField="impact"
       headerActions={
         <div className="flex items-center gap-2">

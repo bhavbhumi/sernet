@@ -5,7 +5,7 @@ const fields: FieldDef[] = [
   { key: 'email', label: 'Email', type: 'text', required: true },
   { key: 'first_name', label: 'First Name', type: 'text', required: true },
   { key: 'last_name', label: 'Last Name', type: 'text' },
-  { key: 'preferences', label: 'Preferences', type: 'multiselect', options: ['resources', 'articles', 'promotion'] },
+  { key: 'preferences', label: 'Preferences', type: 'multiselect', options: ['resources', 'articles', 'promotions'] },
   { key: 'status', label: 'Status', type: 'select', options: ['active', 'unsubscribed'], required: true },
   { key: 'subscribed_at', label: 'Subscribed At', type: 'date' },
 ];
@@ -14,7 +14,7 @@ const emptyForm = {
   email: '',
   first_name: '',
   last_name: '',
-  preferences: ['resources', 'articles', 'promotion'],
+  preferences: ['resources', 'articles', 'promotions'],
   status: 'active',
   subscribed_at: '',
 };
@@ -24,7 +24,7 @@ const tableColumns = [
   { key: 'first_name', label: 'Name', width: '20%' },
   { key: 'preferences', label: 'Preferences', width: '20%' },
   { key: 'status', label: 'Status', width: '10%' },
-  { key: 'subscribed_at', label: 'Subscribed', width: '15%' },
+  { key: 'subscribed_at', label: 'Subscribed', width: '15%', format: 'date' as const },
 ];
 
 const AdminNewsletter = () => {
@@ -37,6 +37,7 @@ const AdminNewsletter = () => {
       emptyForm={emptyForm}
       tableColumns={tableColumns}
       hasStatus={false}
+      orderBy={{ column: 'subscribed_at', ascending: false }}
       categoryField="status"
     />
   );
