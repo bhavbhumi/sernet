@@ -8,10 +8,14 @@ import { NetworkSection } from '@/components/home/NetworkSection';
 import { TestimonialSection } from '@/components/home/TestimonialSection';
 import { OpenAccountSection } from '@/components/home/OpenAccountSection';
 import { InsightsSection } from '@/components/home/InsightsSection';
+import { DiwaliBanner } from '@/components/home/DiwaliBanner';
+import { DiwaliGlow } from '@/components/home/DiwaliGlow';
 
 const Index = () => {
   return (
     <Layout>
+      <DiwaliGlow />
+      <DiwaliBanner />
       <SEOHead
         title="SERNET | Mutual Funds, Insurance & Trading Since 1986"
         exactTitle
