@@ -1,4 +1,6 @@
 # Roadmap
+- [x] Publish the 11 covered drafts with Type/Category set and original dates; three missing Gold/Silver chart placeholders removed. Live article share title/cover verified on two posts.
+- [ ] Implement updated Marketing plan after approval: separate Website group (Content Studio, Resources incl. Calculators/Downloads admin), separate Feedback group (Surveys, Reviews; Polls hidden), ticket-close survey with review invitation, lead attribution on every public form.
 - [x] Prepare Marketing action plan for user observations; implementation awaits feedback. Then take Sales, Support and Accounts in that order; client portal remains deferred.
 - [x] Cover all 11 Insights drafts (5–8 November): seven unique optimized WebP images and four approved series-cover mappings. All ten distinct URLs return 200; signed-in draft editor displays loaded cover. No wording, dates, classification or publication status changed.
 - [ ] Review the 11 draft posts before publication: all lack approved Type classification; at least the Gold/Silver body contains an unresolved original-chart placeholder. Covers are complete, not a content-readiness certification.
