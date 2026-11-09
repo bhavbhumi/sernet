@@ -1,5 +1,38 @@
 # Marketing module — action plan for review
 
+## Updated direction (9 November 2026)
+**Single objective: generate leads the team can pursue.** Every Marketing tool is judged by whether it produces, enriches or hands over a lead.
+
+### New admin menu structure
+```text
+Website (own group, moved out of System)
+  Site Settings · Page Directory · SEO Health · Media Library
+  Content Studio: Posts (Read / Watch / Listen) · Feeds (RSS) · Bulletin · Press & Media
+  Resources:      Calendars (Holidays, Economic Events) · Calculators · Downloads
+Marketing
+  Leads Overview · Campaigns · Lead Attribution · Events & Webinars · Subscribers · Composer
+Feedback (own group)
+  Surveys · Reviews        (Polls retired from the menu)
+System
+  Master Data · Users & Access · Monitor
+```
+- Existing page addresses keep working; only grouping and access keys change. Permissions for current staff move with their screens.
+- **Calculators** and **Downloads** become editable in Admin and drive the public pages (downloadable forms per Invest/Insure/Trade/Other tabs; calculator enquiry results feed leads). Today both are largely fixed on the website.
+- Every Resource and Content page carries its matching call to action; each enquiry records which page, post, calculator or download produced it.
+
+### Feedback: survey or review after a ticket closes?
+- **Every closed ticket → a short satisfaction survey** (1–5 rating + optional comment), linked to the ticket and client. It measures service quality privately.
+- **Review only by invitation**: satisfied clients (4–5) are offered the option to leave a public review, which still goes through moderation and permission to publish. Low ratings create a follow-up task for Support instead.
+- **Periodic client surveys** continue on Microsoft Forms: Admin keeps the survey link, audience and dates, sends it through Composer, and records responses only if exported/imported (Microsoft results are not read automatically).
+- **Polls** are hidden from Admin and the website; existing data is kept.
+
+### Lead-focused priority order
+1. Website/Feedback menu restructure with unchanged links and permissions.
+2. Every public form (Open Account, Contact, calculators, downloads, newsletter, events, post CTAs) creates one attributed lead with source page, campaign and service interest.
+3. Marketing Leads Overview: new, unassigned, handed to Sales, accepted — opening the filtered list.
+4. Calculators and Downloads admin; ticket-close survey and review invitation.
+5. Newsletter consent/controlled sending, then events.
+
 ## Objective and sequence
 Make Marketing usable for SERNET's own team: prepare content, obtain approval, publish, communicate with consenting subscribers, capture attributable enquiries and hand them to Sales or Support.
 
