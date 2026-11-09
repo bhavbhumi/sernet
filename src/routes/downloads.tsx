@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { pageHead } from "@/lib/routeHead";
 import DownloadsPage from "@/pages/DownloadsPage";
+import { downloadItemsQuery } from "@/content/downloads";
 
 export const Route = createFileRoute("/downloads")({
   head: () =>
@@ -10,5 +11,6 @@ export const Route = createFileRoute("/downloads")({
         "Download account opening forms, product documents and apps for Tick Funds, Tushil and Choice FinX.",
       path: "/downloads",
     }),
+  loader: ({ context }) => context.queryClient.ensureQueryData(downloadItemsQuery),
   component: DownloadsPage,
 });

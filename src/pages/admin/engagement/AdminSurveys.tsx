@@ -24,6 +24,7 @@ interface Survey {
   status: string;
   estimated_time: string | null;
   deadline_at: string | null;
+  external_url: string | null;
   created_at: string;
 }
 
@@ -61,7 +62,7 @@ export default function AdminSurveys() {
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editItem, setEditItem] = useState<Survey | null>(null);
-  const [form, setForm] = useState({ title: '', description: '', category: 'General', status: 'active', estimated_time: '5 mins', deadline_at: '' });
+  const [form, setForm] = useState({ title: '', description: '', category: 'General', status: 'active', estimated_time: '5 mins', deadline_at: '', external_url: '' });
   const [questions, setQuestions] = useState<Question[]>([emptyQuestion()]);
   const [saving, setSaving] = useState(false);
   const [responsesFor, setResponsesFor] = useState<Survey | null>(null);
@@ -79,7 +80,7 @@ export default function AdminSurveys() {
 
   const openNew = () => {
     setEditItem(null);
-    setForm({ title: '', description: '', category: 'General', status: 'active', estimated_time: '5 mins', deadline_at: '' });
+    setForm({ title: '', description: '', category: 'General', status: 'active', estimated_time: '5 mins', deadline_at: '', external_url: '' });
     setQuestions([emptyQuestion()]);
     setDialogOpen(true);
   };
@@ -93,6 +94,7 @@ export default function AdminSurveys() {
       status: survey.status,
       estimated_time: survey.estimated_time ?? '5 mins',
       deadline_at: survey.deadline_at ? survey.deadline_at.slice(0, 10) : '',
+      external_url: survey.external_url ?? '',
     });
     const { data } = await db('survey_questions').select('*').eq('survey_id', survey.id).order('sort_order');
     const qs: Question[] = (data ?? []).map((q: Record<string, unknown>) => ({
@@ -121,6 +123,7 @@ export default function AdminSurveys() {
       status: form.status,
       estimated_time: form.estimated_time || null,
       deadline_at: form.deadline_at ? new Date(form.deadline_at).toISOString() : null,
+      external_url: form.external_url.trim() || null,
     };
 
     let surveyId = editItem?.id;
@@ -258,6 +261,11 @@ export default function AdminSurveys() {
               <div className="space-y-1.5">
                 <Label>Deadline</Label>
                 <Input type="date" value={form.deadline_at} onChange={e => setForm(f => ({ ...f, deadline_at: e.target.value }))} />
+              </div>
+              <div className="col-span-2 space-y-1.5">
+                <Label>External form link (optional)</Label>
+                <Input type="url" placeholder="https://forms.cloud.microsoft/…" value={form.external_url} onChange={e => setForm(f => ({ ...f, external_url: e.target.value }))} />
+                <p className="text-xs text-muted-foreground">When set, visitors answer on this form (e.g. Microsoft Forms). Responses stay there and are not counted here.</p>
               </div>
               <div className="col-span-2 space-y-1.5">
                 <Label>Description</Label>

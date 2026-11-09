@@ -24,6 +24,7 @@ interface Survey {
   status: string;
   estimated_time: string | null;
   deadline_at: string | null;
+  external_url?: string | null;
 }
 
 interface Question {
@@ -320,7 +321,7 @@ export const SurveysContent = () => {
                 {survey.description && <p className="text-sm text-muted-foreground mb-4 flex-1">{survey.description}</p>}
                 <div className="flex items-center gap-4 text-xs text-muted-foreground mb-4">
                   {survey.estimated_time && <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {survey.estimated_time}</span>}
-                  <span className="flex items-center gap-1"><Users className="h-3 w-3" /> {responseCounts[survey.id] ?? 0} responses</span>
+                  {!survey.external_url && <span className="flex items-center gap-1"><Users className="h-3 w-3" /> {responseCounts[survey.id] ?? 0} responses</span>}
                 </div>
                 <div className="flex items-center justify-between">
                   {survey.deadline_at && (
@@ -328,6 +329,11 @@ export const SurveysContent = () => {
                       <Calendar className="h-3 w-3" /> {new Date(survey.deadline_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
                     </span>
                   )}
+                  {survey.external_url && survey.status === 'active' ? (
+                    <a href={survey.external_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-primary text-sm font-medium hover:underline ml-auto">
+                      Take Survey <ArrowRight className="h-4 w-4" />
+                    </a>
+                  ) : (
                   <button
                     onClick={() => setSelectedSurvey(survey)}
                     disabled={survey.status === 'closed'}
@@ -336,6 +342,7 @@ export const SurveysContent = () => {
                     {survey.status === 'closed' ? 'Closed' : survey.status === 'upcoming' ? 'Upcoming' : 'Take Survey'}
                     <ArrowRight className="h-4 w-4" />
                   </button>
+                  )}
                 </div>
                 <SurveyEngagement surveyId={survey.id} />
               </motion.div>

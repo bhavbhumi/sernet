@@ -7,7 +7,7 @@ export const Route = createFileRoute("/opinions")({
     pageHead({
       title: "Opinions",
       description:
-        "Share your feedback through surveys and polls — help SERNET improve products and services.",
+        "Share your feedback through surveys — help SERNET improve products and services.",
       path: "/opinions",
     }),
   component: Opinions,

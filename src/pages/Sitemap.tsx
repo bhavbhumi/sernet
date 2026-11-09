@@ -58,7 +58,7 @@ const sitemapSections = [
   {
     title: 'Engagement',
     links: [
-      { label: 'Opinions (Polls & Surveys)', href: '/opinions' },
+      { label: 'Opinions (Surveys)', href: '/opinions' },
       { label: 'Reviews', href: '/reviews' },
       { label: 'Downloads', href: '/downloads' },
     ],

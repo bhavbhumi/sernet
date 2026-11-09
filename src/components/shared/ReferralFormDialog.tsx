@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
+import { getAttribution } from '@/lib/leadAttribution';
 
 interface ReferralFormDialogProps {
   type: 'client' | 'partner';
@@ -53,6 +54,7 @@ export const ReferralFormDialog = ({ type, trigger }: ReferralFormDialogProps) =
         source: 'referral',
         lead_type: `referral_${config.referralType}`,
         context: {
+          attribution: getAttribution(),
           referee_name: refereeName,
           referee_phone: refereePhone,
           referee_email: refereeEmail || undefined,

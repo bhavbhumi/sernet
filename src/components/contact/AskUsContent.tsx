@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Link } from '@/lib/router-compat';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { getAttribution } from '@/lib/leadAttribution';
 
 const reasons = [
   { value: 'enquiry', label: 'General Enquiry', icon: HelpCircle, description: 'Questions about services, eligibility, documents, pricing, etc.' },
@@ -76,6 +77,7 @@ const AskUsContent = () => {
         lead_type: reasonToLeadType[reason],
         source: 'ask-us',
         context: {
+          attribution: getAttribution(),
           reason: reasons.find(r => r.value === reason)?.label,
           topic: formData.topic,
           message: formData.message,

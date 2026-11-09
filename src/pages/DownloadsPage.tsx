@@ -4,15 +4,16 @@ import { PageHero } from '@/components/layout/PageHero';
 import { SEOHead } from '@/components/shared/SEOHead';
 import { motion } from 'framer-motion';
 import { ExternalLink, FileText } from 'lucide-react';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import {
-  downloadsTabs, downloadsTabLabels, downloadsContent, resolveDownloadsTab,
+  downloadsTabs, downloadsTabLabels, downloadsIntro, downloadItemsQuery, groupDownloads, resolveDownloadsTab,
 } from '@/content/downloads';
 
 const DownloadsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTab = resolveDownloadsTab(searchParams.get('tab'));
-  const content = downloadsContent[activeTab];
-  const visibleSections = content.sections.filter((section) => section.docs.length > 0);
+  const { data: items } = useSuspenseQuery(downloadItemsQuery);
+  const visibleSections = groupDownloads(items, activeTab);
 
   return (
     <Layout>
@@ -53,7 +54,7 @@ const DownloadsPage = () => {
 
       <div className="section-padding">
         <div className="container-sernet space-y-12">
-          <p className="text-body text-muted-foreground">{content.intro}</p>
+          <p className="text-body text-muted-foreground">{downloadsIntro[activeTab]}</p>
           {visibleSections.map((section, index) => (
             <motion.section
               key={section.heading}
@@ -65,7 +66,7 @@ const DownloadsPage = () => {
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {section.docs.map((doc) => (
                   <a
-                    key={doc.name}
+                    key={doc.id}
                     href={doc.href}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -76,8 +77,8 @@ const DownloadsPage = () => {
                         <FileText className="h-5 w-5 text-primary" />
                       </div>
                       <div className="min-w-0">
-                        <p className="font-medium text-foreground text-sm">{doc.name}</p>
-                        <p className="text-xs text-muted-foreground">{doc.note}</p>
+                        <p className="font-medium text-foreground text-sm">{doc.title}</p>
+                        {doc.note && <p className="text-xs text-muted-foreground">{doc.note}</p>}
                       </div>
                     </div>
                     <ExternalLink className="h-4 w-4 shrink-0 text-muted-foreground" aria-label="opens in a new tab" />

@@ -87,6 +87,7 @@ import { Route as AdminHrSalarySetupRouteImport } from './routes/admin/hr/salary
 import { Route as AdminLegalAgreementsRouteImport } from './routes/admin/legal/agreements'
 import { Route as AdminLegalInvestorCharterRouteImport } from './routes/admin/legal/investor-charter'
 import { Route as AdminLegalPagesRouteImport } from './routes/admin/legal/pages'
+import { Route as AdminMarketingLeadsRouteImport } from './routes/admin/marketing/leads'
 import { Route as AdminMarketingPressRouteImport } from './routes/admin/marketing/press'
 import { Route as AdminSalesCalculatorLeadsRouteImport } from './routes/admin/sales/calculator-leads'
 import { Route as AdminSalesLeadsRouteImport } from './routes/admin/sales/leads'
@@ -136,6 +137,9 @@ import { Route as AdminMarketingEngagementNewsletterRouteImport } from './routes
 import { Route as AdminMarketingEngagementPollsRouteImport } from './routes/admin/marketing/engagement/polls'
 import { Route as AdminMarketingEngagementReviewsRouteImport } from './routes/admin/marketing/engagement/reviews'
 import { Route as AdminMarketingEngagementSurveysRouteImport } from './routes/admin/marketing/engagement/surveys'
+import { Route as AdminMarketingEngagementTicketFeedbackRouteImport } from './routes/admin/marketing/engagement/ticket-feedback'
+import { Route as AdminMarketingResourcesCalculatorsRouteImport } from './routes/admin/marketing/resources/calculators'
+import { Route as AdminMarketingResourcesDownloadsRouteImport } from './routes/admin/marketing/resources/downloads'
 import { Route as AdminMarketingSiteMediaRouteImport } from './routes/admin/marketing/site/media'
 import { Route as AdminMarketingSitePagesRouteImport } from './routes/admin/marketing/site/pages'
 import { Route as AdminMarketingSiteSeoRouteImport } from './routes/admin/marketing/site/seo'
@@ -548,6 +552,11 @@ const AdminLegalPagesRoute = AdminLegalPagesRouteImport.update({
   path: '/admin/legal/pages',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminMarketingLeadsRoute = AdminMarketingLeadsRouteImport.update({
+  id: '/admin/marketing/leads',
+  path: '/admin/marketing/leads',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminMarketingPressRoute = AdminMarketingPressRouteImport.update({
   id: '/admin/marketing/press',
   path: '/admin/marketing/press',
@@ -818,6 +827,24 @@ const AdminMarketingEngagementSurveysRoute =
     path: '/admin/marketing/engagement/surveys',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AdminMarketingEngagementTicketFeedbackRoute =
+  AdminMarketingEngagementTicketFeedbackRouteImport.update({
+    id: '/admin/marketing/engagement/ticket-feedback',
+    path: '/admin/marketing/engagement/ticket-feedback',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AdminMarketingResourcesCalculatorsRoute =
+  AdminMarketingResourcesCalculatorsRouteImport.update({
+    id: '/admin/marketing/resources/calculators',
+    path: '/admin/marketing/resources/calculators',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AdminMarketingResourcesDownloadsRoute =
+  AdminMarketingResourcesDownloadsRouteImport.update({
+    id: '/admin/marketing/resources/downloads',
+    path: '/admin/marketing/resources/downloads',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AdminMarketingSiteMediaRoute = AdminMarketingSiteMediaRouteImport.update({
   id: '/admin/marketing/site/media',
   path: '/admin/marketing/site/media',
@@ -968,6 +995,7 @@ export interface FileRoutesByFullPath {
   '/admin/legal/agreements': typeof AdminLegalAgreementsRoute
   '/admin/legal/investor-charter': typeof AdminLegalInvestorCharterRoute
   '/admin/legal/pages': typeof AdminLegalPagesRoute
+  '/admin/marketing/leads': typeof AdminMarketingLeadsRoute
   '/admin/marketing/press': typeof AdminMarketingPressRoute
   '/admin/sales/calculator-leads': typeof AdminSalesCalculatorLeadsRoute
   '/admin/sales/leads': typeof AdminSalesLeadsRoute
@@ -1015,6 +1043,9 @@ export interface FileRoutesByFullPath {
   '/admin/marketing/engagement/polls': typeof AdminMarketingEngagementPollsRoute
   '/admin/marketing/engagement/reviews': typeof AdminMarketingEngagementReviewsRoute
   '/admin/marketing/engagement/surveys': typeof AdminMarketingEngagementSurveysRoute
+  '/admin/marketing/engagement/ticket-feedback': typeof AdminMarketingEngagementTicketFeedbackRoute
+  '/admin/marketing/resources/calculators': typeof AdminMarketingResourcesCalculatorsRoute
+  '/admin/marketing/resources/downloads': typeof AdminMarketingResourcesDownloadsRoute
   '/admin/marketing/site/media': typeof AdminMarketingSiteMediaRoute
   '/admin/marketing/site/pages': typeof AdminMarketingSitePagesRoute
   '/admin/marketing/site/seo': typeof AdminMarketingSiteSeoRoute
@@ -1110,6 +1141,7 @@ export interface FileRoutesByTo {
   '/admin/legal/agreements': typeof AdminLegalAgreementsRoute
   '/admin/legal/investor-charter': typeof AdminLegalInvestorCharterRoute
   '/admin/legal/pages': typeof AdminLegalPagesRoute
+  '/admin/marketing/leads': typeof AdminMarketingLeadsRoute
   '/admin/marketing/press': typeof AdminMarketingPressRoute
   '/admin/sales/calculator-leads': typeof AdminSalesCalculatorLeadsRoute
   '/admin/sales/leads': typeof AdminSalesLeadsRoute
@@ -1157,6 +1189,9 @@ export interface FileRoutesByTo {
   '/admin/marketing/engagement/polls': typeof AdminMarketingEngagementPollsRoute
   '/admin/marketing/engagement/reviews': typeof AdminMarketingEngagementReviewsRoute
   '/admin/marketing/engagement/surveys': typeof AdminMarketingEngagementSurveysRoute
+  '/admin/marketing/engagement/ticket-feedback': typeof AdminMarketingEngagementTicketFeedbackRoute
+  '/admin/marketing/resources/calculators': typeof AdminMarketingResourcesCalculatorsRoute
+  '/admin/marketing/resources/downloads': typeof AdminMarketingResourcesDownloadsRoute
   '/admin/marketing/site/media': typeof AdminMarketingSiteMediaRoute
   '/admin/marketing/site/pages': typeof AdminMarketingSitePagesRoute
   '/admin/marketing/site/seo': typeof AdminMarketingSiteSeoRoute
@@ -1253,6 +1288,7 @@ export interface FileRoutesById {
   '/admin/legal/agreements': typeof AdminLegalAgreementsRoute
   '/admin/legal/investor-charter': typeof AdminLegalInvestorCharterRoute
   '/admin/legal/pages': typeof AdminLegalPagesRoute
+  '/admin/marketing/leads': typeof AdminMarketingLeadsRoute
   '/admin/marketing/press': typeof AdminMarketingPressRoute
   '/admin/sales/calculator-leads': typeof AdminSalesCalculatorLeadsRoute
   '/admin/sales/leads': typeof AdminSalesLeadsRoute
@@ -1300,6 +1336,9 @@ export interface FileRoutesById {
   '/admin/marketing/engagement/polls': typeof AdminMarketingEngagementPollsRoute
   '/admin/marketing/engagement/reviews': typeof AdminMarketingEngagementReviewsRoute
   '/admin/marketing/engagement/surveys': typeof AdminMarketingEngagementSurveysRoute
+  '/admin/marketing/engagement/ticket-feedback': typeof AdminMarketingEngagementTicketFeedbackRoute
+  '/admin/marketing/resources/calculators': typeof AdminMarketingResourcesCalculatorsRoute
+  '/admin/marketing/resources/downloads': typeof AdminMarketingResourcesDownloadsRoute
   '/admin/marketing/site/media': typeof AdminMarketingSiteMediaRoute
   '/admin/marketing/site/pages': typeof AdminMarketingSitePagesRoute
   '/admin/marketing/site/seo': typeof AdminMarketingSiteSeoRoute
@@ -1397,6 +1436,7 @@ export interface FileRouteTypes {
     | '/admin/legal/agreements'
     | '/admin/legal/investor-charter'
     | '/admin/legal/pages'
+    | '/admin/marketing/leads'
     | '/admin/marketing/press'
     | '/admin/sales/calculator-leads'
     | '/admin/sales/leads'
@@ -1444,6 +1484,9 @@ export interface FileRouteTypes {
     | '/admin/marketing/engagement/polls'
     | '/admin/marketing/engagement/reviews'
     | '/admin/marketing/engagement/surveys'
+    | '/admin/marketing/engagement/ticket-feedback'
+    | '/admin/marketing/resources/calculators'
+    | '/admin/marketing/resources/downloads'
     | '/admin/marketing/site/media'
     | '/admin/marketing/site/pages'
     | '/admin/marketing/site/seo'
@@ -1539,6 +1582,7 @@ export interface FileRouteTypes {
     | '/admin/legal/agreements'
     | '/admin/legal/investor-charter'
     | '/admin/legal/pages'
+    | '/admin/marketing/leads'
     | '/admin/marketing/press'
     | '/admin/sales/calculator-leads'
     | '/admin/sales/leads'
@@ -1586,6 +1630,9 @@ export interface FileRouteTypes {
     | '/admin/marketing/engagement/polls'
     | '/admin/marketing/engagement/reviews'
     | '/admin/marketing/engagement/surveys'
+    | '/admin/marketing/engagement/ticket-feedback'
+    | '/admin/marketing/resources/calculators'
+    | '/admin/marketing/resources/downloads'
     | '/admin/marketing/site/media'
     | '/admin/marketing/site/pages'
     | '/admin/marketing/site/seo'
@@ -1681,6 +1728,7 @@ export interface FileRouteTypes {
     | '/admin/legal/agreements'
     | '/admin/legal/investor-charter'
     | '/admin/legal/pages'
+    | '/admin/marketing/leads'
     | '/admin/marketing/press'
     | '/admin/sales/calculator-leads'
     | '/admin/sales/leads'
@@ -1728,6 +1776,9 @@ export interface FileRouteTypes {
     | '/admin/marketing/engagement/polls'
     | '/admin/marketing/engagement/reviews'
     | '/admin/marketing/engagement/surveys'
+    | '/admin/marketing/engagement/ticket-feedback'
+    | '/admin/marketing/resources/calculators'
+    | '/admin/marketing/resources/downloads'
     | '/admin/marketing/site/media'
     | '/admin/marketing/site/pages'
     | '/admin/marketing/site/seo'
@@ -1824,6 +1875,7 @@ export interface RootRouteChildren {
   AdminLegalAgreementsRoute: typeof AdminLegalAgreementsRoute
   AdminLegalInvestorCharterRoute: typeof AdminLegalInvestorCharterRoute
   AdminLegalPagesRoute: typeof AdminLegalPagesRoute
+  AdminMarketingLeadsRoute: typeof AdminMarketingLeadsRoute
   AdminMarketingPressRoute: typeof AdminMarketingPressRoute
   AdminSalesCalculatorLeadsRoute: typeof AdminSalesCalculatorLeadsRoute
   AdminSalesLeadsRoute: typeof AdminSalesLeadsRoute
@@ -1871,6 +1923,9 @@ export interface RootRouteChildren {
   AdminMarketingEngagementPollsRoute: typeof AdminMarketingEngagementPollsRoute
   AdminMarketingEngagementReviewsRoute: typeof AdminMarketingEngagementReviewsRoute
   AdminMarketingEngagementSurveysRoute: typeof AdminMarketingEngagementSurveysRoute
+  AdminMarketingEngagementTicketFeedbackRoute: typeof AdminMarketingEngagementTicketFeedbackRoute
+  AdminMarketingResourcesCalculatorsRoute: typeof AdminMarketingResourcesCalculatorsRoute
+  AdminMarketingResourcesDownloadsRoute: typeof AdminMarketingResourcesDownloadsRoute
   AdminMarketingSiteMediaRoute: typeof AdminMarketingSiteMediaRoute
   AdminMarketingSitePagesRoute: typeof AdminMarketingSitePagesRoute
   AdminMarketingSiteSeoRoute: typeof AdminMarketingSiteSeoRoute
@@ -2436,6 +2491,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLegalPagesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/marketing/leads': {
+      id: '/admin/marketing/leads'
+      path: '/admin/marketing/leads'
+      fullPath: '/admin/marketing/leads'
+      preLoaderRoute: typeof AdminMarketingLeadsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/marketing/press': {
       id: '/admin/marketing/press'
       path: '/admin/marketing/press'
@@ -2779,6 +2841,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminMarketingEngagementSurveysRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/marketing/engagement/ticket-feedback': {
+      id: '/admin/marketing/engagement/ticket-feedback'
+      path: '/admin/marketing/engagement/ticket-feedback'
+      fullPath: '/admin/marketing/engagement/ticket-feedback'
+      preLoaderRoute: typeof AdminMarketingEngagementTicketFeedbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/marketing/resources/calculators': {
+      id: '/admin/marketing/resources/calculators'
+      path: '/admin/marketing/resources/calculators'
+      fullPath: '/admin/marketing/resources/calculators'
+      preLoaderRoute: typeof AdminMarketingResourcesCalculatorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/marketing/resources/downloads': {
+      id: '/admin/marketing/resources/downloads'
+      path: '/admin/marketing/resources/downloads'
+      fullPath: '/admin/marketing/resources/downloads'
+      preLoaderRoute: typeof AdminMarketingResourcesDownloadsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/marketing/site/media': {
       id: '/admin/marketing/site/media'
       path: '/admin/marketing/site/media'
@@ -2952,6 +3035,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminLegalAgreementsRoute: AdminLegalAgreementsRoute,
   AdminLegalInvestorCharterRoute: AdminLegalInvestorCharterRoute,
   AdminLegalPagesRoute: AdminLegalPagesRoute,
+  AdminMarketingLeadsRoute: AdminMarketingLeadsRoute,
   AdminMarketingPressRoute: AdminMarketingPressRoute,
   AdminSalesCalculatorLeadsRoute: AdminSalesCalculatorLeadsRoute,
   AdminSalesLeadsRoute: AdminSalesLeadsRoute,
@@ -3002,6 +3086,11 @@ const rootRouteChildren: RootRouteChildren = {
   AdminMarketingEngagementPollsRoute: AdminMarketingEngagementPollsRoute,
   AdminMarketingEngagementReviewsRoute: AdminMarketingEngagementReviewsRoute,
   AdminMarketingEngagementSurveysRoute: AdminMarketingEngagementSurveysRoute,
+  AdminMarketingEngagementTicketFeedbackRoute:
+    AdminMarketingEngagementTicketFeedbackRoute,
+  AdminMarketingResourcesCalculatorsRoute:
+    AdminMarketingResourcesCalculatorsRoute,
+  AdminMarketingResourcesDownloadsRoute: AdminMarketingResourcesDownloadsRoute,
   AdminMarketingSiteMediaRoute: AdminMarketingSiteMediaRoute,
   AdminMarketingSitePagesRoute: AdminMarketingSitePagesRoute,
   AdminMarketingSiteSeoRoute: AdminMarketingSiteSeoRoute,

@@ -48,14 +48,6 @@ const departmentGroups: DepartmentGroup[] = [
       { label: 'Master Data', icon: Database, href: R.settings.masterData, moduleKey: 'system/master-data' },
       { label: 'Users & Access', icon: Shield, href: R.settings.users, moduleKey: 'system/admin-users' },
       { label: 'Monitor', icon: MonitorDot, href: '/admin/settings/monitor', moduleKey: 'system/monitor' },
-      {
-        label: 'Website', icon: Globe, moduleKey: 'system/website', children: [
-          { label: 'Site Settings', icon: Palette, href: R.marketing.site.settings },
-          { label: 'Page Directory', icon: ScanSearch, href: R.marketing.site.pages },
-          { label: 'SEO Health', icon: Search, href: R.marketing.site.seoAudit },
-          { label: 'Media Library', icon: Images, href: R.marketing.site.media },
-        ]
-      },
     ]
   },
   {
@@ -65,6 +57,32 @@ const departmentGroups: DepartmentGroup[] = [
     color: 'text-blue-500',
     items: [
       {
+        label: 'Leads & Campaigns', icon: Target, moduleKey: 'marketing/campaigns', children: [
+          { label: 'Leads Overview', icon: UserCheck, href: R.marketing.leads },
+          { label: 'Campaign Tracker', icon: Target, href: R.marketing.campaigns.tracker },
+          { label: 'Lead Attribution', icon: TrendingUp, href: R.marketing.campaigns.attribution },
+          { label: 'Events & Webinars', icon: CalendarDays, href: R.marketing.campaigns.events },
+          { label: 'Subscribers', icon: Mail, href: R.marketing.engagement.newsletter },
+          { label: 'Composer', icon: Mail, href: R.marketing.engagement.composer },
+        ]
+      },
+    ]
+  },
+  {
+    department: 'Website',
+    departmentKey: 'website',
+    icon: Globe,
+    color: 'text-sky-500',
+    items: [
+      {
+        label: 'Site', icon: Globe, moduleKey: 'system/website', children: [
+          { label: 'Site Settings', icon: Palette, href: R.marketing.site.settings },
+          { label: 'Page Directory', icon: ScanSearch, href: R.marketing.site.pages },
+          { label: 'SEO Health', icon: Search, href: R.marketing.site.seoAudit },
+          { label: 'Media Library', icon: Images, href: R.marketing.site.media },
+        ]
+      },
+      {
         label: 'Content Studio', icon: BookOpen, moduleKey: 'marketing/content-studio', children: [
           { label: 'Posts', icon: FileText, href: R.marketing.content.posts },
           { label: 'Feeds', icon: Rss, href: R.marketing.content.feeds },
@@ -73,25 +91,26 @@ const departmentGroups: DepartmentGroup[] = [
         ]
       },
       {
-        label: 'Campaigns', icon: Target, moduleKey: 'marketing/campaigns', children: [
-          { label: 'Campaign Tracker', icon: Target, href: R.marketing.campaigns.tracker },
-          { label: 'Lead Attribution', icon: TrendingUp, href: R.marketing.campaigns.attribution },
-          { label: 'Events & Webinars', icon: CalendarDays, href: R.marketing.campaigns.events },
-          { label: 'Subscribers', icon: Mail, href: R.marketing.engagement.newsletter },
-          { label: 'Composer', icon: Mail, href: R.marketing.engagement.composer },
-        ]
-      },
-      {
-        label: 'Feedback', icon: Vote, moduleKey: 'marketing/feedback', children: [
-          { label: 'Polls', icon: Vote, href: R.marketing.engagement.polls },
-          { label: 'Surveys', icon: ClipboardList, href: R.marketing.engagement.surveys },
-          { label: 'Reviews', icon: Star, href: R.marketing.engagement.reviews },
-        ]
-      },
-      {
-        label: 'Calendars', icon: CalendarDays, moduleKey: 'marketing/calendars', children: [
+        label: 'Resources', icon: FileArchive, moduleKey: 'marketing/calendars', children: [
           { label: 'Market Holidays', icon: CalendarDays, href: R.marketing.calendars.holidays },
           { label: 'Economic Events', icon: BarChart3, href: R.marketing.calendars.economic },
+          { label: 'Calculators', icon: Calculator, href: R.marketing.resources.calculators },
+          { label: 'Downloads', icon: Download, href: R.marketing.resources.downloads },
+        ]
+      },
+    ]
+  },
+  {
+    department: 'Feedback',
+    departmentKey: 'feedback',
+    icon: Star,
+    color: 'text-amber-500',
+    items: [
+      {
+        label: 'Feedback', icon: ClipboardList, moduleKey: 'marketing/feedback', children: [
+          { label: 'Surveys', icon: ClipboardList, href: R.marketing.engagement.surveys },
+          { label: 'Service Ratings', icon: Star, href: R.marketing.engagement.ticketFeedback },
+          { label: 'Reviews', icon: Star, href: R.marketing.engagement.reviews },
         ]
       },
     ]
