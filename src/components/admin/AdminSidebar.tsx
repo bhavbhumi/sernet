@@ -58,7 +58,7 @@ const departmentGroups: DepartmentGroup[] = [
     items: [
       {
         label: 'Leads & Campaigns', icon: Target, moduleKey: 'marketing/campaigns', children: [
-          { label: 'Leads Overview', icon: UserCheck, href: R.marketing.leads },
+          { label: 'Marketing Overview', icon: UserCheck, href: R.marketing.leads },
           { label: 'Campaign Tracker', icon: Target, href: R.marketing.campaigns.tracker },
           { label: 'Lead Attribution', icon: TrendingUp, href: R.marketing.campaigns.attribution },
           { label: 'Events & Webinars', icon: CalendarDays, href: R.marketing.campaigns.events },

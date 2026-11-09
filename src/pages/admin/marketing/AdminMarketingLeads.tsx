@@ -51,7 +51,7 @@ function BreakdownTable({ title, rows }: { title: string; rows: ReturnType<typeo
         {rows.length === 0 ? <p className="text-sm text-muted-foreground">No leads in this period.</p> : (
           <table className="w-full text-sm">
             <thead><tr className="text-left text-xs text-muted-foreground border-b border-border">
-              <th className="py-2 font-medium">Name</th><th className="py-2 font-medium text-right">Leads</th>
+              <th className="py-2 font-medium">{title.replace(/^By /, '').replace(/^\w/, c => c.toUpperCase())}</th><th className="py-2 font-medium text-right">Leads</th>
               <th className="py-2 font-medium text-right">Unassigned</th><th className="py-2 font-medium text-right">Converted</th>
             </tr></thead>
             <tbody className="divide-y divide-border">
@@ -64,6 +64,72 @@ function BreakdownTable({ title, rows }: { title: string; rows: ReturnType<typeo
         )}
       </CardContent>
     </Card>
+  );
+}
+
+async function exactCount(q: PromiseLike<{ count: number | null; error: { message: string } | null }>) {
+  const { count, error } = await q;
+  if (error) throw new Error(error.message);
+  return count ?? 0;
+}
+
+type DraftRow = { id: string; title: string; thumbnail_url: string | null; post_type: string | null; excerpt: string | null; item_date: string | null };
+
+/** Things waiting on someone — every count opens the list where it is handled. */
+function ActionNeeded() {
+  const { data, error, isLoading } = useQuery({
+    queryKey: ['marketing-action-needed'],
+    queryFn: async () => {
+      const t = (n: string) => supabase.from(n as any) as any;
+      const head = { count: 'exact', head: true } as const;
+      const [drafts, review, approved, subs, campaigns, lowRatings, pendingReviews] = await Promise.all([
+        readAllMISRows<DraftRow>((from, to) => t('articles').select('id,title,thumbnail_url,post_type,excerpt,item_date').eq('status', 'draft').order('item_date', { ascending: false, nullsFirst: false }).range(from, to)),
+        exactCount(t('newsletters').select('id', head).eq('status', 'in_review')),
+        exactCount(t('newsletters').select('id', head).eq('status', 'approved')),
+        exactCount(t('newsletter_subscribers').select('id', head).eq('status', 'active')),
+        exactCount(t('campaigns').select('id', head).eq('status', 'active')),
+        exactCount(t('ticket_feedback').select('id', head).eq('follow_up_status', 'needed')),
+        exactCount(t('reviews').select('id', head).eq('status', 'pending')),
+      ]);
+      return { drafts, review, approved, subs, campaigns, lowRatings, pendingReviews };
+    },
+  });
+  if (error) return <p className="text-sm text-destructive mb-6">Could not load action items: {(error as Error).message}</p>;
+  const missing = (d: DraftRow) => [!d.thumbnail_url && 'cover', !d.post_type && 'type', !(d.excerpt ?? '').trim() && 'summary', !d.item_date && 'date'].filter(Boolean) as string[];
+  const incomplete = (data?.drafts ?? []).filter(d => missing(d).length);
+  const tiles: [string, number | undefined, string][] = [
+    ['Drafts not ready', incomplete.length, ADMIN_ROUTES.marketing.content.posts],
+    ['Drafts ready to publish', data ? data.drafts.length - incomplete.length : undefined, ADMIN_ROUTES.marketing.content.posts],
+    ['Newsletters needing review', data?.review, ADMIN_ROUTES.marketing.engagement.composer],
+    ['Newsletters approved, not sent', data?.approved, ADMIN_ROUTES.marketing.engagement.composer],
+    ['Active subscribers', data?.subs, ADMIN_ROUTES.marketing.engagement.newsletter],
+    ['Active campaigns', data?.campaigns, ADMIN_ROUTES.marketing.campaigns.tracker],
+    ['Low ratings to follow up', data?.lowRatings, ADMIN_ROUTES.marketing.engagement.ticketFeedback],
+    ['Reviews awaiting approval', data?.pendingReviews, ADMIN_ROUTES.marketing.engagement.reviews],
+  ];
+  return (
+    <div className="mb-8">
+      <h2 className="text-sm font-semibold text-foreground mb-3">Action needed</h2>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+        {tiles.map(([label, value, href]) => (
+          <Link key={label} to={href} className="block"><Card className="hover:border-primary/50 transition-colors"><CardContent className="p-4">
+            <p className="text-xs text-muted-foreground">{label}</p>
+            <p className="text-2xl font-semibold text-foreground">{isLoading ? '…' : value}</p>
+          </CardContent></Card></Link>
+        ))}
+      </div>
+      {incomplete.length > 0 && (
+        <Card><CardHeader className="pb-2"><CardTitle className="text-sm font-medium">Drafts missing something before publishing</CardTitle></CardHeader>
+          <CardContent><ul className="divide-y divide-border">
+            {incomplete.slice(0, 15).map(d => (
+              <li key={d.id} className="py-2 flex flex-wrap items-center gap-2 text-sm">
+                <span className="text-foreground">{d.title}</span>
+                <span className="ml-auto flex gap-1">{missing(d).map(m => <Badge key={m} variant="outline">No {m}</Badge>)}</span>
+              </li>
+            ))}
+          </ul>{incomplete.length > 15 && <p className="text-xs text-muted-foreground mt-2">+{incomplete.length - 15} more in Posts.</p>}</CardContent></Card>
+      )}
+    </div>
   );
 }
 
@@ -93,7 +159,8 @@ function LeadsOverviewContent() {
   const waiting = leads.filter(l => !l.assigned_to && l.status !== 'converted').slice(0, 10);
 
   return (
-    <AdminLayout title="Leads Overview" subtitle="Where enquiries come from and whether Sales has picked them up">
+    <AdminLayout title="Marketing Overview" subtitle="What needs attention, where enquiries come from and whether Sales has picked them up">
+      <ActionNeeded />
       <div className="flex flex-wrap items-center gap-3 mb-6">
         <Select value={range} onValueChange={setRange}>
           <SelectTrigger className="w-44"><SelectValue /></SelectTrigger>
