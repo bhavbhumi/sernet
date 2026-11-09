@@ -20,14 +20,14 @@ CREATE TRIGGER download_items_updated_at BEFORE UPDATE ON public.download_items 
 CREATE INDEX download_items_tab_idx ON public.download_items (tab, section, sort_order);
 
 INSERT INTO public.download_items (tab, section, title, note, href, sort_order) VALUES
-('invest','Apps','Tick Funds Web','Open in browser','https://tickfunds.in/',1),
-('invest','Apps','Tick Funds for Android','Google Play','https://play.google.com/store/apps/details?id=com.tickfunds',2),
-('invest','Apps','Tick Funds for iOS','App Store','https://apps.apple.com/in/app/tick-funds/id6443640938',3),
+('invest','Apps','Tick Funds Web','Open in browser','https://tickfunds.sernetindia.com/login',1),
+('invest','Apps','Tick Funds for Android','Google Play','https://play.google.com/store/apps/details?id=com.tick.funds.app&pcampaignid=web_share',2),
+('invest','Apps','Tick Funds for iOS','App Store','https://apps.apple.com/us/app/tickfunds/id1534139413',3),
 ('invest','Information','Monthly Factsheets','Download from AMFI','https://www.amfiindia.com/online-center/download-factsheets',1),
 ('invest','Information','MF Scheme Master Documents','Download from SEBI','https://www.sebi.gov.in/filings/mutual-funds.html',2),
-('insure','Apps','Tushil Web','Open in browser','https://tushil.in/',1),
-('trade','Apps','Choice FinX for Android','Google Play','https://play.google.com/store/apps/details?id=com.choiceequitybroking.jiffy',1),
-('trade','Apps','Choice FinX for iOS','App Store','https://apps.apple.com/in/app/choice-finx/id1472443440',2);
+('insure','Apps','Tushil Web','Open in browser','https://insure.tushil.sernetindia.com',1),
+('trade','Apps','Choice FinX for Android','Google Play','https://play.google.com/store/apps/details?id=com.choiceequitybroking.jiffy&pcampaignid=web_share',1),
+('trade','Apps','Choice FinX for iOS','App Store','https://apps.apple.com/in/app/choice-finx-stocks-demat-app/id1327801261',2);
 
 CREATE TABLE public.ticket_feedback (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
