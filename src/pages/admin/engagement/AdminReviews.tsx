@@ -124,7 +124,8 @@ export default function AdminReviews() {
       await db('reviews').update(payload).eq('id', editItem.id);
       toast({ title: 'Review updated' });
     } else {
-      await db('reviews').insert([{ ...payload, status: 'approved', published_at: new Date().toISOString() }]);
+      // New manual reviews wait for approval; publishing requires an explicit Approve action.
+      await db('reviews').insert([{ ...payload, status: 'pending', published_at: null }]);
       toast({ title: 'Review added and published' });
     }
     setSaving(false);
