@@ -40,7 +40,7 @@
 - MIS totals must use exact error-aware counts or stable paginated reads; never treat query failures as zero or derive full totals from capped lists.
 - Serve `/sitemap.xml` from the server route `src/routes/sitemap[.]xml.ts` (static public paths plus paginated published articles, no lastmod); new posts appear automatically, so keep no static `public/sitemap.xml` that would shadow it.
 - Admin SEO Health derives checklist status from live checks of the published site (`src/lib/seoLiveChecks.ts`) plus database counts; never hardcode pass/warn results, so the checklist stays accurate without manual edits.
-- Every public enquiry form stores `getAttribution()` (src/lib/leadAttribution.ts) in `leads.context.attribution`; Marketing reports read only that field, so new forms must include it to be counted by campaign/channel.
-- Public Downloads come only from the `download_items` table (Admin → Website → Resources → Downloads); `src/content/downloads.ts` holds tab labels/intros/section order, never document links.
-- Admin menu regrouping must keep existing `moduleKey` values (e.g. `system/website`, `marketing/calendars`, `marketing/feedback`) so saved staff permissions keep working; each key appears once per menu.
-- Service ratings for resolved/closed tickets live in `ticket_feedback` (client-owned insert, ≤3 stars flags follow-up); public reviews from the portal enter `reviews` as pending and need admin approval.
+- Public enquiry forms store `getAttribution()` in `leads.context.attribution`; Marketing reports read only that field.
+- Public Downloads come only from `download_items`; `src/content/downloads.ts` holds labels/intros/section order only.
+- Menu regrouping keeps existing `moduleKey` values, each once, so saved staff permissions keep working.
+- Ticket ratings live in `ticket_feedback` (≤3 stars flags follow-up); portal reviews enter `reviews` as pending.
