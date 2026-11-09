@@ -1,4 +1,5 @@
-import { APP_LINKS, TICKFUNDS_LINKS, TUSHIL_LINKS } from '@/lib/appLinks';
+import { queryOptions } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
 export const downloadsTabs = ['invest', 'insure', 'trade', 'other'] as const;
 export type DownloadsTab = (typeof downloadsTabs)[number];
@@ -10,60 +11,38 @@ export const downloadsTabLabels: Record<DownloadsTab, string> = {
   other: 'Other Services',
 };
 
-export interface DownloadDoc { name: string; note: string; href: string }
-export interface DownloadSection { heading: string; docs: DownloadDoc[] }
-export interface DownloadsTabContent { intro: string; sections: DownloadSection[] }
+/** Section order on the public page; sections with no published items are hidden. */
+export const DOWNLOAD_SECTIONS = ['Account Opening', 'Information', 'Transactions', 'Service', 'Apps'] as const;
 
-/** Sections with no documents are hidden until management supplies the files. */
-export const downloadsContent: Record<DownloadsTab, DownloadsTabContent> = {
-  invest: {
-    intro: 'Forms, documents and apps for investing with Tick Funds and Altifi.',
-    sections: [
-      {
-        heading: 'Apps',
-        docs: [
-          { name: 'Tick Funds Web', note: 'Open in browser', href: TICKFUNDS_LINKS.START_INVESTING },
-          { name: 'Tick Funds for Android', note: 'Google Play', href: TICKFUNDS_LINKS.PLAY_STORE },
-          { name: 'Tick Funds for iOS', note: 'App Store', href: TICKFUNDS_LINKS.APP_STORE },
-        ],
-      },
-      {
-        heading: 'Information',
-        docs: [
-          { name: 'Monthly Factsheets', note: 'Download from AMFI', href: 'https://www.amfiindia.com/online-center/download-factsheets' },
-          { name: 'MF Scheme Master Documents', note: 'Download from SEBI', href: 'https://www.sebi.gov.in/filings/mutual-funds.html' },
-        ],
-      },
-    ],
-  },
-  insure: {
-    intro: 'Forms, documents and apps for insurance through Tushil.',
-    sections: [
-      {
-        heading: 'Apps',
-        docs: [
-          { name: 'Tushil Web', note: 'Open in browser', href: TUSHIL_LINKS.WEB },
-        ],
-      },
-    ],
-  },
-  trade: {
-    intro: 'Forms, documents and apps for trading with Choice FinX.',
-    sections: [
-      {
-        heading: 'Apps',
-        docs: [
-          { name: 'Choice FinX for Android', note: 'Google Play', href: APP_LINKS.PLAY_STORE },
-          { name: 'Choice FinX for iOS', note: 'App Store', href: APP_LINKS.APP_STORE },
-        ],
-      },
-    ],
-  },
-  other: {
-    intro: 'Forms and documents for estate planning, credit counselling, tax filing and NRI documentation notarisation.',
-    sections: [],
-  },
+export const downloadsIntro: Record<DownloadsTab, string> = {
+  invest: 'Forms, documents and apps for investing with Tick Funds and Altifi.',
+  insure: 'Forms, documents and apps for insurance through Tushil.',
+  trade: 'Forms, documents and apps for trading with Choice FinX.',
+  other: 'Forms and documents for estate planning, credit counselling, tax filing and NRI documentation notarisation.',
 };
+
+export interface DownloadDoc { id: string; tab: string; section: string; title: string; note: string | null; href: string; sort_order: number }
+export interface DownloadSection { heading: string; docs: DownloadDoc[] }
+
+/** Published download items, managed in Admin → Website → Resources → Downloads. */
+export const downloadItemsQuery = queryOptions({
+  queryKey: ['download_items', 'public'],
+  queryFn: async (): Promise<DownloadDoc[]> => {
+    const { data, error } = await supabase
+      .from('download_items')
+      .select('id,tab,section,title,note,href,sort_order')
+      .eq('status', 'published')
+      .order('sort_order', { ascending: true });
+    if (error) throw new Error(error.message);
+    return data ?? [];
+  },
+});
+
+export function groupDownloads(items: DownloadDoc[], tab: DownloadsTab): DownloadSection[] {
+  return DOWNLOAD_SECTIONS
+    .map((heading) => ({ heading, docs: items.filter((d) => d.tab === tab && d.section === heading) }))
+    .filter((s) => s.docs.length > 0);
+}
 
 export const isDownloadsTab = (v: string | null): v is DownloadsTab =>
   !!v && (downloadsTabs as readonly string[]).includes(v);

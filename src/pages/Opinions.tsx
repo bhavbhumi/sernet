@@ -5,14 +5,12 @@ import { SEOHead } from '@/components/shared/SEOHead';
 import { MessageSquare } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SurveysContent } from '@/components/opinions/SurveysContent';
-import { PollsContent } from '@/components/opinions/PollsContent';
 
-const opinionsTabs = ['Surveys', 'Polls'] as const;
+const opinionsTabs = ['Surveys'] as const;
 type OpinionsTab = (typeof opinionsTabs)[number];
 
 const tabContent: Record<OpinionsTab, React.ReactNode> = {
   Surveys: <SurveysContent />,
-  Polls: <PollsContent />,
 };
 
 const Opinions = () => {
@@ -22,13 +20,13 @@ const Opinions = () => {
     <Layout>
       <SEOHead
         title="Opinions"
-        description="Share your feedback through surveys and polls — help SERNET improve products and services."
+        description="Share your feedback through surveys — help SERNET improve products and services."
         path="/opinions"
       />
       <PageHero
         title="Your voice shapes our"
         highlight="future"
-        description="Share your feedback through surveys and polls — help us improve products, services, and your overall experience."
+        description="Share your feedback through surveys — help us improve products, services, and your overall experience."
         breadcrumbLabel="Opinions"
       />
 
