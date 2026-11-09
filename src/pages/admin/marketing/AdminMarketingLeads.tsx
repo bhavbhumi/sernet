@@ -88,7 +88,7 @@ function ActionNeeded() {
         exactCount(t('newsletters').select('id', head).eq('status', 'approved')),
         exactCount(t('newsletter_subscribers').select('id', head).eq('status', 'active')),
         exactCount(t('campaigns').select('id', head).eq('status', 'active')),
-        exactCount(t('ticket_feedback').select('id', head).eq('follow_up_status', 'needed')),
+        exactCount(t('ticket_feedback').select('id', head).eq('follow_up_status', 'pending')),
         exactCount(t('reviews').select('id', head).eq('status', 'pending')),
       ]);
       return { drafts, review, approved, subs, campaigns, lowRatings, pendingReviews };
