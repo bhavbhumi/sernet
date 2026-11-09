@@ -14,6 +14,7 @@ import { User, Ticket, LogOut, Shield, Phone, Mail, MapPin, Edit2, Save, X } fro
 import sernetLogo from '@/assets/sernet-logo.webp';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
+import { TicketRating } from '@/components/portal/TicketRating';
 
 function PortalDashboardContent() {
   const { session, refreshProfile } = usePortalSession();
@@ -62,6 +63,8 @@ function PortalDashboardContent() {
     }
   };
 
+  const [ratings, setRatings] = useState<Record<string, number>>({});
+
   const loadTickets = async () => {
     if (!session) return;
     setTicketsLoading(true);
@@ -72,6 +75,11 @@ function PortalDashboardContent() {
       .order('created_at', { ascending: false })
       .limit(20);
     setTickets(data || []);
+    const ids = (data || []).map((t: any) => t.id);
+    if (ids.length) {
+      const { data: fb } = await supabase.from('ticket_feedback').select('ticket_id,rating').in('ticket_id', ids);
+      setRatings(Object.fromEntries((fb || []).map(f => [f.ticket_id, f.rating])));
+    }
     setTicketsLoading(false);
   };
 
@@ -283,6 +291,15 @@ function PortalDashboardContent() {
                         </div>
                         <p className="text-sm font-medium text-foreground mt-1">{ticket.subject}</p>
                         <p className="text-xs text-muted-foreground">{ticket.product} · {format(new Date(ticket.created_at), 'dd MMM yyyy')}</p>
+                        {(ticket.status === 'resolved' || ticket.status === 'closed') && session && (
+                          <TicketRating
+                            ticketId={ticket.id}
+                            userId={session.userId}
+                            clientName={profileForm.full_name}
+                            existing={ratings[ticket.id]}
+                            onSaved={(r) => setRatings(prev => ({ ...prev, [ticket.id]: r }))}
+                          />
+                        )}
                       </div>
                     </div>
                   ))}
