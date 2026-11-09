@@ -14,8 +14,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { KYC_LINKS } from '@/lib/appLinks';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
-import {
 import { getAttribution } from '@/lib/leadAttribution';
+import {
   onboardingTabs, tabLabels, tabContent, kycChecks, investorTypes, interestOptions,
   defaultInterests, isOnboardingTab, type OnboardingTab, type OnboardingLink,
 } from '@/content/onboarding';
