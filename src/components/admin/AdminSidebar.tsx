@@ -56,9 +56,9 @@ const departmentGroups: DepartmentGroup[] = [
     icon: Megaphone,
     color: 'text-blue-500',
     items: [
-      { label: 'Leads Overview', icon: UserCheck, href: R.marketing.leads, moduleKey: 'marketing/campaigns' },
       {
-        label: 'Campaigns', icon: Target, moduleKey: 'marketing/campaigns', children: [
+        label: 'Leads & Campaigns', icon: Target, moduleKey: 'marketing/campaigns', children: [
+          { label: 'Leads Overview', icon: UserCheck, href: R.marketing.leads },
           { label: 'Campaign Tracker', icon: Target, href: R.marketing.campaigns.tracker },
           { label: 'Lead Attribution', icon: TrendingUp, href: R.marketing.campaigns.attribution },
           { label: 'Events & Webinars', icon: CalendarDays, href: R.marketing.campaigns.events },
@@ -74,10 +74,14 @@ const departmentGroups: DepartmentGroup[] = [
     icon: Globe,
     color: 'text-sky-500',
     items: [
-      { label: 'Site Settings', icon: Palette, href: R.marketing.site.settings, moduleKey: 'system/website' },
-      { label: 'Page Directory', icon: ScanSearch, href: R.marketing.site.pages, moduleKey: 'system/website' },
-      { label: 'SEO Health', icon: Search, href: R.marketing.site.seoAudit, moduleKey: 'system/website' },
-      { label: 'Media Library', icon: Images, href: R.marketing.site.media, moduleKey: 'system/website' },
+      {
+        label: 'Site', icon: Globe, moduleKey: 'system/website', children: [
+          { label: 'Site Settings', icon: Palette, href: R.marketing.site.settings },
+          { label: 'Page Directory', icon: ScanSearch, href: R.marketing.site.pages },
+          { label: 'SEO Health', icon: Search, href: R.marketing.site.seoAudit },
+          { label: 'Media Library', icon: Images, href: R.marketing.site.media },
+        ]
+      },
       {
         label: 'Content Studio', icon: BookOpen, moduleKey: 'marketing/content-studio', children: [
           { label: 'Posts', icon: FileText, href: R.marketing.content.posts },
