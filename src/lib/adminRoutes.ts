@@ -12,6 +12,11 @@ export const ADMIN_ROUTES = {
   // ── Marketing ──────────────────────────────────
   marketing: {
     root: '/admin/marketing',
+    leads: '/admin/marketing/leads',
+    resources: {
+      downloads: '/admin/marketing/resources/downloads',
+      calculators: '/admin/marketing/resources/calculators',
+    },
     content: {
       posts: '/admin/marketing/content/posts',
       articles: '/admin/marketing/content/articles',
@@ -30,6 +35,7 @@ export const ADMIN_ROUTES = {
       polls: '/admin/marketing/engagement/polls',
       surveys: '/admin/marketing/engagement/surveys',
       reviews: '/admin/marketing/engagement/reviews',
+      ticketFeedback: '/admin/marketing/engagement/ticket-feedback',
       newsletter: '/admin/marketing/engagement/newsletter',
       composer: '/admin/marketing/engagement/composer',
     },
