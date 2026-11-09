@@ -1398,6 +1398,45 @@ export type Database = {
           },
         ]
       }
+      download_items: {
+        Row: {
+          created_at: string
+          href: string
+          id: string
+          note: string | null
+          section: string
+          sort_order: number
+          status: string
+          tab: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          href: string
+          id?: string
+          note?: string | null
+          section: string
+          sort_order?: number
+          status?: string
+          tab: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          href?: string
+          id?: string
+          note?: string | null
+          section?: string
+          sort_order?: number
+          status?: string
+          tab?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       economic_events: {
         Row: {
           actual_value: string | null
@@ -4409,6 +4448,7 @@ export type Database = {
           deadline_at: string | null
           description: string | null
           estimated_time: string | null
+          external_url: string | null
           id: string
           status: string
           title: string
@@ -4421,6 +4461,7 @@ export type Database = {
           deadline_at?: string | null
           description?: string | null
           estimated_time?: string | null
+          external_url?: string | null
           id?: string
           status?: string
           title: string
@@ -4433,6 +4474,7 @@ export type Database = {
           deadline_at?: string | null
           description?: string | null
           estimated_time?: string | null
+          external_url?: string | null
           id?: string
           status?: string
           title?: string
@@ -4551,6 +4593,44 @@ export type Database = {
             foreignKeyName: "ticket_escalation_log_ticket_id_fkey"
             columns: ["ticket_id"]
             isOneToOne: false
+            referencedRelation: "support_tickets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ticket_feedback: {
+        Row: {
+          comment: string | null
+          created_at: string
+          follow_up_status: string
+          id: string
+          rating: number
+          ticket_id: string
+          user_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          follow_up_status?: string
+          id?: string
+          rating: number
+          ticket_id: string
+          user_id: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          follow_up_status?: string
+          id?: string
+          rating?: number
+          ticket_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ticket_feedback_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: true
             referencedRelation: "support_tickets"
             referencedColumns: ["id"]
           },
