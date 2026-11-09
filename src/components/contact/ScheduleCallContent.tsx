@@ -3,6 +3,7 @@ import { Calendar, Clock, Phone, MessageCircle, User, Mail, FileText, Loader2 } 
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { getAttribution } from '@/lib/leadAttribution';
 
 const timeSlots = [
   '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM',
@@ -40,6 +41,7 @@ const ScheduleCallContent = () => {
         lead_type: 'appointment',
         source: 'schedule-call',
         context: {
+          attribution: getAttribution(),
           date: selectedDate,
           time: selectedTime,
           topic: selectedTopic || null,

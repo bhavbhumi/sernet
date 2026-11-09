@@ -5,6 +5,7 @@ import { User, Phone, Mail, FileText, Download, CheckCircle2, Loader2, ArrowRigh
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import type { CalculatorResult } from './CalculatorShell';
+import { getAttribution } from '@/lib/leadAttribution';
 
 interface ProposalDialogProps {
   open: boolean;
@@ -55,6 +56,7 @@ export const ProposalDialog = ({
         lead_type: 'self',
         status: 'new',
         context: {
+          attribution: getAttribution(),
           calculator: calcType,
           proposal_requested: true,
           result_summary: result.metrics.map((m) => `${m.label}: ${m.value}`).join(', '),

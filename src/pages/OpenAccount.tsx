@@ -15,6 +15,7 @@ import { KYC_LINKS } from '@/lib/appLinks';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import {
+import { getAttribution } from '@/lib/leadAttribution';
   onboardingTabs, tabLabels, tabContent, kycChecks, investorTypes, interestOptions,
   defaultInterests, isOnboardingTab, type OnboardingTab, type OnboardingLink,
 } from '@/content/onboarding';
@@ -72,6 +73,7 @@ const InterestForm = ({ tab, requestedInterest }: { tab: OnboardingTab; requeste
       source: 'open_account',
       lead_type: 'account_opening',
       context: {
+          attribution: getAttribution(),
         investor_type: investorType,
         interests,
         city: city || undefined,
