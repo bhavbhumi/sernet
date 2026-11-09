@@ -1,0 +1,2 @@
+ALTER TABLE public.newsletters ADD COLUMN IF NOT EXISTS approved_by uuid, ADD COLUMN IF NOT EXISTS approved_at timestamptz, ADD COLUMN IF NOT EXISTS sent_by uuid;
+COMMENT ON COLUMN public.newsletters.scheduled_at IS 'Planned send date only; nothing sends automatically.';

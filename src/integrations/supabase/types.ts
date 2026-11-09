@@ -2875,6 +2875,8 @@ export type Database = {
       }
       newsletters: {
         Row: {
+          approved_at: string | null
+          approved_by: string | null
           body: string | null
           category: string
           created_at: string
@@ -2884,12 +2886,15 @@ export type Database = {
           recipient_count: number | null
           scheduled_at: string | null
           sent_at: string | null
+          sent_by: string | null
           status: string
           subject: string
           target_preferences: string[] | null
           updated_at: string
         }
         Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
           body?: string | null
           category?: string
           created_at?: string
@@ -2899,12 +2904,15 @@ export type Database = {
           recipient_count?: number | null
           scheduled_at?: string | null
           sent_at?: string | null
+          sent_by?: string | null
           status?: string
           subject: string
           target_preferences?: string[] | null
           updated_at?: string
         }
         Update: {
+          approved_at?: string | null
+          approved_by?: string | null
           body?: string | null
           category?: string
           created_at?: string
@@ -2914,6 +2922,7 @@ export type Database = {
           recipient_count?: number | null
           scheduled_at?: string | null
           sent_at?: string | null
+          sent_by?: string | null
           status?: string
           subject?: string
           target_preferences?: string[] | null
