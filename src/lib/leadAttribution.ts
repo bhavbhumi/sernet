@@ -3,7 +3,7 @@
  * landing page) so every enquiry form can record where the lead came from.
  * Browser-only helpers; safe to import during server rendering.
  */
-export interface LeadAttribution {
+export type LeadAttribution = {
   utm_source?: string;
   utm_medium?: string;
   utm_campaign?: string;
@@ -13,7 +13,7 @@ export interface LeadAttribution {
   landing_page?: string;
   first_seen_at?: string;
   submitted_from?: string;
-}
+};
 
 const STORAGE_KEY = 'sernet_lead_attribution';
 const MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000;
