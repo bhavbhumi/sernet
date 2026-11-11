@@ -139,7 +139,7 @@ function LeadsOverviewContent() {
   const { data: leads = [], error, isLoading } = useQuery({
     queryKey: ['marketing-leads-overview', range],
     queryFn: () => readAllMISRows<LeadRow>((from, to) => {
-      let q = supabase.from('leads').select('id,name,source,lead_type,status,assigned_to,created_at,context')
+      let q = supabase.from('leads').select('id,name,source,lead_type,status,assigned_to,created_at,context,qualification_status,handoff_status')
         .order('created_at', { ascending: false }).order('id').range(from, to);
       if (range !== 'all') q = q.gte('created_at', subDays(new Date(), Number(range)).toISOString());
       return q as unknown as PromiseLike<{ data: LeadRow[] | null; error: { message: string } | null }>;
@@ -152,22 +152,25 @@ function LeadsOverviewContent() {
     unassigned: leads.filter(l => !l.assigned_to && l.status !== 'converted').length,
     converted: leads.filter(l => l.status === 'converted').length,
     attributed: leads.filter(l => attributionLabel(l.context).channel !== 'direct / unknown').length,
+    qualified: leads.filter(l => l.qualification_status === 'qualified').length,
+    handedOff: leads.filter(l => ['ready','accepted'].includes(l.handoff_status)).length,
+    accepted: leads.filter(l => l.handoff_status === 'accepted').length,
   }), [leads]);
 
   const byChannel = useMemo(() => tally(leads, l => attributionLabel(l.context).channel), [leads]);
-  const byCampaign = useMemo(() => tally(leads.filter(l => attributionLabel(l.context).campaign), l => attributionLabel(l.context).campaign!), [leads]);
+  const byCampaign = useMemo(() => tally(leads.filter(l => attributionLabel(l.context).campaign), l => attributionLabel(l.context).campaign ?? 'Unknown'), [leads]);
   const byForm = useMemo(() => tally(leads, l => FORM_LABELS[l.source] ?? l.source), [leads]);
   const waiting = leads.filter(l => !l.assigned_to && l.status !== 'converted').slice(0, 10);
 
   return (
-    <AdminLayout title="Marketing Overview" subtitle="What needs attention, where enquiries come from and whether Sales has picked them up">
+    <AdminLayout title="Marketing Dashboard">
       <ActionNeeded />
       <div className="flex flex-wrap items-center gap-3 mb-6">
         <Select value={range} onValueChange={setRange}>
           <SelectTrigger className="w-44"><SelectValue /></SelectTrigger>
           <SelectContent>{RANGES.map(r => <SelectItem key={r.value} value={r.value}>{r.label}</SelectItem>)}</SelectContent>
         </Select>
-        <Button asChild variant="outline" size="sm" className="ml-auto"><Link to={ADMIN_ROUTES.sales.leads}>Open Sales leads</Link></Button>
+        <Button asChild variant="outline" size="sm" className="ml-auto"><Link to={ADMIN_ROUTES.marketing.leadList}>Open leads</Link></Button>
       </div>
 
       {error ? (
@@ -177,7 +180,7 @@ function LeadsOverviewContent() {
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 mb-6">
             {[
               ['Total leads', stats.total], ['New', stats.fresh], ['Awaiting owner', stats.unassigned],
-              ['Converted', stats.converted], ['With known source', stats.attributed],
+              ['Qualified', stats.qualified], ['Handed to Sales', stats.handedOff], ['Accepted by Sales', stats.accepted], ['Converted to contact', stats.converted], ['With known source', stats.attributed],
             ].map(([label, value]) => (
               <Card key={label as string}><CardContent className="p-4">
                 <p className="text-xs text-muted-foreground">{label}</p>
