@@ -46,6 +46,7 @@ export function PortalGuard({ children }: { children: React.ReactNode }) {
       .maybeSingle();
 
     if (profileError) console.error('Portal profile lookup failed:', profileError.message);
+    console.info('Portal session check', { authUserId: authSession.user.id, profileFound: Boolean(profile), profileStatus: profile?.status });
 
     if (!profile) {
       // Maybe an admin user — redirect them
