@@ -16,11 +16,13 @@ const withLovableConfig = defineConfig({
   },
   vite: {
     resolve: {
-      alias: {
-        "entities/lib/decode.js": path.resolve(process.cwd(), "node_modules/entities/lib/decode.js"),
-        "entities/lib/encode.js": path.resolve(process.cwd(), "node_modules/entities/lib/encode.js"),
-        "entities": path.resolve(process.cwd(), "node_modules/entities"),
-      },
+      alias: [
+        { find: "entities/lib/decode.js", replacement: path.resolve(process.cwd(), "node_modules/entities/lib/decode.js") },
+        { find: "entities/lib/encode.js", replacement: path.resolve(process.cwd(), "node_modules/entities/lib/encode.js") },
+        { find: "entities/decode", replacement: path.resolve(process.cwd(), "node_modules/entities/lib/decode.js") },
+        { find: "entities/encode", replacement: path.resolve(process.cwd(), "node_modules/entities/lib/encode.js") },
+        { find: /^entities$/, replacement: path.resolve(process.cwd(), "node_modules/entities/lib/index.js") },
+      ],
     },
   },
 });
