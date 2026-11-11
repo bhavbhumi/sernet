@@ -353,7 +353,6 @@ export function GenericCMSPage({
                         <div className="flex items-center gap-2">
                           <p className="font-medium text-foreground line-clamp-1 flex-1">{String(item[col.key] ?? '')}</p>
                           <RowActions actions={[
-                            ...(onRowAction ? [{ label: 'Custom', icon: onRowAction(item), onClick: () => {} }] : []),
                             ...(hasStatus ? [{
                               label: item.status === 'published' ? 'Unpublish' : 'Publish',
                               icon: item.status === 'published' ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />,
@@ -366,7 +365,8 @@ export function GenericCMSPage({
                             }] : []),
                             { label: 'Edit', onClick: () => openEdit(item) },
                             { label: 'Delete', onClick: () => handleDelete(String(item.id)), variant: 'destructive' as const, separator: true },
-                          ].filter(a => a.label !== 'Custom' || onRowAction)} />
+                          ]} />
+                          {onRowAction?.(item)}
                         </div>
                       ) : col.key === 'status' ? (
                         <Badge variant={item[col.key] === 'published' ? 'default' : 'secondary'}>

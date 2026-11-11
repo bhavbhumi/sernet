@@ -23,6 +23,7 @@ export default function AdminCampaigns() {
         fields={[
           { key: 'name', label: 'Campaign Name', type: 'text', required: true },
           { key: 'campaign_type', label: 'Type', type: 'select', options: CAMPAIGN_TYPES },
+          { key: 'status', label: 'Status', type: 'select', options: ['draft','active','completed','archived'] },
           { key: 'description', label: 'Description', type: 'textarea' },
           { key: 'utm_source', label: 'UTM Source', type: 'text', placeholder: 'e.g. google, linkedin, newsletter' },
           { key: 'utm_medium', label: 'UTM Medium', type: 'text', placeholder: 'e.g. cpc, email, social' },
@@ -33,11 +34,13 @@ export default function AdminCampaigns() {
           { key: 'target_audience', label: 'Target Audience', type: 'text', placeholder: 'e.g. HNW Clients, NRI Investors' },
         ]}
         emptyForm={{
-          name: '', campaign_type: 'email', description: '',
+          name: '', campaign_type: 'email', description: '', status: 'draft',
           utm_source: '', utm_medium: '', utm_campaign: '',
           start_date: '', end_date: '', budget: '', target_audience: '',
         }}
-        hasStatus
+        hasStatus={false}
+        extraFilterField="status"
+        extraFilterLabel="All statuses"
         categoryField="campaign_type"
         orderBy={{ column: 'created_at', ascending: false }}
         onRowAction={item => <CampaignLinks key={String(item.id)} campaign={item} />}
