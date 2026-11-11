@@ -45,7 +45,7 @@ export function RowActions({ actions }: RowActionsProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="h-7 w-7 p-0">
+        <Button variant="ghost" size="icon" className="relative h-7 w-7 p-0">
           <MoreVertical className="h-4 w-4" />
           <span className="sr-only">Actions</span>
         </Button>

@@ -1,3 +1,5 @@
+import { SalesDealDialog } from '@/components/admin/SalesDealDialog';
+import { readAllMISRows } from '@/lib/misRefresh';
 import { AdminGuard } from '@/components/admin/AdminGuard';
 import { GenericCMSPage } from '@/components/admin/GenericCMSPage';
 import { BulkImportDialog } from '@/components/admin/BulkImportDialog';
@@ -79,66 +81,6 @@ function LogActivityForm({ contactId, onLogged }: { contactId: string; onLogged:
         </div>
       </CardContent>
     </Card>
-  );
-}
-
-// ---- Add Deal from Contact ----
-function AddDealFromContact({ contactId, contactName, onCreated }: {
-  contactId: string; contactName: string; onCreated: () => void;
-}) {
-  const [open, setOpen] = useState(false);
-  const [title, setTitle] = useState(`Deal - ${contactName}`);
-  const [product, setProduct] = useState('');
-  const [value, setValue] = useState('');
-  const [saving, setSaving] = useState(false);
-
-  const handleSave = async () => {
-    if (!title.trim()) { toast.error('Title is required'); return; }
-    setSaving(true);
-    try {
-      const { error } = await supabase.from('crm_deals').insert({
-        title, contact_id: contactId,
-        product_interest: product || null,
-        deal_value: value ? parseFloat(value) : 0,
-      });
-      if (error) throw error;
-      toast.success('Deal created');
-      setOpen(false);
-      setTitle(`Deal - ${contactName}`);
-      setProduct(''); setValue('');
-      onCreated();
-    } catch (e: any) { toast.error(e.message); } finally { setSaving(false); }
-  };
-
-  return (
-    <>
-      <Button size="sm" variant="outline" className="h-7 text-xs" onClick={() => setOpen(true)}>
-        <Plus className="h-3 w-3 mr-1" /> Add Deal
-      </Button>
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-sm">
-          <DialogHeader><DialogTitle>New Deal for {contactName}</DialogTitle></DialogHeader>
-          <div className="space-y-3">
-            <div><Label>Deal Title</Label><Input value={title} onChange={e => setTitle(e.target.value)} /></div>
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <Label>Product</Label>
-                <Select value={product} onValueChange={setProduct}>
-                  <SelectTrigger><SelectValue placeholder="Select..." /></SelectTrigger>
-                  <SelectContent>
-                    {['Mutual Funds', 'Insurance', 'Trading', 'PMS', 'AIF', 'Bonds', 'FD', 'Other'].map(p => (
-                      <SelectItem key={p} value={p}>{p}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div><Label>Value (₹)</Label><Input type="number" value={value} onChange={e => setValue(e.target.value)} placeholder="0" /></div>
-            </div>
-            <Button onClick={handleSave} disabled={saving} className="w-full">{saving ? 'Creating...' : 'Create Deal'}</Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </>
   );
 }
 
@@ -229,44 +171,47 @@ function ContactDetailDialog({ contactId, contactName, contactType, open, onClos
 }) {
   const queryClient = useQueryClient();
   // Fetch full contact record
-  const { data: contact } = useQuery({
+  const { data: contact, error: contactError } = useQuery({
     queryKey: ['contact-detail', contactId],
     enabled: open,
     queryFn: async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('crm_contacts')
         .select('*')
         .eq('id', contactId)
         .single();
+      if(error) throw error;
       return data;
     },
   });
 
   // Fetch linked deals
-  const { data: linkedDeals = [] } = useQuery({
+  const { data: linkedDeals = [], error: dealsError } = useQuery({
     queryKey: ['contact-deals', contactId],
     enabled: open,
     queryFn: async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('crm_deals')
         .select('id, title, stage, sub_status, deal_value, product_interest, created_at')
         .eq('contact_id', contactId)
         .order('created_at', { ascending: false });
+      if(error) throw error;
       return data || [];
     },
   });
 
   // Fetch linked activities
-  const { data: linkedActivities = [] } = useQuery({
+  const { data: linkedActivities = [], error: activitiesError } = useQuery({
     queryKey: ['contact-activities', contactId],
     enabled: open,
     queryFn: async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('crm_activities')
         .select('id, activity_type, subject, outcome, description, is_completed, created_at')
         .eq('contact_id', contactId)
         .order('created_at', { ascending: false })
         .limit(30);
+      if(error) throw error;
       return data || [];
     },
   });
@@ -275,12 +220,13 @@ function ContactDetailDialog({ contactId, contactName, contactType, open, onClos
     queryKey: ['contact-branches', contactId],
     enabled: open,
     queryFn: async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('contact_branches')
         .select('*')
         .eq('contact_id', contactId)
         .order('office_type')
         .order('branch_city');
+      if(error) throw error;
       return (data || []) as BranchRow[];
     },
   });
@@ -291,11 +237,12 @@ function ContactDetailDialog({ contactId, contactName, contactType, open, onClos
     queryKey: ['contact-kmp', contactId],
     enabled: open && isNonIndividual,
     queryFn: async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('contact_kmp')
         .select('*')
         .eq('contact_id', contactId)
         .order('sort_order');
+      if(error) throw error;
       return (data || []) as KMPRow[];
     },
   });
@@ -328,8 +275,9 @@ function ContactDetailDialog({ contactId, contactName, contactType, open, onClos
           </DialogTitle>
         </DialogHeader>
 
+        {(contactError || dealsError || activitiesError) && <p role="alert" className="text-destructive">Contact details could not be loaded.</p>}
         <Tabs defaultValue="profile" className="mt-2">
-          <TabsList>
+          <TabsList className="flex flex-wrap h-auto gap-1">
             <TabsTrigger value="profile">Profile</TabsTrigger>
             <TabsTrigger value="addresses">
               Addresses ({branches.length})
@@ -380,7 +328,7 @@ function ContactDetailDialog({ contactId, contactName, contactType, open, onClos
                         <DetailRow icon={User} label="Gender" value={contact.gender ? contact.gender.charAt(0).toUpperCase() + contact.gender.slice(1) : null} />
                         <DetailRow icon={Shield} label="Tax Status" value={contact.tax_status ? TAX_STATUS_LABELS[contact.tax_status] || contact.tax_status : null} />
                         {ageInfo && (
-                          <DetailRow icon={Calendar} label="DOB / Age" value={`${format(new Date(contact.date_of_birth!), 'dd MMM yyyy')} (${ageInfo.age}y — ${ageInfo.label})`} />
+                          <DetailRow icon={Calendar} label="DOB / Age" value={`${format(new Date(contact.date_of_birth ?? ''), 'dd MMM yyyy')} (${ageInfo.age}y — ${ageInfo.label})`} />
                         )}
                       </>
                     )}
@@ -534,7 +482,7 @@ function ContactDetailDialog({ contactId, contactName, contactType, open, onClos
           <TabsContent value="deals" className="mt-4">
             <div className="flex items-center justify-between mb-3">
               <p className="text-xs text-muted-foreground">{linkedDeals.length} deal(s) linked</p>
-              <AddDealFromContact contactId={contactId} contactName={contactName} onCreated={() => {
+              <SalesDealDialog contactId={contactId} contactName={contactName} onCreated={() => {
                 queryClient.invalidateQueries({ queryKey: ['contact-deals', contactId] });
                 queryClient.invalidateQueries({ queryKey: ['crm-deals'] });
               }} />
@@ -608,7 +556,8 @@ export default function AdminCRMContacts() {
     <AdminGuard>
       <GenericCMSPage
         title="CRM Contacts"
-        subtitle="Manage clients, partners & principals"
+        subtitle="Clients, partners and principals"
+        headerActions={<Button size="sm" variant="outline" onClick={()=>setBulkImportOpen(true)}><Upload className="h-4 w-4 mr-1" />Import</Button>}
         tableName="crm_contacts"
         tableColumns={[
           { key: 'full_name', label: 'Name' },
@@ -657,6 +606,9 @@ export default function AdminCRMContacts() {
           tan: '', cin: '', gstin: '', date_of_incorporation: '',
           city: '', state: '', source: 'direct', notes: '',
         }}
+        wrapFirstColumn
+        extraFilterField="contact_type"
+        extraFilterLabel="All contact types"
         hasStatus={false}
         categoryField="relationship_type"
         orderBy={{ column: 'created_at', ascending: false }}

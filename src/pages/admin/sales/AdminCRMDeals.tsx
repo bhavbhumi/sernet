@@ -1,3 +1,5 @@
+import { SalesDealDialog } from '@/components/admin/SalesDealDialog';
+import { RowActions } from '@/components/admin/RowActions';
 import { readAllMISRows } from '@/lib/misRefresh';
 import { useState } from 'react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
@@ -43,7 +45,7 @@ type Deal = {
 // ---- Hook: load pipeline config ----
 function usePipelineConfig() {
   return useQuery({
-    queryKey: ['pipeline-config'],
+    queryKey: ['sales-pipeline-active'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('pipeline_stages')
@@ -91,113 +93,14 @@ async function validateTransition(dealId: string, toStage: string, toSubStatus: 
 async function executeTransition(deal: Deal, toStage: string, toSubStatus: string) {
   const validation = await validateTransition(deal.id, toStage, toSubStatus);
   if (!validation.allowed) return { success: false, errors: validation.errors, requires_approval: false };
-  if (validation.requires_approval) return { success: false, errors: ['This transition requires approval (not yet implemented)'], requires_approval: true };
+  if (validation.requires_approval) return { success: false, errors: ['Approval is required; keep the current stage until an approval workflow is available'], requires_approval: true };
 
   const { error } = await supabase.from('crm_deals').update({
     stage: toStage as any, sub_status: toSubStatus as any,
   }).eq('id', deal.id);
   if (error) throw error;
 
-  await supabase.from('crm_stage_history').insert({
-    deal_id: deal.id, from_stage: deal.stage as any, from_sub_status: deal.sub_status as any,
-    to_stage: toStage as any, to_sub_status: toSubStatus as any,
-  });
-
   return { success: true, errors: [], requires_approval: false };
-}
-
-// ---- New Deal Dialog ----
-function NewDealDialog({ stages, onCreated }: { stages: PipelineStage[]; onCreated: () => void }) {
-  const [open, setOpen] = useState(false);
-  const firstStage = stages[0];
-  const [form, setForm] = useState({
-    title: '', stage: firstStage?.stage_key || '',
-    sub_status: firstStage?.pipeline_sub_statuses[0]?.sub_status_key || '',
-    deal_value: '', product_interest: '', contact_name: '', contact_phone: '', contact_email: '',
-  });
-  const [saving, setSaving] = useState(false);
-  const currentStage = stages.find(s => s.stage_key === form.stage);
-
-  const handleSave = async () => {
-    if (!form.title.trim()) { toast.error('Title is required'); return; }
-    setSaving(true);
-    try {
-      let contactId: string | null = null;
-      if (form.contact_name.trim()) {
-        const { data: contact, error: cErr } = await supabase.from('crm_contacts').insert({
-          full_name: form.contact_name, phone: form.contact_phone || null, email: form.contact_email || null,
-        }).select('id').single();
-        if (cErr) throw cErr;
-        contactId = contact.id;
-      }
-      const { error } = await supabase.from('crm_deals').insert({
-        title: form.title, stage: form.stage as any, sub_status: form.sub_status as any,
-        deal_value: form.deal_value ? parseFloat(form.deal_value) : 0,
-        product_interest: form.product_interest || null, contact_id: contactId,
-      });
-      if (error) throw error;
-      toast.success('Deal created');
-      setOpen(false);
-      setForm({
-        title: '', stage: firstStage?.stage_key || '',
-        sub_status: firstStage?.pipeline_sub_statuses[0]?.sub_status_key || '',
-        deal_value: '', product_interest: '', contact_name: '', contact_phone: '', contact_email: '',
-      });
-      onCreated();
-    } catch (e: any) { toast.error(e.message); } finally { setSaving(false); }
-  };
-
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button size="sm"><Plus className="h-4 w-4 mr-1" /> New Deal</Button>
-      </DialogTrigger>
-      <DialogContent className="max-w-lg">
-        <DialogHeader><DialogTitle>Create New Deal</DialogTitle></DialogHeader>
-        <div className="space-y-4">
-          <div><Label>Deal Title *</Label><Input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} placeholder="e.g. MF SIP - Rajesh Patel" /></div>
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <Label>Stage</Label>
-              <Select value={form.stage} onValueChange={v => {
-                const stg = stages.find(s => s.stage_key === v)!;
-                setForm(f => ({ ...f, stage: v, sub_status: stg.pipeline_sub_statuses[0]?.sub_status_key || '' }));
-              }}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>{stages.map(s => <SelectItem key={s.stage_key} value={s.stage_key}>{s.stage_label}</SelectItem>)}</SelectContent>
-              </Select>
-            </div>
-            <div>
-              <Label>Sub-Status</Label>
-              <Select value={form.sub_status} onValueChange={v => setForm(f => ({ ...f, sub_status: v }))}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>{currentStage?.pipeline_sub_statuses.map(ss => <SelectItem key={ss.sub_status_key} value={ss.sub_status_key}>{ss.sub_status_label}</SelectItem>)}</SelectContent>
-              </Select>
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            <div><Label>Deal Value (₹)</Label><Input type="number" value={form.deal_value} onChange={e => setForm(f => ({ ...f, deal_value: e.target.value }))} placeholder="0" /></div>
-            <div>
-              <Label>Product Interest</Label>
-              <Select value={form.product_interest} onValueChange={v => setForm(f => ({ ...f, product_interest: v }))}>
-                <SelectTrigger><SelectValue placeholder="Select..." /></SelectTrigger>
-                <SelectContent>{['Mutual Funds', 'Insurance', 'Trading', 'PMS', 'AIF', 'Bonds', 'FD', 'Other'].map(p => <SelectItem key={p} value={p}>{p}</SelectItem>)}</SelectContent>
-              </Select>
-            </div>
-          </div>
-          <div className="border-t pt-3 space-y-3">
-            <p className="text-xs font-medium text-muted-foreground">Contact (optional — select existing or create inline)</p>
-            <Input value={form.contact_name} onChange={e => setForm(f => ({ ...f, contact_name: e.target.value }))} placeholder="Full Name" />
-            <div className="grid grid-cols-2 gap-3">
-              <Input value={form.contact_phone} onChange={e => setForm(f => ({ ...f, contact_phone: e.target.value }))} placeholder="Phone" />
-              <Input value={form.contact_email} onChange={e => setForm(f => ({ ...f, contact_email: e.target.value }))} placeholder="Email" />
-            </div>
-          </div>
-          <Button onClick={handleSave} disabled={saving} className="w-full">{saving ? 'Saving...' : 'Create Deal'}</Button>
-        </div>
-      </DialogContent>
-    </Dialog>
-  );
 }
 
 // ---- Deal Card (Kanban) ----
@@ -253,7 +156,7 @@ function DealCard({ deal, stages, subStatusLabels, subStatusColors, onMove, onSe
       )}
       {validationErrors.length > 0 && (
         <div className="bg-destructive/10 border border-destructive/20 rounded p-2 space-y-1">
-          <div className="flex items-center gap-1 text-destructive text-[10px] font-medium"><ShieldAlert className="h-3 w-3" /> Blueprint blocked</div>
+          <div className="flex items-center gap-1 text-destructive text-[10px] font-medium"><ShieldAlert className="h-3 w-3" /> Stage change blocked</div>
           {validationErrors.map((err, i) => (
             <p key={i} className="text-[10px] text-destructive/80 flex items-start gap-1"><AlertTriangle className="h-3 w-3 shrink-0 mt-0.5" /> {err}</p>
           ))}
@@ -283,10 +186,10 @@ export default function AdminCRMDeals() {
   const [stageFilter, setStageFilter] = useState('all');
   const [search, setSearch] = useState('');
 
-  const { data: stages = [], isLoading: stagesLoading } = usePipelineConfig();
+  const { data: stages = [], isLoading: stagesLoading, error: stagesError } = usePipelineConfig();
   const { stageLabels, stageColors, subStatusLabels, subStatusColors } = buildLookups(stages);
 
-  const { data: deals = [], isLoading: dealsLoading } = useQuery({
+  const { data: deals = [], isLoading: dealsLoading, error: dealsError } = useQuery({
     queryKey: ['crm-deals'],
     queryFn: async () => {
       return await readAllMISRows((from, to) => supabase.from('crm_deals').select('*, crm_contacts(full_name, phone)').order('created_at', { ascending: false }).order('id').range(from, to)) as Deal[];
@@ -311,42 +214,42 @@ export default function AdminCRMDeals() {
 
   const stageCounts = stages.map(s => ({
     ...s,
-    deals: deals.filter(d => d.stage === s.stage_key),
-    totalValue: deals.filter(d => d.stage === s.stage_key).reduce((sum, d) => sum + Number(d.deal_value || 0), 0),
+    deals: filteredDeals.filter(d => d.stage === s.stage_key),
+    totalValue: filteredDeals.filter(d => d.stage === s.stage_key).reduce((sum, d) => sum + Number(d.deal_value || 0), 0),
   }));
 
   return (
     <AdminGuard>
-      <AdminLayout title="Deals & Pipeline" subtitle={`Blueprint-enforced pipeline — ${stageLabel}`}>
+      <AdminLayout title="Deals & Pipeline" subtitle={stageLabel}>
         {/* Header Bar */}
         <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
           <div className="flex items-center gap-3 text-sm text-muted-foreground">
             <span>{deals.length} deals</span>
             <span>₹{totalValue.toLocaleString('en-IN')} total</span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             {/* View Toggle */}
             <div className="flex items-center rounded-lg border border-border p-0.5">
-              <button onClick={() => setView('kanban')}
+              <Button variant="ghost" size="sm" onClick={() => setView('kanban')}
                 className={cn('flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium transition-colors',
                   view === 'kanban' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground')}>
                 <LayoutGrid className="h-3.5 w-3.5" /> Kanban
-              </button>
-              <button onClick={() => setView('list')}
+              </Button>
+              <Button variant="ghost" size="sm" onClick={() => setView('list')}
                 className={cn('flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium transition-colors',
                   view === 'list' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground')}>
                 <List className="h-3.5 w-3.5" /> List
-              </button>
+              </Button>
             </div>
             <Link to={ADMIN_ROUTES.sales.pipelineConfig}>
               <Button variant="outline" size="sm"><Settings2 className="h-4 w-4 mr-1" /> Configure</Button>
             </Link>
-            <NewDealDialog stages={stages} onCreated={refresh} />
+            <SalesDealDialog onCreated={refresh} />
           </div>
         </div>
 
         {/* List-view filters */}
-        {view === 'list' && (
+        {(
           <div className="flex flex-wrap items-center gap-2 mb-4">
             <div className="relative flex-1 min-w-48">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -362,11 +265,12 @@ export default function AdminCRMDeals() {
           </div>
         )}
 
+        {(stagesError || dealsError) && <p role="alert" className="text-destructive mb-4">Opportunities or pipeline settings could not be loaded.</p>}
         {isLoading ? (
           <div className="flex items-center justify-center h-40 text-muted-foreground"><Loader2 className="w-5 h-5 animate-spin mr-2" /> Loading…</div>
         ) : view === 'kanban' ? (
           /* ===== KANBAN VIEW ===== */
-          <div className={cn('grid gap-4 min-h-[60vh]', `grid-cols-1 md:grid-cols-2 xl:grid-cols-${Math.min(stages.length, 6)}`)}>
+          <div className={cn('grid gap-4 min-h-[60vh]', 'grid-cols-1 md:grid-cols-2 xl:grid-cols-4')}>
             {stageCounts.map(stage => (
               <div key={stage.stage_key} className="flex flex-col">
                 <div className="flex items-center gap-2 mb-3 px-1">
@@ -390,7 +294,7 @@ export default function AdminCRMDeals() {
         ) : (
           /* ===== LIST VIEW ===== */
           <div className="rounded-lg border border-border overflow-x-auto">
-            <Table>
+            <Table className="min-w-[800px]">
               <TableHeader>
                 <TableRow>
                   <TableHead>Title</TableHead>
@@ -425,9 +329,7 @@ export default function AdminCRMDeals() {
                     <TableCell>{deal.product_interest || '—'}</TableCell>
                     <TableCell className="text-xs text-muted-foreground">{format(new Date(deal.created_at), 'dd MMM yyyy')}</TableCell>
                     <TableCell>
-                      <Button variant="ghost" size="sm" className="h-7 px-2 text-xs" onClick={e => { e.stopPropagation(); setSelectedDealId(deal.id); }}>
-                        <Eye className="h-3.5 w-3.5" />
-                      </Button>
+                      <div onClick={e => e.stopPropagation()}><RowActions actions={[{label:'View',onClick:()=>setSelectedDealId(deal.id)}]} /></div>
                     </TableCell>
                   </TableRow>
                 ))}
