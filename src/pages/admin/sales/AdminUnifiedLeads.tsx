@@ -1,3 +1,4 @@
+import { inSalesQueue, leadProspect } from '@/lib/sharedLeadWorkflow';
 import { readAllMISRows } from '@/lib/misRefresh';
 import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -25,6 +26,7 @@ import { BulkImportDialog } from '@/components/admin/BulkImportDialog';
 type WebLead = {
   id: string; name: string; phone: string; email: string | null;
   source: string; lead_type: string; status: string;
+  handoff_status: string; qualification_status: string; contact_permission: string; assigned_to: string | null;
   context: Record<string, unknown> | null; notes: string | null; created_at: string;
 };
 
@@ -35,7 +37,7 @@ type CalcLead = {
 };
 
 const SOURCE_LABELS: Record<string, { label: string; color: string; icon: React.ComponentType<{ className?: string }> }> = {
-  calculator:   { label: 'AI Calculator',  color: 'bg-primary/10 text-primary',          icon: Calculator },
+  calculator:   { label: 'Calculator',  color: 'bg-primary/10 text-primary',          icon: Calculator },
   referral:     { label: 'Referral',        color: 'bg-green-500/10 text-green-600',       icon: GitBranch },
   tieup:        { label: 'Tie-up',          color: 'bg-amber-500/10 text-amber-600',       icon: HandshakeIcon },
   service:      { label: 'Service Inquiry', color: 'bg-purple-500/10 text-purple-600',     icon: TrendingUp },
@@ -45,6 +47,7 @@ const SOURCE_LABELS: Record<string, { label: string; color: string; icon: React.
 };
 
 const STATUS_OPTIONS = ['new', 'contacted', 'qualified', 'converted', 'lost'];
+const EDITABLE_STATUS_OPTIONS = STATUS_OPTIONS.filter(s => s !== 'converted');
 const STATUS_COLOR: Record<string, string> = {
   new: 'bg-blue-500/10 text-blue-600', contacted: 'bg-amber-500/10 text-amber-600',
   qualified: 'bg-purple-500/10 text-purple-600', converted: 'bg-green-500/10 text-green-600',
@@ -137,14 +140,9 @@ function ConvertToContactDialog({ lead, open, onClose }: {
   const handleConvert = async () => {
     setSaving(true);
     try {
-      const { error: cErr } = await supabase.from('crm_contacts').insert({
-        full_name: lead.name, phone: lead.phone, email: lead.email || null,
-        pan: pan || null, city: city || null,
-        relationship_type: relationship as any,
-        source: 'lead_conversion', lead_id: lead.id || null,
-      });
-      if (cErr) throw cErr;
-      if (lead.id) await supabase.from('leads').update({ status: 'converted' }).eq('id', lead.id);
+      if (!lead.id) throw new Error('Select a shared enquiry before converting');
+      const {error} = await supabase.rpc('convert_shared_lead', { _lead: lead.id, _relationship: relationship as 'client' | 'partner' | 'principal', _pan: pan || undefined, _city: city || undefined });
+      if(error) throw error;
       toast.success('Lead converted to contact');
       onClose(true);
     } catch (e: any) { toast.error(e.message); } finally { setSaving(false); }
@@ -186,6 +184,7 @@ function ConvertToContactDialog({ lead, open, onClose }: {
 // ---- Main Component ----
 export default function AdminUnifiedLeads() {
   const queryClient = useQueryClient();
+  const [queue, setQueue] = useState('sales');
   const [tab, setTab] = useState('all');
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -196,7 +195,7 @@ export default function AdminUnifiedLeads() {
   const [detailLead, setDetailLead] = useState<{ id: string; type: 'web' | 'calculator' } | null>(null);
 
   // Fetch website leads
-  const { data: webLeads = [], isLoading: webLoading } = useQuery({
+  const { data: webLeads = [], isLoading: webLoading, error: leadError } = useQuery({
     queryKey: ['leads', statusFilter],
     queryFn: async () => {
       let q = supabase.from('leads').select('*').order('created_at', { ascending: false });
@@ -205,25 +204,19 @@ export default function AdminUnifiedLeads() {
     },
   });
 
-  // Fetch calculator leads
-  const { data: calcLeads = [], isLoading: calcLoading } = useQuery({
-    queryKey: ['calculator-leads'],
-    queryFn: async () => {
-      return await readAllMISRows((from, to) => supabase.from('calculator_leads').select('*').order('created_at', { ascending: false }).order('id').range(from, to)) as CalcLead[];
-    },
-  });
-
+  // Calculator enquiries use the same canonical lead records.
+  const calcLeads = webLeads.filter(l => l.source === 'calculator').map(l => ({ ...l, goal_text: String(l.context?.goal_text ?? l.context?.calculator ?? ''), product_type: String(l.context?.product_type ?? ''), calculated_result: l.context?.calculated_result as Record<string, number> | null }));
+  const calcLoading = webLoading;
   // Fetch activity counts per lead (via crm_contacts.lead_id → crm_activities)
   const { data: activityCounts = {} } = useQuery({
     queryKey: ['lead-activity-counts'],
     queryFn: async () => {
       const contacts = await readAllMISRows((from, to) => supabase.from('crm_contacts').select('id, lead_id').not('lead_id', 'is', null).order('id').range(from, to));
-      if (!contacts?.length) return {};
       const contactToLead = new Map(contacts.map(c => [c.id, c.lead_id]));
-      const activities = await readAllMISRows((from, to) => supabase.from('crm_activities').select('contact_id').not('contact_id', 'is', null).order('id').range(from, to));
+      const activities = await readAllMISRows((from, to) => supabase.from('crm_activities').select('contact_id,lead_id').order('id').range(from, to));
       const counts: Record<string, number> = {};
       for (const act of activities || []) {
-        const leadId = act.contact_id ? contactToLead.get(act.contact_id) : undefined;
+        const leadId = act.lead_id ?? (act.contact_id ? contactToLead.get(act.contact_id) : undefined);
         if (leadId) counts[leadId] = (counts[leadId] || 0) + 1;
       }
       return counts;
@@ -238,11 +231,11 @@ export default function AdminUnifiedLeads() {
     return name.toLowerCase().includes(s) || phone.includes(s) || (email ?? '').toLowerCase().includes(s);
   };
 
-  const filteredWeb = webLeads.filter(l => filterBySearch(l.name, l.phone, l.email));
-  const filteredCalc = calcLeads.filter(l => filterBySearch(l.name, l.phone, l.email));
+  const filteredWeb = webLeads.filter(l => (queue === 'all' || inSalesQueue(l)) && filterBySearch(leadProspect(l).name, leadProspect(l).phone, leadProspect(l).email));
+  const filteredCalc = calcLeads.filter(l => (queue === 'all' || inSalesQueue(l)) && filterBySearch(l.name, l.phone, l.email));
 
   const stats = {
-    total: webLeads.length + calcLeads.length,
+    total: webLeads.length,
     webNew: webLeads.filter(l => l.status === 'new').length,
     converted: webLeads.filter(l => l.status === 'converted').length,
     calculator: calcLeads.length,
@@ -250,7 +243,8 @@ export default function AdminUnifiedLeads() {
 
   const updateStatus = async (id: string, status: string) => {
     setUpdatingId(id);
-    await supabase.from('leads').update({ status }).eq('id', id);
+    const {error} = await supabase.from('leads').update({ status }).eq('id', id);
+    if(error) {toast.error(error.message);setUpdatingId(null);return;}
     await queryClient.invalidateQueries({ queryKey: ['leads'] });
     setUpdatingId(null);
   };
@@ -298,8 +292,9 @@ export default function AdminUnifiedLeads() {
 
   return (
     <AdminGuard>
-      <AdminLayout title="Leads" subtitle="All captured leads — website forms, calculators, referrals & more">
+      <AdminLayout title="Leads" subtitle="Shared enquiries and accepted Sales work">
         <div className="space-y-4">
+          {leadError && <p role="alert" className="text-destructive">Shared enquiries could not be refreshed.</p>}
           {/* Stats */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
@@ -317,6 +312,7 @@ export default function AdminUnifiedLeads() {
 
           {/* Filters + Actions */}
           <div className="flex flex-wrap gap-2">
+            <Select value={queue} onValueChange={setQueue}><SelectTrigger className="w-48"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="sales">Sales work queue</SelectItem><SelectItem value="all">All shared enquiries</SelectItem></SelectContent></Select>
             <div className="relative flex-1 min-w-48">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input placeholder="Search name, phone, email…" value={search} onChange={e => setSearch(e.target.value)} className="pl-9" />
@@ -374,6 +370,7 @@ export default function AdminUnifiedLeads() {
                     </thead>
                     <tbody className="divide-y divide-border">
                       {filteredWeb.map(lead => {
+                        const prospect = leadProspect(lead);
                         const src = SOURCE_LABELS[lead.source] ?? SOURCE_LABELS.website;
                         const SrcIcon = src.icon;
                         const actCount = activityCounts[lead.id] || 0;
@@ -381,13 +378,13 @@ export default function AdminUnifiedLeads() {
                           <tr key={lead.id} className="hover:bg-muted/30 transition-colors">
                             <td className="px-4 py-3">
                               <button className="font-medium text-foreground hover:text-primary transition-colors text-left" onClick={() => setDetailLead({ id: lead.id, type: 'web' })}>
-                                {lead.name}
+                                {prospect.name}
                               </button>
                             </td>
                             <td className="px-4 py-3">
                               <div className="flex flex-col gap-0.5">
-                                <span className="flex items-center gap-1.5 text-muted-foreground text-xs"><Phone className="w-3 h-3" /> {lead.phone}</span>
-                                {lead.email && <span className="flex items-center gap-1.5 text-muted-foreground text-xs"><Mail className="w-3 h-3" /> {lead.email}</span>}
+                                <span className="flex items-center gap-1.5 text-muted-foreground text-xs"><Phone className="w-3 h-3" /> {prospect.phone}</span>
+                                {prospect.email && <span className="flex items-center gap-1.5 text-muted-foreground text-xs"><Mail className="w-3 h-3" /> {prospect.email}</span>}
                               </div>
                             </td>
                             <td className="px-4 py-3">
@@ -402,7 +399,7 @@ export default function AdminUnifiedLeads() {
                               {updatingId === lead.id ? <Loader2 className="w-4 h-4 animate-spin" /> : (
                                 <select value={lead.status} onChange={e => updateStatus(lead.id, e.target.value)}
                                   className={`text-xs px-2 py-1 rounded-full border-0 font-medium cursor-pointer focus:outline-hidden ${STATUS_COLOR[lead.status] ?? 'bg-muted text-muted-foreground'}`}>
-                                  {STATUS_OPTIONS.map(s => <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
+                                  {(lead.status === 'converted' ? ['converted'] : EDITABLE_STATUS_OPTIONS).map(s => <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
                                 </select>
                               )}
                             </td>
@@ -421,9 +418,9 @@ export default function AdminUnifiedLeads() {
                                 <Button variant="ghost" size="sm" className="h-7 px-1.5 text-xs" onClick={() => setDetailLead({ id: lead.id, type: 'web' })}>
                                   <Eye className="h-3 w-3" />
                                 </Button>
-                                {lead.status !== 'converted' && (
+                                {lead.status !== 'converted' && lead.handoff_status === 'accepted' && (
                                   <Button variant="ghost" size="sm" className="h-7 text-xs" onClick={() => setConvertLead({
-                                    id: lead.id, name: lead.name, phone: lead.phone, email: lead.email,
+                                    id: lead.id, ...leadProspect(lead),
                                     context: getContextSummary(lead) ?? undefined,
                                   })}>
                                     <ArrowRight className="h-3 w-3 mr-1" /> Convert
@@ -457,7 +454,7 @@ export default function AdminUnifiedLeads() {
                         <th className="px-4 py-3 text-left">Contact</th>
                         <th className="px-4 py-3 text-left">Goal</th>
                         <th className="px-4 py-3 text-left">Product</th>
-                        <th className="px-4 py-3 text-left">AI Result</th>
+                        <th className="px-4 py-3 text-left">Calculated result</th>
                         <th className="px-4 py-3 text-left">Date</th>
                         <th className="px-4 py-3 text-left">Actions</th>
                       </tr>
@@ -466,7 +463,7 @@ export default function AdminUnifiedLeads() {
                       {filteredCalc.map(lead => (
                         <tr key={lead.id} className="hover:bg-muted/30 transition-colors">
                           <td className="px-4 py-3">
-                            <button className="font-medium text-foreground hover:text-primary transition-colors text-left" onClick={() => setDetailLead({ id: lead.id, type: 'calculator' })}>
+                            <button className="font-medium text-foreground hover:text-primary transition-colors text-left" onClick={() => setDetailLead({ id: lead.id, type: 'web' })}>
                               {lead.name}
                             </button>
                           </td>
@@ -486,11 +483,11 @@ export default function AdminUnifiedLeads() {
                           <td className="px-4 py-3 text-muted-foreground text-xs whitespace-nowrap">{format(new Date(lead.created_at), 'dd MMM yy, HH:mm')}</td>
                           <td className="px-4 py-3">
                             <div className="flex items-center gap-1">
-                              <Button variant="ghost" size="sm" className="h-7 px-1.5 text-xs" onClick={() => setDetailLead({ id: lead.id, type: 'calculator' })}>
+                              <Button variant="ghost" size="sm" className="h-7 px-1.5 text-xs" onClick={() => setDetailLead({ id: lead.id, type: 'web' })}>
                                 <Eye className="h-3 w-3" />
                               </Button>
-                              <Button variant="ghost" size="sm" className="h-7 text-xs" onClick={() => setConvertLead({
-                                name: lead.name, phone: lead.phone, email: lead.email,
+                              <Button disabled={lead.handoff_status !== 'accepted' || lead.status === 'converted'} variant="ghost" size="sm" className="h-7 text-xs" onClick={() => setConvertLead({
+                                id: lead.id, name: lead.name, phone: lead.phone, email: lead.email,
                                 context: `${lead.product_type}: ${lead.goal_text}`,
                               })}>
                                 <ArrowRight className="h-3 w-3 mr-1" /> Convert

@@ -27,7 +27,7 @@ export const handle = async (req: Request): Promise<Response> => {
       "news_items", "circulars", "press_items",
     ];
     const operationalTables = [
-      "crm_deals", "crm_contacts", "crm_activities", "leads", "calculator_leads",
+      "crm_deals", "crm_contacts", "crm_activities", "leads",
       "support_tickets", "kb_articles", "employees", "invoices",
       "profiles", "reviews", "polls", "surveys",
     ];
@@ -43,6 +43,9 @@ export const handle = async (req: Request): Promise<Response> => {
         tableCounts[t] = count ?? 0;
       })
     );
+
+    const { count: calculatorCount, error: calculatorError } = await supabase.from("leads").select("id", {count:"exact", head:true}).eq("source", "calculator");
+    if (calculatorError) throw calculatorError;
 
     // ── 2. Content health ────────────────────────────────────
     const { count: draftArticles } = await supabase
@@ -159,7 +162,7 @@ export const handle = async (req: Request): Promise<Response> => {
           open_deals: openDeals ?? 0,
           stale_deals: staleDeals ?? 0,
           leads: tableCounts.leads || 0,
-          calculator_leads: tableCounts.calculator_leads || 0,
+          calculator_leads: calculatorCount ?? 0,
           contacts: tableCounts.crm_contacts || 0,
         },
         workflows: {

@@ -45,6 +45,8 @@
 - Menu regrouping keeps existing `moduleKey` values, each once, so saved staff permissions keep working.
 - Ticket ratings live in `ticket_feedback` (≤3 stars flags follow-up); portal reviews enter `reviews` as pending.
 - Marketing and Sales share `leads`; database-guarded handoffs require qualification, contact permission and an owner, avoiding duplicate prospect records.
+- Convert shared enquiries atomically through `convert_shared_lead`, matching prospect identity (not the referrer) and retaining `converted_contact_id`; database checks restrict acceptance/conversion to the assigned Sales owner or Sales supervisor.
+- Keep pre-conversion follow-ups on `crm_activities.lead_id` and audience enquiries behind explicit interest/permission actions; subscription or attendance alone never promotes a person to Sales.
 - Save campaign links and Insights distribution separately from article content; manual posting records retain platform URLs and dates, never implying automatic delivery.
 - Preserve anonymous newsletter conflict no-ops; existing-address changes require verified staff handling, and database triggers record activation evidence and suppress unsubscribed recipients to prevent unauthorized reactivation.
 - Store lead permission evidence separately from notes in context, with database-recorded actor/time and handoff enforcement; this prevents qualification from implying consent.

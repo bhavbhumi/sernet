@@ -56,6 +56,9 @@ export default function AdminDashboard() {
         { label: 'Circular Sources', count: stats.circulars, href: R.marketing.updates.circulars, icon: AlertCircle, color: 'text-red-600 bg-red-500/10' },
         { label: 'Polls', count: stats.polls, href: R.marketing.engagement.polls, icon: Vote, color: 'text-violet-600 bg-violet-500/10' },
         { label: 'Reviews', count: stats.pendingReviews, href: R.marketing.engagement.reviews, icon: Star, color: 'text-yellow-600 bg-yellow-500/10', subtitle: 'Pending' },
+        { label: 'Enquiries', count: stats.leads, href: R.marketing.leadList, icon: UserCheck, color: 'text-primary', subtitle: 'Shared with Sales' },
+        { label: 'Subscribers', count: stats.subscribers, href: R.marketing.engagement.newsletter, icon: Users, color: 'text-primary' },
+        { label: 'Registrations', count: stats.registrations, href: R.marketing.campaigns.events, icon: Users, color: 'text-primary' },
         { label: 'Press', count: stats.press, href: R.marketing.press, icon: FileText, color: 'text-slate-600 bg-slate-500/10' },
       ],
     },
@@ -65,7 +68,7 @@ export default function AdminDashboard() {
       color: 'text-emerald-600',
       bgColor: 'bg-emerald-500/10',
       cards: [
-        { label: 'All Leads', count: stats.leads == null || stats.calcLeads == null ? null : stats.leads + stats.calcLeads, href: R.sales.leads, icon: UserCheck, color: 'text-emerald-600 bg-emerald-500/10' },
+        { label: 'Sales queue', count: stats.salesQueue, href: R.sales.leads, icon: UserCheck, color: 'text-emerald-600 bg-emerald-500/10' },
       ],
     },
     {
@@ -212,7 +215,7 @@ async function fetchDashboardStats(): Promise<Record<string, number | null>> {
       const [
         articles, analyses, reports, bulletins, news, circulars,
         polls, surveys, reviews, jobs, applications, press,
-        leads, calcLeads, tickets, openTickets, breachedTickets,
+        leads, salesQueue, subscribers, registrations, tickets, openTickets, breachedTickets,
         activeEmps, pendingLeaves, attendanceLogs, lateLogs
       ] = await Promise.all([
         supabase.from('articles').select('id', { count: 'exact', head: true }).in('media_kind', ['text', 'image_text']),
@@ -228,7 +231,9 @@ async function fetchDashboardStats(): Promise<Record<string, number | null>> {
         supabase.from('job_applications').select('id', { count: 'exact', head: true }).eq('status', 'new'),
         supabase.from('press_items').select('id', { count: 'exact', head: true }),
         supabase.from('leads').select('id', { count: 'exact', head: true }),
-        supabase.from('calculator_leads').select('id', { count: 'exact', head: true }),
+        supabase.from('leads').select('id', { count: 'exact', head: true }).in('handoff_status', ['ready', 'accepted']).neq('status', 'converted'),
+        supabase.from('newsletter_subscribers').select('id', { count: 'exact', head: true }).eq('status', 'active'),
+        supabase.from('event_registrations').select('id', { count: 'exact', head: true }),
         db('support_tickets').select('id', { count: 'exact', head: true }),
         db('support_tickets').select('id', { count: 'exact', head: true }).eq('status', 'open'),
         db('support_tickets').select('id', { count: 'exact', head: true }).in('status', ['open', 'in_progress']).lt('tat_deadline', new Date().toISOString()),
@@ -252,7 +257,9 @@ async function fetchDashboardStats(): Promise<Record<string, number | null>> {
         newApplications: readMISCount(applications),
         press: readMISCount(press),
         leads: readMISCount(leads),
-        calcLeads: readMISCount(calcLeads),
+        salesQueue: readMISCount(salesQueue),
+        subscribers: readMISCount(subscribers),
+        registrations: readMISCount(registrations),
         tickets: readMISCount(tickets),
         openTickets: readMISCount(openTickets),
         breachedTickets: readMISCount(breachedTickets),

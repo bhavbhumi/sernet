@@ -1,3 +1,4 @@
+import { toast } from 'sonner';
 import { readAllMISRows } from '@/lib/misRefresh';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
@@ -23,7 +24,7 @@ type Lead = {
 };
 
 const SOURCE_LABELS: Record<string, { label: string; color: string; icon: React.ComponentType<{ className?: string }> }> = {
-  calculator:   { label: 'AI Calculator',  color: 'bg-primary/10 text-primary',          icon: Calculator },
+  calculator:   { label: 'Calculator',  color: 'bg-primary/10 text-primary',          icon: Calculator },
   referral:     { label: 'Referral',        color: 'bg-green-500/10 text-green-600',       icon: GitBranch },
   tieup:        { label: 'Tie-up',          color: 'bg-amber-500/10 text-amber-600',       icon: HandshakeIcon },
   service:      { label: 'Service Inquiry', color: 'bg-purple-500/10 text-purple-600',     icon: TrendingUp },
@@ -76,7 +77,8 @@ const AdminLeads = () => {
 
   const updateStatus = async (id: string, status: string) => {
     setUpdatingId(id);
-    await supabase.from('leads').update({ status }).eq('id', id);
+    const {error} = await supabase.from('leads').update({ status }).eq('id', id);
+    if(error) {toast.error(error.message);setUpdatingId(null);return;}
     await refetch();
     setUpdatingId(null);
   };
@@ -120,7 +122,7 @@ const AdminLeads = () => {
             { label: 'Filtered Total', value: stats.total, color: 'text-foreground' },
             { label: 'New', value: stats.new, color: 'text-blue-600' },
             { label: 'Converted', value: stats.converted, color: 'text-green-600' },
-            { label: 'AI Calculator', value: stats.calculator, color: 'text-primary' },
+            { label: 'Calculator', value: stats.calculator, color: 'text-primary' },
             { label: 'Referrals', value: stats.referral, color: 'text-green-600' },
             { label: 'Tie-ups', value: stats.tieup, color: 'text-amber-600' },
           ].map(({ label, value, color }) => (

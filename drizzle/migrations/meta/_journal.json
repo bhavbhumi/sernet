@@ -134,6 +134,27 @@
       "when": 1794385998524,
       "tag": "0018_marketing_consent_safeguards",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1794388417626,
+      "tag": "0019_shared_enquiry_conversion_and_activity_guards",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1794388698592,
+      "tag": "0020_audience_existing_enquiry_matching",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1794388773826,
+      "tag": "0021_contact_link_conversion_integrity",
+      "breakpoints": true
     }
   ]
 }
