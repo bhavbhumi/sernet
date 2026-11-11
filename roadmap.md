@@ -161,3 +161,4 @@
 
 - [x] Support step 1: Feedback section removed; Surveys & Reviews under Marketing, Service Ratings under Support (own permission). Support screens open on desktop/phone with no errors.
 - [x] Support step 2: granted support@sernetindia.com Service Ratings access; signed in as that staff account and verified ticket create → public reply/first-response timestamp → internal note → in progress → resolved → closed, plus test-rating display and low-rating follow-up completion. No page errors; temporary ticket/replies/rating/audit entries removed and permission retained. Customer rating was represented by a temporary test record; the separate client-portal submission screen was not exercised.
+- [ ] Support step 3: send a ticket-closed email with a direct client-rating link; preserve sign-in return, focus the selected ticket and verify client submission plus low-rating follow-up. Keep closure successful when email is unavailable; no duplicate send when already closed.
