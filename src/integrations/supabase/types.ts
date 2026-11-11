@@ -5008,6 +5008,15 @@ export type Database = {
         }
         Returns: string
       }
+      create_sales_deal: {
+        Args: {
+          _contact: string
+          _product: string
+          _title: string
+          _value?: number
+        }
+        Returns: string
+      }
       get_employee_id_for_user: { Args: { _user_id: string }; Returns: string }
       get_like_state: {
         Args: { _fp: string; _kind: string; _target: string }
