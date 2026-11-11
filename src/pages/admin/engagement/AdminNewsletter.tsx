@@ -7,6 +7,7 @@ const fields: FieldDef[] = [
   { key: 'last_name', label: 'Last Name', type: 'text' },
   { key: 'preferences', label: 'Preferences', type: 'multiselect', options: ['resources', 'articles', 'promotions'] },
   { key: 'status', label: 'Status', type: 'select', options: ['active', 'unsubscribed'], required: true },
+  { key: 'consent_evidence', label: 'Subscription permission evidence (required to activate)', type: 'textarea' },
   { key: 'subscribed_at', label: 'Subscribed At', type: 'date' },
 ];
 
@@ -16,6 +17,7 @@ const emptyForm = {
   last_name: '',
   preferences: ['resources', 'articles', 'promotions'],
   status: 'active',
+  consent_evidence: '',
   subscribed_at: '',
 };
 

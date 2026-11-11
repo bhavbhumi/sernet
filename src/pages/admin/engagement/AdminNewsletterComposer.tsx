@@ -14,6 +14,7 @@ import { RowActions } from '@/components/admin/RowActions';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 import { sanitizeRichText } from '@/lib/sanitizeRichText';
+import { NEWSLETTER_PREFERENCES, eligibleSubscriber, normalizePreferences } from '@/lib/newsletterConsent';
 
 interface Newsletter {
   id: string;
@@ -31,7 +32,7 @@ interface Newsletter {
 }
 
 const CATEGORIES = ['general', 'market-update', 'research', 'promotion', 'announcement'];
-const PREFERENCE_OPTIONS = ['resources', 'articles', 'promotion'];
+const PREFERENCE_OPTIONS = NEWSLETTER_PREFERENCES;
 const STATUSES = ['draft', 'in_review', 'approved', 'sent'];
 const STATUS_LABEL: Record<string, string> = { draft: 'Draft', in_review: 'Needs review', approved: 'Approved', sent: 'Sent', scheduled: 'Planned (legacy)' };
 
@@ -42,10 +43,10 @@ export async function loadEligibleRecipients(targets: string[]) {
   const out: { email: string; first_name: string | null; last_name: string | null }[] = [];
   for (let from = 0; ; from += 1000) {
     const { data, error } = await (supabase.from('newsletter_subscribers' as any) as any)
-      .select('email, first_name, last_name, preferences').eq('status', 'active').order('email').range(from, from + 999);
+      .select('email, first_name, last_name, preferences, status, unsubscribed_at').eq('status', 'active').is('unsubscribed_at', null).order('email').range(from, from + 999);
     if (error) throw error;
     for (const row of data || []) {
-      if (targets.length && !prefsOf(row.preferences).some(p => targets.includes(p))) continue;
+      if (!eligibleSubscriber(row, targets)) continue;
       out.push({ email: row.email, first_name: row.first_name, last_name: row.last_name });
     }
     if (!data || data.length < 1000) break;
@@ -107,7 +108,7 @@ const AdminNewsletterComposer = () => {
       body: item.body || '',
       preview_text: item.preview_text || '',
       category: item.category,
-      target_preferences: item.target_preferences || [],
+      target_preferences: normalizePreferences(item.target_preferences),
       scheduled_at: item.scheduled_at ? item.scheduled_at.slice(0, 16) : '',
     });
     setDialogOpen(true);

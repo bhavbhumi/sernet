@@ -11,5 +11,6 @@ describe('Marketing workflow', () => {
   it('requires qualification before Sales handoff', () => expect(canHandOff({ qualification_status: 'unreviewed', contact_permission: 'permitted', assigned_to: 'owner' })).toBe(false));
   it('requires contact permission before Sales handoff', () => expect(canHandOff({ qualification_status: 'qualified', contact_permission: 'unconfirmed', assigned_to: 'owner' })).toBe(false));
   it('requires an owner before Sales handoff', () => expect(canHandOff({ qualification_status: 'qualified', contact_permission: 'permitted', assigned_to: null })).toBe(false));
-  it('allows a qualified permitted assigned lead', () => expect(canHandOff({ qualification_status: 'qualified', contact_permission: 'permitted', assigned_to: 'owner' })).toBe(true));
+  it('requires evidence for permitted contact before Sales handoff', () => expect(canHandOff({ qualification_status: 'qualified', contact_permission: 'permitted', assigned_to: 'owner', permission_evidence: ' ' })).toBe(false));
+  it('allows a qualified permitted assigned lead with evidence', () => expect(canHandOff({ qualification_status: 'qualified', contact_permission: 'permitted', assigned_to: 'owner', permission_evidence: 'Client requested a callback on 11 November 2026' })).toBe(true));
 });

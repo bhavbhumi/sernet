@@ -10,11 +10,15 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { toast } from 'sonner';
 import type { Database } from '@/integrations/supabase/types';
 type Lead = Database['public']['Tables']['leads']['Row'];
+function permissionEvidence(lead: Lead) {
+  const context = lead.context as Record<string, unknown> | null;
+  return typeof context?.contact_permission_evidence === 'string' ? context.contact_permission_evidence : '';
+}
 export function MarketingLeadWorkflow({ lead }: { lead: Lead }) {
   const client = useQueryClient();
-  const [form,setForm] = useState({qualification_status:lead.qualification_status,contact_permission:lead.contact_permission,assigned_to:lead.assigned_to,notes:lead.notes ?? ''});
+  const [form,setForm] = useState({qualification_status:lead.qualification_status,contact_permission:lead.contact_permission,assigned_to:lead.assigned_to,notes:lead.notes ?? '',permission_evidence:permissionEvidence(lead)});
   const [saving,setSaving] = useState(false);
-  useEffect(()=>setForm({qualification_status:lead.qualification_status,contact_permission:lead.contact_permission,assigned_to:lead.assigned_to,notes:lead.notes ?? ''}),[lead]);
+  useEffect(()=>setForm({qualification_status:lead.qualification_status,contact_permission:lead.contact_permission,assigned_to:lead.assigned_to,notes:lead.notes ?? '',permission_evidence:permissionEvidence(lead)}),[lead]);
   const {data:owners=[],error} = useQuery({queryKey:['marketing-sales-owners'],queryFn: async()=>{
     const roles = await readAllMISRows((f,t)=>supabase.from('user_roles').select('user_id,role,department').order('id').range(f,t));
     if (!roles.length) return [];
@@ -22,10 +26,13 @@ export function MarketingLeadWorkflow({ lead }: { lead: Lead }) {
     return roles.filter(r=>r.department==='sales'||r.role==='super_admin').map(r=>{const employee=employees.find(e=>e.user_id===r.user_id);return {id:r.user_id,full_name:employee?.full_name || (r.role==='super_admin'?'Administrator':'Sales staff'),email:employee?.email};});
   }});
   async function save(handoff: string) {
+    if (form.contact_permission === 'permitted' && !form.permission_evidence.trim()) { toast.error('Record how and when the client gave contact permission'); return; }
     if (['ready','accepted'].includes(handoff) && !canHandOff(form)) {toast.error('Qualification, contact permission and an owner are required');return;}
     setSaving(true);
     try {
-      const {error} = await supabase.from('leads').update({...form,notes:form.notes || null,handoff_status:handoff,handoff_at:handoff==='ready' ? new Date().toISOString() : lead.handoff_at}).eq('id',lead.id);
+      const {permission_evidence, ...fields} = form;
+      const context = lead.context && typeof lead.context === 'object' && !Array.isArray(lead.context) ? lead.context : {};
+      const {error} = await supabase.from('leads').update({...fields,context:{...context,contact_permission_evidence:permission_evidence.trim()},notes:form.notes || null,handoff_status:handoff,handoff_at:handoff==='ready' ? new Date().toISOString() : lead.handoff_at}).eq('id',lead.id);
       if(error) throw error;
       await Promise.all(['leads','lead-detail','marketing-leads-overview'].map(key=>client.invalidateQueries({queryKey:[key]}))); toast.success('Lead updated');
     } catch(e) {toast.error(e instanceof Error ? e.message : 'Could not update lead');} finally {setSaving(false);}
@@ -35,7 +42,8 @@ export function MarketingLeadWorkflow({ lead }: { lead: Lead }) {
     <div><Label>Contact permission</Label><Select value={form.contact_permission} onValueChange={v=>setForm(f=>({...f,contact_permission:v}))}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent>{['unconfirmed','permitted','declined'].map(v=><SelectItem key={v} value={v}>{v}</SelectItem>)}</SelectContent></Select></div></div>
     <Label>Sales owner</Label><Select value={form.assigned_to ?? 'none'} onValueChange={v=>setForm(f=>({...f,assigned_to:v==='none'?null:v}))}><SelectTrigger><SelectValue placeholder="Select owner" /></SelectTrigger><SelectContent><SelectItem value="none">Unassigned</SelectItem>{owners.map(o=><SelectItem key={o.id} value={o.id}>{o.full_name || o.email || o.id}</SelectItem>)}</SelectContent></Select>
     {error && <p role="alert" className="text-destructive text-xs">Could not load owners.</p>}
-    <Label htmlFor="lead-notes">Notes / permission evidence</Label><Textarea id="lead-notes" value={form.notes} onChange={e=>setForm(f=>({...f,notes:e.target.value}))} />
+    <Label htmlFor="permission-evidence">Contact permission evidence</Label><Textarea id="permission-evidence" placeholder="Permission source, date and contact channels agreed" value={form.permission_evidence} onChange={e=>setForm(f=>({...f,permission_evidence:e.target.value}))} />
+    <Label htmlFor="lead-notes">Notes</Label><Textarea id="lead-notes" value={form.notes} onChange={e=>setForm(f=>({...f,notes:e.target.value}))} />
     <p className="text-xs text-muted-foreground">Handoff: {lead.handoff_status}</p><div className="flex flex-wrap gap-2"><Button size="sm" variant="outline" disabled={saving} onClick={()=>save('marketing')}>Save qualification</Button><Button size="sm" disabled={saving || !canHandOff(form)} onClick={()=>save('ready')}>Hand off to Sales</Button>{lead.handoff_status==='ready' && <Button size="sm" disabled={saving} onClick={()=>save('accepted')}>Accept handoff</Button>}{['ready','accepted'].includes(lead.handoff_status) && <Button size="sm" variant="outline" disabled={saving} onClick={()=>save('returned')}>Return to Marketing</Button>}</div>
   </section>;
 }

@@ -10,6 +10,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pi
 import { useState, useMemo } from 'react';
 import { format, subDays, startOfMonth, endOfMonth, subMonths } from 'date-fns';
 import { TrendingUp, Users, Target, Zap } from 'lucide-react';
+import { attributionLabel } from '@/lib/leadAttribution';
 
 const COLORS = ['hsl(var(--primary))', 'hsl(var(--chart-2))', 'hsl(var(--chart-3))', 'hsl(var(--chart-4))', 'hsl(var(--chart-5))', '#94a3b8'];
 
@@ -39,16 +40,25 @@ export default function AdminLeadAttribution() {
     queryKey: ['lead-attribution', range],
     queryFn: async () => {
       const since = getDateFilter(range);
-      return readAllMISRows((from, to) => supabase.from('leads').select('id, source, lead_type, status, created_at').gte('created_at', since).order('created_at', { ascending: false }).order('id').range(from, to));
+      return readAllMISRows((from, to) => supabase.from('leads').select('id, source, context, lead_type, status, created_at').gte('created_at', since).order('created_at', { ascending: false }).order('id').range(from, to));
     },
   });
 
   const bySource = useMemo(() => {
     const map: Record<string, number> = {};
-    leads.forEach(l => { map[l.source] = (map[l.source] || 0) + 1; });
+    leads.forEach(l => { const channel = attributionLabel(l.context).channel; map[channel] = (map[channel] || 0) + 1; });
     return Object.entries(map)
       .map(([name, value]) => ({ name, value }))
       .sort((a, b) => b.value - a.value);
+  }, [leads]);
+
+  const byCampaign = useMemo(() => {
+    const map = new Map<string, number>();
+    for (const lead of leads) {
+      const campaign = attributionLabel(lead.context).campaign;
+      if (campaign) map.set(campaign, (map.get(campaign) ?? 0) + 1);
+    }
+    return [...map].sort((a, b) => b[1] - a[1]);
   }, [leads]);
 
   const byType = useMemo(() => {
@@ -121,6 +131,7 @@ export default function AdminLeadAttribution() {
           </Card>
         </div>
 
+        {byCampaign.length > 0 && <section className="border-y border-border py-4"><h2 className="text-sm font-semibold mb-3">By campaign</h2><div className="flex flex-wrap gap-3">{byCampaign.map(([name, count]) => <Badge key={name} variant="outline">{name}: {count}</Badge>)}</div></section>}
         {/* Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Lead Trend */}

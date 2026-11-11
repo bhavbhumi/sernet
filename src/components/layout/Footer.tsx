@@ -172,6 +172,7 @@ export const FooterNewsletterForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !firstName) return;
+    if (!preferences.length) { setError('Please choose at least one subscription preference'); return; }
     if (!isValidEmail(email)) { setError('Please enter a valid email'); return; }
     setSubmitting(true);
     setError('');
@@ -200,7 +201,7 @@ export const FooterNewsletterForm = () => {
         <Input type="email" placeholder={t('insights.emailPlaceholder')} value={email} onChange={(e) => setEmail(e.target.value)} required className="h-9 text-sm min-w-[200px] flex-[3]" aria-label="Email address" />
         <Button type="submit" size="sm" disabled={submitting} className="w-full sm:w-auto gap-1.5">
           <Send className="w-3.5 h-3.5" />
-          {submitting ? '...' : submitted ? '✓ Subscribed' : t('insights.subscribe')}
+          {submitting ? '...' : submitted ? '✓ Request received' : t('insights.subscribe')}
         </Button>
       </form>
       <div className="flex items-center gap-5">
@@ -212,6 +213,8 @@ export const FooterNewsletterForm = () => {
         ))}
       </div>
       {error && <p className="text-xs text-destructive">{error}</p>}
+      {submitted && <p role="status" className="text-xs text-muted-foreground">Request received. Existing subscription preferences are unchanged.</p>}
+      <p className="text-xs text-muted-foreground">For preference changes, reactivation or unsubscribe, email <a className="text-primary underline" href="mailto:support@sernetindia.com?subject=Newsletter%20subscription">support@sernetindia.com</a> from your subscribed address.</p>
     </div>
   );
 };

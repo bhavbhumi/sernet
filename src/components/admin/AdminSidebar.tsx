@@ -56,14 +56,12 @@ const departmentGroups: DepartmentGroup[] = [
     icon: Megaphone,
     color: 'text-blue-500',
     items: [
-      {
-        label: 'Marketing', icon: Target, moduleKey: 'marketing/campaigns', children: [
           { label: 'Dashboard', icon: LayoutDashboard, href: R.marketing.leads },
           { label: 'Leads', icon: UserCheck, children: [
             { label: 'List & Details', icon: Users, href: R.marketing.leadList },
             { label: 'Attribution', icon: TrendingUp, href: R.marketing.campaigns.attribution },
           ] },
-          { label: 'Campaigns', icon: Target, children: [
+          { label: 'Campaigns', icon: Target, moduleKey: 'marketing/campaigns', children: [
             { label: 'Campaign List', icon: Target, href: R.marketing.campaigns.tracker },
             { label: 'Content Distribution', icon: Megaphone, href: R.marketing.campaigns.distribution },
           ] },
@@ -72,8 +70,6 @@ const departmentGroups: DepartmentGroup[] = [
             { label: 'Composer', icon: Mail, href: R.marketing.engagement.composer },
             { label: 'Subscribers', icon: Users, href: R.marketing.engagement.newsletter },
           ] },
-        ]
-      },
     ]
   },
   {
@@ -225,9 +221,11 @@ function getDepartmentModuleKeys(departmentKey: string): string[] {
   const group = departmentGroups.find(g => g.departmentKey === departmentKey);
   if (!group) return [];
   const keys: string[] = [];
-  for (const item of group.items) {
+  const visit = (items: NavItem[]) => items.forEach(item => {
     if (item.moduleKey) keys.push(item.moduleKey);
-  }
+    if (item.children) visit(item.children);
+  });
+  visit(group.items);
   return keys;
 }
 
@@ -241,6 +239,11 @@ function isModuleAllowed(
   // If no explicit permissions set, fall back to department-based access
   if (!session.allowedModules) return true;
   return session.allowedModules.includes(moduleKey);
+}
+
+// Marketing's flattened entries retain the original shared permission key.
+function permissionKey(group: DepartmentGroup, item: NavItem) {
+  return item.moduleKey ?? (group.departmentKey === 'marketing' ? 'marketing/campaigns' : undefined);
 }
 
 const NavItemComponent = React.memo(function NavItemComponent({
@@ -373,7 +376,7 @@ const DepartmentSection = React.memo(function DepartmentSection({
               key={item.href || item.label}
               item={item}
               collapsed={collapsed}
-              locked={!isModuleAllowed(item.moduleKey, session)}
+              locked={!isModuleAllowed(permissionKey(group, item), session)}
             />
           ))}
         </div>
@@ -394,7 +397,7 @@ function getModuleKeyForPath(pathname: string): string | undefined {
       if (item.children) visit(item.children, key);
     }
   };
-  for (const g of departmentGroups) visit(g.items);
+  for (const g of departmentGroups) visit(g.items, g.departmentKey === 'marketing' ? 'marketing/campaigns' : undefined);
   return best?.key;
 }
 
