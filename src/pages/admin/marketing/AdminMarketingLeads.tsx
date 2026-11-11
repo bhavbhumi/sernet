@@ -16,6 +16,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 type LeadRow = {
   id: string; name: string; source: string; lead_type: string; status: string;
   assigned_to: string | null; created_at: string; context: unknown;
+  qualification_status: string; handoff_status: string;
 };
 
 const RANGES = [
@@ -139,7 +140,7 @@ function LeadsOverviewContent() {
     queryKey: ['marketing-leads-overview', range],
     queryFn: () => readAllMISRows<LeadRow>((from, to) => {
       let q = supabase.from('leads').select('id,name,source,lead_type,status,assigned_to,created_at,context')
-        .order('created_at', { ascending: false }).range(from, to);
+        .order('created_at', { ascending: false }).order('id').range(from, to);
       if (range !== 'all') q = q.gte('created_at', subDays(new Date(), Number(range)).toISOString());
       return q as unknown as PromiseLike<{ data: LeadRow[] | null; error: { message: string } | null }>;
     }),
