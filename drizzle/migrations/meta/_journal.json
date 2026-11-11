@@ -169,6 +169,13 @@
       "when": 1794390008544,
       "tag": "0023_sales_contact_and_configuration_guards",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1794404503839,
+      "tag": "0024_make_support_ticket_numbers_unique",
+      "breakpoints": true
     }
   ]
 }
