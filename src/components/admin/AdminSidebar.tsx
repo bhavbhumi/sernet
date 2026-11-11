@@ -111,7 +111,7 @@ const departmentGroups: DepartmentGroup[] = [
     color: 'text-amber-500',
     items: [
       {
-        label: 'Feedback', icon: ClipboardList, moduleKey: 'marketing/feedback', children: [
+        label: 'Surveys & Reviews', icon: ClipboardList, moduleKey: 'marketing/feedback', children: [
           { label: 'Surveys', icon: ClipboardList, href: R.marketing.engagement.surveys },
           { label: 'Service Ratings', icon: Star, href: R.marketing.engagement.ticketFeedback },
           { label: 'Reviews', icon: Star, href: R.marketing.engagement.reviews },
