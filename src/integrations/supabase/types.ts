@@ -2565,42 +2565,54 @@ export type Database = {
       leads: {
         Row: {
           assigned_to: string | null
+          contact_permission: string
           context: Json | null
           created_at: string
           email: string | null
+          handoff_at: string | null
+          handoff_status: string
           id: string
           lead_type: string
           name: string
           notes: string | null
           phone: string
+          qualification_status: string
           source: string
           status: string
           updated_at: string
         }
         Insert: {
           assigned_to?: string | null
+          contact_permission?: string
           context?: Json | null
           created_at?: string
           email?: string | null
+          handoff_at?: string | null
+          handoff_status?: string
           id?: string
           lead_type?: string
           name: string
           notes?: string | null
           phone: string
+          qualification_status?: string
           source?: string
           status?: string
           updated_at?: string
         }
         Update: {
           assigned_to?: string | null
+          contact_permission?: string
           context?: Json | null
           created_at?: string
           email?: string | null
+          handoff_at?: string | null
+          handoff_status?: string
           id?: string
           lead_type?: string
           name?: string
           notes?: string | null
           phone?: string
+          qualification_status?: string
           source?: string
           status?: string
           updated_at?: string
