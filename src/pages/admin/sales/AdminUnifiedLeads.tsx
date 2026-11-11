@@ -195,7 +195,7 @@ export default function AdminUnifiedLeads() {
   const [detailLead, setDetailLead] = useState<{ id: string; type: 'web' | 'calculator' } | null>(null);
 
   // Fetch website leads
-  const { data: webLeads = [], isLoading: webLoading } = useQuery({
+  const { data: webLeads = [], isLoading: webLoading, error: leadError } = useQuery({
     queryKey: ['leads', statusFilter],
     queryFn: async () => {
       let q = supabase.from('leads').select('*').order('created_at', { ascending: false });
@@ -294,6 +294,7 @@ export default function AdminUnifiedLeads() {
     <AdminGuard>
       <AdminLayout title="Leads" subtitle="Shared enquiries and accepted Sales work">
         <div className="space-y-4">
+          {leadError && <p role="alert" className="text-destructive">Shared enquiries could not be refreshed.</p>}
           {/* Stats */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
@@ -462,7 +463,7 @@ export default function AdminUnifiedLeads() {
                       {filteredCalc.map(lead => (
                         <tr key={lead.id} className="hover:bg-muted/30 transition-colors">
                           <td className="px-4 py-3">
-                            <button className="font-medium text-foreground hover:text-primary transition-colors text-left" onClick={() => setDetailLead({ id: lead.id, type: 'calculator' })}>
+                            <button className="font-medium text-foreground hover:text-primary transition-colors text-left" onClick={() => setDetailLead({ id: lead.id, type: 'web' })}>
                               {lead.name}
                             </button>
                           </td>
@@ -482,10 +483,10 @@ export default function AdminUnifiedLeads() {
                           <td className="px-4 py-3 text-muted-foreground text-xs whitespace-nowrap">{format(new Date(lead.created_at), 'dd MMM yy, HH:mm')}</td>
                           <td className="px-4 py-3">
                             <div className="flex items-center gap-1">
-                              <Button variant="ghost" size="sm" className="h-7 px-1.5 text-xs" onClick={() => setDetailLead({ id: lead.id, type: 'calculator' })}>
+                              <Button variant="ghost" size="sm" className="h-7 px-1.5 text-xs" onClick={() => setDetailLead({ id: lead.id, type: 'web' })}>
                                 <Eye className="h-3 w-3" />
                               </Button>
-                              <Button variant="ghost" size="sm" className="h-7 text-xs" onClick={() => setConvertLead({
+                              <Button disabled={lead.handoff_status !== 'accepted' || lead.status === 'converted'} variant="ghost" size="sm" className="h-7 text-xs" onClick={() => setConvertLead({
                                 id: lead.id, name: lead.name, phone: lead.phone, email: lead.email,
                                 context: `${lead.product_type}: ${lead.goal_text}`,
                               })}>
