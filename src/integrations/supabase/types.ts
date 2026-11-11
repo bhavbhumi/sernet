@@ -2955,6 +2955,9 @@ export type Database = {
       }
       newsletter_subscribers: {
         Row: {
+          consent_evidence: string | null
+          consent_recorded_at: string | null
+          consent_recorded_by: string | null
           created_at: string
           email: string
           first_name: string
@@ -2967,6 +2970,9 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          consent_evidence?: string | null
+          consent_recorded_at?: string | null
+          consent_recorded_by?: string | null
           created_at?: string
           email: string
           first_name: string
@@ -2979,6 +2985,9 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          consent_evidence?: string | null
+          consent_recorded_at?: string | null
+          consent_recorded_by?: string | null
           created_at?: string
           email?: string
           first_name?: string

@@ -127,6 +127,13 @@
       "when": 1794382837607,
       "tag": "0017_protect_public_lead_qualification",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1794385998524,
+      "tag": "0018_marketing_consent_safeguards",
+      "breakpoints": true
     }
   ]
 }
