@@ -12,6 +12,7 @@ export function AudienceEnquiryAction({ kind, id, leadId, phone = '' }: { kind: 
   const client = useQueryClient();
   const [open, setOpen] = useState(false);
   const [viewId, setViewId] = useState<string | null>(null);
+  const [savedLeadId, setSavedLeadId] = useState<string | null>(null);
   const [form, setForm] = useState({ interest: '', evidence: '', phone });
   const [saving, setSaving] = useState(false);
   async function save() {
@@ -21,10 +22,10 @@ export function AudienceEnquiryAction({ kind, id, leadId, phone = '' }: { kind: 
       const { data, error } = await supabase.rpc('create_audience_enquiry', { _kind: kind, _id: id, _interest: form.interest.trim(), _evidence: form.evidence.trim(), _phone: form.phone.trim() });
       if (error) throw error;
       await Promise.all(['leads', 'event-registrations', 'newsletter_subscribers', 'marketing-action-needed', 'admin-dashboard-stats'].map(key => client.invalidateQueries({ queryKey: [key] })));
-      setOpen(false); setViewId(data); toast.success('Enquiry saved for Marketing qualification');
+      setOpen(false); setSavedLeadId(data); setViewId(data); toast.success('Enquiry saved for Marketing qualification');
     } catch (error) { toast.error(error instanceof Error ? error.message : 'Could not create enquiry'); } finally { setSaving(false); }
   }
-  return <><Button size="sm" variant="outline" onClick={() => leadId ? setViewId(leadId) : setOpen(true)}>{leadId ? 'View enquiry' : 'Create enquiry'}</Button>
+  return <><Button size="sm" variant="outline" onClick={() => (savedLeadId || leadId) ? setViewId(savedLeadId || leadId || null) : setOpen(true)}>{(savedLeadId || leadId) ? 'View enquiry' : 'Create enquiry'}</Button>
     <Dialog open={open} onOpenChange={setOpen}><DialogContent className="sm:max-w-md"><DialogHeader><DialogTitle>Create enquiry</DialogTitle></DialogHeader>
       <Label htmlFor={`audience-phone-${id}`}>Phone</Label><Input id={`audience-phone-${id}`} maxLength={40} value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} />
       <Label htmlFor={`audience-interest-${id}`}>Requested product / service</Label><Textarea id={`audience-interest-${id}`} maxLength={1000} value={form.interest} onChange={e => setForm(f => ({ ...f, interest: e.target.value }))} />
