@@ -61,6 +61,10 @@ const departmentGroups: DepartmentGroup[] = [
             { label: 'List & Details', icon: Users, href: R.marketing.leadList },
             { label: 'Attribution', icon: TrendingUp, href: R.marketing.campaigns.attribution },
           ] },
+          { label: 'Surveys & Reviews', icon: ClipboardList, moduleKey: 'marketing/feedback', children: [
+            { label: 'Surveys', icon: ClipboardList, href: R.marketing.engagement.surveys },
+            { label: 'Reviews', icon: Star, href: R.marketing.engagement.reviews },
+          ] },
           { label: 'Campaigns', icon: Target, moduleKey: 'marketing/campaigns', children: [
             { label: 'Campaign List', icon: Target, href: R.marketing.campaigns.tracker },
             { label: 'Content Distribution', icon: Megaphone, href: R.marketing.campaigns.distribution },
@@ -100,21 +104,6 @@ const departmentGroups: DepartmentGroup[] = [
           { label: 'Economic Events', icon: BarChart3, href: R.marketing.calendars.economic },
           { label: 'Calculators', icon: Calculator, href: R.marketing.resources.calculators },
           { label: 'Downloads', icon: Download, href: R.marketing.resources.downloads },
-        ]
-      },
-    ]
-  },
-  {
-    department: 'Feedback',
-    departmentKey: 'feedback',
-    icon: Star,
-    color: 'text-amber-500',
-    items: [
-      {
-        label: 'Surveys & Reviews', icon: ClipboardList, moduleKey: 'marketing/feedback', children: [
-          { label: 'Surveys', icon: ClipboardList, href: R.marketing.engagement.surveys },
-          { label: 'Service Ratings', icon: Star, href: R.marketing.engagement.ticketFeedback },
-          { label: 'Reviews', icon: Star, href: R.marketing.engagement.reviews },
         ]
       },
     ]
@@ -198,6 +187,7 @@ const departmentGroups: DepartmentGroup[] = [
           { label: 'Escalation & Rules', icon: Zap, href: R.support.escalation },
         ]
       },
+      { label: 'Service Ratings', icon: Star, href: R.marketing.engagement.ticketFeedback, moduleKey: 'support/service-ratings' },
       { label: 'Knowledge Base', icon: BookMarked, href: R.support.knowledgeBase, moduleKey: 'support/knowledge-base' },
       { label: 'Documents', icon: FileText, href: R.support.documents, moduleKey: 'support/documents' },
       { label: 'Canned Responses', icon: MessageSquareText, href: R.support.cannedResponses, moduleKey: 'support/canned-responses' },
