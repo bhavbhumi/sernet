@@ -1,6 +1,6 @@
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { useNavigate } from '@/lib/router-compat';
+import { useLocation, useNavigate } from '@/lib/router-compat';
 import { supabase } from '@/integrations/supabase/client';
 
 interface PortalSession {
@@ -26,22 +26,26 @@ export const usePortalSession = () => useContext(PortalContext);
 
 export function PortalGuard({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [session, setSession] = useState<PortalSession | null>(null);
   const [loading, setLoading] = useState(true);
 
   const loadProfile = async () => {
     const { data: { session: authSession } } = await supabase.auth.getSession();
     if (!authSession) {
-      navigate('/login');
+      const next = `${location.pathname}${location.search}`;
+      navigate(`/login?next=${encodeURIComponent(next)}`);
       setLoading(false);
       return;
     }
 
-    const { data: profile } = await supabase
+    const { data: profile, error: profileError } = await supabase
       .from('profiles')
       .select('*')
       .eq('user_id', authSession.user.id)
       .maybeSingle();
+
+    if (profileError) console.error('Portal profile lookup failed:', profileError.message);
 
     if (!profile) {
       // Maybe an admin user — redirect them

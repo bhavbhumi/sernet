@@ -9,6 +9,7 @@ export const BACKEND_TOOLS = [
   "seo-generate",
   "summarize-content",
   "wp-import",
+  "support-close-ticket",
 ] as const;
 export type BackendTool = (typeof BACKEND_TOOLS)[number];
 

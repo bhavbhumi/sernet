@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { useNavigate, Link } from '@/lib/router-compat';
+import { useNavigate, Link, useSearchParams } from '@/lib/router-compat';
 import { supabase } from '@/integrations/supabase/client';
 import { logAudit } from '@/lib/auditLog';
 import { Button } from '@/components/ui/button';
@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Eye, EyeOff, Lock, ArrowLeft, Shield, User, Briefcase, Users } from 'lucide-react';
 import sernetLogo from '@/assets/sernet-logo.webp';
 import { useToast } from '@/hooks/use-toast';
+import { safeClientPortalPath } from '@/lib/ticketClosure';
 
 interface DetectedRole {
   key: string;
@@ -20,6 +21,8 @@ interface DetectedRole {
 
 export default function Login() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const clientReturnPath = safeClientPortalPath(searchParams.get('next'));
   const { toast } = useToast();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -143,7 +146,7 @@ export default function Login() {
         logAudit({ action: 'login', entity_type: 'auth', details: { role: roleData?.role } });
       }
       toast({ title: 'Welcome back!', description: detectedRoles[0].description });
-      navigate(detectedRoles[0].route);
+      navigate(detectedRoles[0].key === 'client' && clientReturnPath ? clientReturnPath : detectedRoles[0].route);
       return;
     }
 
@@ -158,7 +161,7 @@ export default function Login() {
       logAudit({ action: 'login', entity_type: 'auth', details: { role: 'admin', via: 'chooser' } });
     }
     toast({ title: 'Welcome back!', description: role.description });
-    navigate(role.route);
+    navigate(role.key === 'client' && clientReturnPath ? clientReturnPath : role.route);
   };
 
   if (showChooser) {

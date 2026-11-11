@@ -155,6 +155,7 @@ import { Route as AdminSalesCrmPipelineRouteImport } from './routes/admin/sales/
 import { Route as AdminSalesCrmPipelineConfigRouteImport } from './routes/admin/sales/crm/pipeline-config'
 import { Route as AdminSupportTicketsIndexRouteImport } from './routes/admin/support/tickets/index'
 import { Route as AdminSupportTicketsIdRouteImport } from './routes/admin/support/tickets/$id'
+import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -928,6 +929,12 @@ const AdminSupportTicketsIdRoute = AdminSupportTicketsIdRouteImport.update({
   path: '/admin/support/tickets/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LovableEmailTransactionalPreviewRoute =
+  LovableEmailTransactionalPreviewRouteImport.update({
+    id: '/lovable/email/transactional/preview',
+    path: '/lovable/email/transactional/preview',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -1073,6 +1080,7 @@ export interface FileRoutesByFullPath {
   '/admin/sales/crm/pipeline': typeof AdminSalesCrmPipelineRoute
   '/admin/sales/crm/pipeline-config': typeof AdminSalesCrmPipelineConfigRoute
   '/admin/support/tickets/$id': typeof AdminSupportTicketsIdRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/admin/hr/attendance/': typeof AdminHrAttendanceIndexRoute
   '/admin/hr/leave/': typeof AdminHrLeaveIndexRoute
   '/admin/support/tickets/': typeof AdminSupportTicketsIndexRoute
@@ -1221,6 +1229,7 @@ export interface FileRoutesByTo {
   '/admin/sales/crm/pipeline': typeof AdminSalesCrmPipelineRoute
   '/admin/sales/crm/pipeline-config': typeof AdminSalesCrmPipelineConfigRoute
   '/admin/support/tickets/$id': typeof AdminSupportTicketsIdRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/admin/hr/attendance': typeof AdminHrAttendanceIndexRoute
   '/admin/hr/leave': typeof AdminHrLeaveIndexRoute
   '/admin/support/tickets': typeof AdminSupportTicketsIndexRoute
@@ -1370,6 +1379,7 @@ export interface FileRoutesById {
   '/admin/sales/crm/pipeline': typeof AdminSalesCrmPipelineRoute
   '/admin/sales/crm/pipeline-config': typeof AdminSalesCrmPipelineConfigRoute
   '/admin/support/tickets/$id': typeof AdminSupportTicketsIdRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/admin/hr/attendance/': typeof AdminHrAttendanceIndexRoute
   '/admin/hr/leave/': typeof AdminHrLeaveIndexRoute
   '/admin/support/tickets/': typeof AdminSupportTicketsIndexRoute
@@ -1520,6 +1530,7 @@ export interface FileRouteTypes {
     | '/admin/sales/crm/pipeline'
     | '/admin/sales/crm/pipeline-config'
     | '/admin/support/tickets/$id'
+    | '/lovable/email/transactional/preview'
     | '/admin/hr/attendance/'
     | '/admin/hr/leave/'
     | '/admin/support/tickets/'
@@ -1668,6 +1679,7 @@ export interface FileRouteTypes {
     | '/admin/sales/crm/pipeline'
     | '/admin/sales/crm/pipeline-config'
     | '/admin/support/tickets/$id'
+    | '/lovable/email/transactional/preview'
     | '/admin/hr/attendance'
     | '/admin/hr/leave'
     | '/admin/support/tickets'
@@ -1816,6 +1828,7 @@ export interface FileRouteTypes {
     | '/admin/sales/crm/pipeline'
     | '/admin/sales/crm/pipeline-config'
     | '/admin/support/tickets/$id'
+    | '/lovable/email/transactional/preview'
     | '/admin/hr/attendance/'
     | '/admin/hr/leave/'
     | '/admin/support/tickets/'
@@ -1965,6 +1978,7 @@ export interface RootRouteChildren {
   AdminSalesCrmPipelineRoute: typeof AdminSalesCrmPipelineRoute
   AdminSalesCrmPipelineConfigRoute: typeof AdminSalesCrmPipelineConfigRoute
   AdminSupportTicketsIdRoute: typeof AdminSupportTicketsIdRoute
+  LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
   AdminHrAttendanceIndexRoute: typeof AdminHrAttendanceIndexRoute
   AdminHrLeaveIndexRoute: typeof AdminHrLeaveIndexRoute
   AdminSupportTicketsIndexRoute: typeof AdminSupportTicketsIndexRoute
@@ -2994,6 +3008,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSupportTicketsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lovable/email/transactional/preview': {
+      id: '/lovable/email/transactional/preview'
+      path: '/lovable/email/transactional/preview'
+      fullPath: '/lovable/email/transactional/preview'
+      preLoaderRoute: typeof LovableEmailTransactionalPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -3147,6 +3168,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminSalesCrmPipelineRoute: AdminSalesCrmPipelineRoute,
   AdminSalesCrmPipelineConfigRoute: AdminSalesCrmPipelineConfigRoute,
   AdminSupportTicketsIdRoute: AdminSupportTicketsIdRoute,
+  LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
   AdminHrAttendanceIndexRoute: AdminHrAttendanceIndexRoute,
   AdminHrLeaveIndexRoute: AdminHrLeaveIndexRoute,
   AdminSupportTicketsIndexRoute: AdminSupportTicketsIndexRoute,
