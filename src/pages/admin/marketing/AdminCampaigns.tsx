@@ -1,11 +1,13 @@
 import { AdminGuard } from '@/components/admin/AdminGuard';
 import { GenericCMSPage } from '@/components/admin/GenericCMSPage';
+import { CampaignLinks } from '@/components/admin/CampaignLinks';
+import { CAMPAIGN_TYPES } from '@/lib/marketingWorkflow';
 
 export default function AdminCampaigns() {
   return (
     <AdminGuard>
       <GenericCMSPage
-        title="Campaign Tracker"
+        title="Campaigns"
         subtitle="Plan and track marketing campaigns with UTM attribution"
         tableName="campaigns"
         tableColumns={[
@@ -20,14 +22,14 @@ export default function AdminCampaigns() {
         ]}
         fields={[
           { key: 'name', label: 'Campaign Name', type: 'text', required: true },
-          { key: 'campaign_type', label: 'Type', type: 'select', options: ['email', 'social', 'event', 'print', 'digital_ad', 'referral', 'other'] },
+          { key: 'campaign_type', label: 'Type', type: 'select', options: CAMPAIGN_TYPES },
           { key: 'description', label: 'Description', type: 'textarea' },
           { key: 'utm_source', label: 'UTM Source', type: 'text', placeholder: 'e.g. google, linkedin, newsletter' },
           { key: 'utm_medium', label: 'UTM Medium', type: 'text', placeholder: 'e.g. cpc, email, social' },
           { key: 'utm_campaign', label: 'UTM Campaign', type: 'text', placeholder: 'e.g. spring-2026-sip' },
           { key: 'start_date', label: 'Start Date', type: 'date' },
           { key: 'end_date', label: 'End Date', type: 'date' },
-          { key: 'budget', label: 'Budget (₹)', type: 'text' },
+          { key: 'budget', label: 'Budget (₹)', type: 'number' },
           { key: 'target_audience', label: 'Target Audience', type: 'text', placeholder: 'e.g. HNW Clients, NRI Investors' },
         ]}
         emptyForm={{
@@ -38,6 +40,7 @@ export default function AdminCampaigns() {
         hasStatus
         categoryField="campaign_type"
         orderBy={{ column: 'created_at', ascending: false }}
+        onRowAction={item => <CampaignLinks key={String(item.id)} campaign={item} />}
       />
     </AdminGuard>
   );
