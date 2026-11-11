@@ -26,13 +26,15 @@ export const usePortalSession = () => useContext(PortalContext);
 
 export function PortalGuard({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [session, setSession] = useState<PortalSession | null>(null);
   const [loading, setLoading] = useState(true);
 
   const loadProfile = async () => {
     const { data: { session: authSession } } = await supabase.auth.getSession();
     if (!authSession) {
-      navigate('/login');
+      const next = `${location.pathname}${location.search}`;
+      navigate(`/login?next=${encodeURIComponent(next)}`);
       setLoading(false);
       return;
     }

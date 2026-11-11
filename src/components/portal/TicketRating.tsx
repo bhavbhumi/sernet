@@ -17,16 +17,27 @@ export function TicketRating({ ticketId, userId, clientName, existing, onSaved }
   const [reviewText, setReviewText] = useState('');
   const [consent, setConsent] = useState(false);
   const [reviewState, setReviewState] = useState<'idle' | 'sent' | 'error'>('idle');
+  const [saveError, setSaveError] = useState('');
+
+  // Ratings load just after tickets; reflect an existing rating instead of
+  // presenting a second submission form when the client returns later.
+  useEffect(() => { setSaved(existing ?? null); }, [existing]);
 
   const submit = async () => {
     if (!rating) return;
     setSaving(true);
+    setSaveError('');
     const { error } = await supabase.from('ticket_feedback').insert({
       ticket_id: ticketId, user_id: userId, rating, comment: comment.trim() || null,
       follow_up_status: rating <= 3 ? 'pending' : 'none',
     });
     setSaving(false);
-    if (!error) { setSaved(rating); onSaved(rating); }
+    if (error) {
+      setSaveError('Could not save your rating. Please try again.');
+      return;
+    }
+    setSaved(rating);
+    onSaved(rating);
   };
 
   const submitReview = async () => {
@@ -70,6 +81,7 @@ export function TicketRating({ ticketId, userId, clientName, existing, onSaved }
         <>
           <Textarea rows={2} maxLength={1000} value={comment} onChange={e => setComment(e.target.value)} placeholder={rating <= 3 ? 'What could we have done better? (optional)' : 'Anything to add? (optional)'} />
           <Button size="sm" onClick={submit} disabled={saving}>{saving ? 'Saving…' : 'Submit rating'}</Button>
+          {saveError && <p className="text-xs text-destructive" role="alert">{saveError}</p>}
         </>
       )}
     </div>
