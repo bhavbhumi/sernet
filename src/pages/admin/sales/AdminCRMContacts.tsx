@@ -551,6 +551,7 @@ function ContactDetailDialog({ contactId, contactName, contactType, open, onClos
 export default function AdminCRMContacts() {
   const [viewContact, setViewContact] = useState<{ id: string; name: string; type: string } | null>(null);
   const [bulkImportOpen, setBulkImportOpen] = useState(false);
+  const queryClient = useQueryClient();
 
   return (
     <AdminGuard>
@@ -640,7 +641,7 @@ export default function AdminCRMContacts() {
 
       <BulkImportDialog
         open={bulkImportOpen}
-        onClose={(imported) => { setBulkImportOpen(false); }}
+        onClose={(imported) => { setBulkImportOpen(false); if (imported) queryClient.invalidateQueries(); }}
         tableName="crm_contacts"
         title="Contacts"
         fieldMappings={[
