@@ -162,6 +162,13 @@
       "when": 1794389633336,
       "tag": "0022_sales_deal_workflow_integrity",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1794390008544,
+      "tag": "0023_sales_contact_and_configuration_guards",
+      "breakpoints": true
     }
   ]
 }
