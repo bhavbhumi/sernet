@@ -1,4 +1,5 @@
 # Roadmap
+- [ ] Marketing corrections: remove duplicate menu heading without changing access; align Attribution with saved campaign details; secure existing-email subscription changes, record contact-permission evidence and verify suppression before recipient export.
 - [x] Approved Marketing structure: Dashboard; shared Leads list/details and guarded qualification-to-Sales handoff; ten campaign types and saved UTM/QR links; manual Insights distribution; six event types with registration/attendance; Newsletter Composer/Subscribers. Signed-in link/distribution saves, handoff acceptance and attendance checked; 13 tests pass; synthetic test records removed. Preview only.
 - [ ] External automatic posting and newsletter/SMS/WhatsApp delivery — waiting for approved service connections; manual preparation and recording remain available.
 - [x] Publish the 11 covered drafts with Type/Category set and original dates; three missing Gold/Silver chart placeholders removed. Live article share title/cover verified on two posts.
