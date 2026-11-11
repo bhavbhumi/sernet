@@ -336,7 +336,7 @@ export default function AdminUnifiedLeads() {
           </div>
 
           {/* Tabs */}
-          <Tabs value={tab} onValueChange={setTab}>
+          <Tabs value={tab} onValueChange={setTab} className="min-w-0 max-w-full">
             <TabsList>
               <TabsTrigger value="all">
                 All Sources <Badge variant="secondary" className="ml-1.5 text-[10px]">{filteredWeb.length}</Badge>
@@ -347,7 +347,7 @@ export default function AdminUnifiedLeads() {
             </TabsList>
 
             {/* ALL SOURCES TAB */}
-            <TabsContent value="all" className="mt-3">
+            <TabsContent value="all" className="mt-3 min-w-0 max-w-full">
               {isLoading ? (
                 <div className="flex items-center justify-center h-40 text-muted-foreground"><Loader2 className="w-5 h-5 animate-spin mr-2" /> Loading…</div>
               ) : filteredWeb.length === 0 ? (
@@ -355,7 +355,7 @@ export default function AdminUnifiedLeads() {
                   <Users className="w-8 h-8 opacity-30" /><p className="text-sm">No leads found.</p>
                 </div>
               ) : (
-                <div className="rounded-lg border border-border overflow-x-auto">
+                <div className="rounded-lg border border-border max-w-full overflow-x-auto">
                   <table className="w-full text-sm min-w-[1000px]">
                     <thead className="bg-muted/50 text-muted-foreground text-xs uppercase tracking-wide">
                       <tr>
@@ -428,7 +428,7 @@ export default function AdminUnifiedLeads() {
             </TabsContent>
 
             {/* CALCULATOR TAB */}
-            <TabsContent value="calculator" className="mt-3">
+            <TabsContent value="calculator" className="mt-3 min-w-0 max-w-full">
               {calcLoading ? (
                 <div className="flex items-center justify-center h-40 text-muted-foreground"><Loader2 className="w-5 h-5 animate-spin mr-2" /> Loading…</div>
               ) : filteredCalc.length === 0 ? (
@@ -436,7 +436,7 @@ export default function AdminUnifiedLeads() {
                   <Target className="w-8 h-8 opacity-30" /><p className="text-sm">No calculator leads yet.</p>
                 </div>
               ) : (
-                <div className="rounded-lg border border-border overflow-x-auto">
+                <div className="rounded-lg border border-border max-w-full overflow-x-auto">
                   <table className="w-full text-sm min-w-[800px]">
                     <thead className="bg-muted/50 text-muted-foreground text-xs uppercase tracking-wide">
                       <tr>

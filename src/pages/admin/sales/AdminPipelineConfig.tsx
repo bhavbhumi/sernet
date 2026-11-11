@@ -264,7 +264,7 @@ function SubStatusDialog({ stageId, subStatus, onSaved }: { stageId: string; sub
 export function PipelineConfigContent() {
   const queryClient = useQueryClient();
 
-  const { data: stages = [], isLoading } = useQuery({
+  const { data: stages = [], isLoading, error } = useQuery({
     queryKey: ['pipeline-config'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -280,7 +280,7 @@ export function PipelineConfigContent() {
     },
   });
 
-  const refresh = () => queryClient.invalidateQueries({ queryKey: ['pipeline-config'] });
+  const refresh = () => Promise.all(['pipeline-config','sales-pipeline-active'].map(key=>queryClient.invalidateQueries({queryKey:[key]})));
 
   const toggleStageActive = async (stage: PipelineStage) => {
     const { error } = await supabase.from('pipeline_stages').update({ is_active: !stage.is_active }).eq('id', stage.id);
@@ -301,10 +301,12 @@ export function PipelineConfigContent() {
     const swapIdx = direction === 'up' ? idx - 1 : idx + 1;
     if (swapIdx < 0 || swapIdx >= stages.length) return;
     const swap = stages[swapIdx];
-    await Promise.all([
+    const results = await Promise.all([
       supabase.from('pipeline_stages').update({ sort_order: swap.sort_order }).eq('id', stage.id),
       supabase.from('pipeline_stages').update({ sort_order: stage.sort_order }).eq('id', swap.id),
     ]);
+    const failure=results.find(result=>result.error);
+    if(failure?.error)toast.error(failure.error.message);
     refresh();
   };
 
@@ -318,6 +320,7 @@ export function PipelineConfigContent() {
         <StageDialog onSaved={refresh} />
       </div>
 
+      {error && <p role="alert" className="text-destructive">Pipeline settings could not be loaded.</p>}
       {isLoading ? (
         <p className="text-sm text-muted-foreground">Loading...</p>
       ) : (

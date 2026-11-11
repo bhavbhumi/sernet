@@ -50,3 +50,5 @@
 - Save campaign links and Insights distribution separately from article content; manual posting records retain platform URLs and dates, never implying automatic delivery.
 - Preserve anonymous newsletter conflict no-ops; existing-address changes require verified staff handling, and database triggers record activation evidence and suppress unsubscribed recipients to prevent unauthorized reactivation.
 - Store lead permission evidence separately from notes in context, with database-recorded actor/time and handoff enforcement; this prevents qualification from implying consent.
+
+- Sales opportunity creation uses the shared master-product/existing-contact dialog and `create_sales_deal`; database triggers enforce initial states, authorised stage changes and atomic history, preventing inline duplicate contacts and bypassed transitions.
