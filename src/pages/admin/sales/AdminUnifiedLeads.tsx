@@ -294,7 +294,7 @@ export default function AdminUnifiedLeads() {
   return (
     <AdminGuard>
       <AdminLayout title="Leads" subtitle="Shared enquiries and accepted Sales work">
-        <div className="space-y-4">
+        <div className="space-y-4 min-w-0 max-w-full overflow-x-hidden">
           {leadError && <p role="alert" className="text-destructive">Shared enquiries could not be refreshed.</p>}
           {/* Stats */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
