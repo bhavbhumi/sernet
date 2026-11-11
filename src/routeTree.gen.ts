@@ -87,6 +87,7 @@ import { Route as AdminHrSalarySetupRouteImport } from './routes/admin/hr/salary
 import { Route as AdminLegalAgreementsRouteImport } from './routes/admin/legal/agreements'
 import { Route as AdminLegalInvestorCharterRouteImport } from './routes/admin/legal/investor-charter'
 import { Route as AdminLegalPagesRouteImport } from './routes/admin/legal/pages'
+import { Route as AdminMarketingLeadListRouteImport } from './routes/admin/marketing/lead-list'
 import { Route as AdminMarketingLeadsRouteImport } from './routes/admin/marketing/leads'
 import { Route as AdminMarketingPressRouteImport } from './routes/admin/marketing/press'
 import { Route as AdminSalesCalculatorLeadsRouteImport } from './routes/admin/sales/calculator-leads'
@@ -122,6 +123,7 @@ import { Route as AdminMarketingCalendarsEconomicRouteImport } from './routes/ad
 import { Route as AdminMarketingCalendarsHolidaysRouteImport } from './routes/admin/marketing/calendars/holidays'
 import { Route as AdminMarketingCalendarsImportEconomicRouteImport } from './routes/admin/marketing/calendars/import-economic'
 import { Route as AdminMarketingCampaignsAttributionRouteImport } from './routes/admin/marketing/campaigns/attribution'
+import { Route as AdminMarketingCampaignsDistributionRouteImport } from './routes/admin/marketing/campaigns/distribution'
 import { Route as AdminMarketingCampaignsEventsRouteImport } from './routes/admin/marketing/campaigns/events'
 import { Route as AdminMarketingCampaignsTrackerRouteImport } from './routes/admin/marketing/campaigns/tracker'
 import { Route as AdminMarketingContentAnalysisRouteImport } from './routes/admin/marketing/content/analysis'
@@ -552,6 +554,11 @@ const AdminLegalPagesRoute = AdminLegalPagesRouteImport.update({
   path: '/admin/legal/pages',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminMarketingLeadListRoute = AdminMarketingLeadListRouteImport.update({
+  id: '/admin/marketing/lead-list',
+  path: '/admin/marketing/lead-list',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminMarketingLeadsRoute = AdminMarketingLeadsRouteImport.update({
   id: '/admin/marketing/leads',
   path: '/admin/marketing/leads',
@@ -735,6 +742,12 @@ const AdminMarketingCampaignsAttributionRoute =
   AdminMarketingCampaignsAttributionRouteImport.update({
     id: '/admin/marketing/campaigns/attribution',
     path: '/admin/marketing/campaigns/attribution',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AdminMarketingCampaignsDistributionRoute =
+  AdminMarketingCampaignsDistributionRouteImport.update({
+    id: '/admin/marketing/campaigns/distribution',
+    path: '/admin/marketing/campaigns/distribution',
     getParentRoute: () => rootRouteImport,
   } as any)
 const AdminMarketingCampaignsEventsRoute =
@@ -995,6 +1008,7 @@ export interface FileRoutesByFullPath {
   '/admin/legal/agreements': typeof AdminLegalAgreementsRoute
   '/admin/legal/investor-charter': typeof AdminLegalInvestorCharterRoute
   '/admin/legal/pages': typeof AdminLegalPagesRoute
+  '/admin/marketing/lead-list': typeof AdminMarketingLeadListRoute
   '/admin/marketing/leads': typeof AdminMarketingLeadsRoute
   '/admin/marketing/press': typeof AdminMarketingPressRoute
   '/admin/sales/calculator-leads': typeof AdminSalesCalculatorLeadsRoute
@@ -1028,6 +1042,7 @@ export interface FileRoutesByFullPath {
   '/admin/marketing/calendars/holidays': typeof AdminMarketingCalendarsHolidaysRoute
   '/admin/marketing/calendars/import-economic': typeof AdminMarketingCalendarsImportEconomicRoute
   '/admin/marketing/campaigns/attribution': typeof AdminMarketingCampaignsAttributionRoute
+  '/admin/marketing/campaigns/distribution': typeof AdminMarketingCampaignsDistributionRoute
   '/admin/marketing/campaigns/events': typeof AdminMarketingCampaignsEventsRoute
   '/admin/marketing/campaigns/tracker': typeof AdminMarketingCampaignsTrackerRoute
   '/admin/marketing/content/analysis': typeof AdminMarketingContentAnalysisRoute
@@ -1141,6 +1156,7 @@ export interface FileRoutesByTo {
   '/admin/legal/agreements': typeof AdminLegalAgreementsRoute
   '/admin/legal/investor-charter': typeof AdminLegalInvestorCharterRoute
   '/admin/legal/pages': typeof AdminLegalPagesRoute
+  '/admin/marketing/lead-list': typeof AdminMarketingLeadListRoute
   '/admin/marketing/leads': typeof AdminMarketingLeadsRoute
   '/admin/marketing/press': typeof AdminMarketingPressRoute
   '/admin/sales/calculator-leads': typeof AdminSalesCalculatorLeadsRoute
@@ -1174,6 +1190,7 @@ export interface FileRoutesByTo {
   '/admin/marketing/calendars/holidays': typeof AdminMarketingCalendarsHolidaysRoute
   '/admin/marketing/calendars/import-economic': typeof AdminMarketingCalendarsImportEconomicRoute
   '/admin/marketing/campaigns/attribution': typeof AdminMarketingCampaignsAttributionRoute
+  '/admin/marketing/campaigns/distribution': typeof AdminMarketingCampaignsDistributionRoute
   '/admin/marketing/campaigns/events': typeof AdminMarketingCampaignsEventsRoute
   '/admin/marketing/campaigns/tracker': typeof AdminMarketingCampaignsTrackerRoute
   '/admin/marketing/content/analysis': typeof AdminMarketingContentAnalysisRoute
@@ -1288,6 +1305,7 @@ export interface FileRoutesById {
   '/admin/legal/agreements': typeof AdminLegalAgreementsRoute
   '/admin/legal/investor-charter': typeof AdminLegalInvestorCharterRoute
   '/admin/legal/pages': typeof AdminLegalPagesRoute
+  '/admin/marketing/lead-list': typeof AdminMarketingLeadListRoute
   '/admin/marketing/leads': typeof AdminMarketingLeadsRoute
   '/admin/marketing/press': typeof AdminMarketingPressRoute
   '/admin/sales/calculator-leads': typeof AdminSalesCalculatorLeadsRoute
@@ -1321,6 +1339,7 @@ export interface FileRoutesById {
   '/admin/marketing/calendars/holidays': typeof AdminMarketingCalendarsHolidaysRoute
   '/admin/marketing/calendars/import-economic': typeof AdminMarketingCalendarsImportEconomicRoute
   '/admin/marketing/campaigns/attribution': typeof AdminMarketingCampaignsAttributionRoute
+  '/admin/marketing/campaigns/distribution': typeof AdminMarketingCampaignsDistributionRoute
   '/admin/marketing/campaigns/events': typeof AdminMarketingCampaignsEventsRoute
   '/admin/marketing/campaigns/tracker': typeof AdminMarketingCampaignsTrackerRoute
   '/admin/marketing/content/analysis': typeof AdminMarketingContentAnalysisRoute
@@ -1436,6 +1455,7 @@ export interface FileRouteTypes {
     | '/admin/legal/agreements'
     | '/admin/legal/investor-charter'
     | '/admin/legal/pages'
+    | '/admin/marketing/lead-list'
     | '/admin/marketing/leads'
     | '/admin/marketing/press'
     | '/admin/sales/calculator-leads'
@@ -1469,6 +1489,7 @@ export interface FileRouteTypes {
     | '/admin/marketing/calendars/holidays'
     | '/admin/marketing/calendars/import-economic'
     | '/admin/marketing/campaigns/attribution'
+    | '/admin/marketing/campaigns/distribution'
     | '/admin/marketing/campaigns/events'
     | '/admin/marketing/campaigns/tracker'
     | '/admin/marketing/content/analysis'
@@ -1582,6 +1603,7 @@ export interface FileRouteTypes {
     | '/admin/legal/agreements'
     | '/admin/legal/investor-charter'
     | '/admin/legal/pages'
+    | '/admin/marketing/lead-list'
     | '/admin/marketing/leads'
     | '/admin/marketing/press'
     | '/admin/sales/calculator-leads'
@@ -1615,6 +1637,7 @@ export interface FileRouteTypes {
     | '/admin/marketing/calendars/holidays'
     | '/admin/marketing/calendars/import-economic'
     | '/admin/marketing/campaigns/attribution'
+    | '/admin/marketing/campaigns/distribution'
     | '/admin/marketing/campaigns/events'
     | '/admin/marketing/campaigns/tracker'
     | '/admin/marketing/content/analysis'
@@ -1728,6 +1751,7 @@ export interface FileRouteTypes {
     | '/admin/legal/agreements'
     | '/admin/legal/investor-charter'
     | '/admin/legal/pages'
+    | '/admin/marketing/lead-list'
     | '/admin/marketing/leads'
     | '/admin/marketing/press'
     | '/admin/sales/calculator-leads'
@@ -1761,6 +1785,7 @@ export interface FileRouteTypes {
     | '/admin/marketing/calendars/holidays'
     | '/admin/marketing/calendars/import-economic'
     | '/admin/marketing/campaigns/attribution'
+    | '/admin/marketing/campaigns/distribution'
     | '/admin/marketing/campaigns/events'
     | '/admin/marketing/campaigns/tracker'
     | '/admin/marketing/content/analysis'
@@ -1875,6 +1900,7 @@ export interface RootRouteChildren {
   AdminLegalAgreementsRoute: typeof AdminLegalAgreementsRoute
   AdminLegalInvestorCharterRoute: typeof AdminLegalInvestorCharterRoute
   AdminLegalPagesRoute: typeof AdminLegalPagesRoute
+  AdminMarketingLeadListRoute: typeof AdminMarketingLeadListRoute
   AdminMarketingLeadsRoute: typeof AdminMarketingLeadsRoute
   AdminMarketingPressRoute: typeof AdminMarketingPressRoute
   AdminSalesCalculatorLeadsRoute: typeof AdminSalesCalculatorLeadsRoute
@@ -1908,6 +1934,7 @@ export interface RootRouteChildren {
   AdminMarketingCalendarsHolidaysRoute: typeof AdminMarketingCalendarsHolidaysRoute
   AdminMarketingCalendarsImportEconomicRoute: typeof AdminMarketingCalendarsImportEconomicRoute
   AdminMarketingCampaignsAttributionRoute: typeof AdminMarketingCampaignsAttributionRoute
+  AdminMarketingCampaignsDistributionRoute: typeof AdminMarketingCampaignsDistributionRoute
   AdminMarketingCampaignsEventsRoute: typeof AdminMarketingCampaignsEventsRoute
   AdminMarketingCampaignsTrackerRoute: typeof AdminMarketingCampaignsTrackerRoute
   AdminMarketingContentAnalysisRoute: typeof AdminMarketingContentAnalysisRoute
@@ -2491,6 +2518,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLegalPagesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/marketing/lead-list': {
+      id: '/admin/marketing/lead-list'
+      path: '/admin/marketing/lead-list'
+      fullPath: '/admin/marketing/lead-list'
+      preLoaderRoute: typeof AdminMarketingLeadListRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/marketing/leads': {
       id: '/admin/marketing/leads'
       path: '/admin/marketing/leads'
@@ -2734,6 +2768,13 @@ declare module '@tanstack/react-router' {
       path: '/admin/marketing/campaigns/attribution'
       fullPath: '/admin/marketing/campaigns/attribution'
       preLoaderRoute: typeof AdminMarketingCampaignsAttributionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/marketing/campaigns/distribution': {
+      id: '/admin/marketing/campaigns/distribution'
+      path: '/admin/marketing/campaigns/distribution'
+      fullPath: '/admin/marketing/campaigns/distribution'
+      preLoaderRoute: typeof AdminMarketingCampaignsDistributionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/marketing/campaigns/events': {
@@ -3035,6 +3076,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminLegalAgreementsRoute: AdminLegalAgreementsRoute,
   AdminLegalInvestorCharterRoute: AdminLegalInvestorCharterRoute,
   AdminLegalPagesRoute: AdminLegalPagesRoute,
+  AdminMarketingLeadListRoute: AdminMarketingLeadListRoute,
   AdminMarketingLeadsRoute: AdminMarketingLeadsRoute,
   AdminMarketingPressRoute: AdminMarketingPressRoute,
   AdminSalesCalculatorLeadsRoute: AdminSalesCalculatorLeadsRoute,
@@ -3070,6 +3112,8 @@ const rootRouteChildren: RootRouteChildren = {
     AdminMarketingCalendarsImportEconomicRoute,
   AdminMarketingCampaignsAttributionRoute:
     AdminMarketingCampaignsAttributionRoute,
+  AdminMarketingCampaignsDistributionRoute:
+    AdminMarketingCampaignsDistributionRoute,
   AdminMarketingCampaignsEventsRoute: AdminMarketingCampaignsEventsRoute,
   AdminMarketingCampaignsTrackerRoute: AdminMarketingCampaignsTrackerRoute,
   AdminMarketingContentAnalysisRoute: AdminMarketingContentAnalysisRoute,

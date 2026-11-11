@@ -44,3 +44,5 @@
 - Public Downloads come only from `download_items`; `src/content/downloads.ts` holds labels/intros/section order only.
 - Menu regrouping keeps existing `moduleKey` values, each once, so saved staff permissions keep working.
 - Ticket ratings live in `ticket_feedback` (≤3 stars flags follow-up); portal reviews enter `reviews` as pending.
+- Marketing and Sales share `leads`; database-guarded handoffs require qualification, contact permission and an owner, avoiding duplicate prospect records.
+- Save campaign links and Insights distribution separately from article content; manual posting records retain platform URLs and dates, never implying automatic delivery.

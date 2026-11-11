@@ -2,17 +2,24 @@ import { readAllMISRows } from '@/lib/misRefresh';
 import { AdminGuard } from '@/components/admin/AdminGuard';
 import { GenericCMSPage } from '@/components/admin/GenericCMSPage';
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Eye, Users } from 'lucide-react';
 import { format } from 'date-fns';
+import { EVENT_TYPES } from '@/lib/marketingWorkflow';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { toast } from 'sonner';
 
 function EventRegistrationsDialog({ eventId, eventTitle, open, onClose }: {
   eventId: string; eventTitle: string; open: boolean; onClose: () => void;
 }) {
+  const client = useQueryClient();
+  const [form,setForm]=useState({name:'',phone:'',email:'',company:''});
+  const [saving,setSaving]=useState(false);
   const { data: registrations = [], error: loadError } = useQuery({
     queryKey: ['event-registrations', eventId],
     enabled: open,
@@ -22,6 +29,19 @@ function EventRegistrationsDialog({ eventId, eventTitle, open, onClose }: {
   });
 
   const attended = registrations.filter(r => r.attended).length;
+  async function register() {
+    if (!form.name.trim() || !form.phone.trim()) {toast.error('Name and phone are required');return;}
+    setSaving(true);
+    try {
+      const {error} = await supabase.from('event_registrations').insert({...form,event_id:eventId});
+      if(error) throw error;
+      await client.invalidateQueries({queryKey:['event-registrations',eventId]});setForm({name:'',phone:'',email:'',company:''});toast.success('Registration saved');
+    } catch(e) {toast.error(e instanceof Error ? e.message : 'Could not register');} finally {setSaving(false);}
+  }
+  async function attendance(id:string,value:boolean) {
+    const {error}=await supabase.from('event_registrations').update({attended:value}).eq('id',id);
+    if(error) {toast.error(error.message);return;} await client.invalidateQueries({queryKey:['event-registrations',eventId]});
+  }
 
   return (
     <Dialog open={open} onOpenChange={() => onClose()}>
@@ -33,6 +53,7 @@ function EventRegistrationsDialog({ eventId, eventTitle, open, onClose }: {
           </DialogTitle>
         </DialogHeader>
         {loadError && <p role="alert" className="text-destructive">Registrations could not be refreshed.</p>}
+        <div className="grid grid-cols-2 gap-2">{Object.entries(form).map(([key,value])=><div key={key}><Label htmlFor={`event-${key}`}>{key.replace(/^\w/,c=>c.toUpperCase())}</Label><Input id={`event-${key}`} value={value} onChange={e=>setForm(f=>({...f,[key]:e.target.value}))} /></div>)}</div><Button onClick={register} disabled={saving}>{saving?'Saving…':'Add registration'}</Button>
         <div className="flex gap-2 text-xs text-muted-foreground mb-3">
           <Badge variant="outline">{registrations.length} registered</Badge>
           <Badge variant="secondary">{attended} attended</Badge>
@@ -55,6 +76,7 @@ function EventRegistrationsDialog({ eventId, eventTitle, open, onClose }: {
                   <Badge variant={r.attended ? 'default' : 'outline'} className="text-[10px]">
                     {r.attended ? 'Attended' : r.status}
                   </Badge>
+                  <Button size="sm" variant="ghost" onClick={()=>attendance(r.id,!r.attended)}>{r.attended ? 'Undo attendance' : 'Mark attended'}</Button>
                   <p className="text-[10px] text-muted-foreground mt-0.5">{format(new Date(r.created_at), 'dd MMM yyyy')}</p>
                 </div>
               </div>
@@ -72,7 +94,7 @@ export default function AdminEvents() {
   return (
     <AdminGuard>
       <GenericCMSPage
-        title="Events & Webinars"
+        title="Events"
         subtitle="Manage investor meets, webinars, and seminars"
         tableName="events"
         tableColumns={[
@@ -87,15 +109,15 @@ export default function AdminEvents() {
         ]}
         fields={[
           { key: 'title', label: 'Event Title', type: 'text', required: true },
-          { key: 'event_type', label: 'Type', type: 'select', options: ['webinar', 'seminar', 'investor_meet', 'workshop', 'conference', 'other'] },
+          { key: 'event_type', label: 'Type', type: 'select', options: EVENT_TYPES },
           { key: 'description', label: 'Description', type: 'textarea' },
           { key: 'event_date', label: 'Event Date', type: 'date', required: true },
           { key: 'event_time', label: 'Time', type: 'text', placeholder: 'e.g. 10:00 AM IST' },
-          { key: 'duration_minutes', label: 'Duration (mins)', type: 'text', placeholder: '60' },
+          { key: 'duration_minutes', label: 'Duration (mins)', type: 'number', placeholder: '60' },
           { key: 'speaker', label: 'Speaker / Host', type: 'text' },
           { key: 'venue', label: 'Venue / Location', type: 'text' },
           { key: 'meeting_link', label: 'Meeting Link', type: 'text', placeholder: 'Zoom / Teams link' },
-          { key: 'capacity', label: 'Max Capacity', type: 'text' },
+          { key: 'capacity', label: 'Max Capacity', type: 'number' },
         ]}
         emptyForm={{
           title: '', event_type: 'webinar', description: '',

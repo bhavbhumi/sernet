@@ -1,0 +1,13 @@
+CREATE TABLE public.campaign_links (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), campaign_id uuid NOT NULL REFERENCES public.campaigns(id), label text NOT NULL, destination_url text NOT NULL, utm_source text NOT NULL, utm_medium text NOT NULL, utm_campaign text NOT NULL, utm_content text, utm_term text, tracked_url text NOT NULL, created_at timestamptz NOT NULL DEFAULT now());
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.campaign_links TO authenticated;
+GRANT ALL ON public.campaign_links TO service_role;
+ALTER TABLE public.campaign_links ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Admins manage campaign links" ON public.campaign_links FOR ALL TO authenticated USING (public.is_admin(auth.uid())) WITH CHECK (public.is_admin(auth.uid()));
+CREATE INDEX campaign_links_campaign_idx ON public.campaign_links(campaign_id);
+CREATE TABLE public.content_distribution (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), campaign_id uuid NOT NULL REFERENCES public.campaigns(id), article_id uuid NOT NULL REFERENCES public.articles(id), platform text NOT NULL, copy_text text, tracked_url text, status text NOT NULL DEFAULT 'draft' CHECK(status IN ('draft','in_review','approved','posted')), published_url text, posted_on date, created_at timestamptz NOT NULL DEFAULT now(), updated_at timestamptz NOT NULL DEFAULT now());
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.content_distribution TO authenticated;
+GRANT ALL ON public.content_distribution TO service_role;
+ALTER TABLE public.content_distribution ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Admins manage content distribution" ON public.content_distribution FOR ALL TO authenticated USING (public.is_admin(auth.uid())) WITH CHECK (public.is_admin(auth.uid()));
+CREATE INDEX content_distribution_campaign_idx ON public.content_distribution(campaign_id);
+ALTER TABLE public.content_distribution ADD CONSTRAINT posted_requires_evidence CHECK(status <> 'posted' OR (nullif(trim(published_url),'') IS NOT NULL AND posted_on IS NOT NULL));

@@ -1,0 +1,1 @@
+ALTER POLICY "Public can submit leads" ON public.leads WITH CHECK (status='new' AND source IN ('website','schedule-call','ask-us','tieup','referral','calculator','open_account') AND assigned_to IS NULL AND notes IS NULL AND qualification_status='unreviewed' AND contact_permission='unconfirmed' AND handoff_status='marketing' AND handoff_at IS NULL);
