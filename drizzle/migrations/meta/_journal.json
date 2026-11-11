@@ -120,6 +120,13 @@
       "when": 1794382525834,
       "tag": "0016_shared_lead_marketing_handoff",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1794382837607,
+      "tag": "0017_protect_public_lead_qualification",
+      "breakpoints": true
     }
   ]
 }
