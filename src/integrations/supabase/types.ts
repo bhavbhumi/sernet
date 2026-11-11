@@ -519,6 +519,56 @@ export type Database = {
         }
         Relationships: []
       }
+      campaign_links: {
+        Row: {
+          campaign_id: string
+          created_at: string
+          destination_url: string
+          id: string
+          label: string
+          tracked_url: string
+          utm_campaign: string
+          utm_content: string | null
+          utm_medium: string
+          utm_source: string
+          utm_term: string | null
+        }
+        Insert: {
+          campaign_id: string
+          created_at?: string
+          destination_url: string
+          id?: string
+          label: string
+          tracked_url: string
+          utm_campaign: string
+          utm_content?: string | null
+          utm_medium: string
+          utm_source: string
+          utm_term?: string | null
+        }
+        Update: {
+          campaign_id?: string
+          created_at?: string
+          destination_url?: string
+          id?: string
+          label?: string
+          tracked_url?: string
+          utm_campaign?: string
+          utm_content?: string | null
+          utm_medium?: string
+          utm_source?: string
+          utm_term?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campaign_links_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       campaigns: {
         Row: {
           budget: number | null
@@ -845,6 +895,63 @@ export type Database = {
             columns: ["contact_id"]
             isOneToOne: false
             referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      content_distribution: {
+        Row: {
+          article_id: string
+          campaign_id: string
+          copy_text: string | null
+          created_at: string
+          id: string
+          platform: string
+          posted_on: string | null
+          published_url: string | null
+          status: string
+          tracked_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          article_id: string
+          campaign_id: string
+          copy_text?: string | null
+          created_at?: string
+          id?: string
+          platform: string
+          posted_on?: string | null
+          published_url?: string | null
+          status?: string
+          tracked_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          article_id?: string
+          campaign_id?: string
+          copy_text?: string | null
+          created_at?: string
+          id?: string
+          platform?: string
+          posted_on?: string | null
+          published_url?: string | null
+          status?: string
+          tracked_url?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_distribution_article_id_fkey"
+            columns: ["article_id"]
+            isOneToOne: false
+            referencedRelation: "articles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "content_distribution_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
             referencedColumns: ["id"]
           },
         ]
