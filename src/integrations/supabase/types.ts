@@ -1050,6 +1050,7 @@ export type Database = {
           duration_minutes: number | null
           id: string
           is_completed: boolean
+          lead_id: string | null
           outcome: string | null
           subject: string
           updated_at: string
@@ -1066,6 +1067,7 @@ export type Database = {
           duration_minutes?: number | null
           id?: string
           is_completed?: boolean
+          lead_id?: string | null
           outcome?: string | null
           subject: string
           updated_at?: string
@@ -1082,6 +1084,7 @@ export type Database = {
           duration_minutes?: number | null
           id?: string
           is_completed?: boolean
+          lead_id?: string | null
           outcome?: string | null
           subject?: string
           updated_at?: string
@@ -1099,6 +1102,13 @@ export type Database = {
             columns: ["deal_id"]
             isOneToOne: false
             referencedRelation: "crm_deals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_activities_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
             referencedColumns: ["id"]
           },
         ]
@@ -2567,6 +2577,7 @@ export type Database = {
           assigned_to: string | null
           contact_permission: string
           context: Json | null
+          converted_contact_id: string | null
           created_at: string
           email: string | null
           handoff_at: string | null
@@ -2585,6 +2596,7 @@ export type Database = {
           assigned_to?: string | null
           contact_permission?: string
           context?: Json | null
+          converted_contact_id?: string | null
           created_at?: string
           email?: string | null
           handoff_at?: string | null
@@ -2603,6 +2615,7 @@ export type Database = {
           assigned_to?: string | null
           contact_permission?: string
           context?: Json | null
+          converted_contact_id?: string | null
           created_at?: string
           email?: string | null
           handoff_at?: string | null
@@ -2617,7 +2630,15 @@ export type Database = {
           status?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "leads_converted_contact_id_fkey"
+            columns: ["converted_contact_id"]
+            isOneToOne: false
+            referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       leave_balances: {
         Row: {
@@ -2963,6 +2984,7 @@ export type Database = {
           first_name: string
           id: string
           last_name: string | null
+          lead_id: string | null
           preferences: string[]
           status: string
           subscribed_at: string
@@ -2978,6 +3000,7 @@ export type Database = {
           first_name: string
           id?: string
           last_name?: string | null
+          lead_id?: string | null
           preferences?: string[]
           status?: string
           subscribed_at?: string
@@ -2993,13 +3016,22 @@ export type Database = {
           first_name?: string
           id?: string
           last_name?: string | null
+          lead_id?: string | null
           preferences?: string[]
           status?: string
           subscribed_at?: string
           unsubscribed_at?: string | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "newsletter_subscribers_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       newsletters: {
         Row: {
@@ -4956,6 +4988,26 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_work_leads: { Args: { _module: string }; Returns: boolean }
+      convert_shared_lead: {
+        Args: {
+          _city?: string
+          _lead: string
+          _pan?: string
+          _relationship?: Database["public"]["Enums"]["contact_relationship"]
+        }
+        Returns: string
+      }
+      create_audience_enquiry: {
+        Args: {
+          _evidence: string
+          _id: string
+          _interest: string
+          _kind: string
+          _phone?: string
+        }
+        Returns: string
+      }
       get_employee_id_for_user: { Args: { _user_id: string }; Returns: string }
       get_like_state: {
         Args: { _fp: string; _kind: string; _target: string }
@@ -4970,6 +5022,7 @@ export type Database = {
         Returns: boolean
       }
       is_admin: { Args: { _user_id: string }; Returns: boolean }
+      is_sales_supervisor: { Args: never; Returns: boolean }
       is_super_admin: { Args: { _user_id: string }; Returns: boolean }
       remove_like: {
         Args: { _fp: string; _kind: string; _target: string }
