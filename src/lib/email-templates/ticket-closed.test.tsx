@@ -10,7 +10,7 @@ describe("ticket closed email", () => {
     expect(html).toContain("TKT-00001");
     expect(html).toContain("Account statement request");
     expect(html).toContain("Rate this support");
-    expect(html).toContain(data.ratingUrl);
+    expect(html).toContain(data.ratingUrl!.replace(/&/g, "&amp;"));
   });
 
   it("does not show a rating action when the requester has no client portal", async () => {
