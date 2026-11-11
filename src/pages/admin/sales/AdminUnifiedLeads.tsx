@@ -1,3 +1,4 @@
+import { RowActions } from '@/components/admin/RowActions';
 import { inSalesQueue, leadProspect } from '@/lib/sharedLeadWorkflow';
 import { readAllMISRows } from '@/lib/misRefresh';
 import { useState } from 'react';
@@ -298,8 +299,8 @@ export default function AdminUnifiedLeads() {
           {/* Stats */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
-              { label: 'Total Leads', value: stats.total, color: 'text-foreground' },
-              { label: 'New', value: stats.webNew, color: 'text-blue-600' },
+              { label: 'Shared enquiries', value: stats.total, color: 'text-foreground' },
+              { label: 'Sales queue', value: webLeads.filter(inSalesQueue).length, color: 'text-blue-600' },
               { label: 'Converted', value: stats.converted, color: 'text-green-600' },
               { label: 'Calculator', value: stats.calculator, color: 'text-primary' },
             ].map(({ label, value, color }) => (
@@ -338,10 +339,10 @@ export default function AdminUnifiedLeads() {
           <Tabs value={tab} onValueChange={setTab}>
             <TabsList>
               <TabsTrigger value="all">
-                All Sources <Badge variant="secondary" className="ml-1.5 text-[10px]">{webLeads.length}</Badge>
+                All Sources <Badge variant="secondary" className="ml-1.5 text-[10px]">{filteredWeb.length}</Badge>
               </TabsTrigger>
               <TabsTrigger value="calculator">
-                <Calculator className="h-3.5 w-3.5 mr-1" /> Calculator <Badge variant="secondary" className="ml-1.5 text-[10px]">{calcLeads.length}</Badge>
+                <Calculator className="h-3.5 w-3.5 mr-1" /> Calculator <Badge variant="secondary" className="ml-1.5 text-[10px]">{filteredCalc.length}</Badge>
               </TabsTrigger>
             </TabsList>
 
@@ -361,7 +362,7 @@ export default function AdminUnifiedLeads() {
                         <th className="px-4 py-3 text-left">Name</th>
                         <th className="px-4 py-3 text-left">Contact</th>
                         <th className="px-4 py-3 text-left">Source</th>
-                        <th className="px-4 py-3 text-left">Context</th>
+                        <th className="px-4 py-3 text-left">Handoff / interest</th>
                         <th className="px-4 py-3 text-left">Status</th>
                         <th className="px-4 py-3 text-center">Activity</th>
                         <th className="px-4 py-3 text-left">Date</th>
@@ -393,6 +394,7 @@ export default function AdminUnifiedLeads() {
                               </span>
                             </td>
                             <td className="px-4 py-3 max-w-[200px]">
+                              <Badge variant="outline" className="mb-1">{lead.handoff_status}</Badge>
                               {getContextSummary(lead) ? <p className="text-xs text-muted-foreground line-clamp-2">{getContextSummary(lead)}</p> : <span className="text-muted-foreground text-xs">—</span>}
                             </td>
                             <td className="px-4 py-3">
@@ -414,19 +416,7 @@ export default function AdminUnifiedLeads() {
                             </td>
                             <td className="px-4 py-3 text-muted-foreground text-xs whitespace-nowrap">{format(new Date(lead.created_at), 'dd MMM yy, HH:mm')}</td>
                             <td className="px-4 py-3">
-                              <div className="flex items-center gap-1">
-                                <Button variant="ghost" size="sm" className="h-7 px-1.5 text-xs" onClick={() => setDetailLead({ id: lead.id, type: 'web' })}>
-                                  <Eye className="h-3 w-3" />
-                                </Button>
-                                {lead.status !== 'converted' && lead.handoff_status === 'accepted' && (
-                                  <Button variant="ghost" size="sm" className="h-7 text-xs" onClick={() => setConvertLead({
-                                    id: lead.id, ...leadProspect(lead),
-                                    context: getContextSummary(lead) ?? undefined,
-                                  })}>
-                                    <ArrowRight className="h-3 w-3 mr-1" /> Convert
-                                  </Button>
-                                )}
-                              </div>
+                              <RowActions actions={[{label:'View',onClick:()=>setDetailLead({id:lead.id,type:'web'})},{label:'Convert',hidden:lead.status==='converted'||lead.handoff_status!=='accepted',onClick:()=>setConvertLead({id:lead.id,...leadProspect(lead),context:getContextSummary(lead)??undefined})}]} />
                             </td>
                           </tr>
                         );

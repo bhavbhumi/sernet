@@ -156,7 +156,7 @@ function DealCard({ deal, stages, subStatusLabels, subStatusColors, onMove, onSe
       )}
       {validationErrors.length > 0 && (
         <div className="bg-destructive/10 border border-destructive/20 rounded p-2 space-y-1">
-          <div className="flex items-center gap-1 text-destructive text-[10px] font-medium"><ShieldAlert className="h-3 w-3" /> Blueprint blocked</div>
+          <div className="flex items-center gap-1 text-destructive text-[10px] font-medium"><ShieldAlert className="h-3 w-3" /> Stage change blocked</div>
           {validationErrors.map((err, i) => (
             <p key={i} className="text-[10px] text-destructive/80 flex items-start gap-1"><AlertTriangle className="h-3 w-3 shrink-0 mt-0.5" /> {err}</p>
           ))}
@@ -227,19 +227,19 @@ export default function AdminCRMDeals() {
             <span>{deals.length} deals</span>
             <span>₹{totalValue.toLocaleString('en-IN')} total</span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             {/* View Toggle */}
             <div className="flex items-center rounded-lg border border-border p-0.5">
-              <button onClick={() => setView('kanban')}
+              <Button variant="ghost" size="sm" onClick={() => setView('kanban')}
                 className={cn('flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium transition-colors',
                   view === 'kanban' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground')}>
                 <LayoutGrid className="h-3.5 w-3.5" /> Kanban
-              </button>
-              <button onClick={() => setView('list')}
+              </Button>
+              <Button variant="ghost" size="sm" onClick={() => setView('list')}
                 className={cn('flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium transition-colors',
                   view === 'list' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground')}>
                 <List className="h-3.5 w-3.5" /> List
-              </button>
+              </Button>
             </div>
             <Link to={ADMIN_ROUTES.sales.pipelineConfig}>
               <Button variant="outline" size="sm"><Settings2 className="h-4 w-4 mr-1" /> Configure</Button>

@@ -9,6 +9,7 @@ const operationalKeys = new Set([
   'leave-requests-approved', 'expense-claims', 'salary-register', 'leave-encashment',
   'employee-loans', 'employee-exits', 'event-registrations', 'workflow-logs',
   'admin-post-likes', 'admin-post-shares', 'admin-article-likes', 'admin-article-shares',
+  'deal-detail', 'deal-history', 'contact-detail',
   'marketing-leads-overview', 'marketing-action-needed', 'campaign-links', 'content-distribution',
 ]);
 

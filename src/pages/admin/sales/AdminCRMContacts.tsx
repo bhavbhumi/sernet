@@ -186,7 +186,7 @@ function ContactDetailDialog({ contactId, contactName, contactType, open, onClos
   });
 
   // Fetch linked deals
-  const { data: linkedDeals = [] } = useQuery({
+  const { data: linkedDeals = [], error: dealsError } = useQuery({
     queryKey: ['contact-deals', contactId],
     enabled: open,
     queryFn: async () => {
@@ -201,7 +201,7 @@ function ContactDetailDialog({ contactId, contactName, contactType, open, onClos
   });
 
   // Fetch linked activities
-  const { data: linkedActivities = [] } = useQuery({
+  const { data: linkedActivities = [], error: activitiesError } = useQuery({
     queryKey: ['contact-activities', contactId],
     enabled: open,
     queryFn: async () => {
@@ -275,7 +275,7 @@ function ContactDetailDialog({ contactId, contactName, contactType, open, onClos
           </DialogTitle>
         </DialogHeader>
 
-        {contactError && <p role="alert" className="text-destructive">Contact details could not be loaded.</p>}
+        {(contactError || dealsError || activitiesError) && <p role="alert" className="text-destructive">Contact details could not be loaded.</p>}
         <Tabs defaultValue="profile" className="mt-2">
           <TabsList className="flex flex-wrap h-auto gap-1">
             <TabsTrigger value="profile">Profile</TabsTrigger>
@@ -606,6 +606,9 @@ export default function AdminCRMContacts() {
           tan: '', cin: '', gstin: '', date_of_incorporation: '',
           city: '', state: '', source: 'direct', notes: '',
         }}
+        wrapFirstColumn
+        extraFilterField="contact_type"
+        extraFilterLabel="All contact types"
         hasStatus={false}
         categoryField="relationship_type"
         orderBy={{ column: 'created_at', ascending: false }}

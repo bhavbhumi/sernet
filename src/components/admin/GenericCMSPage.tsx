@@ -42,6 +42,7 @@ interface GenericCMSPageProps {
   fields: FieldDef[];
   emptyForm: Record<string, string | number | boolean | string[]>;
   tableColumns: { key: string; label: string; width?: string; format?: 'date' }[];
+  wrapFirstColumn?: boolean;
   hasStatus?: boolean;
   hasFeatured?: boolean;
   categoryField?: string;
@@ -110,7 +111,7 @@ function formatCellDate(val: unknown): string {
 }
 
 export function GenericCMSPage({
-  title, subtitle, tableName, fields, emptyForm: defaultForm, tableColumns, hasStatus = true, hasFeatured = false, categoryField, extraFilterField, extraFilterLabel = 'All', headerActions, orderBy, onRowAction
+  title, subtitle, tableName, fields, emptyForm: defaultForm, tableColumns, hasStatus = true, hasFeatured = false, categoryField, extraFilterField, extraFilterLabel = 'All', headerActions, orderBy, onRowAction, wrapFirstColumn = false
 }: GenericCMSPageProps) {
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
@@ -351,7 +352,7 @@ export function GenericCMSPage({
                     <td key={col.key} className="px-4 py-3 text-muted-foreground align-top">
                       {colIdx === 0 ? (
                         <div className="flex items-center gap-2">
-                          <p className="font-medium text-foreground line-clamp-1 flex-1">{String(item[col.key] ?? '')}</p>
+                          <p className={wrapFirstColumn ? "font-medium text-foreground whitespace-normal break-words min-w-48 flex-1" : "font-medium text-foreground line-clamp-1 flex-1"}>{String(item[col.key] ?? '')}</p>
                           <RowActions actions={[
                             ...(hasStatus ? [{
                               label: item.status === 'published' ? 'Unpublish' : 'Publish',

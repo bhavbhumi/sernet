@@ -54,7 +54,7 @@ export function DealDetailDrawer({ dealId, open, onClose }: DealDetailDrawerProp
     },
   });
 
-  const { data: activities = [] } = useQuery({
+  const { data: activities = [], error: activitiesError } = useQuery({
     queryKey: ['deal-activities', dealId],
     enabled: !!dealId && open,
     queryFn: async () => {
@@ -70,7 +70,7 @@ export function DealDetailDrawer({ dealId, open, onClose }: DealDetailDrawerProp
     },
   });
 
-  const { data: history = [] } = useQuery({
+  const { data: history = [], error: historyError } = useQuery({
     queryKey: ['deal-history', dealId],
     enabled: !!dealId && open,
     queryFn: async () => {
@@ -120,7 +120,7 @@ export function DealDetailDrawer({ dealId, open, onClose }: DealDetailDrawerProp
   const [editing, setEditing] = useState(false);
   useEffect(()=>{if(deal)setDetails({title:deal.title,value:String(deal.deal_value ?? 0),probability:String(deal.probability ?? 0),expected:deal.expected_close_date ?? '',owner:deal.assigned_to ?? '',product:deal.product_id ?? ''});},[deal]);
   const {data:products=[]}=useQuery({queryKey:['sales-products'],enabled:open,queryFn:()=>readAllMISRows((f,t)=>supabase.from('products').select('id,name,parent_id').eq('is_active',true).order('sort_order').order('id').range(f,t))});
-  const {data:owners=[]}=useQuery({queryKey:['sales-owner-options'],enabled:open,queryFn:()=>readAllMISRows((f,t)=>supabase.from('user_roles').select('user_id,role,department').order('id').range(f,t))});
+  const {data:owners=[]}=useQuery({queryKey:['sales-owner-options'],enabled:open,queryFn:async()=>{const roles=await readAllMISRows((f,t)=>supabase.from('user_roles').select('user_id,role,department').order('id').range(f,t));const staff=await readAllMISRows((f,t)=>supabase.from('employees').select('user_id,full_name').order('id').range(f,t));return roles.map(r=>({...r,name:staff.find(e=>e.user_id===r.user_id)?.full_name??(r.role==='super_admin'?'Administrator':'Sales staff')}));}});
   async function saveDetails(){
     if(!dealId || !details.title.trim() || !details.owner || !details.product || !Number.isFinite(Number(details.value)) || Number(details.value)<0 || Number(details.probability)<0 || Number(details.probability)>100){toast.error('Check title, product, owner, value and probability');return;}
     setSaving(true);
@@ -135,14 +135,14 @@ export function DealDetailDrawer({ dealId, open, onClose }: DealDetailDrawerProp
           <SheetTitle className="text-base">{deal?.title || 'Deal Detail'}</SheetTitle>
         </SheetHeader>
 
-        {dealError && <p role="alert" className="text-destructive mt-4">Opportunity could not be loaded.</p>}
+        {(dealError || activitiesError || historyError) && <p role="alert" className="text-destructive mt-4">Opportunity could not be loaded.</p>}
         {deal && (
           <div className="mt-4 space-y-4">
             <Button variant="outline" size="sm" onClick={()=>setEditing(v=>!v)}>{editing?'Cancel editing':'Edit opportunity'}</Button>
             {editing && <section className="space-y-3 border-b border-border pb-4">
               <Label htmlFor="deal-title">Title</Label><Input id="deal-title" maxLength={200} value={details.title} onChange={e=>setDetails(f=>({...f,title:e.target.value}))} />
               <Label>Product</Label><Select value={details.product} onValueChange={v=>setDetails(f=>({...f,product:v}))}><SelectTrigger aria-label="Deal product"><SelectValue /></SelectTrigger><SelectContent>{products.map(p=><SelectItem key={p.id} value={p.id}>{productLabel(p,products)}</SelectItem>)}</SelectContent></Select>
-              <Label>Sales owner</Label><Select value={details.owner} onValueChange={v=>setDetails(f=>({...f,owner:v}))}><SelectTrigger aria-label="Deal owner"><SelectValue /></SelectTrigger><SelectContent>{owners.filter(o=>o.role==='super_admin'||!o.department||o.department==='sales').map(o=><SelectItem key={o.user_id} value={o.user_id}>{o.role==='super_admin'?'Administrator':'Sales staff'} · {o.user_id.slice(0,8)}</SelectItem>)}</SelectContent></Select>
+              <Label>Sales owner</Label><Select value={details.owner} onValueChange={v=>setDetails(f=>({...f,owner:v}))}><SelectTrigger aria-label="Deal owner"><SelectValue /></SelectTrigger><SelectContent>{owners.filter(o=>o.role==='super_admin'||!o.department||o.department==='sales').map(o=><SelectItem key={o.user_id} value={o.user_id}>{o.name}</SelectItem>)}</SelectContent></Select>
               <div className="grid grid-cols-2 gap-3"><div><Label htmlFor="deal-value">Value (₹)</Label><Input id="deal-value" type="number" min={0} value={details.value} onChange={e=>setDetails(f=>({...f,value:e.target.value}))} /></div><div><Label htmlFor="deal-probability">Probability (%)</Label><Input id="deal-probability" type="number" min={0} max={100} value={details.probability} onChange={e=>setDetails(f=>({...f,probability:e.target.value}))} /></div></div>
               <Label htmlFor="deal-expected">Expected close date</Label><Input id="deal-expected" type="date" value={details.expected} onChange={e=>setDetails(f=>({...f,expected:e.target.value}))} />
               <Button onClick={saveDetails} disabled={saving}>Save opportunity</Button>
@@ -214,6 +214,7 @@ export function DealDetailDrawer({ dealId, open, onClose }: DealDetailDrawerProp
                               <Badge variant="outline" className="text-[9px]">{act.activity_type.replace('_', ' ')}</Badge>
                               {act.outcome && <Badge variant="secondary" className="text-[9px]">{act.outcome}</Badge>}
                             </div>
+                            {act.due_date && <p className="text-xs text-primary">Due {format(new Date(act.due_date),'dd MMM yyyy HH:mm')}</p>}
                             {act.description && <p className="text-[10px] text-muted-foreground mt-0.5 line-clamp-2">{act.description}</p>}
                             <p className="text-[10px] text-muted-foreground mt-0.5">{format(new Date(act.created_at), 'dd MMM yyyy HH:mm')}</p>
                           </div>
