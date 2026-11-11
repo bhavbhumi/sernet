@@ -46,3 +46,5 @@
 - Ticket ratings live in `ticket_feedback` (≤3 stars flags follow-up); portal reviews enter `reviews` as pending.
 - Marketing and Sales share `leads`; database-guarded handoffs require qualification, contact permission and an owner, avoiding duplicate prospect records.
 - Save campaign links and Insights distribution separately from article content; manual posting records retain platform URLs and dates, never implying automatic delivery.
+- Preserve anonymous newsletter conflict no-ops; existing-address changes require verified staff handling, and database triggers record activation evidence and suppress unsubscribed recipients to prevent unauthorized reactivation.
+- Store lead permission evidence separately from notes in context, with database-recorded actor/time and handoff enforcement; this prevents qualification from implying consent.

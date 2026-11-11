@@ -11,6 +11,6 @@ export function trackedLink(destination: string, tags: Record<string, string>) {
   if (!tags.utm_source?.trim() || !tags.utm_medium?.trim() || !tags.utm_campaign?.trim()) throw new Error('Source, medium and campaign are required');
   return url.toString();
 }
-export function canHandOff(lead: { qualification_status: string; contact_permission: string; assigned_to: string | null }) {
-  return lead.qualification_status === 'qualified' && lead.contact_permission === 'permitted' && !!lead.assigned_to;
+export function canHandOff(lead: { qualification_status: string; contact_permission: string; assigned_to: string | null; permission_evidence?: string }) {
+  return lead.qualification_status === 'qualified' && lead.contact_permission === 'permitted' && !!lead.assigned_to && !!lead.permission_evidence?.trim();
 }

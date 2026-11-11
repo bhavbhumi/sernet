@@ -30,4 +30,8 @@ describe('lead attribution', () => {
     expect(attributionLabel({})).toEqual({ channel: 'direct / unknown', campaign: null });
     expect(attributionLabel({ attribution: { utm_source: 'newsletter', utm_campaign: 'nov' } })).toEqual({ channel: 'newsletter', campaign: 'nov' });
   });
+  it('uses only saved campaign attribution, not the website form source', () => {
+    expect(attributionLabel({ source: 'open_account', attribution: { utm_source: 'linkedin', utm_campaign: 'sip-nov' } })).toEqual({ channel: 'linkedin', campaign: 'sip-nov' });
+    expect(attributionLabel({ source: 'newsletter', utm_campaign: 'legacy' })).toEqual({ channel: 'direct / unknown', campaign: null });
+  });
 });
