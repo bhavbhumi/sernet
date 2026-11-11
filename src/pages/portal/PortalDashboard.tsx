@@ -44,7 +44,7 @@ function PortalDashboardContent() {
       loadFullProfile();
       loadTickets();
     }
-  }, [session]);
+  }, [session, focusedTicketId]);
 
   const loadFullProfile = async () => {
     if (!session) return;
@@ -77,14 +77,36 @@ function PortalDashboardContent() {
       .eq('created_by', session.userId)
       .order('created_at', { ascending: false })
       .limit(20);
-    setTickets(data || []);
-    const ids = (data || []).map((t: any) => t.id);
+    let rows = data || [];
+    // An emailed link may point beyond the latest 20 tickets; include that
+    // owned ticket explicitly without removing the normal recent-ticket cap.
+    if (focusedTicketId && !rows.some(t => t.id === focusedTicketId)) {
+      const { data: focusedTicket } = await supabase
+        .from('support_tickets')
+        .select('*')
+        .eq('id', focusedTicketId)
+        .eq('created_by', session.userId)
+        .maybeSingle();
+      if (focusedTicket) rows = [focusedTicket, ...rows];
+    }
+    setTickets(rows);
+    const ids = rows.map((t: any) => t.id);
     if (ids.length) {
       const { data: fb } = await supabase.from('ticket_feedback').select('ticket_id,rating').in('ticket_id', ids);
       setRatings(Object.fromEntries((fb || []).map(f => [f.ticket_id, f.rating])));
+    } else {
+      setRatings({});
     }
     setTicketsLoading(false);
   };
+
+  useEffect(() => {
+    if (activeTab !== 'tickets' || !focusedTicketId || ticketsLoading) return;
+    const frame = requestAnimationFrame(() => {
+      document.getElementById(`ticket-${focusedTicketId}`)?.scrollIntoView({ block: 'center' });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [activeTab, focusedTicketId, tickets, ticketsLoading]);
 
   const handleSaveProfile = async () => {
     if (!session) return;
@@ -148,7 +170,7 @@ function PortalDashboardContent() {
           <p className="text-sm text-muted-foreground">Manage your profile, documents and support requests</p>
         </div>
 
-        <Tabs defaultValue="profile" className="space-y-4">
+        <Tabs value={activeTab} onValueChange={value => setSearchParams(value === 'tickets' ? { tab: 'tickets' } : {}, { replace: true })} className="space-y-4">
           <TabsList>
             <TabsTrigger value="profile" className="gap-1.5"><User className="h-4 w-4" /> Profile & KYC</TabsTrigger>
             <TabsTrigger value="tickets" className="gap-1.5"><Ticket className="h-4 w-4" /> Support Tickets</TabsTrigger>
@@ -279,7 +301,7 @@ function PortalDashboardContent() {
               ) : (
                 <div className="divide-y divide-border">
                   {tickets.map((ticket: any) => (
-                    <div key={ticket.id} className="p-4 flex items-center justify-between hover:bg-muted/30 transition-colors">
+                    <div id={`ticket-${ticket.id}`} key={ticket.id} className={`p-4 hover:bg-muted/30 transition-colors ${focusedTicketId === ticket.id ? 'bg-primary/5 ring-1 ring-inset ring-primary/30' : ''}`}>
                       <div>
                         <div className="flex items-center gap-2">
                           <span className="text-xs font-mono text-muted-foreground">{ticket.ticket_number}</span>
