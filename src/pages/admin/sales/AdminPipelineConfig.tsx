@@ -280,6 +280,11 @@ export function PipelineConfigContent() {
     },
   });
 
+  const { data: canEdit = false } = useQuery({
+    queryKey: ['is-sales-supervisor'],
+    queryFn: async () => { const { data, error } = await supabase.rpc('is_sales_supervisor'); if (error) return false; return !!data; },
+  });
+
   const refresh = () => Promise.all(['pipeline-config','sales-pipeline-active'].map(key=>queryClient.invalidateQueries({queryKey:[key]})));
 
   const toggleStageActive = async (stage: PipelineStage) => {
@@ -317,8 +322,9 @@ export function PipelineConfigContent() {
           <Settings2 className="h-4 w-4" />
           <span>{stages.length} stages configured</span>
         </div>
-        <StageDialog onSaved={refresh} />
+        {canEdit && <StageDialog onSaved={refresh} />}
       </div>
+      {!canEdit && !isLoading && <p className="mb-4 text-sm text-muted-foreground">View only — a Sales supervisor or administrator can change pipeline stages.</p>}
 
       {error && <p role="alert" className="text-destructive">Pipeline settings could not be loaded.</p>}
       {isLoading ? (
@@ -331,12 +337,12 @@ export function PipelineConfigContent() {
                 <div className="flex flex-col gap-0.5">
                   <button
                     onClick={() => moveStage(stage, 'up')}
-                    disabled={idx === 0}
+                    disabled={!canEdit || idx === 0}
                     className="text-muted-foreground hover:text-foreground disabled:opacity-20 text-xs"
                   >▲</button>
                   <button
                     onClick={() => moveStage(stage, 'down')}
-                    disabled={idx === stages.length - 1}
+                    disabled={!canEdit || idx === stages.length - 1}
                     className="text-muted-foreground hover:text-foreground disabled:opacity-20 text-xs"
                   >▼</button>
                 </div>
@@ -346,8 +352,8 @@ export function PipelineConfigContent() {
                   <p className="text-[10px] text-muted-foreground font-mono">{stage.stage_key}</p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Switch checked={stage.is_active} onCheckedChange={() => toggleStageActive(stage)} />
-                  <StageDialog stage={stage} onSaved={refresh} />
+                  <Switch checked={stage.is_active} onCheckedChange={() => toggleStageActive(stage)} disabled={!canEdit} />
+                  {canEdit && <StageDialog stage={stage} onSaved={refresh} />}
                 </div>
               </div>
 
@@ -355,7 +361,7 @@ export function PipelineConfigContent() {
               <div className="ml-8 space-y-1.5">
                 <div className="flex items-center gap-2 mb-2">
                   <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">Sub-Statuses</p>
-                  <SubStatusDialog stageId={stage.id} onSaved={refresh} />
+                  {canEdit && <SubStatusDialog stageId={stage.id} onSaved={refresh} />}
                 </div>
                 {stage.pipeline_sub_statuses.map(ss => (
                   <div key={ss.id} className={cn('flex items-center gap-2 py-1', !ss.is_active && 'opacity-40')}>
@@ -364,8 +370,8 @@ export function PipelineConfigContent() {
                     </span>
                     <span className="text-[10px] text-muted-foreground font-mono">{ss.sub_status_key}</span>
                     <div className="ml-auto flex items-center gap-1">
-                      <Switch checked={ss.is_active} onCheckedChange={() => toggleSubStatusActive(ss)} className="scale-75" />
-                      <SubStatusDialog stageId={stage.id} subStatus={ss} onSaved={refresh} />
+                      <Switch checked={ss.is_active} onCheckedChange={() => toggleSubStatusActive(ss)} className="scale-75" disabled={!canEdit} />
+                      {canEdit && <SubStatusDialog stageId={stage.id} subStatus={ss} onSaved={refresh} />}
                     </div>
                   </div>
                 ))}
