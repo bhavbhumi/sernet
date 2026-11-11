@@ -1,3 +1,4 @@
+import { AudienceEnquiryAction } from '@/components/admin/AudienceEnquiryAction';
 import { readAllMISRows } from '@/lib/misRefresh';
 import { AdminGuard } from '@/components/admin/AdminGuard';
 import { GenericCMSPage } from '@/components/admin/GenericCMSPage';
@@ -77,6 +78,7 @@ function EventRegistrationsDialog({ eventId, eventTitle, open, onClose }: {
                     {r.attended ? 'Attended' : r.status}
                   </Badge>
                   <Button size="sm" variant="ghost" onClick={()=>attendance(r.id,!r.attended)}>{r.attended ? 'Undo attendance' : 'Mark attended'}</Button>
+                  <AudienceEnquiryAction kind="event" id={r.id} leadId={r.lead_id} phone={r.phone ?? ''} />
                   <p className="text-[10px] text-muted-foreground mt-0.5">{format(new Date(r.created_at), 'dd MMM yyyy')}</p>
                 </div>
               </div>

@@ -1,3 +1,4 @@
+import { AudienceEnquiryAction } from '@/components/admin/AudienceEnquiryAction';
 import { GenericCMSPage } from '@/components/admin/GenericCMSPage';
 import type { FieldDef } from '@/components/admin/GenericCMSPage';
 
@@ -38,6 +39,7 @@ const AdminNewsletter = () => {
       fields={fields}
       emptyForm={emptyForm}
       tableColumns={tableColumns}
+      onRowAction={item => <AudienceEnquiryAction kind="newsletter" id={String(item.id)} leadId={typeof item.lead_id === 'string' ? item.lead_id : null} />}
       hasStatus={false}
       orderBy={{ column: 'subscribed_at', ascending: false }}
       categoryField="status"

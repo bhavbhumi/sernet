@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
+import { leadProspect } from '@/lib/sharedLeadWorkflow';
 import { MarketingLeadWorkflow } from '@/components/admin/MarketingLeadWorkflow';
 
 const ACTIVITY_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -42,7 +43,7 @@ interface LeadDetailDrawerProps {
 
 export function LeadDetailDrawer({ leadId, leadType, open, onClose, onConverted }: LeadDetailDrawerProps) {
   const queryClient = useQueryClient();
-  const [actForm, setActForm] = useState({ activity_type: 'call', subject: '', description: '', outcome: '' });
+  const [actForm, setActForm] = useState({ activity_type: 'call', subject: '', description: '', outcome: '', due_date: '' });
   const [saving, setSaving] = useState(false);
 
   // Fetch lead
@@ -69,12 +70,12 @@ export function LeadDetailDrawer({ leadId, leadType, open, onClose, onConverted 
     queryFn: async () => {
       if (!leadId) return [];
       // Find contacts that were converted from this lead
-      const { data: contacts } = await supabase.from('crm_contacts').select('id').eq('lead_id', leadId);
-      if (!contacts?.length) return [];
-      const contactIds = contacts.map(c => c.id);
+      const { data: contacts, error: contactError } = await supabase.from('crm_contacts').select('id').eq('lead_id', leadId);
+      if (contactError) throw contactError;
+      const contactIds = (contacts ?? []).map(c => c.id);
       const { data, error } = await supabase.from('crm_activities')
         .select('*')
-        .in('contact_id', contactIds)
+        .or(`lead_id.eq.${leadId}${contactIds.length ? `,contact_id.in.(${contactIds.join(',')})` : ''}`)
         .order('created_at', { ascending: false })
         .limit(30);
       if (error) throw error;
@@ -84,13 +85,13 @@ export function LeadDetailDrawer({ leadId, leadType, open, onClose, onConverted 
 
   // Conversion path: check if lead became a contact, then deals
   const { data: conversionPath } = useQuery({
-    queryKey: ['lead-conversion-path', leadId],
+    queryKey: ['lead-conversion-path', leadId, lead?._type === 'web' ? lead.converted_contact_id : null],
     enabled: !!leadId && open && leadType === 'web',
     queryFn: async () => {
       if (!leadId) return {contact:null,deals:[]};
       const { data: contacts } = await supabase.from('crm_contacts')
         .select('id, full_name, created_at')
-        .eq('lead_id', leadId);
+        .or(`lead_id.eq.${leadId}${lead?._type === 'web' && lead.converted_contact_id ? `,id.eq.${lead.converted_contact_id}` : ''}`);
       if (!contacts?.length) return { contact: null, deals: [] };
       const { data: deals } = await supabase.from('crm_deals')
         .select('id, title, stage, sub_status, deal_value, created_at')
@@ -102,11 +103,13 @@ export function LeadDetailDrawer({ leadId, leadType, open, onClose, onConverted 
 
   const handleLogActivity = async () => {
     if (!actForm.subject.trim()) { toast.error('Subject required'); return; }
-    if (!conversionPath?.contact) { toast.error('Lead must be converted to contact first'); return; }
+    if (!leadId || leadType !== 'web') return;
     setSaving(true);
     try {
       const { error } = await supabase.from('crm_activities').insert({
-        contact_id: conversionPath.contact.id,
+        contact_id: conversionPath?.contact?.id ?? null,
+        lead_id: leadId,
+        due_date: actForm.due_date ? new Date(actForm.due_date).toISOString() : null,
         activity_type: actForm.activity_type as any,
         subject: actForm.subject,
         description: actForm.description || null,
@@ -114,13 +117,15 @@ export function LeadDetailDrawer({ leadId, leadType, open, onClose, onConverted 
       });
       if (error) throw error;
       toast.success('Activity logged');
-      setActForm({ activity_type: 'call', subject: '', description: '', outcome: '' });
+      setActForm({ activity_type: 'call', subject: '', description: '', outcome: '', due_date: '' });
       queryClient.invalidateQueries({ queryKey: ['lead-activities', leadId] });
+      queryClient.invalidateQueries({ queryKey: ['lead-activity-counts'] });
     } catch (e: any) { toast.error(e.message); } finally { setSaving(false); }
   };
 
   const isWeb = lead?._type === 'web';
   const context = isWeb ? (lead as any)?.context : null;
+  const prospect = lead?._type === 'web' ? leadProspect(lead) : lead;
   const SrcIcon = isWeb ? (SOURCE_ICONS[(lead as any)?.source] || Globe) : Target;
 
   return (
@@ -129,7 +134,7 @@ export function LeadDetailDrawer({ leadId, leadType, open, onClose, onConverted 
         <SheetHeader>
           <SheetTitle className="text-base flex items-center gap-2">
             <User className="h-4 w-4 text-primary" />
-            {lead?.name || 'Lead Detail'}
+            {prospect?.name || 'Lead Detail'}
           </SheetTitle>
         </SheetHeader>
 
@@ -140,8 +145,8 @@ export function LeadDetailDrawer({ leadId, leadType, open, onClose, onConverted 
               <Card className="p-3">
                 <p className="text-[10px] text-muted-foreground uppercase">Contact</p>
                 <div className="mt-1 space-y-1">
-                  <div className="flex items-center gap-1.5 text-xs"><Phone className="h-3 w-3 text-muted-foreground" /> {lead.phone}</div>
-                  {lead.email && <div className="flex items-center gap-1.5 text-xs"><Mail className="h-3 w-3 text-muted-foreground" /> {lead.email}</div>}
+                  <div className="flex items-center gap-1.5 text-xs"><Phone className="h-3 w-3 text-muted-foreground" /> {prospect?.phone}</div>
+                  {prospect?.email && <div className="flex items-center gap-1.5 text-xs"><Mail className="h-3 w-3 text-muted-foreground" /> {prospect?.email}</div>}
                 </div>
               </Card>
               <Card className="p-3">
@@ -260,7 +265,7 @@ export function LeadDetailDrawer({ leadId, leadType, open, onClose, onConverted 
 
               {/* Activities */}
               <TabsContent value="activities" className="mt-3 space-y-3">
-                {conversionPath?.contact ? (
+                {isWeb ? (
                   <>
                     <Card className="p-3 space-y-2 bg-muted/30">
                       <p className="text-xs font-medium text-muted-foreground flex items-center gap-1"><Plus className="h-3 w-3" /> Log Activity</p>
@@ -276,6 +281,7 @@ export function LeadDetailDrawer({ leadId, leadType, open, onClose, onConverted 
                         <Input value={actForm.subject} onChange={e => setActForm(f => ({ ...f, subject: e.target.value }))} placeholder="Subject" className="h-8 text-xs" />
                       </div>
                       <Textarea value={actForm.description} onChange={e => setActForm(f => ({ ...f, description: e.target.value }))} placeholder="Notes (optional)" className="text-xs min-h-[50px]" />
+                      <Input aria-label="Next action due" type="datetime-local" value={actForm.due_date} onChange={e => setActForm(f => ({ ...f, due_date: e.target.value }))} />
                       <Button size="sm" onClick={handleLogActivity} disabled={saving} className="w-full h-8 text-xs">{saving ? 'Saving...' : 'Log'}</Button>
                     </Card>
                     {activities.length === 0 ? (
@@ -289,6 +295,7 @@ export function LeadDetailDrawer({ leadId, leadType, open, onClose, onConverted 
                               <Icon className={cn('h-3.5 w-3.5 mt-0.5 shrink-0', ACTIVITY_COLORS[act.activity_type])} />
                               <div className="flex-1 min-w-0">
                                 <span className="text-xs font-medium">{act.subject}</span>
+                                {act.due_date && <p className="text-xs text-primary">Due {format(new Date(act.due_date), 'dd MMM yyyy HH:mm')}</p>}
                                 {act.description && <p className="text-[10px] text-muted-foreground mt-0.5 line-clamp-2">{act.description}</p>}
                                 <p className="text-[10px] text-muted-foreground mt-0.5">{format(new Date(act.created_at), 'dd MMM yyyy HH:mm')}</p>
                               </div>
@@ -299,7 +306,7 @@ export function LeadDetailDrawer({ leadId, leadType, open, onClose, onConverted 
                     )}
                   </>
                 ) : (
-                  <p className="text-xs text-muted-foreground text-center py-6">Convert lead to contact first to log activities.</p>
+                  <p className="text-xs text-muted-foreground text-center py-6">Legacy calculator enquiries are available in the shared Leads list.</p>
                 )}
               </TabsContent>
             </Tabs>

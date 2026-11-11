@@ -20,7 +20,7 @@ export function AudienceEnquiryAction({ kind, id, leadId, phone = '' }: { kind: 
     try {
       const { data, error } = await supabase.rpc('create_audience_enquiry', { _kind: kind, _id: id, _interest: form.interest.trim(), _evidence: form.evidence.trim(), _phone: form.phone.trim() });
       if (error) throw error;
-      await Promise.all(['leads', 'event-registrations', 'cms-newsletter_subscribers', 'marketing-action-needed', 'admin-dashboard-stats'].map(key => client.invalidateQueries({ queryKey: [key] })));
+      await Promise.all(['leads', 'event-registrations', 'newsletter_subscribers', 'marketing-action-needed', 'admin-dashboard-stats'].map(key => client.invalidateQueries({ queryKey: [key] })));
       setOpen(false); setViewId(data); toast.success('Enquiry saved for Marketing qualification');
     } catch (error) { toast.error(error instanceof Error ? error.message : 'Could not create enquiry'); } finally { setSaving(false); }
   }
