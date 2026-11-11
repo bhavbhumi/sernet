@@ -86,7 +86,7 @@ export function PortalGuard({ children }: { children: React.ReactNode }) {
     });
 
     return () => subscription.unsubscribe();
-  }, [navigate, location.pathname, location.search]);
+  }, [navigate]);
 
   if (loading) {
     return (
