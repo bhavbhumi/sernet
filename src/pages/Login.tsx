@@ -146,7 +146,7 @@ export default function Login() {
         logAudit({ action: 'login', entity_type: 'auth', details: { role: roleData?.role } });
       }
       toast({ title: 'Welcome back!', description: detectedRoles[0].description });
-      navigate(detectedRoles[0].route);
+      navigate(detectedRoles[0].key === 'client' && clientReturnPath ? clientReturnPath : detectedRoles[0].route);
       return;
     }
 
@@ -161,7 +161,7 @@ export default function Login() {
       logAudit({ action: 'login', entity_type: 'auth', details: { role: 'admin', via: 'chooser' } });
     }
     toast({ title: 'Welcome back!', description: role.description });
-    navigate(role.route);
+    navigate(role.key === 'client' && clientReturnPath ? clientReturnPath : role.route);
   };
 
   if (showChooser) {

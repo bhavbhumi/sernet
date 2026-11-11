@@ -13,6 +13,15 @@ import { useToast } from '@/hooks/use-toast';
 import { logAudit } from '@/lib/auditLog';
 import { Switch } from '@/components/ui/switch';
 import { PRODUCTS, PRIORITY_CONFIG, RISK_TAGS, REGULATORS } from '@/lib/supportClassification';
+import { invokeBackendTool } from '@/lib/backendTools';
+
+type CloseTicketResult = {
+  closed: boolean;
+  alreadyClosed?: boolean;
+  emailSent: boolean;
+  emailReason?: string | null;
+  ratingIncluded?: boolean;
+};
 
 const db = (t: string) => supabase.from(t as any) as any;
 
@@ -55,6 +64,7 @@ export default function AdminTicketDetail() {
   const [replyText, setReplyText] = useState('');
   const [isInternal, setIsInternal] = useState(false);
   const [sending, setSending] = useState(false);
+  const [closing, setClosing] = useState(false);
 
   const fetchAll = async () => {
     setLoading(true);
@@ -74,6 +84,36 @@ export default function AdminTicketDetail() {
   useEffect(() => { if (id) fetchAll(); }, [id]);
 
   const updateTicket = async (updates: any) => {
+    if (updates.status === 'closed') {
+      setClosing(true);
+      const { data, error } = await invokeBackendTool<CloseTicketResult>('support-close-ticket', {
+        body: { ticketId: id },
+      });
+      setClosing(false);
+      if (error || !data) {
+        toast({ title: 'Ticket could not be closed', description: error?.message || 'Please try again.', variant: 'destructive' });
+        return;
+      }
+      logAudit({
+        action: 'status_change', entity_type: 'support_tickets', entity_id: id,
+        details: { status: 'closed', closure_email_sent: data.emailSent },
+      });
+      const emailMessage = data.alreadyClosed
+        ? 'The ticket was already closed; no duplicate email was sent.'
+        : data.emailSent
+          ? data.ratingIncluded
+            ? 'The client received a closure email with a service-rating link.'
+            : 'The client received a closure email.'
+          : data.emailReason === 'no_email'
+            ? 'No client email address is stored, so no closure email was sent.'
+            : data.emailReason === 'recipient_suppressed'
+              ? 'The ticket closed, but this recipient has opted out of app emails.'
+              : 'The ticket closed, but the closure email could not be sent.';
+      toast({ title: data.alreadyClosed ? 'Ticket already closed' : 'Ticket closed', description: emailMessage });
+      fetchAll();
+      return;
+    }
+
     const { error } = await db('support_tickets').update(updates).eq('id', id);
     if (error) toast({ title: 'Error', description: error.message, variant: 'destructive' });
     else {
@@ -239,7 +279,7 @@ export default function AdminTicketDetail() {
               <div>
                 <Label className="text-xs text-muted-foreground">Status</Label>
                 <Select value={ticket.status} onValueChange={v => updateTicket({ status: v, ...(v === 'resolved' ? { resolved_at: new Date().toISOString() } : {}), ...(v === 'closed' ? { closed_at: new Date().toISOString() } : {}) })}>
-                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectTrigger disabled={closing}><SelectValue placeholder={closing ? 'Closing…' : undefined} /></SelectTrigger>
                   <SelectContent>
                     {Object.entries(statusLabels).map(([k, v]) => (
                       <SelectItem key={k} value={k}>{v}</SelectItem>

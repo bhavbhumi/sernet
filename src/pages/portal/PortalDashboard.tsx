@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from '@/lib/router-compat';
+import { Link, useNavigate, useSearchParams } from '@/lib/router-compat';
 import { supabase } from '@/integrations/supabase/client';
 import { usePortalSession } from '@/components/portal/PortalGuard';
 import { PortalGuard } from '@/components/portal/PortalGuard';
@@ -19,6 +19,9 @@ import { TicketRating } from '@/components/portal/TicketRating';
 function PortalDashboardContent() {
   const { session, refreshProfile } = usePortalSession();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeTab = searchParams.get('tab') === 'tickets' ? 'tickets' : 'profile';
+  const focusedTicketId = searchParams.get('ticket');
   const { toast } = useToast();
 
   const [editing, setEditing] = useState(false);
