@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
+import { MarketingLeadWorkflow } from '@/components/admin/MarketingLeadWorkflow';
 
 const ACTIVITY_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   call: PhoneCall, email: Mail, meeting: Video, note: FileText, task: CheckCircle2, follow_up: Clock,
@@ -49,12 +50,13 @@ export function LeadDetailDrawer({ leadId, leadType, open, onClose, onConverted 
     queryKey: ['lead-detail', leadId, leadType],
     enabled: !!leadId && open,
     queryFn: async () => {
+      if (!leadId) throw new Error('Select a lead');
       if (leadType === 'calculator') {
-        const { data, error } = await supabase.from('calculator_leads').select('*').eq('id', leadId!).single();
+        const { data, error } = await supabase.from('calculator_leads').select('*').eq('id', leadId).single();
         if (error) throw error;
         return { ...data, _type: 'calculator' as const };
       }
-      const { data, error } = await supabase.from('leads').select('*').eq('id', leadId!).single();
+      const { data, error } = await supabase.from('leads').select('*').eq('id', leadId).single();
       if (error) throw error;
       return { ...data, _type: 'web' as const };
     },
@@ -65,8 +67,9 @@ export function LeadDetailDrawer({ leadId, leadType, open, onClose, onConverted 
     queryKey: ['lead-activities', leadId],
     enabled: !!leadId && open && leadType === 'web',
     queryFn: async () => {
+      if (!leadId) return [];
       // Find contacts that were converted from this lead
-      const { data: contacts } = await supabase.from('crm_contacts').select('id').eq('lead_id', leadId!);
+      const { data: contacts } = await supabase.from('crm_contacts').select('id').eq('lead_id', leadId);
       if (!contacts?.length) return [];
       const contactIds = contacts.map(c => c.id);
       const { data, error } = await supabase.from('crm_activities')
@@ -84,9 +87,10 @@ export function LeadDetailDrawer({ leadId, leadType, open, onClose, onConverted 
     queryKey: ['lead-conversion-path', leadId],
     enabled: !!leadId && open && leadType === 'web',
     queryFn: async () => {
+      if (!leadId) return {contact:null,deals:[]};
       const { data: contacts } = await supabase.from('crm_contacts')
         .select('id, full_name, created_at')
-        .eq('lead_id', leadId!);
+        .eq('lead_id', leadId);
       if (!contacts?.length) return { contact: null, deals: [] };
       const { data: deals } = await supabase.from('crm_deals')
         .select('id, title, stage, sub_status, deal_value, created_at')
@@ -171,6 +175,7 @@ export function LeadDetailDrawer({ leadId, leadType, open, onClose, onConverted 
             </Card>
 
             {/* Context / Goal */}
+            {lead._type === 'web' && <MarketingLeadWorkflow lead={lead} />}
             {isWeb && context && (
               <Card className="p-3">
                 <p className="text-[10px] text-muted-foreground uppercase mb-1">Context</p>

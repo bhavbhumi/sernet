@@ -57,13 +57,21 @@ const departmentGroups: DepartmentGroup[] = [
     color: 'text-blue-500',
     items: [
       {
-        label: 'Leads & Campaigns', icon: Target, moduleKey: 'marketing/campaigns', children: [
-          { label: 'Marketing Overview', icon: UserCheck, href: R.marketing.leads },
-          { label: 'Campaign Tracker', icon: Target, href: R.marketing.campaigns.tracker },
-          { label: 'Lead Attribution', icon: TrendingUp, href: R.marketing.campaigns.attribution },
-          { label: 'Events & Webinars', icon: CalendarDays, href: R.marketing.campaigns.events },
-          { label: 'Subscribers', icon: Mail, href: R.marketing.engagement.newsletter },
-          { label: 'Composer', icon: Mail, href: R.marketing.engagement.composer },
+        label: 'Marketing', icon: Target, moduleKey: 'marketing/campaigns', children: [
+          { label: 'Dashboard', icon: LayoutDashboard, href: R.marketing.leads },
+          { label: 'Leads', icon: UserCheck, children: [
+            { label: 'List & Details', icon: Users, href: R.marketing.leadList },
+            { label: 'Attribution', icon: TrendingUp, href: R.marketing.campaigns.attribution },
+          ] },
+          { label: 'Campaigns', icon: Target, children: [
+            { label: 'Campaign List', icon: Target, href: R.marketing.campaigns.tracker },
+            { label: 'Content Distribution', icon: Megaphone, href: R.marketing.campaigns.distribution },
+          ] },
+          { label: 'Events', icon: CalendarDays, href: R.marketing.campaigns.events },
+          { label: 'Newsletter', icon: Mail, children: [
+            { label: 'Composer', icon: Mail, href: R.marketing.engagement.composer },
+            { label: 'Subscribers', icon: Users, href: R.marketing.engagement.newsletter },
+          ] },
         ]
       },
     ]
@@ -279,7 +287,7 @@ const NavItemComponent = React.memo(function NavItemComponent({
         </button>
         {open && !collapsed && !locked && (
           <div className="ml-3 mt-0.5 space-y-0.5 border-l border-border pl-2.5">
-            {item.children!.map(child => (
+            {item.children?.map(child => (
               <NavItemComponent key={child.href || child.label} item={child} collapsed={collapsed} depth={depth + 1} />
             ))}
           </div>

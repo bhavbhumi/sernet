@@ -13,6 +13,7 @@ export const ADMIN_ROUTES = {
   marketing: {
     root: '/admin/marketing',
     leads: '/admin/marketing/leads',
+    leadList: '/admin/marketing/lead-list',
     resources: {
       downloads: '/admin/marketing/resources/downloads',
       calculators: '/admin/marketing/resources/calculators',
@@ -41,6 +42,7 @@ export const ADMIN_ROUTES = {
     },
     campaigns: {
       tracker: '/admin/marketing/campaigns/tracker',
+      distribution: '/admin/marketing/campaigns/distribution',
       attribution: '/admin/marketing/campaigns/attribution',
       events: '/admin/marketing/campaigns/events',
     },
