@@ -146,6 +146,7 @@ export default function Login() {
         logAudit({ action: 'login', entity_type: 'auth', details: { role: roleData?.role } });
       }
       toast({ title: 'Welcome back!', description: detectedRoles[0].description });
+      console.info('Login route selection', detectedRoles.map(role => role.key));
       navigate(detectedRoles[0].key === 'client' && clientReturnPath ? clientReturnPath : detectedRoles[0].route);
       return;
     }

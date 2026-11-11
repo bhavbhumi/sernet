@@ -31,6 +31,7 @@ export function PortalGuard({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   const loadProfile = async () => {
+    console.info('Portal guard loading');
     const { data: { session: authSession } } = await supabase.auth.getSession();
     if (!authSession) {
       const next = `${location.pathname}${location.search}`;
