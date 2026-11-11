@@ -22,16 +22,30 @@ interface BulkImportDialogProps {
   sampleCsvUrl?: string;
 }
 
-function parseCSV(text: string): Record<string, string>[] {
-  const lines = text.split(/\r?\n/).filter(l => l.trim());
+export function splitCSVLine(line: string): string[] {
+  const out: string[] = []; let cur = ''; let quoted = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (quoted) {
+      if (ch === '"' && line[i + 1] === '"') { cur += '"'; i++; }
+      else if (ch === '"') quoted = false;
+      else cur += ch;
+    } else if (ch === '"') quoted = true;
+    else if (ch === ',') { out.push(cur); cur = ''; }
+    else cur += ch;
+  }
+  out.push(cur);
+  return out.map(v => v.trim());
+}
+
+export function parseCSV(text: string): Record<string, string>[] {
+  const lines = text.replace(/^\uFEFF/, '').split(/\r?\n/).filter(l => l.trim());
   if (lines.length < 2) return [];
-  const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+  const headers = splitCSVLine(lines[0]);
   return lines.slice(1).map(line => {
-    const values = line.match(/("([^"]|"")*"|[^,]*)/g) || [];
+    const values = splitCSVLine(line);
     const row: Record<string, string> = {};
-    headers.forEach((h, i) => {
-      row[h] = (values[i] || '').trim().replace(/^"|"$/g, '').replace(/""/g, '"');
-    });
+    headers.forEach((h, i) => { row[h] = values[i] ?? ''; });
     return row;
   });
 }
@@ -90,7 +104,11 @@ export function BulkImportDialog({ open, onClose, tableName, title, fieldMapping
         if (batch.length > 0) {
           const { error } = await supabase.from(tableName as any).insert(batch as any);
           if (error) {
-            errors.push(`Batch ${Math.floor(i / BATCH) + 1}: ${error.message}`);
+            // Retry row by row so one bad row does not reject the whole batch
+            for (let j = 0; j < batch.length; j++) {
+              const { error: rowError } = await supabase.from(tableName as any).insert(batch[j] as any);
+              if (rowError) errors.push(`Row ${i + j + 2}: ${rowError.message}`); else success += 1;
+            }
           } else {
             success += batch.length;
           }
