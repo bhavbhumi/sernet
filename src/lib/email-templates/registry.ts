@@ -1,4 +1,5 @@
 import type { ComponentType } from 'react'
+import { template as ticketClosedTemplate } from './ticket-closed'
 
 export interface TemplateEntry {
   component: ComponentType<any>

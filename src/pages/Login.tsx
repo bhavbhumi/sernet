@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { useNavigate, Link } from '@/lib/router-compat';
+import { useNavigate, Link, useSearchParams } from '@/lib/router-compat';
 import { supabase } from '@/integrations/supabase/client';
 import { logAudit } from '@/lib/auditLog';
 import { Button } from '@/components/ui/button';

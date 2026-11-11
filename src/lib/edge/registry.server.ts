@@ -10,4 +10,5 @@ export const EDGE_HANDLERS: Record<string, () => Promise<EdgeHandler>> = {
   "seo-generate": async () => (await import("./seoGenerate.server")).handle,
   "summarize-content": async () => (await import("./summarizeContent.server")).handle,
   "wp-import": async () => (await import("./wpImport.server")).handle,
+  "support-close-ticket": async () => (await import("./closeTicket.server")).handle,
 };
