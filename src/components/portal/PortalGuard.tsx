@@ -39,11 +39,13 @@ export function PortalGuard({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    const { data: profile } = await supabase
+    const { data: profile, error: profileError } = await supabase
       .from('profiles')
       .select('*')
       .eq('user_id', authSession.user.id)
       .maybeSingle();
+
+    if (profileError) console.error('Portal profile lookup failed:', profileError.message);
 
     if (!profile) {
       // Maybe an admin user — redirect them
