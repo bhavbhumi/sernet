@@ -16,9 +16,10 @@ export function MarketingLeadWorkflow({ lead }: { lead: Lead }) {
   const [saving,setSaving] = useState(false);
   useEffect(()=>setForm({qualification_status:lead.qualification_status,contact_permission:lead.contact_permission,assigned_to:lead.assigned_to,notes:lead.notes ?? ''}),[lead]);
   const {data:owners=[],error} = useQuery({queryKey:['marketing-sales-owners'],queryFn: async()=>{
-    const roles = await readAllMISRows((f,t)=>supabase.from('user_roles').select('user_id').order('id').range(f,t));
+    const roles = await readAllMISRows((f,t)=>supabase.from('user_roles').select('user_id,role,department').order('id').range(f,t));
     if (!roles.length) return [];
-    return readAllMISRows((f,t)=>supabase.from('profiles').select('id,full_name,email').in('id',roles.map(r=>r.user_id)).order('id').range(f,t));
+    const employees = await readAllMISRows((f,t)=>supabase.from('employees').select('user_id,full_name,email').not('user_id','is',null).order('id').range(f,t));
+    return roles.filter(r=>r.department==='sales'||r.role==='super_admin').map(r=>{const employee=employees.find(e=>e.user_id===r.user_id);return {id:r.user_id,full_name:employee?.full_name || (r.role==='super_admin'?'Administrator':'Sales staff'),email:employee?.email};});
   }});
   async function save(handoff: string) {
     if (['ready','accepted'].includes(handoff) && !canHandOff(form)) {toast.error('Qualification, contact permission and an owner are required');return;}
