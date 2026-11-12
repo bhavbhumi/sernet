@@ -7,6 +7,7 @@ import BrokerageCalcContent from '@/components/calculators/BrokerageCalcContent'
 import MarginCalcContent from '@/components/calculators/MarginCalcContent';
 import SIPCalcContent from '@/components/calculators/SIPCalcContent';
 import LumpsumCalcContent from '@/components/calculators/LumpsumCalcContent';
+import BondCalcContent from '@/components/calculators/BondCalcContent';
 import GoalCalcContent from '@/components/calculators/GoalCalcContent';
 import InsuranceNeedCalcContent from '@/components/calculators/InsuranceNeedCalcContent';
 
@@ -15,13 +16,13 @@ const serviceTabs: ServiceTab[] = ['Trading', 'Investment', 'Insurance'];
 
 const subTabs: Record<ServiceTab, string[]> = {
   Trading: ['Brokerage', 'Margin'],
-  Investment: ['SIP', 'Lumpsum', 'Goal Planner'],
+  Investment: ['SIP', 'Lumpsum', 'Goal Planner', 'Bonds'],
   Insurance: ['Need Estimator'],
 };
 
 const serviceDescriptions: Record<ServiceTab, string> = {
   Trading: 'Estimate brokerage costs, margins & leverage for your trades',
-  Investment: 'Plan SIPs, lumpsum investments, and goal-based wealth creation',
+  Investment: 'Plan SIPs, lumpsums, goals and bond yields',
   Insurance: 'Find out how much life cover your family truly needs',
 };
 
@@ -43,6 +44,7 @@ const Calculators = () => {
       if (activeSubTab === 'SIP') return <SIPCalcContent />;
       if (activeSubTab === 'Lumpsum') return <LumpsumCalcContent />;
       if (activeSubTab === 'Goal Planner') return <GoalCalcContent />;
+      if (activeSubTab === 'Bonds') return <BondCalcContent />;
     }
     if (activeService === 'Insurance') {
       return <InsuranceNeedCalcContent />;
@@ -54,7 +56,7 @@ const Calculators = () => {
     <Layout>
       <SEOHead
         title="Financial Calculators"
-        description="Free calculators for brokerage, margin, SIP, lumpsum, goal planning and insurance needs from SERNET."
+        description="Free calculators for brokerage, margin, SIP, lumpsum, goal planning, bonds and insurance needs from SERNET."
         path="/calculators"
       />
       <PageHero
