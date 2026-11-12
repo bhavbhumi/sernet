@@ -324,6 +324,7 @@ const BondCalcContent = () => {
           </p>
           <div className="flex flex-wrap gap-2">
             <Link to="/open-account?tab=invest" className="btn-primary text-sm">Explore Bonds with Altifi <ArrowRight className="w-4 h-4 ml-1" /></Link>
+            <Link to="/insights/articles/d5a43659-ff1f-48ee-9c44-fbe0593d22f7" className="btn-secondary text-sm">Read the Bonds &amp; NCDs guide</Link>
             <Link to="/contact" className="btn-secondary text-sm">Talk to SERNET</Link>
           </div>
         </div>
