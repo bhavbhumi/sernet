@@ -62,7 +62,7 @@ const Calculators = () => {
       <PageHero
         title="Financial planning made"
         highlight="Simple"
-        description="Trading costs, margins, SIP returns, goal planning, and insurance needs — calculate it all in one place."
+        description="Trading costs, margins, SIP returns, goal planning, bond yields and insurance needs — calculate it all in one place."
         breadcrumbLabel="Calculators"
       />
 
