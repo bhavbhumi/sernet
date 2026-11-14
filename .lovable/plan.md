@@ -1,36 +1,53 @@
-# Staff-ready operations: Sales → Support → Accounts
+# Consolidate investment calculators under Funds
 
-## Scope
-Reshape the existing modules for practical daily staff use, completing one department before moving to the next. Defer additional features, new delivery integrations and client-portal work. Preserve the public website, existing records and current permissions keys.
+## Navigation and order
 
-## 1. Sales — first
-- Keep the working path clear: handed-off enquiry → accepted enquiry → contact → product opportunity → recorded progress.
-- Refine existing Leads, Contacts and Deals screens: consistent filters, readable tables, unified row actions, clear owners/statuses and usable mobile layouts.
-- Remove competing creation paths: the current New Deal form can create another contact inline or leave the contact empty; use an existing contact instead.
-- Align both deal-creation entry points with the existing product master and pipeline configuration rather than independent product lists.
-- Repair existing ownership, activity logging, editing, stage changes and history recording; enforce configured transition requirements without claiming unsupported approval actions work.
-- Check staff access at the data/action boundary, not just menu visibility. Show failed reads and saves explicitly, and keep totals aligned with the records staff can access.
-- Preserve the recently verified lead acceptance, prospect-aware conversion and duplicate safeguards.
+Keep the existing Trading, Investment and Insurance tabs. Within **Investment**, replace the separate SIP and Lumpsum options with **Funds**, leaving Goal Planner and Bonds available separately.
 
-**Completion check:** signed-in staff can accept a handed-off enquiry, convert it, open/edit its contact, create its product opportunity, record activity and advance an allowed stage; saved changes and history read back correctly. Check denied actions and desktop/mobile layouts.
+Funds opens with Lumpsum selected and presents these groups in exactly this order:
 
-## 2. Support — after Sales
-- Reshape existing Tickets and ticket details around assignment, classification, replies, internal notes, documents, deadlines and resolution.
-- Repair initial loading, search, filters, pagination and error handling so missing or failed reads do not look like an empty queue.
-- Verify existing canned responses, knowledge-base links and escalation settings; preserve separation between internal notes and customer-visible replies.
-- Verify staff can create, assign, reply to, resolve and close a ticket, with accurate history and authorised customer visibility.
+1. **Lumpsum**
+2. **SIP · STP · SWP**
+3. **Step-up SIP · STP · SWP**
+4. **Step-down SIP · STP · SWP**
 
-## 3. Accounts — after Support
-- Reshape existing Invoices, Commission Claims and Partner Payouts with consistent lists, actions, statuses and references.
-- Check principal/partner/client selection against existing business rules; do not invent charges, commission rates or tax treatment.
-- Repair invoice totals and line-item save integrity, receipt/payment updates, claim and payout validation, and failed save/delete handling.
-- Make existing financial summaries error-aware and complete; confirm records save, reopen and update correctly.
-- Review existing firm, bank, service, tax and payment-term settings for working links and forms; preserve HR's payroll ownership and avoid a second payroll workflow.
+Within each recurring-plan group, select SIP, STP or SWP using a compact selector. This provides all ten calculators without a crowded row of ten tabs. Preserve the clean site styling and make the controls fit comfortably on phones.
 
-## Shared implementation rules
-- Use the existing design system and permission keys; no wholesale rebranding or extra modules.
-- Keep sensitive actions authenticated and enforce business rules in the database or protected server actions.
-- Use additive database changes only where required; preserve previously published compatibility.
-- Add focused regression tests for changed rules and verify real signed-in workflows with temporary records, then remove those records.
-- Report each department's completed checks and any dependency requiring management information before advancing.
-- Keep publication separate from preview work; no deployment is requested by this plan.
+## Calculators
+
+| Calculator | Inputs | Main results |
+|---|---|---|
+| Lumpsum | Investment, assumed annual return, duration | Final value, invested amount, estimated gain |
+| SIP | Instalment, frequency, assumed annual return, duration | Contributions, estimated gain, final value |
+| STP | Initial source-fund balance, transfer amount, frequency, source and destination return assumptions, duration | Remaining source balance, destination value, total portfolio value, total transferred |
+| SWP | Starting corpus, withdrawal amount, frequency, assumed annual return, duration | Total withdrawn, remaining corpus, corpus exhaustion date if applicable |
+
+Step-up and step-down versions use the same inputs plus an **annual change**, selectable as a percentage or fixed rupee amount. The adjustment applies to the SIP contribution, STP transfer or SWP withdrawal—not the assumed return. Keep instalment frequency separate from the annual adjustment frequency.
+
+## Results and value additions
+
+- Live results, a balance chart and an expandable period-by-period cash-flow table.
+- STP shows both funds separately: a transfer is not counted as new money or investment profit.
+- SWP shows withdrawals separately from investment returns; taking money out is not itself a gain.
+- Never permit negative transfers, withdrawals or balances. Cap the final STP/SWP payment at the available balance and clearly report any shortfall or exhaustion.
+- Step-down amounts have a zero floor; percentage decreases cannot exceed 100%.
+- Retain the existing printable proposal flow, including selected inputs and assumptions.
+- Include relevant Tick Funds/Open Account links using existing destinations.
+
+## Assumptions and safeguards
+
+- Use a consistent effective annual-return assumption across Funds calculators, converted to the selected payment frequency.
+- Default recurring payments to the beginning of each period and state that assumption in the calculation notes.
+- Apply annual step changes after each completed year; the first year uses the entered starting amount.
+- Show projections as illustrative, not guaranteed returns or personalised advice.
+- Do not invent tax estimates: STP source-fund redemptions and SWP withdrawals may attract tax and exit loads, which are excluded from the initial projections and explicitly disclosed.
+- All calculations remain local and deterministic, with no AI services.
+
+## Technical implementation and verification
+
+- Reuse the existing calculator presentation and proposal flow; introduce a shared Funds calculation engine rather than ten separate formula implementations.
+- Preserve existing SIP/Lumpsum integrations and prefills where they are reused elsewhere.
+- Update calculator page metadata to reflect Funds and the new plan types.
+- Add numerical regression tests for all ten modes, zero returns, annual step boundaries, source-fund exhaustion, withdrawal exhaustion and prevention of double-counting STP transfers.
+- Verify the complete flow on desktop and mobile, including switching modes, changing inputs, tables, charts and printable proposals.
+- No changes to other calculators, content publication or production deployment.
