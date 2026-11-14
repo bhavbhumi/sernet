@@ -17,6 +17,7 @@
 - Use the CMS-backed About Press tab as the single public home for coverage, redirecting `/media` there; this preserves real article links without maintaining a second hardcoded list.
 
 - Keep calculators deterministic and form-based, with locally generated proposals and no calculator AI services; this preserves useful planning tools without AI usage costs or chat dependencies.
+- Funds calculators share a tested period-by-period engine with effective annual returns, beginning-period cash flows and annual instalment adjustments; this keeps SIP/STP/SWP projections consistent without double-counting internal transfers.
 
 - Keep Legal & Compliance documents in the existing `legal_pages` CMS, with shared navigation metadata in `src/lib/legalConfig.ts`; this keeps public and administrative sections aligned without duplicating legal documents.
 - Redirect legacy legal URLs to the corresponding unified `/legal?tab=` section, while keeping Investor Charter standalone; this prevents conflicting copies while preserving existing links.

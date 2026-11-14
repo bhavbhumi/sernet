@@ -5,8 +5,7 @@ import { SEOHead } from '@/components/shared/SEOHead';
 import { motion, AnimatePresence } from 'framer-motion';
 import BrokerageCalcContent from '@/components/calculators/BrokerageCalcContent';
 import MarginCalcContent from '@/components/calculators/MarginCalcContent';
-import SIPCalcContent from '@/components/calculators/SIPCalcContent';
-import LumpsumCalcContent from '@/components/calculators/LumpsumCalcContent';
+import FundsCalcContent from '@/components/calculators/FundsCalcContent';
 import BondCalcContent from '@/components/calculators/BondCalcContent';
 import GoalCalcContent from '@/components/calculators/GoalCalcContent';
 import InsuranceNeedCalcContent from '@/components/calculators/InsuranceNeedCalcContent';
@@ -16,19 +15,19 @@ const serviceTabs: ServiceTab[] = ['Trading', 'Investment', 'Insurance'];
 
 const subTabs: Record<ServiceTab, string[]> = {
   Trading: ['Brokerage', 'Margin'],
-  Investment: ['SIP', 'Lumpsum', 'Goal Planner', 'Bonds'],
+  Investment: ['Funds', 'Goal Planner', 'Bonds'],
   Insurance: ['Need Estimator'],
 };
 
 const serviceDescriptions: Record<ServiceTab, string> = {
   Trading: 'Estimate brokerage costs, margins & leverage for your trades',
-  Investment: 'Plan SIPs, lumpsums, goals and bond yields',
+  Investment: 'Plan fund investments, transfers, withdrawals and bond yields',
   Insurance: 'Find out how much life cover your family truly needs',
 };
 
 const Calculators = () => {
   const [activeService, setActiveService] = useState<ServiceTab>('Investment');
-  const [activeSubTab, setActiveSubTab] = useState<string>('SIP');
+  const [activeSubTab, setActiveSubTab] = useState<string>('Funds');
 
   const handleServiceChange = (service: ServiceTab) => {
     setActiveService(service);
@@ -41,8 +40,7 @@ const Calculators = () => {
       if (activeSubTab === 'Margin') return <MarginCalcContent />;
     }
     if (activeService === 'Investment') {
-      if (activeSubTab === 'SIP') return <SIPCalcContent />;
-      if (activeSubTab === 'Lumpsum') return <LumpsumCalcContent />;
+      if (activeSubTab === 'Funds') return <FundsCalcContent />;
       if (activeSubTab === 'Goal Planner') return <GoalCalcContent />;
       if (activeSubTab === 'Bonds') return <BondCalcContent />;
     }
@@ -56,13 +54,13 @@ const Calculators = () => {
     <Layout>
       <SEOHead
         title="Financial Calculators"
-        description="Free calculators for brokerage, margin, SIP, lumpsum, goal planning, bonds and insurance needs from SERNET."
+        description="SERNET calculators for funds: lumpsum, SIP, STP, SWP and annual step-up/down plans, plus bonds, goals, brokerage and insurance needs."
         path="/calculators"
       />
       <PageHero
         title="Financial planning made"
         highlight="Simple"
-        description="Trading costs, margins, SIP returns, goal planning, bond yields and insurance needs — calculate it all in one place."
+        description="Fund investments, transfers, withdrawals, bond yields, trading costs and insurance needs."
         breadcrumbLabel="Calculators"
       />
 
