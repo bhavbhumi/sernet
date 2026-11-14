@@ -26,6 +26,7 @@ export const ProposalDialog = ({
   methodology,
   calcType,
 }: ProposalDialogProps) => {
+  const isFunds = calcType.startsWith('funds-');
   const [step, setStep] = useState<Step>('lead');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -239,11 +240,11 @@ export const ProposalDialog = ({
                 {/* Your Requirement */}
                 <h2 style={{ fontSize: '13px', fontWeight: 600, color: '#374151', margin: '0 0 10px', borderLeft: '3px solid #0066cc', paddingLeft: '10px' }}>Your Requirement</h2>
                 <p style={{ fontSize: '13px', color: '#374151', lineHeight: 1.6, marginBottom: '16px' }}>
-                  Based on your inputs in the {calculatorTitle}, we have prepared a personalised financial analysis with recommendations tailored to your situation.
+                  {isFunds ? 'This projection uses your selected inputs and assumptions. It is an illustration, not a personalised investment recommendation.' : `Based on your inputs in the ${calculatorTitle}, we have prepared a personalised financial analysis with recommendations tailored to your situation.`}
                 </p>
 
                 {/* Key Result */}
-                <h2 style={{ fontSize: '13px', fontWeight: 600, color: '#374151', margin: '16px 0 10px', borderLeft: '3px solid #0066cc', paddingLeft: '10px' }}>Key Recommendation</h2>
+                <h2 style={{ fontSize: '13px', fontWeight: 600, color: '#374151', margin: '16px 0 10px', borderLeft: '3px solid #0066cc', paddingLeft: '10px' }}>{isFunds ? 'Projected Result' : 'Key Recommendation'}</h2>
                 {result.primary && (
                   <div style={{ background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '8px', padding: '16px', textAlign: 'center', marginBottom: '12px' }}>
                     <div style={{ fontSize: '11px', color: '#6b7280', marginBottom: '4px' }}>{result.primary.label}</div>
@@ -281,20 +282,26 @@ export const ProposalDialog = ({
                 {/* Next Steps */}
                 <h2 style={{ fontSize: '13px', fontWeight: 600, color: '#374151', margin: '16px 0 10px', borderLeft: '3px solid #0066cc', paddingLeft: '10px' }}>Recommended Next Steps</h2>
                 <div style={{ fontSize: '13px', color: '#374151', lineHeight: 1.8, marginBottom: '16px' }}>
+                  {isFunds ? <>
+                    <div>1. Review your contribution, transfer or withdrawal assumptions.</div>
+                    <div>2. Check scheme documents, risks, tax and exit loads before acting.</div>
+                    <div>3. Revisit the projection as your needs and market conditions change.</div>
+                  </> : <>
                   <div>1. Review the numbers with your SerNet advisor to validate assumptions</div>
                   <div>2. Start with a small SIP or trial plan to build discipline</div>
                   <div>3. Revisit and replan annually as your income or goals change</div>
                   <div>4. Consider tax implications — LTCG, STCG, and Section 80C deductions may apply</div>
+                  </>}
                 </div>
 
                 {/* Disclaimer */}
                 <div style={{ background: '#fff7ed', border: '1px solid #fed7aa', borderRadius: '8px', padding: '12px', fontSize: '11px', color: '#92400e', lineHeight: 1.5 }}>
-                  <strong>Disclaimer:</strong> This proposal is generated based on your inputs and is for illustrative and informational purposes only. It does not constitute investment advice. Actual returns may vary. Please consult a SEBI-registered investment advisor before making any financial decisions. SerNet is a SEBI-registered intermediary.
+                  <strong>Disclaimer:</strong> {isFunds ? 'This projection is illustrative and informational only, not investment advice or a promise of returns. Actual returns may vary. Tax and exit loads are excluded. SERNET distributes mutual funds; it is not a Registered Investment Adviser.' : 'This proposal is generated based on your inputs and is for illustrative and informational purposes only. It does not constitute investment advice. Actual returns may vary. Please consult a SEBI-registered investment advisor before making any financial decisions. SerNet is a SEBI-registered intermediary.'}
                 </div>
 
                 {/* Footer */}
                 <div style={{ marginTop: '24px', borderTop: '1px solid #e5e7eb', paddingTop: '14px', display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#9ca3af' }}>
-                  <span>SerNet Financial Services | www.sernet.in</span>
+                  <span>{isFunds ? 'SERNET Financial Services | sernetindia.com' : 'SerNet Financial Services | www.sernet.in'}</span>
                   <span>Generated on {today} | Confidential</span>
                 </div>
               </div>
