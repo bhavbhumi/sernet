@@ -25,7 +25,7 @@ export const TAXONOMY: Record<PostType, Record<string, string[]>> = {
   Insurance: { 'Life Insurance': ['Traditional'] },
   Trading: { Stocks: [], IPO: [], Industry: [], Sector: [] },
   Credit: { 'Loans Against Assets': ['LAMF', 'LAS', 'LAPM'], 'Credit Counselling': [] },
-  'Personal Finance': { 'Budgeting & Money Management': [] },
+  'Personal Finance': { 'Budgeting & Money Management': [], 'Employee Benefits': ['Gratuity'] },
 };
 
 export function categoriesFor(type: string): string[] {
