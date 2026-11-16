@@ -19,6 +19,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useQuery } from '@tanstack/react-query';
 import { createTablePasteHandler } from '@/lib/tableUtils';
 import { resolvePublishedAt } from '@/lib/publishedAt';
+import { ArticleBodyRenderer } from '@/components/shared/ArticleBodyRenderer';
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const PAGE_SIZE = 25;
@@ -107,6 +108,7 @@ export default function AdminPosts({ initialType }: { initialType?: ContentType 
   const [page, setPage] = useState(1);
   const [dialogOpen, setDialogOpen] = useState(searchParams.get('action') === 'new');
   const [editItem, setEditItem] = useState<Post | null>(null);
+  const [previewItem, setPreviewItem] = useState<Post | null>(null);
   const [form, setForm] = useState(freshForm);
   const [saving, setSaving] = useState(false);
   const [uploadingMedia, setUploadingMedia] = useState(false);
@@ -341,6 +343,7 @@ export default function AdminPosts({ initialType }: { initialType?: ContentType 
                     <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">{item.excerpt}</p>
                     <div className="flex items-center gap-0.5 mt-1.5 flex-nowrap">
                       <RowActions actions={[
+                        { label: 'Review', icon: <Eye className="h-3.5 w-3.5" />, onClick: () => setPreviewItem(item) },
                         { label: item.status === 'published' ? 'Unpublish' : 'Publish', icon: item.status === 'published' ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />, onClick: () => toggleStatus(item) },
                         { label: 'Edit', onClick: () => openEdit(item) },
                         { label: 'Delete', onClick: () => handleDelete(item.id), variant: 'destructive', separator: true },
@@ -376,6 +379,30 @@ export default function AdminPosts({ initialType }: { initialType?: ContentType 
       </div>
 
       {/* Create/Edit Dialog */}
+      <Dialog open={previewItem !== null} onOpenChange={open => { if (!open) setPreviewItem(null); }}>
+        <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-y-auto">
+          {previewItem && <>
+            <DialogHeader>
+              <DialogTitle className="break-words pr-6">{previewItem.title}</DialogTitle>
+            </DialogHeader>
+            <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+              <Badge variant="secondary">{previewItem.status}</Badge>
+              <span>{[previewItem.post_type, previewItem.category, previewItem.sub_category].filter(Boolean).join(' › ')}</span>
+            </div>
+            {(previewItem.thumbnail_url || (mediaGroupOf(previewItem.media_kind) !== 'Listen' && previewItem.media_kind !== 'video' && previewItem.media_url)) &&
+              <img src={previewItem.thumbnail_url || previewItem.media_url || undefined} alt={previewItem.title} className="w-full max-h-80 object-contain" />}
+            {previewItem.media_kind === 'video' && previewItem.media_url && <video src={previewItem.media_url} controls className="w-full max-h-80" />}
+            {previewItem.media_kind === 'audio' && previewItem.media_url && <audio src={previewItem.media_url} controls className="w-full" />}
+            {previewItem.excerpt && <p className="text-muted-foreground">{previewItem.excerpt}</p>}
+            <ArticleBodyRenderer body={previewItem.body || ''} />
+            {previewItem.file_url && <a href={previewItem.file_url} target="_blank" rel="noopener noreferrer" className="text-primary underline">Open attachment</a>}
+            <div className="flex flex-wrap justify-end gap-2 border-t border-border pt-4">
+              <Button variant="outline" onClick={() => setPreviewItem(null)}>Close</Button>
+              <Button onClick={() => { const item = previewItem; setPreviewItem(null); openEdit(item); }}>Edit Post</Button>
+            </div>
+          </>}
+        </DialogContent>
+      </Dialog>
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>

@@ -1,4 +1,5 @@
 # Architecture rules
+- Review unpublished Posts inside the authorized admin screen using the shared article renderer; public article routes remain published-only so review never exposes drafts.
 - Retire unused CMS tables with a deprecation comment and remove all application reads/writes; this avoids breaking the previously published app during feature removal.
 - Generic CMS lists use declared table-specific sort/date fields; publication status must not imply a `published_at` column, and calendar public views show only CMS rows, never sample fallbacks, so admin and public records remain consistent.
 
