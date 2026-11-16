@@ -11,6 +11,10 @@ describe('insights taxonomy', () => {
 
 import { categoriesFor, subCategoriesFor, mediaGroupOf, kindsFor } from './insightsTaxonomy';
 describe('approved structure', () => {
+  it('Personal Finance includes gratuity under Employee Benefits', () => {
+    expect(categoriesFor('Personal Finance')).toContain('Employee Benefits');
+    expect(subCategoriesFor('Personal Finance', 'Employee Benefits')).toEqual(['Gratuity']);
+  });
   it('Trading has Stocks, IPO, Industry, Sector', () => expect(categoriesFor('Trading')).toEqual(['Stocks', 'IPO', 'Industry', 'Sector']));
   it('Markets sub categories', () => expect(subCategoriesFor('Macro & Markets', 'Markets')).toEqual(['Updates', 'Market Impact', 'Triggers', 'Outlook']));
   it('Watch holds image, gif, video', () => expect(kindsFor('Watch').map(k => k.value)).toEqual(['image', 'gif', 'video']));
