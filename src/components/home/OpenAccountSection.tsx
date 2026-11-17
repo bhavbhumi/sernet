@@ -100,10 +100,24 @@ export const OpenAccountSection = () => {
           className="text-center max-w-2xl mx-auto"
         >
           <h2 className="heading-lg text-foreground mb-4">{t('openAccount.heading')}</h2>
+          <motion.div
+            aria-hidden="true"
+            className="mx-auto mb-6 h-2 w-40 rounded-full"
+            style={gradientSweep}
+            animate={sweepAnimate}
+            transition={sweepTransition}
+          />
           <p className="text-body mb-8">{t('openAccount.description')}</p>
-          <Link to="/open-account" className="btn-primary text-base px-8 py-4">
-            {t('openAccount.cta')}
-          </Link>
+          <motion.span
+            className="inline-block rounded-md p-[3px]"
+            style={gradientSweep}
+            animate={sweepAnimate}
+            transition={sweepTransition}
+          >
+            <Link to="/open-account" className="btn-primary text-base px-8 py-4 block">
+              {t('openAccount.cta')}
+            </Link>
+          </motion.span>
         </motion.div>
       </div>
       </div>
