@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
+import { GradientBar } from '@/components/ui/GradientRing';
 
 interface PageHeroProps {
   title: string;
@@ -332,6 +333,7 @@ export const PageHero = ({
               </>
             )}
           </h1>
+          <GradientBar className="mb-4 h-1.5 w-16" />
           <p className="text-body">{description}</p>
         </motion.div>
       </div>
