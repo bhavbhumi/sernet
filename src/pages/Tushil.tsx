@@ -66,7 +66,7 @@ const Tushil = () => (
               ))}
             </ul>
             <div className="flex flex-wrap items-center gap-3 mb-10">
-              <a href={TUSHIL_LINKS.LOGIN} target="_blank" rel="noopener noreferrer" className="btn-primary text-sm">Go to Tushil <ArrowRight className="w-4 h-4 ml-2" /></a>
+              <GradientRing><a href={TUSHIL_LINKS.LOGIN} target="_blank" rel="noopener noreferrer" className="btn-primary text-sm">Go to Tushil <ArrowRight className="w-4 h-4 ml-2" /></a></GradientRing>
               <Link to="/schedule-call" className="btn-secondary text-sm">
                 <CalendarCheck className="w-4 h-4 mr-2" /> Book a Consultation
               </Link>
