@@ -12,6 +12,7 @@ import choicefinxShowcase from '@/assets/choicefinx-showcase.webp';
 import { TICKFUNDS_LINKS } from '@/lib/appLinks';
 import { RegulatoryIdentity, LastReviewed } from '@/components/legal/RegulatoryIdentity';
 import { ProductOnboardingBlock } from '@/components/shared/ProductOnboardingBlock';
+import { GradientRing } from '@/components/ui/GradientRing';
 import { pageReviewDates } from '@/lib/regulatoryIdentity';
 import { tickfundsSeo, tickfundsHero, tickfundsStats, tickfundsFeatures, tickfundsProducts, tickfundsTestimonials, tickfundsSteps, tickfundsFaqs, tickfundsDisclaimer } from '@/content/tickfunds';
 

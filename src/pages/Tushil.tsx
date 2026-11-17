@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { ProductOnboardingBlock } from '@/components/shared/ProductOnboardingBlock';
+import { GradientRing } from '@/components/ui/GradientRing';
 import { TUSHIL_LINKS } from '@/lib/appLinks';
 import choicefinxShowcase from '@/assets/choicefinx-showcase.webp';
 
