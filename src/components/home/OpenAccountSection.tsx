@@ -11,7 +11,7 @@ const gradientSweep = {
 } as const;
 
 const sweepTransition = { repeat: Infinity, duration: 5, ease: 'easeInOut' } as const;
-const sweepAnimate = { backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] } as const;
+const sweepAnimate = { backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] };
 
 const FloatingShape = ({ className, delay = 0, duration = 3, children }: { className?: string; delay?: number; duration?: number; children: React.ReactNode }) => (
   <motion.div
