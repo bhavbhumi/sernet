@@ -36,7 +36,7 @@ export const PricingSection = () => {
           className="text-center mb-8"
         >
           <h2 className="heading-lg text-foreground mb-4">{t('pricing.heading')}</h2>
-          <GradientBar className="mx-auto mb-4 h-1.5 w-24" />
+          <GradientBar className="mx-auto mb-4 h-1.5 w-16" />
           <p className="text-body max-w-2xl mx-auto">{t('pricing.description')}</p>
         </motion.div>
 

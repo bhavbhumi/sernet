@@ -62,7 +62,7 @@ export const InsightsSection = () => {
         >
           <div>
             <h2 className="heading-lg text-foreground">{t('insights.heading')}</h2>
-            <GradientBar className="mt-2 h-1.5 w-24" />
+            <GradientBar className="mt-2 h-1.5 w-16" />
           </div>
           <Link
             to="/insights"

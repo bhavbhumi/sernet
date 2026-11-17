@@ -24,7 +24,7 @@ export const TrustSection = () => {
             transition={{ duration: 0.6 }}
           >
             <h2 className="heading-lg text-foreground mb-2">{t('trust.heading')}</h2>
-            <GradientBar className="mb-4 h-1.5 w-24" />
+            <GradientBar className="mb-4 h-1.5 w-16" />
             <p className="text-muted-foreground text-body mb-6">{t('trust.subheading')}</p>
 
             <div className="space-y-5">
