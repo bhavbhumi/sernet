@@ -4,6 +4,7 @@ import { Star, BadgeCheck, ArrowRight, Play, MapPin, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
+import { GradientBar } from '@/components/ui/GradientRing';
 import { supabase } from '@/integrations/supabase/client';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -272,6 +273,7 @@ export const TestimonialSection = () => {
           <h2 className="heading-lg text-foreground mb-3">
             {t('testimonials.heading')}
           </h2>
+          <GradientBar className="mx-auto mb-4 h-1.5 w-24" />
           <p className="text-body max-w-xl mx-auto">
             {t('testimonials.subheading')}
           </p>

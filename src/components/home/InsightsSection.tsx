@@ -4,6 +4,7 @@ import { ArrowRight, Clock, Calendar, BookOpen, PlayCircle, Headphones } from 'l
 import { postPath, mediaGroupOf, type MediaGroup } from '@/lib/insightsTaxonomy';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
+import { GradientBar } from '@/components/ui/GradientRing';
 import { supabase } from '@/integrations/supabase/client';
 import { Skeleton } from '@/components/ui/skeleton';
 import { format } from 'date-fns';
@@ -61,6 +62,7 @@ export const InsightsSection = () => {
         >
           <div>
             <h2 className="heading-lg text-foreground">{t('insights.heading')}</h2>
+            <GradientBar className="mt-2 h-1.5 w-24" />
           </div>
           <Link
             to="/insights"

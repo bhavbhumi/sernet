@@ -8,6 +8,7 @@ import {
   Users, Star, Shield, Zap, Clock, Smartphone, HeadphonesIcon, Award
 } from 'lucide-react';
 import { ProductOnboardingBlock } from '@/components/shared/ProductOnboardingBlock';
+import { GradientRing } from '@/components/ui/GradientRing';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import choicefinxShowcase from '@/assets/choicefinx-showcase.webp';
 import { APP_LINKS } from '@/lib/appLinks';
@@ -246,9 +247,11 @@ const ChoiceFinX = () => (
           Open your free Demat + Trading account in minutes. Account opened with Choice Equity Broking, supported by SERNET as its Authorised Person.
         </motion.p>
         <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="flex flex-wrap justify-center gap-4">
-          <Link to="/open-account?tab=trade" className="btn-primary">
-            Open Account <ArrowRight className="w-4 h-4 ml-2" />
-          </Link>
+          <GradientRing>
+            <Link to="/open-account?tab=trade" className="btn-primary">
+              Open Account <ArrowRight className="w-4 h-4 ml-2" />
+            </Link>
+          </GradientRing>
           <Link to="/services" className="btn-secondary">Explore All Services</Link>
         </motion.div>
       </div>

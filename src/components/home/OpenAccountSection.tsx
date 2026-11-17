@@ -2,16 +2,7 @@ import { Link } from '@/lib/router-compat';
 import { motion } from 'framer-motion';
 import { Sparkles, Star, PartyPopper } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import ctaGradientBar from '@/assets/cta-gradient-bar.png.asset.json';
-
-const gradientSweep = {
-  backgroundImage: `url(${ctaGradientBar.url})`,
-  backgroundSize: '200% 100%',
-  backgroundRepeat: 'repeat-x',
-} as const;
-
-const sweepTransition = { repeat: Infinity, duration: 5, ease: 'easeInOut' } as const;
-const sweepAnimate = { backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] };
+import { GradientBar, GradientRing } from '@/components/ui/GradientRing';
 
 const FloatingShape = ({ className, delay = 0, duration = 3, children }: { className?: string; delay?: number; duration?: number; children: React.ReactNode }) => (
   <motion.div
@@ -100,24 +91,13 @@ export const OpenAccountSection = () => {
           className="text-center max-w-2xl mx-auto"
         >
           <h2 className="heading-lg text-foreground mb-4">{t('openAccount.heading')}</h2>
-          <motion.div
-            aria-hidden="true"
-            className="mx-auto mb-6 h-2 w-40 rounded-full"
-            style={gradientSweep}
-            animate={sweepAnimate}
-            transition={sweepTransition}
-          />
+          <GradientBar className="mx-auto mb-6 h-2 w-40" />
           <p className="text-body mb-8">{t('openAccount.description')}</p>
-          <motion.span
-            className="inline-block rounded-md p-[3px]"
-            style={gradientSweep}
-            animate={sweepAnimate}
-            transition={sweepTransition}
-          >
+          <GradientRing>
             <Link to="/open-account" className="btn-primary text-base px-8 py-4 block">
               {t('openAccount.cta')}
             </Link>
-          </motion.span>
+          </GradientRing>
         </motion.div>
       </div>
       </div>

@@ -2,6 +2,7 @@ import { Link } from '@/lib/router-compat';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import pricingZero from '@/assets/pricing-zero-sernet.webp';
+import { GradientBar } from '@/components/ui/GradientRing';
 
 export const PricingSection = () => {
   const { t } = useTranslation();
@@ -35,6 +36,7 @@ export const PricingSection = () => {
           className="text-center mb-8"
         >
           <h2 className="heading-lg text-foreground mb-4">{t('pricing.heading')}</h2>
+          <GradientBar className="mx-auto mb-4 h-1.5 w-24" />
           <p className="text-body max-w-2xl mx-auto">{t('pricing.description')}</p>
         </motion.div>
 

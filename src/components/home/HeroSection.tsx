@@ -1,4 +1,5 @@
 import { RegulatoryIdentity } from '@/components/legal/RegulatoryIdentity';
+import { GradientRing } from '@/components/ui/GradientRing';
 import { companyHistory, completedFamilyPracticeYears } from '@/lib/companyHistory';
 import { Link } from '@/lib/router-compat';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
@@ -65,13 +66,15 @@ export const HeroSection = () => {
 
             {/* Dual CTAs */}
             <div className="flex flex-wrap gap-4 mb-8">
-              <Link
-                to="/schedule-call"
-                className="btn-primary px-8 py-3.5 text-base"
-              >
-                {t('common.bookConsultation')}
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
+              <GradientRing>
+                <Link
+                  to="/schedule-call"
+                  className="btn-primary px-8 py-3.5 text-base"
+                >
+                  {t('common.bookConsultation')}
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </GradientRing>
               <Link
                 to="/open-account"
                 className="btn-secondary px-8 py-3.5 text-base"

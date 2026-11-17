@@ -12,6 +12,7 @@ import choicefinxShowcase from '@/assets/choicefinx-showcase.webp';
 import { TICKFUNDS_LINKS } from '@/lib/appLinks';
 import { RegulatoryIdentity, LastReviewed } from '@/components/legal/RegulatoryIdentity';
 import { ProductOnboardingBlock } from '@/components/shared/ProductOnboardingBlock';
+import { GradientRing } from '@/components/ui/GradientRing';
 import { pageReviewDates } from '@/lib/regulatoryIdentity';
 import { tickfundsSeo, tickfundsHero, tickfundsStats, tickfundsFeatures, tickfundsProducts, tickfundsTestimonials, tickfundsSteps, tickfundsFaqs, tickfundsDisclaimer } from '@/content/tickfunds';
 
@@ -118,7 +119,7 @@ const TickFunds = () => (
                 <li key={item} className="flex items-center gap-2 text-sm text-foreground justify-center lg:justify-start"><Check className="w-4 h-4 text-primary shrink-0" />{item}</li>
               ))}
             </ul>
-            <a href={TICKFUNDS_LINKS.START_INVESTING} target="_blank" rel="noopener noreferrer" className="btn-primary">Get Your Free Checkup <ArrowRight className="w-4 h-4 ml-2" /></a>
+            <GradientRing><a href={TICKFUNDS_LINKS.START_INVESTING} target="_blank" rel="noopener noreferrer" className="btn-primary">Get Your Free Checkup <ArrowRight className="w-4 h-4 ml-2" /></a></GradientRing>
           </div>
           <div className="flex-shrink-0 w-full max-w-[280px] lg:max-w-[320px]">
             <div className="rounded-xl bg-background border border-border p-6 shadow-xs space-y-4">
