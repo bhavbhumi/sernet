@@ -2,6 +2,16 @@ import { Link } from '@/lib/router-compat';
 import { motion } from 'framer-motion';
 import { Sparkles, Star, PartyPopper } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import ctaGradientBar from '@/assets/cta-gradient-bar.png.asset.json';
+
+const gradientSweep = {
+  backgroundImage: `url(${ctaGradientBar.url})`,
+  backgroundSize: '200% 100%',
+  backgroundRepeat: 'repeat-x',
+} as const;
+
+const sweepTransition = { repeat: Infinity, duration: 5, ease: 'easeInOut' } as const;
+const sweepAnimate = { backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] } as const;
 
 const FloatingShape = ({ className, delay = 0, duration = 3, children }: { className?: string; delay?: number; duration?: number; children: React.ReactNode }) => (
   <motion.div
