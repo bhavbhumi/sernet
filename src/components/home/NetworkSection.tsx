@@ -4,6 +4,7 @@ import { Link } from '@/lib/router-compat';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Users, Handshake, Building2, Briefcase, Globe, Crown, Building } from 'lucide-react';
 import clientRetail from '@/assets/client-retail.webp';
+import { GradientBar } from '@/components/ui/GradientRing';
 import clientHnw from '@/assets/client-hnw.webp';
 import clientNri from '@/assets/client-nri.webp';
 import clientInstitutions from '@/assets/client-institutions.webp';
@@ -83,6 +84,7 @@ export const NetworkSection = () => {
           <h2 className="heading-lg text-foreground mb-3">
             Whom we serve
           </h2>
+          <GradientBar className="mx-auto mb-4 h-1.5 w-24" />
           <p className="text-body max-w-2xl mx-auto text-muted-foreground">
             A family legacy {companyHistory.familyLegacyLabel.toLowerCase()}, across 54 cities and 18 countries — a growing ecosystem of clients, partners, and principals.
           </p>

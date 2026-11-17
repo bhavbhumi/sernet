@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Link } from '@/lib/router-compat';
 import { useTranslation } from 'react-i18next';
 import { ProductOrbit } from './ProductOrbit';
+import { GradientBar } from '@/components/ui/GradientRing';
 
 export const TrustSection = () => {
   const { t } = useTranslation();
@@ -23,6 +24,7 @@ export const TrustSection = () => {
             transition={{ duration: 0.6 }}
           >
             <h2 className="heading-lg text-foreground mb-2">{t('trust.heading')}</h2>
+            <GradientBar className="mb-4 h-1.5 w-24" />
             <p className="text-muted-foreground text-body mb-6">{t('trust.subheading')}</p>
 
             <div className="space-y-5">
