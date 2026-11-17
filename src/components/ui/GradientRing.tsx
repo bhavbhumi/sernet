@@ -13,7 +13,7 @@ const sweepAnimate = { backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] };
 /** Animated gradient ring that draws attention to a primary action. */
 export const GradientRing = ({ children, className = '' }: { children: React.ReactNode; className?: string }) => (
   <motion.span
-    className={`inline-block rounded-md p-[3px] ${className}`}
+    className={`inline-block rounded-md p-[2px] ${className}`}
     style={sweepStyle}
     animate={sweepAnimate}
     transition={sweepTransition}

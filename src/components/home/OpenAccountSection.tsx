@@ -91,7 +91,7 @@ export const OpenAccountSection = () => {
           className="text-center max-w-2xl mx-auto"
         >
           <h2 className="heading-lg text-foreground mb-4">{t('openAccount.heading')}</h2>
-          <GradientBar className="mx-auto mb-6 h-2 w-40" />
+          <GradientBar className="mx-auto mb-6 h-2 w-28" />
           <p className="text-body mb-8">{t('openAccount.description')}</p>
           <GradientRing>
             <Link to="/open-account" className="btn-primary text-base px-8 py-4 block">
